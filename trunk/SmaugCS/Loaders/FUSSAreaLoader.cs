@@ -1,0 +1,736 @@
+﻿using System;
+using System.Globalization;
+using System.IO;
+using Realm.Library.Common;
+using Realm.Library.Common.Exceptions;
+using SmaugCS.Common;
+using SmaugCS.Enums;
+using SmaugCS.Managers;
+using SmaugCS.Objects;
+
+namespace SmaugCS.Loaders
+{
+    // ReSharper disable InconsistentNaming
+    public class FUSSAreaLoader : AreaLoader
+    // ReSharper restore InconsistentNaming
+    {
+        public FUSSAreaLoader(string areaName, bool bootDb)
+            : base(areaName, bootDb)
+        {
+        }
+
+        #region Overrides of AreaLoader
+
+        public override AreaData LoadArea(AreaData area)
+        {
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(FilePath)))
+            {
+                string word = string.Empty;
+                AreaData newArea = area;
+
+                do
+                {
+                    char c = proxy.ReadNextLetter();
+                    if (c == '*')
+                    {
+                        proxy.ReadToEndOfLine();
+                        continue;
+                    }
+
+                    if (c != '#')
+                    {
+                        LogManager.Bug("LoadFUSSArea: # not found. Invalid format for Area File {0}", AreaName);
+                        if (BootDb)
+                            throw new InitializationException("Invalid format for Area File {0}", AreaName);
+                        break;
+                    }
+
+                    word = proxy.EndOfStream ? "ENDAREA" : proxy.ReadNextWord();
+
+                    switch (word.ToUpper())
+                    {
+                        case "AREADATA":
+                            if (newArea == null)
+                                area = CreateArea();
+                            ReadAreaData(proxy, area);
+                            break;
+                        case "MOBILE":
+                            // fread_fuss_mobile(proxy, area);
+                            break;
+                        case "OBJECT":
+                            // fread_fuss_object(proxy, area);
+                            break;
+                        case "ROOM":
+                            // fread_fuss_room(proxy, area);
+                            break;
+                        case "ENDAREA":
+                            break;
+                        default:
+                            LogManager.Bug("Bad section header {0} in Area file {1}", word, AreaName);
+                            proxy.ReadToEnd();
+                            break;
+                    }
+
+                } while (!proxy.EndOfStream
+                         && !word.Equals("ENDAREA", StringComparison.OrdinalIgnoreCase));
+
+                return newArea;
+            }
+        }
+
+        #endregion
+
+        private static ExtraDescriptionData ReadExtraDescription(TextReaderProxy proxy)
+        {
+            string word;
+            ExtraDescriptionData ed = new ExtraDescriptionData();
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDEXDESC" : proxy.ReadNextWord();
+                switch (word.ToLower())
+                {
+                    case "exdesckey":
+                        ed.Keyword = proxy.ReadString();
+                        break;
+                    case "exdesc":
+                        ed.Description = proxy.ReadString();
+                        break;
+                    case "#endexdesc":
+                        if (string.IsNullOrEmpty(ed.Keyword))
+                        {
+                            LogManager.Bug("Missing Keyword");
+                            return null;
+                        }
+                        break;
+                }
+
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#ENDEXDESC"));
+
+            return ed;
+        }
+
+        private static AffectData ReadAffect(TextReaderProxy proxy, string word)
+        {
+            AffectData af = new AffectData();
+
+            if (word.EqualsIgnoreCase("affect"))
+            {
+                af.Type = EnumerationExtensions.GetEnum<AffectedByTypes>(proxy.ReadNumber());
+            }
+            else
+            {
+                string skillName = proxy.ReadNextWord();
+                int sn = db.LookupSkill(skillName);
+                if (sn < 0)
+                    LogManager.Bug("Unknown skill {0}", skillName);
+                else
+                    af.Type = EnumerationExtensions.GetEnum<AffectedByTypes>(sn);
+            }
+
+            af.Duration = proxy.ReadNumber();
+            int afMod = proxy.ReadNumber();
+            af.Location = EnumerationExtensions.GetEnum<ApplyTypes>(proxy.ReadNumber());
+            af.BitVector = proxy.ReadBitvector();
+
+            if (af.Location == ApplyTypes.WeaponSpell
+                || af.Location == ApplyTypes.WearSpell
+                || af.Location == ApplyTypes.StripSN
+                || af.Location == ApplyTypes.RemoveSpell
+                || af.Location == ApplyTypes.RecurringSpell)
+                af.Modifier = magic.slot_lookup(afMod);
+            else
+                af.Modifier = afMod;
+
+            return af;
+        }
+
+        private void ReadExit(TextReaderProxy proxy, RoomTemplate room)
+        {
+            string word;
+            ExitData exit = null;
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDEXIT" : proxy.ReadNextWord();
+                switch (word.ToLower())
+                {
+                    case "#endexit":
+                        return;
+                    case "desc":
+                        exit.Description = proxy.ReadString();
+                        break;
+                    case "distance":
+                        exit.Distance = proxy.ReadNumber();
+                        break;
+                    case "direction":
+                        int door = (int)build.get_dir(proxy.ReadFlagString());
+                        if (door < 0 || door > (int)DirectionTypes.Somewhere)
+                        {
+                            LogManager.Bug("Vnum {0} has bad door number {1}", room.Vnum, door);
+                            if (BootDb)
+                                return;
+                        }
+                        exit = db.make_exit(room, null, door);
+                        break;
+                    case "flags":
+                        string exitflags = proxy.ReadFlagString();
+
+                        foreach (char c in exitflags)
+                        {
+                            int value = build.get_exflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value > 31)
+                                LogManager.Bug("Unknown exit flag {0}", c);
+                            else
+                                exit.Flags.SetBit(1 << value);
+                        }
+                        break;
+                    case "key":
+                        exit.Key = proxy.ReadNumber();
+                        break;
+                    case "keywords":
+                        exit.Keyword = proxy.ReadString();
+                        break;
+                    case "pull":
+                        exit.PullType = EnumerationExtensions.GetEnum<DirectionPullTypes>(proxy.ReadNumber());
+                        exit.Pull = proxy.ReadNumber();
+                        break;
+                    case "toroom":
+                        exit.vnum = proxy.ReadNumber();
+                        break;
+                }
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#ENDEXIT"));
+
+            if (exit != null)
+                handler.extract_exit(room, exit);
+        }
+
+        private static void ReadAreaData(TextReaderProxy proxy, AreaData area)
+        {
+            string word;
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDAREADATA" : proxy.ReadNextWord();
+                switch (word.ToLower())
+                {
+                    case "#endareadata":
+                        area.Age = area.ResetFrequency;
+                        return;
+                    case "author":
+                        area.Author = proxy.ReadString().TrimHash();
+                        break;
+                    case "credits":
+                        area.Credits = proxy.ReadString().TrimHash();
+                        break;
+                    case "economy":
+                        area.HighEconomy = proxy.ReadNumber();
+                        area.LowEconomy = proxy.ReadNumber();
+                        break;
+                    case "flags":
+                        string flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_areaflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value > 31)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                area.Flags.SetBit(1 << value);
+                        }
+                        break;
+                    case "name":
+                        area.Name = proxy.ReadString();
+                        break;
+                    case "ranges":
+                        string[] words = proxy.ReadString().Split(new[] { ' ' });
+                        area.LowSoftRange = words[0].ToInt32();
+                        area.HighSoftRange = words[1].ToInt32();
+                        area.LowHardRange = words[2].ToInt32();
+                        area.HighHardRange = words[3].ToInt32();
+                        break;
+                    case "resetmsg":
+                        area.ResetMessage = proxy.ReadString().TrimHash();
+                        break;
+                    case "resetfreq":
+                        area.ResetFrequency = proxy.ReadNumber();
+                        break;
+                    case "spelllimit":
+                        area.SpellLimit = proxy.ReadNumber();
+                        break;
+                    case "version":
+                        area.Version = proxy.ReadNumber();
+                        break;
+                    case "weatherx":
+                        area.WeatherX = proxy.ReadNumber();
+                        break;
+                    case "weathery":
+                        area.WeatherY = proxy.ReadNumber();
+                        break;
+                    default:
+                        LogManager.Log("Area {0} found no matching value {1}", area.Filename, word);
+                        proxy.ReadToEndOfLine();
+                        break;
+                }
+
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#ENDAREADATA"));
+        }
+
+        private static MudProgData ReadMudProg(TextReaderProxy proxy, Template index)
+        {
+            string word;
+            MudProgData prog = new MudProgData();
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDEXIT" : proxy.ReadNextWord();
+                switch (word.ToLower())
+                {
+                    case "#endprog":
+                        break;
+                    case "arglist":
+                        prog.arglist = proxy.ReadString();
+                        prog.IsFileProg = false;
+
+                        if (prog.Type == MudProgTypes.InFile)
+                        {
+                            if (index is RoomTemplate)
+                                db.rprog_file_read((RoomTemplate)index, prog.arglist);
+                            else if (index is ObjectTemplate)
+                                db.oprog_file_read((ObjectTemplate)index, prog.arglist);
+                            else if (index is MobTemplate)
+                                db.mprog_file_read((MobTemplate)index, prog.arglist);
+                        };
+                        break;
+                    case "comlist":
+                        prog.comlist = proxy.ReadString();
+                        break;
+                    case "progtype":
+                        prog.Type =
+                            EnumerationExtensions.GetEnum<MudProgTypes>(db.mprog_name_to_type(proxy.ReadFlagString()));
+                        index.ProgTypes.SetBit((int)prog.Type);
+                        break;
+                }
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endprog"));
+
+            return prog;
+        }
+
+        private void ReadMobile(TextReaderProxy proxy, AreaData area)
+        {
+            string word;
+            MobTemplate mob = null;
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDMOBILE" : proxy.ReadNextWord();
+                string flags;
+                string[] words;
+
+                switch (word.ToLower())
+                {
+                    case "#endmobile":
+                        db.MOBILE_INDEX.Add(mob);
+                        break;
+                    case "#mudprog":
+                        MudProgData prog = ReadMudProg(proxy, mob);
+                        if (prog != null)
+                            mob.MudProgs.Add(prog);
+                        break;
+                    case "actflags":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_actflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                mob.Act.SetBit(value);
+                        }
+                        break;
+                    case "affected":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_aflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                mob.AffectedBy.SetBit(value);
+                        }
+                        break;
+                    case "attacks":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_attackflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                mob.Attacks.SetBit(value);
+                        }
+                        break;
+                    case "attribs":
+                        words = proxy.ReadString().Split(new[] { ' ' });
+
+                        mob.PermanentStrength = words[0].ToInt32();
+                        mob.PermanentIntelligence = words[1].ToInt32();
+                        mob.PermanentWisdom = words[2].ToInt32();
+                        mob.PermanentDexterity = words[3].ToInt32();
+                        mob.PermanentConstitution = words[4].ToInt32();
+                        mob.PermanentCharisma = words[5].ToInt32();
+                        mob.PermanentLuck = words[6].ToInt32();
+                        break;
+                    case "bodyparts":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_partflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value > 31)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                mob.ExtraFlags.SetBit(1 << value);
+                        }
+                        break;
+                    case "class":
+                        int npcClass = build.get_npc_class(proxy.ReadString().TrimHash());
+                        if (npcClass < 0 || npcClass >= GameConstants.npc_class.Count)
+                        {
+                            LogManager.Bug("Vnum {0} has invalid class {1}", mob.Vnum, npcClass);
+                            npcClass = build.get_npc_class("warrior");
+                        }
+                        mob.Class = npcClass;
+                        break;
+                    case "defenses":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_defenseflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                mob.Defenses.SetBit(value);
+                        }
+                        break;
+                    case "defpos":
+                        break;
+                    case "desc":
+                        mob.Description = proxy.ReadString().TrimHash();
+                        break;
+                    case "gender":
+                        break;
+                    case "immune":
+                        break;
+                    case "keywords":
+                        mob.Name = proxy.ReadString().TrimHash();
+                        break;
+                    case "long":
+                        mob.LongDescription = proxy.ReadString().TrimHash();
+                        break;
+                    case "position":
+                        break;
+                    case "race":
+                        break;
+                    case "repairdata":
+                        break;
+                    case "resist":
+                        break;
+                    case "saves":
+                        break;
+                    case "short":
+                        mob.ShortDescription = proxy.ReadString().TrimHash();
+                        break;
+                    case "shopdata":
+                        break;
+                    case "speaks":
+                        break;
+                    case "speaking":
+                        break;
+                    case "specfun":
+                        break;
+                    case "stats1":
+                        break;
+                    case "stats2":
+                        break;
+                    case "stats3":
+                        break;
+                    case "stats4":
+                        break;
+                    case "suscept":
+                        break;
+                    case "vnum":
+                        break;
+                }
+
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endmobile"));
+        }
+
+        private void ReadRoom(TextReaderProxy proxy, AreaData area)
+        {
+            string word;
+            RoomTemplate room = null;
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDROOM" : proxy.ReadNextWord();
+                switch (word.ToLower())
+                {
+                    case "#endroom":
+                        db.ROOMS.Add(room);
+                        return;
+                    case "#exit":
+                        ReadExit(proxy, room);
+                        break;
+                    case "#exadesc":
+                        ExtraDescriptionData ed = ReadExtraDescription(proxy);
+                        if (ed != null)
+                            room.ExtraDescriptions.Add(ed);
+                        break;
+                    case "#mudprog":
+                        MudProgData prog = ReadMudProg(proxy, room);
+                        if (prog != null)
+                            room.MudProgs.Add(prog);
+                        break;
+                    case "affect":
+                    case "affectdata":
+                        AffectData af = ReadAffect(proxy, word);
+                        if (af != null)
+                            room.PermanentAffects.Add(af);
+                        break;
+                    case "desc":
+                        room.Description = proxy.ReadString();
+                        break;
+                    case "flags":
+                        string flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_rflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value > ExtendedBitvector.MAX_BITS)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                room.Flags.SetBit(value);
+                        }
+                        break;
+                    case "name":
+                        room.Name = proxy.ReadString();
+                        break;
+                    case "reset":
+                        // TODO load room reset
+                        break;
+                    case "sector":
+                        int sector = build.get_secflag(proxy.ReadFlagString());
+                        if (sector < 0 || sector > EnumerationFunctions.Max<SectorTypes>())
+                        {
+                            LogManager.Bug("Room {0} has bad sector type {1}", room.Vnum, sector);
+                            sector = 1;
+                        }
+
+                        room.SectorType = EnumerationExtensions.GetEnum<SectorTypes>(sector);
+                        break;
+                    case "stats":
+                        string[] words = proxy.ReadString().Split(new[] { ' ' });
+                        room.TeleportDelay = words[0].ToInt32();
+                        room.TeleportToVnum = words[1].ToInt32();
+                        room.Tunnel = words[2].ToInt32();
+                        break;
+                    case "vnum":
+                        bool tmpBootDb = DatabaseManager.BootDb;
+                        int vnum = proxy.ReadNumber();
+                        if (db.get_room_index(vnum) != null)
+                        {
+                            if (tmpBootDb)
+                            {
+                                LogManager.Bug("Vnum {0} duplicated", vnum);
+                                DatabaseManager.BootDb = false;
+                            }
+                            else
+                            {
+                                room = db.get_room_index(vnum);
+                                LogManager.Log(LogTypes.Build,
+                                               db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
+                                               "Cleaning room {0}", vnum);
+                                handler.clean_room(room);
+                            }
+                        }
+                        else
+                        {
+                            room = new RoomTemplate();
+                        }
+
+                        room.Vnum = vnum;
+                        room.Area = area;
+                        DatabaseManager.BootDb = tmpBootDb;
+
+                        if (DatabaseManager.BootDb)
+                        {
+                            if (area.LowRoomNumber == 0)
+                                area.LowRoomNumber = vnum;
+                            if (area.HighRoomNumber > 0)
+                                area.HighRoomNumber = vnum;
+                        }
+                        break;
+                }
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endroom"));
+        }
+
+        private void ReadObject(TextReaderProxy proxy, AreaData area)
+        {
+            string word;
+            ObjectTemplate obj = null;
+
+            do
+            {
+                word = proxy.EndOfStream ? "#ENDOBJECT" : proxy.ReadNextWord();
+                string[] words;
+                string flags;
+                switch (word.ToLower())
+                {
+                    case "#endobject":
+                        db.OBJECT_INDEX.Add(obj);
+                        return;
+                    case "#exdesc":
+                        ExtraDescriptionData ed = ReadExtraDescription(proxy);
+                        if (ed != null)
+                            obj.ExtraDescriptions.Add(ed);
+                        break;
+                    case "#mudprog":
+                        MudProgData prog = ReadMudProg(proxy, obj);
+                        if (prog != null)
+                            obj.MudProgs.Add(prog);
+                        break;
+                    case "action":
+                        obj.ActionDescription = proxy.ReadString().TrimHash();
+                        break;
+                    case "affect":
+                    case "affectdata":
+                        AffectData af = ReadAffect(proxy, word);
+                        if (af != null)
+                            obj.Affects.Add(af);
+                        break;
+                    case "flags":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_oflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                obj.ExtraFlags.SetBit(value);
+                        }
+                        break;
+                    case "keywords":
+                        obj.Name = proxy.ReadString().TrimHash();
+                        break;
+                    case "long":
+                        obj.Description = proxy.ReadString().TrimHash();
+                        break;
+                    case "short":
+                        obj.ShortDescription = proxy.ReadString().TrimHash();
+                        break;
+                    case "spells":
+                        if (obj.Type == ItemTypes.Pill
+                            || obj.Type == ItemTypes.Potion
+                            || obj.Type == ItemTypes.Scroll)
+                        {
+                            obj.Value[1] = db.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[2] = db.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[3] = db.LookupSkill(proxy.ReadNextWord());
+                            break;
+                        }
+                        if (obj.Type == ItemTypes.Staff
+                            || obj.Type == ItemTypes.Wand)
+                        {
+                            obj.Value[3] = db.LookupSkill(proxy.ReadNextWord());
+                            break;
+                        }
+                        if (obj.Type == ItemTypes.Salve)
+                        {
+                            obj.Value[4] = db.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[5] = db.LookupSkill(proxy.ReadNextWord());
+                        }
+                        break;
+                    case "stats":
+                        words = proxy.ReadString().Split(new[] { ' ' });
+                        obj.Weight = words[0].ToInt32();
+                        obj.Cost = words[1].ToInt32();
+                        obj.Rent = words[2].ToInt32();
+                        obj.Level = words[3].ToInt32();
+                        obj.Layers = words[4].ToInt32();
+                        break;
+                    case "type":
+                        int otype = build.get_otype(proxy.ReadFlagString());
+                        if (otype < 0)
+                        {
+                            LogManager.Bug("Vnum {0} object has invalid type {1}", obj.Vnum, otype);
+                            otype = build.get_otype("trash");
+                        }
+                        obj.Type = EnumerationExtensions.GetEnum<ItemTypes>(otype);
+                        break;
+                    case "values":
+                        words = proxy.ReadString().Split(new[] { ' ' });
+                        obj.Value[0] = words[0].ToInt32();
+                        obj.Value[1] = words[1].ToInt32();
+                        obj.Value[2] = words[2].ToInt32();
+                        obj.Value[3] = words[3].ToInt32();
+                        obj.Value[4] = words[4].ToInt32();
+                        obj.Value[5] = words[5].ToInt32();
+                        break;
+                    case "vnum":
+                        bool tmpBootDb = DatabaseManager.BootDb;
+                        int vnum = proxy.ReadNumber();
+                        if (db.get_obj_index(vnum) != null)
+                        {
+                            if (tmpBootDb)
+                            {
+                                LogManager.Bug("Vnum {0} duplicated", vnum);
+                                DatabaseManager.BootDb = false;
+                            }
+                            else
+                            {
+                                obj = db.get_obj_index(vnum);
+                                LogManager.Log(LogTypes.Build,
+                                               db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
+                                               "Cleaning object {0}", vnum);
+                                handler.clean_obj(obj);
+                            }
+                        }
+                        else
+                        {
+                            obj = new ObjectTemplate();
+                        }
+
+                        obj.Vnum = vnum;
+                        DatabaseManager.BootDb = tmpBootDb;
+
+                        if (DatabaseManager.BootDb)
+                        {
+                            if (area.LowObjectNumber == 0)
+                                area.LowObjectNumber = vnum;
+                            if (area.HighObjectNumber > 0)
+                                area.HighObjectNumber = vnum;
+                        }
+                        break;
+                    case "wflags":
+                        flags = proxy.ReadFlagString();
+
+                        foreach (char c in flags)
+                        {
+                            int value = build.get_wflag(c.ToString(CultureInfo.InvariantCulture));
+                            if (value < 0 || value > 31)
+                                LogManager.Bug("Unknown flag {0}", c);
+                            else
+                                obj.WearFlags.SetBit(1 << value);
+                        }
+                        break;
+                }
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endobject"));
+        }
+    }
+}
