@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Realm.Library.Patterns.Singleton</name>
+    </assembly>
+    <members>
+        <member name="T:Realm.Library.Patterns.Singleton.ISingleton">
+            <summary>
+            Defines the contract for a singleton
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Patterns.Singleton.Singleton">
+            <summary>
+            Abstract Singleton class
+            </summary>
+        </member>
+    </members>
+</doc>
