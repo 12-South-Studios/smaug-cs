@@ -1,6 +1,6 @@
 ﻿using System;
 using Realm.Library.Common.Extensions;
-
+using SmaugCS.Common;
 using SmaugCS.Objects;
 using SmaugCS.Organizations;
 
@@ -23,8 +23,9 @@ namespace SmaugCS.Commands.Organizations
                 return;
             }
 
-            string arg = string.Empty;
-            argument = argument.OneArgument(out arg);
+            Tuple<string, string> tuple = argument.FirstArgument();
+            argument = tuple.Item2;
+            string arg = tuple.Item1;
 
             ClanData clan = db.GetClan(arg);
             if (clan == null)
@@ -53,8 +54,9 @@ namespace SmaugCS.Commands.Organizations
                 color.ch_printf(ch, "\r\nThere are %d member%s in %s\r\n", total, total == 1 ? "" : "s", clan.Name);
             }
 
-            string arg2 = string.Empty;
-            argument = argument.OneArgument(out arg2);
+            tuple = argument.FirstArgument();
+            argument = tuple.Item2;
+            string arg2 = tuple.Item1;
 
             if (arg2.Equals("remove", StringComparison.OrdinalIgnoreCase))
             {

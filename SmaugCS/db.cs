@@ -204,7 +204,7 @@ namespace SmaugCS
         public static List<TeleportData> TELEPORT = new List<TeleportData>();
         public static List<ProjectData> PROJECTS = new List<ProjectData>();
         public static List<ObjectInstance> ExtractedObjectQueue = new List<ObjectInstance>();
-        public static List<extracted_char_data> ExtractedCharQueue = new List<extracted_char_data>();
+        public static List<ExtracedCharacterData> ExtractedCharQueue = new List<ExtracedCharacterData>();
 
         public static List<AuctionData> AUCTIONS = new List<AuctionData>();
 
@@ -341,7 +341,7 @@ namespace SmaugCS
                 if (help.Keyword.StartsWith("#$"))
                     break;
 
-                help.Text = proxy.ReadString("~");
+                help.Text = proxy.ReadString(new[] { '~' });
 
                 if (help.Keyword.EqualsIgnoreCase("greeting"))
                     HelpGreeting = help.Text;

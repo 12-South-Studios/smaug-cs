@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SmaugCS.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("GatewayEDI")]
+[assembly: AssemblyCompany("12 South Studios")]
 [assembly: AssemblyProduct("SmaugCS.Common")]
-[assembly: AssemblyCopyright("Copyright © GatewayEDI 2013")]
+[assembly: AssemblyCopyright("Copyright © 12 South Studios 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

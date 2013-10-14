@@ -1,6 +1,6 @@
 ﻿namespace SmaugCS.Objects
 {
-    public class extracted_char_data
+    public class ExtracedCharacterData
     {
         public CharacterInstance ch { get; set; }
         public RoomTemplate room { get; set; }

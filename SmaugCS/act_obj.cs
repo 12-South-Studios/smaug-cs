@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
@@ -1172,7 +1171,9 @@ namespace SmaugCS
 
                     while (match)
                     {
-                        string argcopy = argument.OneArgument(out arg);
+                        Tuple<string, string> args = argument.FirstArgument();
+                        string argcopy = args.Item2;
+                        arg = args.Item1;
                         if (string.IsNullOrEmpty(argcopy))
                             break;
 
