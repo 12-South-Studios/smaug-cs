@@ -200,7 +200,9 @@ namespace SmaugCS.Managers
             dLoader.Load();
 
             LogManager.Log("Loading watches");
-            db.load_watchlist();
+            WatchListLoader wLoader = new WatchListLoader();
+            _loaders.Add(wLoader);
+            wLoader.Load();
 
             LogManager.Log("Loading bans");
             ban.load_banlist();
