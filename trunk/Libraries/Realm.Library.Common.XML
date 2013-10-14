@@ -676,7 +676,7 @@
             </summary>
             <param name="type"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.Atom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.Atom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -774,7 +774,7 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.BoolAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.BoolAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -923,7 +923,7 @@
             <param name="key"></param>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.DictionaryAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.DictionaryAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -962,7 +962,7 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.IntAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.IntAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -1141,7 +1141,7 @@
             Clears objects from the list
             </summary>
         </member>
-        <member name="M:Realm.Library.Common.Data.ListAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.ListAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -1164,7 +1164,7 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.ObjectAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.ObjectAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -1193,7 +1193,7 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.RealAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.RealAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -1216,7 +1216,7 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.StringAtom.Dump(log4net.ILog,System.String)">
+        <member name="M:Realm.Library.Common.Data.StringAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
@@ -2347,75 +2347,9 @@
              <param name="obj"></param>
              <returns></returns>
         </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadLine">
-            <summary>
-            Reads the entire line from the stream
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadToEnd">
-            <summary>
-            Reads to the end of the stream
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadNextLetter">
-            <summary>
-            Reads the next letter
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadToEndOfLine(System.Boolean)">
-            <summary>
-            Reads to the end of the current line
-            </summary>
-            <param name="includeCRLF"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadNextWord">
-            <summary>
-            Reads the next word (using space character as a delimiter)
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadIntoList(System.Char[])">
-            <summary>
-            Reads the stream into a list
-            </summary>
-            <param name="splitChars"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadString(System.String)">
-            <summary>
-            Reads a string from the stream ending at the terminator characters
-            </summary>
-            <param name="terminatorChars"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadSections(System.String[],System.Collections.Generic.IEnumerable{System.String},System.String[],System.String)">
-            <summary>
-            Reads a section from a file with given symbols
-            </summary>
-            <param name="headerChars"></param>
-            <param name="commentChars"></param>
-            <param name="footerChars"></param>
-            <param name="endOfFile"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.TextReaderProxy.ReadNumber">
-            <summary>
-            Reads a number from a stream
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Realm.Library.Common.TextReaderProxy.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.TextReaderProxy.EndOfStream">
-            <summary>
-            Gets if the stream is at the end
             </summary>
         </member>
         <member name="M:Realm.Library.Common.TextWriterProxy.Dispose">
@@ -3562,21 +3496,6 @@
             </summary>
             <param name="value"></param>
             <param name="toCompare"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.Extensions.StringExtensions.IsNumeric(System.String)">
-            <summary>
-            Returns true if the entire string is a number
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.Extensions.StringExtensions.OneArgument(System.String,System.String@)">
-            <summary>
-            Gets the first word from the string, removes it, and returns the resulting string
-            </summary>
-            <param name="phrase"></param>
-            <param name="arg"></param>
             <returns></returns>
         </member>
         <member name="T:Realm.Library.Common.ILogBridge">

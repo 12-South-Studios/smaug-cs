@@ -93,7 +93,7 @@ namespace SmaugCS.Common
         /// <remarks>Was formerly known as one_argument</remarks>
         public static Tuple<string, string> FirstArgument(this string value)
         {
-            return new Tuple<string, string>(value.FirstWord(), value.RemoveWord(0));
+            return new Tuple<string, string>(value.FirstWord(), value.RemoveWord(1));
         }
 
         /// <summary>

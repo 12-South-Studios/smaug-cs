@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <DocumentationFile>bin\Debug\SmaugCS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -493,7 +494,6 @@
     <Compile Include="Enums\TimerTypes.cs" />
     <Compile Include="Enums\ToTypes.cs" />
     <Compile Include="Enums\TrapTypes.cs" />
-    <Compile Include="Enums\trv_type.cs" />
     <Compile Include="Enums\VariableTypes.cs" />
     <Compile Include="Enums\WearLocations.cs" />
     <Compile Include="fight.cs" />
@@ -533,7 +533,7 @@
     <Compile Include="Objects\DoFunction.cs" />
     <Compile Include="Objects\EditorData.cs" />
     <Compile Include="Objects\ExitData.cs" />
-    <Compile Include="Objects\extracted_char_data.cs" />
+    <Compile Include="Objects\ExtracedCharacterDAta.cs" />
     <Compile Include="Objects\ExtraDescriptionData.cs" />
     <Compile Include="Objects\FightingData.cs" />
     <Compile Include="Objects\game_board_data.cs" />
@@ -596,8 +596,6 @@
     <Compile Include="Objects\timerset.cs" />
     <Compile Include="Objects\TimerData.cs" />
     <Compile Include="Objects\TimeInfoData.cs" />
-    <Compile Include="Objects\trv_data.cs" />
-    <Compile Include="Objects\trv_world.cs" />
     <Compile Include="Objects\TimezoneData.cs" />
     <Compile Include="Objects\VariableData.cs" />
     <Compile Include="Objects\WatchData.cs" />

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Realm.Library.Patterns.Decorator</name>
+    </assembly>
+    <members>
+        <member name="T:Realm.Library.Patterns.Decorator.Component">
+            <summary>
+            Abstract class that defines a component
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Patterns.Decorator.IComponent">
+            <summary>
+            Declares the contract for a component
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Patterns.Decorator.Decorator">
+            <summary>
+            Abstract class that defines a decorator component
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Patterns.Decorator.Decorator.#ctor(Realm.Library.Patterns.Decorator.IComponent)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="component"></param>
+        </member>
+        <member name="P:Realm.Library.Patterns.Decorator.Decorator.Component">
+            <summary>
+            Gets a component reference
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Common;
 using SmaugCS.Enums;
@@ -92,15 +93,78 @@ namespace SmaugCS
         }
 
         private static int Pulse { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public static void violence_update()
         {
             Pulse = (Pulse + 1) % 100;
 
-            // TODO finish this
+            foreach (CharacterInstance ch in db.CHARACTERS
+                .Where(ch => !handler.char_died(ch)))
+            {
+                //// Experience gained during battle decreases as the battle drags on
+                if (ch.CurrentFighting != null &&
+                    (++ch.CurrentFighting.Duration % 24) == 0)
+                    ch.CurrentFighting.Experience = ((ch.CurrentFighting.Experience * 9) / 10);
+
+                foreach (TimerData timer in ch.Timers)
+                    DecreaseExperienceInBattle(timer, ch);
+
+                if (handler.char_died(ch))
+                    continue;
+
+                //// Spells that have durations less than 1 hour
+                foreach (AffectData paf in ch.Affects)
+                {
+                    if (paf.Duration > 0)
+                        paf.Duration--;
+                    else if (paf.Duration == 0)
+                    {
+
+                    }
+                }
+            }
         }
 
+        private static void DecreaseExperienceInBattle(TimerData timer, CharacterInstance ch)
+        {
+            --timer.Count;
+            if (timer.Count > 0)
+                return;
+
+            switch (timer.Type)
+            {
+                case TimerTypes.ASupressed:
+                    if (timer.Value == -1)
+                        timer.Count = 1000;
+                    break;
+                case TimerTypes.Nuisance:
+                    ch.PlayerData.Nuisance = null;
+                    break;
+                case TimerTypes.DoFunction:
+                    CharacterSubStates tempsub = ch.SubState;
+                    ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(timer.Value);
+                    timer.Action.Value.Invoke(ch, string.Empty);
+                    if (handler.char_died(ch))
+                        break;
+                    ch.SubState = tempsub;
+                    break;
+            }
+            handler.extract_timer(ch, timer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="victim"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public static int multi_hit(CharacterInstance ch, CharacterInstance victim, int dt)
         {
+            //// Add a timer to pkillers
             if (!ch.IsNpc() && !victim.IsNpc())
             {
                 if (ch.Act.IsSet((int)PlayerFlags.Nice))
@@ -126,10 +190,13 @@ namespace SmaugCS
             if (ch.IsNpc() && ch.Level <= 5 && wield == null)
                 return 0;
 
-            switch (wield.Value[3])
+            /*switch (wield.Value[3])
             {
 
-            }
+            }*/
+
+
+            return 0;
         }
 
         public static int off_shld_lvl(CharacterInstance ch, CharacterInstance victim)
