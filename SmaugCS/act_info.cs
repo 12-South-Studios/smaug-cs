@@ -182,11 +182,11 @@ namespace SmaugCS
 
         public static string hallucinated_object(int ms, bool fShort)
         {
-            int sms = SmaugCS.Common.Check.Range(1, (ms + 10) / 5, 20);
+            int sms = Check.Range(1, (ms + 10) / 5, 20);
 
             return fShort
-                ? GameConstants.HallucinatedObjectShort[SmaugCS.Common.SmaugRandom.Between(6 - SmaugCS.Common.Check.Range(1, sms / 2, 5), sms) - 1]
-                : GameConstants.HallucinatedObjectLong[SmaugCS.Common.SmaugRandom.Between(6 - SmaugCS.Common.Check.Range(1, sms / 2, 5), sms) - 1];
+                ? GameConstants.HallucinatedObjectShort[SmaugRandom.Between(6 - Check.Range(1, sms / 2, 5), sms) - 1]
+                : GameConstants.HallucinatedObjectLong[SmaugRandom.Between(6 - Check.Range(1, sms / 2, 5), sms) - 1];
         }
 
         public static string num_punct(int foo)
@@ -240,11 +240,11 @@ namespace SmaugCS
             int offcount;
             if (Math.Abs(ms) > 40)
             {
-                offcount = SmaugCS.Common.Check.Range(-count, (count * ms) / 100, count * 2);
+                offcount = Check.Range(-count, (count * ms) / 100, count * 2);
                 if (offcount < 0)
-                    offcount += SmaugCS.Common.SmaugRandom.Between(0, Math.Abs(offcount));
+                    offcount += SmaugRandom.Between(0, Math.Abs(offcount));
                 else if (offcount > 0)
-                    offcount -= SmaugCS.Common.SmaugRandom.Between(0, offcount);
+                    offcount -= SmaugRandom.Between(0, offcount);
             }
             else
                 offcount = 0;
@@ -277,11 +277,11 @@ namespace SmaugCS
                 if (offcount < 0 && ++cnt > (count + offcount))
                     break;
 
-                if (tmp > 0 && SmaugCS.Common.SmaugRandom.Bits(1) == 0)
+                if (tmp > 0 && SmaugRandom.Bits(1) == 0)
                 {
                     prgpstrShow[nShow] = hallucinated_object(ms, fShort);
                     prgnShow[nShow] = 1;
-                    pitShow[nShow] = SmaugCS.Common.SmaugRandom.Between((int)ItemTypes.Light, (int)ItemTypes.Book);
+                    pitShow[nShow] = SmaugRandom.Between((int)ItemTypes.Light, (int)ItemTypes.Book);
                     nShow++;
                     --tmp;
                 }
@@ -324,7 +324,7 @@ namespace SmaugCS
                 {
                     prgpstrShow[nShow] = hallucinated_object(ms, fShort);
                     prgnShow[nShow] = 1;
-                    pitShow[nShow] = SmaugCS.Common.SmaugRandom.Between((int)ItemTypes.Light, (int)ItemTypes.Book);
+                    pitShow[nShow] = SmaugRandom.Between((int)ItemTypes.Light, (int)ItemTypes.Book);
                     nShow++;
                 }
             }
@@ -763,7 +763,7 @@ namespace SmaugCS
                                 db.GetRace(victim.CurrentRace).Name, db.GetClass(victim.CurrentClass).Name);
             }
 
-            if (SmaugCS.Common.SmaugRandom.Percent() < Macros.LEARNED(ch, 0)) // TODO: gsn_peek
+            if (SmaugRandom.Percent() < Macros.LEARNED(ch, 0)) // TODO: gsn_peek
             {
                 color.ch_printf(ch, "\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
                 show_list_to_char(victim.Carrying, ch, true, true);
@@ -773,7 +773,7 @@ namespace SmaugCS
                 skills.learn_from_failure(ch, 0);   // TODO gsn_peek
         }
 
-        public static void show_char_to_char(List<CharacterInstance> list, CharacterInstance ch)
+        public static void show_char_to_char(IEnumerable<CharacterInstance> list, CharacterInstance ch)
         {
             foreach (CharacterInstance rch in list.Where(x => x != ch))
             {

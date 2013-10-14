@@ -1448,11 +1448,6 @@ namespace SmaugCS
             return false;
         }
 
-        public static void load_watchlist()
-        {
-            // TODO
-        }
-
         public static void tail_chain()
         {
             // do nothing

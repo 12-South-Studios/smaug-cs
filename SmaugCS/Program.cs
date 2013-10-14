@@ -337,10 +337,6 @@ namespace SmaugCS
 
         // Externs - Lines 2877 to 2986
 
-        public static int CMD_FLAG_POSSESS = BV00;
-        public static int CMD_FLAG_POLYMORPHED = BV01;
-        public static int CMD_WATCH = BV02;
-
 
         public static int RIS_000 = BV00;
         public static int RIS_R00 = BV01;

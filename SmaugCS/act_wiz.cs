@@ -1,12 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Realm.Library.Common;
 using SmaugCS.Commands;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -169,22 +166,6 @@ namespace SmaugCS
                     && !victim.IsNpc()
                     && !handler.in_hard_range(victim, location.Area))
                     comm.act(ATTypes.AT_DANGER, "Warning: this player's level is not within the area's level range.", ch, null, null, ToTypes.Character);
-            }
-        }
-
-        public static void save_watchlist()
-        {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.Watches);
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
-            {
-                foreach (WatchData watch in db.WATCHES)
-                {
-                    proxy.Write(string.Format("{0} {1}~{2}~{3}~\n", watch.ImmortalLevel, watch.ImmortalName,
-                                              string.IsNullOrEmpty(watch.TargetName) ? " " : watch.TargetName,
-                                              string.IsNullOrEmpty(watch.PlayerSite) ? " " : watch.PlayerSite));
-                }
-
-                proxy.Write("-1\n");
             }
         }
 
