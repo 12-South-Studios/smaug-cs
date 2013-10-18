@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Config;
 using SmaugCS.Enums;
+using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -123,13 +127,206 @@ namespace SmaugCS
 
         public static string act_string(string format, CharacterInstance to, CharacterInstance ch, object arg1, object arg2, int flags)
         {
-            // TODO
-            return string.Empty;
+            bool dontUpper = !format.StartsWith("$");
+
+            int varPosition;
+            var startIndex = 0;
+            StringBuilder sb = new StringBuilder(format);
+            string buffer = string.Empty;
+
+            do
+            {
+                const string chars = "$";
+                var anyOf = chars.ToCharArray();
+
+                varPosition = sb.IndexOfAny(anyOf, startIndex);
+                if (varPosition == -1) continue;
+
+                //// Is it a valid variable?
+                string var = sb.Substring(varPosition, 2);
+                if (!string.IsNullOrEmpty(var))
+                {
+                    CharacterInstance vch;
+                    ObjectInstance obj;
+
+                    switch (var)
+                    {
+                        case "$t":
+                            buffer = arg1.ToString();
+                            break;
+                        case "$T":
+                            buffer = arg2.ToString();
+                            break;
+                        case "$n":
+                            if (ch.CurrentMorph == null)
+                                buffer = (to != null ? Macros.PERS(ch, to) : Macros.NAME(ch));
+                            else if (!flags.IsSet(Program.STRING_IMM))
+                                buffer = (to != null ? Macros.MORPHERS(ch, to) : MORPHNAME(ch));
+                            else
+                                buffer = string.Format("(MORPH) {0}", to != null ? Macros.PERS(ch, to) : Macros.NAME(ch));
+                            break;
+                        case "$N":
+                            vch = arg2.CastAs<CharacterInstance>();
+                            if (vch.CurrentMorph == null)
+                                buffer = (to != null ? Macros.PERS(vch, to) : Macros.NAME(vch));
+                            else if (!flags.IsSet(Program.STRING_IMM))
+                                buffer = (to != null ? Macros.MORPHERS(vch, to) : MORPHNAME(vch));
+                            else
+                                buffer = string.Format("(MORPH) {0}", to != null ? Macros.PERS(vch, to) : Macros.NAME(vch));
+                            break;
+                        case "$e":
+                            buffer = ch.Gender.SubjectPronoun();
+                            break;
+                        case "$E":
+                            vch = arg2.CastAs<CharacterInstance>();
+                            buffer = vch.Gender.SubjectPronoun();
+                            break;
+                        case "$m":
+                            buffer = ch.Gender.ObjectPronoun();
+                            break;
+                        case "$M":
+                            vch = arg2.CastAs<CharacterInstance>();
+                            buffer = vch.Gender.ObjectPronoun();
+                            break;
+                        case "$s":
+                            buffer = ch.Gender.PossessivePronoun();
+                            break;
+                        case "$S":
+                            vch = arg2.CastAs<CharacterInstance>();
+                            buffer = vch.Gender.PossessivePronoun();
+                            break;
+                        case "$q":
+                            buffer = to == ch ? "" : "s";
+                            break;
+                        case "$Q":
+                            buffer = to == ch ? "your" : ch.Gender.PossessivePronoun();
+                            break;
+                        case "$p":
+                            obj = arg1.CastAs<ObjectInstance>();
+                            buffer = to == null || handler.can_see_obj(to, obj)
+                                         ? obj_short(obj)
+                                         : "something";
+                            break;
+                        case "$P":
+                            obj = arg2.CastAs<ObjectInstance>();
+                            buffer = to == null || handler.can_see_obj(to, obj)
+                                         ? obj_short(obj)
+                                         : "something";
+                            break;
+                        case "$d":
+                            if (arg2 == null || string.IsNullOrEmpty(arg2.ToString()))
+                                buffer = "door";
+                            else
+                            {
+                                Tuple<string, string> tuple = arg2.ToString().FirstArgument();
+                                buffer = tuple.Item1;
+                            }
+                            break;
+                    }
+                    sb.ReplaceFirst(var, buffer);
+                }
+
+                startIndex = varPosition + 1;
+            }
+            while (varPosition != -1);
+
+            if (!dontUpper)
+                sb.CapitalizeFirst();
+            return sb.ToString();
         }
 
-        public static void act(ATTypes attype, string format, CharacterInstance to, object arg1, object arg2, ToTypes type)
+        enum ActFFlags
         {
-            // TODO
+            None = 0,
+            Text = 1 << 0,
+            CH = 1 << 1,
+            OBJ = 1 << 2
+        }
+
+        public static void act(ATTypes attype, string format, CharacterInstance ch, object arg1, object arg2, ToTypes type)
+        {
+            if (string.IsNullOrEmpty(format) || ch == null)
+                return;
+
+            int flags1 = (int)ActFFlags.None;
+            int flags2 = (int)ActFFlags.None;
+            ObjectInstance obj1 = arg1.CastAs<ObjectInstance>();
+            ObjectInstance obj2 = arg2.CastAs<ObjectInstance>();
+            CharacterInstance vch = arg2.CastAs<CharacterInstance>();
+            CharacterInstance to;
+
+            #region Nasty type checking
+            // Do some proper type checking here..  Sort of.  We base it on the $* params.
+            // This is kinda lame really, but I suppose in some weird sense it beats having
+            // to pass like 8 different NULL parameters every time we need to call act()..
+            if (format.Contains("$t"))
+            {
+                flags1 |= (int)ActFFlags.Text;
+                obj1 = null;
+            }
+            if (format.Contains("$T") || format.Contains("$d"))
+            {
+                flags2 |= (int)ActFFlags.Text;
+                vch = null;
+                obj2 = null;
+            }
+
+            if (format.Contains("$N")
+                || format.Contains("$E")
+                || format.Contains("$M")
+                || format.Contains("$S")
+                || format.Contains("$Q"))
+            {
+                flags2 |= (int)ActFFlags.CH;
+                obj2 = null;
+            }
+
+            if (format.Contains("$p"))
+                flags1 |= (int)ActFFlags.OBJ;
+
+            if (format.Contains("$P"))
+            {
+                flags2 |= (int)ActFFlags.OBJ;
+                vch = null;
+            }
+
+            if (flags1 != (int)ActFFlags.None && flags1 != (int)ActFFlags.Text
+                && flags1 != (int)ActFFlags.CH && flags1 != (int)ActFFlags.OBJ)
+            {
+                LogManager.Bug("More than one type {0} defined. Setting all null.", flags1);
+                obj1 = null;
+            }
+
+            if (flags2 != (int)ActFFlags.None && flags2 != (int)ActFFlags.Text
+                && flags2 != (int)ActFFlags.CH && flags2 != (int)ActFFlags.OBJ)
+            {
+                LogManager.Bug("More than one type {0} defined. Setting all null.", flags2);
+                vch = null;
+                obj2 = null;
+            }
+
+            if (ch.CurrentRoom == null)
+                to = null;
+            else if (type == ToTypes.Character)
+                to = ch;
+            else
+                to = ch.CurrentRoom.Persons.First();
+            #endregion
+
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Secretive)
+                && type != ToTypes.Character)
+                return;
+
+            if (type == ToTypes.Victim)
+            {
+                if (vch == null)
+                    return;
+                if (vch.CurrentRoom == null)
+                    return;
+                to = vch;
+            }
+
+            // TODO 
         }
 
         public static string default_fprompt(CharacterInstance ch)

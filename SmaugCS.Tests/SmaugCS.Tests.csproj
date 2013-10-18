@@ -80,6 +80,7 @@
     <Compile Include="ExtendedBitvectorTests.cs" />
     <Compile Include="CheckTests.cs" />
     <Compile Include="EnumerationFunctionTests.cs" />
+    <Compile Include="CharExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

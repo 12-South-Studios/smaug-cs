@@ -133,6 +133,12 @@ namespace SmaugCS.Objects
             SavingThrows = new SavingThrowData();
         }
 
+        public bool IsImmune(SpellDamageTypes type)
+        {
+            ResistanceTypes resType = LookupManager.Instance.GetResistanceType(type);
+            return resType != ResistanceTypes.Unknown && Immunity.IsSet((int)resType);
+        }
+
         public MobTemplate MobIndex
         {
             get { return Parent.CastAs<MobTemplate>(); }
@@ -1271,7 +1277,7 @@ namespace SmaugCS.Objects
                 mud_prog.oprog_zap_trigger(this, obj);
 
                 if (db.SystemData.SaveFlags.IsSet((int)AutoSaveFlags.ZapDrop)
-                    && !handler.char_died(this))
+                    && !CharDied())
                     save.save_char_obj(this);
                 return;
             }
@@ -1342,6 +1348,14 @@ namespace SmaugCS.Objects
             return string.IsNullOrEmpty(name)
                        ? string.Empty
                        : string.Format("{0}.{1}", 1 + CurrentRoom.Persons.Count(rch => name.IsEqual(rch.Name)), name);
+        }
+
+        public bool CharDied()
+        {
+            if (this == handler.CurrentCharacter && handler.CurrentDeadCharacter != null)
+                return true;
+
+            return db.ExtractedCharQueue.Any(ccd => ccd.Character == this);
         }
     }
 }

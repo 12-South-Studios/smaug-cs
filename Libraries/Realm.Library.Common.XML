@@ -1241,6 +1241,101 @@
             Gets the value of the atom
             </summary>
         </member>
+        <member name="T:Realm.Library.Common.Dice.CustomExpression">
+            <summary>
+            Class for setting up custom functions for the Dice Parser
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.CustomExpression.FunctionName">
+            <summary>
+            Name of the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.CustomExpression.FunctionKeyword">
+            <summary>
+            Keyword that is found within the expression
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.CustomExpression.RegularExpressionPattern">
+            <summary>
+            Regular expression match pattern
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.CustomExpression.Regex">
+            <summary>
+            Gets the regular expression object using the established pattern
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.CustomExpression.Function">
+            <summary>
+            Function call if a match is found
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.CustomExpression.RegexReplaceFunction">
+            <summary>
+            The function to call to do a replacement 
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Common.Dice.DiceParser">
+            <summary>
+            Dice object that utilizes the magnificent NCalc utility at http://ncalc.codeplex.com/
+            Extended to allow dice functions to be evaluated as well
+            </summary>
+            <remarks>Also use http://regexlib.com/</remarks>
+        </member>
+        <member name="M:Realm.Library.Common.Dice.DiceParser.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.Dice.DiceParser.#ctor(Realm.Library.Common.Dice.ExpressionTable)">
+            <summary>
+            Overloaded constructor
+            </summary>
+            <param name="exprTable"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Dice.DiceParser.Roll(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="expr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Realm.Library.Common.Dice.ExpressionTable">
+            <summary>
+            Expression Table maintains a dictionary of expression objects
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.Dice.ExpressionTable.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.Dice.ExpressionTable.Add(Realm.Library.Common.Dice.CustomExpression)">
+            <summary>
+            Attempts to add a custom expression to the expression table.  Checks for 
+            name, keyword and regular expression conflicts.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Dice.ExpressionTable.Get(System.String)">
+            <summary>
+            Attempts to retrieve a custom expression from the expresison table. Checks
+            for name, keyword and regular expression matches.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.ExpressionTable.Keys">
+            <summary>
+            Gets an enumerable list of the Dictionary keys
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.Dice.ExpressionTable.Values">
+            <summary>
+            Gets an enumerable list of the Dictionary values
+            </summary>
+        </member>
         <member name="T:Realm.Library.Common.EntityContext`1">
              <summary>
             

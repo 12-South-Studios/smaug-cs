@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Language;
@@ -12,6 +13,89 @@ namespace SmaugCS
 {
     public static class tables
     {
+        public static List<Tuple<string, string>> SyllableTable = new List<Tuple<string, string>>()
+            {
+                new Tuple<string, string>(" ", " "),
+                new Tuple<string, string>("ar", "abra"),
+                new Tuple<string, string>("au", "kada"),
+                new Tuple<string, string>("bless", "fido"),
+                new Tuple<string, string>("blind", "nose"),
+                new Tuple<string, string>("bur", "mosa"),
+                new Tuple<string, string>("cu", "judi"),
+                new Tuple<string, string>("de", "oculo"),
+                new Tuple<string, string>("en", "unso"),
+                new Tuple<string, string>("light", "dies"),
+                new Tuple<string, string>("lo", "hi"),
+                new Tuple<string, string>("mor", "zak"),
+                new Tuple<string, string>("move", "sido"),
+                new Tuple<string, string>("ness", "lacri"),
+                new Tuple<string, string>("ning", "illa"),
+                new Tuple<string, string>("per", "duda"),
+                new Tuple<string, string>("polymorph", "iaddahs"),
+                new Tuple<string, string>("ra", "gru"),
+                new Tuple<string, string>("re", "candus"),
+                new Tuple<string, string>("son", "sabru"),
+                new Tuple<string, string>("tect", "infra"),
+                new Tuple<string, string>("tri", "cula"),
+                new Tuple<string, string>("ven", "nofo"),
+                new Tuple<string, string>("a", "a"),
+                new Tuple<string, string>("b", "b"),
+                new Tuple<string, string>("c", "q"),
+                new Tuple<string, string>("d", "e"),
+                new Tuple<string, string>("e", "z"),
+                new Tuple<string, string>("f", "y"),
+                new Tuple<string, string>("g", "o"),
+                new Tuple<string, string>("h", "p"),
+                new Tuple<string, string>("i", "u"),
+                new Tuple<string, string>("j", "y"),
+                new Tuple<string, string>("k", "t"),
+                new Tuple<string, string>("l", "r"),
+                new Tuple<string, string>("m", "w"),
+                new Tuple<string, string>("n", "i"),
+                new Tuple<string, string>("o", "a"),
+                new Tuple<string, string>("p", "s"),
+                new Tuple<string, string>("q", "d"),
+                new Tuple<string, string>("r", "f"),
+                new Tuple<string, string>("s", "g"),
+                new Tuple<string, string>("t", "h"),
+                new Tuple<string, string>("u", "j"),
+                new Tuple<string, string>("v", "z"),
+                new Tuple<string, string>("w", "x"),
+                new Tuple<string, string>("x", "n"),
+                new Tuple<string, string>("y", "l"),
+                new Tuple<string, string>("z", "k"),
+                new Tuple<string, string>("", "")
+            };
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceString"></param>
+        /// <returns></returns>
+        public static string ConvertStringSyllables(string sourceString)
+        {
+            string buffer = string.Empty;
+            string oldStr = sourceString;
+
+            for (int i=0; i<sourceString.Length; i++)
+            {
+                foreach (Tuple<string, string> tuple in SyllableTable)
+                {
+                    if (oldStr.StartsWithIgnoreCase(tuple.Item1))
+                    {
+                        buffer += tuple.Item2;
+                        oldStr = oldStr.Remove(0, tuple.Item1.Length);
+                        break;
+                    }
+                }
+
+                if (oldStr.IsNullOrWhitespace())
+                    break;
+            }
+
+            return buffer;
+        }
+
         private static readonly Dictionary<string, Func<int, int, CharacterInstance, object, int>> spell_functions = new Dictionary<string, Func<int, int, CharacterInstance, object, int>>();
         private static readonly Dictionary<string, Action<CharacterInstance, string>> skill_functions = new Dictionary<string, Action<CharacterInstance, string>>();
 
@@ -40,7 +124,7 @@ namespace SmaugCS
 
         #region Skills
 
-        public static List<string> skill_tname = new List<string>
+        /*public static List<string> skill_tname = new List<string>
                                                      {
                                                          "unknown",
                                                          "Spell",
@@ -73,35 +157,6 @@ namespace SmaugCS
                        : (int)SkillTypes.Unknown;
         }
 
-        public static int skill_comp(SkillData sk1, SkillData sk2)
-        {
-            if (sk1 == null && sk2 != null)
-                return 1;
-            if (sk1 != null && sk2 == null)
-                return -1;
-            if (sk1 == null)
-                return 0;
-
-            return (int)sk1.Name.CaseCompare(sk2.Name);
-        }
-
-        public static int skill_comp_bytype(SkillData sk1, SkillData sk2)
-        {
-            if (sk1 == null && sk2 != null)
-                return 1;
-            if (sk1 != null && sk2 == null)
-                return -1;
-            if (sk1 == null)
-                return 0;
-
-            if (sk1.Type < sk1.Type)
-                return -1;
-            if (sk1.Type > sk2.Type)
-                return 1;
-
-            return (int)sk1.Name.CaseCompare(sk2.Name);
-        }
-
         /// <summary>
         /// Sorts the skill tables
         /// </summary>
@@ -116,7 +171,7 @@ namespace SmaugCS
 
             List<SkillData> orderedListByType = skill_table_bytype;
             orderedListByType.Sort(skill_comp_bytype);
-        }
+        }*/
 
 
         #endregion
@@ -208,8 +263,8 @@ namespace SmaugCS
 
         #endregion
 
-        public static readonly string[, ,] TitleTable = new string[Program.MAX_CLASS, Program.MAX_LEVEL + 1, 2];
-
+        //public static readonly string[, ,] TitleTable = new string[Program.MAX_CLASS, Program.MAX_LEVEL + 1, 2];
+        public static readonly string[,,] TitleTable;
         public static string GetTitle(ClassTypes type, int level, GenderTypes gender)
         {
             return TitleTable[(int)type, level, gender == GenderTypes.Female ? 1 : 0];

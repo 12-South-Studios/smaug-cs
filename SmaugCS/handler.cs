@@ -17,6 +17,9 @@ namespace SmaugCS
         public static CharacterInstance SavingCharacter { get; set; }
         public static CharacterInstance LoadingCharacter { get; set; }
 
+        public static CharacterInstance CurrentCharacter { get; set; }
+        public static CharacterInstance CurrentDeadCharacter { get; set; }
+
         // Private static used by affect_modify
         private static int depth = 0;
 
@@ -31,7 +34,7 @@ namespace SmaugCS
                     mod = Math.Abs(mod);
                     SkillData skill = db.SKILLS[mod];
 
-                    if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == (int)SkillTypes.Spell)
+                    if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                         ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
                     else
                         LogManager.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
@@ -46,7 +49,7 @@ namespace SmaugCS
                     mod = Math.Abs(mod);
                     SkillData skill = db.SKILLS[mod];
 
-                    if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != (int)SkillTypes.Spell)
+                    if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         LogManager.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
                     ch.AffectedBy.RemoveBit((int)AffectedByTypes.RecurringSpell);
                     return;
@@ -232,22 +235,22 @@ namespace SmaugCS
                     mod = Math.Abs(mod);
                     SkillData skill = db.SKILLS[mod];
 
-                    if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == (int)SkillTypes.Spell)
+                    if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
-                        if (skill.Target == (int)TargetTypes.Ignore ||
-                            skill.Target == (int)TargetTypes.InvisibleObject)
+                        if (skill.Target == TargetTypes.Ignore ||
+                            skill.Target == TargetTypes.InvisibleObject)
                         {
                             LogManager.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
                             return;
                         }
                         int retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
-                        if (retcode == (int)ReturnTypes.CharacterDied || char_died(ch))
+                        if (retcode == (int)ReturnTypes.CharacterDied || ch.CharDied())
                             return;
                     }
                     break;
 
                 case (int)ApplyTypes.Track:
-                    ch.ModifySkill(db.GetSkill("track").Type, mod, add);
+                    ch.ModifySkill((int)db.GetSkill("track").Type, mod, add);
                     break;
 
                 // TODO Add the rest
@@ -363,7 +366,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (char_died(ch))
+            if (ch.CharDied())
             {
                 LogManager.Bug("extract_char: %s already died!", ch.Name);
                 return;
@@ -1068,12 +1071,6 @@ namespace SmaugCS
         public static void set_cur_char(CharacterInstance ch)
         {
             // TODO
-        }
-
-        public static bool char_died(CharacterInstance ch)
-        {
-            // TODO
-            return false;
         }
 
         public static void queue_extracted_char(CharacterInstance ch, bool extract)

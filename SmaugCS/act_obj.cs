@@ -136,7 +136,7 @@ namespace SmaugCS
 
             if (obj.ItemType != ItemTypes.Container)
                 handler.check_for_trap(ch, obj, (int)TrapTriggerTypes.Get);
-            if (handler.char_died(ch))
+            if (ch.CharDied())
                 return;
 
             if (obj.ItemType == ItemTypes.Money)
@@ -148,7 +148,7 @@ namespace SmaugCS
             else
                 obj = obj.ToCharacter(ch);
 
-            if (handler.char_died(ch) || handler.obj_extracted(obj))
+            if (ch.CharDied() || handler.obj_extracted(obj))
                 return;
 
             mud_prog.oprog_get_trigger(ch, obj);

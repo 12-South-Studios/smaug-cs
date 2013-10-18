@@ -4,6 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Common;
 using SmaugCS.Enums;
+using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -26,11 +27,11 @@ namespace SmaugCS
                 comm.act(ATTypes.AT_ACTION, "$n gets $p from $P", ch, content, corpse, ToTypes.Room);
                 content.InObject.FromObject(content);
                 handler.check_for_trap(ch, content, (int)TrapTriggerTypes.Get);
-                if (handler.char_died(ch))
+                if (ch.CharDied())
                     return false;
 
                 mud_prog.oprog_get_trigger(ch, content);
-                if (handler.char_died(ch))
+                if (ch.CharDied())
                     return false;
 
                 ch.CurrentCoin += content.Value[0] * content.Count;
@@ -102,7 +103,7 @@ namespace SmaugCS
             Pulse = (Pulse + 1) % 100;
 
             foreach (CharacterInstance ch in db.CHARACTERS
-                .Where(ch => !handler.char_died(ch)))
+                .Where(ch => !ch.CharDied()))
             {
                 //// Experience gained during battle decreases as the battle drags on
                 if (ch.CurrentFighting != null &&
@@ -112,17 +113,138 @@ namespace SmaugCS
                 foreach (TimerData timer in ch.Timers)
                     DecreaseExperienceInBattle(timer, ch);
 
-                if (handler.char_died(ch))
+                if (ch.CharDied())
                     continue;
 
                 //// Spells that have durations less than 1 hour
-                foreach (AffectData paf in ch.Affects)
+                List<AffectData>.Enumerator enumerator = ch.Affects.GetEnumerator();
+                AffectData paf = null;
+                while (enumerator.MoveNext())
                 {
+                    AffectData pafNext = paf;
+                    paf = enumerator.Current;
+
                     if (paf.Duration > 0)
                         paf.Duration--;
-                    else if (paf.Duration == 0)
+                    else if (paf.Duration < 0)
                     {
+                        // Do nothing, skip
+                    }
+                    else
+                    {
+                        if (pafNext == null || pafNext.Type != paf.Type
+                            || pafNext.Duration > 0)
+                        {
+                            SkillData skill = db.GetSkill((int)paf.Type);
+                            if (paf.Type > 0 && skill != null && !string.IsNullOrEmpty(skill.WearOffMessage))
+                            {
+                                color.set_char_color(ATTypes.AT_WEAROFF, ch);
+                                color.send_to_char(skill.WearOffMessage, ch);
+                                color.send_to_char("\r\n", ch);
+                            }
+                        }
+                        
+                        if ((int) paf.Type == db.LookupSkill("possess"))
+                        {
+                            ch.Descriptor.Character = ch.Descriptor.Original;
+                            ch.Descriptor.Original = null;
+                            ch.Descriptor.Character.Descriptor = ch.Descriptor;
+                            ch.Descriptor.Character.Switched = null;
+                            ch.Descriptor = null;
+                        }
+                        ch.RemoveAffect(paf);
+                    }
+                }
 
+                if (ch.CharDied())
+                    continue;
+
+                //// Check exits for moving players around
+                ReturnTypes retCode = act_move.pullcheck(ch, Pulse);
+                if (retCode == ReturnTypes.CharacterDied || ch.CharDied())
+                    continue;
+
+                //// Let the battle begin
+                CharacterInstance victim = who_fighting(ch);
+                if (victim == null || ch.IsAffected(AffectedByTypes.Paralysis))
+                    continue;
+
+                retCode = ReturnTypes.None;
+                if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe))
+                {
+                    LogManager.Log("{0} fighting {1} in a SAFE room.", ch.Name, victim.Name);
+                    stop_fighting(ch, true);
+                }
+                else if (ch.IsAwake() && ch.CurrentRoom == victim.CurrentRoom)
+                    retCode = EnumerationExtensions.GetEnum<ReturnTypes>(multi_hit(ch, victim, Program.TYPE_UNDEFINED));
+                else 
+                    stop_fighting(ch, false);
+
+                if (ch.CharDied())
+                    continue;
+
+                if (retCode == ReturnTypes.CharacterDied)
+                    continue;
+                
+                victim = who_fighting(ch);
+                if (victim == null)
+                    continue;
+
+                //// Mob triggers
+                mud_prog.rprog_rfight_trigger(ch);
+                if (ch.CharDied() || victim.CharDied())
+                    continue;
+                mud_prog.mprog_hitprcnt_trigger(ch, victim);
+                if (ch.CharDied() || victim.CharDied())
+                    continue;
+                mud_prog.mprog_fight_trigger(ch, victim);
+                if (ch.CharDied() || victim.CharDied())
+                    continue;
+
+                //// NPC Special attack flags
+                if (ch.IsNpc())
+                {
+                    if (!ch.Attacks.IsEmpty())
+                    {
+                        int attacktype = -1;
+                        if (30 + (ch.Level/4) >= SmaugRandom.Percent())
+                        {
+                            int cnt = 0;
+                            for (;;)
+                            {
+                                if (cnt++ > 10)
+                                {
+                                    attacktype = -1;
+                                    break;
+                                }
+                                attacktype = SmaugRandom.Between(7, EnumerationFunctions.Max<AttackTypes>() - 1);
+                                if (ch.Attacks.IsSet(attacktype))
+                                    break;
+                            }
+
+                            AttackTypes atkType = EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
+                            switch (atkType)
+                            {
+                                case AttackTypes.Bash:
+                                    //Bash.do_bash(ch, "");
+                                    retCode = ReturnTypes.None;
+                                    break;
+                                case AttackTypes.Stun:
+                                    //Stun.do_stun(ch, "");
+                                    retCode = ReturnTypes.None;
+                                    break;
+                                case AttackTypes.Gouge:
+                                    //Gouge.do_gouge(ch, "");
+                                    retCode = ReturnTypes.None;
+                                    break;
+                                case AttackTypes.Feed:
+                                    //Feed.do_feed(ch, "");
+                                    retCode = ReturnTypes.None;
+                                    break;
+                                case AttackTypes.Drain:
+                                    break;
+                            }
+                        }
                     }
                 }
             }
@@ -147,7 +269,7 @@ namespace SmaugCS
                     CharacterSubStates tempsub = ch.SubState;
                     ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(timer.Value);
                     timer.Action.Value.Invoke(ch, string.Empty);
-                    if (handler.char_died(ch))
+                    if (ch.CharDied())
                         break;
                     ch.SubState = tempsub;
                     break;

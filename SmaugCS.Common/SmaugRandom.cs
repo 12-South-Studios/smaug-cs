@@ -35,7 +35,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static int Between(int from, int to)
         {
-            return ((to - from) < 1) ? from : (RandomMM() % (to - from + 1)) + from;
+            return Realm.Library.Common.Random.Between(from, to);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static int Percent()
         {
-            return (RandomMM() % 100) + 1;
+            return Realm.Library.Common.Random.D100(1);
         }
 
         public static int Bits(int width)
@@ -68,18 +68,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static int RollDice(int number, int size)
         {
-            switch (size)
-            {
-                case 0:
-                    return 0;
-                case 1:
-                    return number;
-            }
-
-            int sum = 0;
-            for (int i = 0; i < number; i++)
-                sum += Between(1, size);
-            return sum;
+            return Realm.Library.Common.Random.Roll(size, number);
         }
     }
 }
