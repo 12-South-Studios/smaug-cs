@@ -1,4 +1,5 @@
 #summary SmaugCS MUD 0.1 Alpha
+#sidebar SideBarTableOfContents
 
 Based on SmaugFUSS 1.9 which was obtained from Nick Gammon's website (http://www.mushclient.com/downloads/dlsmaug.htm).
 
