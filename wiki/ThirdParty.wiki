@@ -1,0 +1,10 @@
+#summary Third-Party Libraries
+#sidebar SideBarTableOfContents
+
+The following third-party libraries have been used (thus far) in the project.
+
+ * NCalc
+ * Log4net
+ * zlibnet
+ * NUnit
+ * Moq
