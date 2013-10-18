@@ -1,0 +1,17 @@
+#summary Code Coverage and Unit-Testing Results
+#sidebar SideBarTableOfContents
+
+Code Coverage Statistics:
+ * SmaugCS and SmaugCS.Common (110 tests, covering 3.95%)
+  * SmaugCS (0.15%)
+  * SmaugCS.Common (91.61%)
+ 
+ * Realm.Libraries (391 tests, covering 46.08%)
+  * Realm.Library.Common (48.87%)
+  * Realm.Library.Database (20.03%)
+  * Realm.Library.Network (26.19%)
+  * Realm.Library.Patterns.Command (100.0%)
+  * Realm.Library.Patterns.Decorator (100.0%)
+  * Realm.Library.Patterns.Factory (0.00%)
+  * Realm.Library.Patterns.Repository (100.0%)
+  * Realm.Library.Patterns.Singleton (0.00%)
