@@ -29,6 +29,7 @@ namespace SmaugCS.Enums
         Plus5 = 1 << 18,
         Plus6 = 1 << 19,
         Magic = 1 << 20,
-        Paralysis = 1 << 21
+        Paralysis = 1 << 21,
+        Unknown = 1 << 22
     }
 }

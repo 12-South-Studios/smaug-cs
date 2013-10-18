@@ -178,5 +178,29 @@ namespace SmaugCS.Tests
         {
             Assert.That(hiddenChar == null ? value.UnhideTilde() : value.UnhideTilde(hiddenChar), Is.EqualTo(expected));
         }
+
+        [TestCase("This is a test", false)]
+        [TestCase("", true)]
+        [TestCase(null, true)]
+        public void IsNullOrEmptyTest(string value, bool expectedValue)
+        {
+            Assert.That(value.IsNullOrEmpty(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase("This is a test", false)]
+        [TestCase("", true)]
+        [TestCase("     ", true)]
+        [TestCase(null, true)]
+        public void IsNullOrWhitespaceTest(string value, bool expectedValue)
+        {
+            Assert.That(value.IsNullOrWhitespace(), Is.EqualTo(expectedValue));    
+        }
+
+        [TestCase("Testing", "Testing", false)]
+        [TestCase("Testing", "Test", true)]
+        public void NotEqualsTest(string value, string compareTo, bool expectedValue)
+        {
+            Assert.That(value.NotEquals(compareTo), Is.EqualTo(expectedValue));
+        }
     }
 }

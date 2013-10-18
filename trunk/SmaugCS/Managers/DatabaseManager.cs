@@ -69,7 +69,6 @@ namespace SmaugCS.Managers
 
             LogManager.Log("Loading skill table");
             tables.load_skill_table();
-            tables.sort_skill_table();
             tables.remap_slot_numbers();
 
             //db.NumberSortedSkills = db.SKILLS.Count;

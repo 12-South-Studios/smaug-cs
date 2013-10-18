@@ -433,6 +433,7 @@ namespace SmaugCS
         public static int MOVE_WRONGCOLOR = 9;
         public static int MOVE_INCHECK = 10;
 
+        public static int TYPE_UNDEFINED = -1;
         public static int TYPE_LOCAL = 1;
         public static int TYPE_IMC = 2;
         #endregion

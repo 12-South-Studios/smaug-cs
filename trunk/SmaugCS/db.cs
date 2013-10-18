@@ -116,6 +116,11 @@ namespace SmaugCS
             return SKILLS.FirstOrDefault(x => x.ID == skillNumber);
         }
 
+        public static IEnumerable<SkillData> GetSkills(SkillTypes type)
+        {
+            return SKILLS.Where(x => x.Type == type);
+        }
+
         /// <summary>
         /// Lookup a skill by name (or partial)
         /// </summary>

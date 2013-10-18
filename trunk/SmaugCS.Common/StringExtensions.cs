@@ -6,8 +6,42 @@ using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="compareTo"></param>
+        /// <returns></returns>
+        public static bool NotEquals(this string value, string compareTo)
+        {
+            return !value.Equals(compareTo);
+        }
+
+        /// <summary>
+        /// Simple extension wrapper around the String.IsNullOrEmpty function
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return String.IsNullOrEmpty(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNullOrWhitespace(this string value)
+        {
+            return String.IsNullOrWhiteSpace(value);
+        }
+
         /// <summary>
         /// Returns true if the string is completely numeric
         /// </summary>

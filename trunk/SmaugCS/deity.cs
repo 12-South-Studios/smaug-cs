@@ -17,7 +17,7 @@ namespace SmaugCS
                 && ch.PlayerData.CurrentDeity.Alignment != 0)
             {
                 ch.PlayerData.Favor -= 2;
-                ch.PlayerData.Favor = SmaugCS.Common.Check.Range(-2500, ch.PlayerData.Favor, 2500);
+                ch.PlayerData.Favor = Check.Range(-2500, ch.PlayerData.Favor, 2500);
 
                 UpdateCharacterBits(ch);
                 CheckForExtremeFavor(ch, oldfavor);
@@ -25,7 +25,7 @@ namespace SmaugCS
             else
             {
                 ch.PlayerData.Favor += FuzzifyFavorBasedOnField(ch.PlayerData.CurrentDeity, field, mod < 1 ? 1 : mod);
-                ch.PlayerData.Favor = SmaugCS.Common.Check.Range(-2500, ch.PlayerData.Favor, 2500);
+                ch.PlayerData.Favor = Check.Range(-2500, ch.PlayerData.Favor, 2500);
             }
         }
 
@@ -90,7 +90,7 @@ namespace SmaugCS
                     break;
             }
 
-            return SmaugCS.Common.SmaugRandom.Fuzzy(fieldvalue / mod);
+            return SmaugRandom.Fuzzy(fieldvalue / mod);
         }
 
         /// <summary>

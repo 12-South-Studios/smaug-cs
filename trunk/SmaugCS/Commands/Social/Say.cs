@@ -79,10 +79,10 @@ namespace SmaugCS.Commands.Social
             }
 
             mud_prog.mprog_speech_trigger(argument, ch);
-            if (handler.char_died(ch))
+            if (ch.CharDied())
                 return;
             mud_prog.oprog_speech_trigger(argument, ch);
-            if (handler.char_died(ch))
+            if (ch.CharDied())
                 return;
             mud_prog.rprog_speech_trigger(argument, ch);
         }
