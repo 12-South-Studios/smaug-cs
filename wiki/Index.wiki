@@ -11,9 +11,3 @@ The goals of this project are:
  * Use Windows sockets instead of the existing network layer
  * Replace file-handling with a more robust file handling system
  * Lastly, get the code back into working (and running) order
-
-Project Information:
- * Developed using C# .NET 4.0
- * Microsoft Visual Studio 2012
- * JetBrains ReSharper 7.1
- * Remco Software NCrunch 1.46
