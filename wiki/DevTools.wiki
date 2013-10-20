@@ -1,0 +1,8 @@
+#summary Tools used in the Development of SmaugCS
+
+ * Language: C# (.NET 4.0)
+ * Microsoft Visual Studio 2012
+ * JetBrains Resharper 7.1
+  * http://www.jetbrains.com/resharper/
+ * Remco Software NCrunch 1.46
+  * http://www.ncrunch.net/
