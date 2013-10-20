@@ -53,7 +53,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DiceParserTests.cs" />
+    <Compile Include="ExpressionParserTests.cs" />
     <Compile Include="ExpressionTableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -18,11 +18,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Debug\</OutputPath>
+    <OutputPath>..\..\Build\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Debug\Realm.Library.NCalcExt.XML</DocumentationFile>
+    <DocumentationFile>..\..\Build\Debug\Realm.Library.NCalcExt.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\..\..\..\RealmLibraries\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomExpression.cs" />
-    <Compile Include="DiceParser.cs" />
+    <Compile Include="ExpressionParser.cs" />
     <Compile Include="ExpressionTable.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -38,27 +38,21 @@ namespace Realm.Library.NCalcExt
         public void Add(CustomExpression expression)
         {
             Validation.IsNotNull(expression, "expression");
-            Validation.IsNotNullOrEmpty(expression.FunctionName, "expression.FunctionName");
-            Validation.IsNotNullOrEmpty(expression.FunctionKeyword, "expression.FunctionKeyword");
-            Validation.IsNotNullOrEmpty(expression.RegularExpressionPattern, "expression.RegularExpressionPattern");
-            Validation.IsNotNull(expression.Function, "expression.Function");
-            Validation.IsNotNull(expression.RegexReplaceFunction, "expression.RegexReplaceFunction");
+            Validation.IsNotNullOrEmpty(expression.Name, "expression.Name");
+            Validation.IsNotNullOrEmpty(expression.RegexPattern, "expression.RegexPattern");
+            Validation.IsNotNull(expression.ExpressionFunction, "expression.ExpressionFunction");
+            Validation.IsNotNull(expression.ReplacementFunction, "expression.ReplacementFunction");
 
-            if (_expressionMap.ContainsKey(expression.FunctionName.ToLower()))
+            if (_expressionMap.ContainsKey(expression.Name.ToLower()))
                 throw new ArgumentException(string.Format("Function Name '{0}' is already present in the collection.",
-                                                          expression.FunctionName));
-            foreach (CustomExpression expr in _expressionMap.Values)
-            {
-                if (expr.FunctionKeyword.Equals(expression.FunctionKeyword, StringComparison.OrdinalIgnoreCase))
-                    throw new ArgumentException(string.Format("Keyword '{0}' is already present in the collection.",
-                                                              expr.FunctionKeyword));
-                if (expr.RegularExpressionPattern.Equals(expression.RegularExpressionPattern))
-                    throw new ArgumentException(
-                        string.Format("Regular Expression '{0}' is already present in the collection.",
-                                      expr.RegularExpressionPattern));
-            }
+                                                          expression.Name));
 
-            _expressionMap.Add(expression.FunctionName.ToLower(), expression);
+            if (_expressionMap.Values.Any(expr => expr.RegexPattern.Equals(expression.RegexPattern)))
+                throw new ArgumentException(
+                    string.Format("Regular Expression '{0}' is already present in the collection.",
+                                  expression.RegexPattern));
+
+            _expressionMap.Add(expression.Name.ToLower(), expression);
         }
 
         /// <summary>
@@ -72,12 +66,10 @@ namespace Realm.Library.NCalcExt
             if (string.IsNullOrEmpty(value))
                 return null;
 
-            if (_expressionMap.ContainsKey(value.ToLower()))
-                return _expressionMap[value.ToLower()];
-            return
-                _expressionMap.Values.ToList()
-                              .FirstOrDefault(x => x.FunctionKeyword.Equals(value, StringComparison.OrdinalIgnoreCase)
-                                                   || x.RegularExpressionPattern.Equals(value));
+            return (_expressionMap.ContainsKey(value.ToLower()))
+                       ? _expressionMap[value.ToLower()]
+                       : _expressionMap.Values.ToList()
+                                       .FirstOrDefault(x => x.RegexPattern.Equals(value));
         }
     }
 }
