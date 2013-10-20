@@ -6,35 +6,37 @@ using Realm.Library.Common;
 namespace Realm.Library.NCalcExt
 {
     /// <summary>
-    /// Dice object that utilizes the magnificent NCalc utility at http://ncalc.codeplex.com/
-    /// Extended to allow dice functions to be evaluated as well
+    /// Expression parser that utilizes the NCalc library (http://ncalc.codeplex.com/)
+    /// to parse mathematical expressions in addition to custom-defined functions.
     /// </summary>
-    /// <remarks>Also use http://regexlib.com/</remarks>
-    public class DiceParser
+    /// <remarks>Examples of use can be found in the Realm.Library.NCalcExt.Tests project</remarks>
+    public class ExpressionParser
     {
         private readonly ExpressionTable _expressionTable;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public DiceParser() { }
+        public ExpressionParser() { }
 
         /// <summary>
         /// Overloaded constructor
         /// </summary>
         /// <param name="exprTable"></param>
-        public DiceParser(ExpressionTable exprTable)
+        public ExpressionParser(ExpressionTable exprTable)
         {
             _expressionTable = exprTable;
         }
 
         /// <summary>
-        /// 
+        /// Performs the actual execution of the expression parser
         /// </summary>
         /// <param name="expr"></param>
         /// <returns></returns>
-        public int Roll(string expr)
+        public int Execute(string expr)
         {
+            Validation.IsNotNullOrEmpty(expr, "expr");
+
             string newExpr = ReplaceExpressionMatches(expr);
 
             Expression exp = new Expression(newExpr);
@@ -44,8 +46,8 @@ namespace Realm.Library.NCalcExt
                                                 return;
 
                                             CustomExpression customExpr = _expressionTable.Get(name);
-                                            if (customExpr != null && customExpr.Function != null)
-                                                args.Result = customExpr.Function.Invoke(args);
+                                            if (customExpr != null && customExpr.ExpressionFunction != null)
+                                                args.Result = customExpr.ExpressionFunction.Invoke(args);
                                         };
 
             object result = exp.Evaluate();
@@ -55,6 +57,11 @@ namespace Realm.Library.NCalcExt
             return outResult;
         }
 
+        /// <summary>
+        /// Performs a regex match and replace for any custom expressions
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         private string ReplaceExpressionMatches(string expr)
         {
             if (_expressionTable == null || _expressionTable.Keys.IsEmpty())
@@ -72,7 +79,7 @@ namespace Realm.Library.NCalcExt
                     string firstPart = newStr.Substring(0, match.Index + lengthOffset);
                     string secondPart = newStr.Substring(match.Index + lengthOffset + match.Length,
                                                          newStr.Length - (match.Index + lengthOffset + match.Length));
-                    newStr = firstPart + customExpr.RegexReplaceFunction.Invoke(match) + secondPart;
+                    newStr = firstPart + customExpr.ReplacementFunction.Invoke(match) + secondPart;
                     lengthOffset = newStr.Length - originalLength;
                 }
             }

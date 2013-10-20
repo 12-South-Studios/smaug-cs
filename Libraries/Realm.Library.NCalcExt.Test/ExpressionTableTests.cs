@@ -23,11 +23,10 @@ namespace Realm.Library.NCalcExt.Test
             var table = new ExpressionTable();
             var expr = new CustomExpression()
                            {
-                               FunctionName = "Test",
-                               FunctionKeyword = "T",
-                               RegularExpressionPattern = "[0-9]",
-                               Function = FakeFunc,
-                               RegexReplaceFunction = FakeReplaceFunc
+                               Name = "Test",
+                               RegexPattern = "[0-9]",
+                               ExpressionFunction = FakeFunc,
+                               ReplacementFunction = FakeReplaceFunc
                            };
 
             table.Add(expr);
@@ -42,50 +41,20 @@ namespace Realm.Library.NCalcExt.Test
             var table = new ExpressionTable();
             var expr1 = new CustomExpression()
                             {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
+                                Name = "Test",
+                                RegexPattern = "[0-9]",
+                                ExpressionFunction = FakeFunc,
+                                ReplacementFunction = FakeReplaceFunc
                             };
 
             table.Add(expr1);
 
             var expr2 = new CustomExpression()
                             {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
-                            };
-
-            table.Add(expr2);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Add_KeywordConflict_Test()
-        {
-            var table = new ExpressionTable();
-            var expr1 = new CustomExpression()
-                            {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
-                            };
-
-            table.Add(expr1);
-
-            var expr2 = new CustomExpression()
-                            {
-                                FunctionName = "Test1",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
+                                Name = "Test",
+                                RegexPattern = "[0-9]",
+                                ExpressionFunction = FakeFunc,
+                                ReplacementFunction = FakeReplaceFunc
                             };
 
             table.Add(expr2);
@@ -98,22 +67,20 @@ namespace Realm.Library.NCalcExt.Test
             var table = new ExpressionTable();
             var expr1 = new CustomExpression()
                             {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
+                                Name = "Test",
+                                RegexPattern = "[0-9]",
+                                ExpressionFunction = FakeFunc,
+                                ReplacementFunction = FakeReplaceFunc
                             };
 
             table.Add(expr1);
 
             var expr2 = new CustomExpression()
                             {
-                                FunctionName = "Test1",
-                                FunctionKeyword = "s",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
+                                Name = "Test1",
+                                RegexPattern = "[0-9]",
+                                ExpressionFunction = FakeFunc,
+                                ReplacementFunction = FakeReplaceFunc
                             };
 
             table.Add(expr2);
@@ -125,38 +92,15 @@ namespace Realm.Library.NCalcExt.Test
             var table = new ExpressionTable();
             var expr1 = new CustomExpression()
                             {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
+                                Name = "Test",
+                                RegexPattern = "[0-9]",
+                                ExpressionFunction = FakeFunc,
+                                ReplacementFunction = FakeReplaceFunc
                             };
 
             table.Add(expr1);
 
-            var foundExpr = table.Get("Test");
-
-            Assert.That(foundExpr, Is.EqualTo(expr1));
-        }
-
-        [Test]
-        public void Get_KeywordMatch_Test()
-        {
-            var table = new ExpressionTable();
-            var expr1 = new CustomExpression()
-                            {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
-                            };
-
-            table.Add(expr1);
-
-            var foundExpr = table.Get("T");
-
-            Assert.That(foundExpr, Is.EqualTo(expr1));
+            Assert.That(table.Get("Test"), Is.EqualTo(expr1));
         }
 
         [Test]
@@ -165,18 +109,15 @@ namespace Realm.Library.NCalcExt.Test
             var table = new ExpressionTable();
             var expr1 = new CustomExpression()
                             {
-                                FunctionName = "Test",
-                                FunctionKeyword = "T",
-                                RegularExpressionPattern = "[0-9]",
-                                Function = FakeFunc,
-                                RegexReplaceFunction = FakeReplaceFunc
+                                Name = "Test",
+                                RegexPattern = "[0-9]",
+                                ExpressionFunction = FakeFunc,
+                                ReplacementFunction = FakeReplaceFunc
                             };
 
             table.Add(expr1);
 
-            var foundExpr = table.Get("[0-9]");
-
-            Assert.That(foundExpr, Is.EqualTo(expr1));
+            Assert.That(table.Get("[0-9]"), Is.EqualTo(expr1));
         }
     }
 }
