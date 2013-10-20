@@ -1,4 +1,5 @@
 #summary Tools used in the Development of SmaugCS
+#sidebar SideBarTableOfContents
 
  * Language: C# (.NET 4.0)
  * Microsoft Visual Studio 2012
