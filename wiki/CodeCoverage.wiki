@@ -8,8 +8,7 @@ Code Coverage Statistics:
  
  * Realm.Libraries (391 tests, covering 46.08%)
   * Realm.Library.Common (48.87%)
-  * Realm.Library.Database (20.03%)
-  * Realm.Library.Network (26.19%)
+  * Realm.Library.!NCalcExt (?)
   * Realm.Library.Patterns.Command (100.0%)
   * Realm.Library.Patterns.Decorator (100.0%)
   * Realm.Library.Patterns.Factory (0.00%)
