@@ -3,8 +3,13 @@
 
 The following third-party libraries have been used (thus far) in the project.
 
- * NCalc
- * Log4net
- * zlibnet
- * NUnit
- * Moq
+ * NCalc (v1.3.8)
+  * http://ncalc.codeplex.com/
+ * Log4net (v2.0.0)
+  * http://logging.apache.org/log4net/
+ * zlibnet (v1.3)
+  * http://zlibnet.codeplex.com/
+ * NUnit (v2.6.2)
+  * http://nunit.org/
+ * Moq (v4.1.1)
+  * https://code.google.com/p/moq/
