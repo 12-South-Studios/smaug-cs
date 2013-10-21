@@ -64,5 +64,18 @@ namespace SmaugCS.Tests
 
             Assert.That(val.GetFlagString(new[] { "a", "b", "c", "d", "e", "f", "g", "h", "i" }), Is.EqualTo("cd"));
         }
+
+        [Test]
+        public void Interpolate()
+        {
+            const int number = 2;
+            const int value00 = 100;
+            const int value32 = -100;
+            const int expected = 88;
+
+            var actual = number.Interpolate(value00, value32);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
     }
 }

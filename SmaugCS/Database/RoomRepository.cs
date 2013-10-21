@@ -6,9 +6,18 @@ using SmaugCS.Objects;
 
 namespace SmaugCS.Database
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RoomRepository : Repository<int, RoomTemplate>
     {
-        public RoomTemplate make_room(int vnum, AreaData area)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="area"></param>
+        /// <returns></returns>
+        public RoomTemplate Create(int vnum, AreaData area)
         {
             if (area == null || vnum < 1)
                 throw new Exception("Invalid data");

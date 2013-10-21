@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Enums;
+using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -29,7 +30,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             color.ch_printf(ch, "\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                             Macros.PERS(leader, ch), ch.Level < Program.LEVEL_AVATAR ? " [to lvl]" : "");
 
-            foreach (CharacterInstance gch in db.CHARACTERS.Where(x => x.IsSameGroup(ch)))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
                 string buffer = string.Empty;
@@ -173,7 +174,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             }
 
             int count = 0;
-            foreach (CharacterInstance gch in db.CHARACTERS.Where(x => x.IsSameGroup(ch) && x != ch))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch) && x != ch))
             {
                 gch.Leader = null;
                 gch.Master = null;

@@ -53,6 +53,12 @@ namespace SmaugCS.Objects
         public MobTemplate()
         {
             SavingThrows = new SavingThrowData();
+            Act = new ExtendedBitvector();
+            AffectedBy = new ExtendedBitvector();
+            Attacks = new ExtendedBitvector();
+            Defenses = new ExtendedBitvector();
+            HitDice = new DiceData();
+            DamageDice = new DiceData();
         }
     }
 }

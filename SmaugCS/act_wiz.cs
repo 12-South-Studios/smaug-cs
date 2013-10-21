@@ -203,7 +203,7 @@ namespace SmaugCS
 
         public static void close_area(AreaData pArea)
         {
-            foreach (CharacterInstance ech in db.CHARACTERS)
+            foreach (CharacterInstance ech in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (ech.CurrentFighting != null)
                     fight.stop_fighting(ech, true);
@@ -220,7 +220,7 @@ namespace SmaugCS
                 }
             }
 
-            foreach (ObjectInstance eobj in db.OBJECTS)
+            foreach (ObjectInstance eobj in DatabaseManager.Instance.OBJECTS.Values)
             {
                 if ((Check.Range(pArea.LowObjectNumber, eobj.ObjectIndex.Vnum, pArea.HighObjectNumber) == eobj.ObjectIndex.Vnum)
                     || (eobj.InRoom != null && eobj.InRoom.Area == pArea))
