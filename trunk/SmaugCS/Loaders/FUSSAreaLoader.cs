@@ -330,7 +330,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endmobile":
-                        db.MOBILE_INDEX.Add(mob);
+                        DatabaseManager.Instance.MOBILE_INDEXES.Add(mob.Vnum, mob);
                         break;
                     case "#mudprog":
                         MudProgData prog = ReadMudProg(proxy, mob);
@@ -592,7 +592,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endobject":
-                        db.OBJECT_INDEX.Add(obj);
+                        DatabaseManager.Instance.OBJECT_INDEXES.Add(obj.Vnum, obj);
                         return;
                     case "#exdesc":
                         ExtraDescriptionData ed = ReadExtraDescription(proxy);
@@ -685,7 +685,7 @@ namespace SmaugCS.Loaders
                     case "vnum":
                         bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
-                        if (db.get_obj_index(vnum) != null)
+                        if (DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum) != null)
                         {
                             if (tmpBootDb)
                             {
@@ -694,7 +694,7 @@ namespace SmaugCS.Loaders
                             }
                             else
                             {
-                                obj = db.get_obj_index(vnum);
+                                obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum);
                                 LogManager.Log(LogTypes.Build,
                                                db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning object {0}", vnum);

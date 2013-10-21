@@ -367,6 +367,11 @@
     <Compile Include="Constants\BuilderConstants.cs" />
     <Compile Include="Constants\SystemConstants.cs" />
     <Compile Include="Constants\WeatherConstants.cs" />
+    <Compile Include="Database\AreaRepository.cs" />
+    <Compile Include="Database\CharacterRepository.cs" />
+    <Compile Include="Database\MobileRepository.cs" />
+    <Compile Include="Database\ObjectRepository.cs" />
+    <Compile Include="Database\ObjInstanceRepository.cs" />
     <Compile Include="Database\RoomRepository.cs" />
     <Compile Include="Enums\AnsiCodes.cs" />
     <Compile Include="Enums\AreaFlags.cs" />

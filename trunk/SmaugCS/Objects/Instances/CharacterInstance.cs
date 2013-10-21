@@ -19,6 +19,8 @@ namespace SmaugCS.Objects
     [XmlRoot("Character")]
     public class CharacterInstance : Instance
     {
+        public int ID { get; private set; }
+
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
         public FightingData CurrentFighting { get; set; }
@@ -127,8 +129,9 @@ namespace SmaugCS.Objects
         public int ResetVnum { get; set; }
         public int ResetNum { get; set; }
 
-        public CharacterInstance()
+        public CharacterInstance(int id)
         {
+            ID = id;
             Colors = new Dictionary<ATTypes, char>();
             SavingThrows = new SavingThrowData();
         }
@@ -1063,7 +1066,7 @@ namespace SmaugCS.Objects
 
             Leader = null;
 
-            foreach (CharacterInstance fch in db.CHARACTERS)
+            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (fch.Master == this)
                     StopFollower();

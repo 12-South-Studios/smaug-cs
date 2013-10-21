@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SmaugCS.Enums;
+using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -33,7 +34,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            foreach (CharacterInstance gch in db.CHARACTERS.Where(x => x.IsSameGroup(ch)))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
                 color.set_char_color(ATTypes.AT_GTELL, gch);
 

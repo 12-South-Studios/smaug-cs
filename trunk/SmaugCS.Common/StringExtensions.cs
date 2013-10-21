@@ -207,8 +207,8 @@ namespace SmaugCS.Common
 
             foreach (string number in numbers)
             {
-                int num;
-                Int32.TryParse(number, out num);
+                uint num;
+                UInt32.TryParse(number, out num);
 
                 if (x < ExtendedBitvector.XBI)
                     bit.Bits[x] = num;

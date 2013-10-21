@@ -35,12 +35,25 @@ namespace SmaugCS.Objects
         public int Level { get; set; }
         public int[] Value { get; set; }
         public int Count { get; set; }
-        public int serial { get; set; }
+        public int ID { get; set; }
         public int room_vnum { get; set; }
 
-        public ObjectInstance()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="maxWear"></param>
+        /// <param name="maxLayers"></param>
+        public ObjectInstance(int id, int maxWear, int maxLayers)
         {
+            ID = id;
             Value = new int[6];
+            ExtraDescriptions = new List<ExtraDescriptionData>();
+            ExtraFlags = new ExtendedBitvector();
+            Contents = new List<ObjectInstance>();
+
+            PlayerEq = new ObjectInstance[maxWear, maxLayers];
+            MobEq = new ObjectInstance[maxWear, maxLayers];
         }
 
         public ObjectTemplate ObjectIndex
@@ -131,8 +144,8 @@ namespace SmaugCS.Objects
             return weight;
         }
 
-        private static readonly ObjectInstance[,] PlayerEq = new ObjectInstance[Program.MAX_WEAR, Program.MAX_LAYERS];
-        private static readonly ObjectInstance[,] MobEq = new ObjectInstance[Program.MAX_WEAR, Program.MAX_LAYERS];
+        private static ObjectInstance[,] PlayerEq;
+        private static ObjectInstance[,] MobEq;
 
         public ObjectInstance ToCharacter(CharacterInstance ch)
         {

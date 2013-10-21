@@ -37,12 +37,6 @@ namespace SmaugCS
         }
 
         #region Objects
-        public static List<ObjectTemplate> OBJECT_INDEX = new List<ObjectTemplate>();
-        public static ObjectTemplate get_obj_index(int vnum)
-        {
-            return OBJECT_INDEX.FirstOrDefault(x => x.Vnum == vnum);
-        }
-        public static List<ObjectInstance> OBJECTS = new List<ObjectInstance>();
         public static int NumberOfObjectsLoaded { get; set; }
         public static int PhysicalObjects { get; set; }
         public static int CurrentObject { get; set; }
@@ -52,12 +46,6 @@ namespace SmaugCS
         #endregion
 
         #region Mobiles/Characters
-        public static List<MobTemplate> MOBILE_INDEX = new List<MobTemplate>();
-        public static MobTemplate get_mob_index(int vnum)
-        {
-            return MOBILE_INDEX.FirstOrDefault(x => x.Vnum == vnum);
-        }
-        public static List<CharacterInstance> CHARACTERS = new List<CharacterInstance>();
         public static int NumberOfMobsLoaded { get; set; }
         public static CharacterInstance Supermob { get; set; }
         public static CharacterInstance CurrentChar { get; set; }
@@ -356,11 +344,6 @@ namespace SmaugCS
             } while (!proxy.EndOfStream);
         }
 
-        public static void add_char(CharacterInstance ch)
-        {
-            CHARACTERS.Add(ch);
-        }
-
         public static void load_mobiles(AreaData tarea, FileStream fs)
         {
             // TODO
@@ -436,7 +419,7 @@ namespace SmaugCS
 
                 for (int x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    MobTemplate mob = get_mob_index(x);
+                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.Gold * 10);
                 }
@@ -475,7 +458,7 @@ namespace SmaugCS
                                         ? area.ResetMessage + "\r\n"
                                         : "You hear some squeaking sounds...\r\n";
 
-                    foreach (CharacterInstance pch in CHARACTERS
+                    foreach (CharacterInstance pch in DatabaseManager.Instance.CHARACTERS.Values
                         .Where(pch => !pch.IsNpc()
                             && pch.IsAwake()
                             && pch.CurrentRoom != null
@@ -498,144 +481,6 @@ namespace SmaugCS
                         area.Age = 15 - 3;
                 }
             }
-        }
-
-        public static CharacterInstance create_mobile(MobTemplate index)
-        {
-            CharacterInstance mob = new CharacterInstance
-                {
-                    Parent = index,
-                    Name = index.Name,
-                    ShortDescription = index.ShortDescription,
-                    LongDescription = index.LongDescription,
-                    Description = index.Description,
-                    SpecialFunction = index.SpecialFunction,
-                    Level = SmaugRandom.Fuzzy(index.Level),
-                    Act = index.Act,
-                    HomeVNum = -1,
-                    ResetVnum = -1,
-                    ResetNum = -1,
-                    AffectedBy = index.AffectedBy,
-                    CurrentAlignment = index.Alignment,
-                    Gender = EnumerationExtensions.GetEnum<GenderTypes>(index.Gender)
-                };
-
-            if (!string.IsNullOrEmpty(index.spec_funname))
-                mob.SpecialFunctionName = index.spec_funname;
-
-            if (mob.Act.IsSet((int)ActFlags.MobInvisibility))
-                mob.MobInvisible = mob.Level;
-
-            mob.ArmorClass = index.ArmorClass > 0 ? index.ArmorClass : interpolate(mob.Level, 100, -100);
-
-            if (index.HitDice == null || index.HitDice.NumberOf == 0)
-                mob.MaximumHealth = mob.Level * 8 + SmaugRandom.Between(mob.Level * mob.Level / 4, mob.Level * mob.Level);
-            else
-                mob.MaximumHealth = index.HitDice.NumberOf * SmaugRandom.Between(1, index.HitDice.SizeOf) + index.HitDice.Bonus;
-
-            mob.CurrentCoin = index.Gold;
-            mob.Experience = index.Experience;
-            mob.Position = index.Position;
-            mob.DefPosition = index.DefPosition;
-            mob.BareDice = new DiceData() { NumberOf = index.DamageDice.NumberOf, SizeOf = index.DamageDice.SizeOf };
-            mob.ToHitArmorClass0 = index.ToHitArmorClass0;
-            mob.HitRoll = new DiceData() { Bonus = index.HitDice.Bonus };
-            mob.DamageRoll = new DiceData() { Bonus = index.DamageDice.Bonus };
-            mob.PermanentStrength = index.PermanentStrength;
-            mob.PermanentDexterity = index.PermanentDexterity;
-            mob.PermanentWisdom = index.PermanentWisdom;
-            mob.PermanentIntelligence = index.PermanentIntelligence;
-            mob.PermanentConstitution = index.PermanentConstitution;
-            mob.PermanentCharisma = index.PermanentCharisma;
-            mob.PermanentLuck = index.PermanentLuck;
-            mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(index.Race);
-            mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(index.Class);
-            mob.ExtraFlags = index.ExtraFlags;
-            mob.SavingThrows = new SavingThrowData(index.SavingThrows);
-            mob.Height = index.Height;
-            mob.Weight = index.Weight;
-            mob.Resistance = index.Resistance;
-            mob.Immunity = index.Immunity;
-            mob.Susceptibility = index.Susceptibility;
-            mob.Attacks = index.Attacks;
-            mob.Defenses = index.Defenses;
-            mob.NumberOfAttacks = index.NumberOfAttacks;
-            mob.Speaks = index.Speaks;
-            mob.Speaking = index.Speaking;
-
-            add_char(mob);
-
-            return mob;
-        }
-
-        private static int CurrentObjectSerial { get; set; }
-
-        public static ObjectInstance create_object(ObjectTemplate index, int level)
-        {
-            ObjectInstance obj = new ObjectInstance
-                {
-                    Parent = index,
-                    Level = level,
-                    WearLocation = WearLocations.None,
-                    Count = 1
-                };
-
-            CurrentObjectSerial = Check.Maximum((CurrentObjectSerial + 1) & (Program.BV30 - 1), 1);
-            obj.serial = obj.ObjectIndex.serial = CurrentObjectSerial;
-
-            obj.Name = index.Name;
-            obj.ShortDescription = index.ShortDescription;
-            obj.Description = index.Description;
-            obj.ActionDescription = index.ActionDescription;
-            obj.ItemType = index.Type;
-            obj.ExtraFlags = index.ExtraFlags;
-            obj.WearFlags = index.WearFlags;
-
-            Array.Copy(index.Value, obj.Value, 5);
-
-            obj.Weight = index.Weight;
-            obj.Cost = index.Cost;
-
-            if (obj.ItemType == ItemTypes.Food || obj.ItemType == ItemTypes.Cook)
-                obj.Timer = (obj.Value[4] > 0) ? obj.Value[4] : obj.Value[1];
-            if (obj.ItemType == ItemTypes.Salve)
-                obj.Value[3] = SmaugRandom.Fuzzy(obj.Value[3]);
-            if (obj.ItemType == ItemTypes.Scroll)
-                obj.Value[0] = SmaugRandom.Fuzzy(obj.Value[0]);
-            if (obj.ItemType == ItemTypes.Wand || obj.ItemType == ItemTypes.Staff)
-            {
-                obj.Value[0] = SmaugRandom.Fuzzy(obj.Value[0]);
-                obj.Value[1] = SmaugRandom.Fuzzy(obj.Value[1]);
-                obj.Value[2] = obj.Value[1];
-            }
-            if (obj.ItemType == ItemTypes.Weapon || obj.ItemType == ItemTypes.MissileWeapon ||
-                obj.ItemType == ItemTypes.Projectile)
-            {
-                if (obj.Value[1] > 0 && obj.Value[2] > 0)
-                    obj.Value[2] = obj.Value[1];
-                else
-                {
-                    obj.Value[1] = SmaugRandom.Fuzzy(1 * level / 4 + 2);
-                    obj.Value[2] = SmaugRandom.Fuzzy(3 * level / 4 + 6);
-                }
-                if (obj.Value[0] == 0)
-                    obj.Value[0] = Program.INIT_WEAPON_CONDITION;
-            }
-            if (obj.ItemType == ItemTypes.Armor)
-            {
-                if (obj.Value[0] == 0)
-                    obj.Value[0] = SmaugRandom.Fuzzy(level / 4 + 2);
-                if (obj.Value[1] == 0)
-                    obj.Value[1] = obj.Value[0];
-            }
-            if (obj.ItemType == ItemTypes.Potion || obj.ItemType == ItemTypes.Pill)
-                obj.Value[0] = SmaugRandom.Fuzzy(obj.Value[0]);
-            if (obj.ItemType == ItemTypes.Money)
-                obj.Value[0] = obj.Cost > 0 ? obj.Cost : 1;
-
-            OBJECTS.Add(obj);
-
-            return obj;
         }
 
         public static void clear_char(CharacterInstance ch)
@@ -740,7 +585,7 @@ namespace SmaugCS
             }
 
             ch.Comments.Clear();
-            CHARACTERS.Remove(ch);
+            DatabaseManager.Instance.CHARACTERS.Delete(ch.ID);
         }
 
         public static string get_extra_descr(string name, IEnumerable<ExtraDescriptionData> extraDescriptions)
@@ -783,11 +628,6 @@ namespace SmaugCS
             }
 
             return door;
-        }
-
-        public static int interpolate(int level, int value_00, int value_32)
-        {
-            return value_00 + level * (value_32 - value_00) / 32;
         }
 
         public static void append_file(CharacterInstance ch, string file, string str)
@@ -1035,7 +875,7 @@ namespace SmaugCS
                     handler.extract_char(ch, true);
             }
 
-            foreach (CharacterInstance och in CHARACTERS)
+            foreach (CharacterInstance och in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (och.PreviousRoom == room)
                     och.PreviousRoom = och.CurrentRoom;
@@ -1075,18 +915,18 @@ namespace SmaugCS
 
         public static void delete_obj(ObjectTemplate obj)
         {
-            OBJECTS.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
+            DatabaseManager.Instance.OBJECTS.Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
             obj.ExtraDescriptions.Clear();
             obj.Affects.Clear();
             obj.MudProgs.Clear();
-            OBJECT_INDEX.Remove(obj);
+            DatabaseManager.Instance.OBJECT_INDEXES.Delete(obj.Vnum);
 
             // TODO Object hash stuff here, but can be removed?
         }
 
         public static void delete_mob(MobTemplate mob)
         {
-            foreach (CharacterInstance ch in CHARACTERS)
+            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (ch.MobIndex == mob)
                     handler.extract_char(ch, true);
@@ -1108,125 +948,9 @@ namespace SmaugCS
                 SHOP.Remove(mob.Shop);
             if (mob.RepairShop != null)
                 REPAIR.Remove(mob.RepairShop);
-            MOBILE_INDEX.Remove(mob);
+            DatabaseManager.Instance.MOBILE_INDEXES.Delete(mob.Vnum);
 
             // TODO Mob hash stuff here, but can be removed?
-        }
-
-        public static ObjectTemplate make_object(int vnum, int cvnum, string name)
-        {
-            if (vnum < 1 || string.IsNullOrWhiteSpace(name))
-                throw new Exception("Invalid data");
-            if (OBJECT_INDEX.Any(x => x.Vnum == vnum))
-                throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
-
-            ObjectTemplate cloneObject = null;
-            if (cvnum > 0)
-            {
-                cloneObject = OBJECT_INDEX.FirstOrDefault(x => x.Vnum == cvnum);
-            }
-
-            ObjectTemplate newObject = new ObjectTemplate
-                {
-                    Name = string.Format("A newly created {0}", name),
-                    Description = string.Format("Somebody dropped a newly created {0} here.", name),
-                    Type = ItemTypes.Trash,
-                    Weight = 1,
-                    Vnum = vnum
-                };
-            newObject.ExtraFlags.SetBit((int)ItemExtraFlags.Prototype);
-
-            if (cloneObject != null)
-            {
-                newObject.ShortDescription = cloneObject.ShortDescription;
-                newObject.Description = cloneObject.Description;
-                newObject.ActionDescription = cloneObject.ActionDescription;
-                newObject.Type = cloneObject.Type;
-                newObject.ExtraFlags = new ExtendedBitvector(cloneObject.ExtraFlags);
-                newObject.WearFlags = cloneObject.WearFlags;
-                Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);
-                newObject.Weight = cloneObject.Weight;
-                newObject.Cost = cloneObject.Cost;
-                newObject.ExtraDescriptions = new List<ExtraDescriptionData>(cloneObject.ExtraDescriptions);
-                newObject.Affects = new List<AffectData>(cloneObject.Affects);
-            }
-
-            OBJECT_INDEX.Add(newObject);
-            return newObject;
-        }
-
-        public static MobTemplate make_mobile(int vnum, int cvnum, string name)
-        {
-            if (vnum < 1 || string.IsNullOrWhiteSpace(name))
-                throw new Exception("Invalid data");
-            if (MOBILE_INDEX.Any(x => x.Vnum == vnum))
-                throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
-
-            MobTemplate cloneMob = null;
-            if (cvnum > 1)
-            {
-                cloneMob = MOBILE_INDEX.FirstOrDefault(x => x.Vnum == cvnum);
-            }
-
-            MobTemplate newMob = new MobTemplate()
-                {
-                    Name = string.Format("A newly created {0}", name),
-                    Vnum = vnum,
-                    LongDescription = string.Format("Somebody abandoned a newly created {0} here.", name),
-                    Level = 1,
-                    Position = PositionTypes.Standing,
-                    DefPosition = PositionTypes.Standing,
-                    PermanentStrength = 13,
-                    PermanentDexterity = 13,
-                    PermanentIntelligence = 13,
-                    PermanentWisdom = 13,
-                    PermanentCharisma = 13,
-                    PermanentConstitution = 13,
-                    PermanentLuck = 13,
-                    Class = 3
-                };
-            newMob.Act.SetBit((int)ActFlags.IsNpc);
-            newMob.Act.SetBit((int)ActFlags.Prototype);
-
-            if (cloneMob != null)
-            {
-                newMob.ShortDescription = cloneMob.ShortDescription;
-                newMob.LongDescription = cloneMob.LongDescription;
-                newMob.Description = cloneMob.Description;
-                newMob.Act = cloneMob.Act;
-                newMob.AffectedBy = cloneMob.AffectedBy;
-                newMob.SpecialFunction = cloneMob.SpecialFunction;
-                newMob.Alignment = cloneMob.Alignment;
-                newMob.Level = cloneMob.Level;
-                newMob.ToHitArmorClass0 = cloneMob.ToHitArmorClass0;
-                newMob.ArmorClass = cloneMob.ArmorClass;
-                newMob.HitDice = new DiceData(cloneMob.HitDice);
-                newMob.DamageDice = new DiceData(cloneMob.DamageDice);
-                newMob.Gold = cloneMob.Gold;
-                newMob.Experience = cloneMob.Experience;
-                newMob.Position = cloneMob.Position;
-                newMob.DefPosition = cloneMob.DefPosition;
-                newMob.Gender = cloneMob.Gender;
-                newMob.PermanentStrength = cloneMob.PermanentStrength;
-                newMob.PermanentDexterity = cloneMob.PermanentDexterity;
-                newMob.PermanentIntelligence = cloneMob.PermanentIntelligence;
-                newMob.PermanentWisdom = cloneMob.PermanentWisdom;
-                newMob.PermanentCharisma = cloneMob.PermanentCharisma;
-                newMob.PermanentConstitution = cloneMob.PermanentConstitution;
-                newMob.PermanentLuck = cloneMob.PermanentLuck;
-                newMob.Race = cloneMob.Race;
-                newMob.Class = cloneMob.Class;
-                newMob.ExtraFlags = cloneMob.ExtraFlags;
-                newMob.Resistance = cloneMob.Resistance;
-                newMob.Susceptibility = cloneMob.Susceptibility;
-                newMob.Immunity = cloneMob.Immunity;
-                newMob.NumberOfAttacks = cloneMob.NumberOfAttacks;
-                newMob.Attacks = new ExtendedBitvector(cloneMob.Attacks);
-                newMob.Defenses = new ExtendedBitvector(cloneMob.Defenses);
-            }
-
-            MOBILE_INDEX.Add(newMob);
-            return newMob;
         }
 
         public static ExitData make_exit(RoomTemplate room, RoomTemplate to_room, int door)

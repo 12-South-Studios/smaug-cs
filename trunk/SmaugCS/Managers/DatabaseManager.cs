@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Realm.Library.Common.Objects;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Config;
 using SmaugCS.Database;
@@ -16,10 +17,16 @@ namespace SmaugCS.Managers
         private static DatabaseManager _instance;
         private static readonly object Padlock = new object();
 
-        private List<ListLoader> _loaders = new List<ListLoader>();
+        private readonly List<ListLoader> _loaders = new List<ListLoader>();
 
         private DatabaseManager()
         {
+            ROOMS = new RoomRepository();
+            AREAS = new AreaRepository();
+            OBJECT_INDEXES = new ObjectRepository();
+            MOBILE_INDEXES = new MobileRepository();
+            CHARACTERS = new CharacterRepository();
+            OBJECTS = new ObjInstanceRepository(Program.MAX_WEAR, Program.MAX_LAYERS);
         }
 
         /// <summary>
@@ -38,6 +45,11 @@ namespace SmaugCS.Managers
 
         public static bool BootDb { get; set; }
         public RoomRepository ROOMS { get; private set; }
+        public AreaRepository AREAS { get; private set; }
+        public ObjectRepository OBJECT_INDEXES { get; private set; }
+        public MobileRepository MOBILE_INDEXES { get; private set; }
+        public CharacterRepository CHARACTERS { get; private set; }
+        public ObjInstanceRepository OBJECTS { get; private set; }
 
         public void Initialize(bool fCopyOver)
         {

@@ -62,6 +62,17 @@ namespace SmaugCS.Common
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="bit"></param>
+        /// <returns></returns>
+        public static bool IsSet(this uint value, int bit)
+        {
+            return (value & bit) > 0;
+        }
+
+        /// <summary>
         /// Sets a given bit on an integer field
         /// </summary>
         /// <param name="value"></param>
@@ -70,6 +81,18 @@ namespace SmaugCS.Common
         public static int SetBit(this int value, int bit)
         {
             return value | bit;
+        }
+
+
+        /// <summary>
+        /// Sets a given bit on an integer field
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="bit"></param>
+        /// <returns></returns>
+        public static uint SetBit(this uint value, int bit)
+        {
+            return value | (uint)bit;
         }
 
         /// <summary>
@@ -84,6 +107,17 @@ namespace SmaugCS.Common
         }
 
         /// <summary>
+        /// Removes a given bit from an integer field
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="bit"></param>
+        /// <returns></returns>
+        public static uint RemoveBit(this uint value, int bit)
+        {
+            return value & ~(uint)bit;
+        }
+
+        /// <summary>
         /// Toggles the given bit on the integer field
         /// </summary>
         /// <param name="value"></param>
@@ -92,6 +126,29 @@ namespace SmaugCS.Common
         public static int ToggleBit(this int value, int bit)
         {
             return value ^ bit;
+        }
+
+        /// <summary>
+        /// Toggles the given bit on the integer field
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="bit"></param>
+        /// <returns></returns>
+        public static uint ToggleBit(this uint value, int bit)
+        {
+            return value ^ (uint)bit;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="value_00"></param>
+        /// <param name="value_32"></param>
+        /// <returns></returns>
+        public static int Interpolate(this int level, int value_00, int value_32)
+        {
+            return value_00 + level * (value_32 - value_00) / 32;
         }
     }
 }

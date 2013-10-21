@@ -330,7 +330,7 @@ namespace SmaugCS
                 db.RELATIONS.Remove(relation);
             }
 
-            db.OBJECTS.Remove(obj);
+            DatabaseManager.Instance.OBJECTS.Delete(obj.ID);
 
             queue_extracted_obj(obj);
 
@@ -338,7 +338,7 @@ namespace SmaugCS
             db.NumberOfObjectsLoaded -= obj.Count;
             --db.PhysicalObjects;
 
-            if (obj.serial == db.CurrentObject)
+            if (obj.ID == db.CurrentObject)
             {
                 db.CurrentObjectExtracted = true;
                 if (db.GlobalObjectCode == ReturnTypes.None)
@@ -406,7 +406,7 @@ namespace SmaugCS
             if (ch.IsNpc())
             {
                 ch.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
-                foreach (CharacterInstance wch in db.CHARACTERS.Where(wch => wch.CurrentMount == ch))
+                foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
                     wch.Position = PositionTypes.Standing;
@@ -478,7 +478,7 @@ namespace SmaugCS
             if (ch.Switched != null && ch.Switched.Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
-            foreach (CharacterInstance wch in db.CHARACTERS)
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (wch.ReplyTo == ch)
                     wch.ReplyTo = null;
@@ -486,7 +486,7 @@ namespace SmaugCS
                     wch.RetellTo = null;
             }
 
-            db.CHARACTERS.Remove(ch);
+            DatabaseManager.Instance.CHARACTERS.Delete(ch.ID);
 
             if (ch.Descriptor != null)
             {
@@ -579,7 +579,7 @@ namespace SmaugCS
 
             // Check the world for an exact match
             count = 0;
-            foreach (CharacterInstance wch in db.CHARACTERS
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values
                                             .Where(wch => can_see(ch, wch) && arg.IsAnyEqual(wch.Name)
                                                           || (wch.IsNpc() && vnum == wch.MobIndex.Vnum)))
             {
@@ -607,7 +607,7 @@ namespace SmaugCS
 
             // If no prefix match was found in room, check the world
             count = 0;
-            foreach (CharacterInstance wch in db.CHARACTERS
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values
                                             .Where(wch => can_see(ch, wch) && arg.IsAnyEqualPrefix(wch.Name)))
             {
                 if (number == 0 && !wch.IsNpc())
@@ -803,7 +803,7 @@ namespace SmaugCS
             int vnum = (ch.Trust >= Program.LEVEL_SAVIOR && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
-            foreach (ObjectInstance obj in db.OBJECTS
+            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.Values
                                          .Where(obj => can_see_obj(ch, obj) && (arg.IsAnyEqual(obj.Name)
                                                                                 || obj.ObjectIndex.Vnum == vnum)))
             {
@@ -818,7 +818,7 @@ namespace SmaugCS
             // if we didn't find an exact match, run through the list again for a partial match
             // i.e. swo == sword
             count = 0;
-            foreach (ObjectInstance obj in db.OBJECTS
+            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.Values
                                          .Where(obj => can_see_obj(ch, obj) && arg.IsAnyEqualPrefix(obj.Name)))
             {
                 count += obj.Count;

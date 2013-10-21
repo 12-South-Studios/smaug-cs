@@ -17,15 +17,16 @@ namespace SmaugCS.Common
 
         #endregion
 
-        public int[] Bits { get; private set; }
+        public uint[] Bits { get; private set; }
 
         public ExtendedBitvector()
         {
-            Bits = new int[XBI];
+            Bits = new uint[XBI];
         }
 
         public ExtendedBitvector(ExtendedBitvector exBV)
         {
+            Bits = new uint[XBI];
             SetBits(exBV);    
         }
 
@@ -34,9 +35,9 @@ namespace SmaugCS.Common
             return !Bits.Any(x => x != 0);
         }
 
-        public int HasBits(ExtendedBitvector checkBits)
+        public uint HasBits(ExtendedBitvector checkBits)
         {
-            int bit;
+            uint bit;
             for (int x = 0; x < XBI; x++)
                 if ((bit = (Bits[x] & checkBits.Bits[x])) != 0)
                     return bit;
@@ -108,19 +109,19 @@ namespace SmaugCS.Common
             return (Bits[bit >> RSV] & 1 << (bit & XBM)) > 0;
         }
 
-        public long SetBit(int bit)
+        public uint SetBit(int bit)
         {
-            return (Bits[bit >> RSV] |= 1 << (bit & XBM));
+            return (Bits[bit >> RSV] |= (uint)1 << (bit & XBM));
         }
 
-        public long RemoveBit(int bit)
+        public uint RemoveBit(int bit)
         {
-            return (Bits[bit >> RSV] &= ~(1 << (bit & XBM)));
+            return (Bits[bit >> RSV] &= ~((uint)1 << (bit & XBM)));
         }
 
-        public long ToggleBit(int bit)
+        public uint ToggleBit(int bit)
         {
-            return (Bits[bit >> RSV] ^= 1 << (bit & XBM));
+            return (Bits[bit >> RSV] ^= (uint)1 << (bit & XBM));
         }
 
         public void ClearBits()

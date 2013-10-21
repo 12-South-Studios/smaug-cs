@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
+using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -65,7 +66,7 @@ namespace SmaugCS
             }
             else
             {
-                ObjectTemplate obj = db.get_obj_index(mix.Data[0]);
+                ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(mix.Data[0]);
                 if (obj == null)
                 {
                     color.pager_printf(ch, "%s has a bad object vnum %d, inform an Admin\r\n", mix.Name, mix.Data[0]);

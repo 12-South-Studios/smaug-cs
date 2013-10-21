@@ -6,6 +6,11 @@ namespace SmaugCS.Objects
     [XmlRoot("Area")]
     public class AreaData
     {
+        public AreaData()
+        {
+            Rooms = new List<RoomTemplate>();    
+        }
+
         [XmlArray("Rooms")]
         public List<RoomTemplate> Rooms { get; set; }
 

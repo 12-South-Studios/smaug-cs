@@ -102,7 +102,7 @@ namespace SmaugCS
         {
             Pulse = (Pulse + 1) % 100;
 
-            foreach (CharacterInstance ch in db.CHARACTERS
+            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values
                 .Where(ch => !ch.CharDied()))
             {
                 //// Experience gained during battle decreases as the battle drags on

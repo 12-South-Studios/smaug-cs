@@ -31,6 +31,7 @@ namespace SmaugCS.Objects
             Value = new int[6];
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Affects = new List<AffectData>();
+            ExtraFlags = new ExtendedBitvector();
         }
     }
 }

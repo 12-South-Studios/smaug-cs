@@ -35,6 +35,7 @@ namespace SmaugCS.Objects
 
         public RoomTemplate()
         {
+            Flags = new ExtendedBitvector();
             Resets = new List<ResetData>();
             Persons = new List<CharacterInstance>();
             Contents = new List<ObjectInstance>();
