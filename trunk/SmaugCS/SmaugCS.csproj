@@ -367,6 +367,7 @@
     <Compile Include="Constants\BuilderConstants.cs" />
     <Compile Include="Constants\SystemConstants.cs" />
     <Compile Include="Constants\WeatherConstants.cs" />
+    <Compile Include="Database\RoomRepository.cs" />
     <Compile Include="Enums\AnsiCodes.cs" />
     <Compile Include="Enums\AreaFlags.cs" />
     <Compile Include="Enums\AreaType.cs" />
@@ -710,6 +711,10 @@
     <ProjectReference Include="..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
+      <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
+      <Name>Realm.Library.Patterns.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Singleton\Realm.Library.Patterns.Singleton.csproj">
       <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>

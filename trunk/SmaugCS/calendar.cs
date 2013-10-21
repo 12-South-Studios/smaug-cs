@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
-using SmaugCS.Common;
 
 namespace SmaugCS
 {
@@ -79,7 +79,7 @@ namespace SmaugCS
 
         public static HolidayData get_holiday(int month, int day)
         {
-            return db.HOLIDAYS.FirstOrDefault(holiday => month + 1 == holiday.Month 
+            return db.HOLIDAYS.FirstOrDefault(holiday => month + 1 == holiday.Month
                 && day + 1 == holiday.Day);
         }
 
@@ -112,8 +112,8 @@ namespace SmaugCS
             act_wiz.echo_to_all(ATTypes.AT_CYAN, "Freshwater bodies everywhere have frozen over.\r\n", (int)EchoTypes.All);
 
             WinterFreeze = true;
-            foreach (RoomTemplate room in db.ROOMS
-                .Where(x => x.SectorType == SectorTypes.DeepWater 
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values
+                .Where(x => x.SectorType == SectorTypes.DeepWater
                     || x.SectorType == SectorTypes.ShallowWater))
             {
                 room.WinterSector = room.SectorType;
@@ -127,7 +127,7 @@ namespace SmaugCS
             act_wiz.echo_to_all(ATTypes.AT_BLUE, "Freshwater bodies everywhere have thawed out.\r\n", (int)EchoTypes.All);
 
             WinterFreeze = true;
-            foreach (RoomTemplate room in db.ROOMS
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values
                 .Where(x => x.SectorType == SectorTypes.Ice
                     && x.SectorType != SectorTypes.Unknown))
             {
@@ -160,7 +160,7 @@ namespace SmaugCS
             if (db.GameTime.Season == SeasonTypes.Winter && !WinterFreeze)
             {
                 WinterFreeze = true;
-                foreach (RoomTemplate room in db.ROOMS
+                foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values
                     .Where(x => x.SectorType == SectorTypes.DeepWater
                         || x.SectorType == SectorTypes.ShallowWater))
                 {
@@ -172,34 +172,34 @@ namespace SmaugCS
 
         public static void calc_season()
         {
-            int day = db.GameTime.Month*db.SystemData.DaysPerMonth + db.GameTime.Day;
+            int day = db.GameTime.Month * db.SystemData.DaysPerMonth + db.GameTime.Day;
             if (day < db.SystemData.DaysPerYear / 4)
             {
                 db.GameTime.Season = SeasonTypes.Spring;
                 if (db.GameTime.Hour == 0 && day == 0)
                     start_spring();
             }
-            else if (day < (db.SystemData.DaysPerYear/4)*2)
+            else if (day < (db.SystemData.DaysPerYear / 4) * 2)
             {
                 db.GameTime.Season = SeasonTypes.Summer;
                 if (db.GameTime.Hour == 0 && day == (db.SystemData.DaysPerYear / 4))
                     start_summer();
             }
-            else if (day < (db.SystemData.DaysPerYear/4)*3)
+            else if (day < (db.SystemData.DaysPerYear / 4) * 3)
             {
                 db.GameTime.Season = SeasonTypes.Fall;
-                if (db.GameTime.Hour == 0 && day == (db.SystemData.DaysPerYear/4)*2)
+                if (db.GameTime.Hour == 0 && day == (db.SystemData.DaysPerYear / 4) * 2)
                     start_fall();
             }
             else if (day < db.SystemData.DaysPerYear)
             {
                 db.GameTime.Season = SeasonTypes.Winter;
-                if (db.GameTime.Hour == 0 && day == (db.SystemData.DaysPerYear/4)*3)
+                if (db.GameTime.Hour == 0 && day == (db.SystemData.DaysPerYear / 4) * 3)
                     start_winter();
             }
             else
                 db.GameTime.Season = SeasonTypes.Spring;
-            
+
             season_update();
         }
 
@@ -209,7 +209,7 @@ namespace SmaugCS
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 int dayCount = 0;
-                List<TextSection> sections = proxy.ReadSections(new[] {"#HOLIDAY"}, new[]{"*"}, null, "END");
+                List<TextSection> sections = proxy.ReadSections(new[] { "#HOLIDAY" }, new[] { "*" }, null, "END");
                 foreach (TextSection section in sections)
                 {
                     if (dayCount >= db.SystemData.MaxHolidays)

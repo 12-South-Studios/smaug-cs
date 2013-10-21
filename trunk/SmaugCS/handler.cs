@@ -439,13 +439,13 @@ namespace SmaugCS
             {
                 RoomTemplate location = null;
                 if (!ch.IsNpc() && ch.PlayerData.Clan != null)
-                    location = db.get_room_index(ch.PlayerData.Clan.RecallRoom);
+                    location = DatabaseManager.Instance.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
 
                 if (location == null)
-                    location = db.get_room_index(Program.ROOM_VNUM_ALTAR);
+                    location = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_ALTAR);
 
                 if (location == null)
-                    location = db.get_room_index(1);
+                    location = DatabaseManager.Instance.ROOMS.Get(1);
 
                 location.ToRoom(ch);
 

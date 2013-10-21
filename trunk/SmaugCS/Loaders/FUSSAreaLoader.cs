@@ -481,7 +481,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endroom":
-                        db.ROOMS.Add(room);
+                        DatabaseManager.Instance.ROOMS.Add(room.Vnum, room);
                         return;
                     case "#exit":
                         ReadExit(proxy, room);
@@ -542,7 +542,7 @@ namespace SmaugCS.Loaders
                     case "vnum":
                         bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
-                        if (db.get_room_index(vnum) != null)
+                        if (DatabaseManager.Instance.ROOMS.Get(vnum) != null)
                         {
                             if (tmpBootDb)
                             {
@@ -551,7 +551,7 @@ namespace SmaugCS.Loaders
                             }
                             else
                             {
-                                room = db.get_room_index(vnum);
+                                room = DatabaseManager.Instance.ROOMS.Get(vnum);
                                 LogManager.Log(LogTypes.Build,
                                                db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning room {0}", vnum);

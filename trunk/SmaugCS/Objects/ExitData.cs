@@ -1,6 +1,8 @@
-﻿using System.Xml.Serialization;
+﻿using System.Linq;
+using System.Xml.Serialization;
 using SmaugCS.Common;
 using SmaugCS.Enums;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Objects
 {
@@ -19,7 +21,7 @@ namespace SmaugCS.Objects
         private int DestinationID { get; set; }
         public RoomTemplate Destination
         {
-            get { return db.ROOMS.Find(x => x.Vnum == DestinationID); }
+            get { return DatabaseManager.Instance.ROOMS.Values.ToList().Find(x => x.Vnum == DestinationID); }
             set { DestinationID = value.Vnum; }
         }
 

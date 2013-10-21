@@ -156,7 +156,7 @@ namespace SmaugCS
                     ++roomnum;
                     distance = exit.Distance - 1;
                 }
-                backroom = db.get_room_index(brvnum);
+                backroom = DatabaseManager.Instance.ROOMS.Get(brvnum);
             }
             else
             {
@@ -172,7 +172,9 @@ namespace SmaugCS
 
             bool found = false;
 
-            RoomTemplate foundRoom = db.ROOMS.FirstOrDefault(x => x.Vnum == serial && x.TeleportToVnum == roomnum);
+            RoomTemplate foundRoom =
+                DatabaseManager.Instance.ROOMS.Values.FirstOrDefault(
+                    x => x.Vnum == serial && x.TeleportToVnum == roomnum);
             if (foundRoom != null)
                 found = true;
 
@@ -189,7 +191,7 @@ namespace SmaugCS
                         Flags = room.Flags
                     };
                 decorate_room(newRoom);
-                db.ROOMS.Add(newRoom);
+                DatabaseManager.Instance.ROOMS.Add(newRoom.Vnum, newRoom);
             }
 
             ExitData xit = newRoom.GetExit(vdir);
@@ -333,7 +335,7 @@ namespace SmaugCS
 
         public static void teleport(CharacterInstance ch, int room, int flags)
         {
-            RoomTemplate dest = db.get_room_index(room);
+            RoomTemplate dest = DatabaseManager.Instance.ROOMS.Get(room);
             if (dest == null)
             {
                 LogManager.Bug("bad room vnum {0}", room);

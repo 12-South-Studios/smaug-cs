@@ -989,7 +989,7 @@ namespace SmaugCS.Objects
                 {
                     LogManager.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", CurrentRoom.Vnum);
                     CurrentRoom.FromRoom(this);
-                    db.get_room_index(Program.ROOM_VNUM_TEMPLE).ToRoom(this);
+                    DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_TEMPLE).ToRoom(this);
                     return true;
                 }
 
