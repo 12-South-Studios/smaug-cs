@@ -155,11 +155,11 @@ namespace SmaugCS.Objects
                 return;
             }
 
-            if (db.get_room_index(Vnum) == null)
+            if (DatabaseManager.Instance.ROOMS.Get(Vnum) == null)
             {
                 LogManager.Bug("%s: %s -> NULL room! Putting char in limbo (%d)",
                     "char_to_room", ch.Name, Program.ROOM_VNUM_LIMBO);
-                localRoom = db.get_room_index(Program.ROOM_VNUM_LIMBO);
+                localRoom = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_LIMBO);
             }
 
             ch.CurrentRoom = localRoom;

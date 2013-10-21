@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Config;
+using SmaugCS.Database;
 using SmaugCS.Enums;
 using SmaugCS.Loaders;
 using SmaugCS.Objects;
@@ -36,6 +37,7 @@ namespace SmaugCS.Managers
         }
 
         public static bool BootDb { get; set; }
+        public RoomRepository ROOMS { get; private set; }
 
         public void Initialize(bool fCopyOver)
         {

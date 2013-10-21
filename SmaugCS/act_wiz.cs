@@ -88,9 +88,9 @@ namespace SmaugCS
         public static RoomTemplate find_location(CharacterInstance ch, string arg)
         {
             if (arg.IsNumber())
-                return db.get_room_index(arg.ToInt32());
+                return DatabaseManager.Instance.ROOMS.Get(arg.ToInt32());
             if (arg.Equals("pk"))
-                return db.get_room_index(db.LastPKRoom);
+                return DatabaseManager.Instance.ROOMS.Get(db.LastPKRoom);
 
             CharacterInstance victim = handler.get_char_world(ch, arg);
             if (victim != null)

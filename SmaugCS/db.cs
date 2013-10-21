@@ -233,11 +233,11 @@ namespace SmaugCS
         public static List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
         public static List<SpecialFunction> SPEC_LIST = new List<SpecialFunction>();
 
-        public static List<RoomTemplate> ROOMS = new List<RoomTemplate>();
-        public static RoomTemplate get_room_index(int vnum)
-        {
-            return ROOMS.FirstOrDefault(x => x.Vnum == vnum);
-        }
+        //public static List<RoomTemplate> ROOMS = new List<RoomTemplate>();
+        //public static RoomTemplate get_room_index(int vnum)
+        //{
+        //    return ROOMS.FirstOrDefault(x => x.Vnum == vnum);
+        //}
 
 
         public static List<WatchData> WATCHES = new List<WatchData>();
@@ -273,13 +273,13 @@ namespace SmaugCS
 
         public static void FixExits()
         {
-            foreach (RoomTemplate room in ROOMS)
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values)
             {
                 bool fexit = false;
                 foreach (ExitData exit in room.Exits)
                 {
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = get_room_index(exit.vnum);
+                    exit.Destination = DatabaseManager.Instance.ROOMS.Get(exit.vnum);
                     if (exit.vnum <= 0 || exit.Destination == null)
                     {
                         if (DatabaseManager.BootDb)
@@ -298,7 +298,7 @@ namespace SmaugCS
                     room.Flags.SetBit((int)RoomFlags.NoMob);
             }
 
-            foreach (RoomTemplate room in ROOMS)
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values)
             {
                 foreach (ExitData exit in room.Exits)
                 {
@@ -493,7 +493,7 @@ namespace SmaugCS
                     area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
-                    RoomTemplate room = get_room_index(Program.ROOM_VNUM_SCHOOL);
+                    RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_SCHOOL);
                     if (room != null && room.Area == area && area.ResetFrequency == 0)
                         area.Age = 15 - 3;
                 }
@@ -1021,7 +1021,7 @@ namespace SmaugCS
 
         public static void delete_room(RoomTemplate room)
         {
-            RoomTemplate limbo = get_room_index(Program.ROOM_VNUM_LIMBO);
+            RoomTemplate limbo = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_LIMBO);
 
             CharacterInstance ch;
             while ((ch = room.Persons.FirstOrDefault()) != null)
@@ -1068,7 +1068,7 @@ namespace SmaugCS
             room.Exits.ForEach(x => handler.extract_exit(room, x));
             room.MudProgActs.Clear();
             room.MudProgs.Clear();
-            ROOMS.Remove(room);
+            DatabaseManager.Instance.ROOMS.Delete(room.Vnum);
 
             // TODO: Room hash stuff here, but can be removed?
         }
@@ -1111,27 +1111,6 @@ namespace SmaugCS
             MOBILE_INDEX.Remove(mob);
 
             // TODO Mob hash stuff here, but can be removed?
-        }
-
-        public static RoomTemplate make_room(int vnum, AreaData area)
-        {
-            if (area == null || vnum < 1)
-                throw new Exception("Invalid data");
-            if (ROOMS.Any(x => x.Vnum == vnum))
-                throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
-
-            RoomTemplate newRoom = new RoomTemplate
-                {
-                    Name = "Floating in a void",
-                    SectorType = SectorTypes.Inside,
-                    Area = area,
-                    Vnum = vnum
-                };
-            newRoom.Flags.SetBit((int)RoomFlags.Prototype);
-
-            ROOMS.Add(newRoom);
-            area.Rooms.Add(newRoom);
-            return newRoom;
         }
 
         public static ObjectTemplate make_object(int vnum, int cvnum, string name)
@@ -1292,7 +1271,7 @@ namespace SmaugCS
         {
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
-                RoomTemplate room = get_room_index(rnum);
+                RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(rnum);
                 if (room == null)
                     continue;
 
@@ -1301,7 +1280,7 @@ namespace SmaugCS
                 {
                     fexit = true;
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = exit.vnum <= 0 ? null : get_room_index(exit.vnum);
+                    exit.Destination = exit.vnum <= 0 ? null : DatabaseManager.Instance.ROOMS.Get(exit.vnum);
                 }
                 if (!fexit)
                     room.Flags.SetBit((int)RoomFlags.NoMob);
@@ -1309,7 +1288,7 @@ namespace SmaugCS
 
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
-                RoomTemplate room = get_room_index(rnum);
+                RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(rnum);
                 if (room == null)
                     continue;
 
