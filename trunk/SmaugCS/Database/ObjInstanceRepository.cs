@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Enums;
@@ -40,10 +41,8 @@ namespace SmaugCS.Database
         /// <returns></returns>
         public ObjectInstance Create(ObjectTemplate parent, int level)
         {
-            if (parent == null)
-                throw new InvalidDataException(string.Format("Parent is null"));
-            if (level <= 0)
-                throw new InvalidDataException(string.Format("Invalid level {0}", level));
+            Validation.IsNotNull(parent, "parent");
+            Validation.Validate(level > 0, "Invalid level {0}", level);
 
             ObjectInstance obj = new ObjectInstance(GetNextId, _maxWear, _maxLayers)
                 {

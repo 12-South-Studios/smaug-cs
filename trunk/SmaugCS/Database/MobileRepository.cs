@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Enums;
@@ -25,12 +26,14 @@ namespace SmaugCS.Database
         /// <returns></returns>
         public MobTemplate Create(int vnum, int cvnum, string name)
         {
-            if (cvnum < 1 || cvnum == vnum || vnum < 1 || name.IsNullOrWhitespace())
-                throw new Exception("Invalid data");
-            if (Contains(vnum))
-                throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
-            if (!Contains(cvnum))
-                throw new InvalidDataException(string.Format("Clone vnum {0} is not present", cvnum));
+            Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
+            Validation.Validate(() =>
+                {
+                    if (Contains(vnum))
+                        throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+                    if (!Contains(cvnum))
+                        throw new InvalidDataException(string.Format("Clone vnum {0} is not present", cvnum));
+                });
 
             MobTemplate newMob = Create(vnum, name);
             MobTemplate cloneMob = Get(cvnum);
@@ -82,10 +85,12 @@ namespace SmaugCS.Database
         /// <returns></returns>
         public MobTemplate Create(int vnum, string name)
         {
-            if (vnum < 1 || name.IsNullOrWhitespace())
-                throw new Exception("Invalid data");
-            if (Contains(vnum))
-                throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+            Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
+            Validation.Validate(() =>
+                {
+                    if (Contains(vnum))
+                        throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+                });
 
             MobTemplate newMob = new MobTemplate()
                 {

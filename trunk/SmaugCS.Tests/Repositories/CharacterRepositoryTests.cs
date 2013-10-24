@@ -22,7 +22,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof (InvalidDataException))]
+        [ExpectedException(typeof (ArgumentNullException))]
         public void Create_InvalidParent()
         {
             var repo = new CharacterRepository();

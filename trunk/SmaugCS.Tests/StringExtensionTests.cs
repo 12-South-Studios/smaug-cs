@@ -202,5 +202,24 @@ namespace SmaugCS.Tests
         {
             Assert.That(value.NotEquals(compareTo), Is.EqualTo(expectedValue));
         }
+
+        [TestCase("Test", 'x', 2, "Text")]
+        public void ThisTest(string value, char charToSet, int index, string expected)
+        {
+            Assert.That(value.SetChar(index, charToSet), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ToWordsTest()
+        {
+            const string value = "This is a test";
+
+            var actual = value.ToWords();
+
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Count, Is.EqualTo(4));
+            Assert.That(actual[0], Is.EqualTo("This"));
+            Assert.That(actual[3], Is.EqualTo("test"));
+        }
     }
 }

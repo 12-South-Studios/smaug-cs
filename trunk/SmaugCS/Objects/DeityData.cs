@@ -11,6 +11,9 @@ using SmaugCS.Interfaces;
 
 namespace SmaugCS.Objects
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DeityData : IPersistable
     {
         public string Filename { get; set; }
@@ -54,11 +57,18 @@ namespace SmaugCS.Objects
         public int AffectedNum { get; set; }
         public int ObjStat { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
         public DeityData(string filename)
         {
             Filename = filename;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Save()
         {
             if (string.IsNullOrWhiteSpace(Filename))
@@ -114,6 +124,9 @@ namespace SmaugCS.Objects
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Deity) + Filename;
@@ -253,6 +266,76 @@ namespace SmaugCS.Objects
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        public int FuzzifyFavor(int field, int mod)
+        {
+            int fieldvalue = 0;
+            switch (field)
+            {
+                case 0:
+                    fieldvalue = Flee;
+                    break;
+                case 1:
+                    fieldvalue = Flee_NPCRace;
+                    break;
+                case 2:
+                    fieldvalue = Kill;
+                    break;
+                case 3:
+                    fieldvalue = Kill_NPCRace;
+                    break;
+                case 4:
+                    fieldvalue = Kill_Magic;
+                    break;
+                case 5:
+                    fieldvalue = Sacrifice;
+                    break;
+                case 6:
+                    fieldvalue = BuryCorpse;
+                    break;
+                case 7:
+                    fieldvalue = AidSpell;
+                    break;
+                case 8:
+                    fieldvalue = Aid;
+                    break;
+                case 9:
+                    fieldvalue = Steal;
+                    break;
+                case 10:
+                    fieldvalue = Backstab;
+                    break;
+                case 11:
+                    fieldvalue = Die;
+                    break;
+                case 12:
+                    fieldvalue = Die_NPCRace;
+                    break;
+                case 13:
+                    fieldvalue = SpellAid;
+                    break;
+                case 14:
+                    fieldvalue = DigCorpse;
+                    break;
+                case 15:
+                    fieldvalue = Die_NPCFoe;
+                    break;
+                case 16:
+                    fieldvalue = Flee_NPCFoe;
+                    break;
+                case 17:
+                    fieldvalue = Kill_NPCFoe;
+                    break;
+            }
+
+            return SmaugRandom.Fuzzy(fieldvalue / mod);
         }
     }
 }

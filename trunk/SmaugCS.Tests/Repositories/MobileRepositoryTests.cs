@@ -40,7 +40,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Create_ThrowsException()
         {
             var repo = new MobileRepository();
@@ -49,7 +49,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new MobileRepository();
@@ -68,7 +68,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Create_Clone_InvalidCloneVnum()
         {
             var repo = new MobileRepository();
