@@ -133,6 +133,16 @@ namespace SmaugCS.Common
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static List<string> ToWords(this string value)
+        {
+            return value.Split(' ').ToList();
+        }
+
+        /// <summary>
         /// Picks off one argument from a string and returns the rest.  Uses quotes
         /// </summary>
         /// <param name="value"></param>
@@ -368,6 +378,20 @@ namespace SmaugCS.Common
         public static string UnhideTilde(this string str, string hiddenChar = "*")
         {
             return str.Replace(hiddenChar, "~");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="index"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static string SetChar(this string str, int index, char c)
+        {
+            char[] charArray = str.ToCharArray();
+            charArray[index] = c;
+            return new string(charArray);
         }
     }
 }

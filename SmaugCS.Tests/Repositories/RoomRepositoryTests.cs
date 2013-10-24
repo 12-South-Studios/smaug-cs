@@ -25,7 +25,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_ThrowsException()
         {
             var repo = new RoomRepository();
@@ -34,7 +34,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new RoomRepository();

@@ -24,73 +24,9 @@ namespace SmaugCS
             }
             else
             {
-                ch.PlayerData.Favor += FuzzifyFavorBasedOnField(ch.PlayerData.CurrentDeity, field, mod < 1 ? 1 : mod);
+                ch.PlayerData.Favor += ch.PlayerData.CurrentDeity.FuzzifyFavor(field, mod < 1 ? 1 : mod);
                 ch.PlayerData.Favor = Check.Range(-2500, ch.PlayerData.Favor, 2500);
             }
-        }
-
-        private static int FuzzifyFavorBasedOnField(DeityData deity, int field, int mod)
-        {
-            int fieldvalue = 0;
-            switch (field)
-            {
-                case 0:
-                    fieldvalue = deity.Flee;
-                    break;
-                case 1:
-                    fieldvalue = deity.Flee_NPCRace;
-                    break;
-                case 2:
-                    fieldvalue = deity.Kill;
-                    break;
-                case 3:
-                    fieldvalue = deity.Kill_NPCRace;
-                    break;
-                case 4:
-                    fieldvalue = deity.Kill_Magic;
-                    break;
-                case 5:
-                    fieldvalue = deity.Sacrifice;
-                    break;
-                case 6:
-                    fieldvalue = deity.BuryCorpse;
-                    break;
-                case 7:
-                    fieldvalue = deity.AidSpell;
-                    break;
-                case 8:
-                    fieldvalue = deity.Aid;
-                    break;
-                case 9:
-                    fieldvalue = deity.Steal;
-                    break;
-                case 10:
-                    fieldvalue = deity.Backstab;
-                    break;
-                case 11:
-                    fieldvalue = deity.Die;
-                    break;
-                case 12:
-                    fieldvalue = deity.Die_NPCRace;
-                    break;
-                case 13:
-                    fieldvalue = deity.SpellAid;
-                    break;
-                case 14:
-                    fieldvalue = deity.DigCorpse;
-                    break;
-                case 15:
-                    fieldvalue = deity.Die_NPCFoe;
-                    break;
-                case 16:
-                    fieldvalue = deity.Flee_NPCFoe;
-                    break;
-                case 17:
-                    fieldvalue = deity.Kill_NPCFoe;
-                    break;
-            }
-
-            return SmaugRandom.Fuzzy(fieldvalue / mod);
         }
 
         /// <summary>

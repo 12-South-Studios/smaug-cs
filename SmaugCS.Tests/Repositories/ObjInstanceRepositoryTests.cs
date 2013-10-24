@@ -22,7 +22,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidDataException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_InvalidParent()
         {
             var repo = new ObjInstanceRepository(5, 5);
@@ -30,7 +30,7 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidDataException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Create_InvalidLevel()
         {
             var objRepo = new ObjectRepository();

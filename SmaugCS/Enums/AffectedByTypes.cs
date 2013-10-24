@@ -5,6 +5,7 @@ namespace SmaugCS.Enums
     [Flags]
     public enum AffectedByTypes
     {
+        None = -1,
         Blind = 1 << 0,
         Invisible = 1 << 1,
         DetectEvil = 1 << 2,

@@ -22,8 +22,7 @@ namespace SmaugCS.Database
         /// <returns></returns>
         public CharacterInstance Create(MobTemplate parent)
         {
-            if (parent == null)
-                throw new InvalidDataException(string.Format("Parent is null"));
+            Validation.IsNotNull(parent, "parent");
 
             CharacterInstance mob = new CharacterInstance(GetNextId)
                 {

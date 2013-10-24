@@ -1,4 +1,5 @@
 ﻿using System;
+using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Enums;
 using SmaugCS.Exceptions;
@@ -19,10 +20,13 @@ namespace SmaugCS.Database
         /// <returns></returns>
         public RoomTemplate Create(int vnum, AreaData area)
         {
-            if (area == null || vnum < 1)
-                throw new Exception("Invalid data");
-            if (Contains(vnum))
-                throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+            Validation.Validate(vnum >= 1);
+            Validation.IsNotNull(area, "area");
+            Validation.Validate(() =>
+                {
+                    if (Contains(vnum))
+                        throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+                });
 
             RoomTemplate newRoom = new RoomTemplate
                                        {

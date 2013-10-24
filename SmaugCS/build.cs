@@ -374,29 +374,29 @@ namespace SmaugCS
                 char c = charArray[size++];
                 if (c == '\0')
                 {
-                    edit.Text[lines, lpos] = '\0';
+                    edit.Text[lines].SetChar(lpos, '\0');
                     break;
                 }
                 if (c == '\r') continue;
                 if (c == '\n' || lpos > 78)
                 {
-                    edit.Text[lines, lpos] = '\0';
+                    edit.Text[lines].SetChar(lpos, '\0');
                     ++lines;
                     lpos = 0;
                 }
                 else
-                    edit.Text[lines, lpos++] = c;
+                    edit.Text[lines].SetChar(lpos++, c);
 
                 if (lines >= 49 || size > 4096)
                 {
-                    edit.Text[lines, lpos] = '\0';
+                    edit.Text[lines].SetChar(lpos, '\0');
                     break;
                 }
             }
             if (lpos > 0 && lpos < 78 && lines < 49)
             {
-                edit.Text[lines, lpos] = '~';
-                edit.Text[lines, lpos + 1] = '\0';
+                edit.Text[lines].SetChar(lpos, '~');
+                edit.Text[lines].SetChar(lpos + 1, '\0');
                 ++lines;
             }
 
@@ -409,14 +409,44 @@ namespace SmaugCS
 
         public static string copy_buffer_nohash(CharacterInstance ch)
         {
-            // TODO
-            return string.Empty;
+            if (ch == null || ch.CurrentEditor == null)
+                return string.Empty;
+
+            string buffer = string.Empty;
+
+            for (int x = 0; x < ch.CurrentEditor.NumberOfLines; x++)
+            {
+                string tmp = ch.CurrentEditor.Text[x];
+                if (!tmp.IsNullOrEmpty() && tmp.EndsWith("~"))
+                    tmp.SetChar(tmp.Length - 1, '\0');
+                else
+                    tmp += "\n";
+                tmp.SmashTilde();
+                buffer += tmp;
+            }
+
+            return buffer;
         }
 
         public static string copy_buffer(CharacterInstance ch)
         {
-            // TODO
-            return string.Empty;
+            if (ch == null || ch.CurrentEditor == null)
+                return string.Empty;
+
+            string buffer = string.Empty;
+
+            for (int x = 0; x < ch.CurrentEditor.NumberOfLines; x++)
+            {
+                string tmp = ch.CurrentEditor.Text[x];
+                if (!tmp.IsNullOrEmpty() && tmp.EndsWith("~"))
+                    tmp.SetChar(tmp.Length - 1, '\0');
+                else
+                    tmp += "\n";
+                tmp.SmashTilde();
+                buffer += tmp;
+            }
+
+            return buffer;
         }
 
         public static void stop_editing(CharacterInstance ch)
@@ -467,17 +497,238 @@ namespace SmaugCS
 
         public static void add_room_affect(RoomTemplate location, CharacterInstance ch, bool indexaffect, string argument)
         {
-            // TODO
+            Tuple<string, string> tuple = argument.FirstArgument();
+            string arg = tuple.Item1;
+            string arg2 = tuple.Item2;
+
+            if (arg2.IsNullOrEmpty() || arg.IsNullOrEmpty())
+            {
+                color.send_to_char(
+                    !indexaffect
+                        ? "Usage: redit affect <field> <value>\r\n"
+                        : "Usage: redit permaffect <field> <value>\r\n", ch);
+                return;
+            }
+
+            int loc = get_atype(arg2);
+            if (loc < 1)
+            {
+                color.ch_printf(ch, "Unknown field: %s\r\n", arg2);
+                return;
+            }
+
+            int value = 0;
+            bool found = false;
+            int bitv = 0;
+
+            if (loc == (int) ApplyTypes.Affect)
+            {
+                Tuple<string, string> tuple2 = arg.FirstArgument();
+
+                value = get_aflag(tuple2.Item2);
+                if (value < 0 || value >= EnumerationFunctions.Max<AffectedByTypes>())
+                    color.ch_printf(ch, "Unknown affect: %s\r\n", tuple2.Item2);
+                else
+                    found = true;
+            }
+            else if (loc == (int) ApplyTypes.Resistance
+                     || loc == (int) ApplyTypes.Immunity
+                     || loc == (int) ApplyTypes.Susceptibility)
+            {
+                List<string> words = arg.ToWords();
+                foreach (string word in words)
+                {
+                    value = get_risflag(word);
+                    if (value < 0 || value > 31)
+                        color.ch_printf(ch, "Unknown flag: %s\r\n", value);
+                    else
+                    {
+                        bitv.SetBit(1 << value);
+                        found = true;
+                    }
+
+                    if (bitv == 0)
+                        return;
+                    value = bitv;
+                }
+            }
+            else if (loc == (int) ApplyTypes.WeaponSpell
+                     || loc == (int) ApplyTypes.WearSpell
+                     || loc == (int) ApplyTypes.RemoveSpell
+                     || loc == (int) ApplyTypes.StripSN
+                     || loc == (int) ApplyTypes.RecurringSpell)
+            {
+                value = db.LookupSkill(arg);
+                if (!Macros.IS_VALID_SN(value))
+                    color.ch_printf(ch, "Invalid spell: %s", arg);
+                else
+                    found = true;
+            }
+            else
+            {
+                value = arg.ToInt32();
+                found = true;
+            }
+
+            if (!found)
+                return;
+
+            AffectData paf = new AffectData
+                {
+                    Type = AffectedByTypes.None,
+                    Duration = -1,
+                    Location = EnumerationExtensions.GetEnum<ApplyTypes>(loc),
+                    Modifier = value
+                };
+            paf.BitVector.ClearBits();
+
+            if (!indexaffect)
+                location.Affects.Add(paf);
+            else 
+                location.PermanentAffects.Add(paf);
+
+            color.send_to_char("Room affect added.\r\n", ch);
+
+            if (paf.Location != ApplyTypes.WearSpell
+                && paf.Location != ApplyTypes.RemoveSpell
+                && paf.Location != ApplyTypes.StripSN)
+            {
+                // apply the affect to anyone in the room
+                foreach(CharacterInstance vch in ch.CurrentRoom.Persons)
+                    vch.AddAffect(paf);
+            }
         }
 
         public static void remove_room_affect(RoomTemplate location, CharacterInstance ch, bool indexaffect, string argument)
         {
-            // TODO
+            if (argument.IsNullOrEmpty())
+            {
+                color.send_to_char(!indexaffect 
+                    ? "Usage: redit rmaffect <affect#>\r\n" 
+                    : "Usage: redit rmpermaffect <affect#>\r\n", ch);
+                return;
+            }
+
+            int count = 0;
+            int loc = argument.ToInt32();
+            if (loc < 1)
+            {
+                color.send_to_char("Invalid number.\r\n", ch);
+                return;
+            }
+
+            if (!indexaffect)
+            {
+                foreach (AffectData paf in location.Affects)
+                {
+                    if (++count == loc)
+                    {
+                        if (paf.Location != ApplyTypes.WearSpell
+                            && paf.Location != ApplyTypes.RemoveSpell
+                            && paf.Location != ApplyTypes.StripSN)
+                        {
+                            // Remove the affect from people in the room
+                            foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
+                                handler.affect_modify(vch, paf, false);
+                        }
+                        location.Affects.Remove(paf);
+                        color.send_to_char("Room affect removed.\r\n", ch);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                foreach (AffectData paf in location.PermanentAffects)
+                {
+                    if (++count == loc)
+                    {
+                        if (paf.Location != ApplyTypes.WearSpell
+                            && paf.Location != ApplyTypes.RemoveSpell
+                            && paf.Location != ApplyTypes.StripSN)
+                        {
+                            // Remove the affect from people in the room
+                            foreach(CharacterInstance vch in ch.CurrentRoom.Persons)
+                                handler.affect_modify(vch, paf, false);
+                        }
+                        location.PermanentAffects.Remove(paf);
+                        color.send_to_char("Room index affect removed.\r\n", ch);
+                        return;
+                    }
+                }
+            }
+
+            color.send_to_char("Room affect not found.\r\n", ch);
         }
 
         public static void edit_buffer(CharacterInstance ch, string argument)
         {
-            // TODO
+            DescriptorData d = ch.Descriptor;
+            if (d == null)
+            {
+                color.send_to_char("You have no descriptor.\r\n", ch);
+                return;
+            }
+
+            if (d.ConnectionStatus != ConnectionTypes.Editing)
+            {
+                color.send_to_char("You can't do that!\r\n", ch);
+                LogManager.Bug("{0}: d.ConnectionStatus != Editing", ch.Name);
+                return;
+            }
+
+            if ((int) ch.SubState <= (int) CharacterSubStates.Pause)
+            {
+                color.send_to_char("You can't do that!\r\n", ch);
+                LogManager.Bug("{0}: Illegal Character SubState {1}", ch.Name, ch.SubState);
+                d.ConnectionStatus = ConnectionTypes.Playing;
+                return;
+            }
+
+            if (ch.CurrentEditor == null)
+            {
+                color.send_to_char("You can't do that!\r\n", ch);
+                LogManager.Bug("{0}: Null Editor", ch.Name);
+                d.ConnectionStatus = ConnectionTypes.Playing;
+                return;
+            }
+
+            EditorData edit = ch.CurrentEditor;
+            bool save = false;
+
+            if (argument.StartsWith("/") || argument.StartsWith("\\"))
+            {
+                Tuple<string, string> tuple = argument.FirstArgument();
+                string arg1 = tuple.Item1;
+                string arg2 = tuple.Item2;
+
+                if (arg1.StartsWith("/?"))
+                {
+                    color.send_to_char("Editing commands\r\n---------------------------------\r\n", ch);
+                    color.send_to_char("/l              list buffer\r\n", ch);
+                    color.send_to_char("/c              clear buffer\r\n", ch);
+                    color.send_to_char("/d [line]       delete line\r\n", ch);
+                    color.send_to_char("/g <line>       goto line\r\n", ch);
+                    color.send_to_char("/i <line>       insert line\r\n", ch);
+                    color.send_to_char("/f <format>     format text in buffer\r\n", ch);
+                    color.send_to_char("/r <old> <new>  global replace\r\n", ch);
+                    color.send_to_char("/a              abort editing\r\n", ch);
+                    if (ch.Trust > Program.LEVEL_IMMORTAL)
+                        color.send_to_char("/! <command>    execute command (do not use another editing command)\r\n", ch);
+                    color.send_to_char("/s              save buffer\r\n\r\n> ", ch);
+                    return;
+                }
+
+                if (arg1.StartsWith("/c"))
+                {
+                    edit.NumberOfLines = 0;
+                    edit.OnLine = 0;
+                    color.send_to_char("Buffer cleared.\r\n", ch);
+                    return;
+                }
+
+
+            }
         }
 
         public static void assign_area(CharacterInstance ch)
