@@ -18,5 +18,16 @@ namespace SmaugCS.Common
         {
             proxy.Write(value, new[] { arg1, arg2, arg3, arg4 });
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="proxy"></param>
+        /// <param name="value"></param>
+        /// <param name="args"></param>
+        public static void Write(this TextWriterProxy proxy, string value, params object[] args)
+        {
+            proxy.Write(string.Format(value, args));
+        }
     }
 }

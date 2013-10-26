@@ -312,27 +312,29 @@ namespace SmaugCS
 
         public static void ch_printf(CharacterInstance ch, string fmt, params object[] args)
         {
-            // TODO
+            send_to_char(string.Format(fmt, args), ch);
         }
 
         public static void pager_printf(CharacterInstance ch, string fmt, params object[] args)
         {
-            // TODO
+            send_to_pager(string.Format(fmt, args), ch);
         }
 
         public static void ch_printf_color(CharacterInstance ch, string fmt, params object[] args)
         {
-            // TODO
+            send_to_char(string.Format(fmt, args), ch);
         }
 
         public static void pager_printf_color(CharacterInstance ch, string fmt, params object[] args)
         {
-            // TODO
+            send_to_pager(string.Format(fmt, args), ch);
         }
 
         public static void paint(ATTypes attype, CharacterInstance ch, string fmt, params object[] args)
         {
-            // TODO
+            set_char_color(attype, ch);
+            send_to_char(string.Format(fmt, args), ch);
+            set_char_color(attype, ch);
         }
 
         public static void send_to_char_color(string txt, CharacterInstance ch)

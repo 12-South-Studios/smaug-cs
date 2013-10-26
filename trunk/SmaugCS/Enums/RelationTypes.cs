@@ -8,7 +8,7 @@ namespace SmaugCS.Enums
 {
     public enum RelationTypes
     {
-        MSet_On,
-        OSet_On
+        MSet_On = 1,
+        OSet_On = 2
     }
 }

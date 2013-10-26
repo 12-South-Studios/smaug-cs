@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Enums;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS.Objects
 // ReSharper restore CheckNamespace
 {
-    public class RoomTemplate : Template
+    public class RoomTemplate : Template, IHasExtraDescriptions
     {
         public List<ResetData> Resets { get; set; }
         public ResetData LastMobReset { get; set; }
@@ -294,6 +297,78 @@ namespace SmaugCS.Objects
             if (obj.ObjectIndex.Vnum == Program.OBJ_VNUM_CORPSE_PC && handler.falling < 1)
                 save.write_corpses(null, obj.ShortDescription, null);
             return obj;
+        }
+
+        #region IHasExtraDescriptions Implementation
+        public ExtraDescriptionData Add(string keywords)
+        {
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.IsEqual(keywords));
+            if (foundEd == null)
+            {
+                foundEd = new ExtraDescriptionData { Keyword = keywords, Description = "" };
+                ExtraDescriptions.Add(foundEd);
+            }
+
+            return foundEd;
+        }
+
+        public bool Delete(string keywords)
+        {
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keywords));
+            if (foundEd == null)
+                return false;
+
+            ExtraDescriptions.Remove(foundEd);
+            return true;
+        }
+        #endregion
+
+        public void SaveFUSS(TextWriterProxy proxy, bool install)
+        {
+            if (install)
+            {
+                Flags.RemoveBit((int) RoomFlags.Prototype);
+                foreach (CharacterInstance victim in Persons.Where(x => x.IsNpc()))
+                {
+                    handler.extract_char(victim, true);
+                }
+
+                foreach (ObjectInstance obj in Contents)
+                {
+                    handler.extract_obj(obj);
+                }
+            }
+
+            Flags.RemoveBit((int) RoomFlags.BfsMark);
+
+            proxy.Write("#ROOM\n");
+            proxy.Write("Vnum     {0}\n", Vnum);
+            proxy.Write("Name     {0}~\n", Name);
+            proxy.Write("Sector   {0}~\n", BuilderConstants.sec_flags[(int)SectorType]);
+            if (!Flags.IsEmpty())
+                proxy.Write("Flags    {0}~\n", Flags.GetFlagString(BuilderConstants.r_flags));
+            if (TeleportDelay > 0 || TeleportToVnum > 0 || Tunnel > 0)
+                proxy.Write("STats    {0} {1} {2}\n", TeleportDelay, TeleportToVnum, Tunnel);
+            if (!Description.IsNullOrEmpty())
+                proxy.Write("Desc     {0}~\n", Description);
+
+            foreach (ExitData exit in Exits.Where(x => !x.Flags.IsSet((int)ExitFlags.Portal)))
+            {
+                exit.SaveFUSS(proxy);
+            }
+
+            build.save_reset_level(proxy, Resets, 0);
+
+            foreach(AffectData af in PermanentAffects)
+                af.SaveFUSS(proxy);
+
+            foreach(ExtraDescriptionData ed in ExtraDescriptions)
+                ed.SaveFUSS(proxy);
+
+            foreach (MudProgData mp in MudProgs)
+                mp.Save(proxy);
+
+            proxy.Write("#ENDROOM\n\n");
         }
     }
 }

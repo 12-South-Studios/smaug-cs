@@ -6221,7 +6221,7 @@ bool mprog_write_prog( FILE * fpout, MPROG_DATA * mprog )
       fprintf( fpout, "Arglist   %s~\n", mprog->arglist );
 
       if( mprog->comlist && mprog->comlist[0] != '\0' && !mprog->fileprog )
-         fprintf( fpout, "Comlist   %s~\n", strip_cr( mprog->comlist ) );
+         fprintf( fpout, "Comlist   k%s~\n", strip_cr( mprog->comlist ) );
 
       fprintf( fpout, "%s", "#ENDPROG\n\n" );
       return true;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Common
 {
@@ -29,25 +31,26 @@ namespace SmaugCS.Common
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="bitvector"></param>
-        /// <param name="flagarray"></param>
+        /// <param name="value"></param>
+        /// <param name="flags"></param>
         /// <returns></returns>
-        public static string GetFlagString(this int bitvector, string[] flagarray)
+        public static string GetFlagString(this int value, IEnumerable<string> flags)
         {
-            string flags = string.Empty;
+            string flagString = string.Empty;
+            string[] flagArray = flags.ToArray();
 
-            for (int x = 0; x < 32; ++x)
+            for (int x = 0; x < 32; ++x )
             {
-                if (bitvector.IsSet(1 << x))
+                if (value.IsSet(1 << x))
                 {
-                    if (string.IsNullOrWhiteSpace(flagarray[x]))
+                    if (string.IsNullOrWhiteSpace(flagArray[x]))
                         continue;
 
-                    flags += flagarray[x];
+                    flagString += flagArray[x];
                 }
             }
 
-            return flags;
+            return flagString;
         }
 
         /// <summary>

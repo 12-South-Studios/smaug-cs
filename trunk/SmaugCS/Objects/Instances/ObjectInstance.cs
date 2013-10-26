@@ -13,7 +13,7 @@ namespace SmaugCS.Objects
 // ReSharper restore CheckNamespace
 {
     [XmlRoot("Object")]
-    public class ObjectInstance : Instance, IHasExtraFlags
+    public class ObjectInstance : Instance, IHasExtraFlags, IHasExtraDescriptions
     {
         public List<ObjectInstance> Contents { get; set; }
         public ObjectInstance InObject { get; set; }
@@ -351,5 +351,29 @@ namespace SmaugCS.Objects
             return ObjectIndex.Affects.Where(paf => paf.Location == ApplyTypes.HitRoll).Sum(paf => paf.Modifier) +
                    Affects.Where(paf => paf.Location == ApplyTypes.HitRoll).Sum(paf => paf.Modifier);
         }
+
+        #region IHasExtraDescriptions Implementation
+        public ExtraDescriptionData Add(string keywords)
+        {
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.IsEqual(keywords));
+            if (foundEd == null)
+            {
+                foundEd = new ExtraDescriptionData { Keyword = keywords, Description = "" };
+                ExtraDescriptions.Add(foundEd);
+            }
+
+            return foundEd;
+        }
+
+        public bool Delete(string keywords)
+        {
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keywords));
+            if (foundEd == null)
+                return false;
+
+            ExtraDescriptions.Remove(foundEd);
+            return true;
+        }
+        #endregion
     }
 }

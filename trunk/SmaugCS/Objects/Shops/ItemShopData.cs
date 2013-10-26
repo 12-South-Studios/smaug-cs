@@ -1,6 +1,8 @@
 ﻿using System.Xml.Serialization;
 
+// ReSharper disable CheckNamespace
 namespace SmaugCS.Objects
+// ReSharper restore CheckNamespace
 {
     public class ItemShopData : ShopData
     {

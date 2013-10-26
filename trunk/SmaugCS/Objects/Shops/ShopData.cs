@@ -2,11 +2,12 @@
 using System.Xml.Serialization;
 using SmaugCS.Enums;
 
-
+// ReSharper disable CheckNamespace
 namespace SmaugCS.Objects
+// ReSharper restore CheckNamespace
 {
     [XmlRoot("Shop")]
-    public class ShopData
+    public abstract class ShopData
     {
         [XmlElement]
         public int Keeper { get; set; }
