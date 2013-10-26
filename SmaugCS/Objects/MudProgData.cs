@@ -1,4 +1,6 @@
-﻿using SmaugCS.Enums;
+﻿using Realm.Library.Common;
+using SmaugCS.Enums;
+using SmaugCS.Common;
 
 namespace SmaugCS.Objects
 {
@@ -10,5 +12,21 @@ namespace SmaugCS.Objects
         public string arglist { get; set; }
         public string comlist { get; set; }
         public bool IsFileProg { get; set; }
+
+        public bool Save(TextWriterProxy proxy)
+        {
+            if (arglist.IsNullOrEmpty())
+                return false;
+
+            proxy.Write("#MUDPROG\n");
+            proxy.Write("ProgType  {0}~\n", mud_comm.mprog_type_to_name(Type));
+            proxy.Write("Arglist   {0}~\n", arglist);
+
+            if (!comlist.IsNullOrEmpty() && !IsFileProg)
+                proxy.Write("Comlist   {0}~\n", comlist);
+
+            proxy.Write("#ENDPROG\n\n");
+            return true;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SmaugCS.Common
@@ -91,17 +92,23 @@ namespace SmaugCS.Common
             return sb.ToString();
         }
 
-        public string GetFlagString(string[] flagarray)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flags"></param>
+        /// <returns></returns>
+        public string GetFlagString(IEnumerable<string> flags)
         {
-            string flags = string.Empty;
+            string flagString = string.Empty;
+            string[] flagArray = flags.ToArray();
 
             for (int x = 0; x < MAX_BITS; ++x)
             {
                 if (IsSet(x))
-                    flags += flagarray[x] + " ";
+                    flagString += flagArray[x] + " ";
             }
 
-            return flags;
+            return flagString;
         }
 
         public bool IsSet(int bit)

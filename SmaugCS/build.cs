@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Common;
@@ -695,6 +698,7 @@ namespace SmaugCS
 
             EditorData edit = ch.CurrentEditor;
             bool save = false;
+            bool exit = false;
 
             if (argument.StartsWith("/") || argument.StartsWith("\\"))
             {
@@ -702,125 +706,364 @@ namespace SmaugCS
                 string arg1 = tuple.Item1;
                 string arg2 = tuple.Item2;
 
-                if (arg1.StartsWith("/?"))
+                if (EditBufferTable.ContainsKey(arg1.ToLower()))
+                    exit = EditBufferTable[arg1.ToLower()].Invoke(ch, arg2);
+
+                if (exit)
+                    return;
+
+                if (ch.Trust > Program.LEVEL_IMMORTAL && arg1.Equals("/!"))
                 {
-                    color.send_to_char("Editing commands\r\n---------------------------------\r\n", ch);
-                    color.send_to_char("/l              list buffer\r\n", ch);
-                    color.send_to_char("/c              clear buffer\r\n", ch);
-                    color.send_to_char("/d [line]       delete line\r\n", ch);
-                    color.send_to_char("/g <line>       goto line\r\n", ch);
-                    color.send_to_char("/i <line>       insert line\r\n", ch);
-                    color.send_to_char("/f <format>     format text in buffer\r\n", ch);
-                    color.send_to_char("/r <old> <new>  global replace\r\n", ch);
-                    color.send_to_char("/a              abort editing\r\n", ch);
-                    if (ch.Trust > Program.LEVEL_IMMORTAL)
-                        color.send_to_char("/! <command>    execute command (do not use another editing command)\r\n", ch);
-                    color.send_to_char("/s              save buffer\r\n\r\n> ", ch);
+                    // do last command
                     return;
                 }
-
-                if (arg1.StartsWith("/c"))
-                {
-                    edit.NumberOfLines = 0;
-                    edit.OnLine = 0;
-                    color.send_to_char("Buffer cleared.\r\n", ch);
-                    return;
-                }
-
-
             }
+
+            if (ch.CurrentEditor.Text.Sum(x => x.Length) + argument.Length + 1 > Program.MAX_STRING_LENGTH - 1)
+                color.send_to_char("Your buffer is full.\r\n", ch);
+            else
+            {
+                string buffer;
+                if (argument.Length > 79)
+                {
+                    buffer = argument.Substring(0, 79);
+                    color.send_to_char("(Long line trimmed)\r\n", ch);
+                }
+                else
+                    buffer = argument;
+
+                edit.Text[edit.OnLine++] = buffer;
+                if (edit.OnLine > edit.NumberOfLines)
+                    edit.NumberOfLines++;
+                if (edit.NumberOfLines > Program.GetIntegerConstant("MaximumBufferLines"))
+                {
+                    edit.NumberOfLines = Program.GetIntegerConstant("MaximumBufferLines");
+                    color.send_to_char("Buffer full.\r\n", ch);
+                    save = true;
+                }
+            }
+
+            if (save)
+            {
+                EditBufferStop(ch, "");
+                return;
+            }
+
+            color.send_to_char("> ", ch);
+        }
+
+        private static readonly Dictionary<string, Func<CharacterInstance, string, bool>> EditBufferTable = new Dictionary
+            <string, Func<CharacterInstance, string, bool>>()
+            {
+                {"/?", EditBufferHelp},
+                {"/c", EditBufferClear},
+                {"/r", EditBufferReplace},
+                {"/f", EditBufferFormat},
+                {"/i", EditBufferInsert},
+                {"/d", EditBufferDelete},
+                {"/g", EditBufferGoto},
+                {"/l", EditBufferList},
+                {"/a", EditBufferAbort},
+                {"/s", EditBufferStop}
+            };
+
+        private static bool EditBufferHelp(CharacterInstance ch, string arg)
+        {
+            color.send_to_char("Editing commands\r\n---------------------------------\r\n", ch);
+            color.send_to_char("/l              list buffer\r\n", ch);
+            color.send_to_char("/c              clear buffer\r\n", ch);
+            color.send_to_char("/d [line]       delete line\r\n", ch);
+            color.send_to_char("/g <line>       goto line\r\n", ch);
+            color.send_to_char("/i <line>       insert line\r\n", ch);
+            color.send_to_char("/f <format>     format text in buffer\r\n", ch);
+            color.send_to_char("/r <old> <new>  global replace\r\n", ch);
+            color.send_to_char("/a              abort editing\r\n", ch);
+            if (ch.Trust > Program.LEVEL_IMMORTAL)
+                color.send_to_char("/! <command>    execute command (do not use another editing command)\r\n", ch);
+            color.send_to_char("/s              save buffer\r\n\r\n> ", ch);
+            return true;
+        }
+        private static bool EditBufferClear(CharacterInstance ch, string arg)
+        {
+            ch.CurrentEditor.NumberOfLines = 0;
+            ch.CurrentEditor.OnLine = 0;
+            color.send_to_char("Buffer cleared.\r\n", ch);
+            return true;
+        }
+        private static bool EditBufferReplace(CharacterInstance ch, string arg)
+        {
+            string[] words = arg.Split(' ');
+            if (words.Length == 0 || words[0].IsNullOrWhitespace() || words[1].IsNullOrWhitespace())
+            {
+                color.send_to_char("Need word to replace, and replacement.\r\n", ch);
+                return true;
+            }
+
+            if (words[0].Equals(words[1]))
+            {
+                color.send_to_char("Done.\r\n", ch);
+                return true;
+            }
+
+            color.ch_printf(ch, "Replacing all occurrences of %s with %s...\r\n", words[0], words[1]);
+            int count = 0;
+
+            for (int x = 0; x < ch.CurrentEditor.NumberOfLines; x++)
+            {
+                if (ch.CurrentEditor.Text[x].Contains(words[0]))
+                {
+                    count += Regex.Matches(ch.CurrentEditor.Text[x], words[0]).Count;
+                    string line = ch.CurrentEditor.Text[x].Replace(words[0], words[1]);
+                    ch.CurrentEditor.Text[x] = line;
+                }
+            }
+
+            color.ch_printf(ch, "Found and replaced %d occurrence(s).\r\n", count);
+            return true;
+        }
+        private static bool EditBufferFormat(CharacterInstance ch, string arg)
+        {
+            color.pager_printf(ch, "Reformatting...\r\n");
+
+            string buffer = string.Empty;
+            for (int x = 0; x < ch.CurrentEditor.NumberOfLines; x++)
+            {
+                buffer += ch.CurrentEditor.Text[x] + ' ';
+            }
+
+            int end_mark = buffer.Length;
+            int old_p = 0;
+            int p = 75;
+            ch.CurrentEditor.OnLine = 0;
+            ch.CurrentEditor.NumberOfLines = 0;
+
+            while (old_p < end_mark)
+            {
+                while (buffer[p] != ' ' && p > old_p)
+                    p--;
+
+                if (p == old_p)
+                    p += 75;
+
+                if (p > end_mark)
+                    p = end_mark;
+
+                int ep = 0;
+                for (int x = old_p; x < p; x++)
+                {
+                    ch.CurrentEditor.Text[x].SetChar(ep, buffer[x]);
+                    ep++;
+                }
+                ch.CurrentEditor.Text[ch.CurrentEditor.OnLine].SetChar(ep, '\0');
+                ch.CurrentEditor.OnLine++;
+                ch.CurrentEditor.NumberOfLines++;
+
+                old_p = p + 1;
+                p += 75;
+            }
+
+            color.pager_printf(ch, "Reformatting done.\r\n");
+            return true;
+        }
+        private static bool EditBufferInsert(CharacterInstance ch, string arg)
+        {
+            if (ch.CurrentEditor.NumberOfLines >= Program.GetIntegerConstant("MaximumBufferLines"))
+            {
+                color.send_to_char("Buffer is full.\r\n", ch);
+                return true;
+            }
+
+            int line = arg[2] == ' ' ? arg.FirstWord().ToInt32() : ch.CurrentEditor.OnLine;
+            if (line < 0)
+                line = ch.CurrentEditor.OnLine;
+            if (line < 0 || line > ch.CurrentEditor.NumberOfLines)
+            {
+                color.send_to_char("Out of range.\r\n", ch);
+                return true;
+            }
+
+            ch.CurrentEditor.Text.Insert(line, "");
+            color.send_to_char("Line inserted.\r\n", ch);
+            return true;
+        }
+        private static bool EditBufferDelete(CharacterInstance ch, string arg)
+        {
+            if (ch.CurrentEditor.NumberOfLines == 0 || ch.CurrentEditor.Text.Count == 0)
+            {
+                color.send_to_char("Buffer is empty.\r\n", ch);
+                return true;
+            }
+
+            int line = arg[2] == ' ' ? arg.FirstWord().ToInt32() : ch.CurrentEditor.OnLine;
+            if (line < 0)
+                line = ch.CurrentEditor.OnLine;
+            if (line < 0 || line > ch.CurrentEditor.NumberOfLines)
+            {
+                color.send_to_char("Out of range.\r\n", ch);
+                return true;
+            }
+
+            if (line == 0 && ch.CurrentEditor.NumberOfLines == 1)
+            {
+                ch.CurrentEditor = null;
+                color.send_to_char("Line deleted.\r\n", ch);
+                return true;
+            }
+
+            ch.CurrentEditor.Text.RemoveAt(line);
+            if (ch.CurrentEditor.OnLine > ch.CurrentEditor.NumberOfLines)
+                ch.CurrentEditor.OnLine = ch.CurrentEditor.NumberOfLines;
+                
+            color.send_to_char("Line deleted.\r\n", ch);
+            return true;
+        }
+        private static bool EditBufferGoto(CharacterInstance ch, string arg)
+        {
+            if (ch.CurrentEditor.NumberOfLines == 0 || ch.CurrentEditor.Text.Count == 0)
+            {
+                color.send_to_char("Buffer is empty.\r\n", ch);
+                return true;
+            }
+
+            int line = arg[2] == ' ' ? arg.FirstWord().ToInt32() : ch.CurrentEditor.OnLine;
+            if (line < 0)
+                line = ch.CurrentEditor.OnLine;
+            if (line < 0 || line > ch.CurrentEditor.NumberOfLines)
+            {
+                color.send_to_char("Out of range.\r\n", ch);
+                return true;
+            }
+
+            ch.CurrentEditor.OnLine = line;
+            color.ch_printf(ch, "(On line %d)\r\n", line + 1);
+            return true;
+        }
+        private static bool EditBufferList(CharacterInstance ch, string arg)
+        {
+            if (ch.CurrentEditor.NumberOfLines == 0 || ch.CurrentEditor.Text.Count == 0)
+            {
+                color.send_to_char("Buffer is empty.\r\n", ch);
+                return true;
+            }
+
+            color.send_to_char("------------------\r\n", ch);
+            for (int x = 0; x < ch.CurrentEditor.NumberOfLines; x++)
+                color.ch_printf(ch, "%2d> %s\r\n", x + 1, ch.CurrentEditor.Text[x]);
+            color.send_to_char("------------------\r\n> ", ch);
+            return true;
+        }
+        private static bool EditBufferAbort(CharacterInstance ch, string arg)
+        {
+            color.send_to_char("\r\nAborting... ", ch);
+            stop_editing(ch);
+            return true;
+        }
+        private static bool EditBufferStop(CharacterInstance ch, string arg)
+        {
+            ch.Descriptor.ConnectionStatus = ConnectionTypes.Playing;
+            if (ch.LastCommand == null)
+                return true;
+            ch.LastCommand.Value.Invoke(ch, "");
+            return true;
         }
 
         public static void assign_area(CharacterInstance ch)
         {
-            // TODO
+            if (ch.IsNpc())
+                return;
+            if (ch.Trust <= Program.LEVEL_IMMORTAL || ch.PlayerData.r_range_lo <= 0 || ch.PlayerData.r_range_hi <= 0)
+                return;
+
+            AreaData area = ch.PlayerData.BuilderArea;
+            string areaName = string.Format("{0}.are", ch.Name.CapitalizeFirst());
+            if (area == null)
+            {
+                foreach (AreaData tmpArea in db.BUILD_AREAS.Where(tmpArea => tmpArea.Filename.EqualsIgnoreCase(areaName)))
+                {
+                    area = tmpArea;
+                    break;
+                }
+            }
+
+            bool created = false;
+            if (area == null)
+            {
+                LogManager.Log(LogTypes.Normal, ch.Level, "Creating area entry for {0}", ch.Name);
+                area = new AreaData
+                    {
+                        Name = string.Format("{{PROTO}} {0}'s area in progress", ch.Name),
+                        Filename = areaName,
+                        Author = ch.Name
+                    };
+                db.BUILD_AREAS.Add(area);
+                created = true;
+            } 
+            else 
+                LogManager.Log(LogTypes.Normal, ch.Level, "Updating area entry for {0}", ch.Name);
+
+            area.LowRoomNumber = ch.PlayerData.r_range_lo;
+            area.LowObjectNumber = ch.PlayerData.o_range_lo;
+            area.LowMobNumber = ch.PlayerData.m_range_lo;
+            area.HighRoomNumber = ch.PlayerData.r_range_hi;
+            area.HighObjectNumber = ch.PlayerData.o_range_hi;
+            area.HighMobNumber = ch.PlayerData.m_range_hi;
+            ch.PlayerData.BuilderArea = area;
+            if (created)
+                db.sort_area(area, true);
         }
 
-        public static ExtraDescriptionData SetRExtra(RoomTemplate room, string keywords)
+        public static void save_reset_level(TextWriterProxy proxy, IEnumerable<ResetData> resets, int level)
         {
-            // TODO
-            return null;
+            foreach (ResetData reset in resets)
+            {
+                string buffer = reset.Command.PadLeft(level*2, '.');
+                switch (reset.Command.ToUpper()[0])
+                {
+                    case '*':
+                        break;
+                    default:
+                        proxy.Write(string.Format("{0}Reset {1} {2} {3} {4} {5}\n", buffer, reset.Command.ToUpper(), reset.Extra, reset.Args[0], reset.Args[1], reset.Args[2]));
+                        break;
+                    case 'G':
+                    case 'R':
+                        proxy.Write(string.Format("{0}Reset {1} {2} {3} {4}\n", buffer, reset.Extra, reset.Args[0], reset.Args[1], reset.Args[2]));
+                        break;
+                }
+
+                // Save nested resets
+                save_reset_level(proxy, reset.Resets, level + 1);
+            }
         }
 
-        public static bool DelRExtra(RoomTemplate room, string keywords)
+        public static void fold_area(AreaData area, string fname, bool install)
         {
-            // TODO
-            return false;
-        }
+            string filename = fname + ".bak";
+            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(filename)))
+            {
+                area.Version = Program.AREA_VERSION_WRITE;
+                proxy.Write("#FUSSAREA\n");
+                area.SaveHeader(proxy, install);
 
-        public static ExtraDescriptionData SetOExtra(ObjectInstance obj, string keywords)
-        {
-            // TODO
-            return null;
-        }
-
-        public static bool DelOExtra(ObjectInstance obj, string keywords)
-        {
-            // TODO
-            return false;
-        }
-
-        public static ExtraDescriptionData SetOExtraProto(ObjectTemplate obj, string keywords)
-        {
-            // TODO
-            return null;
-        }
-
-        public static bool DelOExtraProto(ObjectTemplate obj, string keywords)
-        {
-            // TODO
-            return false;
-        }
-
-        public static void fwrite_fuss_exdesc(FileStream fs, ExtraDescriptionData ed)
-        {
-            // TODO
-        }
-
-        public static void fwrite_fuss_extra(FileStream fs, ExitData pexit)
-        {
-            // TODO
-        }
-
-        public static void fwrite_fuss_affect(FileStream fs, AffectData paf)
-        {
-            // TODO
-        }
-
-        public static bool mprog_write_prog(FileStream fs, MudProgData mprog)
-        {
-            // TODO
-            return false;
-        }
-
-        public static void save_reset_level(FileStream fs, ResetData start_reset, int level)
-        {
-            // TODO
-        }
-
-        public static void fwrite_fuss_room(FileStream fs, RoomTemplate room, bool install)
-        {
-            // TODO
-        }
-
-        public static void fwrite_fuss_object(FileStream fs, ObjectTemplate pObjIndex, bool install)
-        {
-            // TODO
-        }
-
-        public static void fwrite_fuss_mobile(FileStream fs, MobTemplate pMobIndex, bool install)
-        {
-            // TODO
-        }
-
-        public static void fwrite_area_header(FileStream fs, AreaData tarea, bool install)
-        {
-            // TODO
-        }
-
-        public static void fold_area(AreaData tarea, string fname, bool install)
-        {
-            // TODO
+                for (int i = area.LowMobNumber; i <= area.HighMobNumber; ++i)
+                {
+                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.Get(i);
+                    if (mob != null)
+                        mob.SaveFUSS(proxy, install);
+                }
+                for (int i = area.LowObjectNumber; i <= area.HighObjectNumber; ++i)
+                {
+                    ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(i);
+                    if (obj != null)
+                        obj.SaveFUSS(proxy, install);
+                }
+                for (int i = area.LowRoomNumber; i <= area.HighRoomNumber; ++i)
+                {
+                    RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(i);
+                    if (room != null)
+                        room.SaveFUSS(proxy, install);
+                }
+                proxy.Write("#ENDAREA\n");
+            }
         }
 
         public static void old_fold_area(AreaData tarea, string filename, bool install)
@@ -830,23 +1073,67 @@ namespace SmaugCS
 
         public static void write_area_list()
         {
-            // TODO
+            string path = SystemConstants.GetSystemFile(SystemFileTypes.Areas);
+            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
+            {
+                proxy.Write("help.are\n");
+                foreach(AreaData area in db.AREAS)
+                    proxy.Write("{0}\n", area.Filename);
+                proxy.Write("$\n");
+            }
         }
 
-        public static bool check_for_area_conflicts(AreaData carea, int lo, int hi)
+        /// <summary>
+        /// Check other areas for a conflict while ignoring the current area
+        /// </summary>
+        /// <param name="currentArea"></param>
+        /// <param name="lo"></param>
+        /// <param name="hi"></param>
+        /// <returns></returns>
+        public static bool check_for_area_conflicts(AreaData currentArea, int lo, int hi)
         {
-            // TODO
-            return false;
+            return db.AREAS.Any(area => area != currentArea && act_wiz.check_area_conflict(area, lo, hi))
+                   || db.BUILD_AREAS.Any(area => area != currentArea && act_wiz.check_area_conflict(area, lo, hi));
         }
 
         public static void RelCreate(RelationTypes tp, object actor, object subject)
         {
-            // TODO
+            if (actor == null || subject == null)
+            {
+                LogManager.Bug("Null actor or subject.");
+                return;
+            }
+
+            foreach (RelationData relation in db.RELATIONS)
+            {
+                if (relation.Types == tp && relation.Actor == actor && relation.Subject == subject)
+                {
+                    LogManager.Bug("Duplicated Relation");
+                    return;
+                }
+            }
+
+            RelationData newRelation = new RelationData
+                {
+                    Types = tp,
+                    Actor = actor, 
+                    Subject = subject
+                };
+            db.RELATIONS.Add(newRelation);
         }
 
         public static void RelDestroy(RelationTypes tp, object actor, object subject)
         {
-            // TODO
+            if (actor == null || subject == null)
+            {
+                LogManager.Bug("NULL actor or subject.");
+                return;
+            }
+
+            RelationData foundRelation =
+                db.RELATIONS.FirstOrDefault(x => x.Types == tp && x.Actor == actor && x.Subject == subject);
+            if (foundRelation != null)
+                db.RELATIONS.Remove(foundRelation);
         }
     }
 }

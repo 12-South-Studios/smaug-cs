@@ -398,6 +398,7 @@
     <Compile Include="Enums\WhoTypes.cs" />
     <Compile Include="Exceptions\DuplicateIndexException.cs" />
     <Compile Include="Exceptions\DuplicateSkillException.cs" />
+    <Compile Include="Interfaces\IHasExtraDescriptions.cs" />
     <Compile Include="Interfaces\IPersistable.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
@@ -414,7 +415,7 @@
     <Compile Include="Interfaces\IHasExtraFlags.cs" />
     <Compile Include="Objects\DiceData.cs" />
     <Compile Include="Objects\Instances\Instance.cs" />
-    <Compile Include="Objects\ItemShopData.cs" />
+    <Compile Include="Objects\Shops\ItemShopData.cs" />
     <Compile Include="Objects\SavingThrowData.cs" />
     <Compile Include="Organizations\OrganizationData.cs" />
     <Compile Include="StringExt.cs" />
@@ -565,7 +566,7 @@
     <Compile Include="Language\LanguageConversionData.cs" />
     <Compile Include="Objects\LiquidData.cs" />
     <Compile Include="Objects\liq_type.cs" />
-    <Compile Include="Objects\lmsg_data.cs" />
+    <Compile Include="Objects\LoginMessageData.cs" />
     <Compile Include="Objects\map_data.cs" />
     <Compile Include="Objects\map_index_data.cs" />
     <Compile Include="Objects\map_stuff.cs" />
@@ -590,11 +591,11 @@
     <Compile Include="Objects\RelationData.cs" />
     <Compile Include="Objects\renumber_areas.cs" />
     <Compile Include="Objects\renumber_data.cs" />
-    <Compile Include="Objects\RepairShopData.cs" />
+    <Compile Include="Objects\Shops\RepairShopData.cs" />
     <Compile Include="Objects\ResetData.cs" />
     <Compile Include="Objects\Templates\RoomTemplate.cs" />
     <Compile Include="Organizations\RosterData.cs" />
-    <Compile Include="Objects\ShopData.cs" />
+    <Compile Include="Objects\Shops\ShopData.cs" />
     <Compile Include="Objects\SkillData.cs" />
     <Compile Include="Objects\smaug_affect.cs" />
     <Compile Include="Objects\snswap_data.cs" />

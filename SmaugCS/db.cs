@@ -156,6 +156,10 @@ namespace SmaugCS
         {
             return RACES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
+        public static RaceData GetRace(int id)
+        {
+            return RACES.FirstOrDefault(x => (int) x.Type == id);
+        }
         #endregion
 
         #region Classes
@@ -169,7 +173,10 @@ namespace SmaugCS
         {
             return CLASSES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
-
+        public static ClassData GetClass(int id)
+        {
+            return CLASSES.FirstOrDefault(x => (int) x.Type == id);
+        }
         #endregion
 
         #region Bans
@@ -191,7 +198,7 @@ namespace SmaugCS
         public static List<ExtraDescriptionData> ExtraDescriptions = new List<ExtraDescriptionData>();
 
         public static List<WizardData> WIZARDS = new List<WizardData>();
-        public static List<lmsg_data> LMSG = new List<lmsg_data>();
+        public static List<LoginMessageData> LOGIN_MESSAGES = new List<LoginMessageData>();
         public static List<ShopData> SHOP = new List<ShopData>();
         public static List<RepairShopData> REPAIR = new List<RepairShopData>();
         public static List<TeleportData> TELEPORT = new List<TeleportData>();
@@ -1190,23 +1197,113 @@ namespace SmaugCS
 
         public static void load_loginmsg()
         {
-            // TODO
+            string path = SystemConstants.GetSystemFile(SystemFileTypes.LoginMsg);
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            {
+                // TODO
+            }
         }
 
         public static void save_loginmsg()
         {
-            // TODO
+            string path = SystemConstants.GetSystemFile(SystemFileTypes.LoginMsg);
+            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
+            {
+                foreach(LoginMessageData lmsg in LOGIN_MESSAGES)
+                    lmsg.Save(proxy);
+
+                proxy.Write("#END\n");
+            }
         }
 
-        public static void add_loginmsg(string name, short type, string argument)
+        public static void add_loginmsg(string name, int type, string argument)
         {
-            // TODO
+            if (type < 0 || name.IsNullOrEmpty())
+            {
+                LogManager.Bug("Bad name {0} or type {1} for Login Message", name, type);
+                return;
+            }
+
+            LoginMessageData lmsg = new LoginMessageData
+                {
+                    Type = type,
+                    Name = name
+                };
+            if (!argument.IsNullOrEmpty())
+                lmsg.Text = argument;
+
+            LOGIN_MESSAGES.Add(lmsg);
+            save_loginmsg();
         }
 
         public static void check_loginmsg(CharacterInstance ch)
         {
-            // TODO
+            if (ch == null || ch.IsNpc())
+                return;
+
+            List<LoginMessageData> loginMessages = LOGIN_MESSAGES.Where(x => x.Name.EqualsIgnoreCase(ch.Name)).ToList();
+
+            foreach (LoginMessageData loginMessage in LOGIN_MESSAGES)
+            {
+                if (loginMessage.Type > Program.MAX_MSG)
+                {
+                    LogManager.Bug("Unknown login message type {0} for {1}", loginMessage.Type, ch.Name);
+                    continue;
+                }
+
+                switch (loginMessage.Type)
+                {
+                    case 0:
+                        ImmortalMessage(ch, loginMessage);
+                        break;
+                    case 17:
+                        DeathMessage(ch, loginMessage);
+                        break;
+                    case 18:
+                        WorldChangeMessage(ch, loginMessage);
+                        break;
+                    default:
+                        color.send_to_char_color(GameConstants.LoginMessages[loginMessage.Type], ch);
+                        break;
+                }
+
+                save_loginmsg();
+            }
+
+            while (loginMessages.Count > 0)
+                LOGIN_MESSAGES.Remove(loginMessages.First());
         }
 
+        private static void ImmortalMessage(CharacterInstance ch, LoginMessageData lmsg)
+        {
+            if (!lmsg.Text.IsNullOrEmpty())
+            {
+                LogManager.Bug("NULL loginMessage text for type 0");
+                return;
+            }
+
+            color.ch_printf(ch, "\r\n&YThe game administrators have left you the following message:\r\n%s\r\n", lmsg.Text);
+        }
+        private static void DeathMessage(CharacterInstance ch, LoginMessageData lmsg)
+        {
+            if (!lmsg.Text.IsNullOrEmpty())
+            {
+                LogManager.Bug("NULL loginMessage text for type 17");
+                return;
+            }
+
+            color.ch_printf(ch, "\r\n&RYou were killed by %s while your character was link-dead.\r\n", lmsg.Text);
+            color.send_to_char("You should look for your corpse immediately.\r\n", ch);
+        }
+        private static void WorldChangeMessage(CharacterInstance ch, LoginMessageData lmsg)
+        {
+            if (!lmsg.Text.IsNullOrEmpty())
+            {
+                LogManager.Bug("NULL loginMessage text for type 18");
+                return;
+            }
+
+            color.ch_printf(ch, "\r\n&GA change in the Realms has affected you personally:\r\n%s\r\n", lmsg.Text);
+        }
     }
 }

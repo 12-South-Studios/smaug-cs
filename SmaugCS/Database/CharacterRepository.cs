@@ -42,8 +42,8 @@ namespace SmaugCS.Database
                     Gender = EnumerationExtensions.GetEnum<GenderTypes>(parent.Gender)
                 };
 
-            if (!string.IsNullOrEmpty(parent.spec_funname))
-                mob.SpecialFunctionName = parent.spec_funname;
+            if (!string.IsNullOrEmpty(parent.SpecialFunctionName))
+                mob.SpecialFunctionName = parent.SpecialFunctionName;
 
             if (mob.Act.IsSet((int)ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;

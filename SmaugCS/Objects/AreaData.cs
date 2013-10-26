@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using Realm.Library.Common;
+using SmaugCS.Common;
+using SmaugCS.Constants;
+using SmaugCS.Enums;
 
 namespace SmaugCS.Objects
 {
@@ -106,6 +110,33 @@ namespace SmaugCS.Objects
         public bool EconomyHas(int gold)
         {
             return (((HighEconomy > 0) ? 1 : 0) * 1000000000 + LowEconomy) >= gold;
+        }
+
+        public void SaveHeader(TextWriterProxy proxy, bool install)
+        {
+            if (install)
+                Flags.RemoveBit((int) AreaFlags.Prototype);
+
+            proxy.Write("#AREADATA\n");
+            proxy.Write("Version      {0}\n", Version);
+            proxy.Write("Name         {0}~\n", Name);
+            proxy.Write("Author       {0}~\n", Author);
+            proxy.Write("WeatherX     {0}\n", WeatherX);
+            proxy.Write("WeatherY     {0}\n", WeatherY);
+            if (!Credits.IsNullOrEmpty())
+                proxy.Write("Credits      {0}~\n", Credits);
+            proxy.Write("Ranges       {0} {1} {2} {3}\n", LowSoftRange, HighSoftRange, LowHardRange, HighHardRange);
+            if (SpellLimit > 0)
+                proxy.Write("SpellLimit   {0}\n", SpellLimit);
+            if (HighEconomy > 0 || LowEconomy > 0)
+                proxy.Write("Economy      {0} {1}\n", HighEconomy, LowEconomy);
+            if (!ResetMessage.IsNullOrEmpty())
+                proxy.Write("ResetMsg     {0}~\n", ResetMessage);
+            if (ResetFrequency > 0)
+                proxy.Write("ResetFreq    {0}\n", ResetFrequency);
+            if (Flags > 0)
+                proxy.Write("Flags        {0}~\n", Flags.GetFlagString(BuilderConstants.area_flags));
+            proxy.Write("#ENDAREADATA\n\n");
         }
     }
 }
