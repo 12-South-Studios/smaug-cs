@@ -21,7 +21,7 @@ namespace SmaugCS
                 return skill.ID;
             if (ch.PlayerData.Learned[skill.ID] > 0
                 && (ch.Level >= skill.skill_level[(int) ch.CurrentClass]
-                    || ch.Level >= skill.race_level[(int) ch.CurrentRace]))
+                    || ch.Level >= skill.RaceLevel[(int) ch.CurrentRace]))
                 return skill.ID;
             return -1;
         }

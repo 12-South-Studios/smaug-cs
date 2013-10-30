@@ -19,8 +19,6 @@ namespace SmaugCS.Objects
     [XmlRoot("Character")]
     public class CharacterInstance : Instance
     {
-        public int ID { get; private set; }
-
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
         public FightingData CurrentFighting { get; set; }
@@ -129,9 +127,8 @@ namespace SmaugCS.Objects
         public int ResetVnum { get; set; }
         public int ResetNum { get; set; }
 
-        public CharacterInstance(int id)
+        public CharacterInstance(int id) : base(id)
         {
-            ID = id;
             Colors = new Dictionary<ATTypes, char>();
             SavingThrows = new SavingThrowData();
         }

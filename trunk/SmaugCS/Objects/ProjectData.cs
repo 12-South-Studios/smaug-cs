@@ -12,5 +12,22 @@ namespace SmaugCS.Objects
         public string date { get; set; }
         public string description { get; set; }
         public bool taken { get; set; }
+
+        public ProjectData()
+        {
+            Logs = new List<NoteData>();
+        }
+
+        public NoteData GetLog(int num)
+        {
+            int count = 0;
+            foreach (NoteData note in Logs)
+            {
+                count++;
+                if (count == num)
+                    return note;
+            }
+            return null;
+        }
     }
 }

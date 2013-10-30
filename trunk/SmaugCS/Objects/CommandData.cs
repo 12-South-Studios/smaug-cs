@@ -10,7 +10,7 @@ namespace SmaugCS.Objects
         public short position { get; set; }
         public short level { get; set; }
         public short log { get; set; }
-        public timerset userec { get; set; }
+        public UseHistory userec { get; set; }
         public int lag_count { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Common;
 
 namespace SmaugCS
 {
@@ -8,7 +9,7 @@ namespace SmaugCS
         public static void make_fire(RoomTemplate in_room, short timer)
         {
             ObjectInstance fire = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.Get(Program.OBJ_VNUM_FIRE), 0);
-            fire.Timer = (short)SmaugCS.Common.SmaugRandom.Fuzzy(timer);
+            fire.Timer = (short)SmaugRandom.Fuzzy(timer);
             in_room.ToRoom(fire);
         }
 
@@ -38,15 +39,15 @@ namespace SmaugCS
         public static void make_blood(CharacterInstance ch)
         {
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.Get(Program.OBJ_VNUM_BLOOD), 0);
-            obj.Timer = (short)SmaugCS.Common.SmaugRandom.Between(2, 4);
-            obj.Value[1] = SmaugCS.Common.SmaugRandom.Between(3, SmaugCS.Common.Check.Minimum(5, ch.Level));
+            obj.Timer = (short)SmaugRandom.Between(2, 4);
+            obj.Value[1] = SmaugRandom.Between(3, Check.Minimum(5, ch.Level));
             ch.CurrentRoom.ToRoom(obj);
         }
 
         public static void make_bloodstain(CharacterInstance ch)
         {
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.Get(Program.OBJ_VNUM_BLOODSTAIN), 0);
-            obj.Timer = (short)SmaugCS.Common.SmaugRandom.Between(1, 2);
+            obj.Timer = (short)SmaugRandom.Between(1, 2);
             ch.CurrentRoom.ToRoom(obj);
         }
 

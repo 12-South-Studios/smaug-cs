@@ -163,5 +163,44 @@ namespace Realm.Library.Common
             }
             return number + suf;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="inclusive"></param>
+        /// <returns></returns>
+        public static bool InRange(this Int32 value, Int32 min, Int32 max, bool inclusive = false)
+        {
+            return inclusive ? value >= min && value <= max : value > min && value < max;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="inclusive"></param>
+        /// <returns></returns>
+        public static bool InRange(this Int64 value, Int64 min, Int64 max, bool inclusive = false)
+        {
+            return inclusive ? value >= min && value <= max : value > min && value < max;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="inclusive"></param>
+        /// <returns></returns>
+        public static bool InRange(this Double value, Double min, Double max, bool inclusive = false)
+        {
+            return inclusive ? value >= min && value <= max : value > min && value < max;
+        }
     }
 }

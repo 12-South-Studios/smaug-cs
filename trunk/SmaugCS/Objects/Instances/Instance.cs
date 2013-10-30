@@ -8,6 +8,7 @@ namespace SmaugCS.Objects
 {
     public abstract class Instance
     {
+        public int ID { get; private set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
@@ -17,8 +18,9 @@ namespace SmaugCS.Objects
 
         public int Timer { get; set; }
 
-        public Instance()
+        protected Instance(int id)
         {
+            ID = id;
             Affects = new List<AffectData>();
         }
     }

@@ -12,16 +12,6 @@ namespace SmaugCS
 {
     public static class act_wiz
     {
-        public static int get_saveflag(string name)
-        {
-            for (int i = 0; i < GameConstants.save_flag.Count; i++)
-            {
-                if (GameConstants.save_flag[i].Equals(name, StringComparison.OrdinalIgnoreCase))
-                    return i;
-            }
-            return -1;
-        }
-
         private static int NumberOfHits { get; set; }
 
         /// <summary>
@@ -361,30 +351,6 @@ namespace SmaugCS
             race.HealthRegenRate = 0;
             race.RaceRecallRoom = 0;
             return true;
-        }
-
-        public static ProjectData get_project_by_number(int pnum)
-        {
-            int count = 0;
-            foreach (ProjectData project in db.PROJECTS)
-            {
-                count++;
-                if (count == pnum)
-                    return project;
-            }
-            return null;
-        }
-
-        public static NoteData get_log_by_number(ProjectData project, int pnum)
-        {
-            int count = 0;
-            foreach (NoteData note in project.Logs)
-            {
-                count++;
-                if (count == pnum)
-                    return note;
-            }
-            return null;
         }
 
         public static bool check_area_conflict(AreaData area, int lo, int hi)

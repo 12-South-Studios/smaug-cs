@@ -57,9 +57,13 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="zlibnet">
       <HintPath>Libraries\zlibnet.dll</HintPath>
@@ -79,6 +83,7 @@
     <Compile Include="Commands\Admin\DMesg.cs" />
     <Compile Include="Commands\Admin\Fixed.cs" />
     <Compile Include="Commands\Admin\FShow.cs" />
+    <Compile Include="Commands\Admin\HintEdit.cs" />
     <Compile Include="Commands\Admin\IPCompare.cs" />
     <Compile Include="Commands\Admin\KHistory.cs" />
     <Compile Include="Commands\Admin\MakeWizList.cs" />
@@ -110,6 +115,8 @@
     <Compile Include="Commands\Building\Goto.cs" />
     <Compile Include="Commands\Building\InstallArea.cs" />
     <Compile Include="Commands\Building\LoadArea.cs" />
+    <Compile Include="Commands\Building\Shop\MakeRepair.cs" />
+    <Compile Include="Commands\Building\Shop\MakeShop.cs" />
     <Compile Include="Commands\Building\MCreate.cs" />
     <Compile Include="Commands\Building\MDelete.cs" />
     <Compile Include="Commands\Building\MList.cs" />
@@ -126,6 +133,7 @@
     <Compile Include="Commands\Building\RDelete.cs" />
     <Compile Include="Commands\Building\RDig.cs" />
     <Compile Include="Commands\Building\REdit.cs" />
+    <Compile Include="Commands\Building\Shop\RepairSet.cs" />
     <Compile Include="Commands\Building\RGrid.cs" />
     <Compile Include="Commands\Building\RList.cs" />
     <Compile Include="Commands\Building\RPCopy.cs" />
@@ -133,8 +141,14 @@
     <Compile Include="Commands\Building\SaveArea.cs" />
     <Compile Include="Commands\Building\SetLiquid.cs" />
     <Compile Include="Commands\Building\SetMixture.cs" />
+    <Compile Include="Commands\Building\Shop\RepairShops.cs" />
+    <Compile Include="Commands\Building\Shop\RepairStat.cs" />
+    <Compile Include="Commands\Building\Shop\Shops.cs" />
+    <Compile Include="Commands\Building\Shop\ShopSet.cs" />
+    <Compile Include="Commands\Building\Shop\ShopStat.cs" />
     <Compile Include="Commands\Building\ShowLiquid.cs" />
     <Compile Include="Commands\Building\ShowMixture.cs" />
+    <Compile Include="Commands\Building\SSet.cs" />
     <Compile Include="Commands\Building\UnfoldArea.cs" />
     <Compile Include="Commands\Building\VAssign.cs" />
     <Compile Include="Commands\Building\CEdit.cs" />
@@ -298,6 +312,53 @@
     <Compile Include="Commands\Organizations\Victories.cs" />
     <Compile Include="Commands\Password.cs" />
     <Compile Include="Commands\Practice.cs" />
+    <Compile Include="Commands\Shop\Appraise.cs" />
+    <Compile Include="Commands\Shop\Buy.cs" />
+    <Compile Include="Commands\Shop\List.cs" />
+    <Compile Include="Commands\Shop\Repair.cs" />
+    <Compile Include="Commands\Shop\Sell.cs" />
+    <Compile Include="Commands\Shop\Value.cs" />
+    <Compile Include="Commands\Skills\Aid.cs" />
+    <Compile Include="Commands\Skills\Berserk.cs" />
+    <Compile Include="Commands\Skills\Brew.cs" />
+    <Compile Include="Commands\Skills\Cook.cs" />
+    <Compile Include="Commands\Skills\Dismount.cs" />
+    <Compile Include="Commands\Skills\Fire.cs" />
+    <Compile Include="Commands\Skills\Hitall.cs" />
+    <Compile Include="Commands\Skills\Mount.cs" />
+    <Compile Include="Commands\Skills\Recall.cs" />
+    <Compile Include="Commands\Skills\Scan.cs" />
+    <Compile Include="Commands\Skills\Scribe.cs" />
+    <Compile Include="Commands\Skills\Slice.cs" />
+    <Compile Include="Commands\Skills\Style.cs" />
+    <Compile Include="Commands\Skills\Thief\Backstab.cs" />
+    <Compile Include="Commands\Skills\Bash.cs" />
+    <Compile Include="Commands\Skills\Bite.cs" />
+    <Compile Include="Commands\Skills\Bloodlet.cs" />
+    <Compile Include="Commands\Skills\Broach.cs" />
+    <Compile Include="Commands\Skills\Claw.cs" />
+    <Compile Include="Commands\Skills\Thief\Circle.cs" />
+    <Compile Include="Commands\Skills\Thief\DeTrap.cs" />
+    <Compile Include="Commands\Skills\Dig.cs" />
+    <Compile Include="Commands\Skills\Disarm.cs" />
+    <Compile Include="Commands\Skills\Feed.cs" />
+    <Compile Include="Commands\Skills\Gouge.cs" />
+    <Compile Include="Commands\Skills\Kick.cs" />
+    <Compile Include="Commands\Skills\MistWalk.cs" />
+    <Compile Include="Commands\Skills\Thief\Hide.cs" />
+    <Compile Include="Commands\Skills\Thief\Pick.cs" />
+    <Compile Include="Commands\Skills\Punch.cs" />
+    <Compile Include="Commands\Skills\Rescue.cs" />
+    <Compile Include="Commands\Skills\Search.cs" />
+    <Compile Include="Commands\Skills\Skin.cs" />
+    <Compile Include="Commands\Skills\SLookup.cs" />
+    <Compile Include="Commands\Skills\Thief\PoisonWeapon.cs" />
+    <Compile Include="Commands\Skills\Thief\Sneak.cs" />
+    <Compile Include="Commands\Skills\Thief\Steal.cs" />
+    <Compile Include="Commands\Skills\Sting.cs" />
+    <Compile Include="Commands\Skills\Stun.cs" />
+    <Compile Include="Commands\Skills\Tail.cs" />
+    <Compile Include="Commands\Skills\Thief\Visible.cs" />
     <Compile Include="Commands\SList.cs" />
     <Compile Include="Commands\Socials.cs" />
     <Compile Include="Commands\Social\Glance.cs" />
@@ -391,6 +452,7 @@
     <Compile Include="Enums\ResistanceTypes.cs" />
     <Compile Include="Enums\SkillFlags.cs" />
     <Compile Include="Enums\SkillNumberTypes.cs" />
+    <Compile Include="Enums\StatisticTypes.cs" />
     <Compile Include="Enums\TeleportTriggerFlags.cs" />
     <Compile Include="Enums\TextAlignmentStyle.cs" />
     <Compile Include="Enums\TrapTriggerTypes.cs" />
@@ -405,6 +467,7 @@
     <Compile Include="Loaders\CommentLoader.cs" />
     <Compile Include="Loaders\CouncilLoader.cs" />
     <Compile Include="Loaders\DeityListLoader.cs" />
+    <Compile Include="Loaders\HintLoader.cs" />
     <Compile Include="Loaders\LiquidLoader.cs" />
     <Compile Include="Loaders\ListLoader.cs" />
     <Compile Include="Loaders\MixtureLoader.cs" />
@@ -413,6 +476,8 @@
     <Compile Include="Loaders\WatchListLoader.cs" />
     <Compile Include="Managers\ChatManager.cs" />
     <Compile Include="Interfaces\IHasExtraFlags.cs" />
+    <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Managers\TimerManager.cs" />
     <Compile Include="Objects\DiceData.cs" />
     <Compile Include="Objects\Instances\Instance.cs" />
     <Compile Include="Objects\Shops\ItemShopData.cs" />
@@ -510,7 +575,6 @@
     <Compile Include="Enums\WearLocations.cs" />
     <Compile Include="fight.cs" />
     <Compile Include="handler.cs" />
-    <Compile Include="hint.cs" />
     <Compile Include="hotboot.cs" />
     <Compile Include="interp.cs" />
     <Compile Include="liquids.cs" />
@@ -551,7 +615,7 @@
     <Compile Include="Objects\game_board_data.cs" />
     <Compile Include="Objects\godlist_data.cs" />
     <Compile Include="Objects\HelpData.cs" />
-    <Compile Include="Objects\hint_data.cs" />
+    <Compile Include="Objects\HintData.cs" />
     <Compile Include="Objects\HolidayData.cs" />
     <Compile Include="Objects\hour_min_sec.cs" />
     <Compile Include="Objects\HuntHateFearData.cs" />
@@ -605,13 +669,13 @@
     <Compile Include="Objects\str_app_type.cs" />
     <Compile Include="Objects\SystemData.cs" />
     <Compile Include="Objects\TeleportData.cs" />
-    <Compile Include="Objects\timerset.cs" />
+    <Compile Include="Objects\UseHistory.cs" />
     <Compile Include="Objects\TimerData.cs" />
     <Compile Include="Objects\TimeInfoData.cs" />
     <Compile Include="Objects\TimezoneData.cs" />
     <Compile Include="Objects\VariableData.cs" />
     <Compile Include="Objects\WatchData.cs" />
-    <Compile Include="Weather\weather_data.cs" />
+    <Compile Include="Weather\WeatherData.cs" />
     <Compile Include="Objects\whogr_s.cs" />
     <Compile Include="Objects\who_data.cs" />
     <Compile Include="Objects\wis_app_type.cs" />
@@ -718,6 +782,10 @@
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.NCalcExt\Realm.Library.NCalcExt.csproj">
+      <Project>{d2eba739-4153-48ff-93f0-aaeb43d1ab7e}</Project>
+      <Name>Realm.Library.NCalcExt</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
       <Name>Realm.Library.Patterns.Repository</Name>
@@ -753,6 +821,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

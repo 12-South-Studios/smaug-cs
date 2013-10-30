@@ -176,7 +176,7 @@ namespace SmaugCS
                     stop_fighting(ch, true);
                 }
                 else if (ch.IsAwake() && ch.CurrentRoom == victim.CurrentRoom)
-                    retCode = EnumerationExtensions.GetEnum<ReturnTypes>(multi_hit(ch, victim, Program.TYPE_UNDEFINED));
+                    retCode = multi_hit(ch, victim, Program.TYPE_UNDEFINED);
                 else 
                     stop_fighting(ch, false);
 
@@ -284,7 +284,7 @@ namespace SmaugCS
         /// <param name="victim"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public static int multi_hit(CharacterInstance ch, CharacterInstance victim, int dt)
+        public static ReturnTypes multi_hit(CharacterInstance ch, CharacterInstance victim, int dt)
         {
             //// Add a timer to pkillers
             if (!ch.IsNpc() && !victim.IsNpc())

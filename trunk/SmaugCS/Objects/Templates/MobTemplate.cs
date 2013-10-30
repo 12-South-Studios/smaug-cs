@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using System.Collections.Generic;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
@@ -21,9 +22,6 @@ namespace SmaugCS.Objects
         public int Level { get; set; }
         public ExtendedBitvector Act { get; set; }
         public ExtendedBitvector AffectedBy { get; set; }
-        public int Alignment { get; set; }
-        public int ToHitArmorClass0 { get; set; }
-        public int ArmorClass { get; set; }
         public DiceData HitDice { get; set; }
         public DiceData DamageDice { get; set; }
         public int NumberOfAttacks { get; set; }
@@ -43,16 +41,8 @@ namespace SmaugCS.Objects
         public int Weight { get; set; }
         public int Race { get; set; }
         public int Class { get; set; }
-        public int PermanentStrength { get; set; }
-        public int PermanentIntelligence { get; set; }
-        public int PermanentWisdom { get; set; }
-        public int PermanentDexterity { get; set; }
-        public int PermanentConstitution { get; set; }
-        public int PermanentCharisma { get; set; }
-        public int PermanentLuck { get; set; }
         public SavingThrowData SavingThrows { get; set; }
-        public int HitRoll { get; set; }
-        public int DamageRoll { get; set; }
+        public Dictionary<StatisticTypes, int> Statistics { get; set; }
 
         public MobTemplate()
         {
@@ -63,6 +53,12 @@ namespace SmaugCS.Objects
             Defenses = new ExtendedBitvector();
             HitDice = new DiceData();
             DamageDice = new DiceData();
+            Statistics = new Dictionary<StatisticTypes, int>();
+        }
+
+        public int GetStatistic(StatisticTypes type)
+        {
+            return Statistics.ContainsKey(type) ? Statistics[type] : 0;
         }
 
         public void SaveFUSS(TextWriterProxy proxy, bool install)
@@ -88,13 +84,17 @@ namespace SmaugCS.Objects
             proxy.Write("Actflags   {0}~\n", Act.GetFlagString(BuilderConstants.act_flags));
             if (!AffectedBy.IsEmpty())
                 proxy.Write("Affected   {0}~\n", AffectedBy.GetFlagString(BuilderConstants.a_flags));
-            proxy.Write("Stats1     {0} {1} {2} {3} {4} {5}\n", Alignment, Level, ToHitArmorClass0, ArmorClass, Gold,
+            proxy.Write("Stats1     {0} {1} {2} {3} {4} {5}\n", GetStatistic(StatisticTypes.Alignment), Level,
+                        GetStatistic(StatisticTypes.ToHitArmorClass0), GetStatistic(StatisticTypes.ArmorClass), Gold,
                         Experience);
             proxy.Write("Stats2     {0} {1} {2}\n", HitDice.NumberOf, HitDice.SizeOf, HitDice.Bonus);
             proxy.Write("Stats3     {0} {1} {2}\n", DamageDice.NumberOf, DamageDice.SizeOf, DamageDice.Bonus);
-            proxy.Write("Stats4     {0} {1} {2} {3} {4}\n", Height, Weight, NumberOfAttacks, HitRoll, DamageRoll);
-            proxy.Write("Attribs    {0} {1} {2} {3} {4} {5} {6}\n", PermanentStrength, PermanentIntelligence,
-                        PermanentWisdom, PermanentDexterity, PermanentConstitution, PermanentCharisma, PermanentLuck);
+            proxy.Write("Stats4     {0} {1} {2} {3} {4}\n", Height, Weight, NumberOfAttacks,
+                        GetStatistic(StatisticTypes.HitRoll), GetStatistic(StatisticTypes.DamageRoll));
+            proxy.Write("Attribs    {0} {1} {2} {3} {4} {5} {6}\n", GetStatistic(StatisticTypes.Strength),
+                        GetStatistic(StatisticTypes.Intelligence), GetStatistic(StatisticTypes.Wisdom),
+                        GetStatistic(StatisticTypes.Dexterity), GetStatistic(StatisticTypes.Constitution),
+                        GetStatistic(StatisticTypes.Charisma), GetStatistic(StatisticTypes.Luck));
             proxy.Write("Saves      {0} {1} {2} {3} {4}\n", SavingThrows.SaveVsPoisonDeath, SavingThrows.SaveVsWandRod,
                         SavingThrows.SaveVsParalysisPetrify, SavingThrows.SaveVsBreath, SavingThrows.SaveVsSpellStaff);
             

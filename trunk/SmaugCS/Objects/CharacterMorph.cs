@@ -1,4 +1,6 @@
-﻿using SmaugCS.Common;
+﻿using System.Collections.Generic;
+using SmaugCS.Common;
+using SmaugCS.Enums;
 
 namespace SmaugCS.Objects
 {
@@ -17,27 +19,14 @@ namespace SmaugCS.Objects
         public int suscept { get; set; }
         public int timer { get; set; }
 
-        public short ac { get; set; }
-        public short blood { get; set; }
-        public short cha { get; set; }
-        public short con { get; set; }
-        public short damroll { get; set; }
-        public short dex { get; set; }
-        public short dodge { get; set; }
-        public short hit { get; set; }
-        public short hitroll { get; set; }
-        public short inte { get; set; }
-        public short lck { get; set; }
-        public short mana { get; set; }
-        public short move { get; set; }
-        public short parry { get; set; }
-        public short saving_breath { get; set; }
-        public short saving_para_petri { get; set; }
-        public short saving_poison_death { get; set; }
-        public short saving_spell_staff { get; set; }
-        public short saving_wand { get; set; }
-        public short str { get; set; }
+        public Dictionary<StatisticTypes, int> Statistics { get; set; }
+        public SavingThrowData SavingThrows { get; set; }
         public short tumble { get; set; }
-        public short wis { get; set; }
+
+        public CharacterMorph()
+        {
+            Statistics = new Dictionary<StatisticTypes, int>();
+            SavingThrows = new SavingThrowData();
+        }
     }
 }

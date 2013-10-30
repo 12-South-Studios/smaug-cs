@@ -38,7 +38,7 @@ namespace SmaugCS.Database
                     ResetVnum = -1,
                     ResetNum = -1,
                     AffectedBy = parent.AffectedBy,
-                    CurrentAlignment = parent.Alignment,
+                    CurrentAlignment = parent.GetStatistic(StatisticTypes.Alignment),
                     Gender = EnumerationExtensions.GetEnum<GenderTypes>(parent.Gender)
                 };
 
@@ -48,7 +48,9 @@ namespace SmaugCS.Database
             if (mob.Act.IsSet((int)ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;
 
-            mob.ArmorClass = parent.ArmorClass > 0 ? parent.ArmorClass : mob.Level.Interpolate(100, -100);
+            mob.ArmorClass = parent.GetStatistic(StatisticTypes.ArmorClass) > 0
+                                 ? parent.GetStatistic(StatisticTypes.ArmorClass)
+                                 : mob.Level.Interpolate(100, -100);
 
             if (parent.HitDice == null || parent.HitDice.NumberOf == 0)
                 mob.MaximumHealth = mob.Level * 8 + SmaugRandom.Between(mob.Level * mob.Level / 4, mob.Level * mob.Level);
@@ -60,16 +62,16 @@ namespace SmaugCS.Database
             mob.Position = parent.Position;
             mob.DefPosition = parent.DefPosition;
             mob.BareDice = new DiceData { NumberOf = parent.DamageDice.NumberOf, SizeOf = parent.DamageDice.SizeOf };
-            mob.ToHitArmorClass0 = parent.ToHitArmorClass0;
+            mob.ToHitArmorClass0 = parent.GetStatistic(StatisticTypes.ToHitArmorClass0);
             mob.HitRoll = new DiceData { Bonus = parent.HitDice.Bonus };
             mob.DamageRoll = new DiceData { Bonus = parent.DamageDice.Bonus };
-            mob.PermanentStrength = parent.PermanentStrength;
-            mob.PermanentDexterity = parent.PermanentDexterity;
-            mob.PermanentWisdom = parent.PermanentWisdom;
-            mob.PermanentIntelligence = parent.PermanentIntelligence;
-            mob.PermanentConstitution = parent.PermanentConstitution;
-            mob.PermanentCharisma = parent.PermanentCharisma;
-            mob.PermanentLuck = parent.PermanentLuck;
+            mob.PermanentStrength = parent.GetStatistic(StatisticTypes.Strength);
+            mob.PermanentDexterity = parent.GetStatistic(StatisticTypes.Dexterity);
+            mob.PermanentWisdom = parent.GetStatistic(StatisticTypes.Wisdom);
+            mob.PermanentIntelligence = parent.GetStatistic(StatisticTypes.Intelligence);
+            mob.PermanentConstitution = parent.GetStatistic(StatisticTypes.Constitution);
+            mob.PermanentCharisma = parent.GetStatistic(StatisticTypes.Charisma);
+            mob.PermanentLuck = parent.GetStatistic(StatisticTypes.Luck);
             mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(parent.Race);
             mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(parent.Class);
             mob.ExtraFlags = parent.ExtraFlags;

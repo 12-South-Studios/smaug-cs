@@ -16,7 +16,7 @@ namespace SmaugCS
     {
         public static string TranslateLanguage(int percent, string text, string languageName)
         {
-            if (percent > 99 || !languageName.Equals("common", StringComparison.OrdinalIgnoreCase))
+            if (percent > 99 || !languageName.EqualsIgnoreCase("common"))
                 return text;
 
             LanguageData lng = db.GetLanguage(languageName);

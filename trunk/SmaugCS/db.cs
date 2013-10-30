@@ -17,6 +17,12 @@ namespace SmaugCS
     public static class db
     {
         public static List<string> ReservedNames = new List<string>();
+        public static bool IsReservedName(string name)
+        {
+            return db.ReservedNames.Any(reservedName => reservedName.EqualsIgnoreCase(name)
+                || (reservedName.StartsWithIgnoreCase("*")
+                && reservedName.ContainsIgnoreCase(name)));
+        }
 
         public static RoomTemplate[] ROOM_INDEX_HASH = new RoomTemplate[Program.MAX_KEY_HASH];
         public static MobTemplate[] MOB_INDEX_HASH = new MobTemplate[Program.MAX_KEY_HASH];
@@ -202,7 +208,22 @@ namespace SmaugCS
         public static List<ShopData> SHOP = new List<ShopData>();
         public static List<RepairShopData> REPAIR = new List<RepairShopData>();
         public static List<TeleportData> TELEPORT = new List<TeleportData>();
+
+        #region Projects
         public static List<ProjectData> PROJECTS = new List<ProjectData>();
+        public static ProjectData GetProject(int num)
+        {
+            int count = 0;
+            foreach (ProjectData project in PROJECTS)
+            {
+                count++;
+                if (count == num)
+                    return project;
+            }
+            return null;
+        }
+        #endregion
+
         public static List<ObjectInstance> ExtractedObjectQueue = new List<ObjectInstance>();
         public static List<ExtracedCharacterData> ExtractedCharQueue = new List<ExtracedCharacterData>();
 
@@ -218,22 +239,64 @@ namespace SmaugCS
         public static List<DeityData> DEITIES = new List<DeityData>();
         public static DeityData GetDeity(string name)
         {
-            return DEITIES.Single(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return DEITIES.Single(x => x.Name.EqualsIgnoreCase(name);
         }
 
 
-        public static List<hint_data> HINT = new List<hint_data>();
+        public static List<HintData> HINTS = new List<HintData>();
+        public static string GetHint(int level)
+        {
+            if (level < 0)
+                return string.Format("HintLevel error, level was {0}", level);
+
+            int count = HINTS.Count(hint => level >= hint.Low && level <= hint.High);
+            if (count > 1)
+            {
+                int which = SmaugRandom.Between(1, count);
+                count = 0;
+                foreach (HintData hint in HINTS)
+                {
+                    if (level >= hint.Low && level <= hint.High)
+                        ++count;
+                    if (count == which)
+                        return hint.Text;
+                }
+            }
+            else if (count == 1)
+            {
+                foreach (HintData hint in HINTS)
+                {
+                    if (level >= hint.Low && level <= hint.High)
+                        return hint.Text;
+                }
+            }
+
+            return " ";
+        }
+
+
         public static List<MixtureData> MIXTURES = new List<MixtureData>();
+        public static MixtureData GetMixture(string str)
+        {
+            return MIXTURES.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
+        }
+
+        #region Liquids
         public static List<LiquidData> LIQUIDS = new List<LiquidData>();
+        public static LiquidData GetLiquid(string str)
+        {
+            return str.IsNumber()
+                ? LIQUIDS.FirstOrDefault(x => x.Vnum == str.ToInt32())
+                : LIQUIDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
+        }
+        public static LiquidData GetLiquid(int vnum)
+        {
+            return LIQUIDS.FirstOrDefault(x => x.Vnum == vnum);
+        }
+        #endregion
+
         public static List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
         public static List<SpecialFunction> SPEC_LIST = new List<SpecialFunction>();
-
-        //public static List<RoomTemplate> ROOMS = new List<RoomTemplate>();
-        //public static RoomTemplate get_room_index(int vnum)
-        //{
-        //    return ROOMS.FirstOrDefault(x => x.Vnum == vnum);
-        //}
-
 
         public static List<WatchData> WATCHES = new List<WatchData>();
 
@@ -242,13 +305,13 @@ namespace SmaugCS
         public static List<SkillData> HERBS = new List<SkillData>();
         public static SkillData GetHerb(string name)
         {
-            return HERBS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return HERBS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         }
 
         public static List<SkillData> DISEASES = new List<SkillData>();
         public static SkillData GetDisease(string name)
         {
-            return DISEASES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return DISEASES.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         }
 
         public static SystemData SystemData;

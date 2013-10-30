@@ -35,7 +35,6 @@ namespace SmaugCS.Objects
         public int Level { get; set; }
         public int[] Value { get; set; }
         public int Count { get; set; }
-        public int ID { get; set; }
         public int room_vnum { get; set; }
 
         /// <summary>
@@ -44,9 +43,8 @@ namespace SmaugCS.Objects
         /// <param name="id"></param>
         /// <param name="maxWear"></param>
         /// <param name="maxLayers"></param>
-        public ObjectInstance(int id, int maxWear, int maxLayers)
+        public ObjectInstance(int id, int maxWear, int maxLayers) : base(id)
         {
-            ID = id;
             Value = new int[6];
             ExtraDescriptions = new List<ExtraDescriptionData>();
             ExtraFlags = new ExtendedBitvector();

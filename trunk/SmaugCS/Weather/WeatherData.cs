@@ -1,7 +1,7 @@
 ﻿
 namespace SmaugCS.Weather
 {
-    public class weather_data
+    public class WeatherData
     {
         public int mmhg { get; set; }
         public int change { get; set; }

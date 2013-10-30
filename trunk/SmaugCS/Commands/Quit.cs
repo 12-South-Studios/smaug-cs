@@ -1,4 +1,5 @@
 ﻿using SmaugCS.Commands.Combat;
+using SmaugCS.Commands.Skills;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -52,7 +53,7 @@ namespace SmaugCS.Commands
             }
 
             if (ch.Position == PositionTypes.Mounted)
-                skills.do_dismount(ch, "");
+                Dismount.do_dismount(ch, "");
 
             color.set_char_color(ATTypes.AT_WHITE, ch);
             color.send_to_char("Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n", ch);

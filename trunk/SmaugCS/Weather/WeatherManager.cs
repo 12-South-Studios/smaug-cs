@@ -34,6 +34,9 @@ namespace SmaugCS.Weather
         public void InitializeWeatherMap()
         {
             Weather = new WeatherMap(Program.WEATHER_SIZE_X, Program.WEATHER_SIZE_Y);
+            Weather.LoadMap(SystemFileTypes.StarMap, Weather.StarMap);
+            Weather.LoadMap(SystemFileTypes.SunMap, Weather.SunMap);
+            Weather.LoadMap(SystemFileTypes.MoonMap, Weather.MoonMap);
             Weather.Initialize();
         }
 

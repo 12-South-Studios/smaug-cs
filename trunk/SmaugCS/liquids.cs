@@ -14,23 +14,6 @@ namespace SmaugCS
             return db.LIQUIDS.Max(x => x.Vnum) + 1;
         }
 
-        public static LiquidData get_liq(string str)
-        {
-            return str.IsNumber()
-                ? db.LIQUIDS.FirstOrDefault(x => x.Vnum == str.ToInt32())
-                : db.LIQUIDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
-        }
-
-        public static LiquidData get_liq_vnum(int vnum)
-        {
-            return db.LIQUIDS.FirstOrDefault(x => x.Vnum == vnum);
-        }
-
-        public static MixtureData get_mix(string str)
-        {
-            return db.MIXTURES.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
-        }
-
         public static void displaymixture(CharacterInstance ch, MixtureData mix)
         {
             color.send_to_pager(" .-.                ,\r\n", ch);
@@ -50,8 +33,8 @@ namespace SmaugCS
 
             if (!mix.Object)
             {
-                LiquidData ingredient1 = get_liq_vnum(mix.Data[0]);
-                LiquidData ingredient2 = get_liq_vnum(mix.Data[1]);
+                LiquidData ingredient1 = db.GetLiquid(mix.Data[0]);
+                LiquidData ingredient2 = db.GetLiquid(mix.Data[1]);
                 color.send_to_pager("&wCombine two liquids to create this mixture:\r\n", ch);
 
                 if (ingredient1 == null)
@@ -73,7 +56,7 @@ namespace SmaugCS
                     return;
                 }
 
-                LiquidData ingredient1 = get_liq_vnum(mix.Data[1]);
+                LiquidData ingredient1 = db.GetLiquid(mix.Data[1]);
                 color.send_to_pager("Combine an object and a liquid in this mixture\r\n", ch);
                 color.pager_printf(ch, "&wMix &G%s&w (%d)\r\n", obj.Name, mix.Data[0]);
                 color.pager_printf(ch, "&winto one part &G%s&w (%d)&D\r\n", ingredient1.Name, mix.Data[1]);
@@ -89,7 +72,7 @@ namespace SmaugCS
             if (mixture == null || mixture.Data[2] == -1)
                 return null;
 
-            LiquidData liquid = get_liq_vnum(mixture.Data[2]);
+            LiquidData liquid = db.GetLiquid(mixture.Data[2]);
             if (liquid == null)
                 return null;
 
@@ -110,7 +93,7 @@ namespace SmaugCS
             if (mixture == null || mixture.Data[2] == -1)
                 return null;
 
-            LiquidData liquid = get_liq_vnum(mixture.Data[2]);
+            LiquidData liquid = db.GetLiquid(mixture.Data[2]);
             if (liquid == null)
                 return null;
 

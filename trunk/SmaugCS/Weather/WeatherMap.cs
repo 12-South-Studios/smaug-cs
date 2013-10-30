@@ -14,6 +14,10 @@ namespace SmaugCS.Weather
         private readonly WeatherCell[,] Map;
         private readonly WeatherCell[,] Delta;
 
+        public List<string> StarMap { get; private set; }
+        public List<string> SunMap { get; private set; }
+        public List<string> MoonMap { get; private set; }
+ 
         public int Width { get; private set; }
         public int Height { get; private set; }
 
@@ -60,6 +64,24 @@ namespace SmaugCS.Weather
 
             Map = new WeatherCell[width, height];
             Delta = new WeatherCell[width, height];
+
+            StarMap = new List<string>();
+            SunMap = new List<string>();
+            MoonMap = new List<string>();
+        }
+
+        public void LoadMap(SystemFileTypes fileType, List<string> map)
+        {
+            string path = SystemConstants.GetSystemFile(fileType);
+            using (
+                TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            {
+                List<string> lines = proxy.ReadIntoList();
+                if (lines.Count == 0)
+                    throw new InvalidDataException(string.Format("Missing data for {0}", fileType));
+
+                map.AddRange(lines);
+            }
         }
 
         public WeatherCell GetCellFromMap(int x, int y)

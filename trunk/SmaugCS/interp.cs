@@ -132,29 +132,6 @@ namespace SmaugCS
             return false;
         }
 
-
-
-        public static void start_timer(TimeSpan sttime)
-        {
-            // TODO
-        }
-
-        public static DateTime end_timer(TimeSpan sttime)
-        {
-            // TODO
-            return DateTime.Now;
-        }
-
-        public static void send_timer(TimeSpan vtime, CharacterInstance ch)
-        {
-            // TODO
-        }
-
-        public static void update_userec(TimeSpan time_used, DateTime userec)
-        {
-            // TODO
-        }
-
         public static string check_cmd_flags(CharacterInstance ch, CommandData cmd)
         {
             // TODO
