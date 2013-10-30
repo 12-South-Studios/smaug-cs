@@ -29,11 +29,11 @@ namespace SmaugCS.Organizations
         public string LeaderRank { get; set; }
         public string NumberOneRank { get; set; }
         public string NumberTwoRank { get; set; }
-        public int[] PKillTable { get; set; }
-        public int[] PDeathTable { get; set; }
-        public int MobileKills { get; set; }
-        public int MobileDeaths { get; set; }
-        public int IllegalPK { get; set; }
+        public int[] PvPKillTable { get; set; }
+        public int[] PvPDeathTable { get; set; }
+        public int PvEKills { get; set; }
+        public int PvEDeaths { get; set; }
+        public int IllegalPvPKill { get; set; }
         public int Score { get; set; }
 
         [XmlElement]
@@ -55,16 +55,16 @@ namespace SmaugCS.Organizations
 
         public ClanData()
         {
-            PKillTable = new int[7];
-            PDeathTable = new int[7];
+            PvPKillTable = new int[7];
+            PvPDeathTable = new int[7];
             ClanObjects = new int[5];
         }
 
         public ClanData(string filename)
         {
             Filename = filename;
-            PKillTable = new int[7];
-            PDeathTable = new int[7];
+            PvPKillTable = new int[7];
+            PvPDeathTable = new int[7];
             ClanObjects = new int[5];
         }
 
@@ -97,11 +97,11 @@ namespace SmaugCS.Organizations
             if (roster != null)
             {
                 roster.Level = ch.Level;
-                roster.Kills = ch.PlayerData.mkills;
-                roster.Deaths = ch.PlayerData.mdeaths;
+                roster.Kills = ch.PlayerData.PvEKills;
+                roster.Deaths = ch.PlayerData.PvEDeaths;
             }
             else 
-                AddToRoster(ch.Name, (int)ch.CurrentClass, ch.Level, ch.PlayerData.mkills, ch.PlayerData.mdeaths);
+                AddToRoster(ch.Name, (int)ch.CurrentClass, ch.Level, ch.PlayerData.PvEKills, ch.PlayerData.PvEDeaths);
             Save();
         }
 
@@ -155,14 +155,14 @@ namespace SmaugCS.Organizations
                 proxy.Write("Onerank      {0}~\n", NumberOneRank);
                 proxy.Write("Tworank      {0}~\n", NumberTwoRank);
                 proxy.Write("PKillRangeNew   {0}\n",
-                            string.Format("{0} {1} {2} {3} {4} {5}", PKillTable[0], PKillTable[1], PKillTable[2],
-                                          PKillTable[3], PKillTable[4], PKillTable[5]));
+                            string.Format("{0} {1} {2} {3} {4} {5}", PvPKillTable[0], PvPKillTable[1], PvPKillTable[2],
+                                          PvPKillTable[3], PvPKillTable[4], PvPKillTable[5]));
                 proxy.Write("PDeathRangeNew   {0}\n",
-                            string.Format("{0} {1} {2} {3} {4} {5}", PDeathTable[0], PDeathTable[1], PDeathTable[2],
-                                          PDeathTable[3], PDeathTable[4], PDeathTable[5]));
-                proxy.Write("MKills       {0}~\n", MobileKills);
-                proxy.Write("MDeaths      {0}~\n", MobileDeaths);
-                proxy.Write("IllegalPK    {0}~\n", IllegalPK);
+                            string.Format("{0} {1} {2} {3} {4} {5}", PvPDeathTable[0], PvPDeathTable[1], PvPDeathTable[2],
+                                          PvPDeathTable[3], PvPDeathTable[4], PvPDeathTable[5]));
+                proxy.Write("MKills       {0}~\n", PvEKills);
+                proxy.Write("MDeaths      {0}~\n", PvEDeaths);
+                proxy.Write("IllegalPK    {0}~\n", IllegalPvPKill);
                 proxy.Write("Score        {0}~\n", Score);
                 proxy.Write("Type         {0}~\n", ClanType);
                 proxy.Write("Class        {0}~\n", Class);
@@ -301,7 +301,7 @@ namespace SmaugCS.Organizations
                     GuardTwo = tuple.Item2.ToInt32();
                     break;
                 case "illegalpk":
-                    IllegalPK = tuple.Item2.ToInt32();
+                    IllegalPvPKill = tuple.Item2.ToInt32();
                     break;
                 case "leader":
                     Leader = tuple.Item2.TrimHash();
@@ -310,7 +310,7 @@ namespace SmaugCS.Organizations
                     LeaderRank = tuple.Item2.TrimHash();
                     break;
                 case "mdeaths":
-                    MobileDeaths = tuple.Item2.ToInt32();
+                    PvEDeaths = tuple.Item2.ToInt32();
                     break;
                 case "members":
                     // Do nothing here as we don't maintain an external count any longer
@@ -319,7 +319,7 @@ namespace SmaugCS.Organizations
                     MemberLimit = tuple.Item2.ToInt32();
                     break;
                 case "mkills":
-                    MobileKills = tuple.Item2.ToInt32();
+                    PvEKills = tuple.Item2.ToInt32();
                     break;
                 case "motto":
                     Motto = tuple.Item2.TrimHash();
@@ -337,10 +337,10 @@ namespace SmaugCS.Organizations
                     NumberOneRank = tuple.Item2.TrimHash();
                     break;
                 case "pdeaths":
-                    PDeathTable[6] = tuple.Item2.ToInt32();
+                    PvPDeathTable[6] = tuple.Item2.ToInt32();
                     break;
                 case "pkills":
-                    PKillTable[6] = tuple.Item2.ToInt32();
+                    PvPKillTable[6] = tuple.Item2.ToInt32();
                     break;
                 case "pdeathrange":
                     // TODO What to do here?  Original file doesn't assign the values to anything
@@ -353,13 +353,13 @@ namespace SmaugCS.Organizations
                         break;
                     }
 
-                    PDeathTable[0] = words[0].ToInt32();
-                    PDeathTable[1] = words[1].ToInt32();
-                    PDeathTable[2] = words[2].ToInt32();
-                    PDeathTable[3] = words[3].ToInt32();
-                    PDeathTable[4] = words[4].ToInt32();
-                    PDeathTable[5] = words[5].ToInt32();
-                    PDeathTable[6] = words[6].ToInt32();
+                    PvPDeathTable[0] = words[0].ToInt32();
+                    PvPDeathTable[1] = words[1].ToInt32();
+                    PvPDeathTable[2] = words[2].ToInt32();
+                    PvPDeathTable[3] = words[3].ToInt32();
+                    PvPDeathTable[4] = words[4].ToInt32();
+                    PvPDeathTable[5] = words[5].ToInt32();
+                    PvPDeathTable[6] = words[6].ToInt32();
                     break;
                 case "pkillrangenew":
                     words = tuple.Item2.Split(' ');
@@ -369,13 +369,13 @@ namespace SmaugCS.Organizations
                         break;
                     }
 
-                    PKillTable[0] = words[0].ToInt32();
-                    PKillTable[1] = words[1].ToInt32();
-                    PKillTable[2] = words[2].ToInt32();
-                    PKillTable[3] = words[3].ToInt32();
-                    PKillTable[4] = words[4].ToInt32();
-                    PKillTable[5] = words[5].ToInt32();
-                    PKillTable[6] = words[6].ToInt32();
+                    PvPKillTable[0] = words[0].ToInt32();
+                    PvPKillTable[1] = words[1].ToInt32();
+                    PvPKillTable[2] = words[2].ToInt32();
+                    PvPKillTable[3] = words[3].ToInt32();
+                    PvPKillTable[4] = words[4].ToInt32();
+                    PvPKillTable[5] = words[5].ToInt32();
+                    PvPKillTable[6] = words[6].ToInt32();
                     break;
                 case "pkillrange":
                     // TODO What to do here?  Original file doesn't assign the vlaues to anything

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using NUnit.Framework;
 using SmaugCS.Database;
 
@@ -18,7 +17,7 @@ namespace SmaugCS.Tests.Repositories
             var actual = repo.Create(obj, 5);
 
             Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.ID, Is.EqualTo(1));
+            Assert.That(actual.ID, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]

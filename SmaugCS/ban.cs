@@ -244,7 +244,7 @@ namespace SmaugCS
                                 int count = 0;
                                 foreach (ClassData cls in db.CLASSES)
                                 {
-                                    if (cls.Name.Equals(arg, StringComparison.OrdinalIgnoreCase))
+                                    if (cls.Name.EqualsIgnoreCase(arg))
                                         break;
                                     count++;
                                 }
@@ -293,7 +293,7 @@ namespace SmaugCS
                                 int count = 0;
                                 foreach (RaceData race in db.RACES)
                                 {
-                                    if (race.Name.Equals(arg, StringComparison.OrdinalIgnoreCase))
+                                    if (race.Name.EqualsIgnoreCase(arg))
                                         break;
                                     count++;
                                 }
@@ -611,11 +611,6 @@ namespace SmaugCS
             }
 
             db.BANS.Remove(ban);
-        }
-
-        public static void free_bans()
-        {
-            db.BANS.Clear();
         }
     }
 }

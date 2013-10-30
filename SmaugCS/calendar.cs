@@ -1,11 +1,7 @@
 ﻿
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -45,7 +41,7 @@ namespace SmaugCS
                 new TimezoneData("GMT+12", "Fiji, Wellington, Auckland", 12, 0)
             };
 
-        public static int tzone_lookup(string arg)
+        public static int GetTimezone(string arg)
         {
             int count = 0;
             foreach (TimezoneData tz in TimezoneTable)
@@ -55,55 +51,6 @@ namespace SmaugCS
                 count++;
             }
             return -1;
-        }
-
-        public static string c_time(DateTime curtime, int tz)
-        {
-            // TODO
-            return string.Empty;
-        }
-
-        public static string mini_c_time(DateTime curtime, int tz)
-        {
-            // TODO
-            return string.Empty;
-        }
-
-        //public static int DUR_ADDS()
-
-        public static string sec_to_hms(DateTime loctime, string tstr)
-        {
-            // TODO
-            return string.Empty;
-        }
-
-        public static HolidayData get_holiday(int month, int day)
-        {
-            return db.HOLIDAYS.FirstOrDefault(holiday => month + 1 == holiday.Month
-                && day + 1 == holiday.Day);
-        }
-
-        public static TimeInfoData load_timedata()
-        {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat";
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                TimeInfoData timeInfo = new TimeInfoData();
-
-                List<string> lines = proxy.ReadIntoList();
-                foreach (string line in lines.Where(x => !x.StartsWith("*")))
-                {
-                    if (line.StartsWith("#TIME"))
-                    {
-                        timeInfo.Load(lines);
-                        break;
-                    }
-                    if (line.Equals("END"))
-                        break;
-                }
-
-                return timeInfo;
-            }
         }
 
         public static void start_winter()
@@ -148,7 +95,7 @@ namespace SmaugCS
 
         public static void season_update()
         {
-            HolidayData day = get_holiday(db.GameTime.Month, db.GameTime.Day);
+            HolidayData day = db.GetHoliday(db.GameTime.Month, db.GameTime.Day);
             if (day != null)
             {
                 if (db.GameTime.Day + 1 == day.Day && db.GameTime.Hour == 0)
@@ -201,47 +148,6 @@ namespace SmaugCS
                 db.GameTime.Season = SeasonTypes.Spring;
 
             season_update();
-        }
-
-        public static void load_holidays()
-        {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.Holiday);
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                int dayCount = 0;
-                List<TextSection> sections = proxy.ReadSections(new[] { "#HOLIDAY" }, new[] { "*" }, null, "END");
-                foreach (TextSection section in sections)
-                {
-                    if (dayCount >= db.SystemData.MaxHolidays)
-                    {
-                        LogManager.Bug("Exceeded maximum holidays {0}", dayCount);
-                        return;
-                    }
-
-                    HolidayData newHoliday = new HolidayData();
-                    newHoliday.Load(section);
-                    dayCount++;
-                    db.HOLIDAYS.Add(newHoliday);
-                }
-            }
-        }
-
-        public static void save_holidays()
-        {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.Holiday);
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
-            {
-                foreach (HolidayData day in db.HOLIDAYS)
-                {
-                    proxy.Write("#HOLIDAY\n");
-                    proxy.Write("Name     {0}~\n", day.Name);
-                    proxy.Write("Announce {0}~\n", day.Announce);
-                    proxy.Write("Month    {0}\n", day.Month);
-                    proxy.Write("Day      {0}\n", day.Day);
-                    proxy.Write("End\n\n");
-                }
-                proxy.Write("#END\n");
-            }
         }
     }
 }

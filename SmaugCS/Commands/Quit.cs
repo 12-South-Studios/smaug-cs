@@ -18,18 +18,18 @@ namespace SmaugCS.Commands
             if (ch.IsNpc())
                 return;
 
-            if (ch.Position == PositionTypes.Fighting
-                || ch.Position == PositionTypes.Evasive
-                || ch.Position == PositionTypes.Defensive
-                || ch.Position == PositionTypes.Aggressive
-                || ch.Position == PositionTypes.Berserk)
+            if (ch.CurrentPosition == PositionTypes.Fighting
+                || ch.CurrentPosition == PositionTypes.Evasive
+                || ch.CurrentPosition == PositionTypes.Defensive
+                || ch.CurrentPosition == PositionTypes.Aggressive
+                || ch.CurrentPosition == PositionTypes.Berserk)
             {
                 color.set_char_color(ATTypes.AT_RED, ch);
                 color.send_to_char("No way! You are fighting.\r\n", ch);
                 return;
             }
 
-            if (ch.Position == PositionTypes.Stunned)
+            if (ch.CurrentPosition == PositionTypes.Stunned)
             {
                 color.set_char_color(ATTypes.AT_BLOOD, ch);
                 color.send_to_char("You're not DEAD yet.\r\n", ch);
@@ -52,7 +52,7 @@ namespace SmaugCS.Commands
                 Wimpy.do_wimpy(ch, "max");
             }
 
-            if (ch.Position == PositionTypes.Mounted)
+            if (ch.CurrentPosition == PositionTypes.Mounted)
                 Dismount.do_dismount(ch, "");
 
             color.set_char_color(ATTypes.AT_WHITE, ch);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Config;
@@ -12,11 +13,6 @@ namespace SmaugCS
 {
     public static class comm
     {
-        public static void cleanup_memory()
-        {
-            // TODO
-        }
-
         public static bool chk_watch(short player_level, string player_name, string player_site)
         {
             if (db.WATCHES.Count == 0)
@@ -322,32 +318,93 @@ namespace SmaugCS
             // TODO 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <returns></returns>
         public static string default_fprompt(CharacterInstance ch)
         {
-            // TODO
-            return string.Empty;
+            StringBuilder sb = new StringBuilder("&w<&Y%hhp ");
+            sb.Append(ch.IsVampire() ? "&R%bbp" : "&C%mm");
+            sb.Append("&G%vmv&w> ");
+
+            if (ch.IsNpc() || ch.IsImmortal())
+                sb.Append("%i%R");
+
+            return sb.ToString();
         }
 
-        public static string default_promp(CharacterInstance ch)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <returns></returns>
+        /// <remarks>Not sure why this exists since its a perfect copy of default_fprompt</remarks>
+        public static string default_prompt(CharacterInstance ch)
         {
-            // tODO
-            return string.Empty;
+            return default_fprompt(ch);
         }
 
+        private const string Colors = "xrgObpcwzRGYBPCW";
         public static int getcolor(char clr)
         {
-            // TODO
-            return 0;
+            for (int x = 0; x < 16; x++)
+                if (clr == Colors[x])
+                    return x;
+            return -1;
         }
 
         public static void display_prompt(DescriptorData d)
         {
+            CharacterInstance ch = d.Character;
+            CharacterInstance och = (d.Original ?? d.Character);
+            string buffer = string.Empty;
 
+            bool ansi = (!och.IsNpc() && och.Act.IsSet((int)PlayerFlags.Ansi));
+
+            const string helpstart = "<Type HELP START>";
+
+            if (ch == null)
+            {
+                LogManager.Bug("Null ch");
+                return;
+            }
+
+            string prompt;
+            if (!ch.IsNpc() && !ch.PlayerData.Flags.IsSet((int)PCFlags.HelpStart))
+                prompt = helpstart;
+            else if (!ch.IsNpc() && ch.SubState != CharacterSubStates.None
+                     && !ch.PlayerData.SubPrompt.IsNullOrEmpty())
+                prompt = ch.PlayerData.SubPrompt;
+            else if (ch.IsNpc() || (ch.CurrentFighting == null && ch.PlayerData.Prompt.IsNullOrEmpty()))
+                prompt = default_prompt(ch);
+            else if (ch.CurrentFighting != null)
+            {
+                prompt = ch.PlayerData.FPrompt.IsNullOrEmpty()
+                             ? default_fprompt(ch)
+                             : ch.PlayerData.FPrompt;
+            }
+            else
+                prompt = ch.PlayerData.Prompt;
+
+            if (ansi)
+            {
+                prompt = prompt.Insert(0, AnsiCodes.Reset.GetName());
+                d.prevcolor = Convert.ToChar(0x08);
+            }
+
+            // Clear out old color stuff
+            {
+                // TODO
+            }
+
+            color.send_to_char(buffer, ch);
         }
 
         public static void set_pager_input(DescriptorData d, string argument)
         {
-
+            d.PageCommand = argument.Trim();
         }
 
         public static bool pager_output(DescriptorData d)
@@ -363,7 +420,14 @@ namespace SmaugCS
 
         public static void bailout()
         {
-            // TODO
+            act_wiz.echo_to_all(ATTypes.AT_IMMORT, "MUD shutting down by system operator NOW!!", (int)EchoTypes.All);
+            db.shutdown_mud("MUD shutdown by system operator");
+            LogManager.Log("MUD shutdown by system operator");
+
+            Thread.Sleep(5000);
+
+            // stop game loop
+            // shutdown socket and save characters
         }
     }
 }

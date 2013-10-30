@@ -47,7 +47,7 @@ namespace SmaugCS.Commands.Social
             CharacterInstance victim = handler.get_char_world(ch, firstArgument);
             if (victim == null ||
                 (victim.IsNpc() && victim.CurrentRoom != ch.CurrentRoom)
-                || (!Macros.NOT_AUTHORIZED(ch) && Macros.NOT_AUTHORIZED(victim) && !ch.IsImmortal()))
+                || (!ch.IsNotAuthorized() && victim.IsNotAuthorized() && !ch.IsImmortal()))
             {
                 color.send_to_char("They aren't here.\r\n", ch);
                 return;
@@ -59,7 +59,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (Macros.NOT_AUTHORIZED(ch) && !Macros.NOT_AUTHORIZED(victim) && !victim.IsImmortal())
+            if (ch.IsNotAuthorized() && !victim.IsNotAuthorized() && !victim.IsImmortal())
             {
                 color.send_to_char("They can't hear you because you are not authorized.\r\n", ch);
                 return;
@@ -152,8 +152,8 @@ namespace SmaugCS.Commands.Social
             //MOBTrigger = false;
 
             comm.act(ATTypes.AT_TELL, "You tell $N '$t'", ch, argumentString, victim, ToTypes.Character);
-            PositionTypes position = victim.Position;
-            victim.Position = PositionTypes.Standing;
+            PositionTypes position = victim.CurrentPosition;
+            victim.CurrentPosition = PositionTypes.Standing;
 
             if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
             {
@@ -170,7 +170,7 @@ namespace SmaugCS.Commands.Social
 
             //MOBtrigger = true;
 
-            victim.Position = position;
+            victim.CurrentPosition = position;
             victim.ReplyTo = ch;
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))

@@ -65,7 +65,7 @@ namespace SmaugCS.Managers
 
         public static void SendToChat(CharacterInstance ch, string argument, ChannelTypes channel, string channelName)
         {
-            if (Macros.NOT_AUTHORIZED(ch))
+            if (ch.IsNotAuthorized())
             {
                 color.send_to_char("Huh?\r\n", ch);
                 return;
@@ -169,11 +169,11 @@ namespace SmaugCS.Managers
                 case ChannelTypes.AvTalk:
                 case ChannelTypes.ImmTalk:
                     {
-                        PositionTypes position = ch.Position;
+                        PositionTypes position = ch.CurrentPosition;
                         comm.act(ATTypes.AT_IMMORT,
                                  string.Format("$n{0} $t", channel == ChannelTypes.ImmTalk ? '>' : ':'), ch, argument, null,
                                  ToTypes.Character);
-                        ch.Position = position;
+                        ch.CurrentPosition = position;
                     }
                     break;
                 default:
@@ -203,11 +203,11 @@ namespace SmaugCS.Managers
                     if (och.IsIgnoring(ch) && (ch.Trust <= och.Trust))
                         continue;
 
-                    if (channel != ChannelTypes.Newbie && Macros.NOT_AUTHORIZED(och))
+                    if (channel != ChannelTypes.Newbie && och.IsNotAuthorized())
                         continue;
                     if (channel == ChannelTypes.ImmTalk && !och.IsImmortal())
                         continue;
-                    if (channel == ChannelTypes.WarTalk && Macros.NOT_AUTHORIZED(och))
+                    if (channel == ChannelTypes.WarTalk && och.IsNotAuthorized())
                         continue;
                     if (channel == ChannelTypes.AvTalk && !och.IsHero())
                         continue;
@@ -223,7 +223,7 @@ namespace SmaugCS.Managers
                     }
 
                     if (channel == ChannelTypes.Newbie &&
-                        (!och.IsImmortal() && !Macros.NOT_AUTHORIZED(och)
+                        (!och.IsImmortal() && !och.IsNotAuthorized()
                         && !(och.PlayerData.Council != null
                         && och.PlayerData.Council.Name.Equals("Newbie Council"))))
                         continue;
@@ -248,9 +248,9 @@ namespace SmaugCS.Managers
                                                              : ch.MobInvisible);
                     }
 
-                    PositionTypes position = vch.Position;
+                    PositionTypes position = vch.CurrentPosition;
                     if (channel != ChannelTypes.Shout && channel != ChannelTypes.Yell)
-                        vch.Position = PositionTypes.Standing;
+                        vch.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
                     if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
@@ -286,7 +286,7 @@ namespace SmaugCS.Managers
                         comm.act(ATTypes.AT_RACETALK, lbuf, ch, sbuf, vch, ToTypes.Victim);
                     else
                         comm.act(ATTypes.AT_GOSSIP, lbuf, ch, sbuf, vch, ToTypes.Victim);
-                    vch.Position = position;
+                    vch.CurrentPosition = position;
                 }
             }
         }
@@ -312,7 +312,7 @@ namespace SmaugCS.Managers
                 if (d.ConnectionStatus == ConnectionTypes.Playing
                     && !original.Deaf.IsSet((int)ChannelTypes.Auction)
                     && !original.CurrentRoom.Flags.IsSet((int)RoomFlags.Silence)
-                    && !Macros.NOT_AUTHORIZED(original))
+                    && !original.IsNotAuthorized())
                     comm.act(ATTypes.AT_GOSSIP, buffer, original, null, null, ToTypes.Character);
             }
         }

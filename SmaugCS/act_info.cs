@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Realm.Library.Common.Extensions;
+using SmaugCS.Commands;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Commands.Skills.Thief;
 using SmaugCS.Common;
@@ -530,9 +531,9 @@ namespace SmaugCS
                 buffer += "(Morphed) ";
 
             color.set_char_color(ATTypes.AT_PERSON, ch);
-            if ((victim.Position == victim.DefPosition && !string.IsNullOrEmpty(victim.LongDescription))
+            if ((victim.CurrentPosition == victim.CurrentDefensivePosition && !string.IsNullOrEmpty(victim.LongDescription))
                 || (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null
-                    && victim.CurrentMorph.Morph.Position == (int)victim.Position))
+                    && victim.CurrentMorph.Morph.Position == (int)victim.CurrentPosition))
             {
                 if (victim.CurrentMorph != null)
                 {
@@ -570,7 +571,7 @@ namespace SmaugCS
             TimerData timer = handler.get_timerptr(ch, TimerTypes.DoFunction);
             if (timer != null)
             {
-                if (timer.Action.Value == magic.do_cast)
+                if (timer.Action.Value == Cast.do_cast)
                     buffer += " is here chanting.";
                 else if (timer.Action.Value == Dig.do_dig)
                     buffer += " is here digging.";
@@ -583,7 +584,7 @@ namespace SmaugCS
             }
             else
             {
-                switch (victim.Position)
+                switch (victim.CurrentPosition)
                 {
                     case PositionTypes.Dead:
                         buffer += " is DEAD!!";
@@ -598,15 +599,15 @@ namespace SmaugCS
                         buffer += " is laying here stunned.";
                         break;
                     case PositionTypes.Sleeping:
-                        if (ch.Position == PositionTypes.Sitting || ch.Position == PositionTypes.Resting)
+                        if (ch.CurrentPosition == PositionTypes.Sitting || ch.CurrentPosition == PositionTypes.Resting)
                             buffer += " is sleeping nearby.";
                         else
                             buffer += " is deep in slumber here.";
                         break;
                     case PositionTypes.Sitting:
-                        if (ch.Position == PositionTypes.Sitting)
+                        if (ch.CurrentPosition == PositionTypes.Sitting)
                             buffer += " sits here with you.";
-                        else if (ch.Position == PositionTypes.Resting)
+                        else if (ch.CurrentPosition == PositionTypes.Resting)
                             buffer += " sits nearby as you lay around.";
                         else
                             buffer += " sits upright here.";
@@ -670,7 +671,7 @@ namespace SmaugCS
                         {
                             buffer += "thin air???";
 
-                            victim.Position = victim.CurrentMount == null
+                            victim.CurrentPosition = victim.CurrentMount == null
                                                   ? PositionTypes.Standing
                                                   : PositionTypes.Mounted;
                         }

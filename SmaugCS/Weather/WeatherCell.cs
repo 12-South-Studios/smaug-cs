@@ -1,5 +1,6 @@
 ﻿using System;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Enums;
 
 
@@ -206,7 +207,7 @@ namespace SmaugCS.Weather
                         Climate = EnumerationExtensions.GetEnum<ClimateTypes>(proxy.ReadNumber());
                         break;
                     case 'E':
-                        if (word.Equals("End"))
+                        if (word.EqualsIgnoreCase("end"))
                             return;
                         break;
                     case 'H':
@@ -226,7 +227,7 @@ namespace SmaugCS.Weather
                         }
                         break;
                 }
-            } while (!proxy.EndOfStream && !word.Equals("End", StringComparison.OrdinalIgnoreCase));
+            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("end"));
         }
     }
 }

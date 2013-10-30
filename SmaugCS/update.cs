@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Realm.Library.Common;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -14,7 +13,7 @@ namespace SmaugCS
         public static void gain_condition(CharacterInstance ch, ConditionTypes condition, int value)
         {
             if (value == 0 || ch.IsNpc() || ch.Level >= Program.LEVEL_IMMORTAL
-                || Macros.NOT_AUTHORIZED(ch))
+                || ch.IsNotAuthorized())
                 return;
 
             int conditionValue = ch.PlayerData.GetConditionValue(condition);
@@ -45,12 +44,12 @@ namespace SmaugCS
 
         private static int ConditionFull(CharacterInstance ch, int conditionValue)
         {
-            int retcode = (int) ReturnTypes.None;
+            int retcode = (int)ReturnTypes.None;
 
             if (ch.Level < Program.LEVEL_AVATAR && ch.CurrentClass != ClassTypes.Vampire)
             {
                 color.set_char_color(ATTypes.AT_HUNGRY, ch);
-                color.send_to_char(ConditionMessageTableTable[ConditionTypes.Full][conditionValue*2], ch);
+                color.send_to_char(ConditionMessageTableTable[ConditionTypes.Full][conditionValue * 2], ch);
                 if (conditionValue < 2)
                 {
                     comm.act(ATTypes.AT_HUNGRY, ConditionMessageTableTable[ConditionTypes.Full][(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
@@ -58,7 +57,7 @@ namespace SmaugCS
                     {
                         if (!ch.IsPKill() || SmaugCS.Common.SmaugRandom.Bits(1) == 0)
                             handler.worsen_mental_state(ch, 1);
-                        retcode = fight.damage(ch, ch, 2, (int) SkillNumberTypes.Undefined);
+                        retcode = fight.damage(ch, ch, 2, (int)SkillNumberTypes.Undefined);
                     }
                     else
                     {
@@ -95,21 +94,21 @@ namespace SmaugCS
         }
         private static int ConditionBloodthirsty(CharacterInstance ch, int conditionValue)
         {
-            int retcode = (int) ReturnTypes.None;
+            int retcode = (int)ReturnTypes.None;
 
             if (ch.Level < Program.LEVEL_AVATAR)
             {
                 color.set_char_color(ATTypes.AT_BLOOD, ch);
-                color.send_to_char(ConditionMessageTableTable[ConditionTypes.Bloodthirsty][conditionValue*2], ch);
+                color.send_to_char(ConditionMessageTableTable[ConditionTypes.Bloodthirsty][conditionValue * 2], ch);
                 if (conditionValue < 2)
                 {
                     comm.act(ATTypes.AT_HUNGRY,
-                             ConditionMessageTableTable[ConditionTypes.Bloodthirsty][(conditionValue*2) + 1], ch, null,
+                             ConditionMessageTableTable[ConditionTypes.Bloodthirsty][(conditionValue * 2) + 1], ch, null,
                              null, ToTypes.Room);
                     if (conditionValue == 0)
                     {
                         handler.worsen_mental_state(ch, 2);
-                        retcode = fight.damage(ch, ch, ch.MaximumHealth/20, (int) SkillNumberTypes.Undefined);
+                        retcode = fight.damage(ch, ch, ch.MaximumHealth / 20, (int)SkillNumberTypes.Undefined);
                     }
                     else
                         handler.worsen_mental_state(ch, 1);
@@ -168,7 +167,7 @@ namespace SmaugCS
                         "You are sober.\r\n",
                         "You are feeling a little less light headed.\r\n"
                     }}
-            }; 
+            };
 
         public static void mobile_update()
         {

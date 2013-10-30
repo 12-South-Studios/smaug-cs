@@ -1,6 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
 
@@ -71,7 +71,7 @@ namespace SmaugCS.Weather
                     string[] words = line.Split(new[] { ',' });
 
                     HemisphereTypes hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(words[0]
-                        .Equals("NORTH", StringComparison.OrdinalIgnoreCase) ? 0 : 1);
+                        .EqualsIgnoreCase("north") ? 0 : 1);
                     SeasonTypes season = EnumerationExtensions.GetEnum<SeasonTypes>(words[1]);
                     ClimateTypes climate = EnumerationExtensions.GetEnum<ClimateTypes>(words[2]);
 

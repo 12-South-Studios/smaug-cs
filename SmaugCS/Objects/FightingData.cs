@@ -4,8 +4,8 @@
     {
         public CharacterInstance Who { get; set; }
         public int Experience { get; set; }
-        public short align { get; set; }
-        public short Duration { get; set; }
-        public short timeskilled { get; set; }
+        public int Alignment { get; set; }
+        public int Duration { get; set; }
+        public int TimesKilled { get; set; }
     }
 }

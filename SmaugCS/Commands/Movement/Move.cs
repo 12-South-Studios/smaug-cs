@@ -16,14 +16,14 @@ namespace SmaugCS.Commands.Movement
 
             if (!ch.IsNpc())
             {
-                if (ch.IsDrunk(2) && ch.Position != PositionTypes.Shove
-                    && ch.Position != PositionTypes.Drag)
+                if (ch.IsDrunk(2) && ch.CurrentPosition != PositionTypes.Shove
+                    && ch.CurrentPosition != PositionTypes.Drag)
                     drunk = true;
 
                 if (ch.PlayerData.Nuisance != null
                     && ch.PlayerData.Nuisance.Flags > 8
-                    && ch.Position != PositionTypes.Shove
-                    && ch.Position != PositionTypes.Drag
+                    && ch.CurrentPosition != PositionTypes.Shove
+                    && ch.CurrentPosition != PositionTypes.Drag
                     && SmaugCS.Common.SmaugRandom.Percent() > (ch.PlayerData.Nuisance.Flags * ch.PlayerData.Nuisance.Power))
                     nuisance = true;
             }
@@ -54,7 +54,7 @@ namespace SmaugCS.Commands.Movement
 
             if (exit == null || exit.Destination == null)
             {
-                if (drunk && ch.Position != PositionTypes.Mounted
+                if (drunk && ch.CurrentPosition != PositionTypes.Mounted
                     && ch.CurrentRoom.SectorType != SectorTypes.ShallowWater
                     && ch.CurrentRoom.SectorType != SectorTypes.DeepWater
                     && ch.CurrentRoom.SectorType != SectorTypes.Underwater
@@ -69,7 +69,7 @@ namespace SmaugCS.Commands.Movement
                         case 3:
                             comm.act(ATTypes.AT_ACTION, "In your drunken stupor you trip over your own feet and tumble to the ground.", ch, null, null, ToTypes.Character);
                             comm.act(ATTypes.AT_ACTION, "$n stumbles drunkenly, trips and tumbles to the ground.", ch, null, null, ToTypes.Room);
-                            ch.Position = PositionTypes.Resting;
+                            ch.CurrentPosition = PositionTypes.Resting;
                             break;
                         case 4:
                             comm.act(ATTypes.AT_SOCIAL, "You utter a string of slurred obscenities.", ch, null, null, ToTypes.Character);
@@ -78,7 +78,7 @@ namespace SmaugCS.Commands.Movement
                             comm.act(ATTypes.AT_ACTION, "$n drunkenly staggers into something.", ch, null, null, ToTypes.Room);
                             comm.act(ATTypes.AT_SOCIAL, "$n utters a string of slurred obscenities: @*&^%@*&!", ch, null, null, ToTypes.Room);
                             comm.act(ATTypes.AT_ACTION, "$n topples to the ground with a thud.", ch, null, null, ToTypes.Room);
-                            ch.Position = PositionTypes.Incapacitated;
+                            ch.CurrentPosition = PositionTypes.Incapacitated;
                             break;
                     }
                 }
@@ -280,9 +280,9 @@ namespace SmaugCS.Commands.Movement
 
                 if (ch.CurrentMount != null)
                 {
-                    if (PositionMoveMessage.ContainsKey(ch.CurrentMount.Position))
+                    if (PositionMoveMessage.ContainsKey(ch.CurrentMount.CurrentPosition))
                     {
-                        color.send_to_char(PositionMoveMessage[ch.CurrentMount.Position], ch);
+                        color.send_to_char(PositionMoveMessage[ch.CurrentMount.CurrentPosition], ch);
                         return ReturnTypes.None;
                     }
 

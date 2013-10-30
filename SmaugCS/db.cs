@@ -6,7 +6,6 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
-using SmaugCS.Exceptions;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -164,7 +163,7 @@ namespace SmaugCS
         }
         public static RaceData GetRace(int id)
         {
-            return RACES.FirstOrDefault(x => (int) x.Type == id);
+            return RACES.FirstOrDefault(x => (int)x.Type == id);
         }
         #endregion
 
@@ -181,7 +180,7 @@ namespace SmaugCS
         }
         public static ClassData GetClass(int id)
         {
-            return CLASSES.FirstOrDefault(x => (int) x.Type == id);
+            return CLASSES.FirstOrDefault(x => (int)x.Type == id);
         }
         #endregion
 
@@ -234,12 +233,18 @@ namespace SmaugCS
 
 
         public static List<RelationData> RELATIONS = new List<RelationData>();
+
         public static List<HolidayData> HOLIDAYS = new List<HolidayData>();
+        public static HolidayData GetHoliday(int month, int day)
+        {
+            return HOLIDAYS.FirstOrDefault(holiday => month + 1 == holiday.Month
+                && day + 1 == holiday.Day);
+        }
 
         public static List<DeityData> DEITIES = new List<DeityData>();
         public static DeityData GetDeity(string name)
         {
-            return DEITIES.Single(x => x.Name.EqualsIgnoreCase(name);
+            return DEITIES.Single(x => x.Name.EqualsIgnoreCase(name));
         }
 
 
@@ -576,7 +581,7 @@ namespace SmaugCS
             ch.AffectedBy.ClearBits();
             ch.logon = DateTime.Now;
             ch.ArmorClass = 100;
-            ch.Position = PositionTypes.Standing;
+            ch.CurrentPosition = PositionTypes.Standing;
             ch.Practice = 0;
             ch.CurrentHealth = ch.MaximumHealth = 20;
             ch.CurrentMana = ch.MaximumMana = 100;
@@ -631,9 +636,7 @@ namespace SmaugCS
             ch.StopFearing();
             fight.free_fight(ch);
 
-            NoteData note;
-            while ((note = ch.NoteList.First()) != null)
-                boards.free_note(note);
+            ch.NoteList.Clear();
 
             foreach (VariableData vd in ch.Variables)
                 variables.delete_variable(vd);
@@ -1272,7 +1275,7 @@ namespace SmaugCS
             string path = SystemConstants.GetSystemFile(SystemFileTypes.LoginMsg);
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
             {
-                foreach(LoginMessageData lmsg in LOGIN_MESSAGES)
+                foreach (LoginMessageData lmsg in LOGIN_MESSAGES)
                     lmsg.Save(proxy);
 
                 proxy.Write("#END\n");

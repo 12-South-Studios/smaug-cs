@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
@@ -17,7 +18,7 @@ namespace SmaugCS.Weather
         public List<string> StarMap { get; private set; }
         public List<string> SunMap { get; private set; }
         public List<string> MoonMap { get; private set; }
- 
+
         public int Width { get; private set; }
         public int Height { get; private set; }
 
@@ -542,12 +543,12 @@ namespace SmaugCS.Weather
                     }
 
                     string word = proxy.ReadNextWord();
-                    if (word.Equals("CELL", StringComparison.OrdinalIgnoreCase))
+                    if (word.EqualsIgnoreCase("cell"))
                     {
                         WeatherCell cell = GetCellFromMap(proxy.ReadNumber(), proxy.ReadNumber());
                         cell.Load(proxy);
                     }
-                    else if (word.Equals("END", StringComparison.OrdinalIgnoreCase))
+                    else if (word.EqualsIgnoreCase("end"))
                         break;
                     else
                         LogManager.Bug("No match for %s", word);

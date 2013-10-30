@@ -29,16 +29,16 @@ namespace SmaugCS
 
         public static bool check_pos(CharacterInstance ch, int position)
         {
-            if (ch.IsNpc() && (int) ch.Position > 3)
+            if (ch.IsNpc() && (int) ch.CurrentPosition > 3)
                 return true;
 
-            if ((int) ch.Position < position)
+            if ((int) ch.CurrentPosition < position)
             {
-                KeyValuePair<PositionTypes, string> kvp = PositionMap.FirstOrDefault(x => x.Key == ch.Position);
-                bool fighting = (ch.Position == PositionTypes.Fighting
-                                 || ch.Position == PositionTypes.Defensive
-                                 || ch.Position == PositionTypes.Aggressive
-                                 || ch.Position == PositionTypes.Berserk);
+                KeyValuePair<PositionTypes, string> kvp = PositionMap.FirstOrDefault(x => x.Key == ch.CurrentPosition);
+                bool fighting = (ch.CurrentPosition == PositionTypes.Fighting
+                                 || ch.CurrentPosition == PositionTypes.Defensive
+                                 || ch.CurrentPosition == PositionTypes.Aggressive
+                                 || ch.CurrentPosition == PositionTypes.Berserk);
 
                 if (fighting && position <= (int)PositionTypes.Evasive)
                     color.send_to_char(FightingMessage, ch);
@@ -83,7 +83,7 @@ namespace SmaugCS
                 return true;
             }
 
-            switch (ch.Position)
+            switch (ch.CurrentPosition)
             {
                 case PositionTypes.Dead:
                     color.send_to_char("Lie still; you are DEAD.\r\n", ch);
