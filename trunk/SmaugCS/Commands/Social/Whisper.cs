@@ -96,8 +96,8 @@ namespace SmaugCS.Commands.Social
             }
 
             comm.act(ATTypes.AT_WHISPER, "You whisper to $N '$t'", ch, argumentString, victim, ToTypes.Character);
-            PositionTypes position = victim.Position;
-            victim.Position = PositionTypes.Standing;
+            PositionTypes position = victim.CurrentPosition;
+            victim.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
             if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))

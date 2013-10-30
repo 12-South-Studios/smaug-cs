@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Realm.Library.Common.Objects;
-using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Config;
 using SmaugCS.Database;
@@ -120,7 +119,8 @@ namespace SmaugCS.Managers
             // TODO Save equipment is inside each object now
 
             LogManager.Log("Setting time and weather.");
-            TimeInfoData timeInfo = calendar.load_timedata();
+            TimeLoader timeLoader = new TimeLoader();
+            TimeInfoData timeInfo = timeLoader.LoadTimeInfo();
             if (timeInfo != null)
             {
                 db.GameTime = timeInfo;
@@ -148,7 +148,8 @@ namespace SmaugCS.Managers
             }
 
             LogManager.Log("Loading holiday chart...");
-            calendar.load_holidays();
+            HolidayLoader hLoader = new HolidayLoader();
+            hLoader.Load();
 
             // TODO DNS Cache
 

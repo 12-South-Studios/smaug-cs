@@ -42,11 +42,11 @@ namespace SmaugCS
 
         public static bool spec_breath_any(CharacterInstance ch)
         {
-            if (ch.Position != PositionTypes.Fighting
-                && ch.Position != PositionTypes.Evasive
-                && ch.Position != PositionTypes.Defensive
-                && ch.Position != PositionTypes.Aggressive
-                && ch.Position != PositionTypes.Berserk)
+            if (ch.CurrentPosition != PositionTypes.Fighting
+                && ch.CurrentPosition != PositionTypes.Evasive
+                && ch.CurrentPosition != PositionTypes.Defensive
+                && ch.CurrentPosition != PositionTypes.Aggressive
+                && ch.CurrentPosition != PositionTypes.Berserk)
                 return false;
 
             switch (SmaugCS.Common.SmaugRandom.Bits(3))

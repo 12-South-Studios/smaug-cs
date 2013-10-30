@@ -231,16 +231,7 @@ namespace SmaugCS
             if (string.IsNullOrEmpty(arg))
                 return null;
 
-            int door = 0;
-            foreach (string key in DoorDirectionMap.Keys)
-            {
-                string[] words = key.Split(';');
-                if (words.Any(x => x.Equals(arg, StringComparison.OrdinalIgnoreCase)))
-                {
-                    door = DoorDirectionMap[key];
-                    break;
-                }
-            }
+            int door = (from key in DoorDirectionMap.Keys let words = key.Split(';') where words.Any(x => x.EqualsIgnoreCase(arg)) select DoorDirectionMap[key]).FirstOrDefault();
 
             if (door == 0)
             {

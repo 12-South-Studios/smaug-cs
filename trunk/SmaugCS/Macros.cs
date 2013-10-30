@@ -158,17 +158,6 @@ namespace SmaugCS
             return IS_VALID_SN(dt) && SPELL_DAMAGE(db.SKILLS[dt]) == (int)SpellDamageTypes.Poison;
         }
 
-        public static bool NOT_AUTHORIZED(CharacterInstance ch)
-        {
-            return !ch.IsNpc() && ch.PlayerData.AuthState <= 3 &&
-                   ch.PlayerData.Flags.IsSet((int)PCFlags.Unauthorized);
-        }
-
-        public static bool IS_WAITING_FOR_AUTH(CharacterInstance ch)
-        {
-            return !ch.IsNpc() && ch.Descriptor != null && ch.PlayerData.AuthState == 1
-                   && ch.PlayerData.Flags.IsSet((int)PCFlags.Unauthorized);
-        }
         public static bool CAN_WEAR(ObjectInstance obj, int part)
         {
             return obj.WearFlags.IsSet(part);

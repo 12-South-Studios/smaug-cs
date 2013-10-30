@@ -244,7 +244,7 @@ namespace SmaugCS
             {
                 d.PagePoint = d.PageBuffer;
                 d.PageTop = 0;
-                d.PageCommand = '\0';
+                d.PageCommand = "";
             }
             if (d.PageTop == 0 && !d.fcommand)
             {

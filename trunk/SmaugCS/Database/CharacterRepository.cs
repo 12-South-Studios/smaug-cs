@@ -59,8 +59,8 @@ namespace SmaugCS.Database
 
             mob.CurrentCoin = parent.Gold;
             mob.Experience = parent.Experience;
-            mob.Position = parent.Position;
-            mob.DefPosition = parent.DefPosition;
+            mob.CurrentPosition = parent.Position;
+            mob.CurrentDefensivePosition = parent.DefPosition;
             mob.BareDice = new DiceData { NumberOf = parent.DamageDice.NumberOf, SizeOf = parent.DamageDice.SizeOf };
             mob.ToHitArmorClass0 = parent.GetStatistic(StatisticTypes.ToHitArmorClass0);
             mob.HitRoll = new DiceData { Bonus = parent.HitDice.Bonus };

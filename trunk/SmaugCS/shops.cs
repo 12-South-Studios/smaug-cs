@@ -74,13 +74,13 @@ namespace SmaugCS
                 }
             }
 
-            if (keeper.Position == PositionTypes.Sleeping)
+            if (keeper.CurrentPosition == PositionTypes.Sleeping)
             {
                 color.send_to_char("While they're asleep?\r\n", ch);
                 return null;
             }
 
-            if ((int)keeper.Position < (int)PositionTypes.Sleeping)
+            if ((int)keeper.CurrentPosition < (int)PositionTypes.Sleeping)
             {
                 color.send_to_char("I don't think they can hear you...\r\n", ch);
                 return null;

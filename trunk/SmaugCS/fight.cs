@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
+using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Organizations;
 
 namespace SmaugCS
 {
@@ -38,7 +43,7 @@ namespace SmaugCS
                 handler.extract_obj(content);
             }
 
-            if (ch.CurrentCoin - oldgold > 1 && ch.Position > PositionTypes.Sleeping)
+            if (ch.CurrentCoin - oldgold > 1 && ch.CurrentPosition > PositionTypes.Sleeping)
                 Split.do_split(ch, string.Format("{0}", ch.CurrentCoin - oldgold));
 
             return true;
@@ -143,8 +148,8 @@ namespace SmaugCS
                                 color.send_to_char("\r\n", ch);
                             }
                         }
-                        
-                        if ((int) paf.Type == db.LookupSkill("possess"))
+
+                        if ((int)paf.Type == db.LookupSkill("possess"))
                         {
                             ch.Descriptor.Character = ch.Descriptor.Original;
                             ch.Descriptor.Original = null;
@@ -177,7 +182,7 @@ namespace SmaugCS
                 }
                 else if (ch.IsAwake() && ch.CurrentRoom == victim.CurrentRoom)
                     retCode = multi_hit(ch, victim, Program.TYPE_UNDEFINED);
-                else 
+                else
                     stop_fighting(ch, false);
 
                 if (ch.CharDied())
@@ -185,7 +190,7 @@ namespace SmaugCS
 
                 if (retCode == ReturnTypes.CharacterDied)
                     continue;
-                
+
                 victim = who_fighting(ch);
                 if (victim == null)
                     continue;
@@ -207,10 +212,10 @@ namespace SmaugCS
                     if (!ch.Attacks.IsEmpty())
                     {
                         int attacktype = -1;
-                        if (30 + (ch.Level/4) >= SmaugRandom.Percent())
+                        if (30 + (ch.Level / 4) >= SmaugRandom.Percent())
                         {
                             int cnt = 0;
-                            for (;;)
+                            for (; ; )
                             {
                                 if (cnt++ > 10)
                                 {
@@ -226,19 +231,19 @@ namespace SmaugCS
                             switch (atkType)
                             {
                                 case AttackTypes.Bash:
-                                    //Bash.do_bash(ch, "");
+                                    Bash.do_bash(ch, "");
                                     retCode = ReturnTypes.None;
                                     break;
                                 case AttackTypes.Stun:
-                                    //Stun.do_stun(ch, "");
+                                    Stun.do_stun(ch, "");
                                     retCode = ReturnTypes.None;
                                     break;
                                 case AttackTypes.Gouge:
-                                    //Gouge.do_gouge(ch, "");
+                                    Gouge.do_gouge(ch, "");
                                     retCode = ReturnTypes.None;
                                     break;
                                 case AttackTypes.Feed:
-                                    //Feed.do_feed(ch, "");
+                                    Feed.do_feed(ch, "");
                                     retCode = ReturnTypes.None;
                                     break;
                                 case AttackTypes.Drain:
@@ -307,18 +312,56 @@ namespace SmaugCS
             return 0;
         }
 
-        public static int weapon_prof_bonus_check(CharacterInstance ch, ObjectInstance wield, int gsn_ptr)
+        public static Tuple<int, int> weapon_prof_bonus_check(CharacterInstance ch, ObjectInstance wield)
         {
             if (ch.IsNpc() && ch.Level <= 5 && wield == null)
-                return 0;
+                return new Tuple<int, int>(0, -1);
 
-            /*switch (wield.Value[3])
+            int bonus = 0;
+            int sn = -1;
+
+            switch (EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]))
             {
+                case DamageTypes.Hit:
+                case DamageTypes.Suction:
+                case DamageTypes.Bite:
+                case DamageTypes.Blast:
+                    sn = db.LookupSkill("pugilism");
+                    break;
+                case DamageTypes.Slash:
+                case DamageTypes.Slice:
+                    sn = db.LookupSkill("long blades");
+                    break;
+                case DamageTypes.Pierce:
+                case DamageTypes.Stab:
+                    sn = db.LookupSkill("short blades");
+                    break;
+                case DamageTypes.Whip:
+                    sn = db.LookupSkill("flexible arms");
+                    break;
+                case DamageTypes.Claw:
+                    sn = db.LookupSkill("talonous arms");
+                    break;
+                case DamageTypes.Pound:
+                case DamageTypes.Crush:
+                    sn = db.LookupSkill("bludgeons");
+                    break;
+                case DamageTypes.Bolt:
+                case DamageTypes.Arrow:
+                case DamageTypes.Dart:
+                case DamageTypes.Stone:
+                case DamageTypes.Pea:
+                    sn = db.LookupSkill("missile weapons");
+                    break;
+            }
 
-            }*/
+            if (sn != -1)
+                bonus = (Macros.LEARNED(ch, sn) - 50) / 10;
 
+            if (ch.IsDevoted())
+                bonus -= ch.PlayerData.Favor / -400;
 
-            return 0;
+            return new Tuple<int, int>(bonus, sn);
         }
 
         public static int off_shld_lvl(CharacterInstance ch, CharacterInstance victim)
@@ -327,8 +370,8 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                lvl = SmaugCS.Common.Check.Maximum(1, ch.Level - 10 / 2);
-                if (SmaugCS.Common.SmaugRandom.Percent() + (victim.Level - lvl) < 40)
+                lvl = Check.Maximum(1, ch.Level - 10 / 2);
+                if (SmaugRandom.Percent() + (victim.Level - lvl) < 40)
                 {
                     if (ch.CanPKill() && victim.CanPKill())
                         return ch.Level;
@@ -338,13 +381,366 @@ namespace SmaugCS
             }
 
             lvl = ch.Level / 2;
-            return SmaugCS.Common.SmaugRandom.Percent() + (victim.Level - lvl) < 70 ? lvl : 0;
+            return SmaugRandom.Percent() + (victim.Level - lvl) < 70 ? lvl : 0;
         }
 
-        public static int one_hit(CharacterInstance ch, CharacterInstance victim, int dt)
+        private static bool DualFlip = false;
+        public static ReturnTypes one_hit(CharacterInstance ch, CharacterInstance victim, int dt)
         {
-            // TODO
+            int damageType = dt;
+            ReturnTypes retcode = ReturnTypes.None;
+
+            // Can't beat a dead character and guard against room-leavings
+            if (victim.CurrentPosition == PositionTypes.Dead
+                || ch.CurrentRoom != victim.CurrentRoom)
+                return ReturnTypes.CharacterDied;
+
+            // Figure out the weapon doing the damage
+            ObjectInstance wield = ch.GetEquippedItem(WearLocations.DualWield);
+            if (wield != null)
+            {
+                if (!DualFlip)
+                {
+                    DualFlip = true;
+                    wield = ch.GetEquippedItem(WearLocations.Wield);
+                }
+                else
+                    DualFlip = false;
+            }
+            else
+                wield = ch.GetEquippedItem(WearLocations.Wield);
+
+            Tuple<int, int> profBonus = null;
+            if (wield != null)
+                profBonus = weapon_prof_bonus_check(ch, wield);
+
+            int proficiencyBonus = profBonus != null ? profBonus.Item1 : 0;
+            int sn = profBonus != null ? profBonus.Item2 : -1;
+
+            if (ch.CurrentFighting != null
+                && damageType == Program.TYPE_UNDEFINED
+                && ch.IsNpc()
+                && !ch.Attacks.IsEmpty())
+            {
+                int cnt = 0;
+                int attacktype = 0;
+                for (; ; )
+                {
+                    attacktype = SmaugRandom.Between(0, 6);
+                    if (ch.Attacks.IsSet(attacktype))
+                        break;
+                    if (cnt++ > 16)
+                    {
+                        attacktype = -1;
+                        break;
+                    }
+                }
+
+                if (attacktype == (int)AttackTypes.Backstab)
+                    attacktype = -1;
+                if (wield != null && (SmaugRandom.Percent() > 25))
+                    attacktype = -1;
+                if (wield == null && (SmaugRandom.Percent() > 50))
+                    attacktype = -1;
+
+                retcode = ReturnTypes.None;
+                switch (attacktype)
+                {
+                    case (int)AttackTypes.Bite:
+                        Bite.do_bite(ch, "");
+                        retcode = handler.GlobalReturnCode;
+                        break;
+                    case (int)AttackTypes.Claws:
+                        Claw.do_claw(ch, "");
+                        retcode = handler.GlobalReturnCode;
+                        break;
+                    case (int)AttackTypes.Tail:
+                        Tail.do_tail(ch, "");
+                        retcode = handler.GlobalReturnCode;
+                        break;
+                    case (int)AttackTypes.Sting:
+                        Sting.do_sting(ch, "");
+                        retcode = handler.GlobalReturnCode;
+                        break;
+                    case (int)AttackTypes.Punch:
+                        Punch.do_punch(ch, "");
+                        retcode = handler.GlobalReturnCode;
+                        break;
+                    case (int)AttackTypes.Kick:
+                        Kick.do_kick(ch, "");
+                        retcode = handler.GlobalReturnCode;
+                        break;
+                    case (int)AttackTypes.Trip:
+                        attacktype = 0;
+                        break;
+                }
+
+                if (attacktype >= 0)
+                    return retcode;
+            }
+
+            if (damageType == Program.TYPE_UNDEFINED)
+            {
+                damageType = (int)DamageTypes.Hit;
+                if (wield != null && wield.ItemType == ItemTypes.Weapon)
+                    damageType += wield.Value[3];
+            }
+
+            // Calculate thac0 vs armor
+            int thac0_00 = 0, thac0_32 = 0;
+
+            if (ch.IsNpc())
+            {
+                thac0_00 = ch.ToHitArmorClass0;
+                thac0_32 = thac0_00;
+            }
+            else
+            {
+                thac0_00 = db.GetClass(ch.CurrentClass).ToHitArmorClass0;
+                thac0_32 = db.GetClass(ch.CurrentClass).ToHitArmorClass32;
+            }
+            thac0_00 = ch.Level.Interpolate(thac0_00, thac0_32) - ch.GetHitroll();
+            int victimArmorClass = Check.Maximum(-19, victim.GetArmorClass() / 10);
+
+            // if you can't see what;s coming
+            if (wield != null && !handler.can_see_obj(victim, wield))
+                victimArmorClass += 1;
+            if (!handler.can_see(ch, victim))
+                victimArmorClass -= 4;
+
+            // Learning between combatants. Takes the intelligence difference, 
+            // and multiplies by the times killed to make up a learning bonus 
+            // given to whoever is more intelligent
+            if (ch.CurrentFighting != null && ch.CurrentFighting.Who == victim)
+            {
+                if (ch.CurrentFighting.TimesKilled > 0)
+                {
+                    int intDiff = ch.CurrentIntelligence - victim.CurrentIntelligence;
+                    if (intDiff != 0)
+                        victimArmorClass += (intDiff * ch.CurrentFighting.TimesKilled) / 10;
+                }
+            }
+
+            // Weapon proficiency bonus
+            victimArmorClass += proficiencyBonus;
+
+            int diceroll = 0;
+            while ((diceroll = SmaugRandom.Bits(5)) >= 20)
+                ;
+
+            if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_00 - victimArmorClass))
+            {
+                // Miss!
+                if (sn != -1)
+                    skills.learn_from_failure(ch, sn);
+                fight.damage(ch, victim, 0, damageType);
+                // TODO Tail_chain?
+                return ReturnTypes.None;
+            }
+
+            // HIt!
+            int damage = 0;
+            if (wield == null)
+                damage = SmaugRandom.RollDice(ch.BareDice.NumberOf, ch.BareDice.SizeOf) + ch.DamageRoll.Bonus;
+            else
+                damage = SmaugRandom.Between(wield.Value[1], wield.Value[2]);
+
+            // Bonuses
+            damage += ch.GetDamroll();
+            if (proficiencyBonus > 0)
+                damage += proficiencyBonus / 4;
+
+            // CAlculate damage modifiers from victim's fighting style
+            damage = ModifyDamageByFightingStyle(victim, damage);
+
+            // Calculate damage modifiers from attacker's fighting style
+            damage = ModifyDamageByFightingStyle(ch, damage);
+
+            if (!ch.IsNpc() && ch.PlayerData.Learned[db.LookupSkill("enhanced damage")] > 0)
+            {
+                damage += damage * Macros.LEARNED(ch, db.LookupSkill("enhanced damage") / 120);
+                skills.learn_from_success(ch, db.LookupSkill("enhanced damage"));
+            }
+
+            if (!victim.IsAwake())
+                damage *= 2;
+            if (dt == db.LookupSkill("backstab"))
+                damage *= (2 + Check.Range(2, ch.Level - (victim.Level / 4), 30) / 8);
+            if (dt == db.LookupSkill("circle"))
+                damage *= (2 + Check.Range(2, ch.Level - (victim.Level / 4), 30) / 16);
+            if (damage <= 0)
+                damage = 1;
+
+            int plusRIS = 0;
+            if (wield != null)
+            {
+                damage = Macros.IS_OBJ_STAT(wield, (int)ItemExtraFlags.Magical)
+                    ? ris_damage(victim, damage, (int)ResistanceTypes.Magic)
+                    : ris_damage(victim, damage, (int)ResistanceTypes.NonMagic);
+
+                // Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
+                plusRIS = wield.GetHitRoll();
+            }
+            else
+                damage = ris_damage(victim, damage, (int)ResistanceTypes.NonMagic);
+
+            // Check for RIS_PLUS
+            if (damage > 0)
+            {
+                if (plusRIS > 0)
+                    plusRIS = (int)ResistanceTypes.Plus1 << Check.Minimum(plusRIS, 7);
+
+                int imm = -1, res = -1, sus = 1;
+
+                // find the high resistance
+                for (int x = (int)ResistanceTypes.Plus1; x <= (int)ResistanceTypes.Plus6; x <<= 1)
+                {
+                    if (victim.Immunity.IsSet(x))
+                        imm = x;
+                    if (victim.Resistance.IsSet(x))
+                        res = x;
+                    if (victim.Susceptibility.IsSet(x))
+                        sus = x;
+                }
+
+                int mod = 10;
+                if (imm >= plusRIS)
+                    mod -= 10;
+                if (res >= plusRIS)
+                    mod -= 2;
+                if (sus <= plusRIS)
+                    mod += 2;
+
+                // check if immune
+                if (mod <= 0)
+                    damage = -1;
+                if (mod != 10)
+                    damage = (damage * mod) / 10;
+            }
+
+            if (sn != -1)
+            {
+                if (damage > 0)
+                    skills.learn_from_success(ch, sn);
+                else
+                    skills.learn_from_failure(ch, sn);
+            }
+
+            // immune to damage
+            if (damage == -1)
+            {
+                SkillData skill = db.GetSkill(dt);
+                if (skill != null)
+                {
+                    if (!skill.ImmuneCharacterMessage.IsNullOrEmpty())
+                        comm.act(ATTypes.AT_HIT, skill.ImmuneCharacterMessage, ch, null, victim, ToTypes.Character);
+                    if (!skill.ImmuneVictimMessage.IsNullOrEmpty())
+                        comm.act(ATTypes.AT_HITME, skill.ImmuneVictimMessage, ch, null, victim, ToTypes.Victim);
+                    if (!skill.ImmuneRoomMessage.IsNullOrEmpty())
+                        comm.act(ATTypes.AT_ACTION, skill.ImmuneRoomMessage, ch, null, victim, ToTypes.Room);
+                    return ReturnTypes.None;
+                }
+
+                damage = 0;
+            }
+
+            int returnCode = fight.damage(ch, victim, damage, dt);
+            retcode = EnumerationExtensions.GetEnum<ReturnTypes>(returnCode);
+
+            if (retcode != ReturnTypes.None)
+                return retcode;
+            if (ch.CharDied())
+                return ReturnTypes.CharacterDied;
+            if (victim.CharDied())
+                return ReturnTypes.VictimDied;
+
+            retcode = ReturnTypes.None;
+            if (damage == 0)
+                return retcode;
+
+            // Weapon spell support
+            if (wield != null && !victim.Immunity.IsSet((int)ResistanceTypes.Magic)
+                && !victim.CurrentRoom.Flags.IsSet((int)RoomFlags.NoMagic))
+            {
+                foreach (AffectData aff in wield.ObjectIndex.Affects)
+                {
+                    if (aff.Location == ApplyTypes.WeaponSpell
+                        && Macros.IS_VALID_SN(aff.Modifier)
+                        && db.GetSkill(aff.Modifier).SpellFunction != null)
+                        retcode = db.GetSkill(aff.Modifier)
+                                    .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3) / 3, ch, victim);
+                }
+
+                if (retcode == ReturnTypes.SpellFailed)
+                    return ReturnTypes.None;
+                if (retcode != ReturnTypes.None && (ch.CharDied() || victim.CharDied()))
+                    return retcode;
+
+                foreach (AffectData aff in wield.Affects)
+                {
+                    if (aff.Location == ApplyTypes.WeaponSpell
+                        && Macros.IS_VALID_SN(aff.Modifier)
+                        && db.GetSkill(aff.Modifier).SpellFunction != null)
+                        retcode = db.GetSkill(aff.Modifier)
+                                    .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3) / 3, ch, victim);
+                }
+
+                if (retcode == ReturnTypes.SpellFailed)
+                    return ReturnTypes.None;
+                if (retcode != ReturnTypes.None && (ch.CharDied() || victim.CharDied()))
+                    return retcode;
+            }
+
+            // Magic shields that retaliate
+            if (victim.IsAffected(AffectedByTypes.FireShield)
+                && !ch.IsAffected(AffectedByTypes.FireShield))
+                retcode = magic.spell_smaug(db.LookupSkill("flare"), off_shld_lvl(victim, ch), victim, ch);
+            if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
+                return retcode;
+
+            if (victim.IsAffected(AffectedByTypes.IceShield)
+                && !ch.IsAffected(AffectedByTypes.IceShield))
+                retcode = magic.spell_smaug(db.LookupSkill("iceshard"), off_shld_lvl(victim, ch), victim, ch);
+            if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
+                return retcode;
+
+            if (victim.IsAffected(AffectedByTypes.ShockShield)
+            && !ch.IsAffected(AffectedByTypes.ShockShield))
+                retcode = magic.spell_smaug(db.LookupSkill("torrent"), off_shld_lvl(victim, ch), victim, ch);
+            if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
+                return retcode;
+
+            if (victim.IsAffected(AffectedByTypes.AcidMist)
+            && !ch.IsAffected(AffectedByTypes.AcidMist))
+                retcode = magic.spell_smaug(db.LookupSkill("acidshot"), off_shld_lvl(victim, ch), victim, ch);
+            if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
+                return retcode;
+
+            if (victim.IsAffected(AffectedByTypes.VenomShield)
+            && !ch.IsAffected(AffectedByTypes.VenomShield))
+                retcode = magic.spell_smaug(db.LookupSkill("venomshot"), off_shld_lvl(victim, ch), victim, ch);
+            if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
+                return retcode;
+
+            // TODO tail_chain?
             return 0;
+        }
+
+        private static int ModifyDamageByFightingStyle(CharacterInstance ch, int damage)
+        {
+            switch (ch.CurrentPosition)
+            {
+                case PositionTypes.Berserk:
+                    return (int)(damage * 1.2);
+                case PositionTypes.Aggressive:
+                    return (int)(damage * 1.1);
+                case PositionTypes.Defensive:
+                    return (int)(damage * 0.85);
+                case PositionTypes.Evasive:
+                    return (int)(damage * 0.8);
+                default:
+                    return damage;
+            }
         }
 
         public static int projectile_hit(CharacterInstance ch, CharacterInstance victim, ObjectInstance wield, ObjectInstance projectile, short dist)
@@ -382,60 +778,685 @@ namespace SmaugCS
 
         public static bool is_safe(CharacterInstance ch, CharacterInstance victim, bool show_messg)
         {
-            // TODO
+            if (who_fighting(ch) == ch)
+                return false;
+
+            if (victim.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe))
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_MAGIC, ch);
+                    color.send_to_char("A magical force prevents you from attacking.\r\n", ch);
+                }
+                return true;
+            }
+
+            if (Macros.IS_PACIFIST(ch))
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_MAGIC, ch);
+                    color.ch_printf(ch, "You are a pacifist and will not fight.\r\n");
+                }
+                return true;
+            }
+
+            if (Macros.IS_PACIFIST(victim))
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_MAGIC, ch);
+                    color.send_to_char(string.Format("{0} is a pacifist and will not fight.\r\n", victim.ShortDescription.CapitalizeFirst()), ch);
+                }
+                return true;
+            }
+
+            if (!ch.IsNpc() && ch.Level >= Program.LEVEL_IMMORTAL)
+                return false;
+
+            if (!ch.IsNpc() && !victim.IsNpc() && ch != victim
+                && victim.CurrentRoom.Area.Flags.IsSet((int)AreaFlags.NoPKill))
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_IMMORT, ch);
+                    color.send_to_char("The gods have forbidden player killing in this area.\r\n", ch);
+                }
+                return true;
+            }
+
+            if (ch.IsNpc() || victim.IsNpc())
+                return false;
+
+            if (ch.CalculateAge() < 18 || ch.Level < 5)
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_WHITE, ch);
+                    color.send_to_char("You are not yet ready, needing age or experience, if not both.\r\n", ch);
+                }
+                return true;
+            }
+            if (victim.CalculateAge() < 18 || victim.Level < 5)
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_WHITE, ch);
+                    color.send_to_char("They are yet too young to die.\r\n", ch);
+                }
+                return true;
+            }
+
+            if (ch.Level - victim.Level > 5 || victim.Level - ch.Level > 5)
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_IMMORT, ch);
+                    color.send_to_char("The gods do not allow murder when there is such a difference in level.\r\n", ch);
+                }
+                return true;
+            }
+
+            if (handler.get_timer(victim, (int)TimerTypes.PKilled) > 0)
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_GREEN, ch);
+                    color.send_to_char("That character has died within the last 5 minutes.\r\n", ch);
+                }
+                return true;
+            }
+
+            if (handler.get_timer(ch, (int)TimerTypes.PKilled) > 0)
+            {
+                if (show_messg)
+                {
+                    color.set_char_color(ATTypes.AT_GREEN, ch);
+                    color.send_to_char("You have been killed within the last 5 minutes.\r\n", ch);
+                }
+                return true;
+            }
+
             return false;
         }
 
         public static bool legal_loot(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            // Anyone can loot mobs
+            if (victim.IsNpc())
+                return true;
+
+            // Non-charmed mobs can loot anything
+            if (ch.IsNpc() && ch.Master == null)
+                return true;
+
+            // Members of diferent clans can loot too
+            if (!ch.IsNpc() && !victim.IsNpc()
+                && ch.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
+                && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly))
+                return true;
+
             return false;
         }
 
+        /// <summary>
+        /// See if an attack justifies a KILLER flag
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="victim"></param>
         public static void check_killer(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            // NPCs are fair game
+            if (victim.IsNpc())
+            {
+                if (!ch.IsNpc())
+                {
+                    int levelRatio = 0;
+
+                    levelRatio = victim.Level < 1
+                        ? Check.Range(1, ch.Level, Program.MAX_LEVEL)
+                        : Check.Range(1, ch.Level / victim.Level, Program.MAX_LEVEL);
+
+                    if (ch.PlayerData.Clan != null)
+                        ch.PlayerData.Clan.PvEKills++;
+                    ch.PlayerData.PvEKills++;
+                    ch.CurrentRoom.Area.PvEKills++;
+
+                    if (ch.PlayerData.CurrentDeity != null)
+                    {
+                        if (victim.CurrentRace == ch.PlayerData.CurrentDeity.NPCRace)
+                            deity.adjust_favor(ch, 3, levelRatio);
+                        else if (victim.CurrentRace == ch.PlayerData.CurrentDeity.NPCFoe)
+                            deity.adjust_favor(ch, 17, levelRatio);
+                        else
+                            deity.adjust_favor(ch, 2, levelRatio);
+                    }
+                }
+                return;
+            }
+
+            // if you kill yourself, nothing happens
+            if (ch == victim || ch.Level >= Program.LEVEL_IMMORTAL)
+                return;
+
+            // Any character in the arena is okay to kill
+            if (in_arena(ch))
+            {
+                if (!ch.IsNpc() && !victim.IsNpc())
+                {
+                    ch.PlayerData.PvPKills++;
+                    victim.PlayerData.PvPDeaths++;
+                }
+                return;
+            }
+
+            // killers and thieves are okay to kill 
+            if (victim.Act.IsSet((int)PlayerFlags.Killer)
+                || victim.Act.IsSet((int)PlayerFlags.Thief))
+            {
+                if (!ch.IsNpc())
+                {
+                    if (ch.PlayerData.Clan != null)
+                    {
+                        if (victim.Level < 10)
+                            ch.PlayerData.Clan.PvPKillTable[0]++;
+                        else if (victim.Level < 15)
+                            ch.PlayerData.Clan.PvPKillTable[1]++;
+                        else if (victim.Level < 20)
+                            ch.PlayerData.Clan.PvPKillTable[2]++;
+                        else if (victim.Level < 30)
+                            ch.PlayerData.Clan.PvPKillTable[3]++;
+                        else if (victim.Level < 40)
+                            ch.PlayerData.Clan.PvPKillTable[4]++;
+                        else if (victim.Level < 50)
+                            ch.PlayerData.Clan.PvPKillTable[5]++;
+                        else
+                            ch.PlayerData.Clan.PvPKillTable[6]++;
+                    }
+
+                    ch.PlayerData.PvPKills++;
+                    ch.CurrentRoom.Area.PvPKills++;
+                }
+                return;
+            }
+
+            // Clan checks
+            if (!ch.IsNpc() && !victim.IsNpc()
+                && ch.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
+                && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly))
+            {
+                if (ch.PlayerData.Clan == null
+                    || victim.PlayerData.Clan == null
+                    || (ch.PlayerData.Clan.ClanType != ClanTypes.NoKill
+                        && victim.PlayerData.Clan.ClanType != ClanTypes.NoKill
+                        && ch.PlayerData.Clan != victim.PlayerData.Clan))
+                {
+                    if (ch.PlayerData.Clan != null)
+                    {
+                        if (victim.Level < 10)
+                            ch.PlayerData.Clan.PvPKillTable[0]++;
+                        else if (victim.Level < 15)
+                            ch.PlayerData.Clan.PvPKillTable[1]++;
+                        else if (victim.Level < 20)
+                            ch.PlayerData.Clan.PvPKillTable[2]++;
+                        else if (victim.Level < 30)
+                            ch.PlayerData.Clan.PvPKillTable[3]++;
+                        else if (victim.Level < 40)
+                            ch.PlayerData.Clan.PvPKillTable[4]++;
+                        else if (victim.Level < 50)
+                            ch.PlayerData.Clan.PvPKillTable[5]++;
+                        else
+                            ch.PlayerData.Clan.PvPKillTable[6]++;
+                    }
+
+                    ch.PlayerData.PvPKills++;
+                    ch.CurrentHealth = ch.MaximumHealth;
+                    ch.CurrentMana = ch.MaximumMana;
+                    ch.CurrentMovement = ch.MaximumMovement;
+                    if (ch.PlayerData != null)
+                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = (10 + ch.Level);
+                    update_pos(victim);
+                    if (victim != ch)
+                    {
+                        comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into $n.", ch, victim.Name, null, ToTypes.Room);
+                        comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into you.", ch, victim.Name, null, ToTypes.Character);
+                    }
+
+                    if (victim.PlayerData.Clan != null)
+                    {
+                        if (victim.Level < 10)
+                            ch.PlayerData.Clan.PvPDeathTable[0]++;
+                        else if (victim.Level < 15)
+                            ch.PlayerData.Clan.PvPDeathTable[1]++;
+                        else if (victim.Level < 20)
+                            ch.PlayerData.Clan.PvPDeathTable[2]++;
+                        else if (victim.Level < 30)
+                            ch.PlayerData.Clan.PvPDeathTable[3]++;
+                        else if (victim.Level < 40)
+                            ch.PlayerData.Clan.PvPDeathTable[4]++;
+                        else if (victim.Level < 50)
+                            ch.PlayerData.Clan.PvPDeathTable[5]++;
+                        else
+                            ch.PlayerData.Clan.PvPDeathTable[6]++;
+                    }
+
+                    victim.PlayerData.PvPDeaths++;
+                    deity.adjust_favor(victim, 11, 1);
+                    deity.adjust_favor(ch, 2, 1);
+                    handler.add_timer(victim, (short)TimerTypes.PKilled, 115, null, 0);
+                    Macros.WAIT_STATE(victim, 3 * db.SystemData.PulseViolence);
+                    return;
+                }
+            }
+
+            if (ch.IsAffected(AffectedByTypes.Charm))
+            {
+                if (ch.Master == null)
+                {
+                    LogManager.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+                    // TODO: affect_strip
+                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
+                    return;
+                }
+
+                check_killer(ch.Master, victim);
+                return;
+            }
+
+            if (ch.IsNpc())
+            {
+                if (!victim.IsNpc())
+                {
+                    if (victim.PlayerData.Clan != null)
+                        victim.PlayerData.Clan.PvEDeaths++;
+                    victim.PlayerData.PvEDeaths++;
+                    victim.CurrentRoom.Area.PvEDeaths++;
+
+                    int levelRatio = Check.Range(1, ch.Level / victim.Level, Program.LEVEL_AVATAR);
+                    if (victim.PlayerData.CurrentDeity != null)
+                    {
+                        if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCRace)
+                            deity.adjust_favor(victim, 12, levelRatio);
+                        else if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCFoe)
+                            deity.adjust_favor(victim, 15, levelRatio);
+                        else
+                            deity.adjust_favor(victim, 11, levelRatio);
+                    }
+                }
+                return;
+            }
+
+            if (!ch.IsNpc())
+            {
+                if (ch.PlayerData.Clan != null)
+                    ch.PlayerData.Clan.IllegalPvPKill++;
+                ch.PlayerData.IllegalPvPKill++;
+                ch.CurrentRoom.Area.IllegalPvPKill++;
+            }
+
+            if (!victim.IsNpc())
+            {
+                if (victim.PlayerData.Clan != null)
+                {
+                    if (victim.Level < 10)
+                        ch.PlayerData.Clan.PvPDeathTable[0]++;
+                    else if (victim.Level < 15)
+                        ch.PlayerData.Clan.PvPDeathTable[1]++;
+                    else if (victim.Level < 20)
+                        ch.PlayerData.Clan.PvPDeathTable[2]++;
+                    else if (victim.Level < 30)
+                        ch.PlayerData.Clan.PvPDeathTable[3]++;
+                    else if (victim.Level < 40)
+                        ch.PlayerData.Clan.PvPDeathTable[4]++;
+                    else if (victim.Level < 50)
+                        ch.PlayerData.Clan.PvPDeathTable[5]++;
+                    else
+                        ch.PlayerData.Clan.PvPDeathTable[6]++;
+                }
+
+                victim.PlayerData.PvPDeaths++;
+                victim.CurrentRoom.Area.PvPDeaths++;
+            }
+
+            if (ch.Act.IsSet((int)PlayerFlags.Killer))
+                return;
+
+            color.set_char_color(ATTypes.AT_WHITE, ch);
+            color.send_to_char("A strange feeling grows deep inside you, and a tingle goes up your spine...\r\n", ch);
+            color.set_char_color(ATTypes.AT_IMMORT, ch);
+            color.send_to_char("A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'\r\n", ch);
+            color.set_char_color(ATTypes.AT_WHITE, ch);
+            color.send_to_char("You feel as if your soul has been revealed for all to see.\r\n", ch);
+            ch.Act.SetBit((int)PlayerFlags.Killer);
+            if (ch.Act.IsSet((int)PlayerFlags.Attacker))
+                ch.Act.RemoveBit((int)PlayerFlags.Attacker);
+            save.save_char_obj(ch);
         }
 
+        /// <summary>
+        /// See if an attack justifies an ATTACKER flag
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="victim"></param>
         public static void check_attacker(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            // NPCs, killers and theives are fair game
+            if (victim.IsNpc() || victim.Act.IsSet((int)PlayerFlags.Killer) ||
+                victim.Act.IsSet((int)PlayerFlags.Thief))
+                return;
+
+            if (!ch.IsNpc() && !victim.IsNpc() && ch.CanPKill() && victim.CanPKill())
+                return;
+
+            if (ch.IsAffected(AffectedByTypes.Charm))
+            {
+                if (ch.Master == null)
+                {
+                    LogManager.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+                    // TODO affect_strip
+                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
+                    return;
+                }
+
+                return;
+            }
+
+            if (ch.IsNpc() || ch == victim || ch.Level >= Program.LEVEL_IMMORTAL ||
+                ch.Act.IsSet((int)PlayerFlags.Attacker) || ch.Act.IsSet((int)PlayerFlags.Killer))
+                return;
+
+            ch.Act.SetBit((int)PlayerFlags.Attacker);
+            save.save_char_obj(ch);
         }
 
-        public static void updatE_pos(CharacterInstance victim)
+        public static void update_pos(CharacterInstance victim)
         {
-            // TODO
+            if (victim.CurrentHealth > 0)
+            {
+                if (victim.CurrentPosition <= PositionTypes.Stunned)
+                    victim.CurrentPosition = PositionTypes.Standing;
+                if (victim.IsAffected(AffectedByTypes.Paralysis))
+                    victim.CurrentPosition = PositionTypes.Stunned;
+                return;
+            }
+
+            // You're dead
+            if (victim.IsNpc() || victim.CurrentHealth <= -11)
+            {
+                if (victim.CurrentMount != null)
+                {
+                    comm.act(ATTypes.AT_ACTION, "$n falls from $N.", victim, null, victim.CurrentMount, ToTypes.Room);
+                    victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
+                    victim.CurrentMount = null;
+                }
+
+                victim.CurrentPosition = PositionTypes.Dead;
+                return;
+            }
+
+            if (victim.CurrentHealth <= -6)
+                victim.CurrentPosition = PositionTypes.Mortal;
+            else if (victim.CurrentHealth <= -3)
+                victim.CurrentPosition = PositionTypes.Incapacitated;
+            else
+                victim.CurrentPosition = PositionTypes.Stunned;
+
+            if (victim.CurrentPosition > PositionTypes.Stunned
+                && victim.IsAffected(AffectedByTypes.Paralysis))
+                victim.CurrentPosition = PositionTypes.Stunned;
+
+            if (victim.CurrentMount != null)
+            {
+                comm.act(ATTypes.AT_ACTION, "$n falls unconcious from $N.", victim, null, victim.CurrentMount, ToTypes.Room);
+                victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
+                victim.CurrentMount = null;
+            }
         }
 
         public static void set_fighting(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            if (ch.CurrentFighting != null)
+            {
+                LogManager.Bug("{0} -> {1} is already fighting {2}", ch.Name, victim.Name, ch.CurrentFighting.Who.Name);
+                return;
+            }
+
+            if (ch.IsAffected(AffectedByTypes.Sleep))
+            {
+                // TODO affect_strip
+            }
+
+            if (victim.NumberFighting > Program.MAX_FIGHT)
+            {
+                color.send_to_char("There are too many people fighting for you to join in.\r\n", ch);
+                return;
+            }
+
+            FightingData fight = new FightingData
+                                     {
+                                         Who = victim,
+                                         Experience = (int)(xp_compute(ch, victim) * 0.85),
+                                         Alignment = align_compute(ch, victim)
+                                     };
+            if (!ch.IsNpc() && victim.IsNpc())
+                fight.TimesKilled = handler.times_killed(ch, victim);
+
+            ch.NumberFighting = 1;
+            ch.CurrentFighting = fight;
+
+            if (ch.IsNpc())
+                ch.CurrentPosition = PositionTypes.Fighting;
+            else
+            {
+                switch (ch.CurrentStyle)
+                {
+                    case StyleTypes.Evasive:
+                        ch.CurrentPosition = PositionTypes.Evasive;
+                        break;
+                    case StyleTypes.Defensive:
+                        ch.CurrentPosition = PositionTypes.Defensive;
+                        break;
+                    case StyleTypes.Aggressive:
+                        ch.CurrentPosition = PositionTypes.Aggressive;
+                        break;
+                    case StyleTypes.Berserk:
+                        ch.CurrentPosition = PositionTypes.Berserk;
+                        break;
+                    default:
+                        ch.CurrentPosition = PositionTypes.Fighting;
+                        break;
+                }
+            }
+
+            victim.NumberFighting++;
+            if (victim.Switched != null && victim.Switched.IsAffected(AffectedByTypes.Possess))
+            {
+                color.send_to_char("You are disturbed!\r\n", victim.Switched);
+                Return.do_return(victim.Switched, "");
+            }
         }
 
         public static CharacterInstance who_fighting(CharacterInstance ch)
         {
-            // TODO
-            return null;
+            return ch == null || ch.CurrentFighting == null ? null : ch.CurrentFighting.Who;
         }
 
         public static void free_fight(CharacterInstance ch)
         {
-            // TODO
+            if (ch.CurrentFighting != null)
+            {
+                if (ch.CurrentFighting.Who.CharDied())
+                    --ch.CurrentFighting.Who.NumberFighting;
+            }
+
+            ch.CurrentFighting = null;
+            ch.CurrentPosition = ch.CurrentMount != null
+                ? PositionTypes.Mounted
+                : PositionTypes.Standing;
+
+            // Berserk wears off after combat
+            if (ch.IsAffected(AffectedByTypes.Berserk))
+            {
+                // TODO affect_strip
+                color.set_char_color(ATTypes.AT_WEAROFF, ch);
+                color.send_to_char(db.GetSkill("berserk").WearOffMessage, ch);
+                color.send_to_char("\r\n", ch);
+            }
         }
 
-        public static void stop_fighting(CharacterInstance ch, bool fBoth)
+        public static void stop_fighting(CharacterInstance ch, bool both)
         {
-            // TODO
+            free_fight(ch);
+            update_pos(ch);
+
+            if (!both)
+                return;
+
+            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.Values.Where(fch => who_fighting(fch) == ch))
+            {
+                free_fight(fch);
+                update_pos(fch);
+            }
         }
+
+        private static readonly List<string> DeathCries = new List<string>()
+            {
+                "You hear $n's death cry.",
+                "$n screams furiously as $e falls to the ground in a heap!",
+                "$n hits the ground ... DEAD.",
+                "$n catches $s guts in $s hands as they pour through $s fatal wound!",
+                "$n splatters blood on your armor.",
+                "$n gasps $s last breath and blood spurts out of $s mouth and ears.",
+                "You hear something's death cry.",
+                "You hear someone's death cry."
+            };
 
         public static void death_cry(CharacterInstance ch)
         {
-            // TODO
+            string msg = string.Empty;
+            int vnum = 0;
+
+            int random = SmaugRandom.Between(0, 5);
+            if (random >= 0 && random <= 4)
+                msg = DeathCries[random + 1];
+            else if (random == 5)
+            {
+                int shift = SmaugRandom.Between(0, 31);
+                int cindex = 1 << shift;
+
+                for (int i = 0; i < 32 && ch.ExtraFlags > 0; i++)
+                {
+                    if (ch.HasBodyPart(cindex))
+                    {
+                        msg = GameConstants.PartMessages[shift];
+                        vnum = GameConstants.PartVnums[shift];
+                        break;
+                    }
+                    shift = SmaugRandom.Between(0, 31);
+                    cindex = 1 << shift;
+                }
+
+                if (msg.IsNullOrEmpty())
+                    msg = DeathCries[0];
+            }
+            else
+                msg = DeathCries[0];
+
+            comm.act(ATTypes.AT_CARNAGE, msg, ch, null, null, ToTypes.Room);
+
+            if (vnum > 0)
+            {
+                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum);
+                if (template == null)
+                {
+                    LogManager.Bug("Invalid vnum");
+                    return;
+                }
+
+                string name = ch.IsNpc() ? ch.ShortDescription : ch.Name;
+                ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(template, 0);
+                obj.Timer = SmaugRandom.Between(4, 7);
+                if (ch.IsAffected(AffectedByTypes.Poison))
+                    obj.Value[3] = 10;
+
+                obj.ShortDescription = string.Format(obj.ShortDescription, name);
+                obj.Description = string.Format(obj.Description, name);
+                ch.CurrentRoom.ToRoom(obj);
+            }
+
+            msg = ch.IsNpc()
+                      ? DeathCries[6]
+                      : DeathCries[7];
+
+            RoomTemplate prevRoom = ch.CurrentRoom;
+            foreach (ExitData exit in prevRoom.Exits.Where(exit => exit.Destination != null && exit.Destination != prevRoom))
+            {
+                ch.CurrentRoom = exit.Destination;
+                comm.act(ATTypes.AT_CARNAGE, msg, ch, null, null, ToTypes.Room);
+            }
+
+            ch.CurrentRoom = prevRoom;
         }
 
         public static ObjectInstance raw_kill(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            if (victim.IsNotAuthorized())
+            {
+                LogManager.Bug("Killing unauthorized");
+                return null;
+            }
+
+            stop_fighting(victim, true);
+
+            if (victim.CurrentMorph != null)
+            {
+                // do_unmorph_char(victim);
+                return raw_kill(ch, victim);
+            }
+
+            mud_prog.mprog_death_trigger(ch, victim);
+            if (victim.CharDied())
+                return null;
+
+            mud_prog.rprog_death_trigger(victim);
+            if (victim.CharDied())
+                return null;
+
+            ObjectInstance corpse = makeobjs.make_corpse(victim, ch);
+            if (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor
+                || victim.CurrentRoom.SectorType == SectorTypes.Underwater
+                || victim.CurrentRoom.SectorType == SectorTypes.ShallowWater
+                || victim.CurrentRoom.SectorType == SectorTypes.DeepWater)
+                comm.act(ATTypes.AT_BLOOD, "$n's blood slowly clouds the surrounding water.", victim, null, null, ToTypes.Room);
+            else if (victim.CurrentRoom.SectorType == SectorTypes.Air)
+                comm.act(ATTypes.AT_BLOOD, "$n's blood sprays wildly through the air.", victim, null, null, ToTypes.Room);
+            else
+                makeobjs.make_blood(victim);
+
+            if (victim.IsNpc())
+            {
+                victim.MobIndex.TimesKilled++;
+                handler.extract_char(victim, true);
+                victim = null;
+                return corpse;
+            }
+
+            color.set_char_color(ATTypes.AT_DIEMSG, victim);
+            if (victim.PlayerData.PvEDeaths + victim.PlayerData.PvPDeaths < 3)
+            {
+                // do_help(victim, "new_death");
+            }
+            else
+            {
+                //do_help(victim, "_DIEMSG_");
+            }
+
+            handler.extract_char(victim, false);
+
+            while (victim.Affects.Count > 0)
+                victim.RemoveAffect(victim.Affects.First());
+
+
             return null;
         }
 
@@ -466,21 +1487,6 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void do_kill(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_murde(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_murder(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
         public static bool in_arena(CharacterInstance ch)
         {
             // TODO
@@ -491,21 +1497,6 @@ namespace SmaugCS
         {
             // TODO
             return false;
-        }
-
-        public static void do_flee(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_sla(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_slay(CharacterInstance ch, string argument)
-        {
-            // TODO
         }
     }
 }

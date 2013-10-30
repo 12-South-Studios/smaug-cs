@@ -10,7 +10,7 @@ namespace SmaugCS.Commands.Social
     {
         public static void do_clantalk(CharacterInstance ch, string argument)
         {
-            if (Macros.NOT_AUTHORIZED(ch))
+            if (ch.IsNotAuthorized())
             {
                 color.send_to_char("Huh?\r\n", ch);
                 return;

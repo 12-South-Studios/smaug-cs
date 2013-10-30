@@ -17,7 +17,7 @@ namespace SmaugCS.Objects
         public string LongDescription { get; set; }
         public string SpecialFunctionName { get; set; }
         public int Count { get; set; }
-        public int killed { get; set; }
+        public int TimesKilled { get; set; }
         public int Gender { get; set; }
         public int Level { get; set; }
         public ExtendedBitvector Act { get; set; }

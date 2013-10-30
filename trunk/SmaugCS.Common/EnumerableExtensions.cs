@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 
 namespace SmaugCS.Common
 {
@@ -44,8 +44,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static T Peek<T>(this IEnumerable<T> obj, T currentObject)
         {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
+            Validation.IsNotNull(obj, "obj");
 
             IList<T> objList = obj.ToList();
             int index = objList.IndexOf(currentObject);

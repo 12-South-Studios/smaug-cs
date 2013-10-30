@@ -14,6 +14,8 @@ namespace SmaugCS
 {
     public static class handler
     {
+        public static ReturnTypes GlobalReturnCode { get; set; }
+
         public static CharacterInstance SavingCharacter { get; set; }
         public static CharacterInstance LoadingCharacter { get; set; }
 
@@ -282,7 +284,7 @@ namespace SmaugCS
         {
             if (obj_extracted(obj))
             {
-                LogManager.Bug("extract_obj: obj %d already extracted", obj.ObjectIndex.Vnum);
+                LogManager.Bug("Object {0} already extracted", obj.ObjectIndex.Vnum);
                 return;
             }
 
@@ -292,8 +294,8 @@ namespace SmaugCS
             AuctionData auction = db.AUCTIONS.FirstOrDefault(a => a.ItemForSale == obj);
             if (auction != null)
             {
-                string buffer = string.Format("Sale of {0} has been stopped by a system action.", obj.ShortDescription);
-                ChatManager.talk_auction(buffer);
+                ChatManager.talk_auction(string.Format("Sale of {0} has been stopped by a system action.",
+                                                       obj.ShortDescription));
 
                 auction.ItemForSale = null;
                 if (auction.Buyer != null
@@ -350,25 +352,25 @@ namespace SmaugCS
         {
             if (ch == null)
             {
-                LogManager.Bug("extract_char: null ch");
+                LogManager.Bug("null ch");
                 return;
             }
 
             if (ch.CurrentRoom == null)
             {
-                LogManager.Bug("extract_char: %s in null room", !string.IsNullOrEmpty(ch.Name) ? ch.Name : "???");
+                LogManager.Bug("{0} in null room", !string.IsNullOrEmpty(ch.Name) ? ch.Name : "???");
                 return;
             }
 
             if (ch == db.Supermob)
             {
-                LogManager.Bug("extract_char: ch == supermob");
+                LogManager.Bug("ch == supermob");
                 return;
             }
 
             if (ch.CharDied())
             {
-                LogManager.Bug("extract_char: %s already died!", ch.Name);
+                LogManager.Bug("{0} already died!", ch.Name);
                 return;
             }
 
@@ -400,7 +402,7 @@ namespace SmaugCS
                 reset.update_room_reset(ch, true);
                 ch.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
                 ch.CurrentMount = null;
-                ch.Position = PositionTypes.Standing;
+                ch.CurrentPosition = PositionTypes.Standing;
             }
 
             if (ch.IsNpc())
@@ -409,7 +411,7 @@ namespace SmaugCS
                 foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
-                    wch.Position = PositionTypes.Standing;
+                    wch.CurrentPosition = PositionTypes.Standing;
                     if (wch.CurrentRoom == ch.CurrentRoom)
                     {
                         comm.act(ATTypes.AT_SOCIAL, "Your faithful mount collapses beneath you...", wch, null, ch,
@@ -463,7 +465,7 @@ namespace SmaugCS
                     comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swirling mists!", ch, null, null,
                              ToTypes.Room);
 
-                ch.Position = PositionTypes.Resting;
+                ch.CurrentPosition = PositionTypes.Resting;
             }
 
             if (ch.IsNpc())
@@ -491,7 +493,7 @@ namespace SmaugCS
             if (ch.Descriptor != null)
             {
                 if (ch.Descriptor.Character != ch)
-                    LogManager.Bug("extract_char: Char's descriptor points to another char");
+                    LogManager.Bug("Char's descriptor points to another char");
                 else
                 {
                     ch.Descriptor.Character = null;
@@ -664,7 +666,7 @@ namespace SmaugCS
         /// <param name="argument"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static ObjectInstance get_obj_list_rev(CharacterInstance ch, string argument, List<ObjectInstance> list)
+        public static ObjectInstance get_obj_list_rev(CharacterInstance ch, string argument, IEnumerable<ObjectInstance> list)
         {
             List<ObjectInstance> reversedList = new List<ObjectInstance>();
             reversedList.AddRange(list);

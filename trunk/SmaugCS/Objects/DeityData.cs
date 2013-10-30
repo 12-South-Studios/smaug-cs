@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
-using SmaugCS.Common;
 using SmaugCS.Interfaces;
 
 namespace SmaugCS.Objects
@@ -47,8 +47,8 @@ namespace SmaugCS.Objects
         public int Race2 { get; set; }
         public int Class { get; set; }
         public int Gender { get; set; }
-        public int NPCRace { get; set; }
-        public int NPCFoe { get; set; }
+        public RaceTypes NPCRace { get; set; }
+        public RaceTypes NPCFoe { get; set; }
         public int Suscept { get; set; }
         public int Element { get; set; }
         public ExtendedBitvector AffectedBy { get; set; }
@@ -216,10 +216,10 @@ namespace SmaugCS.Objects
                             Name = restOfLine;
                             break;
                         case "NPCFOE":
-                            NPCFoe = restOfLine.ToInt32();
+                            NPCFoe = EnumerationExtensions.GetEnum<RaceTypes>(restOfLine.ToInt32());
                             break;
                         case "NPCRACE":
-                            NPCRace = restOfLine.ToInt32();
+                            NPCRace = EnumerationExtensions.GetEnum<RaceTypes>(restOfLine.ToInt32());
                             break;
                         case "OBJSTAT":
                             ObjStat = restOfLine.ToInt32();

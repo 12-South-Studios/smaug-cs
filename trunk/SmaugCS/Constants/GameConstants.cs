@@ -14,6 +14,109 @@ namespace SmaugCS
             return values.ToList().FindIndex(x => x.EqualsIgnoreCase(name));
         }
 
+        public static List<int> PartVnums = new List<int>()
+                                                {
+                                                    12,
+                                                    /* Head */
+                                                    14,
+                                                    /* arms */
+                                                    15,
+                                                    /* legs */
+                                                    13,
+                                                    /* heart */
+                                                    44,
+                                                    /* brains */
+                                                    16,
+                                                    /* guts */
+                                                    45,
+                                                    /* hands */
+                                                    46,
+                                                    /* feet */
+                                                    47,
+                                                    /* fingers */
+                                                    48,
+                                                    /* ear */
+                                                    49,
+                                                    /* eye */
+                                                    50,
+                                                    /* long_tongue */
+                                                    51,
+                                                    /* eyestalks */
+                                                    52,
+                                                    /* tentacles */
+                                                    53,
+                                                    /* fins */
+                                                    54,
+                                                    /* wings */
+                                                    55,
+                                                    /* tail */
+                                                    56,
+                                                    /* scales */
+                                                    59,
+                                                    /* claws */
+                                                    87,
+                                                    /* fangs */
+                                                    58,
+                                                    /* horns */
+                                                    57,
+                                                    /* tusks */
+                                                    55,
+                                                    /* tailattack */
+                                                    85,
+                                                    /* sharpscales */
+                                                    84,
+                                                    /* beak */
+                                                    86,
+                                                    /* haunches */
+                                                    83,
+                                                    /* hooves */
+                                                    82,
+                                                    /* paws */
+                                                    81,
+                                                    /* forelegs */
+                                                    80,
+                                                    /* feathers */
+                                                    0,
+                                                    /* r1 */
+                                                    0 /* r2 */
+                                                };
+
+        public static List<string> PartMessages = new List<string>
+                                                      {
+                                                          "$n's severed head plops from its neck.",
+                                                          "$n's arm is sliced from $s dead body.",
+                                                          "$n's leg is sliced from $s dead body.",
+                                                          "$n's heart is torn from $s chest.",
+                                                          "$n's brains spill grotesquely from $s head.",
+                                                          "$n's guts spill grotesquely from $s torso.",
+                                                          "$n's hand is sliced from $s dead body.",
+                                                          "$n's foot is sliced from $s dead body.",
+                                                          "A finger is sliced from $n's dead body.",
+                                                          "$n's ear is sliced from $s dead body.",
+                                                          "$n's eye is gouged from its socket.",
+                                                          "$n's tongue is torn from $s mouth.",
+                                                          "An eyestalk is sliced from $n's dead body.",
+                                                          "A tentacle is severed from $n's dead body.",
+                                                          "A fin is sliced from $n's dead body.",
+                                                          "A wing is severed from $n's dead body.",
+                                                          "$n's tail is sliced from $s dead body.",
+                                                          "A scale falls from the body of $n.",
+                                                          "A claw is torn from $n's dead body.",
+                                                          "$n's fangs are torn from $s mouth.",
+                                                          "A horn is wrenched from the body of $n.",
+                                                          "$n's tusk is torn from $s dead body.",
+                                                          "$n's tail is sliced from $s dead body.",
+                                                          "A ridged scale falls from the body of $n.",
+                                                          "$n's beak is sliced from $s dead body.",
+                                                          "$n's haunches are sliced from $s dead body.",
+                                                          "A hoof is sliced from $n's dead body.",
+                                                          "A paw is sliced from $n's dead body.",
+                                                          "$n's foreleg is sliced from $s dead body.",
+                                                          "Some feathers fall from $n's dead body.",
+                                                          "r1 message.",
+                                                          "r2 message."
+                                                      };
+
         public static List<string> ObjectAffectStrings = new List<string>()
             {
                 "(Invis)", "(Red Aura)", "(Flaming Red)", "(Flaming Grey)", 

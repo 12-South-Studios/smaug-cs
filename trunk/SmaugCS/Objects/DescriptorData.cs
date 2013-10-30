@@ -28,7 +28,7 @@ namespace SmaugCS.Objects
         public int PageSize { get; set; }
         public int PageTop { get; set; }
         public string PagePoint { get; set; }
-        public char PageCommand { get; set; }
+        public string PageCommand { get; set; }
         public char PageColor { get; set; }
         public int newstate { get; set; }
         public char prevcolor { get; set; }

@@ -48,12 +48,12 @@ namespace SmaugCS.Objects
         public int HighHardRange { get; set; }
         public int SpellLimit { get; set; }
         public int curr_spell_count { get; set; }
-        public int mkills { get; set; }
-        public int mdeaths { get; set; }
-        public int pkills { get; set; }
-        public int pdeaths { get; set; }
+        public int PvEKills { get; set; }
+        public int PvEDeaths { get; set; }
+        public int PvPKills { get; set; }
+        public int PvPDeaths { get; set; }
         public int gold_looted { get; set; }
-        public int illegal_pk { get; set; }
+        public int IllegalPvPKill { get; set; }
         public int HighEconomy { get; set; }
         public int LowEconomy { get; set; }
         public int status { get; set; }

@@ -26,8 +26,8 @@ namespace SmaugCS
             NumberOfHits = 0;
 
             foreach (DescriptorData d in db.DESCRIPTORS.Where(d => d.Character != null
-                                                                  && d.Character.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
-                                                                  && Macros.IS_WAITING_FOR_AUTH(d.Character)))
+                                                                  && d.Character.Name.EqualsIgnoreCase(name)
+                                                                  && d.Character.IsWaitingForAuthorization()))
             {
                 if (++NumberOfHits > 1)
                 {
@@ -121,7 +121,7 @@ namespace SmaugCS
             if (!handler.can_see(ch, victim))
                 return;
 
-            if (ch.IsNpc() && Macros.NOT_AUTHORIZED(victim)
+            if (ch.IsNpc() && victim.IsNotAuthorized()
                 && location.Area != victim.CurrentRoom.Area)
             {
                 string buffer = string.Format("Mptransfer - unauthed char ({0})", victim.Name);

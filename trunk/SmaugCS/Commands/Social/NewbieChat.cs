@@ -10,7 +10,7 @@ namespace SmaugCS.Commands.Social
         public static void do_newbiechat(CharacterInstance ch, string argument)
         {
             if (ch.IsNpc() ||
-                (!Macros.NOT_AUTHORIZED(ch) && !ch.IsImmortal()
+                (!ch.IsNotAuthorized() && !ch.IsImmortal()
                  && !(ch.PlayerData.Council != null &&
                       ch.PlayerData.Council.Name.Equals("Newbie Council"))))
             {

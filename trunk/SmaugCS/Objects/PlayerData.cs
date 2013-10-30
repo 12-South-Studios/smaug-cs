@@ -30,11 +30,11 @@ namespace SmaugCS.Objects
         public DateTime outcast_time { get; set; }
         public DateTime restore_time { get; set; }
         public int Flags { get; set; }
-        public int pkills { get; set; }
-        public int pdeaths { get; set; }
-        public int mkills { get; set; }
-        public int mdeaths { get; set; }
-        public int illegal_pk { get; set; }
+        public int PvPKills { get; set; }
+        public int PvPDeaths { get; set; }
+        public int PvEKills { get; set; }
+        public int PvEDeaths { get; set; }
+        public int IllegalPvPKill { get; set; }
         public int r_range_lo { get; set; }
         public int r_range_hi { get; set; }
         public int m_range_lo { get; set; }
@@ -56,9 +56,9 @@ namespace SmaugCS.Objects
         public string bio { get; set; }
         public string authed_by { get; set; }
         public SkillData[] special_skills { get; set; }
-        public string prompt { get; set; }
-        public string fprompt { get; set; }
-        public string subprompt { get; set; }
+        public string Prompt { get; set; }
+        public string FPrompt { get; set; }
+        public string SubPrompt { get; set; }
         public int pagerlen { get; set; }
         public List<IgnoreData> Ignored { get; set; }
         public List<string> TellHistory { get; set; }

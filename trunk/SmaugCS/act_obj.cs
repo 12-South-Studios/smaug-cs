@@ -385,7 +385,7 @@ namespace SmaugCS
             }
 
             if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Personal)
-                && ch.Name.Equals(obj.Owner, StringComparison.OrdinalIgnoreCase))
+                && ch.Name.EqualsIgnoreCase(obj.Owner))
             {
                 color.send_to_char("That item is personalized and belongs to someone else.\r\n", ch);
                 if (obj.CarriedBy != null)

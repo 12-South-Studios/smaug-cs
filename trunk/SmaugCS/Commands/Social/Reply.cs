@@ -97,8 +97,8 @@ namespace SmaugCS.Commands.Social
             }
 
             comm.act(ATTypes.AT_TELL, "You tell $N '$t'", ch, argument, victim, ToTypes.Character);
-            PositionTypes position = victim.Position;
-            victim.Position = PositionTypes.Standing;
+            PositionTypes position = victim.CurrentPosition;
+            victim.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
             if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
@@ -126,7 +126,7 @@ namespace SmaugCS.Commands.Social
                          ch, scramble(argument, ch.Speaking), victim, ToTypes.Victim);
 #endif
 
-            victim.Position = position;
+            victim.CurrentPosition = position;
             victim.ReplyTo = ch;
             ch.RetellTo = victim;
 

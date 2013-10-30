@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
@@ -32,7 +31,7 @@ namespace SmaugCS
 
         public static bool is_note_to(CharacterInstance ch, NoteData note)
         {
-            if (ch.Name.Equals(note.Sender, StringComparison.OrdinalIgnoreCase))
+            if (ch.Name.EqualsIgnoreCase(note.Sender))
                 return true;
             if ("all".IsEqual(note.RecipientList))
                 return true;
@@ -86,7 +85,7 @@ namespace SmaugCS
             {
                 if (ch.Name.IsEqual(note.RecipientList))
                     ++counterTo;
-                else if (ch.Name.Equals(note.Sender, StringComparison.OrdinalIgnoreCase))
+                else if (ch.Name.EqualsIgnoreCase(note.Sender))
                     ++counterFrom;
             }
 
@@ -94,11 +93,6 @@ namespace SmaugCS
                 color.ch_printf(ch, "You have {0} mail message{1}waiting for you.\r\n", counterTo, counterTo > 1 ? "s " : " ");
             if (counterFrom > 0)
                 color.ch_printf(ch, "You have {0} mail message{1}written by you.\r\n", counterFrom, counterFrom > 1 ? "s " : " ");
-        }
-
-        public static void free_note(NoteData note)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -57,6 +57,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="NCalc">
+      <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -242,11 +245,16 @@
     <Compile Include="Commands\ANSI.cs" />
     <Compile Include="Commands\Areas.cs" />
     <Compile Include="Commands\Bug.cs" />
+    <Compile Include="Commands\Cast.cs" />
     <Compile Include="Commands\Channels.cs" />
     <Compile Include="Commands\CheckVNums.cs" />
     <Compile Include="Commands\Color.cs" />
     <Compile Include="Commands\Combat\Drag.cs" />
+    <Compile Include="Commands\Combat\Flee.cs" />
+    <Compile Include="Commands\Combat\Kill.cs" />
+    <Compile Include="Commands\Combat\Murder.cs" />
     <Compile Include="Commands\Combat\Shove.cs" />
+    <Compile Include="Commands\Combat\Slay.cs" />
     <Compile Include="Commands\Combat\Wimpy.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Compare.cs" />
@@ -468,11 +476,13 @@
     <Compile Include="Loaders\CouncilLoader.cs" />
     <Compile Include="Loaders\DeityListLoader.cs" />
     <Compile Include="Loaders\HintLoader.cs" />
+    <Compile Include="Loaders\HolidayLoader.cs" />
     <Compile Include="Loaders\LiquidLoader.cs" />
     <Compile Include="Loaders\ListLoader.cs" />
     <Compile Include="Loaders\MixtureLoader.cs" />
     <Compile Include="Loaders\PrototypeAreaLoader.cs" />
     <Compile Include="Loaders\ReservedLoader.cs" />
+    <Compile Include="Loaders\TimeLoader.cs" />
     <Compile Include="Loaders\WatchListLoader.cs" />
     <Compile Include="Managers\ChatManager.cs" />
     <Compile Include="Interfaces\IHasExtraFlags.cs" />
@@ -821,7 +831,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Spells\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

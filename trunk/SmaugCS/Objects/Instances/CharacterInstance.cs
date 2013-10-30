@@ -22,6 +22,7 @@ namespace SmaugCS.Objects
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
         public FightingData CurrentFighting { get; set; }
+        public int NumberFighting { get; set; }
         public CharacterInstance ReplyTo { get; set; }
         public CharacterInstance RetellTo { get; set; }
         public CharacterInstance Switched { get; set; }
@@ -52,7 +53,6 @@ namespace SmaugCS.Objects
         public List<TimerData> Timers { get; set; }
         public CharacterMorph CurrentMorph { get; set; }
         public string LongDescription { get; set; }
-        public int num_fighting { get; set; }
         public CharacterSubStates SubState { get; set; }
         public GenderTypes Gender { get; set; }
         public ClassTypes CurrentClass { get; set; }
@@ -95,9 +95,9 @@ namespace SmaugCS.Objects
         public int ToHitArmorClass0 { get; set; }
         public DiceData DamageRoll { get; set; }
         public DiceData HitRoll { get; set; }
-        public PositionTypes Position { get; set; }
-        public PositionTypes DefPosition { get; set; }
-        public int style { get; set; }
+        public PositionTypes CurrentPosition { get; set; }
+        public PositionTypes CurrentDefensivePosition { get; set; }
+        public StyleTypes CurrentStyle { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
         public int ArmorClass { get; set; }
@@ -127,10 +127,23 @@ namespace SmaugCS.Objects
         public int ResetVnum { get; set; }
         public int ResetNum { get; set; }
 
-        public CharacterInstance(int id) : base(id)
+        public CharacterInstance(int id)
+            : base(id)
         {
             Colors = new Dictionary<ATTypes, char>();
             SavingThrows = new SavingThrowData();
+        }
+
+        public bool IsNotAuthorized()
+        {
+            return !IsNpc() && PlayerData.AuthState <= 3 &&
+                   PlayerData.Flags.IsSet((int)PCFlags.Unauthorized);
+        }
+
+        public bool IsWaitingForAuthorization()
+        {
+            return !IsNpc() && Descriptor != null && PlayerData.AuthState == 1
+                   && PlayerData.Flags.IsSet((int)PCFlags.Unauthorized);
         }
 
         public bool IsImmune(SpellDamageTypes type)
@@ -209,7 +222,7 @@ namespace SmaugCS.Objects
         }
         public bool IsAwake()
         {
-            return Position > PositionTypes.Sleeping;
+            return CurrentPosition > PositionTypes.Sleeping;
         }
         public int GetArmorClass()
         {
@@ -786,7 +799,7 @@ namespace SmaugCS.Objects
             modgain = Check.Minimum((int)modgain, GetExperienceLevel(Level + 2) - GetExperienceLevel(Level + 1));
             Experience = Check.Maximum(0, Experience + (int)modgain);
 
-            if (Macros.NOT_AUTHORIZED(this) && Experience >= GetExperienceLevel(Level + 1))
+            if (IsNotAuthorized() && Experience >= GetExperienceLevel(Level + 1))
             {
                 color.send_to_char("You cannot ascend to a higher level until you are authorized.\r\n", this);
                 Experience = GetExperienceLevel(Level + 1) - 1;
@@ -814,7 +827,7 @@ namespace SmaugCS.Objects
             }
 
             gain = Check.Minimum(5, Level);
-            switch (Position)
+            switch (CurrentPosition)
             {
                 case PositionTypes.Dead:
                     return 0;
@@ -858,9 +871,9 @@ namespace SmaugCS.Objects
             }
 
             gain = Check.Minimum(5, Level / 2);
-            if (Position < PositionTypes.Sleeping)
+            if (CurrentPosition < PositionTypes.Sleeping)
                 return 0;
-            switch (Position)
+            switch (CurrentPosition)
             {
                 case PositionTypes.Sleeping:
                     gain += (int)(CurrentIntelligence * 3.25f);
@@ -894,7 +907,7 @@ namespace SmaugCS.Objects
 
             gain = Check.Maximum(15, 2 * Level);
 
-            switch (Position)
+            switch (CurrentPosition)
             {
                 case PositionTypes.Dead:
                     return 0;

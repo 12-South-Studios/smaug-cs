@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using NUnit.Framework;
 using SmaugCS.Database;
 
@@ -18,11 +17,11 @@ namespace SmaugCS.Tests.Repositories
             var actual = repo.Create(mob);
 
             Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.ID, Is.EqualTo(1));
+            Assert.That(actual.ID, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_InvalidParent()
         {
             var repo = new CharacterRepository();
