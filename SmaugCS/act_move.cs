@@ -120,12 +120,6 @@ namespace SmaugCS
             room.Description = string.Format("{0}\r\n", wordwrap(buf, 78));
         }
 
-        public static void clear_vrooms()
-        {
-            // TODO
-        }
-
-
         public static string rev_exit(int vdir)
         {
             return GameConstants.ReversedDirectionNames[vdir];

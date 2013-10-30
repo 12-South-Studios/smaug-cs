@@ -7,6 +7,6 @@ namespace SmaugCS.Enums
         OffensiveCharacter,
         DefensiveCharacter,
         Self,
-        InvisibleObject
+        InventoryObject
     }
 }

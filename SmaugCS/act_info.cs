@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Realm.Library.Common.Extensions;
+using SmaugCS.Commands.Skills;
+using SmaugCS.Commands.Skills.Thief;
 using SmaugCS.Common;
 using SmaugCS.Enums;
 using SmaugCS.Objects;
@@ -50,7 +52,7 @@ namespace SmaugCS
                         && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                         && (i >= moonpos - 2) && (i <= moonpos + 2)
                         && ((sunpos == moonpos && db.GameTime.Hour == 12) || moonphase != 0)
-                        && (GameConstants.moon_map[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
+                        && (WeatherManager.Instance.Weather.MoonMap[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
                             || (moonphase > 0 && i + 2 - moonpos <= moonphase))
@@ -61,7 +63,7 @@ namespace SmaugCS
                     else if ((line >= 3) && (line < 6)
                              && (moonpos >= Program.MAP_WIDTH / 4 - 2) && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                              && (i >= moonpos - 2) && (i <= moonpos + 2)
-                             && (GameConstants.moon_map[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
+                             && (WeatherManager.Instance.Weather.MoonMap[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
                             || (moonphase > 0 && i + 2 - moonpos <= moonphase))
@@ -74,14 +76,16 @@ namespace SmaugCS
                         if (db.GameTime.Hour >= 6 && db.GameTime.Hour <= 18)
                         {
                             if (i >= sunpos - 2 && i <= sunpos + 2)
-                                sb.AppendFormat("&Y{0}", GameConstants.sun_map[line - 3].ToCharArray()[i + 2 - sunpos]);
+                                sb.AppendFormat("&Y{0}",
+                                                WeatherManager.Instance.Weather.SunMap[line - 3].ToCharArray()[
+                                                    i + 2 - sunpos]);
                             else
                                 sb.Append(" ");
                         }
                         else
                         {
                             char c =
-                                GameConstants.star_map[line].ToCharArray()[
+                                WeatherManager.Instance.Weather.StarMap[line].ToCharArray()[
                                     (Program.MAP_WIDTH + 1 - starpos) % Program.MAP_WIDTH];
                             sb.Append(GameConstants.StarCharacterMap.ContainsKey(c)
                                           ? GameConstants.StarCharacterMap[c]
@@ -568,11 +572,11 @@ namespace SmaugCS
             {
                 if (timer.Action.Value == magic.do_cast)
                     buffer += " is here chanting.";
-                else if (timer.Action.Value == skills.do_dig)
+                else if (timer.Action.Value == Dig.do_dig)
                     buffer += " is here digging.";
-                else if (timer.Action.Value == skills.do_search)
+                else if (timer.Action.Value == Search.do_search)
                     buffer += " is searching the area for something.";
-                else if (timer.Action.Value == skills.do_detrap)
+                else if (timer.Action.Value == DeTrap.do_detrap)
                     buffer += " is working with the trap here.";
                 else
                     buffer += " is looking rather lost.";

@@ -19,6 +19,6 @@ namespace SmaugCS.Objects
         public short climate { get; set; }
         public short gravity { get; set; }
         public TimeInfoData time_info { get; set; }
-        public weather_data weather_data { get; set; }
+        public WeatherData weather_data { get; set; }
     }
 }

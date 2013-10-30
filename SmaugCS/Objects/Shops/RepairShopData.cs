@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS.Objects
@@ -7,6 +8,7 @@ namespace SmaugCS.Objects
     public class RepairShopData : ShopData
     {
         [XmlElement]
+        [JsonProperty]
         public int ProfitFix { get; set; }
     }
 }

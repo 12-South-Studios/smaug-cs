@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Enums;
 using SmaugCS.Language;
 using SmaugCS.Objects;
@@ -7,6 +9,11 @@ namespace SmaugCS
 {
     public static class GameConstants
     {
+        public static int GetFlagIndex(string name, IEnumerable<string> values)
+        {
+            return values.ToList().FindIndex(x => x.EqualsIgnoreCase(name));
+        }
+
         public static List<string> ObjectAffectStrings = new List<string>()
             {
                 "(Invis)", "(Red Aura)", "(Flaming Red)", "(Flaming Grey)", 
@@ -743,7 +750,7 @@ namespace SmaugCS
                 {'Y', "&Y"}, {'c', "&c"}
             };
 
-        public static List<string> star_map = new List<string>()
+        /*public static List<string> StarMap = new List<string>()
                                                   {
                                                       "                                               C. C.                  g*",
                                                       "    O:       R*        G*    G.  W* W. W.          C. C.    Y* Y. Y.    ",
@@ -756,19 +763,19 @@ namespace SmaugCS
                                                   };
 
 
-        public static List<string> sun_map = new List<string>()
+        public static List<string> SunMap = new List<string>()
                                                  {
                                                      "\\`|'/",
                                                      "- O -",
                                                      "/.|.\\"
                                                  };
 
-        public static List<string> moon_map = new List<string>()
+        public static List<string> MoonMap = new List<string>()
                                                   {
                                                       " @@@ ",
                                                       "@@@@@",
                                                       " @@@ "
-                                                  };
+                                                  };*/
 
         public static List<string> WhereNames = new List<string>()
                                                     {

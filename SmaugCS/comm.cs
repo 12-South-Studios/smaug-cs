@@ -45,13 +45,6 @@ namespace SmaugCS
             d.ConnectionStatus = ConnectionTypes.PressEnter;
         }
 
-        public static bool is_reserved_name(string name)
-        {
-            return db.ReservedNames.Any(reservedName => reservedName.EqualsIgnoreCase(name)
-                || (reservedName.StartsWithIgnoreCase("*")
-                && reservedName.ContainsIgnoreCase(name)));
-        }
-
         /// <summary>
         /// PArse a name for acceptability
         /// </summary>

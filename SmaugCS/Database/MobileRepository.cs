@@ -45,10 +45,10 @@ namespace SmaugCS.Database
                 newMob.Act = new ExtendedBitvector(cloneMob.Act);
                 newMob.AffectedBy = new ExtendedBitvector(cloneMob.AffectedBy);
                 newMob.SpecialFunction = cloneMob.SpecialFunction;
-                newMob.Alignment = cloneMob.Alignment;
+                newMob.Statistics[StatisticTypes.Alignment] = cloneMob.GetStatistic(StatisticTypes.Alignment);
                 newMob.Level = cloneMob.Level;
-                newMob.ToHitArmorClass0 = cloneMob.ToHitArmorClass0;
-                newMob.ArmorClass = cloneMob.ArmorClass;
+                newMob.Statistics[StatisticTypes.ToHitArmorClass0] = cloneMob.GetStatistic(StatisticTypes.ToHitArmorClass0);
+                newMob.Statistics[StatisticTypes.ArmorClass] = cloneMob.GetStatistic(StatisticTypes.ArmorClass);
                 newMob.HitDice = new DiceData(cloneMob.HitDice);
                 newMob.DamageDice = new DiceData(cloneMob.DamageDice);
                 newMob.Gold = cloneMob.Gold;
@@ -56,13 +56,13 @@ namespace SmaugCS.Database
                 newMob.Position = cloneMob.Position;
                 newMob.DefPosition = cloneMob.DefPosition;
                 newMob.Gender = cloneMob.Gender;
-                newMob.PermanentStrength = cloneMob.PermanentStrength;
-                newMob.PermanentDexterity = cloneMob.PermanentDexterity;
-                newMob.PermanentIntelligence = cloneMob.PermanentIntelligence;
-                newMob.PermanentWisdom = cloneMob.PermanentWisdom;
-                newMob.PermanentCharisma = cloneMob.PermanentCharisma;
-                newMob.PermanentConstitution = cloneMob.PermanentConstitution;
-                newMob.PermanentLuck = cloneMob.PermanentLuck;
+                newMob.Statistics[StatisticTypes.Strength] = cloneMob.GetStatistic(StatisticTypes.Strength);
+                newMob.Statistics[StatisticTypes.Dexterity] = cloneMob.GetStatistic(StatisticTypes.Dexterity);
+                newMob.Statistics[StatisticTypes.Intelligence] = cloneMob.GetStatistic(StatisticTypes.Intelligence);
+                newMob.Statistics[StatisticTypes.Wisdom] = cloneMob.GetStatistic(StatisticTypes.Wisdom);
+                newMob.Statistics[StatisticTypes.Charisma] = cloneMob.GetStatistic(StatisticTypes.Charisma);
+                newMob.Statistics[StatisticTypes.Constitution] = cloneMob.GetStatistic(StatisticTypes.Constitution);
+                newMob.Statistics[StatisticTypes.Luck] = cloneMob.GetStatistic(StatisticTypes.Luck);
                 newMob.Race = cloneMob.Race;
                 newMob.Class = cloneMob.Class;
                 newMob.ExtraFlags = cloneMob.ExtraFlags;
@@ -100,15 +100,15 @@ namespace SmaugCS.Database
                     Level = 1,
                     Position = PositionTypes.Standing,
                     DefPosition = PositionTypes.Standing,
-                    PermanentStrength = 13,
-                    PermanentDexterity = 13,
-                    PermanentIntelligence = 13,
-                    PermanentWisdom = 13,
-                    PermanentCharisma = 13,
-                    PermanentConstitution = 13,
-                    PermanentLuck = 13,
                     Class = 3
                 };
+            newMob.Statistics[StatisticTypes.Strength] = 13;
+            newMob.Statistics[StatisticTypes.Dexterity] = 13;
+            newMob.Statistics[StatisticTypes.Intelligence] = 13;
+            newMob.Statistics[StatisticTypes.Wisdom] = 13;
+            newMob.Statistics[StatisticTypes.Charisma] = 13;
+            newMob.Statistics[StatisticTypes.Constitution] = 13;
+            newMob.Statistics[StatisticTypes.Luck] = 13;
             newMob.Act.SetBit((int)ActFlags.IsNpc);
             newMob.Act.SetBit((int)ActFlags.Prototype);
 

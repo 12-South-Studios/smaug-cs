@@ -43,3 +43,6 @@ Weather,weathermap.dat,0~
 Holiday,holidays.dat,0~
 News,news.dat,0~
 NewsInclude,news.txt,0~
+StarMap,StarMap.txt,1~
+SunMap,SunMap.txt,1~
+MoonMap,MoonMap.txt,1~

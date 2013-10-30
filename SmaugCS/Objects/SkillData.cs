@@ -21,12 +21,12 @@ namespace SmaugCS.Objects
 
         public int[] skill_level { get; set; }
         public int[] skill_adept { get; set; }
-        public int[] race_level { get; set; }
-        public int[] race_adept { get; set; }
-        public int minimum_position { get; set; }
+        public int[] RaceLevel { get; set; }
+        public int[] RaceAdept { get; set; }
+        public int MinimumPosition { get; set; }
         public int slot { get; set; }
-        public int min_mama { get; set; }
-        public int beats { get; set; }
+        public int MinimumMana { get; set; }
+        public int Beats { get; set; }
         public string noun_damage { get; set; }
         public string WearOffMessage { get; set; }
         public int guild { get; set; }
@@ -54,14 +54,14 @@ namespace SmaugCS.Objects
         public string components { get; set; }
         public string teachers { get; set; }
         public char participants { get; set; }
-        public timerset userec { get; set; }
+        public UseHistory UseHistory { get; set; }
 
         public SkillData()
         {
             skill_level = new int[Program.MAX_CLASS];
             skill_adept = new int[Program.MAX_CLASS];
-            race_level = new int[Program.MAX_RACE];
-            race_adept = new int[Program.MAX_RACE];
+            RaceLevel = new int[Program.MAX_RACE];
+            RaceAdept = new int[Program.MAX_RACE];
         }
 
         public static int Compare(SkillData sk1, SkillData sk2)

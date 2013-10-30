@@ -47,6 +47,9 @@ namespace SmaugCS.Enums
         Holiday,
         News,
         NewsInclude,
-        MudProgs
+        MudProgs,
+        StarMap,
+        SunMap,
+        MoonMap
     }
 }

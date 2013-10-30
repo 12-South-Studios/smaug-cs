@@ -376,13 +376,13 @@ namespace SmaugCS.Loaders
                     case "attribs":
                         words = proxy.ReadString().Split(new[] { ' ' });
 
-                        mob.PermanentStrength = words[0].ToInt32();
-                        mob.PermanentIntelligence = words[1].ToInt32();
-                        mob.PermanentWisdom = words[2].ToInt32();
-                        mob.PermanentDexterity = words[3].ToInt32();
-                        mob.PermanentConstitution = words[4].ToInt32();
-                        mob.PermanentCharisma = words[5].ToInt32();
-                        mob.PermanentLuck = words[6].ToInt32();
+                        mob.Statistics[StatisticTypes.Strength] = words[0].ToInt32();
+                        mob.Statistics[StatisticTypes.Intelligence] = words[1].ToInt32();
+                        mob.Statistics[StatisticTypes.Wisdom] = words[2].ToInt32();
+                        mob.Statistics[StatisticTypes.Dexterity] = words[3].ToInt32();
+                        mob.Statistics[StatisticTypes.Constitution] = words[4].ToInt32();
+                        mob.Statistics[StatisticTypes.Charisma] = words[5].ToInt32();
+                        mob.Statistics[StatisticTypes.Luck] = words[6].ToInt32();
                         break;
                     case "bodyparts":
                         flags = proxy.ReadFlagString();

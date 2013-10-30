@@ -238,13 +238,13 @@ namespace SmaugCS
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
                         if (skill.Target == TargetTypes.Ignore ||
-                            skill.Target == TargetTypes.InvisibleObject)
+                            skill.Target == TargetTypes.InventoryObject)
                         {
                             LogManager.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
                             return;
                         }
-                        int retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
-                        if (retcode == (int)ReturnTypes.CharacterDied || ch.CharDied())
+                        ReturnTypes retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
+                        if (retcode == ReturnTypes.CharacterDied || ch.CharDied())
                             return;
                     }
                     break;
