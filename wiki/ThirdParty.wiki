@@ -13,3 +13,5 @@ The following third-party libraries have been used (thus far) in the project.
   * http://nunit.org/
  * Moq (v4.1.1)
   * https://code.google.com/p/moq/
+ * NewtonSoft JSON (v5.0.8)
+  * http://james.newtonking.com/json
