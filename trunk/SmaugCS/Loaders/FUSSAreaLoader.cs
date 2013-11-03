@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Exceptions;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Enums;
 using SmaugCS.Managers;

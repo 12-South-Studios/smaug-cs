@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Enums;
-using SmaugCS.Common;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -29,10 +27,10 @@ namespace SmaugCS
 
         public static bool check_pos(CharacterInstance ch, int position)
         {
-            if (ch.IsNpc() && (int) ch.CurrentPosition > 3)
+            if (ch.IsNpc() && (int)ch.CurrentPosition > 3)
                 return true;
 
-            if ((int) ch.CurrentPosition < position)
+            if ((int)ch.CurrentPosition < position)
             {
                 KeyValuePair<PositionTypes, string> kvp = PositionMap.FirstOrDefault(x => x.Key == ch.CurrentPosition);
                 bool fighting = (ch.CurrentPosition == PositionTypes.Fighting
@@ -42,7 +40,7 @@ namespace SmaugCS
 
                 if (fighting && position <= (int)PositionTypes.Evasive)
                     color.send_to_char(FightingMessage, ch);
-                else 
+                else
                     color.send_to_char(kvp.Value, ch);
                 return false;
             }
@@ -52,7 +50,7 @@ namespace SmaugCS
 
         public static bool valid_watch(string logline)
         {
-            if (logline.Length == 1 && (logline.StartsWith("n") || logline.StartsWith("s") 
+            if (logline.Length == 1 && (logline.StartsWith("n") || logline.StartsWith("s")
                 || logline.StartsWith("w") || logline.StartsWith("u") || logline.StartsWith("d")))
                 return false;
             if (logline.Length == 2 && (logline.StartsWith("ne") || logline.StartsWith("nw")))
@@ -77,7 +75,7 @@ namespace SmaugCS
             SocialData social = db.GetSocial(command);
             if (social == null)
                 return false;
-            if (!ch.IsNpc() && ch.Act.IsSet((int) PlayerFlags.NoEmote))
+            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.NoEmote))
             {
                 color.send_to_char("You are anti-social!\r\n", ch);
                 return true;
@@ -118,7 +116,7 @@ namespace SmaugCS
                     {
                         ignoringList.Add(victim);
                         i++;
-                        room.Persons.Remove(victim); 
+                        room.Persons.Remove(victim);
                     }
                     else
                     {

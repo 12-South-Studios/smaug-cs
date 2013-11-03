@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SmaugCS.Tests
+namespace Realm.Library.Common.Test
 {
     [TestFixture]
     public class GenericEqualityComparerTests

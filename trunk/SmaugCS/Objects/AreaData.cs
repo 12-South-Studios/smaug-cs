@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
@@ -12,7 +13,7 @@ namespace SmaugCS.Objects
     {
         public AreaData()
         {
-            Rooms = new List<RoomTemplate>();    
+            Rooms = new List<RoomTemplate>();
         }
 
         [XmlArray("Rooms")]
@@ -115,7 +116,7 @@ namespace SmaugCS.Objects
         public void SaveHeader(TextWriterProxy proxy, bool install)
         {
             if (install)
-                Flags.RemoveBit((int) AreaFlags.Prototype);
+                Flags.RemoveBit((int)AreaFlags.Prototype);
 
             proxy.Write("#AREADATA\n");
             proxy.Write("Version      {0}\n", Version);

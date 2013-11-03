@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
-using SmaugCS.Common;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -21,7 +19,7 @@ namespace SmaugCS.Loaders
             DirectoryProxy dirProxy = new DirectoryProxy();
             IEnumerable<string> files = dirProxy.GetFiles(Directory);
 
-            List<string> validLines = new List<string>() {"level", "roomrange", "mobrange", "objrange"};
+            List<string> validLines = new List<string>() { "level", "roomrange", "mobrange", "objrange" };
 
             foreach (string file in files.Where(x => !x.Equals(".")))
             {
@@ -65,7 +63,7 @@ namespace SmaugCS.Loaders
 
                     if (rlow > 0 && rhi > 0 && !badFile)
                     {
-                        
+
                     }
 
                 }

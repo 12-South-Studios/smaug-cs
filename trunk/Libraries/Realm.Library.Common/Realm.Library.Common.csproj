@@ -139,6 +139,7 @@
     <Compile Include="Entities\EntityContext.cs" />
     <Compile Include="Entities\IEntityModule.cs" />
     <Compile Include="Entities\IHelper.cs" />
+    <Compile Include="EnumerationFunctions.cs" />
     <Compile Include="Events\EventCallback.cs" />
     <Compile Include="Events\EventHandler.cs" />
     <Compile Include="Events\IEventHandler.cs" />
@@ -147,10 +148,12 @@
     <Compile Include="Exceptions\InstantiationException.cs" />
     <Compile Include="Exceptions\GeneralException.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExceptionHandlingOptions.cs" />
     <Compile Include="Extensions\FuncExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="GenericEqualityComparer.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="Events\OnGameInitialize.cs" />
     <Compile Include="Collections\SerializableDictionary.cs" />

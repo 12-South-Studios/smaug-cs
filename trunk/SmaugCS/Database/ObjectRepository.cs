@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Enums;
