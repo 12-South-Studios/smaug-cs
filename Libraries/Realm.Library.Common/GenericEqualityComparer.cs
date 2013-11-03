@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SmaugCS.Common
+namespace Realm.Library.Common
 {
     public class GenericEqualityComparer<T> : IEqualityComparer<T>
     {

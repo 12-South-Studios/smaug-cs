@@ -116,9 +116,12 @@
     <Compile Include="Data\ObjectAtomTest.cs" />
     <Compile Include="Data\RealAtomTest.cs" />
     <Compile Include="Data\StringAtomTest.cs" />
+    <Compile Include="EnumerationFunctionTests.cs" />
     <Compile Include="Events\EventHandlerTests.cs" />
     <Compile Include="Extensions\CharExtensionsTests.cs" />
+    <Compile Include="Extensions\EnumerableExtensionTests.cs" />
     <Compile Include="Extensions\TaskExtensionTests.cs" />
+    <Compile Include="GenericEqualityComparerTests.cs" />
     <Compile Include="SingleLinkedListTests.cs" />
     <Compile Include="PasswordTest.cs" />
     <Compile Include="RandomTest.cs" />

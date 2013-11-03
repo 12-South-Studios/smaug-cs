@@ -46,12 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharExtensions.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="DirectoryProxy.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="EnumerationFunctions.cs" />
-    <Compile Include="GenericEqualityComparer.cs" />
     <Compile Include="ExtendedBitvector.cs" />
     <Compile Include="NumberExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

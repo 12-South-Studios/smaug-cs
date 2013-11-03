@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
-using SmaugCS.Common;
 using SmaugCS.Config;
 using SmaugCS.Database;
 using SmaugCS.Enums;

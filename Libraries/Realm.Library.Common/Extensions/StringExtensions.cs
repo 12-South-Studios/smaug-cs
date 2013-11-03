@@ -11,6 +11,253 @@ namespace Realm.Library.Common.Extensions
     public static class StringExtensions
     {
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="compareTo"></param>
+        /// <returns></returns>
+        public static bool NotEquals(this string value, string compareTo)
+        {
+            return !value.Equals(compareTo);
+        }
+
+        /// <summary>
+        /// Simple extension wrapper around the String.IsNullOrEmpty function
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return String.IsNullOrEmpty(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNullOrWhitespace(this string value)
+        {
+            return String.IsNullOrWhiteSpace(value);
+        }
+
+        /// <summary>
+        /// Returns true if the string is completely numeric
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNumber(this string value)
+        {
+            try
+            {
+                int val;
+                return Int32.TryParse(value, out val);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static List<string> ToWords(this string value)
+        {
+            return value.Split(' ').ToList();
+        }
+
+        /// <summary>
+        /// Checks the equality of two strings, regardless of case
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="compareTo"></param>
+        /// <returns></returns>
+        public static bool EqualsIgnoreCase(this string value, string compareTo)
+        {
+            return value.Equals(compareTo, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Checks if the string starts with another starts, regardless of case
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startsWith"></param>
+        /// <returns></returns>
+        public static bool StartsWithIgnoreCase(this string value, string startsWith)
+        {
+            return value.StartsWith(startsWith, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Checks if the string contains another string, regardless of case
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="contains"></param>
+        /// <returns></returns>
+        public static bool ContainsIgnoreCase(this string value, string contains)
+        {
+            return value.Contains(contains, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Converts the string to a 32-bit integer value
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        public static int ToInt32(this string argument)
+        {
+            int val;
+            try
+            {
+                val = Convert.ToInt32(argument);
+            }
+            catch
+            {
+                val = 0;
+            }
+
+            return val;
+        }
+
+        /// <summary>
+        /// Converts the string to a boolean value
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        public static bool ToBoolean(this string argument)
+        {
+            return argument.EqualsIgnoreCase("true")
+                   || argument.ToInt32() == 1
+                   || argument.EqualsIgnoreCase("t");
+        }
+
+        private static readonly char[] WordListDelimiters = new[] { ' ', '-' };
+
+        /// <summary>
+        /// Determines if the given string is equal to any values in the passed string list
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="wordList"></param>
+        /// <returns></returns>
+        /// <remarks>Was formerly known as is_name</remarks>
+        public static bool IsEqual(this string value, string wordList)
+        {
+            string[] words = wordList.Split(WordListDelimiters);
+            return words.Any(word => word.EqualsIgnoreCase(value));
+        }
+
+        /// <summary>
+        /// Determines if the given string is equal to any of the prefix values in the passed string list
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="wordList"></param>
+        /// <returns></returns>
+        /// <remarks>Was formerly known as is_name2</remarks>
+        public static bool IsEqualPrefix(this string value, string wordList)
+        {
+            string[] words = wordList.Split(WordListDelimiters);
+            return words.Any(word => word.StartsWithIgnoreCase(value));
+        }
+
+        /// <summary>
+        /// Checks all words in the given string against the passed word list
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="wordList"></param>
+        /// <returns></returns>
+        /// <remarks>Was formerly known as nifty_is_name</remarks>
+        public static bool IsAnyEqual(this string value, string wordList)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            string[] wordsToCheck = value.Split(WordListDelimiters);
+            return wordsToCheck.Any(word => word.IsEqual(wordList));
+        }
+
+        /// <summary>
+        /// Checks all words in the given string for a prefix match against the passed word list
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="wordList"></param>
+        /// <returns></returns>
+        /// <remarks>Was formerly known as nifty_is_name_prefix</remarks>
+        public static bool IsAnyEqualPrefix(this string value, string wordList)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            string[] wordsToCheck = value.Split(WordListDelimiters);
+            return wordsToCheck.Any(word => word.IsEqualPrefix(wordList));
+        }
+
+        /// <summary>
+        /// Repeats a character a specified number of times
+        /// </summary>
+        /// <param name="chatToRepeat"></param>
+        /// <param name="repeat"></param>
+        /// <returns></returns>
+        public static string Repeat(this char chatToRepeat, int repeat)
+        {
+            return new string(chatToRepeat, repeat);
+        }
+
+        /// <summary>
+        /// Repeats a string a specified number of times
+        /// </summary>
+        /// <param name="stringToRepeat"></param>
+        /// <param name="repeat"></param>
+        /// <returns></returns>
+        public static string Repeat(this string stringToRepeat, int repeat)
+        {
+            var builder = new StringBuilder(repeat * stringToRepeat.Length);
+            for (int i = 0; i < repeat; i++)
+            {
+                builder.Append(stringToRepeat);
+            }
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="index"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static string SetChar(this string str, int index, char c)
+        {
+            char[] charArray = str.ToCharArray();
+            charArray[index] = c;
+            return new string(charArray);
+        }
+
+        /// <summary>
+        /// Appends an 'a' or an 'an' to the front of a string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string AOrAn(this string value)
+        {
+            return value[0].IsVowel() ? "an " + value : "a " + value;
+        }
+
+        /// <summary>
+        /// Returns true if a string contains only alphanumeric characters
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsAlphaNum(this string str)
+        {
+            return !string.IsNullOrEmpty(str)
+                && (str.ToCharArray().All(c => Char.IsLetter(c)
+                    || Char.IsNumber(c)));
+        }
+
+        /// <summary>
         /// Convert a string to a byte array.
         /// </summary>
         public static byte[] ToByteArray(this string value)

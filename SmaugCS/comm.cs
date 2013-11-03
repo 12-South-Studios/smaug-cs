@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Config;
 using SmaugCS.Enums;

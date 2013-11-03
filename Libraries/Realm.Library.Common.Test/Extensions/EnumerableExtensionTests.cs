@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using SmaugCS.Common;
+using Realm.Library.Common.Extensions;
 
-namespace SmaugCS.Tests
+namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
     public class EnumerableExtensionTests
