@@ -189,7 +189,7 @@ namespace SmaugCS
             switch (obj.ItemType)
             {
                 default:
-                    makeobjs.make_scraps(obj);
+                    ObjectFactory.CreateScraps(obj);
                     returnVal = ReturnTypes.ObjectScrapped;
                     break;
                 case ItemTypes.Container:
@@ -199,7 +199,7 @@ namespace SmaugCS
                     {
                         if (!fight.in_arena(ch))
                         {
-                            makeobjs.make_scraps(obj);
+                            ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
@@ -211,7 +211,7 @@ namespace SmaugCS
                     {
                         if (!fight.in_arena(ch))
                         {
-                            makeobjs.make_scraps(obj);
+                            ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
@@ -225,7 +225,7 @@ namespace SmaugCS
                     {
                         if (!ch.IsPKill() && !fight.in_arena(ch))
                         {
-                            makeobjs.make_scraps(obj);
+                            ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
@@ -242,7 +242,7 @@ namespace SmaugCS
                     {
                         if (!ch.IsPKill() && !fight.in_arena(ch))
                         {
-                            makeobjs.make_scraps(obj);
+                            ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
@@ -1129,7 +1129,7 @@ namespace SmaugCS
                                     comm.act(ATTypes.AT_PLAIN, "$p is destroyed in the fall!",
                                              obj.InRoom.Persons.First(), obj, null, ToTypes.Character);
                                 }
-                                makeobjs.make_scraps(obj);
+                                ObjectFactory.CreateScraps(obj);
                             }
                             else
                                 obj.Value[0] -= dam;
@@ -1144,7 +1144,7 @@ namespace SmaugCS
                                     comm.act(ATTypes.AT_PLAIN, "$p is destroyed in the fall!",
                                              obj.InRoom.Persons.First(), obj, null, ToTypes.Character);
                                 }
-                                makeobjs.make_scraps(obj);
+                                ObjectFactory.CreateScraps(obj);
                             }
                             break;
                     }

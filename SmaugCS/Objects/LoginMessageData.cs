@@ -1,5 +1,6 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Common;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Objects
 {

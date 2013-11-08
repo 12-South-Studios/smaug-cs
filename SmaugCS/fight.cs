@@ -11,6 +11,7 @@ using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 using SmaugCS.Organizations;
+using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS
 {
@@ -694,31 +695,31 @@ namespace SmaugCS
             // Magic shields that retaliate
             if (victim.IsAffected(AffectedByTypes.FireShield)
                 && !ch.IsAffected(AffectedByTypes.FireShield))
-                retcode = magic.spell_smaug(db.LookupSkill("flare"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(db.LookupSkill("flare"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.IceShield)
                 && !ch.IsAffected(AffectedByTypes.IceShield))
-                retcode = magic.spell_smaug(db.LookupSkill("iceshard"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(db.LookupSkill("iceshard"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.ShockShield)
             && !ch.IsAffected(AffectedByTypes.ShockShield))
-                retcode = magic.spell_smaug(db.LookupSkill("torrent"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(db.LookupSkill("torrent"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.AcidMist)
             && !ch.IsAffected(AffectedByTypes.AcidMist))
-                retcode = magic.spell_smaug(db.LookupSkill("acidshot"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(db.LookupSkill("acidshot"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.VenomShield)
             && !ch.IsAffected(AffectedByTypes.VenomShield))
-                retcode = magic.spell_smaug(db.LookupSkill("venomshot"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(db.LookupSkill("venomshot"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
@@ -1422,7 +1423,7 @@ namespace SmaugCS
             if (victim.CharDied())
                 return null;
 
-            ObjectInstance corpse = makeobjs.make_corpse(victim, ch);
+            ObjectInstance corpse = ObjectFactory.CreateCorpse(victim, ch);
             if (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor
                 || victim.CurrentRoom.SectorType == SectorTypes.Underwater
                 || victim.CurrentRoom.SectorType == SectorTypes.ShallowWater
@@ -1431,7 +1432,7 @@ namespace SmaugCS
             else if (victim.CurrentRoom.SectorType == SectorTypes.Air)
                 comm.act(ATTypes.AT_BLOOD, "$n's blood sprays wildly through the air.", victim, null, null, ToTypes.Room);
             else
-                makeobjs.make_blood(victim);
+                ObjectFactory.CreateBlood(victim);
 
             if (victim.IsNpc())
             {

@@ -1,101 +1,45 @@
 ﻿using System.IO;
 using SmaugCS.Common;
+using SmaugCS.Enums;
 using SmaugCS.Objects;
 
 namespace SmaugCS
 {
     public static class misc
     {
-        public static void do_eat(CharacterInstance ch, string argument)
+        /// <summary>
+        /// Generates an action description message
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="object"></param>
+        public static void actiondesc(CharacterInstance ch, ObjectInstance obj)
         {
-            // TODO
-        }
+            string charbuf = obj.ActionDescription;
+            string roombuf = obj.ActionDescription;
 
-        public static void do_quaff(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
+            // TODO: Replacements?
 
-        public static void do_recite(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
+            switch (obj.ItemType)
+            {
+                case ItemTypes.Blood:
+                case ItemTypes.Fountain:
+                    comm.act(ATTypes.AT_ACTION, charbuf, ch, obj, ch, ToTypes.Character);
+                    comm.act(ATTypes.AT_ACTION, roombuf, ch, obj, ch, ToTypes.Room);
+                    return;
 
-        public static void pullorpush(CharacterInstance ch, ObjectInstance @object, bool pull)
-        {
-            // TODO
-        }
+                case ItemTypes.DrinkContainer:
+                    LiquidData liq = db.GetLiquid(obj.Value[2]);
+                    comm.act(ATTypes.AT_ACTION, charbuf, ch, obj, liq.Name, ToTypes.Character);
+                    comm.act(ATTypes.AT_ACTION, roombuf, ch, obj, liq.Name, ToTypes.Room);
+                    return;
 
-        public static void do_pull(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_push(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_rap(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_tamp(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_smoke(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_light(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_apply(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void actiondesc(CharacterInstance ch, ObjectInstance @object)
-        {
-            // TODO
-        }
-
-        public static ExtendedBitvector fread_bitvector(FileStream fs)
-        {
-            // TODO
-            return null;
-        }
-
-        public static string print_bitvector(ExtendedBitvector bits)
-        {
-            // TODO
-            return string.Empty;
-        }
-
-        public static void fwrite_bitvector(ExtendedBitvector bits, FileStream fs)
-        {
-            // TODO
-        }
-
-        public static ExtendedBitvector meb(int bit)
-        {
-            ExtendedBitvector bits = new ExtendedBitvector();
-            bits.ClearBits();
-            if (bit >= 0)
-                bits.SetBit(bit);
-            return bits;
-        }
-
-        public static ExtendedBitvector multimeb(int bit, params object[] args)
-        {
-            // TODO
-            return null;
+                case ItemTypes.Cook:
+                case ItemTypes.Food:
+                case ItemTypes.Pill:
+                    comm.act(ATTypes.AT_ACTION, charbuf, ch, obj, ch, ToTypes.Character);
+                    comm.act(ATTypes.AT_ACTION, roombuf, ch, obj, ch, ToTypes.Room);
+                    return;
+            }
         }
     }
 }

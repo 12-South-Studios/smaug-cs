@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS
 {

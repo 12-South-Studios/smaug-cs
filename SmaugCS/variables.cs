@@ -105,7 +105,7 @@ namespace SmaugCS
                         proxy.Write("Str     {0}~\n", vd.Data.ToString());
                         break;
                     case VariableTypes.ExtendedBit:
-                        proxy.Write("Xbit    {9}\n", misc.print_bitvector((ExtendedBitvector)vd.Data));
+                        proxy.Write("Xbit    {9}\n", vd.Data.ToString());
                         break;
                     case VariableTypes.Integer:
                         proxy.Write("Int     {0}\n", (long)vd.Data);

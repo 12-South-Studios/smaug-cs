@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using SmaugCS.Common;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Objects
 {

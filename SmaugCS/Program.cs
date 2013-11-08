@@ -8,6 +8,8 @@ namespace SmaugCS
 {
     public class Program
     {
+        public static int BERR = 255;
+
         public static bool EXA_prog_trigger = true;
         public static int RESTORE_INTERVAL = 21600;
 

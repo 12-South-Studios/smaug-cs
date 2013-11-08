@@ -27,6 +27,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -73,6 +75,78 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Apply.cs" />
+    <Compile Include="Commands\MudProgs\MPAdvance.cs" />
+    <Compile Include="Commands\MudProgs\MPApply.cs" />
+    <Compile Include="Commands\MudProgs\MPApplyB.cs" />
+    <Compile Include="Commands\MudProgs\MPASound.cs" />
+    <Compile Include="Commands\MudProgs\MPAt.cs" />
+    <Compile Include="Commands\MudProgs\MPBodyBag.cs" />
+    <Compile Include="Commands\MudProgs\MPClosePassage.cs" />
+    <Compile Include="Commands\MudProgs\MPDamage.cs" />
+    <Compile Include="Commands\MudProgs\MPDelay.cs" />
+    <Compile Include="Commands\MudProgs\MPDeposit.cs" />
+    <Compile Include="Commands\MudProgs\MPDream.cs" />
+    <Compile Include="Commands\MudProgs\MPEcho.cs" />
+    <Compile Include="Commands\MudProgs\MPEchoAround.cs" />
+    <Compile Include="Commands\MudProgs\MPEchoAt.cs" />
+    <Compile Include="Commands\MudProgs\MPEchoZone.cs" />
+    <Compile Include="Commands\MudProgs\MPFavor.cs" />
+    <Compile Include="Commands\MudProgs\MPFear.cs" />
+    <Compile Include="Commands\MudProgs\MPFillIn.cs" />
+    <Compile Include="Commands\MudProgs\MPForce.cs" />
+    <Compile Include="Commands\MudProgs\MPGoto.cs" />
+    <Compile Include="Commands\MudProgs\MPHate.cs" />
+    <Compile Include="Commands\MudProgs\MPHunt.cs" />
+    <Compile Include="Commands\MudProgs\MPInvis.cs" />
+    <Compile Include="Commands\MudProgs\MPJunk.cs" />
+    <Compile Include="Commands\MudProgs\MPKill.cs" />
+    <Compile Include="Commands\MudProgs\MPLog.cs" />
+    <Compile Include="Commands\MudProgs\MPMLoad.cs" />
+    <Compile Include="Commands\MudProgs\MPMorph.cs" />
+    <Compile Include="Commands\MudProgs\MPMusic.cs" />
+    <Compile Include="Commands\MudProgs\MPMusicAround.cs" />
+    <Compile Include="Commands\MudProgs\MPMusicAt.cs" />
+    <Compile Include="Commands\MudProgs\MPNothing.cs" />
+    <Compile Include="Commands\MudProgs\MPNuisance.cs" />
+    <Compile Include="Commands\MudProgs\MPOLoad.cs" />
+    <Compile Include="Commands\MudProgs\MPOOwner.cs" />
+    <Compile Include="Commands\MudProgs\MPOpenPassage.cs" />
+    <Compile Include="Commands\MudProgs\MPPardon.cs" />
+    <Compile Include="Commands\MudProgs\MPPeace.cs" />
+    <Compile Include="Commands\MudProgs\MPPKSet.cs" />
+    <Compile Include="Commands\MudProgs\MPPractice.cs" />
+    <Compile Include="Commands\MudProgs\MPPurge.cs" />
+    <Compile Include="Commands\MudProgs\MPRestore.cs" />
+    <Compile Include="Commands\MudProgs\MPScatter.cs" />
+    <Compile Include="Commands\MudProgs\MPSlay.cs" />
+    <Compile Include="Commands\MudProgs\MPSound.cs" />
+    <Compile Include="Commands\MudProgs\MPSoundAround.cs" />
+    <Compile Include="Commands\MudProgs\MPSoundAt.cs" />
+    <Compile Include="Commands\MudProgs\MPStat.cs" />
+    <Compile Include="Commands\MudProgs\MPStrew.cs" />
+    <Compile Include="Commands\MudProgs\MPSupress.cs" />
+    <Compile Include="Commands\MudProgs\MPTransfer.cs" />
+    <Compile Include="Commands\MudProgs\MPUnmorph.cs" />
+    <Compile Include="Commands\MudProgs\MPUnnuisance.cs" />
+    <Compile Include="Commands\MudProgs\MPWithdraw.cs" />
+    <Compile Include="Commands\MudProgs\OPStat.cs" />
+    <Compile Include="Commands\MudProgs\RPStat.cs" />
+    <Compile Include="Commands\Pipe\Light.cs" />
+    <Compile Include="Commands\Liquids\Quaff.cs" />
+    <Compile Include="Commands\Movement\Pull.cs" />
+    <Compile Include="Commands\Movement\Push.cs" />
+    <Compile Include="Commands\Objects\Eat.cs" />
+    <Compile Include="Commands\Objects\Recite.cs" />
+    <Compile Include="Commands\Pipe\Rap.cs" />
+    <Compile Include="Commands\Pipe\Smoke.cs" />
+    <Compile Include="Commands\Pipe\Tamp.cs" />
+    <Compile Include="Enums\MudProgReturnTypes.cs" />
+    <Compile Include="Managers\LuaManager.cs" />
+    <Compile Include="Spells\Smaug\Affect.cs" />
+    <Compile Include="Spells\Smaug\AffectChar.cs" />
+    <Compile Include="Spells\Smaug\AreaAttack.cs" />
+    <Compile Include="Spells\Smaug\Attack.cs" />
     <Compile Include="Commands\Admin\Advance.cs" />
     <Compile Include="Commands\Admin\At.cs" />
     <Compile Include="Commands\Admin\AtObj.cs" />
@@ -468,6 +542,7 @@
     <Compile Include="Enums\WhoTypes.cs" />
     <Compile Include="Exceptions\DuplicateIndexException.cs" />
     <Compile Include="Exceptions\DuplicateSkillException.cs" />
+    <Compile Include="Exceptions\SkillNotFoundException.cs" />
     <Compile Include="Interfaces\IHasExtraDescriptions.cs" />
     <Compile Include="Interfaces\IPersistable.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
@@ -493,6 +568,101 @@
     <Compile Include="Objects\Shops\ItemShopData.cs" />
     <Compile Include="Objects\SavingThrowData.cs" />
     <Compile Include="Organizations\OrganizationData.cs" />
+    <Compile Include="Spells\Acid\AcetumPrimus.cs" />
+    <Compile Include="Spells\Acid\AcidBlast.cs" />
+    <Compile Include="Spells\NPC\AcidBreath.cs" />
+    <Compile Include="Spells\Death\AnimateDead.cs" />
+    <Compile Include="Spells\AstralWalk.cs" />
+    <Compile Include="Spells\Paladin\BethsaideanTouch.cs" />
+    <Compile Include="Spells\Death\BlackFist.cs" />
+    <Compile Include="Spells\Death\BlackHand.cs" />
+    <Compile Include="Spells\Death\BlackLightning.cs" />
+    <Compile Include="Spells\Blindness.cs" />
+    <Compile Include="Spells\Fire\BurningHands.cs" />
+    <Compile Include="Spells\Electrical\CallLightning.cs" />
+    <Compile Include="Spells\Life\CauseCritical.cs" />
+    <Compile Include="Spells\Life\CauseLight.cs" />
+    <Compile Include="Spells\Life\CauseSerious.cs" />
+    <Compile Include="Spells\Acid\CausticFount.cs" />
+    <Compile Include="Spells\ChangeSex.cs" />
+    <Compile Include="Spells\CharmPerson.cs" />
+    <Compile Include="Spells\Ice\ChillTouch.cs" />
+    <Compile Include="Spells\ColourSpray.cs" />
+    <Compile Include="Spells\Air\ControlWeather.cs" />
+    <Compile Include="Spells\Object\CreateFood.cs" />
+    <Compile Include="Spells\Object\CreateWater.cs" />
+    <Compile Include="Spells\CureBlindness.cs" />
+    <Compile Include="Spells\CurePoison.cs" />
+    <Compile Include="Spells\Curse.cs" />
+    <Compile Include="Spells\DetectPoison.cs" />
+    <Compile Include="Spells\Object\DisenchantWeapon.cs" />
+    <Compile Include="Spells\DispelEvil.cs" />
+    <Compile Include="Spells\DispelMagic.cs" />
+    <Compile Include="Spells\Energy\Disruption.cs" />
+    <Compile Include="Spells\Dream.cs" />
+    <Compile Include="Spells\Earth\Earthquake.cs" />
+    <Compile Include="Spells\Object\EnchantWeapon.cs" />
+    <Compile Include="Spells\Energy\EnergyDrain.cs" />
+    <Compile Include="Spells\Energy\EtherealFist.cs" />
+    <Compile Include="Spells\Paladin\Expurgation.cs" />
+    <Compile Include="Spells\FaerieFire.cs" />
+    <Compile Include="Spells\FaerieFog.cs" />
+    <Compile Include="Spells\FarSight.cs" />
+    <Compile Include="Spells\Fire\Fireball.cs" />
+    <Compile Include="Spells\NPC\FireBreath.cs" />
+    <Compile Include="Spells\Fire\FlameStrike.cs" />
+    <Compile Include="Spells\Electrical\GalvanicWhip.cs" />
+    <Compile Include="Spells\NPC\GasBreath.cs" />
+    <Compile Include="Spells\Gate.cs" />
+    <Compile Include="Spells\Energy\HandOfChaos.cs" />
+    <Compile Include="Spells\Life\Harm.cs" />
+    <Compile Include="Spells\Fire\HelicalFlow.cs" />
+    <Compile Include="Spells\Object\Identify.cs" />
+    <Compile Include="Spells\Invis.cs" />
+    <Compile Include="Spells\Knock.cs" />
+    <Compile Include="Spells\KnowAlignment.cs" />
+    <Compile Include="Spells\Electrical\LightningBolt.cs" />
+    <Compile Include="Spells\NPC\LightningBreath.cs" />
+    <Compile Include="Spells\Object\LocateObject.cs" />
+    <Compile Include="Spells\MagicMissile.cs" />
+    <Compile Include="Spells\Electrical\MagneticThrust.cs" />
+    <Compile Include="Spells\MidasTouch.cs" />
+    <Compile Include="Spells\Mind\MindWrack.cs" />
+    <Compile Include="Spells\Mind\MindWrench.cs" />
+    <Compile Include="Spells\Smaug\CreateMob.cs" />
+    <Compile Include="Spells\Smaug\CreateObj.cs" />
+    <Compile Include="Spells\Smaug\ObjInv.cs" />
+    <Compile Include="Spells\Smaug\Smaug.cs" />
+    <Compile Include="Spells\Vampire\Mistwalk.cs" />
+    <Compile Include="Spells\NotFound.cs" />
+    <Compile Include="Spells\PassDoor.cs" />
+    <Compile Include="Spells\PlantPass.cs" />
+    <Compile Include="Spells\Poison.cs" />
+    <Compile Include="Spells\Polymorph.cs" />
+    <Compile Include="Spells\Portal.cs" />
+    <Compile Include="Spells\Possess.cs" />
+    <Compile Include="Spells\Electrical\QuantumSpike.cs" />
+    <Compile Include="Spells\Object\Recharge.cs" />
+    <Compile Include="Spells\RemoveCurse.cs" />
+    <Compile Include="Spells\RemoveInvis.cs" />
+    <Compile Include="Spells\Object\RemoveTrap.cs" />
+    <Compile Include="Spells\NPC\FrostBreath.cs" />
+    <Compile Include="Spells\Life\Revive.cs" />
+    <Compile Include="Spells\Paladin\SacralDivinity.cs" />
+    <Compile Include="Spells\Fire\ScorchingSurge.cs" />
+    <Compile Include="Spells\Electrical\ShockingGrasp.cs" />
+    <Compile Include="Spells\Sleep.cs" />
+    <Compile Include="Spells\Cleric\SolarFlight.cs" />
+    <Compile Include="Spells\Energy\SonicResonance.cs" />
+    <Compile Include="Spells\Energy\SpectralFuror.cs" />
+    <Compile Include="Spells\SpiralBlast.cs" />
+    <Compile Include="Spells\Acid\SulfurousSpray.cs" />
+    <Compile Include="Spells\Summon.cs" />
+    <Compile Include="Spells\Teleport.cs" />
+    <Compile Include="Spells\Transport.cs" />
+    <Compile Include="Spells\Ventriloquate.cs" />
+    <Compile Include="Spells\Life\Weaken.cs" />
+    <Compile Include="Spells\WordOfRecall.cs" />
     <Compile Include="StringExt.cs" />
     <Compile Include="Weather\ClimateTypes.cs" />
     <Compile Include="Weather\CloudCoverTypes.cs" />
@@ -590,12 +760,11 @@
     <Compile Include="liquids.cs" />
     <Compile Include="Macros.cs" />
     <Compile Include="magic.cs" />
-    <Compile Include="makeobjs.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="mapout.cs" />
     <Compile Include="mapper.cs" />
     <Compile Include="misc.cs" />
     <Compile Include="mpxset.cs" />
-    <Compile Include="mud_comm.cs" />
     <Compile Include="mud_prog.cs" />
     <Compile Include="news.cs" />
     <Compile Include="Objects\act_prog_data.cs" />
@@ -792,6 +961,10 @@
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Lua\Realm.Library.Lua.csproj">
+      <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
+      <Name>Realm.Library.Lua</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.NCalcExt\Realm.Library.NCalcExt.csproj">
       <Project>{d2eba739-4153-48ff-93f0-aaeb43d1ab7e}</Project>
       <Name>Realm.Library.NCalcExt</Name>
@@ -831,10 +1004,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Spells\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

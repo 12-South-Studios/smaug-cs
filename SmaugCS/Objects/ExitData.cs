@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Managers;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Objects
 {

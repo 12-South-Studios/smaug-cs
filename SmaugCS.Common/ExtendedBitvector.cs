@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -135,6 +136,31 @@ namespace SmaugCS.Common
         {
             for (int x = 0; x < XBI; x++)
                 Bits[x] = 0;
+        }
+
+        public static ExtendedBitvector Meb(int bit)
+        {
+            ExtendedBitvector bits = new ExtendedBitvector();
+            bits.ClearBits();
+            if (bit >= 0)
+                bits.SetBit(bit);
+            return bits;
+        }
+
+        public static ExtendedBitvector MultiMeb(int bit, params object[] args)
+        {
+            if (bit < 0)
+                return new ExtendedBitvector();
+
+            ExtendedBitvector bits = new ExtendedBitvector();
+            bits.SetBit(bit);
+
+            foreach (int val in args.Cast<int>().Where(val => val != -1))
+            {
+                bits.SetBit(val);
+            }
+
+            return bits;
         }
     }
 }

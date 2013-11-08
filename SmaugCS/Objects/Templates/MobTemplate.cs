@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Enums;
+using Realm.Library.Common.Extensions;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS.Objects
