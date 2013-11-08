@@ -48,10 +48,10 @@ namespace SmaugCS.Objects
         public string dice { get; set; }
         public int value { get; set; }
         public int spell_sector { get; set; }
-        public char saves { get; set; }
+        public SaveVsTypes SaveVs { get; set; }
         public char difficulty { get; set; }
         public List<smaug_affect> affects { get; set; }
-        public string components { get; set; }
+        public string Components { get; set; }
         public string teachers { get; set; }
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }

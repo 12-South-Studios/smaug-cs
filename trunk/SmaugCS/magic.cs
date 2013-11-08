@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Enums;
+using SmaugCS.Exceptions;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
@@ -98,7 +100,7 @@ namespace SmaugCS
         /// <returns></returns>
         public static int dispel_casting(AffectData paf, CharacterInstance ch, CharacterInstance victim, int affect, bool dispel)
         {
-            ExtendedBitvector ext_bv = misc.meb(affect);
+            ExtendedBitvector ext_bv = ExtendedBitvector.Meb(affect);
             bool isMage = false;
             bool hasDetect = false;
 
@@ -378,758 +380,363 @@ namespace SmaugCS
 
             GameManager.CurrentCharacter = ch;
             return GameManager.Instance.ExpParser.Execute(expression);
-
-            /*char[] buffer = expression.ToCharArray();
-
-            if (string.IsNullOrEmpty(expression))
-                return 0;
-
-            // Get rid of brackets if they surround the entire expression
-            if (expression.StartsWith("(") && expression.EndsWith(")"))
-                buffer = expression.Trim(new[] { '(', ')' }).ToCharArray();
-
-            //// Check if the expression is just a number
-            if (buffer.Length == 1 || buffer[0].IsVowel())
-            {
-                switch (buffer[0])
-                {
-                    case 'L':
-                    case 'l':
-                        return level;
-                    case 'H':
-                    case 'h':
-                        return ch.CurrentHealth;
-                    case 'M':
-                    case 'm':
-                        return ch.CurrentMana;
-                    case 'V':
-                    case 'v':
-                        return ch.CurrentMovement;
-                    case 'S':
-                    case 's':
-                        return ch.CurrentStrength;
-                    case 'I':
-                    case 'i':
-                        return ch.CurrentIntelligence;
-                    case 'W':
-                    case 'w':
-                        return ch.CurrentWisdom;
-                    case 'X':
-                    case 'x':
-                        return ch.CurrentDexterity;
-                    case 'C':
-                    case 'c':
-                        return ch.CurrentConstitution;
-                    case 'A':
-                    case 'a':
-                        return ch.CurrentCharisma;
-                    case 'U':
-                    case 'u':
-                        return ch.CurrentLuck;
-                    case 'Y':
-                    case 'y':
-                        return ch.CalculateAge();
-                }
-            }
-
-            int y = 0;
-            for (int x = 0; x < buffer.Length; ++x, y = x)
-            {
-                if (!buffer[x].IsDigit() && !buffer[x].IsSpace())
-                    break;
-            }
-            if (y == buffer.Length)
-                return Convert.ToInt32(buffer.ToString());
-
-            int eop = 0, lop = 0, gop = 0;
-            int total = 0;
-
-            for (int x = 0; x < buffer.Length; ++x)
-            {
-                switch (buffer[x])
-                {
-                    case '^':
-                        if (total == 0)
-                            eop = x;
-                        break;
-                    case '-':
-                    case '+':
-                        if (total == 0)
-                            lop = x;
-                        break;
-                    case '*':
-                    case '/':
-                    case '%':
-                    case 'd':
-                    case 'D':
-                    case '<':
-                    case '>':
-                    case '{':
-                    case '}':
-                    case '=':
-                        if (total == 0)
-                            gop = x;
-                        break;
-                    case '(':
-                        ++total;
-                        break;
-                    case ')':
-                        --total;
-                        break;
-                }
-            }
-
-            int xp = 0;
-            if (lop > 0)
-                xp = lop;
-            else if (gop > 0)
-                xp = gop;
-            else
-                xp = eop;
-
-            char operation = buffer[xp];
-
-            // TODO
-
-
-            return 0;*/
         }
 
         public static int dice_parse(CharacterInstance ch, int level, string texp)
         {
-            // TODO
-            return 0;
+            return rd_parse(ch, level, texp);
         }
 
+        /// <summary>
+        /// Process the spell's required components, if any
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="sn"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// T###		check for item of type ###
+        /// V#####	check for item of vnum #####
+        /// Kword	check for item with keyword 'word'
+        /// G#####	check if player has ##### amount of gold
+        /// H####	check if player has #### amount of hitpoints
+        /// 
+        /// Special operators:
+        /// ! spell fails if player has this
+        /// + don't consume this component
+        /// @ decrease component's value[0], and extract if it reaches 0
+        /// # decrease component's value[1], and extract if it reaches 0
+        /// $ decrease component's value[2], and extract if it reaches 0
+        /// % decrease component's value[3], and extract if it reaches 0
+        /// ^ decrease component's value[4], and extract if it reaches 0
+        /// & decrease component's value[5], and extract if it reaches 0
+        /// </remarks>
         public static bool process_spell_components(CharacterInstance ch, int sn)
         {
-            // TODO
+            SkillData skill = db.GetSkill(sn);
+
+            if (skill == null || skill.Components.IsNullOrEmpty())
+                return true;
+
+            // TODO: how to handle this?
+
             return false;
         }
 
-        public static List<object> locate_targets(CharacterInstance ch, string arg, int sn, CharacterInstance victim, ObjectInstance obj)
+        public static object locate_targets(CharacterInstance ch, string arg, int sn, CharacterInstance victim, ObjectInstance obj)
         {
-            // TODO
-            return null;
+            SkillData skill = db.GetSkill(sn);
+            if (skill == null)
+                return null;
+
+            object vo = null;
+
+            switch (skill.Target)
+            {
+                default:
+                    LogManager.Bug("Bad target for SN {0}", sn);
+                    return -1;
+                case TargetTypes.Ignore:
+                    break;
+                case TargetTypes.OffensiveCharacter:
+                    vo = TarCharOffensive(arg, ch, false, skill);
+                    break;
+                case TargetTypes.DefensiveCharacter:
+                    vo = TarCharDefensive(arg, ch, false, skill);
+                    break;
+                case TargetTypes.Self:
+                    vo = TarCharSelf(arg, ch, false);
+                    break;
+                case TargetTypes.InventoryObject:
+                    vo = TarObjInv(arg, ch, false);
+                    break;
+            }
+
+            return vo;
+        }
+
+        private static object TarCharOffensive(string arg, CharacterInstance ch, bool silence, SkillData skill)
+        {
+            CharacterInstance victim = null;
+
+            if (arg.IsNullOrEmpty())
+            {
+                victim = fight.who_fighting(ch);
+                if (victim == null)
+                {
+                    if (!silence)
+                        color.send_to_char("Cast the spell on whom?\r\n", ch);
+                    return null;
+                }
+            }
+            else
+            {
+                victim = handler.get_char_room(ch, arg);
+                if (victim == null)
+                {
+                    if (!silence)
+                        color.send_to_char("They aren't here.\r\n", ch);
+                    return null;
+                }
+            }
+
+            // Nuisance flag will pick who you are fighting for offensive spells up to 92% of the time
+            if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
+                && ch.PlayerData.Nuisance.Flags > 5 &&
+                SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
+                victim = fight.who_fighting(ch);
+
+            if (fight.is_safe(ch, victim, true))
+                return null;
+
+            if (ch == victim)
+            {
+                if (Macros.SPELL_FLAG(skill, (int) SkillFlags.NoSelf))
+                {
+                    if (!silence)
+                        color.send_to_char("You can't cast this on yourself!\r\n", ch);
+                    return null;
+                }
+
+                if (!silence)
+                    color.send_to_char("Cast this on yourself?  Okay...\r\n", ch);
+            }
+
+            if (!ch.IsNpc())
+            {
+                if (!victim.IsNpc())
+                {
+                    if (handler.get_timer(ch, (int) TimerTypes.PKilled) > 0)
+                    {
+                        if (!silence)
+                            color.send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
+                        return null;
+                    }
+
+                    if (handler.get_timer(victim, (int)TimerTypes.PKilled) > 0)
+                    {
+                        if (!silence)
+                            color.send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
+                        return null;
+                    }
+
+                    if (ch.Act.IsSet((int) PlayerFlags.Nice) && ch != victim)
+                    {
+                        if (!silence)
+                            color.send_to_char("You are too nice to attack another player.\r\n", ch);
+                        return null;
+                    }
+
+                    if (victim != ch)
+                    {
+                        if (!silence)
+                            color.send_to_char("You really shouldn't do this to another player...\r\n", ch);
+                        else if (fight.who_fighting(victim) != ch)
+                            return null;
+                    }
+                }
+
+                if (ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim)
+                {
+                    if (!silence)
+                        color.send_to_char("You can't do that to your own follower.\r\n", ch);
+                    return null;
+                }
+            }
+
+            fight.check_illegal_pk(ch, victim);
+            return victim;
+        }
+        private static object TarCharDefensive(string arg, CharacterInstance ch, bool silence, SkillData skill)
+        {
+            CharacterInstance victim;
+
+            if (arg.IsNullOrEmpty())
+                victim = ch;
+            else
+            {
+                victim = handler.get_char_room(ch, arg);
+                if (victim == null)
+                {
+                    if (!silence)
+                        color.send_to_char("They aren't here.\r\n", ch);
+                    return null;
+                }
+            }
+
+            // Nuisance flag will pick who you are fighting for defensive spells up to 36% of the time
+            if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
+                && ch.PlayerData.Nuisance.Flags > 5 &&
+                SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5)*8) + 6*ch.PlayerData.Nuisance.Power))
+                victim = fight.who_fighting(ch);
+
+            if (ch == victim && Macros.SPELL_FLAG(skill, (int) SkillFlags.NoSelf))
+            {
+                if (!silence)
+                    color.send_to_char("You can't cast this on yourself!\r\n", ch);
+                return null;
+            }
+
+            return victim;
+        }
+        private static object TarCharSelf(string arg, CharacterInstance ch, bool silence)
+        {
+            if (!arg.IsNullOrEmpty() && !arg.EqualsIgnoreCase(ch.Name))
+            {
+                if (!silence)
+                    color.send_to_char("You cannot cast this spell on another.\r\n", ch);
+                return null;
+            }
+            return ch;
+        }
+        private static object TarObjInv(string arg, CharacterInstance ch, bool silence)
+        {
+            if (arg.IsNullOrEmpty())
+            {
+                if (!silence)
+                    color.send_to_char("What should the spell be cast upon?\r\n", ch);
+                return null;
+            }
+
+            ObjectInstance obj = handler.get_obj_carry(ch, arg);
+            if (obj == null)
+            {
+                if (!silence)
+                    color.send_to_char("You are not carrying that.\r\n", ch);
+                return null;
+            }
+
+            return obj;
         }
 
         public static int obj_cast_spell(int sn, int level, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
         {
-            // TODO
-            return 0;
+            if (sn == -1)
+                return (int)ReturnTypes.None;
+
+            SkillData skill = db.GetSkill(sn);
+            if (skill == null || skill.SpellFunction == null)
+                return (int)ReturnTypes.Error;
+
+            if (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.NoMagic)
+                || (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Safe)
+                && skill.Target == TargetTypes.OffensiveCharacter))
+            {
+                color.set_char_color(ATTypes.AT_MAGIC, ch);
+                color.send_to_char("Nothing seems to happen...\r\n", ch);
+                return (int)ReturnTypes.None;
+            }
+
+            // Reduces the number of level 5 players using level 40 scrolls in battle
+            int levelDiff = ch.Level - level;
+            if ((skill.Target == TargetTypes.OffensiveCharacter || SmaugRandom.Bits(7) == 1)
+                && skill.Type != SkillTypes.Herb
+                && handler.chance(ch, 95 + levelDiff))
+            {
+                switch (SmaugRandom.Bits(2))
+                {
+                    case 0:
+                    case 2:
+                        failed_casting(skill, ch, victim, null);
+                        break;
+                    case 1:
+                    case 3:
+                        comm.act(ATTypes.AT_MAGIC, "The $t spell backfires!", ch, skill.Name, victim, ToTypes.Character);
+                        if (victim != null)
+                            comm.act(ATTypes.AT_MAGIC, "$n's $t spell backfires!", ch, skill.Name, victim, ToTypes.Victim);
+                        comm.act(ATTypes.AT_MAGIC, "$n's $t spell backfires!", ch, skill.Name, victim, ToTypes.Room);
+                        return fight.damage(ch, ch, SmaugRandom.Between(1, level), Program.TYPE_UNDEFINED);
+                }
+
+                return (int) ReturnTypes.None;
+            }
+
+            object vo = null;
+            string targetName = string.Empty;
+
+            switch (skill.Target)
+            {
+                default:
+                    LogManager.Bug("Bad target for sn {0}", sn);
+                    return (int) ReturnTypes.Error;
+
+                case TargetTypes.Ignore:
+                    vo = null;
+                    if (victim != null)
+                        targetName = victim.Name;
+                    else if (obj != null)
+                        targetName = obj.Name;
+                    break;
+                case TargetTypes.OffensiveCharacter:
+                    if (victim != ch)
+                    {
+                        if (victim == null)
+                            victim = fight.who_fighting(ch);
+                        if (victim == null || (!victim.IsNpc() && !fight.in_arena(victim)))
+                        {
+                            color.send_to_char("You can't do that.\r\n", ch);
+                            return (int) ReturnTypes.None;
+                        }
+                    }
+                    if (ch != victim && fight.is_safe(ch, victim, true))
+                        return (int) ReturnTypes.None;
+                    vo = victim;
+                    break;
+                case TargetTypes.DefensiveCharacter:
+                    if (victim == null)
+                        victim = ch;
+                    vo = victim;
+                    if (skill.Type != SkillTypes.Herb && victim.Immunity.IsSet((int)ResistanceTypes.Magic))
+                    {
+                        immune_casting(skill, ch, victim, null);
+                        return (int) ReturnTypes.None;
+                    }
+                    break;
+                case TargetTypes.Self:
+                    vo = ch;
+                    if (skill.Type != SkillTypes.Herb && ch.Immunity.IsSet((int) ResistanceTypes.Magic))
+                    {
+                        immune_casting(skill, ch, victim, null);
+                        return (int) ReturnTypes.None;
+                    }
+                    break;
+                case TargetTypes.InventoryObject:
+                    if (obj == null)
+                    {
+                        color.send_to_char("You can't do that!\r\n", ch);
+                        return (int) ReturnTypes.None;
+                    }
+                    vo = obj;
+                    break;
+            }
+
+            DateTime start = DateTime.Now;
+            ReturnTypes retcode = skill.SpellFunction.Value.Invoke(sn, level, ch, vo);
+            skill.UseHistory.Use(ch, DateTime.Now.Subtract(start));
+
+            if (retcode == ReturnTypes.SpellFailed)
+                retcode = ReturnTypes.None;
+
+            if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.Error)
+                return (int) retcode;
+
+            if (ch.CharDied())
+                return (int) ReturnTypes.CharacterDied;
+
+            if (skill.Target == TargetTypes.OffensiveCharacter
+                && victim != ch
+                && !victim.CharDied())
+            {
+                foreach (
+                    CharacterInstance vch in
+                        ch.CurrentRoom.Persons.Where(
+                            vch => victim == vch && vch.CurrentFighting == null && vch.Master != ch))
+                {
+                    retcode = fight.multi_hit(vch, ch, Program.TYPE_UNDEFINED);
+                    break;
+                }
+            }
+
+            return (int)retcode;
         }
-
-        public static int spell_acid_blast(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_blindness(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_burning_hands(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_call_lightning(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_cause_light(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_cause_critical(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_cause_serious(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_change_sex(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static bool can_charm(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static int spell_charm_person(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_chill_touch(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_colour_spray(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_control_weather(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_create_food(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_create_water(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_cure_blindness(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_sacral_divinity(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_expurgation(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_bethsaidean_touch(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_cure_poison(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-
-        public static int spell_curse(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-
-        public static int spell_detect_poison(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-
-        public static int spell_dispel_evil(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
-            return 0;
-        }
-
-        public static int spell_dispel_magic(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_polymorph(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_earthquake(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_enchant_weapon(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_disenchant_weapon(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_energy_drain(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_fireball(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_flamestrike(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_faerie_fire(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_faerie_fog(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_gate(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_harm(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_identify(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_invis(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_know_alignment(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_lightning_bolt(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_locate_object(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_magic_missile(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_pass_door(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_poison(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_remove_curse(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_remove_trap(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_shocking_grasp(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_sleep(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_summon(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_teleport(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_ventriloquate(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_weaken(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_word_of_recall(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_acid_breath(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_fire_breath(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_frost_breath(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_gas_breath(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_lightning_breath(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_notfound(int sn, int level, CharacterInstance ch, object vo)
-        {
-            color.send_to_char("That's not a spell!\r\n", ch);
-            return (int)ReturnTypes.None;
-        }
-
-        public static int spell_transport(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_portal(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_farsight(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_recharge(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_plant_pass(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_mist_walk(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_solar_flight(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_remove_invis(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_animate_dead(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_possess(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_knock(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_dream(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_spiral_blast(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_scorching_surge(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_helical_flow(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_ethereal_fist(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_spectral_furor(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_hand_of_chaos(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_disruption(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_sonic_resonance(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_mind_wrack(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_mind_wrench(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_revive(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_sulfurous_spray(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_caustic_fount(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_acetum_primus(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_galvanic_whip(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_magnetic_thrust(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_quantum_spike(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_black_hand(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_black_fist(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_black_lightning(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_midas_touch(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        /*******************************************************
-          * Everything after this point is part of SMAUG SPELLS *
-          *******************************************************/
-        public static int check_save(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_attack(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_area_attack(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_affectchar(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_affect(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_obj_inv(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_create_obj(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static int spell_create_mob(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static ReturnTypes spell_smaug(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO
-            return ReturnTypes.None;
-        }
-
     }
 }

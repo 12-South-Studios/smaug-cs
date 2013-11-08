@@ -1130,7 +1130,7 @@ namespace SmaugCS
             return false;
         }
 
-        public static bool chance(CharacterInstance ch, short percent)
+        public static bool chance(CharacterInstance ch, int percent)
         {
             // TODO
             return false;

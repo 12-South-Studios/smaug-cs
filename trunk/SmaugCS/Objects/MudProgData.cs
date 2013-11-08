@@ -1,6 +1,8 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Constants;
 using SmaugCS.Enums;
 using SmaugCS.Common;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Objects
 {
@@ -19,7 +21,7 @@ namespace SmaugCS.Objects
                 return false;
 
             proxy.Write("#MUDPROG\n");
-            proxy.Write("ProgType  {0}~\n", mud_comm.mprog_type_to_name(Type));
+            proxy.Write("ProgType  {0}~\n", BuilderConstants.mprog_type_to_name(Type));
             proxy.Write("Arglist   {0}~\n", arglist);
 
             if (!comlist.IsNullOrEmpty() && !IsFileProg)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SmaugCS.Enums;
 
 namespace SmaugCS.Constants
 {
@@ -932,5 +933,45 @@ namespace SmaugCS.Constants
                                                          "tell",
                                                          "command"
                                                      };
+
+        public static Dictionary<MudProgTypes, string> mprog_types = new Dictionary<MudProgTypes, string>()
+            {
+                {MudProgTypes.InFile, "in_file_prog"},
+                {MudProgTypes.Act, "act_prog"},
+                {MudProgTypes.Speech, "speech_prog"},
+                {MudProgTypes.Random, "rand_prog"},
+                {MudProgTypes.Fight, "fight_prog"},
+                {MudProgTypes.HitPercent, "hitprcnt_prog"},
+                {MudProgTypes.Death, "death_prog"},
+                {MudProgTypes.Entry, "entry_prog"},
+                {MudProgTypes.Greet, "greet_prog"},
+                {MudProgTypes.GreetAll, "all_greet_prog"},
+                {MudProgTypes.Give, "give_prog"},
+                {MudProgTypes.Bribe, "bribe_prog"},
+                {MudProgTypes.Hour, "hour_prog"},
+                {MudProgTypes.Time, "time_prog"},
+                {MudProgTypes.Wear, "wear_prog"},
+                {MudProgTypes.Remove, "remove_prog"},
+                {MudProgTypes.Sacrifice, "sac_prog"},
+                {MudProgTypes.Look, "look_prog"},
+                {MudProgTypes.Examine, "exa_prog"},
+                {MudProgTypes.Zap, "zap_prog"},
+                {MudProgTypes.Get, "get_prog"},
+                {MudProgTypes.Drop, "drop_prog"},
+                {MudProgTypes.Repair, "repair_prog"},
+                {MudProgTypes.Damage, "damage_prog"},
+                {MudProgTypes.Pull, "pull_prog"},
+                {MudProgTypes.Push, "push_prog"},
+                {MudProgTypes.Script, "script_prog"},
+                {MudProgTypes.Sleep, "sleep_prog"},
+                {MudProgTypes.Rest, "rest_prog"},
+                {MudProgTypes.Leave, "leave_prog"},
+                {MudProgTypes.Use, "use_prog"}
+            };
+
+        public static string mprog_type_to_name(MudProgTypes type)
+        {
+            return mprog_types.ContainsKey(type) ? mprog_types[type] : "ERROR_PROG";
+        }
     }
 }
