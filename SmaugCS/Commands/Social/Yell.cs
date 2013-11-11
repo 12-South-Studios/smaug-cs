@@ -1,8 +1,7 @@
 ﻿
-using SmaugCS.Enums;
-using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Commands.Social
 {

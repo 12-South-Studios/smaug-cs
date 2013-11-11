@@ -1,4 +1,7 @@
-﻿namespace SmaugCS.Objects
+﻿using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+
+namespace SmaugCS.Objects
 {
     public class ExtracedCharacterData
     {

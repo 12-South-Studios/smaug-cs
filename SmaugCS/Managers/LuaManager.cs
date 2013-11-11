@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
 
 namespace SmaugCS.Managers
@@ -13,6 +9,7 @@ namespace SmaugCS.Managers
         private static readonly object Padlock = new object();
 
         public LuaVirtualMachine LUA { get; private set; }
+        public LuaInterfaceProxy Proxy { get; private set; }
 
         private LuaManager()
         {
@@ -32,9 +29,14 @@ namespace SmaugCS.Managers
             }
         }
 
-        public void Init()
+        public void InitProxy(LuaInterfaceProxy proxy)
         {
-            LUA = new LuaVirtualMachine(1, null, new LuaFunctionRepository(), new LuaInterfaceProxy());
+            Proxy = proxy ?? new LuaInterfaceProxy();
+        }
+
+        public void InitVirtualMachine()
+        {
+            LUA = new LuaVirtualMachine(1, null, new LuaFunctionRepository(), Proxy);
         }
     }
 }

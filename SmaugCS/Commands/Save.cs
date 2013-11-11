@@ -1,4 +1,5 @@
-﻿using SmaugCS.Objects;
+﻿using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands
 {

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
-using SmaugCS.Config;
+using SmaugCS.Constants.Config;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Database;
-using SmaugCS.Enums;
+using SmaugCS.Extensions;
 using SmaugCS.Loaders;
-using SmaugCS.Objects;
 using SmaugCS.Weather;
 
 namespace SmaugCS.Managers
@@ -25,7 +26,7 @@ namespace SmaugCS.Managers
             OBJECT_INDEXES = new ObjectRepository();
             MOBILE_INDEXES = new MobileRepository();
             CHARACTERS = new CharacterRepository();
-            OBJECTS = new ObjInstanceRepository(Program.MAX_WEAR, Program.MAX_LAYERS);
+            //OBJECTS = new ObjInstanceRepository(Program.MAX_WEAR, Program.MAX_LAYERS);
         }
 
         /// <summary>
@@ -140,12 +141,12 @@ namespace SmaugCS.Managers
 
             db.GameTime.SetTimeOfDay(db.SystemData);
 
-            WeatherManager.Instance.InitializeWeatherMap();
-            if (!WeatherManager.Instance.Weather.Load())
+            WeatherManager.Instance.InitializeWeatherMap(Program.WEATHER_SIZE_X, Program.WEATHER_SIZE_Y);
+            /*if (!WeatherManager.Instance.Weather.Load())
             {
                 LogManager.BootLog("Failed to load WeatherMap");
                 // TODO Fatal
-            }
+            }*/
 
             LogManager.Log("Loading holiday chart...");
             HolidayLoader hLoader = new HolidayLoader();

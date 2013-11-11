@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Realm.Library.Common.Extensions;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Language;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Commands
 {

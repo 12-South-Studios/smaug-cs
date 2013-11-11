@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common.Objects;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Managers
 {

@@ -7,9 +7,11 @@ using SmaugCS.Commands;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Commands.Skills.Thief;
 using SmaugCS.Common;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
-using SmaugCS.Organizations;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Organizations;
+using SmaugCS.Extensions;
 using SmaugCS.Weather;
 
 namespace SmaugCS

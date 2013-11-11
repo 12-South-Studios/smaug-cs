@@ -5,11 +5,14 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
-using SmaugCS.Organizations;
 
 namespace SmaugCS
 {
@@ -45,7 +48,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype) && !ch.CanTakePrototype)
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype) && !ch.CanTakePrototype())
             {
                 color.send_to_char("A godly force prevents you from getting close to it.\r\n", ch);
                 return;
@@ -130,8 +133,8 @@ namespace SmaugCS
             {
                 foreach (ClanData clan in db.CLANS)
                 {
-                    if (clan.StoreRoom == ch.CurrentRoom.Vnum)
-                        clan.SaveStoreroom(ch);
+                    //if (clan.StoreRoom == ch.CurrentRoom.Vnum)
+                    //     clan.SaveStoreroom(ch);
                 }
             }
 
@@ -879,7 +882,7 @@ namespace SmaugCS
                         return;
 
                     if ((obj.GetObjectWeight() + tobj.GetObjectWeight()) >
-                        GameConstants.str_app[ch.CurrentStrength].Wield)
+                        GameConstants.str_app[ch.GetCurrentStrength()].Wield)
                     {
                         color.send_to_char("It is too heavy for you to wield.\r\n", ch);
                         return;
@@ -917,7 +920,7 @@ namespace SmaugCS
                     }
 
                     if ((obj.GetObjectWeight() + mw.GetObjectWeight()) >
-                        GameConstants.str_app[ch.CurrentStrength].Wield)
+                        GameConstants.str_app[ch.GetCurrentStrength()].Wield)
                     {
                         color.send_to_char("It is too heavy for you to wield.\r\n", ch);
                         return;
@@ -947,7 +950,7 @@ namespace SmaugCS
                 }
             }
 
-            if (obj.GetObjectWeight() > GameConstants.str_app[ch.CurrentStrength].Wield)
+            if (obj.GetObjectWeight() > GameConstants.str_app[ch.GetCurrentStrength()].Wield)
             {
                 color.send_to_char("It is too heavy for you to wield.\r\n", ch);
                 return;
@@ -1064,7 +1067,7 @@ namespace SmaugCS
                 && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
             {
                 ExitData exit = obj.InRoom.GetExit(DirectionTypes.Down);
-                RoomTemplate to_room = exit.Destination;
+                RoomTemplate to_room = exit.GetDestination();
 
                 if (through)
                     fall_count++;

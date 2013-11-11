@@ -1,4 +1,4 @@
-﻿using SmaugCS.Objects;
+﻿using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Commands.Admin
 {

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using LuaInterface;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
-using Realm.Library.Lua.Properties;
 
 namespace Realm.Library.Lua
 {
@@ -79,50 +77,13 @@ namespace Realm.Library.Lua
         /// Registers all lua functions found within the given object type
         /// </summary>
         /// <param name="type">The type of the object to scan for LuaFunctionAttribute</param>
-        public void RegisterLuaFunctions(Type type)
+        private void RegisterLuaFunctions(Type type)
         {
             Validation.IsNotNull(type, "type");
 
             try
             {
-                // Get the target type
-                var targetType = type;
-
-                // ... and simply iterate through all it's methods
-                targetType.GetMethods().ToList().ForEach(info => Attribute.GetCustomAttributes(info).ToList().ForEach(attr =>
-                    {
-                        // and if they happen to be one of our LuaFunctionAttribute attributes
-                        if (attr.GetType() != typeof(LuaFunctionAttribute)) return;
-                        var functionAttr = attr as LuaFunctionAttribute;
-                        var paramTable = new Dictionary<string, string>();
-
-                        // Get the desired function name and doc string, along with parameter info
-                        if (functionAttr == null) return;
-
-                        var strFName = functionAttr.Name;
-                        var strFDoc = functionAttr.Description;
-                        var paramDocs = functionAttr.Parameters;
-
-                        // Now get the expected parameters from the MethodInfo object
-                        var paramInfo = info.GetParameters();
-
-                        // If they don't match, someone forgot to add some documentation to the
-                        // attribute, complain and go to the next method
-                        if (paramDocs.IsNotNull() && (paramInfo.Length != paramDocs.Count))
-                        {
-                            throw new ArgumentException(String.Format(Resources.ERR_FUNC_ARG_MISMATCH,
-                                                                      info.Name, strFName, paramDocs.Count,
-                                                                      paramInfo.Length));
-                        }
-
-                        // Build a parameter <-> parameter doc dictionary
-                        if (paramDocs.IsNotNull())
-                            Enumerable.Range(0, paramInfo.Length)
-                                      .ToList()
-                                      .ForEach(i => paramTable.Add(paramInfo[i].Name, paramDocs.ElementAt(i)));
-
-                        _repository.Add(strFName, new LuaFunctionDescriptor(strFName, strFDoc, paramTable, info));
-                    }));
+                LuaHelper.RegisterFunctionTypes(_repository, type);
 
                 _virtualMachines.ToList().ForEach(x => x.RegisterFunctions());
             }

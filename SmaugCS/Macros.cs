@@ -1,9 +1,11 @@
 ﻿
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Exceptions;
-using SmaugCS.Interfaces;
-using SmaugCS.Objects;
+using SmaugCS.Extensions;
 
 namespace SmaugCS
 {
@@ -13,7 +15,7 @@ namespace SmaugCS
         {
             int retVal = db.AddSkill(value);
             if (retVal == -1)
-                throw new DuplicateSkillException("{0} already exists", value);
+                throw new DuplicateEntryException("{0} already exists", value);
             return retVal;
         }
 

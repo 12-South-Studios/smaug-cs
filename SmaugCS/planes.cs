@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using SmaugCS.Objects;
+﻿using System.IO;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS
 {
@@ -24,7 +21,7 @@ namespace SmaugCS
             // TODO
         }
 
-        public static plane_data plane_lookup(string name)
+        public static PlaneData plane_lookup(string name)
         {
             // tODO
             return null;
@@ -50,7 +47,7 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void check_planes(plane_data p)
+        public static void check_planes(PlaneData p)
         {
             // TODO
         }

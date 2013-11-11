@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Realm.Library.Common;
-using SmaugCS.Objects;
+﻿using Realm.Library.Common;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
@@ -13,9 +10,9 @@ namespace SmaugCS.Spells
         {
             CharacterInstance victim = vo.CastAs<CharacterInstance>();
 
-                int damage = Common.SmaugRandom.RollDice(level, 6);
-            
-            if (SavingThrowData.CheckSaveVsSpellStaff(level, victim))
+            int damage = Common.SmaugRandom.RollDice(level, 6);
+
+            if (victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
                 damage /= 2;
 
             return fight.damage(ch, victim, damage, sn);

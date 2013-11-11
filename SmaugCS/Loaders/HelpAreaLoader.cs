@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Realm.Library.Common;
-using SmaugCS.Objects;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Loaders
 {

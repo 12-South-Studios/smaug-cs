@@ -1,4 +1,6 @@
 ﻿
+using SmaugCS.Data;
+
 namespace SmaugCS.Objects
 {
     public class whogr_s

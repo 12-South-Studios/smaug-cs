@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Social
 {

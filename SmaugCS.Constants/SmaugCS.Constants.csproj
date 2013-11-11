@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CB479E-4286-4168-94DF-61777231F87C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmaugCS.Constants</RootNamespace>
+    <AssemblyName>SmaugCS.Constants</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config\Constant.cs" />
+    <Compile Include="Config\ConstantCollection.cs" />
+    <Compile Include="Config\ConstantConfigurationSection.cs" />
+    <Compile Include="Config\Vnum.cs" />
+    <Compile Include="Config\VnumCollection.cs" />
+    <Compile Include="Config\VnumConfigurationSection.cs" />
+    <Compile Include="Constants\BuilderConstants.cs" />
+    <Compile Include="Constants\SystemConstants.cs" />
+    <Compile Include="Enums\ActFlags.cs" />
+    <Compile Include="Enums\AffectedByTypes.cs" />
+    <Compile Include="Enums\AnsiCodes.cs" />
+    <Compile Include="Enums\ApplyTypes.cs" />
+    <Compile Include="Enums\AreaFlags.cs" />
+    <Compile Include="Enums\AreaType.cs" />
+    <Compile Include="Enums\AttackTypes.cs" />
+    <Compile Include="Enums\ATTypes.cs" />
+    <Compile Include="Enums\AutoSaveFlags.cs" />
+    <Compile Include="Enums\BanTypes.cs" />
+    <Compile Include="Enums\BoardTypes.cs" />
+    <Compile Include="Enums\BodyPartTypes.cs" />
+    <Compile Include="Enums\ChannelTypes.cs" />
+    <Compile Include="Enums\CharacterSubStates.cs" />
+    <Compile Include="Enums\ClassTypes.cs" />
+    <Compile Include="Enums\CommandFlags.cs" />
+    <Compile Include="Enums\ConditionTypes.cs" />
+    <Compile Include="Enums\ConnectionTypes.cs" />
+    <Compile Include="Enums\ContainerFlags.cs" />
+    <Compile Include="Enums\DamageTypes.cs" />
+    <Compile Include="Enums\DefenseTypes.cs" />
+    <Compile Include="Enums\DirectionPullTypes.cs" />
+    <Compile Include="Enums\DirectionTypes.cs" />
+    <Compile Include="Enums\EchoTypes.cs" />
+    <Compile Include="Enums\ExitFlags.cs" />
+    <Compile Include="Enums\GenderTypes.cs" />
+    <Compile Include="Enums\GravityTypes.cs" />
+    <Compile Include="Enums\HemisphereTypes.cs" />
+    <Compile Include="Enums\ItemExtraFlags.cs" />
+    <Compile Include="Enums\ItemMagicFlags.cs" />
+    <Compile Include="Enums\ItemTypes.cs" />
+    <Compile Include="Enums\ItemWearFlags.cs" />
+    <Compile Include="Enums\LiquidTypes.cs" />
+    <Compile Include="Enums\LogTypes.cs" />
+    <Compile Include="Enums\MudProgBaseTypes.cs" />
+    <Compile Include="Enums\MudProgReturnTypes.cs" />
+    <Compile Include="Enums\MudProgTypes.cs" />
+    <Compile Include="Enums\PCFlags.cs" />
+    <Compile Include="Enums\PipeFlags.cs" />
+    <Compile Include="Enums\PlaneTypes.cs" />
+    <Compile Include="Enums\PlayerFlags.cs" />
+    <Compile Include="Enums\PlayerPermissionTypes.cs" />
+    <Compile Include="Enums\PositionTypes.cs" />
+    <Compile Include="Enums\RaceTypes.cs" />
+    <Compile Include="Enums\RelationTypes.cs" />
+    <Compile Include="Enums\RenumberTypes.cs" />
+    <Compile Include="Enums\ResetFlags.cs" />
+    <Compile Include="Enums\ResistanceTypes.cs" />
+    <Compile Include="Enums\ReturnTypes.cs" />
+    <Compile Include="Enums\RoomFlags.cs" />
+    <Compile Include="Enums\SaveVsTypes.cs" />
+    <Compile Include="Enums\SeasonTypes.cs" />
+    <Compile Include="Enums\SectorTypes.cs" />
+    <Compile Include="Enums\SkillFlags.cs" />
+    <Compile Include="Enums\SkillNumberTypes.cs" />
+    <Compile Include="Enums\SkillTypes.cs" />
+    <Compile Include="Enums\SkyConditionTypes.cs" />
+    <Compile Include="Enums\SpellActTypes.cs" />
+    <Compile Include="Enums\SpellClassTypes.cs" />
+    <Compile Include="Enums\SpellDamageTypes.cs" />
+    <Compile Include="Enums\SpellPowerTypes.cs" />
+    <Compile Include="Enums\SpellSaveEffectTypes.cs" />
+    <Compile Include="Enums\StatisticTypes.cs" />
+    <Compile Include="Enums\StyleTypes.cs" />
+    <Compile Include="Enums\SunPositionTypes.cs" />
+    <Compile Include="Enums\SystemDirectoryTypes.cs" />
+    <Compile Include="Enums\SystemFileTypes.cs" />
+    <Compile Include="Enums\TargetTypes.cs" />
+    <Compile Include="Enums\TeleportTriggerFlags.cs" />
+    <Compile Include="Enums\TextAlignmentStyle.cs" />
+    <Compile Include="Enums\TimerTypes.cs" />
+    <Compile Include="Enums\ToTypes.cs" />
+    <Compile Include="Enums\TrapTriggerTypes.cs" />
+    <Compile Include="Enums\TrapTypes.cs" />
+    <Compile Include="Enums\Triggerflags.cs" />
+    <Compile Include="Enums\VariableTypes.cs" />
+    <Compile Include="Enums\WearLocations.cs" />
+    <Compile Include="Enums\WhoTypes.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
+      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
+      <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

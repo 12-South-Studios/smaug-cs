@@ -5,9 +5,10 @@ using Realm.Library.Common;
 using Realm.Library.Common.Exceptions;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Loaders
 {
@@ -197,7 +198,7 @@ namespace SmaugCS.Loaders
                         exit.Pull = proxy.ReadNumber();
                         break;
                     case "toroom":
-                        exit.vnum = proxy.ReadNumber();
+                        //exit.vnum = proxy.ReadNumber();
                         break;
                 }
             } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#ENDEXIT"));
@@ -241,7 +242,7 @@ namespace SmaugCS.Loaders
                         }
                         break;
                     case "name":
-                        area.Name = proxy.ReadString();
+                        // area.Name = proxy.ReadString();
                         break;
                     case "ranges":
                         string[] words = proxy.ReadString().Split(new[] { ' ' });
@@ -561,7 +562,7 @@ namespace SmaugCS.Loaders
                         }
                         else
                         {
-                            room = new RoomTemplate();
+                            room = new RoomTemplate(0, "");
                         }
 
                         room.Vnum = vnum;
@@ -704,7 +705,7 @@ namespace SmaugCS.Loaders
                         }
                         else
                         {
-                            obj = new ObjectTemplate();
+                            obj = new ObjectTemplate(0, "");
                         }
 
                         obj.Vnum = vnum;

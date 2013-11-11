@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Database
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ObjInstanceRepository : Repository<int, ObjectInstance>
+    public class ObjInstanceRepository : Repository<long, ObjectInstance>
     {
-        private static int _idSpace = 1;
-        private static int GetNextId { get { return _idSpace++; } }
+        private static long _idSpace = 1;
+        private static long GetNextId { get { return _idSpace++; } }
 
         private readonly int _maxWear;
         private readonly int _maxLayers;
@@ -44,13 +42,12 @@ namespace SmaugCS.Database
             Validation.IsNotNull(parent, "parent");
             Validation.Validate(level > 0, "Invalid level {0}", level);
 
-            ObjectInstance obj = new ObjectInstance(GetNextId, _maxWear, _maxLayers)
+            ObjectInstance obj = new ObjectInstance(GetNextId, parent.Name, _maxWear, _maxLayers)
                 {
                     Parent = parent,
                     Level = level,
                     WearLocation = WearLocations.None,
                     Count = 1,
-                    Name = parent.Name,
                     ShortDescription = parent.ShortDescription,
                     Description = parent.Description,
                     ActionDescription = parent.ActionDescription,
@@ -85,7 +82,7 @@ namespace SmaugCS.Database
                 {ItemTypes.Potion, UpdatePotion},
                 {ItemTypes.Pill, UpdatePotion},
                 {ItemTypes.Money, UpdateMoney}
-            };  
+            };
 
         private static void UpdateFood(ObjectInstance obj)
         {

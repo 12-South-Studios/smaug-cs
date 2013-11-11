@@ -1,16 +1,17 @@
-﻿using System.IO;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Database
 {
     /// <summary>
     /// 
     /// </summary>
-    public class CharacterRepository : Repository<int, CharacterInstance>
+    public class CharacterRepository : Repository<long, CharacterInstance>
     {
         private static int _idSpace = 1;
         private static int GetNextId { get { return _idSpace++; } }
@@ -24,10 +25,9 @@ namespace SmaugCS.Database
         {
             Validation.IsNotNull(parent, "parent");
 
-            CharacterInstance mob = new CharacterInstance(GetNextId)
+            CharacterInstance mob = new CharacterInstance(GetNextId, parent.Name)
                 {
                     Parent = parent,
-                    Name = parent.Name,
                     ShortDescription = parent.ShortDescription,
                     LongDescription = parent.LongDescription,
                     Description = parent.Description,

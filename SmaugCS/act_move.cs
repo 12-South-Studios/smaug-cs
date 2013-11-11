@@ -5,9 +5,12 @@ using Realm.Library.Common.Extensions;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS
 {
@@ -127,10 +130,10 @@ namespace SmaugCS
 
         public static RoomTemplate generate_exit(RoomTemplate room, ExitData exit)
         {
-            int serial;
-            int roomnum;
-            int brvnum;
-            int distance = -1;
+            long serial;
+            long roomnum;
+            long brvnum;
+            long distance = -1;
             RoomTemplate backroom;
             int vdir = exit.vdir;
 
@@ -154,8 +157,8 @@ namespace SmaugCS
             }
             else
             {
-                int r1 = room.Vnum;
-                int r2 = exit.vnum;
+                long r1 = room.Vnum;
+                long r2 = exit.vnum;
 
                 brvnum = r1;
                 backroom = room;
@@ -176,7 +179,7 @@ namespace SmaugCS
             RoomTemplate newRoom = null;
             if (!found)
             {
-                newRoom = new RoomTemplate
+                newRoom = new RoomTemplate(serial, "New room")
                     {
                         Area = room.Area,
                         Vnum = serial,
@@ -191,9 +194,9 @@ namespace SmaugCS
             ExitData xit = newRoom.GetExit(vdir);
             if (!found || xit == null)
             {
-                xit = db.make_exit(newRoom, exit.Destination, vdir);
+                xit = db.make_exit(newRoom, exit.GetDestination(), vdir);
                 xit.Key = -1;
-                xit.Distance = distance;
+                xit.Distance = (int)distance;
             }
 
             if (!found)
@@ -201,11 +204,11 @@ namespace SmaugCS
                 ExitData bxit = db.make_exit(newRoom, backroom, GameConstants.rev_dir[vdir]);
                 bxit.Key = -1;
                 if ((serial & 65536) != exit.vnum)
-                    bxit.Distance = roomnum;
+                    bxit.Distance = (int)roomnum;
                 else
                 {
                     ExitData tmp = backroom.GetExit(vdir);
-                    bxit.Distance = tmp.Distance - distance;
+                    bxit.Distance = tmp.Distance - (int)distance;
                 }
             }
 
@@ -386,11 +389,11 @@ namespace SmaugCS
             if (xit.Flags.IsSet((int)ExitFlags.Closed))
                 return ReturnTypes.None;
 
-            if (xit.Destination.Tunnel > 0)
+            if (xit.GetDestination().Tunnel > 0)
             {
                 int count = ch.CurrentMount != null ? 1 : 0;
 
-                if (xit.Destination.Persons.Any(ctmp => ++count >= xit.Destination.Tunnel))
+                if (xit.GetDestination().Persons.Any(ctmp => ++count >= xit.GetDestination().Tunnel))
                     return ReturnTypes.None;
             }
 
@@ -484,17 +487,17 @@ namespace SmaugCS
                     comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null, GameConstants.dir_name[xit.vdir], ToTypes.Room);
 
                 if (!string.IsNullOrEmpty(msg.DestRoom)
-                                          && xit.Destination.Persons.Any())
+                                          && xit.GetDestination().Persons.Any())
                 {
-                    comm.act(ATTypes.AT_PLAIN, msg.DestRoom, xit.Destination.Persons.First(), null, dtxt, ToTypes.Character);
-                    comm.act(ATTypes.AT_PLAIN, msg.DestRoom, xit.Destination.Persons.First(), null, dtxt, ToTypes.Room);
+                    comm.act(ATTypes.AT_PLAIN, msg.DestRoom, xit.GetDestination().Persons.First(), null, dtxt, ToTypes.Character);
+                    comm.act(ATTypes.AT_PLAIN, msg.DestRoom, xit.GetDestination().Persons.First(), null, dtxt, ToTypes.Room);
                 }
 
                 if (xit.PullType == DirectionPullTypes.Slip)
                     return Move.move_char(ch, xit, 1);
 
                 ch.CurrentRoom.FromRoom(ch);
-                xit.Destination.ToRoom(ch);
+                xit.GetDestination().ToRoom(ch);
 
                 if (showroom)
                     Look.do_look(ch, "auto");
@@ -502,7 +505,7 @@ namespace SmaugCS
                 if (ch.CurrentMount != null)
                 {
                     ch.CurrentMount.CurrentRoom.FromRoom(ch.CurrentMount);
-                    xit.Destination.ToRoom(ch.CurrentMount);
+                    xit.GetDestination().ToRoom(ch.CurrentMount);
                     if (showroom)
                         Look.do_look(ch.CurrentMount, "auto");
                 }
@@ -551,12 +554,12 @@ namespace SmaugCS
 
                     if (!string.IsNullOrEmpty(msg.DestObj) && ch.CurrentRoom.Persons.Any())
                     {
-                        comm.act(ATTypes.AT_PLAIN, msg.DestObj, xit.Destination.Persons.First(), obj, dtxt, ToTypes.Character);
-                        comm.act(ATTypes.AT_PLAIN, msg.DestObj, xit.Destination.Persons.First(), obj, dtxt, ToTypes.Room);
+                        comm.act(ATTypes.AT_PLAIN, msg.DestObj, xit.GetDestination().Persons.First(), obj, dtxt, ToTypes.Character);
+                        comm.act(ATTypes.AT_PLAIN, msg.DestObj, xit.GetDestination().Persons.First(), obj, dtxt, ToTypes.Room);
                     }
 
                     obj.InRoom.FromRoom(obj);
-                    xit.Destination.ToRoom(obj);
+                    xit.GetDestination().ToRoom(obj);
                 }
             }
 

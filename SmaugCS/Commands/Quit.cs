@@ -1,8 +1,9 @@
 ﻿using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Commands
 {
@@ -70,8 +71,8 @@ namespace SmaugCS.Commands
                 handler.extract_char(ch.PlayerData.Pet, true);
             }
 
-            if (ch.PlayerData.Clan != null)
-                ch.PlayerData.Clan.Save();
+            //if (ch.PlayerData.Clan != null)
+            //   ch.PlayerData.Clan.Save();
 
             // TODO saving_char = null;
 

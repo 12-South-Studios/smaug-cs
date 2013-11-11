@@ -1,6 +1,7 @@
-﻿using SmaugCS.Constants;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+﻿using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
 {
@@ -21,7 +22,7 @@ namespace SmaugCS.Loaders
 
         protected AreaData CreateArea()
         {
-            AreaData newArea = new AreaData
+            AreaData newArea = new AreaData(DatabaseManager.Instance.AREAS.Count + db.BUILD_AREAS.Count + 1, AreaName)
             {
                 Age = 15,
                 HighSoftRange = Program.MAX_LEVEL,

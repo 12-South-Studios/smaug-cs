@@ -1,10 +1,9 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS
 {

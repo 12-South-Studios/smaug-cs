@@ -14,7 +14,7 @@ dwarven.are
 daycare.are
 grave.are
 chapel.are
-astral.are
+astral.lua
 Build.are
 pixie.are
 export.are

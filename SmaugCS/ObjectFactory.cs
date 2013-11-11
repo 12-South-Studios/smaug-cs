@@ -1,8 +1,10 @@
 ﻿using System.Linq;
-using SmaugCS.Enums;
-using SmaugCS.Managers;
-using SmaugCS.Objects;
 using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -110,7 +112,7 @@ namespace SmaugCS
                     if (ch.CurrentRoom != null)
                     {
                         ch.CurrentRoom.Area.gold_looted += ch.CurrentCoin;
-                        db.SystemData.global_looted += ch.CurrentCoin/100;
+                        db.SystemData.global_looted += ch.CurrentCoin / 100;
                     }
 
                     ObjectInstance money = CreateMoney(ch.CurrentCoin);
@@ -118,7 +120,7 @@ namespace SmaugCS
                     ch.CurrentCoin = 0;
                 }
 
-                corpse.Cost = -1*ch.MobIndex.Vnum;
+                corpse.Cost = -1 * (int)ch.MobIndex.Vnum;
                 corpse.Value[2] = corpse.Timer;
             }
             else
@@ -128,10 +130,10 @@ namespace SmaugCS
                     DatabaseManager.Instance.OBJECTS.Create(
                         DatabaseManager.Instance.OBJECT_INDEXES.Get(Program.OBJ_VNUM_CORPSE_PC), 0);
                 corpse.Timer = fight.in_arena(ch) ? 0 : 40;
-                corpse.Value[2] = corpse.Timer/8;
+                corpse.Value[2] = corpse.Timer / 8;
                 corpse.Value[4] = ch.Level;
                 if (ch.CanPKill() && db.SystemData.PlayerKillLoot > 0)
-                    corpse.ExtraFlags.SetBit((int) ItemExtraFlags.ClanCorpse);
+                    corpse.ExtraFlags.SetBit((int)ItemExtraFlags.ClanCorpse);
 
                 // Pkill corpses get save timers in tickets (approx 70 seconds)
                 corpse.Value[3] = (!ch.IsNpc() && !killer.IsNpc()) ? 1 : 0;
@@ -139,17 +141,17 @@ namespace SmaugCS
 
             if (ch.CanPKill() && killer.CanPKill() && ch != killer)
                 corpse.ActionDescription = killer.Name;
-            
+
             // Added corpse name, makes locate easier
-            corpse.Name = string.Format("corpse {0}", name);
+            //corpse.Name = string.Format("corpse {0}", name);
             corpse.ShortDescription = name;
             corpse.Description = name;
 
             foreach (ObjectInstance obj in ch.Carrying)
             {
                 obj.FromCharacter();
-                if (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.Inventory)
-                    || Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.DeathRot))
+                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Inventory)
+                    || Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.DeathRot))
                     handler.extract_obj(obj);
                 else
                     obj.ToObject(corpse);

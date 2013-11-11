@@ -1,5 +1,5 @@
 ﻿using System;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Objects
 {

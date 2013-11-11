@@ -2,11 +2,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
 using log4net;
 using Realm.Library.Common;
 using Realm.Library.Common.Objects;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
 
 namespace SmaugCS.Managers
 {

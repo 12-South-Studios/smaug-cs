@@ -5,12 +5,17 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Shops;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
-using SmaugCS.Organizations;
 
 namespace SmaugCS
 {
@@ -146,7 +151,7 @@ namespace SmaugCS
                 return -1;
 
             int newId = SKILLS.Max(x => x.ID) + 1;
-            SKILLS.Add(new SkillData() { Name = name, ID = newId });
+            SKILLS.Add(new SkillData(Program.MAX_CLASS, Program.MAX_RACE) { Name = name, ID = newId });
             return newId;
         }
 
@@ -343,8 +348,8 @@ namespace SmaugCS
                 foreach (ExitData exit in room.Exits)
                 {
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = DatabaseManager.Instance.ROOMS.Get(exit.vnum);
-                    if (exit.vnum <= 0 || exit.Destination == null)
+                    exit.Destination = DatabaseManager.Instance.ROOMS.Get(exit.vnum).ID;
+                    if (exit.vnum <= 0 || exit.Destination <= 0)
                     {
                         if (DatabaseManager.BootDb)
                         {
@@ -366,13 +371,13 @@ namespace SmaugCS
             {
                 foreach (ExitData exit in room.Exits)
                 {
-                    if (exit.Destination != null && exit.ReverseExit == null)
+                    if (exit.Destination <= 0 && exit.GetReverseExit() == null)
                     {
-                        ExitData reverseExit = exit.Destination.GetExitTo(GameConstants.rev_dir[exit.vdir], room.Vnum);
+                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[exit.vdir], room.ID);
                         if (reverseExit != null)
                         {
-                            exit.ReverseExit = reverseExit;
-                            reverseExit.ReverseExit = exit;
+                            exit.Reverse = reverseExit.ID;
+                            reverseExit.Reverse = exit.ID;
                         }
                     }
                 }
@@ -565,7 +570,6 @@ namespace SmaugCS
             ch.CurrentHunting = null;
             ch.CurrentFearing = null;
             ch.CurrentHating = null;
-            ch.Name = string.Empty;
             ch.ShortDescription = string.Empty;
             ch.LongDescription = string.Empty;
             ch.Description = string.Empty;
@@ -1029,25 +1033,20 @@ namespace SmaugCS
 
         public static ExitData make_exit(RoomTemplate room, RoomTemplate to_room, int door)
         {
-            ExitData newExit = new ExitData
+            ExitData newExit = new ExitData(door, "An exit")
                 {
                     vdir = door,
                     Room_vnum = room.Vnum,
-                    Destination = to_room,
+                    Destination = to_room.ID,
                     Distance = 1,
                     Key = -1
                 };
 
-            ExitData reverseExit = null;
-            if (to_room != null)
+            ExitData reverseExit = to_room.GetExitTo(GameConstants.rev_dir[door], room.Vnum);
+            if (reverseExit != null)
             {
-                newExit.vnum = to_room.Vnum;
-                reverseExit = to_room.GetExitTo(GameConstants.rev_dir[door], room.Vnum);
-                if (reverseExit != null)
-                {
-                    reverseExit.ReverseExit = newExit;
-                    newExit.ReverseExit = reverseExit;
-                }
+                reverseExit.Reverse = newExit.ID;
+                newExit.Reverse = reverseExit.ID;
             }
 
             bool broke = room.Exits.Any(exit => door < exit.vdir);
@@ -1078,7 +1077,7 @@ namespace SmaugCS
                 {
                     fexit = true;
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = exit.vnum <= 0 ? null : DatabaseManager.Instance.ROOMS.Get(exit.vnum);
+                    exit.Destination = exit.vnum <= 0 ? 0 : DatabaseManager.Instance.ROOMS.Get(exit.vnum).ID;
                 }
                 if (!fexit)
                     room.Flags.SetBit((int)RoomFlags.NoMob);
@@ -1092,13 +1091,13 @@ namespace SmaugCS
 
                 foreach (ExitData exit in room.Exits)
                 {
-                    if (exit.Destination != null && exit.ReverseExit == null)
+                    if (exit.Reverse < -0)
                     {
-                        ExitData reverseExit = exit.Destination.GetExitTo(GameConstants.rev_dir[exit.vdir], room.Vnum);
+                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[exit.vdir], room.Vnum);
                         if (reverseExit != null)
                         {
-                            exit.ReverseExit = reverseExit;
-                            reverseExit.ReverseExit = exit;
+                            exit.Reverse = reverseExit.ID;
+                            reverseExit.Reverse = exit.ID;
                         }
                     }
                 }

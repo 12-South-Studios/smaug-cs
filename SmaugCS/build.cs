@@ -1,16 +1,20 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
 using SmaugCS.Common;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Managers;
+using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -524,7 +528,7 @@ namespace SmaugCS
             bool found = false;
             int bitv = 0;
 
-            if (loc == (int) ApplyTypes.Affect)
+            if (loc == (int)ApplyTypes.Affect)
             {
                 Tuple<string, string> tuple2 = arg.FirstArgument();
 
@@ -534,9 +538,9 @@ namespace SmaugCS
                 else
                     found = true;
             }
-            else if (loc == (int) ApplyTypes.Resistance
-                     || loc == (int) ApplyTypes.Immunity
-                     || loc == (int) ApplyTypes.Susceptibility)
+            else if (loc == (int)ApplyTypes.Resistance
+                     || loc == (int)ApplyTypes.Immunity
+                     || loc == (int)ApplyTypes.Susceptibility)
             {
                 List<string> words = arg.ToWords();
                 foreach (string word in words)
@@ -555,11 +559,11 @@ namespace SmaugCS
                     value = bitv;
                 }
             }
-            else if (loc == (int) ApplyTypes.WeaponSpell
-                     || loc == (int) ApplyTypes.WearSpell
-                     || loc == (int) ApplyTypes.RemoveSpell
-                     || loc == (int) ApplyTypes.StripSN
-                     || loc == (int) ApplyTypes.RecurringSpell)
+            else if (loc == (int)ApplyTypes.WeaponSpell
+                     || loc == (int)ApplyTypes.WearSpell
+                     || loc == (int)ApplyTypes.RemoveSpell
+                     || loc == (int)ApplyTypes.StripSN
+                     || loc == (int)ApplyTypes.RecurringSpell)
             {
                 value = db.LookupSkill(arg);
                 if (!Macros.IS_VALID_SN(value))
@@ -587,7 +591,7 @@ namespace SmaugCS
 
             if (!indexaffect)
                 location.Affects.Add(paf);
-            else 
+            else
                 location.PermanentAffects.Add(paf);
 
             color.send_to_char("Room affect added.\r\n", ch);
@@ -597,7 +601,7 @@ namespace SmaugCS
                 && paf.Location != ApplyTypes.StripSN)
             {
                 // apply the affect to anyone in the room
-                foreach(CharacterInstance vch in ch.CurrentRoom.Persons)
+                foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
                     vch.AddAffect(paf);
             }
         }
@@ -606,8 +610,8 @@ namespace SmaugCS
         {
             if (argument.IsNullOrEmpty())
             {
-                color.send_to_char(!indexaffect 
-                    ? "Usage: redit rmaffect <affect#>\r\n" 
+                color.send_to_char(!indexaffect
+                    ? "Usage: redit rmaffect <affect#>\r\n"
                     : "Usage: redit rmpermaffect <affect#>\r\n", ch);
                 return;
             }
@@ -651,7 +655,7 @@ namespace SmaugCS
                             && paf.Location != ApplyTypes.StripSN)
                         {
                             // Remove the affect from people in the room
-                            foreach(CharacterInstance vch in ch.CurrentRoom.Persons)
+                            foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
                                 handler.affect_modify(vch, paf, false);
                         }
                         location.PermanentAffects.Remove(paf);
@@ -680,7 +684,7 @@ namespace SmaugCS
                 return;
             }
 
-            if ((int) ch.SubState <= (int) CharacterSubStates.Pause)
+            if ((int)ch.SubState <= (int)CharacterSubStates.Pause)
             {
                 color.send_to_char("You can't do that!\r\n", ch);
                 LogManager.Bug("{0}: Illegal Character SubState {1}", ch.Name, ch.SubState);
@@ -913,7 +917,7 @@ namespace SmaugCS
             ch.CurrentEditor.Text.RemoveAt(line);
             if (ch.CurrentEditor.OnLine > ch.CurrentEditor.NumberOfLines)
                 ch.CurrentEditor.OnLine = ch.CurrentEditor.NumberOfLines;
-                
+
             color.send_to_char("Line deleted.\r\n", ch);
             return true;
         }
@@ -989,16 +993,17 @@ namespace SmaugCS
             if (area == null)
             {
                 LogManager.Log(LogTypes.Normal, ch.Level, "Creating area entry for {0}", ch.Name);
-                area = new AreaData
-                    {
-                        Name = string.Format("{{PROTO}} {0}'s area in progress", ch.Name),
-                        Filename = areaName,
-                        Author = ch.Name
-                    };
+                area = new AreaData(db.AREAS.Count + db.BUILD_AREAS.Count + 1,
+                                    string.Format("{{PROTO}} {0}'s area in progress", ch.Name))
+                           {
+
+                               Filename = areaName,
+                               Author = ch.Name
+                           };
                 db.BUILD_AREAS.Add(area);
                 created = true;
-            } 
-            else 
+            }
+            else
                 LogManager.Log(LogTypes.Normal, ch.Level, "Updating area entry for {0}", ch.Name);
 
             area.LowRoomNumber = ch.PlayerData.r_range_lo;
@@ -1016,7 +1021,7 @@ namespace SmaugCS
         {
             foreach (ResetData reset in resets)
             {
-                string buffer = reset.Command.PadLeft(level*2, '.');
+                string buffer = reset.Command.PadLeft(level * 2, '.');
                 switch (reset.Command.ToUpper()[0])
                 {
                     case '*':
@@ -1042,25 +1047,25 @@ namespace SmaugCS
             {
                 area.Version = Program.AREA_VERSION_WRITE;
                 proxy.Write("#FUSSAREA\n");
-                area.SaveHeader(proxy, install);
+                //area.SaveHeader(proxy, install);
 
                 for (int i = area.LowMobNumber; i <= area.HighMobNumber; ++i)
                 {
                     MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.Get(i);
-                    if (mob != null)
-                        mob.SaveFUSS(proxy, install);
+                    //if (mob != null)
+                    //    mob.SaveFUSS(proxy, install);
                 }
                 for (int i = area.LowObjectNumber; i <= area.HighObjectNumber; ++i)
                 {
                     ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(i);
-                    if (obj != null)
-                        obj.SaveFUSS(proxy, install);
+                    //if (obj != null)
+                    //    obj.SaveFUSS(proxy, install);
                 }
                 for (int i = area.LowRoomNumber; i <= area.HighRoomNumber; ++i)
                 {
                     RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(i);
-                    if (room != null)
-                        room.SaveFUSS(proxy, install);
+                    //if (room != null)
+                    //     room.SaveFUSS(proxy, install);
                 }
                 proxy.Write("#ENDAREA\n");
             }
@@ -1077,7 +1082,7 @@ namespace SmaugCS
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
             {
                 proxy.Write("help.are\n");
-                foreach(AreaData area in db.AREAS)
+                foreach (AreaData area in db.AREAS)
                     proxy.Write("{0}\n", area.Filename);
                 proxy.Write("$\n");
             }
@@ -1116,7 +1121,7 @@ namespace SmaugCS
             RelationData newRelation = new RelationData
                 {
                     Types = tp,
-                    Actor = actor, 
+                    Actor = actor,
                     Subject = subject
                 };
             db.RELATIONS.Add(newRelation);

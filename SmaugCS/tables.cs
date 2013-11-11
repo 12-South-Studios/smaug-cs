@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
-using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Language;
-using SmaugCS.Objects;
 
 namespace SmaugCS
 {
@@ -77,7 +77,7 @@ namespace SmaugCS
             string buffer = string.Empty;
             string oldStr = sourceString;
 
-            for (int i=0; i<sourceString.Length; i++)
+            for (int i = 0; i < sourceString.Length; i++)
             {
                 foreach (Tuple<string, string> tuple in SyllableTable)
                 {
@@ -264,7 +264,7 @@ namespace SmaugCS
         #endregion
 
         //public static readonly string[, ,] TitleTable = new string[Program.MAX_CLASS, Program.MAX_LEVEL + 1, 2];
-        public static readonly string[,,] TitleTable;
+        public static readonly string[, ,] TitleTable;
         public static string GetTitle(ClassTypes type, int level, GenderTypes gender)
         {
             return TitleTable[(int)type, level, gender == GenderTypes.Female ? 1 : 0];
