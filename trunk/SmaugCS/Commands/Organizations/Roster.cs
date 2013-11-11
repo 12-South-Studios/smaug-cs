@@ -1,8 +1,9 @@
 ﻿using System;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Objects;
-using SmaugCS.Organizations;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Organizations;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Organizations
 {
@@ -67,7 +68,7 @@ namespace SmaugCS.Commands.Organizations
                 }
 
                 clan.RemoveFromRoster(argument);
-                clan.Save();
+                //clan.Save();
                 color.ch_printf(ch, "%s has been removed from the roster for %s.\r\n", argument, clan.Name);
             }
 

@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Commands.Social;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Shops;
+using SmaugCS.Extensions;
 
 namespace SmaugCS
 {
@@ -129,13 +131,13 @@ namespace SmaugCS
             bool richCustomer = ch.CurrentCoin > (ch.Level * ch.Level * 100000);
             if (fBuy)
             {
-                profitMod = 13 - ch.CurrentCharisma + (richCustomer ? 15 : 0)
+                profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0)
                             + ((Common.Check.Range(5, ch.Level, Program.LEVEL_AVATAR) - 20) / 2);
                 cost = (obj.Cost * Common.Check.Maximum(shop.ProfitSell + 1, shop.ProfitBuy + profitMod) / 100);
             }
             else
             {
-                profitMod = 13 - ch.CurrentCharisma + (richCustomer ? 15 : 0);
+                profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0);
                 for (int i = 0; i < Program.MAX_TRADE; i++)
                 {
                     if (shop.ItemTypes.ToList().Contains(obj.ItemType))
@@ -211,7 +213,7 @@ namespace SmaugCS
         public static void repair_one_obj(CharacterInstance ch, CharacterInstance keeper, ObjectInstance obj,
                                           string arg, int maxgold, string fixstr, string fixstr2)
         {
-            int cost ;
+            int cost;
             string buffer;
 
             if (!handler.can_drop_obj(ch, obj))
@@ -228,7 +230,7 @@ namespace SmaugCS
             }
 
             // repair all gets a 10% surcharge
-            else if ((cost = arg.Equals("all") ? cost : 11*(cost/10)) > ch.CurrentCoin)
+            else if ((cost = arg.Equals("all") ? cost : 11 * (cost / 10)) > ch.CurrentCoin)
             {
                 buffer = string.Format("$N tells you, 'It will cost {0} piece{1} of gold to {2} {3}...'",
                                          cost, cost == 1 ? "" : "s", fixstr, obj.Name);
@@ -251,7 +253,7 @@ namespace SmaugCS
                 else if (keeper.CurrentCoin > maxgold)
                 {
                     keeper.CurrentRoom.Area.BoostEconomy(keeper.CurrentCoin - maxgold / 2);
-                    keeper.CurrentCoin = maxgold/2;
+                    keeper.CurrentCoin = maxgold / 2;
                     comm.act(ATTypes.AT_ACTION, "$n puts some gold into a large safe.", keeper, null, null, ToTypes.Room);
                 }
 

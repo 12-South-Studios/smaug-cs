@@ -1,9 +1,11 @@
 ﻿using System;
-using SmaugCS.Common;
-using SmaugCS.Enums;
-using SmaugCS.Managers;
-using SmaugCS.Objects;
 using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -77,7 +79,7 @@ namespace SmaugCS
                 return false;
 
             SkillData skill = db.GetSkill(sn);
-            if (skill.SkillFunction == null || skill.SpellFunction == null 
+            if (skill.SkillFunction == null || skill.SpellFunction == null
                 || can_use_skill(ch, 0, sn))
                 return false;
 
@@ -99,7 +101,7 @@ namespace SmaugCS
                 mana = ch.IsNpc()
                            ? 0
                            : Check.Maximum(skill.MinimumMana,
-                                           100/(2 + ch.Level - skill.RaceLevel[(int) ch.CurrentRace]));
+                                           100 / (2 + ch.Level - skill.RaceLevel[(int)ch.CurrentRace]));
                 if (ch.IsVampire())
                 {
                     if (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] < blood)
@@ -156,7 +158,7 @@ namespace SmaugCS
                         if (fight.is_safe(ch, victim, true))
                             return true;
 
-                        if (ch == victim && Macros.SPELL_FLAG(skill, (int) SkillFlags.NoSelf))
+                        if (ch == victim && Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
                         {
                             color.send_to_char("You can't target yourself!\r\n", ch);
                             return true;
@@ -166,12 +168,12 @@ namespace SmaugCS
                         {
                             if (!victim.IsNpc())
                             {
-                                if (handler.get_timer(ch, (short) TimerTypes.PKilled) > 0)
+                                if (handler.get_timer(ch, (short)TimerTypes.PKilled) > 0)
                                 {
                                     color.send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
                                     return true;
                                 }
-                                if (handler.get_timer(victim, (short) TimerTypes.PKilled) > 0)
+                                if (handler.get_timer(victim, (short)TimerTypes.PKilled) > 0)
                                 {
                                     color.send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
                                     return true;
@@ -230,16 +232,16 @@ namespace SmaugCS
                 Macros.WAIT_STATE(ch, skill.Beats);
 
                 //// Check for failure
-                if ((SmaugRandom.Percent() + skill.difficulty*5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, skill.ID)))
+                if ((SmaugRandom.Percent() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, skill.ID)))
                 {
                     magic.failed_casting(skill, ch, victim, obj);
                     learn_from_failure(ch, skill.ID);
                     if (mana > 0)
                     {
                         if (ch.IsVampire())
-                            update.gain_condition(ch, ConditionTypes.Bloodthirsty, -blood/2);
+                            update.gain_condition(ch, ConditionTypes.Bloodthirsty, -blood / 2);
                         else
-                            ch.CurrentMana -= mana/2;
+                            ch.CurrentMana -= mana / 2;
                     }
                     return true;
                 }
@@ -264,7 +266,7 @@ namespace SmaugCS
                     learn_from_failure(ch, skill.ID);
                     retcode = ReturnTypes.None;
                 }
-                else 
+                else
                     ability_learn_from_success(ch, skill.ID);
 
                 if (skill.Target == TargetTypes.OffensiveCharacter
@@ -314,14 +316,14 @@ namespace SmaugCS
                 return;
 
             SkillData skill = db.GetSkill(sn);
-            int adept = skill.RaceAdept[(int) ch.CurrentRace];
-            int skillLevel = skill.RaceLevel[(int) ch.CurrentRace];
-            
+            int adept = skill.RaceAdept[(int)ch.CurrentRace];
+            int skillLevel = skill.RaceLevel[(int)ch.CurrentRace];
+
             if (skillLevel == 0)
                 skillLevel = ch.Level;
             if (ch.PlayerData.Learned[sn] < adept)
             {
-                int schance = ch.PlayerData.Learned[sn] + (5*skill.difficulty);
+                int schance = ch.PlayerData.Learned[sn] + (5 * skill.difficulty);
                 int percent = SmaugRandom.Percent();
 
                 int learn = 1;
@@ -335,14 +337,14 @@ namespace SmaugCS
                 int gain = 0;
                 if (ch.PlayerData.Learned[sn] == adept)
                 {
-                    gain = 1000*skillLevel;
+                    gain = 1000 * skillLevel;
                     color.set_char_color(ATTypes.AT_WHITE, ch);
                     color.ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!\r\n", skill.Name,
                                     gain);
                 }
                 else
                 {
-                    gain = 20*skillLevel;
+                    gain = 20 * skillLevel;
                     if (ch.CurrentFighting == null) // TODO: Check gsn_hide && gsn_sneak
                     {
                         color.set_char_color(ATTypes.AT_WHITE, ch);

@@ -7,10 +7,13 @@ using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
-using SmaugCS.Organizations;
 using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS
@@ -27,7 +30,7 @@ namespace SmaugCS
                 .Where(x => x.ItemType == ItemTypes.Money)
                 .Where(x => handler.can_see_obj(ch, x))
                 .Where(x => Macros.CAN_WEAR(x, (int)ItemWearFlags.Take) && ch.Level < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
-                .Where(x => Macros.IS_OBJ_STAT(x, (int)ItemExtraFlags.Prototype) && ch.CanTakePrototype))
+                .Where(x => Macros.IS_OBJ_STAT(x, (int)ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
             {
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n gets $p from $P", ch, content, corpse, ToTypes.Room);
@@ -516,7 +519,7 @@ namespace SmaugCS
             {
                 if (ch.CurrentFighting.TimesKilled > 0)
                 {
-                    int intDiff = ch.CurrentIntelligence - victim.CurrentIntelligence;
+                    int intDiff = ch.GetCurrentIntelligence() - victim.GetCurrentIntelligence();
                     if (intDiff != 0)
                         victimArmorClass += (intDiff * ch.CurrentFighting.TimesKilled) / 10;
                 }
@@ -1390,9 +1393,9 @@ namespace SmaugCS
                       : DeathCries[7];
 
             RoomTemplate prevRoom = ch.CurrentRoom;
-            foreach (ExitData exit in prevRoom.Exits.Where(exit => exit.Destination != null && exit.Destination != prevRoom))
+            foreach (ExitData exit in prevRoom.Exits.Where(exit => exit.GetDestination() != null && exit.GetDestination() != prevRoom))
             {
-                ch.CurrentRoom = exit.Destination;
+                ch.CurrentRoom = exit.GetDestination();
                 comm.act(ATTypes.AT_CARNAGE, msg, ch, null, null, ToTypes.Room);
             }
 

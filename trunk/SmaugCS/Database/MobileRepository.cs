@@ -3,16 +3,17 @@ using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Database
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MobileRepository : Repository<int, MobTemplate>
+    public class MobileRepository : Repository<long, MobTemplate>
     {
         /// <summary>
         /// 
@@ -21,7 +22,7 @@ namespace SmaugCS.Database
         /// <param name="cvnum"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public MobTemplate Create(int vnum, int cvnum, string name)
+        public MobTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
@@ -80,7 +81,7 @@ namespace SmaugCS.Database
         /// <param name="vnum"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public MobTemplate Create(int vnum, string name)
+        public MobTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
@@ -89,16 +90,16 @@ namespace SmaugCS.Database
                         throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
                 });
 
-            MobTemplate newMob = new MobTemplate()
-                {
-                    Name = string.Format("A newly created {0}", name),
-                    Vnum = vnum,
-                    LongDescription = string.Format("Somebody abandoned a newly created {0} here.", name),
-                    Level = 1,
-                    Position = PositionTypes.Standing,
-                    DefPosition = PositionTypes.Standing,
-                    Class = 3
-                };
+            MobTemplate newMob = new MobTemplate(vnum, string.Format("A newly created {0}", name))
+                                     {
+                                         Vnum = vnum,
+                                         LongDescription =
+                                             string.Format("Somebody abandoned a newly created {0} here.", name),
+                                         Level = 1,
+                                         Position = PositionTypes.Standing,
+                                         DefPosition = PositionTypes.Standing,
+                                         Class = 3
+                                     };
             newMob.Statistics[StatisticTypes.Strength] = 13;
             newMob.Statistics[StatisticTypes.Dexterity] = 13;
             newMob.Statistics[StatisticTypes.Intelligence] = 13;

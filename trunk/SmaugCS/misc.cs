@@ -1,7 +1,6 @@
-﻿using System.IO;
-using SmaugCS.Common;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+﻿using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS
 {

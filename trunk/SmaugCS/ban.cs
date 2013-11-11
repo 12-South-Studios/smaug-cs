@@ -6,9 +6,12 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
+using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -593,8 +596,8 @@ namespace SmaugCS
 
             if (ban.UnbanDate <= DateTime.Now)
             {
-                LogManager.Log(LogTypes.Warn, db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel),
-                               "{0} ban has expired.", ban.Name);
+                //LogManager.Log(LogTypes.Warn, db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel),
+                //               "{0} ban has expired.", ban.Name);
                 return true;
             }
 

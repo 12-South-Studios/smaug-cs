@@ -5,10 +5,12 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS
 {
@@ -28,14 +30,14 @@ namespace SmaugCS
             {
                 ++count;
                 pager_printf(ch, "%s%-15.15s", color_str(ATTypes.AT_PLAIN, ch), file);
-                if (++col%6 == 0)
+                if (++col % 6 == 0)
                     send_to_pager("\r\n", ch);
             }
 
             if (count == 0)
                 send_to_pager("No themes defined yet.\r\n", ch);
 
-            if (col%6 != 0)
+            if (col % 6 != 0)
                 send_to_pager("\r\n", ch);
         }
 
@@ -50,7 +52,7 @@ namespace SmaugCS
 
             for (int count = 0; count < 16; ++count)
             {
-                if ((count%8) == 0 && count != 0)
+                if ((count % 8) == 0 && count != 0)
                     send_to_pager("\r\n", ch);
 
                 ATTypes atType = EnumerationExtensions.GetEnum<ATTypes>(count);
@@ -60,9 +62,9 @@ namespace SmaugCS
             send_to_pager("\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n",
                           ch);
 
-            for (int count = 32; count < (int) ATTypes.MAX_COLORS; ++count)
+            for (int count = 32; count < (int)ATTypes.MAX_COLORS; ++count)
             {
-                if ((count%8) == 0 && count != 32)
+                if ((count % 8) == 0 && count != 32)
                     send_to_pager("\r\n", ch);
 
                 ATTypes atType = EnumerationExtensions.GetEnum<ATTypes>(count);
@@ -74,7 +76,7 @@ namespace SmaugCS
 
             for (int count = 0; count <= GameConstants.valid_color.Count; ++count)
             {
-                if ((count%8) == 0 && count != 0)
+                if ((count % 8) == 0 && count != 0)
                     send_to_pager("\r\n", ch);
 
                 pager_printf(ch, "%s%-10s", color_str(ATTypes.AT_PLAIN, ch), GameConstants.valid_color[count]);
@@ -104,10 +106,10 @@ namespace SmaugCS
                     switch (tuple.Item1.ToLower())
                     {
                         case "colors":
-                            string[] colors = tuple.Item2.Split(new[] {' '});
+                            string[] colors = tuple.Item2.Split(new[] { ' ' });
                             for (int i = 0; i < colors.Length; i++)
                             {
-                                ch.Colors[EnumerationExtensions.GetEnum<ATTypes>(i)] = (char) colors[i].ToInt32();
+                                ch.Colors[EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
                             }
                             break;
                         case "end":
@@ -119,10 +121,10 @@ namespace SmaugCS
 
         public static string color_str(ATTypes attype, CharacterInstance ch)
         {
-            if (ch.IsNpc() || ch.Act.IsSet((int) PlayerFlags.Ansi))
+            if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Ansi))
                 return string.Empty;
 
-            AnsiCodes code = EnumerationExtensions.GetEnum<AnsiCodes>((int) attype);
+            AnsiCodes code = EnumerationExtensions.GetEnum<AnsiCodes>((int)attype);
             return code.GetName();
         }
 
@@ -190,16 +192,16 @@ namespace SmaugCS
 
             switch (align)
             {
-                case (int) TextAlignmentStyle.Right:
+                case (int)TextAlignmentStyle.Right:
                     if (len >= size)
                         buffer = argument.PadLeft(len);
                     break;
-                case (int) TextAlignmentStyle.Center:
+                case (int)TextAlignmentStyle.Center:
                     buffer = string.Format("{0}{1}{2}",
-                                           c.Repeat(space/2), argument,
-                                           c.Repeat((space/2)*2 == space ? space/2 : (space/2) + 1));
+                                           c.Repeat(space / 2), argument,
+                                           c.Repeat((space / 2) * 2 == space ? space / 2 : (space / 2) + 1));
                     break;
-                case (int) TextAlignmentStyle.Left:
+                case (int)TextAlignmentStyle.Left:
                     buffer = argument.PadRight(space);
                     break;
             }
@@ -229,7 +231,7 @@ namespace SmaugCS
                 return;
 
             comm.write_to_buffer(ch.Descriptor, color_str(attype, ch), 0);
-            ch.Descriptor.PageColor = ch.Colors.ContainsKey(attype) ? ch.Colors[attype] : (char) 0;
+            ch.Descriptor.PageColor = ch.Colors.ContainsKey(attype) ? ch.Colors[attype] : (char)0;
         }
 
         public static void write_to_pager(DescriptorData d, string txt, int length)
@@ -261,7 +263,7 @@ namespace SmaugCS
             //int pagerOffset = d.PagePoint - d.PageBuffer;
             while (d.PageTop + len >= d.PageSize)
             {
-                if (d.PageSize > Program.MAX_STRING_LENGTH*16)
+                if (d.PageSize > Program.MAX_STRING_LENGTH * 16)
                 {
                     LogManager.Bug("Pager overflow. Ignoring.\r\n");
                     d.PageTop = 0;
@@ -284,7 +286,7 @@ namespace SmaugCS
                 return;
 
             write_to_pager(ch.Descriptor, color_str(attype, ch), 0);
-            ch.Descriptor.PageColor = ch.Colors.ContainsKey(attype) ? ch.Colors[attype] : (char) 0;
+            ch.Descriptor.PageColor = ch.Colors.ContainsKey(attype) ? ch.Colors[attype] : (char)0;
         }
 
         public static void send_to_desc_color(string txt, DescriptorData d)
@@ -307,7 +309,7 @@ namespace SmaugCS
                 return;
 
             CharacterInstance och = ch.Descriptor.Original ?? ch.Descriptor.Character;
-            if (och.IsNpc() || !och.PlayerData.Flags.IsSet((int) PCFlags.PagerOn))
+            if (och.IsNpc() || !och.PlayerData.Flags.IsSet((int)PCFlags.PagerOn))
                 send_to_desc_color(txt, ch.Descriptor);
             else
                 write_to_pager(ch.Descriptor, colorize(txt, ch.Descriptor), 0);
@@ -406,7 +408,7 @@ namespace SmaugCS
             if (color_list.Contains(color.ToLower()))
                 return color_list.IndexOf(color.ToLower());
             if (blink_list.Contains(color.ToLower()))
-                return blink_list.IndexOf(color.ToLower()) + (int) ATTypes.AT_BLINK;
+                return blink_list.IndexOf(color.ToLower()) + (int)ATTypes.AT_BLINK;
             return 0;
         }
     }

@@ -38,12 +38,39 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="lua51">
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\lua51.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface">
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\LuaInterface.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="VikingErik.LuaInterface">
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -59,6 +86,7 @@
     <Compile Include="Repositories\MobileRepositoryTests.cs" />
     <Compile Include="Repositories\CharacterRepositoryTests.cs" />
     <Compile Include="Repositories\ObjInstanceRepositoryTests.cs" />
+    <Compile Include="Repositories\AreaRepositoryTests.cs" />
     <Compile Include="TablesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextReaderProxyExtensionTests.cs" />
@@ -66,6 +94,7 @@
     <Compile Include="NumberExtensionTests.cs" />
     <Compile Include="ExtendedBitvectorTests.cs" />
     <Compile Include="CheckTests.cs" />
+    <Compile Include="LuaFunctionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -75,13 +104,37 @@
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Lua\Realm.Library.Lua.csproj">
+      <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
+      <Name>Realm.Library.Lua</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
       <Name>Realm.Library.Patterns.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Singleton\Realm.Library.Patterns.Singleton.csproj">
+      <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
+      <Name>Realm.Library.Patterns.Singleton</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
+      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
+      <Name>SmaugCS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj">
+      <Project>{0e01a79f-5582-4797-af09-12de27901885}</Project>
+      <Name>SmaugCS.Language</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj">
+      <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>
+      <Name>SmaugCS.Weather</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS\SmaugCS.csproj">
       <Project>{30198591-fff9-488c-ab88-2b02d58900d4}</Project>

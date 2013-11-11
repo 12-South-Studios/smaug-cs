@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS
 {
@@ -68,7 +70,7 @@ namespace SmaugCS
                 {
                     BoardData newBoard = new BoardData();
                     newBoard.Load(section);
-                    newBoard.LoadNotes();
+                    //newBoard.LoadNotes();
                     db.BOARDS.Add(newBoard);
                 }
             }

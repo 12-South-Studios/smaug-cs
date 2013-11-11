@@ -2,7 +2,8 @@
 using NCalc;
 using Realm.Library.Common.Objects;
 using Realm.Library.NCalcExt;
-using SmaugCS.Objects;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Managers
 {
@@ -160,7 +161,7 @@ namespace SmaugCS.Managers
         }
         private static int StrengthFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentStrength;
+            return CurrentCharacter.GetCurrentStrength();
         }
         private static string ReplaceStrengthCall(Match regexMatch)
         {
@@ -168,7 +169,7 @@ namespace SmaugCS.Managers
         }
         private static int IntelligenceFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentIntelligence;
+            return CurrentCharacter.GetCurrentIntelligence();
         }
         private static string ReplaceIntelligenceCall(Match regexMatch)
         {
@@ -176,7 +177,7 @@ namespace SmaugCS.Managers
         }
         private static int WisdomFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentWisdom;
+            return CurrentCharacter.GetCurrentWisdom();
         }
         private static string ReplaceWisdomCall(Match regexMatch)
         {
@@ -184,7 +185,7 @@ namespace SmaugCS.Managers
         }
         private static int DexterityFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentDexterity;
+            return CurrentCharacter.GetCurrentDexterity();
         }
         private static string ReplaceDexterityCall(Match regexMatch)
         {
@@ -192,7 +193,7 @@ namespace SmaugCS.Managers
         }
         private static int ConstitutionFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentConstitution;
+            return CurrentCharacter.GetCurrentConstitution();
         }
         private static string ReplaceConstitutionCall(Match regexMatch)
         {
@@ -200,7 +201,7 @@ namespace SmaugCS.Managers
         }
         private static int CharismaFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentCharisma;
+            return CurrentCharacter.GetCurrentCharisma();
         }
         private static string ReplaceCharismaCall(Match regexMatch)
         {
@@ -208,7 +209,7 @@ namespace SmaugCS.Managers
         }
         private static int LuckFunction(FunctionArgs args)
         {
-            return CurrentCharacter.CurrentLuck;
+            return CurrentCharacter.GetCurrentLuck();
         }
         private static string ReplaceLuckCall(Match regexMatch)
         {

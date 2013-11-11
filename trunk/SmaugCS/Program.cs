@@ -1,8 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Text;
-using SmaugCS.Config;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Config;
+using SmaugCS.Constants.Enums;
 
 namespace SmaugCS
 {

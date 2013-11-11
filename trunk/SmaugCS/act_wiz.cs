@@ -1,13 +1,15 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Commands;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS
 {
@@ -141,7 +143,7 @@ namespace SmaugCS
             if (!ch.IsNpc())
             {
                 comm.act(ATTypes.AT_MAGIC, "$n disappears in a cloud of swirling colors.", victim, null, null, ToTypes.Room);
-                victim.retran = victim.CurrentRoom.Vnum;
+                victim.retran = (int)victim.CurrentRoom.Vnum;
             }
 
             victim.CurrentRoom.FromRoom(victim);

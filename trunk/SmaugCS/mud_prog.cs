@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SmaugCS.Enums;
-using SmaugCS.Managers;
-using SmaugCS.Objects;
-using SmaugCS.Common;
-using Realm.Library.Common.Extensions;
+﻿using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS
 {

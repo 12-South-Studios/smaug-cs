@@ -6,8 +6,13 @@ using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
+using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -264,7 +269,7 @@ namespace SmaugCS
 
             ObjectInstance wield = ch.GetEquippedItem(WearLocations.Wield);
             if (!ch.IsNpc() && SavingCharacter != ch
-                && wield != null && wield.GetObjectWeight() > GameConstants.str_app[ch.CurrentStrength].Wield)
+                && wield != null && wield.GetObjectWeight() > GameConstants.str_app[ch.GetCurrentStrength()].Wield)
             {
                 if (depth == 0)
                 {

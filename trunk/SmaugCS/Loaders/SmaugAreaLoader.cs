@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Exceptions;
+using SmaugCS.Data;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Loaders
 {

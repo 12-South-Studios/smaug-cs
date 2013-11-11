@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Social
 {

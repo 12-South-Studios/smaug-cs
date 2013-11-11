@@ -5,16 +5,17 @@ using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Database
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ObjectRepository : Repository<int, ObjectTemplate>
+    public class ObjectRepository : Repository<long, ObjectTemplate>
     {
         /// <summary>
         /// 
@@ -22,7 +23,7 @@ namespace SmaugCS.Database
         /// <param name="vnum"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public ObjectTemplate Create(int vnum, string name)
+        public ObjectTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
@@ -32,9 +33,8 @@ namespace SmaugCS.Database
                 });
 
 
-            ObjectTemplate newObject = new ObjectTemplate
+            ObjectTemplate newObject = new ObjectTemplate(vnum, string.Format("A newly created {0}", name))
             {
-                Name = string.Format("A newly created {0}", name),
                 Description = string.Format("Somebody dropped a newly created {0} here.", name),
                 Type = ItemTypes.Trash,
                 Weight = 1,
@@ -53,7 +53,7 @@ namespace SmaugCS.Database
         /// <param name="cvnum"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public ObjectTemplate Create(int vnum, int cvnum, string name)
+        public ObjectTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>

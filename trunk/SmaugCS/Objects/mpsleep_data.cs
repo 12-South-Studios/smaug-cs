@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Enums;
-
+﻿using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Objects
 {
@@ -22,7 +22,7 @@ namespace SmaugCS.Objects
 
         public mpsleep_data()
         {
-            ifstate = new bool[Program.MAX_IFS,Program.DO_ELSE+1];
+            ifstate = new bool[Program.MAX_IFS, Program.DO_ELSE + 1];
         }
     }
 }

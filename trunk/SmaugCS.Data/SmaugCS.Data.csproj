@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68F2E535-38B5-4A0F-BB8B-74E3FF486E83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmaugCS.Data</RootNamespace>
+    <AssemblyName>SmaugCS.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="zlibnet">
+      <HintPath>..\SmaugCS\Libraries\zlibnet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AffectData.cs" />
+    <Compile Include="afswap_data.cs" />
+    <Compile Include="AreaData.cs" />
+    <Compile Include="AuctionData.cs" />
+    <Compile Include="BoardData.cs" />
+    <Compile Include="CharacterMorph.cs" />
+    <Compile Include="ClassData.cs" />
+    <Compile Include="CommandData.cs" />
+    <Compile Include="DeityData.cs" />
+    <Compile Include="DescriptorData.cs" />
+    <Compile Include="DiceData.cs" />
+    <Compile Include="DoFunction.cs" />
+    <Compile Include="EditorData.cs" />
+    <Compile Include="ExitData.cs" />
+    <Compile Include="ExtraDescriptionData.cs" />
+    <Compile Include="FightingData.cs" />
+    <Compile Include="HelpData.cs" />
+    <Compile Include="HintData.cs" />
+    <Compile Include="HolidayData.cs" />
+    <Compile Include="HuntHateFearData.cs" />
+    <Compile Include="IgnoreData.cs" />
+    <Compile Include="Instances\CharacterInstance.cs" />
+    <Compile Include="Instances\Instance.cs" />
+    <Compile Include="Instances\ObjectInstance.cs" />
+    <Compile Include="Interfaces\IHasExtraDescriptions.cs" />
+    <Compile Include="Interfaces\IHasExtraFlags.cs" />
+    <Compile Include="Interfaces\IPersistable.cs" />
+    <Compile Include="killed_data.cs" />
+    <Compile Include="LiquidData.cs" />
+    <Compile Include="mccp_data.cs" />
+    <Compile Include="MixtureData.cs" />
+    <Compile Include="MorphData.cs" />
+    <Compile Include="MudProgActData.cs" />
+    <Compile Include="MudProgData.cs" />
+    <Compile Include="NoteData.cs" />
+    <Compile Include="nuisance_data.cs" />
+    <Compile Include="Organizations\ClanData.cs" />
+    <Compile Include="Organizations\ClanTypes.cs" />
+    <Compile Include="Organizations\CouncilData.cs" />
+    <Compile Include="Organizations\GroupTypes.cs" />
+    <Compile Include="Organizations\OrganizationData.cs" />
+    <Compile Include="Organizations\RosterData.cs" />
+    <Compile Include="PlaneData.cs" />
+    <Compile Include="PlayerData.cs" />
+    <Compile Include="ProjectData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RaceData.cs" />
+    <Compile Include="ResetData.cs" />
+    <Compile Include="SavingThrowData.cs" />
+    <Compile Include="Shops\ItemShopData.cs" />
+    <Compile Include="Shops\RepairShopData.cs" />
+    <Compile Include="Shops\ShopData.cs" />
+    <Compile Include="SkillData.cs" />
+    <Compile Include="smaug_affect.cs" />
+    <Compile Include="snswap_data.cs" />
+    <Compile Include="SpecialFunction.cs" />
+    <Compile Include="SpellFunction.cs" />
+    <Compile Include="SystemData.cs" />
+    <Compile Include="TeleportData.cs" />
+    <Compile Include="Templates\MobTemplate.cs" />
+    <Compile Include="Templates\ObjectTemplate.cs" />
+    <Compile Include="Templates\RoomTemplate.cs" />
+    <Compile Include="Templates\Template.cs" />
+    <Compile Include="TimeInfoData.cs" />
+    <Compile Include="TimerData.cs" />
+    <Compile Include="UseHistory.cs" />
+    <Compile Include="VariableData.cs" />
+    <Compile Include="WeatherData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
+      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
+      <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Lua\Realm.Library.Lua.csproj">
+      <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
+      <Name>Realm.Library.Lua</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

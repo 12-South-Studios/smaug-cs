@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using LuaInterface;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Lua.Properties;
 
 namespace Realm.Library.Lua
 {
@@ -12,6 +15,58 @@ namespace Realm.Library.Lua
     /// </summary>
     public static class LuaHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="functionRepository"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static LuaFunctionRepository RegisterFunctionTypes(LuaFunctionRepository functionRepository, Type type)
+        {
+            LuaFunctionRepository repository = functionRepository ?? new LuaFunctionRepository();
+
+            List<MethodInfo> methods = type.GetMethods().ToList();
+            foreach (MethodInfo info in methods)
+            {
+                foreach (Attribute attr in Attribute.GetCustomAttributes(info).ToList())
+                {
+                    // and if they happen to be one of our LuaFunctionAttribute attributes
+                    if (attr.GetType() != typeof(LuaFunctionAttribute))
+                        continue;
+
+                    var functionAttr = attr as LuaFunctionAttribute;
+                    var paramTable = new Dictionary<string, string>();
+
+                    // Get the desired function name and doc string, along with parameter info
+                    if (functionAttr == null)
+                        continue;
+
+                    var strFName = functionAttr.Name;
+                    var strFDoc = functionAttr.Description;
+                    var paramDocs = functionAttr.Parameters;
+
+                    // Now get the expected parameters from the MethodInfo object
+                    var paramInfo = info.GetParameters();
+
+                    // If they don't match, someone forgot to add some documentation to the
+                    // attribute, complain and go to the next method
+                    if (paramDocs.IsNotNull() && (paramInfo.Length != paramDocs.Count))
+                        throw new ArgumentException(String.Format(Resources.ERR_FUNC_ARG_MISMATCH, info.Name, strFName,
+                                                                  paramDocs.Count, paramInfo.Length));
+
+                    // Build a parameter <-> parameter doc dictionary
+                    if (paramDocs.IsNotNull())
+                        Enumerable.Range(0, paramInfo.Length)
+                                  .ToList()
+                                  .ForEach(i => paramTable.Add(paramInfo[i].Name, paramDocs.ElementAt(i)));
+
+                    repository.Add(strFName, new LuaFunctionDescriptor(strFName, strFDoc, paramTable, info));
+                }
+            }
+
+            return repository;
+        }
+
         /// <summary>
         ///
         /// </summary>

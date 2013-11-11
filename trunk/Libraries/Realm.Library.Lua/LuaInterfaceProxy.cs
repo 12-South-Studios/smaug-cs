@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using System.Text;
 using LuaInterface;
 using Realm.Library.Common;
 using Realm.Library.Lua.Properties;
@@ -15,9 +12,20 @@ namespace Realm.Library.Lua
 
         public LuaInterfaceProxy()
         {
-            _lua = new LuaInterface.Lua();    
+            _lua = new LuaInterface.Lua();
             if (_lua.IsNull())
                 throw new LuaException(Resources.ERR_UNABLE_INITIALIZE);
+        }
+
+        public void Close()
+        {
+            _lua.Close();
+        }
+
+        public LuaTable CreateTable(string name)
+        {
+            _lua.NewTable(name);
+            return _lua.GetTable(name);
         }
 
         public object[] DoFile(string fileName)
@@ -33,6 +41,11 @@ namespace Realm.Library.Lua
         public LuaFunction GetFunction(string fullPath)
         {
             return _lua.GetFunction(fullPath);
+        }
+
+        public void RegisterFunctions(LuaFunctionRepository repository)
+        {
+            repository.Values.ToList().ForEach(x => RegisterFunction(x.Name, null, x.Info));
         }
 
         public LuaFunction RegisterFunction(string path, object target, MethodBase function)

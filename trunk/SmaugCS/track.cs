@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using SmaugCS.Common;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
@@ -39,7 +43,7 @@ namespace SmaugCS
 #if !TRACK_THROUGH_DOORS
  && !exit.Flags.IsSet((int)ExitFlags.Closed)
 #endif
- && !IS_MARKED(exit.Destination);
+ && !IS_MARKED(exit.GetDestination());
         }
 
         public static void bfs_enqueue(RoomTemplate room, char dir)
@@ -88,9 +92,9 @@ namespace SmaugCS
             foreach (ExitData exit in src.Exits.Where(valid_edge))
             {
                 curr_dir = exit.vdir;
-                MARK(exit.Destination);
-                room_enqueue(exit.Destination);
-                bfs_enqueue(exit.Destination, Convert.ToChar(curr_dir));
+                MARK(exit.GetDestination());
+                room_enqueue(exit.GetDestination());
+                bfs_enqueue(exit.GetDestination(), Convert.ToChar(curr_dir));
             }
 
             int count = 0;
@@ -115,9 +119,9 @@ namespace SmaugCS
                 foreach (ExitData exit in queueHead.Room.Exits.Where(valid_edge))
                 {
                     curr_dir = exit.vdir;
-                    MARK(exit.Destination);
-                    room_enqueue(exit.Destination);
-                    bfs_enqueue(exit.Destination, queueHead.Dir);
+                    MARK(exit.GetDestination());
+                    room_enqueue(exit.GetDestination());
+                    bfs_enqueue(exit.GetDestination(), queueHead.Dir);
                 }
                 bfs_dequeue();
             }

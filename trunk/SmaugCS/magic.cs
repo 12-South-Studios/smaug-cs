@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Enums;
-using SmaugCS.Exceptions;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS
 {
@@ -490,7 +490,7 @@ namespace SmaugCS
 
             if (ch == victim)
             {
-                if (Macros.SPELL_FLAG(skill, (int) SkillFlags.NoSelf))
+                if (Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
                 {
                     if (!silence)
                         color.send_to_char("You can't cast this on yourself!\r\n", ch);
@@ -505,7 +505,7 @@ namespace SmaugCS
             {
                 if (!victim.IsNpc())
                 {
-                    if (handler.get_timer(ch, (int) TimerTypes.PKilled) > 0)
+                    if (handler.get_timer(ch, (int)TimerTypes.PKilled) > 0)
                     {
                         if (!silence)
                             color.send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
@@ -519,7 +519,7 @@ namespace SmaugCS
                         return null;
                     }
 
-                    if (ch.Act.IsSet((int) PlayerFlags.Nice) && ch != victim)
+                    if (ch.Act.IsSet((int)PlayerFlags.Nice) && ch != victim)
                     {
                         if (!silence)
                             color.send_to_char("You are too nice to attack another player.\r\n", ch);
@@ -566,10 +566,10 @@ namespace SmaugCS
             // Nuisance flag will pick who you are fighting for defensive spells up to 36% of the time
             if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
                 && ch.PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5)*8) + 6*ch.PlayerData.Nuisance.Power))
+                SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
                 victim = fight.who_fighting(ch);
 
-            if (ch == victim && Macros.SPELL_FLAG(skill, (int) SkillFlags.NoSelf))
+            if (ch == victim && Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
             {
                 if (!silence)
                     color.send_to_char("You can't cast this on yourself!\r\n", ch);
@@ -617,8 +617,8 @@ namespace SmaugCS
             if (skill == null || skill.SpellFunction == null)
                 return (int)ReturnTypes.Error;
 
-            if (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.NoMagic)
-                || (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Safe)
+            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.NoMagic)
+                || (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe)
                 && skill.Target == TargetTypes.OffensiveCharacter))
             {
                 color.set_char_color(ATTypes.AT_MAGIC, ch);
@@ -647,7 +647,7 @@ namespace SmaugCS
                         return fight.damage(ch, ch, SmaugRandom.Between(1, level), Program.TYPE_UNDEFINED);
                 }
 
-                return (int) ReturnTypes.None;
+                return (int)ReturnTypes.None;
             }
 
             object vo = null;
@@ -657,7 +657,7 @@ namespace SmaugCS
             {
                 default:
                     LogManager.Bug("Bad target for sn {0}", sn);
-                    return (int) ReturnTypes.Error;
+                    return (int)ReturnTypes.Error;
 
                 case TargetTypes.Ignore:
                     vo = null;
@@ -674,11 +674,11 @@ namespace SmaugCS
                         if (victim == null || (!victim.IsNpc() && !fight.in_arena(victim)))
                         {
                             color.send_to_char("You can't do that.\r\n", ch);
-                            return (int) ReturnTypes.None;
+                            return (int)ReturnTypes.None;
                         }
                     }
                     if (ch != victim && fight.is_safe(ch, victim, true))
-                        return (int) ReturnTypes.None;
+                        return (int)ReturnTypes.None;
                     vo = victim;
                     break;
                 case TargetTypes.DefensiveCharacter:
@@ -688,22 +688,22 @@ namespace SmaugCS
                     if (skill.Type != SkillTypes.Herb && victim.Immunity.IsSet((int)ResistanceTypes.Magic))
                     {
                         immune_casting(skill, ch, victim, null);
-                        return (int) ReturnTypes.None;
+                        return (int)ReturnTypes.None;
                     }
                     break;
                 case TargetTypes.Self:
                     vo = ch;
-                    if (skill.Type != SkillTypes.Herb && ch.Immunity.IsSet((int) ResistanceTypes.Magic))
+                    if (skill.Type != SkillTypes.Herb && ch.Immunity.IsSet((int)ResistanceTypes.Magic))
                     {
                         immune_casting(skill, ch, victim, null);
-                        return (int) ReturnTypes.None;
+                        return (int)ReturnTypes.None;
                     }
                     break;
                 case TargetTypes.InventoryObject:
                     if (obj == null)
                     {
                         color.send_to_char("You can't do that!\r\n", ch);
-                        return (int) ReturnTypes.None;
+                        return (int)ReturnTypes.None;
                     }
                     vo = obj;
                     break;
@@ -717,10 +717,10 @@ namespace SmaugCS
                 retcode = ReturnTypes.None;
 
             if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.Error)
-                return (int) retcode;
+                return (int)retcode;
 
             if (ch.CharDied())
-                return (int) ReturnTypes.CharacterDied;
+                return (int)ReturnTypes.CharacterDied;
 
             if (skill.Target == TargetTypes.OffensiveCharacter
                 && victim != ch

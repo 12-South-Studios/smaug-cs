@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Realm.Library.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Loaders
 {

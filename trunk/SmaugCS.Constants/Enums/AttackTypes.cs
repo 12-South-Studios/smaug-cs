@@ -1,0 +1,38 @@
+﻿namespace SmaugCS.Constants.Enums
+{
+    public enum AttackTypes
+    {
+        Bite,
+        Claws, 
+        Tail, 
+        Sting, 
+        Punch, 
+        Kick,
+        Trip,
+        Bash, 
+        Stun, 
+        Gouge, 
+        Backstab,
+        Feed,
+        Drain, 
+        FireBreath, 
+        FrostBreath, 
+        AcidBreath,
+        LightningBreath,
+        GasBreath, 
+        Poison, 
+        NastyPoison,
+        Gaze,
+        Blindness,
+        CauseSerious,
+        Earthquake, 
+        CauseCritical,
+        Curse,
+        FlameStrike,
+        Harm,
+        Fireball, 
+        ColorSpray,
+        Weaken, 
+        SpiralBlast
+    }
+}

@@ -2,10 +2,9 @@
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Constants;
-using SmaugCS.Enums;
-using SmaugCS.Objects;
-using SmaugCS.Organizations;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Organizations;
 
 namespace SmaugCS.Loaders
 {
@@ -37,7 +36,7 @@ namespace SmaugCS.Loaders
                 List<string> lines = proxy.ReadIntoList().Where(x => !x.Equals("$")).ToList();
                 foreach (ClanData clan in lines.Select(filename => new ClanData(filename)))
                 {
-                    clan.Load();
+                    //clan.Load();
                     db.CLANS.Add(clan);
                 }
             }

@@ -55,9 +55,36 @@
   <PropertyGroup>
     <StartupObject>SmaugCS.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\Build\Debug\SmaugCS.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="lua51, Version=0.0.0.0, Culture=neutral, PublicKeyToken=1e1fb15b02227b8a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\lua51.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\LuaInterface.dll</HintPath>
     </Reference>
     <Reference Include="NCalc">
       <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
@@ -70,11 +97,19 @@
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
+    <Reference Include="VikingErik.LuaInterface, Version=1.0.4213.34901, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
+    </Reference>
     <Reference Include="zlibnet">
       <HintPath>Libraries\zlibnet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
+    <Compile Include="Extensions\ExitDataExtensions.cs" />
+    <Compile Include="Extensions\ObjectInstanceExtensions.cs" />
+    <Compile Include="Extensions\RoomTemplateExtensions.cs" />
     <Compile Include="Commands\Apply.cs" />
     <Compile Include="Commands\MudProgs\MPAdvance.cs" />
     <Compile Include="Commands\MudProgs\MPApply.cs" />
@@ -141,7 +176,10 @@
     <Compile Include="Commands\Pipe\Rap.cs" />
     <Compile Include="Commands\Pipe\Smoke.cs" />
     <Compile Include="Commands\Pipe\Tamp.cs" />
-    <Compile Include="Enums\MudProgReturnTypes.cs" />
+    <Compile Include="Extensions\SavingThrowDataExtensions.cs" />
+    <Compile Include="Extensions\WeatherManagerExtensions.cs" />
+    <Compile Include="GameConstants.cs" />
+    <Compile Include="LuaFunctions.cs" />
     <Compile Include="Managers\LuaManager.cs" />
     <Compile Include="Spells\Smaug\Affect.cs" />
     <Compile Include="Spells\Smaug\AffectChar.cs" />
@@ -501,50 +539,15 @@
     <Compile Include="Commands\Social\Where.cs" />
     <Compile Include="Commands\Social\Who.cs" />
     <Compile Include="Commands\WizList.cs" />
-    <Compile Include="Config\Constant.cs" />
-    <Compile Include="Config\ConstantCollection.cs" />
-    <Compile Include="Config\ConstantConfigurationSection.cs" />
-    <Compile Include="Config\Vnum.cs" />
-    <Compile Include="Config\VnumCollection.cs" />
-    <Compile Include="Config\VnumConfigurationSection.cs" />
-    <Compile Include="Constants\BuilderConstants.cs" />
-    <Compile Include="Constants\SystemConstants.cs" />
-    <Compile Include="Constants\WeatherConstants.cs" />
     <Compile Include="Database\AreaRepository.cs" />
     <Compile Include="Database\CharacterRepository.cs" />
     <Compile Include="Database\MobileRepository.cs" />
     <Compile Include="Database\ObjectRepository.cs" />
     <Compile Include="Database\ObjInstanceRepository.cs" />
     <Compile Include="Database\RoomRepository.cs" />
-    <Compile Include="Enums\AnsiCodes.cs" />
-    <Compile Include="Enums\AreaFlags.cs" />
-    <Compile Include="Enums\AreaType.cs" />
-    <Compile Include="Enums\BanTypes.cs" />
-    <Compile Include="Enums\BodyPartTypes.cs" />
-    <Compile Include="Enums\CommandFlags.cs" />
-    <Compile Include="Enums\ContainerFlags.cs" />
-    <Compile Include="Enums\EchoTypes.cs" />
-    <Compile Include="Enums\GravityTypes.cs" />
-    <Compile Include="Enums\HemisphereTypes.cs" />
-    <Compile Include="Enums\ItemMagicFlags.cs" />
-    <Compile Include="Enums\ItemWearFlags.cs" />
-    <Compile Include="Enums\PipeFlags.cs" />
-    <Compile Include="Enums\PlaneTypes.cs" />
-    <Compile Include="Enums\ResetFlags.cs" />
-    <Compile Include="Enums\ResistanceTypes.cs" />
-    <Compile Include="Enums\SkillFlags.cs" />
-    <Compile Include="Enums\SkillNumberTypes.cs" />
-    <Compile Include="Enums\StatisticTypes.cs" />
-    <Compile Include="Enums\TeleportTriggerFlags.cs" />
-    <Compile Include="Enums\TextAlignmentStyle.cs" />
-    <Compile Include="Enums\TrapTriggerTypes.cs" />
-    <Compile Include="Enums\Triggerflags.cs" />
-    <Compile Include="Enums\WhoTypes.cs" />
     <Compile Include="Exceptions\DuplicateIndexException.cs" />
-    <Compile Include="Exceptions\DuplicateSkillException.cs" />
+    <Compile Include="Exceptions\DuplicateEntryException.cs" />
     <Compile Include="Exceptions\SkillNotFoundException.cs" />
-    <Compile Include="Interfaces\IHasExtraDescriptions.cs" />
-    <Compile Include="Interfaces\IPersistable.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
     <Compile Include="Loaders\CommentLoader.cs" />
@@ -560,14 +563,8 @@
     <Compile Include="Loaders\TimeLoader.cs" />
     <Compile Include="Loaders\WatchListLoader.cs" />
     <Compile Include="Managers\ChatManager.cs" />
-    <Compile Include="Interfaces\IHasExtraFlags.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\TimerManager.cs" />
-    <Compile Include="Objects\DiceData.cs" />
-    <Compile Include="Objects\Instances\Instance.cs" />
-    <Compile Include="Objects\Shops\ItemShopData.cs" />
-    <Compile Include="Objects\SavingThrowData.cs" />
-    <Compile Include="Organizations\OrganizationData.cs" />
     <Compile Include="Spells\Acid\AcetumPrimus.cs" />
     <Compile Include="Spells\Acid\AcidBlast.cs" />
     <Compile Include="Spells\NPC\AcidBreath.cs" />
@@ -664,30 +661,14 @@
     <Compile Include="Spells\Life\Weaken.cs" />
     <Compile Include="Spells\WordOfRecall.cs" />
     <Compile Include="StringExt.cs" />
-    <Compile Include="Weather\ClimateTypes.cs" />
-    <Compile Include="Weather\CloudCoverTypes.cs" />
-    <Compile Include="Enums\ExitFlags.cs" />
-    <Compile Include="Weather\HumidityTypes.cs" />
-    <Compile Include="Enums\PCFlags.cs" />
-    <Compile Include="Enums\PlayerPermissionTypes.cs" />
-    <Compile Include="Weather\PrecipitationTypes.cs" />
-    <Compile Include="Enums\SeasonTypes.cs" />
-    <Compile Include="Enums\SystemDirectoryTypes.cs" />
-    <Compile Include="Enums\SystemFileTypes.cs" />
-    <Compile Include="Weather\TemperatureTypes.cs" />
-    <Compile Include="Weather\WindSpeedTypes.cs" />
     <Compile Include="Loaders\AreaLoader.cs" />
     <Compile Include="Loaders\FUSSAreaLoader.cs" />
     <Compile Include="Loaders\HelpAreaLoader.cs" />
     <Compile Include="Loaders\SmaugAreaLoader.cs" />
-    <Compile Include="Weather\WeatherManager.cs" />
     <Compile Include="Managers\LogManager.cs" />
     <Compile Include="Managers\LookupManager.cs" />
     <Compile Include="Managers\DatabaseManager.cs" />
     <Compile Include="Objects\BFSQueueData.cs" />
-    <Compile Include="Weather\WeatherCell.cs" />
-    <Compile Include="Weather\WeatherMap.cs" />
-    <Compile Include="Weather\WeatherRangeData.cs" />
     <Compile Include="track.cs" />
     <Compile Include="act_comm.cs" />
     <Compile Include="act_info.cs" />
@@ -700,59 +681,8 @@
     <Compile Include="calendar.cs" />
     <Compile Include="color.cs" />
     <Compile Include="comm.cs" />
-    <Compile Include="Constants\GameConstants.cs" />
     <Compile Include="db.cs" />
     <Compile Include="deity.cs" />
-    <Compile Include="Enums\ActFlags.cs" />
-    <Compile Include="Enums\AffectedByTypes.cs" />
-    <Compile Include="Enums\ApplyTypes.cs" />
-    <Compile Include="Enums\AttackTypes.cs" />
-    <Compile Include="Enums\ATTypes.cs" />
-    <Compile Include="Enums\AutoSaveFlags.cs" />
-    <Compile Include="Enums\BoardTypes.cs" />
-    <Compile Include="Enums\ChannelTypes.cs" />
-    <Compile Include="Enums\CharacterSubStates.cs" />
-    <Compile Include="Organizations\ClanTypes.cs" />
-    <Compile Include="Enums\ClassTypes.cs" />
-    <Compile Include="Enums\ConditionTypes.cs" />
-    <Compile Include="Enums\ConnectionTypes.cs" />
-    <Compile Include="Enums\DamageTypes.cs" />
-    <Compile Include="Enums\DefenseTypes.cs" />
-    <Compile Include="Enums\DirectionPullTypes.cs" />
-    <Compile Include="Enums\DirectionTypes.cs" />
-    <Compile Include="Organizations\GroupTypes.cs" />
-    <Compile Include="Enums\ItemExtraFlags.cs" />
-    <Compile Include="Enums\ItemTypes.cs" />
-    <Compile Include="Language\LanguageTypes.cs" />
-    <Compile Include="Enums\LiquidTypes.cs" />
-    <Compile Include="Enums\LogTypes.cs" />
-    <Compile Include="Enums\MudProgBaseTypes.cs" />
-    <Compile Include="Enums\PlayerFlags.cs" />
-    <Compile Include="Enums\PositionTypes.cs" />
-    <Compile Include="Enums\MudProgTypes.cs" />
-    <Compile Include="Enums\RaceTypes.cs" />
-    <Compile Include="Enums\RelationTypes.cs" />
-    <Compile Include="Enums\RenumberTypes.cs" />
-    <Compile Include="Enums\ReturnTypes.cs" />
-    <Compile Include="Enums\RoomFlags.cs" />
-    <Compile Include="Enums\SaveVsTypes.cs" />
-    <Compile Include="Enums\SectorTypes.cs" />
-    <Compile Include="Enums\GenderTypes.cs" />
-    <Compile Include="Enums\SkillTypes.cs" />
-    <Compile Include="Enums\SkyConditionTypes.cs" />
-    <Compile Include="Enums\SpellActTypes.cs" />
-    <Compile Include="Enums\SpellClassTypes.cs" />
-    <Compile Include="Enums\SpellDamageTypes.cs" />
-    <Compile Include="Enums\SpellPowerTypes.cs" />
-    <Compile Include="Enums\SpellSaveEffectTypes.cs" />
-    <Compile Include="Enums\StyleTypes.cs" />
-    <Compile Include="Enums\SunPositionTypes.cs" />
-    <Compile Include="Enums\TargetTypes.cs" />
-    <Compile Include="Enums\TimerTypes.cs" />
-    <Compile Include="Enums\ToTypes.cs" />
-    <Compile Include="Enums\TrapTypes.cs" />
-    <Compile Include="Enums\VariableTypes.cs" />
-    <Compile Include="Enums\WearLocations.cs" />
     <Compile Include="fight.cs" />
     <Compile Include="handler.cs" />
     <Compile Include="hotboot.cs" />
@@ -768,99 +698,40 @@
     <Compile Include="mud_prog.cs" />
     <Compile Include="news.cs" />
     <Compile Include="Objects\act_prog_data.cs" />
-    <Compile Include="Objects\afswap_data.cs" />
-    <Compile Include="Objects\AuctionData.cs" />
     <Compile Include="Objects\BanData.cs" />
-    <Compile Include="Objects\BoardData.cs" />
-    <Compile Include="Objects\Instances\CharacterInstance.cs" />
-    <Compile Include="Objects\CharacterMorph.cs" />
     <Compile Include="Objects\cha_app_type.cs" />
-    <Compile Include="Organizations\ClanData.cs" />
-    <Compile Include="Objects\ClassData.cs" />
-    <Compile Include="Objects\CommandData.cs" />
     <Compile Include="Objects\con_app_type.cs" />
     <Compile Include="Objects\coordinate.cs" />
-    <Compile Include="Organizations\CouncilData.cs" />
-    <Compile Include="Objects\DeityData.cs" />
-    <Compile Include="Objects\DescriptorData.cs" />
     <Compile Include="Objects\dex_app_type.cs" />
     <Compile Include="Objects\dns_data.cs" />
-    <Compile Include="Objects\DoFunction.cs" />
-    <Compile Include="Objects\EditorData.cs" />
-    <Compile Include="Objects\ExitData.cs" />
     <Compile Include="Objects\ExtracedCharacterDAta.cs" />
-    <Compile Include="Objects\ExtraDescriptionData.cs" />
-    <Compile Include="Objects\FightingData.cs" />
     <Compile Include="Objects\game_board_data.cs" />
     <Compile Include="Objects\godlist_data.cs" />
-    <Compile Include="Objects\HelpData.cs" />
-    <Compile Include="Objects\HintData.cs" />
-    <Compile Include="Objects\HolidayData.cs" />
     <Compile Include="Objects\hour_min_sec.cs" />
-    <Compile Include="Objects\HuntHateFearData.cs" />
-    <Compile Include="Objects\IgnoreData.cs" />
     <Compile Include="Objects\immortal_host.cs" />
-    <Compile Include="Objects\Templates\Template.cs" />
     <Compile Include="Objects\int_app_type.cs" />
     <Compile Include="Objects\ipcompare_data.cs" />
-    <Compile Include="Objects\killed_data.cs" />
-    <Compile Include="Language\LanguageData.cs" />
     <Compile Include="Objects\lck_app_type.cs" />
-    <Compile Include="Language\LanguageConversionData.cs" />
-    <Compile Include="Objects\LiquidData.cs" />
     <Compile Include="Objects\liq_type.cs" />
     <Compile Include="Objects\LoginMessageData.cs" />
     <Compile Include="Objects\map_data.cs" />
     <Compile Include="Objects\map_index_data.cs" />
     <Compile Include="Objects\map_stuff.cs" />
     <Compile Include="Objects\map_type.cs" />
-    <Compile Include="Objects\mccp_data.cs" />
-    <Compile Include="Objects\MixtureData.cs" />
-    <Compile Include="Objects\Templates\MobTemplate.cs" />
-    <Compile Include="Objects\MudProgActData.cs" />
-    <Compile Include="Objects\MudProgData.cs" />
-    <Compile Include="Objects\MorphData.cs" />
     <Compile Include="Objects\mpsleep_data.cs" />
     <Compile Include="Objects\news_data.cs" />
     <Compile Include="Objects\news_type.cs" />
-    <Compile Include="Objects\NoteData.cs" />
-    <Compile Include="Objects\nuisance_data.cs" />
-    <Compile Include="Objects\Instances\ObjectInstance.cs" />
-    <Compile Include="Objects\Templates\ObjectTemplate.cs" />
-    <Compile Include="Objects\PlayerData.cs" />
-    <Compile Include="Objects\plane_data.cs" />
-    <Compile Include="Objects\ProjectData.cs" />
-    <Compile Include="Objects\RaceData.cs" />
     <Compile Include="Objects\RelationData.cs" />
     <Compile Include="Objects\renumber_areas.cs" />
     <Compile Include="Objects\renumber_data.cs" />
-    <Compile Include="Objects\Shops\RepairShopData.cs" />
-    <Compile Include="Objects\ResetData.cs" />
-    <Compile Include="Objects\Templates\RoomTemplate.cs" />
-    <Compile Include="Organizations\RosterData.cs" />
-    <Compile Include="Objects\Shops\ShopData.cs" />
-    <Compile Include="Objects\SkillData.cs" />
-    <Compile Include="Objects\smaug_affect.cs" />
-    <Compile Include="Objects\snswap_data.cs" />
     <Compile Include="Objects\SocialData.cs" />
-    <Compile Include="Objects\SpecialFunction.cs" />
-    <Compile Include="Objects\SpellFunction.cs" />
     <Compile Include="Objects\str_app_type.cs" />
-    <Compile Include="Objects\SystemData.cs" />
-    <Compile Include="Objects\TeleportData.cs" />
-    <Compile Include="Objects\UseHistory.cs" />
-    <Compile Include="Objects\TimerData.cs" />
-    <Compile Include="Objects\TimeInfoData.cs" />
     <Compile Include="Objects\TimezoneData.cs" />
-    <Compile Include="Objects\VariableData.cs" />
     <Compile Include="Objects\WatchData.cs" />
-    <Compile Include="Weather\WeatherData.cs" />
     <Compile Include="Objects\whogr_s.cs" />
     <Compile Include="Objects\who_data.cs" />
     <Compile Include="Objects\wis_app_type.cs" />
     <Compile Include="Objects\WizardData.cs" />
-    <Compile Include="Objects\AffectData.cs" />
-    <Compile Include="Objects\AreaData.cs" />
     <Compile Include="planes.cs" />
     <Compile Include="player.cs" />
     <Compile Include="polymorph.cs" />
@@ -980,6 +851,22 @@
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
+      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
+      <Name>SmaugCS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj">
+      <Project>{0e01a79f-5582-4797-af09-12de27901885}</Project>
+      <Name>SmaugCS.Language</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj">
+      <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>
+      <Name>SmaugCS.Weather</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
