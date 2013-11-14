@@ -13,20 +13,6 @@ namespace SmaugCS.Database
     public class AreaRepository : Repository<long, AreaData>
     {
         private AreaData LastArea { get; set; }
-        private readonly LuaInterfaceProxy _proxy;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public AreaRepository()
-        {
-            _proxy = LuaManager.Instance.Proxy;
-        }
-
-        internal AreaRepository(LuaInterfaceProxy proxy)
-        {
-            _proxy = proxy;
-        }
 
         [LuaFunction("LProcessArea", "Processes an area script", "script text")]
         public static AreaData LuaProcessArea(string text)
@@ -39,10 +25,10 @@ namespace SmaugCS.Database
         public static AreaData LuaCreateArea(string id, string name)
         {
             long areaId = Convert.ToInt64(id);
-            AreaData newArea = new AreaData(areaId, name);
             if (DatabaseManager.Instance.AREAS.Contains(areaId))
                 throw new DuplicateEntryException("Repository contains Area with Id {0}", areaId);
 
+            AreaData newArea = new AreaData(areaId, name);
             LuaManager.Instance.Proxy.CreateTable("area");
             DatabaseManager.Instance.AREAS.Add(areaId, newArea);
             DatabaseManager.Instance.AREAS.LastArea = newArea;

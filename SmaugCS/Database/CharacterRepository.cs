@@ -5,6 +5,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Database
 {
@@ -33,17 +34,17 @@ namespace SmaugCS.Database
                     Description = parent.Description,
                     SpecialFunction = parent.SpecialFunction,
                     Level = SmaugRandom.Fuzzy(parent.Level),
-                    Act = parent.Act,
+                    Act = new ExtendedBitvector(parent.GetActFlags()),
                     HomeVNum = -1,
                     ResetVnum = -1,
                     ResetNum = -1,
-                    AffectedBy = parent.AffectedBy,
+                    AffectedBy = new ExtendedBitvector(parent.GetAffected()),
                     CurrentAlignment = parent.GetStatistic(StatisticTypes.Alignment),
                     Gender = EnumerationExtensions.GetEnum<GenderTypes>(parent.Gender)
                 };
 
-            if (!string.IsNullOrEmpty(parent.SpecialFunctionName))
-                mob.SpecialFunctionName = parent.SpecialFunctionName;
+            if (!string.IsNullOrEmpty(parent.SpecFun))
+                mob.SpecialFunctionName = parent.SpecFun;
 
             if (mob.Act.IsSet((int)ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;
@@ -59,8 +60,8 @@ namespace SmaugCS.Database
 
             mob.CurrentCoin = parent.Gold;
             mob.Experience = parent.Experience;
-            mob.CurrentPosition = parent.Position;
-            mob.CurrentDefensivePosition = parent.DefPosition;
+            mob.CurrentPosition = parent.GetPosition();
+            mob.CurrentDefensivePosition = parent.GetDefensivePosition();
             mob.BareDice = new DiceData { NumberOf = parent.DamageDice.NumberOf, SizeOf = parent.DamageDice.SizeOf };
             mob.ToHitArmorClass0 = parent.GetStatistic(StatisticTypes.ToHitArmorClass0);
             mob.HitRoll = new DiceData { Bonus = parent.HitDice.Bonus };
@@ -72,20 +73,20 @@ namespace SmaugCS.Database
             mob.PermanentConstitution = parent.GetStatistic(StatisticTypes.Constitution);
             mob.PermanentCharisma = parent.GetStatistic(StatisticTypes.Charisma);
             mob.PermanentLuck = parent.GetStatistic(StatisticTypes.Luck);
-            mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(parent.Race);
+            mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(parent.GetRace());
             mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(parent.Class);
             mob.ExtraFlags = parent.ExtraFlags;
             mob.SavingThrows = new SavingThrowData(parent.SavingThrows);
             mob.Height = parent.Height;
             mob.Weight = parent.Weight;
-            mob.Resistance = parent.Resistance;
-            mob.Immunity = parent.Immunity;
-            mob.Susceptibility = parent.Susceptibility;
-            mob.Attacks = parent.Attacks;
-            mob.Defenses = parent.Defenses;
+            mob.Resistance = parent.GetResistance();
+            mob.Immunity = parent.GetImmunity();
+            mob.Susceptibility = parent.GetSusceptibility();
+            mob.Attacks = new ExtendedBitvector(parent.GetAttacks());
+            mob.Defenses = new ExtendedBitvector(parent.GetDefenses());
             mob.NumberOfAttacks = parent.NumberOfAttacks;
-            mob.Speaks = parent.Speaks;
-            mob.Speaking = parent.Speaking;
+            mob.Speaks = build.get_langflag(parent.Speaks);
+            mob.Speaking = build.get_langflag(parent.Speaking);
 
             Add(mob.ID, mob);
 

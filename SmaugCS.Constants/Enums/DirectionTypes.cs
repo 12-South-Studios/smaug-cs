@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Constants.Enums
 {
     [Flags]
     public enum DirectionTypes
     {
-        North, 
+        North,
         East,
-        South, 
+        South,
         West,
-        Up, 
+        Up,
         Down,
-        Northeast, 
+        Northeast,
         Northwest,
         Southeast,
-        Southwest, 
+        Southwest,
         Somewhere
     }
 }

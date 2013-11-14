@@ -13,8 +13,8 @@ namespace SmaugCS
         /// <param name="object"></param>
         public static void actiondesc(CharacterInstance ch, ObjectInstance obj)
         {
-            string charbuf = obj.ActionDescription;
-            string roombuf = obj.ActionDescription;
+            string charbuf = obj.Action;
+            string roombuf = obj.Action;
 
             // TODO: Replacements?
 

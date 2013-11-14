@@ -73,11 +73,11 @@ namespace SmaugCS
             string buf2 = string.Empty;
             int[] previous = new int[8];
 
-            room.Name = "In a virtual room";
+            //room.Name = "In a virtual room";
             room.Description = "You're on a pathway.\r\n";
 
             SectorTypes sector = room.SectorType;
-            room.Name = GameConstants.SectorNames[(int)sector].Key;
+            //room.Name = GameConstants.SectorNames[(int)sector].Key;
             int nRand = SmaugRandom.Between(1, Check.Minimum(8, GameConstants.SentTotals[(int)sector]));
 
             for (int iRand = 0; iRand < nRand; iRand++)
@@ -135,7 +135,7 @@ namespace SmaugCS
             long brvnum;
             long distance = -1;
             RoomTemplate backroom;
-            int vdir = exit.vdir;
+            int vdir = (int)exit.Direction;
 
             if (room.Vnum > 32767)
             {
@@ -182,7 +182,6 @@ namespace SmaugCS
                 newRoom = new RoomTemplate(serial, "New room")
                     {
                         Area = room.Area,
-                        Vnum = serial,
                         TeleportToVnum = roomnum,
                         SectorType = room.SectorType,
                         Flags = room.Flags
@@ -241,8 +240,8 @@ namespace SmaugCS
                 foreach (ExitData pexit in ch.CurrentRoom.Exits)
                 {
                     if ((quiet || pexit.Flags.IsSet((int)ExitFlags.IsDoor))
-                        && !string.IsNullOrEmpty(pexit.Keyword)
-                        && arg.IsAnyEqual(pexit.Keyword))
+                        && !string.IsNullOrEmpty(pexit.Keywords)
+                        && arg.IsAnyEqual(pexit.Keywords))
                         return pexit;
                 }
 
@@ -399,12 +398,12 @@ namespace SmaugCS
 
             if (pull < 0)
             {
-                xit = ch.CurrentRoom.GetExit(GameConstants.rev_dir[xit.vdir]);
+                xit = ch.CurrentRoom.GetExit(GameConstants.rev_dir[(int)xit.Direction]);
                 if (xit == null)
                     return ReturnTypes.None;
             }
 
-            string dtxt = rev_exit(xit.vdir);
+            string dtxt = rev_exit((int)xit.Direction);
 
             // First determine if the player should be moved or not Check various flags, spells, 
             // the players position and strength vs. the pull, etc... any kind of checks you like.
@@ -480,11 +479,11 @@ namespace SmaugCS
             {
                 if (!string.IsNullOrEmpty(msg.ToChar))
                 {
-                    comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null, GameConstants.dir_name[xit.vdir], ToTypes.Character);
+                    comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null, GameConstants.dir_name[(int)xit.Direction], ToTypes.Character);
                     color.send_to_char("\r\n", ch);
                 }
                 if (!string.IsNullOrEmpty(msg.ToRoom))
-                    comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null, GameConstants.dir_name[xit.vdir], ToTypes.Room);
+                    comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null, GameConstants.dir_name[(int)xit.Direction], ToTypes.Room);
 
                 if (!string.IsNullOrEmpty(msg.DestRoom)
                                           && xit.GetDestination().Persons.Any())
@@ -548,8 +547,8 @@ namespace SmaugCS
                     if (!string.IsNullOrEmpty(msg.ObjMsg)
                         && ch.CurrentRoom.Persons.Any())
                     {
-                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj, GameConstants.dir_name[xit.vdir], ToTypes.Character);
-                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj, GameConstants.dir_name[xit.vdir], ToTypes.Room);
+                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj, GameConstants.dir_name[(int)xit.Direction], ToTypes.Character);
+                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj, GameConstants.dir_name[(int)xit.Direction], ToTypes.Room);
                     }
 
                     if (!string.IsNullOrEmpty(msg.DestObj) && ch.CurrentRoom.Persons.Any())

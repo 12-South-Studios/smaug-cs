@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Data.Templates;
@@ -108,6 +109,12 @@ namespace SmaugCS.Data
             return (((HighEconomy > 0) ? 1 : 0) * 1000000000 + LowEconomy) >= gold;
         }
 
+        public void AddRoom(RoomTemplate room)
+        {
+            if (Rooms.All(x => x.ID != room.ID))
+                Rooms.Add(room);
+        }
+
         /*public void SaveHeader(TextWriterProxy proxy, bool install)
         {
             if (install)
@@ -135,20 +142,6 @@ namespace SmaugCS.Data
             proxy.Write("#ENDAREADATA\n\n");
         }*/
 
-        #region Lua Functions
-        public void SetEconomy(int highValue, int lowValue)
-        {
-            HighEconomy = highValue;
-            LowEconomy = lowValue;
-        }
-        public void SetRanges(int lowSoft, int highSoft, int lowHard, int highHard)
-        {
-            LowSoftRange = lowSoft;
-            HighSoftRange = highSoft;
-            LowHardRange = lowHard;
-            HighHardRange = highHard;
-        }
-        #endregion
 
     }
 }

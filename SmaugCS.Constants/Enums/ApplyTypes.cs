@@ -3,7 +3,7 @@ namespace SmaugCS.Constants.Enums
 {
     public enum ApplyTypes
     {
-        None,
+        None = -1,
         Strength,
         Dexterity,
         Intelligence,

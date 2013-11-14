@@ -5,6 +5,7 @@ using Realm.Library.Common;
 using Realm.Library.Common.Exceptions;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
@@ -180,7 +181,7 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in exitflags)
                         {
-                            int value = build.get_exflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_exflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
                                 LogManager.Bug("Unknown exit flag {0}", c);
                             else
@@ -191,7 +192,7 @@ namespace SmaugCS.Loaders
                         exit.Key = proxy.ReadNumber();
                         break;
                     case "keywords":
-                        exit.Keyword = proxy.ReadString();
+                        exit.Keywords = proxy.ReadString();
                         break;
                     case "pull":
                         exit.PullType = EnumerationExtensions.GetEnum<DirectionPullTypes>(proxy.ReadNumber());
@@ -234,7 +235,7 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_areaflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_areaflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
                                 LogManager.Bug("Unknown flag {0}", c);
                             else
@@ -291,26 +292,26 @@ namespace SmaugCS.Loaders
                     case "#endprog":
                         break;
                     case "arglist":
-                        prog.arglist = proxy.ReadString();
+                        prog.ArgList = proxy.ReadString();
                         prog.IsFileProg = false;
 
                         if (prog.Type == MudProgTypes.InFile)
                         {
                             if (index is RoomTemplate)
-                                db.rprog_file_read((RoomTemplate)index, prog.arglist);
+                                db.rprog_file_read((RoomTemplate)index, prog.ArgList);
                             else if (index is ObjectTemplate)
-                                db.oprog_file_read((ObjectTemplate)index, prog.arglist);
+                                db.oprog_file_read((ObjectTemplate)index, prog.ArgList);
                             else if (index is MobTemplate)
-                                db.mprog_file_read((MobTemplate)index, prog.arglist);
+                                db.mprog_file_read((MobTemplate)index, prog.ArgList);
                         };
                         break;
                     case "comlist":
-                        prog.comlist = proxy.ReadString();
+                        prog.Script = proxy.ReadString();
                         break;
                     case "progtype":
                         prog.Type =
                             EnumerationExtensions.GetEnum<MudProgTypes>(db.mprog_name_to_type(proxy.ReadFlagString()));
-                        index.ProgTypes.SetBit((int)prog.Type);
+                        //index.ProgTypes.SetBit((int)prog.Type);
                         break;
                 }
             } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endprog"));
@@ -344,11 +345,11 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_actflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_actflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
                                 LogManager.Bug("Unknown flag {0}", c);
-                            else
-                                mob.Act.SetBit(value);
+                            //else
+                            //    mob.Act.SetBit(value);
                         }
                         break;
                     case "affected":
@@ -356,11 +357,11 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_aflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_aflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
                                 LogManager.Bug("Unknown flag {0}", c);
-                            else
-                                mob.AffectedBy.SetBit(value);
+                            // else
+                            //     mob.AffectedBy.SetBit(value);
                         }
                         break;
                     case "attacks":
@@ -368,11 +369,11 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_attackflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_attackflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
                                 LogManager.Bug("Unknown flag {0}", c);
-                            else
-                                mob.Attacks.SetBit(value);
+                            //else
+                            //    mob.Attacks.SetBit(value);
                         }
                         break;
                     case "attribs":
@@ -391,7 +392,7 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_partflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_partflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
                                 LogManager.Bug("Unknown flag {0}", c);
                             else
@@ -405,18 +406,18 @@ namespace SmaugCS.Loaders
                             LogManager.Bug("Vnum {0} has invalid class {1}", mob.Vnum, npcClass);
                             npcClass = build.get_npc_class("warrior");
                         }
-                        mob.Class = npcClass;
+                        //mob.Class = npcClass;
                         break;
                     case "defenses":
                         flags = proxy.ReadFlagString();
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_defenseflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_defenseflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
                                 LogManager.Bug("Unknown flag {0}", c);
-                            else
-                                mob.Defenses.SetBit(value);
+                            // else
+                            //    mob.Defenses.SetBit(value);
                         }
                         break;
                     case "defpos":
@@ -429,7 +430,7 @@ namespace SmaugCS.Loaders
                     case "immune":
                         break;
                     case "keywords":
-                        mob.Name = proxy.ReadString().TrimHash();
+                        //mob.Name = proxy.ReadString().TrimHash();
                         break;
                     case "long":
                         mob.LongDescription = proxy.ReadString().TrimHash();
@@ -512,7 +513,7 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_rflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_rflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > ExtendedBitvector.MAX_BITS)
                                 LogManager.Bug("Unknown flag {0}", c);
                             else
@@ -520,13 +521,13 @@ namespace SmaugCS.Loaders
                         }
                         break;
                     case "name":
-                        room.Name = proxy.ReadString();
+                        //room.Name = proxy.ReadString();
                         break;
                     case "reset":
                         // TODO load room reset
                         break;
                     case "sector":
-                        int sector = build.get_secflag(proxy.ReadFlagString());
+                        int sector = Lookup.get_secflag(proxy.ReadFlagString());
                         if (sector < 0 || sector > EnumerationFunctions.Max<SectorTypes>())
                         {
                             LogManager.Bug("Room {0} has bad sector type {1}", room.Vnum, sector);
@@ -565,7 +566,7 @@ namespace SmaugCS.Loaders
                             room = new RoomTemplate(0, "");
                         }
 
-                        room.Vnum = vnum;
+                        //room.Vnum = vnum;
                         room.Area = area;
                         DatabaseManager.BootDb = tmpBootDb;
 
@@ -607,7 +608,7 @@ namespace SmaugCS.Loaders
                             obj.MudProgs.Add(prog);
                         break;
                     case "action":
-                        obj.ActionDescription = proxy.ReadString().TrimHash();
+                        obj.Action = proxy.ReadString().TrimHash();
                         break;
                     case "affect":
                     case "affectdata":
@@ -620,7 +621,7 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_oflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_oflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
                                 LogManager.Bug("Unknown flag {0}", c);
                             else
@@ -628,7 +629,7 @@ namespace SmaugCS.Loaders
                         }
                         break;
                     case "keywords":
-                        obj.Name = proxy.ReadString().TrimHash();
+                        // obj.Name = proxy.ReadString().TrimHash();
                         break;
                     case "long":
                         obj.Description = proxy.ReadString().TrimHash();
@@ -667,11 +668,11 @@ namespace SmaugCS.Loaders
                         obj.Layers = words[4].ToInt32();
                         break;
                     case "type":
-                        int otype = build.get_otype(proxy.ReadFlagString());
+                        int otype = Lookup.get_otype(proxy.ReadFlagString());
                         if (otype < 0)
                         {
                             LogManager.Bug("Vnum {0} object has invalid type {1}", obj.Vnum, otype);
-                            otype = build.get_otype("trash");
+                            otype = Lookup.get_otype("trash");
                         }
                         obj.Type = EnumerationExtensions.GetEnum<ItemTypes>(otype);
                         break;
@@ -708,7 +709,7 @@ namespace SmaugCS.Loaders
                             obj = new ObjectTemplate(0, "");
                         }
 
-                        obj.Vnum = vnum;
+                        //obj.Vnum = vnum;
                         DatabaseManager.BootDb = tmpBootDb;
 
                         if (DatabaseManager.BootDb)
@@ -724,11 +725,11 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = build.get_wflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = Lookup.get_wflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
                                 LogManager.Bug("Unknown flag {0}", c);
-                            else
-                                obj.WearFlags.SetBit(1 << value);
+                            //else
+                            //    obj.WearFlags.SetBit(1 << value);
                         }
                         break;
                 }

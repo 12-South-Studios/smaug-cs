@@ -7,8 +7,8 @@ namespace SmaugCS.Data
         public MudProgTypes Type { get; set; }
         public bool triggered { get; set; }
         public int resetdelay { get; set; }
-        public string arglist { get; set; }
-        public string comlist { get; set; }
+        public string ArgList { get; set; }
+        public string Script { get; set; }
         public bool IsFileProg { get; set; }
 
         /*public bool Save(TextWriterProxy proxy)

@@ -114,12 +114,14 @@
     <Compile Include="Enums\RelationTypes.cs" />
     <Compile Include="Enums\RenumberTypes.cs" />
     <Compile Include="Enums\ResetFlags.cs" />
+    <Compile Include="Enums\ResetTypes.cs" />
     <Compile Include="Enums\ResistanceTypes.cs" />
     <Compile Include="Enums\ReturnTypes.cs" />
     <Compile Include="Enums\RoomFlags.cs" />
     <Compile Include="Enums\SaveVsTypes.cs" />
     <Compile Include="Enums\SeasonTypes.cs" />
     <Compile Include="Enums\SectorTypes.cs" />
+    <Compile Include="Enums\ShopTypes.cs" />
     <Compile Include="Enums\SkillFlags.cs" />
     <Compile Include="Enums\SkillNumberTypes.cs" />
     <Compile Include="Enums\SkillTypes.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Enums\VariableTypes.cs" />
     <Compile Include="Enums\WearLocations.cs" />
     <Compile Include="Enums\WhoTypes.cs" />
+    <Compile Include="Lookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

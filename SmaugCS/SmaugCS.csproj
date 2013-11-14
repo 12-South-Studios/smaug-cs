@@ -108,7 +108,9 @@
   <ItemGroup>
     <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />
+    <Compile Include="Extensions\MobTemplateExtensions.cs" />
     <Compile Include="Extensions\ObjectInstanceExtensions.cs" />
+    <Compile Include="Extensions\ObjectTemplateExtensions.cs" />
     <Compile Include="Extensions\RoomTemplateExtensions.cs" />
     <Compile Include="Commands\Apply.cs" />
     <Compile Include="Commands\MudProgs\MPAdvance.cs" />

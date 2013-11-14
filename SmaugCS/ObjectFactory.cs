@@ -140,7 +140,7 @@ namespace SmaugCS
             }
 
             if (ch.CanPKill() && killer.CanPKill() && ch != killer)
-                corpse.ActionDescription = killer.Name;
+                corpse.Action = killer.Name;
 
             // Added corpse name, makes locate easier
             //corpse.Name = string.Format("corpse {0}", name);

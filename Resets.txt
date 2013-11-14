@@ -1,0 +1,42 @@
+mob Reset
+extra (unused)
+arg1 (mob #)
+arg2 (room #)
+arg3 (limit)
+
+obj Reset
+extra (unused)
+arg1 (object #)
+arg2 (room #)
+arg3 (limit)
+
+give Reset
+extra (unused)
+arg1 (object #)
+arg2 (unused)
+arg3 (unused)
+
+equip Reset
+extra (unused)
+arg1 (object #)
+arg2 (wear loc)
+arg3 (unused)
+
+put Reset
+extra (unused)
+arg1 (source object #)
+arg2 (target object #)
+arg3 (unused)
+
+door Reset
+extra (unused)
+arg1 (direction (0-based index))
+arg2 (door state ())
+arg3 (unused)
+
+Trap Reset
+extra (flags (bit-field))
+arg1 (trap #)
+arg2 (trap type)
+arg3 (charges)
+

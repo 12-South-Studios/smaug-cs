@@ -1205,7 +1205,7 @@ namespace SmaugCS
 
         public static string get_chance_verb(ObjectInstance obj)
         {
-            return !string.IsNullOrWhiteSpace(obj.ActionDescription) ? obj.ActionDescription : "roll$q";
+            return !string.IsNullOrWhiteSpace(obj.Action) ? obj.Action : "roll$q";
         }
 
         public static string get_ed_number(ObjectInstance obj, int number)

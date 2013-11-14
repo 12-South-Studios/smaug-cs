@@ -18,7 +18,7 @@ namespace SmaugCS.Data.Instances
         public CharacterInstance CarriedBy { get; set; }
         public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
         public RoomTemplate InRoom { get; set; }
-        public string ActionDescription { get; set; }
+        public string Action { get; set; }
         public string Owner { get; set; }
         public ItemTypes ItemType { get; set; }
         public int mpscriptpos { get; set; }
@@ -99,27 +99,50 @@ namespace SmaugCS.Data.Instances
         }
 
         #region IHasExtraDescriptions Implementation
-        public ExtraDescriptionData Add(string keywords)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="description"></param>
+        public void AddExtraDescription(string keywords, string description)
         {
-            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.IsEqual(keywords));
-            if (foundEd == null)
+            string[] words = keywords.Split(new[] { ' ' });
+            foreach (string word in words)
             {
-                foundEd = new ExtraDescriptionData { Keyword = keywords, Description = "" };
-                ExtraDescriptions.Add(foundEd);
+                ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
+                if (foundEd == null)
+                {
+                    foundEd = new ExtraDescriptionData { Keyword = keywords, Description = description };
+                    ExtraDescriptions.Add(foundEd);
+                }
             }
-
-            return foundEd;
         }
 
-        public bool Delete(string keywords)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public bool DeleteExtraDescription(string keyword)
         {
-            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keywords));
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
             if (foundEd == null)
                 return false;
 
             ExtraDescriptions.Remove(foundEd);
             return true;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public ExtraDescriptionData GetExtraDescription(string keyword)
+        {
+            return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
+        }
+
         #endregion
     }
 }

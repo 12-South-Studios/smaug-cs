@@ -7,7 +7,7 @@ namespace SmaugCS.Tests.Repositories
     [TestFixture]
     public class CharacterRepositoryTests
     {
-        [Test]
+        //[Test]
         public void Create()
         {
             var mobRepo = new MobileRepository();

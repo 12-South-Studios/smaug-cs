@@ -846,15 +846,15 @@ namespace SmaugCS
                     continue;
 
                 if (exit.Flags.IsSet((int)ExitFlags.Window))
-                    exitInfo[exit.vdir] = 2;
+                    exitInfo[(int)exit.Direction] = 2;
                 else if (exit.Flags.IsSet((int)ExitFlags.Secret))
-                    exitInfo[exit.vdir] = 3;
+                    exitInfo[(int)exit.Direction] = 3;
                 else if (exit.Flags.IsSet((int)ExitFlags.Closed))
-                    exitInfo[exit.vdir] = 4;
+                    exitInfo[(int)exit.Direction] = 4;
                 else if (exit.Flags.IsSet((int)ExitFlags.Locked))
-                    exitInfo[exit.vdir] = 5;
+                    exitInfo[(int)exit.Direction] = 5;
                 else
-                    exitInfo[exit.vdir] = 1;
+                    exitInfo[(int)exit.Direction] = 1;
             }
 
             color.set_char_color(ATTypes.AT_RMNAME, ch);

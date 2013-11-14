@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Properties;
 
 // ReSharper disable CheckNamespace
@@ -100,6 +102,57 @@ namespace Realm.Library.Common
             if (Enum.IsDefined(typeof(T), name))
                 return (T)Enum.Parse(typeof(T), name);
             throw new ArgumentException(string.Format(Resources.ERR_NO_VALUE, typeof(T), name));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T GetEnumIgnoreCase<T>(string name)
+        {
+            foreach (T value in GetValues<T>().Where(value => value.ToString().EqualsIgnoreCase(name)))
+                return value;
+
+            throw new InvalidEnumArgumentException(string.Format("{0} not found in Enum Type {1}", name, typeof(T)));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<T> GetValues<T>()
+        {
+            // Can't use type constraints on value types, so have to do check like this
+            if (typeof(T).BaseType != typeof(Enum))
+                throw new ArgumentException("T must be of type System.Enum");
+
+            return (T[])Enum.GetValues(typeof(T));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T GetEnumByName<T>(string name)
+        {
+            foreach (T value in GetValues<T>())
+            {
+                var field = value.GetType().GetField(value.ToString());
+                EnumAttribute enumAttrib = Attribute.GetCustomAttribute(field, typeof(EnumAttribute)) as EnumAttribute;
+                if (enumAttrib != null && enumAttrib.Name.Equals(name))
+                    return value;
+
+                NameAttribute nameAttrib = Attribute.GetCustomAttribute(field, typeof(NameAttribute)) as NameAttribute;
+                if (nameAttrib != null && nameAttrib.Name.Equals(name))
+                    return value;
+            }
+
+            throw new InvalidEnumArgumentException(string.Format("{0} not found in Enum Type {1}", name, typeof(T)));
         }
 
         /// <summary>

@@ -91,7 +91,7 @@ namespace SmaugCS
             int curr_dir = 0;
             foreach (ExitData exit in src.Exits.Where(valid_edge))
             {
-                curr_dir = exit.vdir;
+                curr_dir = (int)exit.Direction;
                 MARK(exit.GetDestination());
                 room_enqueue(exit.GetDestination());
                 bfs_enqueue(exit.GetDestination(), Convert.ToChar(curr_dir));
@@ -118,7 +118,7 @@ namespace SmaugCS
 
                 foreach (ExitData exit in queueHead.Room.Exits.Where(valid_edge))
                 {
-                    curr_dir = exit.vdir;
+                    curr_dir = (int)exit.Direction;
                     MARK(exit.GetDestination());
                     room_enqueue(exit.GetDestination());
                     bfs_enqueue(exit.GetDestination(), queueHead.Dir);

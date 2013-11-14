@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -7,25 +8,36 @@ using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Data.Templates
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
         public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
         public List<AffectData> Affects { get; set; }
         public ExtendedBitvector ExtraFlags { get; set; }
+        public string Flags { get; set; }
         public string ShortDescription { get; set; }
-        public string ActionDescription { get; set; }
+        public string LongDescription { get; set; }
+        public string Action { get; set; }
         public int[] Value { get; set; }
         public int serial { get; set; }
         public int Cost { get; set; }
         public int Rent { get; set; }
         public int magic_flags { get; set; }
-        public int WearFlags { get; set; }
+        public string WearFlags { get; set; }
         public int count { get; set; }
         public int Weight { get; set; }
         public int Layers { get; set; }
         public int Level { get; set; }
         public ItemTypes Type { get; set; }
+        public List<string> Spells { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public ObjectTemplate(long id, string name)
             : base(id, name)
         {
@@ -33,30 +45,121 @@ namespace SmaugCS.Data.Templates
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Affects = new List<AffectData>();
             ExtraFlags = new ExtendedBitvector();
+            Spells = new List<string>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <param name="v3"></param>
+        /// <param name="v4"></param>
+        /// <param name="v5"></param>
+        /// <param name="v6"></param>
+        public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
+        {
+            Value[0] = v1;
+            Value[1] = v2;
+            Value[2] = v3;
+            Value[3] = v4;
+            Value[4] = v5;
+            Value[5] = v6;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="spell"></param>
+        public void AddSpell(string spell)
+        {
+            if (!Spells.Contains(spell.ToLower()))
+                Spells.Add(spell.ToLower());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="duration"></param>
+        /// <param name="modifier"></param>
+        /// <param name="location"></param>
+        /// <param name="bitvector"></param>
+        public void AddAffect(int type, int duration, int modifier, int location, string bitvector)
+        {
+            AffectData newAffect = new AffectData
+                {
+                    Type = EnumerationExtensions.GetEnum<AffectedByTypes>(type),
+                    Duration = duration,
+                    Modifier = modifier,
+                    Location = EnumerationExtensions.GetEnum<ApplyTypes>(location),
+                    BitVector = bitvector.ToBitvector()
+                };
+            Affects.Add(newAffect);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="weight"></param>
+        /// <param name="cost"></param>
+        /// <param name="rent"></param>
+        /// <param name="level"></param>
+        /// <param name="layers"></param>
+        public void SetStats(int weight, int cost, int rent, int level, int layers)
+        {
+            Weight = weight;
+            Cost = cost;
+            Rent = rent;
+            Level = level;
+            Layers = layers;
         }
 
         #region IHasExtraDescriptions Implementation
-        public ExtraDescriptionData Add(string keywords)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="description"></param>
+        public void AddExtraDescription(string keywords, string description)
         {
-            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.IsEqual(keywords));
-            if (foundEd == null)
+            string[] words = keywords.Split(new[] { ' ' });
+            foreach (string word in words)
             {
-                foundEd = new ExtraDescriptionData { Keyword = keywords, Description = "" };
-                ExtraDescriptions.Add(foundEd);
+                ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
+                if (foundEd == null)
+                {
+                    foundEd = new ExtraDescriptionData { Keyword = word, Description = description };
+                    ExtraDescriptions.Add(foundEd);
+                }
             }
-
-            return foundEd;
         }
 
-        public bool Delete(string keywords)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public bool DeleteExtraDescription(string keyword)
         {
-            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keywords));
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
             if (foundEd == null)
                 return false;
 
             ExtraDescriptions.Remove(foundEd);
             return true;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public ExtraDescriptionData GetExtraDescription(string keyword)
+        {
+            return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
+        }
+
         #endregion
 
         /*public void SaveFUSS(TextWriterProxy proxy, bool install)
@@ -71,8 +174,8 @@ namespace SmaugCS.Data.Templates
             proxy.Write("Short    {0}~\n", ShortDescription);
             if (!Description.IsNullOrEmpty())
                 proxy.Write("Long     {0}~\n", Description);
-            if (!ActionDescription.IsNullOrEmpty())
-                proxy.Write("Action   {0}~\n", ActionDescription);
+            if (!Action.IsNullOrEmpty())
+                proxy.Write("Action   {0}~\n", Action);
             if (!ExtraFlags.IsEmpty())
                 proxy.Write("Flags    {0}~\n", ExtraFlags.GetFlagString(BuilderConstants.o_flags));
             if (WearFlags > 0)

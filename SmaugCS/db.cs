@@ -356,7 +356,7 @@ namespace SmaugCS
                             // TODO boot_log error
                         }
 
-                        LogManager.Bug("Deleting %s exit in room %d", GameConstants.dir_name[exit.vdir], room.Vnum);
+                        LogManager.Bug("Deleting %s exit in room %d", GameConstants.dir_name[(int)exit.Direction], room.Vnum);
                         handler.extract_exit(room, exit);
                     }
                     else
@@ -373,7 +373,7 @@ namespace SmaugCS
                 {
                     if (exit.Destination <= 0 && exit.GetReverseExit() == null)
                     {
-                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[exit.vdir], room.ID);
+                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[(int)exit.Direction], room.ID);
                         if (reverseExit != null)
                         {
                             exit.Reverse = reverseExit.ID;
@@ -884,12 +884,12 @@ namespace SmaugCS
                     MudProgData prog = new MudProgData
                                            {
                                                Type = type,
-                                               arglist = proxy.ReadString(),
-                                               comlist = proxy.ReadString(),
+                                               ArgList = proxy.ReadString(),
+                                               Script = proxy.ReadString(),
                                                IsFileProg = true
                                            };
 
-                    index.ProgTypes.SetBit((int)prog.Type);
+                    //index.ProgTypes.SetBit((int)prog.Type);
                     index.MudProgs.Add(prog);
                     break;
 
@@ -924,15 +924,15 @@ namespace SmaugCS
                 if (type == MudProgTypes.InFile)
                 {
                     prog.IsFileProg = false;
-                    prog.arglist = proxy.ReadString();
-                    mudprog_file_read(index, prog.arglist);
+                    prog.ArgList = proxy.ReadString();
+                    mudprog_file_read(index, prog.ArgList);
                 }
                 else
                 {
-                    index.ProgTypes.SetBit((int)prog.Type);
+                    // index.ProgTypes.SetBit((int)prog.Type);
                     prog.IsFileProg = false;
-                    prog.arglist = proxy.ReadString();
-                    prog.comlist = proxy.ReadString();
+                    prog.ArgList = proxy.ReadString();
+                    prog.Script = proxy.ReadString();
                 }
             }
         }
@@ -1035,7 +1035,7 @@ namespace SmaugCS
         {
             ExitData newExit = new ExitData(door, "An exit")
                 {
-                    vdir = door,
+                    Direction = EnumerationExtensions.GetEnum<DirectionTypes>(door),
                     Room_vnum = room.Vnum,
                     Destination = to_room.ID,
                     Distance = 1,
@@ -1049,7 +1049,7 @@ namespace SmaugCS
                 newExit.Reverse = reverseExit.ID;
             }
 
-            bool broke = room.Exits.Any(exit => door < exit.vdir);
+            bool broke = room.Exits.Any(exit => door < (int)exit.Direction);
             if (room.Exits == null)
                 room.Exits.Add(newExit);
             else
@@ -1093,7 +1093,7 @@ namespace SmaugCS
                 {
                     if (exit.Reverse < -0)
                     {
-                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[exit.vdir], room.Vnum);
+                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[(int)exit.Direction], room.Vnum);
                         if (reverseExit != null)
                         {
                             exit.Reverse = reverseExit.ID;
