@@ -87,6 +87,7 @@
     <Compile Include="Instances\ObjectInstance.cs" />
     <Compile Include="Interfaces\IHasExtraDescriptions.cs" />
     <Compile Include="Interfaces\IHasExtraFlags.cs" />
+    <Compile Include="Interfaces\IHasMudProgs.cs" />
     <Compile Include="Interfaces\IPersistable.cs" />
     <Compile Include="killed_data.cs" />
     <Compile Include="LiquidData.cs" />

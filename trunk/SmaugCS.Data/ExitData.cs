@@ -1,9 +1,13 @@
 ﻿using System.Xml.Serialization;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [XmlRoot("Exit")]
     public class ExitData : Entity
     {
@@ -14,7 +18,7 @@ namespace SmaugCS.Data
         public long Destination { get; set; }
 
         [XmlElement]
-        public string Keyword { get; set; }
+        public string Keywords { get; set; }
 
         [XmlElement]
         public string Description { get; set; }
@@ -27,18 +31,34 @@ namespace SmaugCS.Data
 
         public int Flags { get; set; }
         public int Key { get; set; }
-        public int vdir { get; set; }
+
+        [XmlElement("Direction")]
+        public DirectionTypes Direction { get; set; }
+
         public int Distance { get; set; }
         public int Pull { get; set; }
         public DirectionPullTypes PullType { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public ExitData(long id, string name) : base(id, name) { }
 
-        public int Equals(ExitData exit)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flags"></param>
+        public void SetFlags(string flags)
         {
-            return vdir < exit.vdir
-                ? -1 : vdir > exit.vdir
-                ? 1 : 0;
+            string[] words = flags.Split(new[] { ' ' });
+            foreach (string word in words)
+            {
+                ExitFlags flag = EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>(word);
+                int flagValue = (int)flag;
+                Flags = Flags.SetBit(flagValue);
+            }
         }
 
         /*public void SaveFUSS(TextWriterProxy proxy)

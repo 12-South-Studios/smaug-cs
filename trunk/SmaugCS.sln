@@ -51,32 +51,33 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "area", "area", "{E74C8BB0-D610-4403-9D6B-64C1C65473B2}"
 	ProjectSection(SolutionItems) = preProject
 		data\area\area.lst = data\area\area.lst
-		data\area\astra.lua = data\area\astra.lua
-		data\area\boot.txt = data\area\boot.txt
-		data\area\Build.are = data\area\Build.are
-		data\area\chapel.are = data\area\chapel.are
-		data\area\daycare.are = data\area\daycare.are
-		data\area\dwarven.are = data\area\dwarven.are
-		data\area\export.are = data\area\export.are
-		data\area\gallery.are = data\area\gallery.are
-		data\area\gods.are = data\area\gods.are
-		data\area\grave.are = data\area\grave.are
-		data\area\grove.are = data\area\grove.are
-		data\area\haon.are = data\area\haon.are
-		data\area\help.are = data\area\help.are
-		data\area\limbo.are = data\area\limbo.are
-		data\area\manor.are = data\area\manor.are
-		data\area\midennir.are = data\area\midennir.are
-		data\area\newacad.are = data\area\newacad.are
-		data\area\newdark.are = data\area\newdark.are
-		data\area\newgate.are = data\area\newgate.are
-		data\area\pixie.are = data\area\pixie.are
-		data\area\plains.are = data\area\plains.are
-		data\area\redferne.are = data\area\redferne.are
-		data\area\sewer.are = data\area\sewer.are
-		data\area\shutdown.txt = data\area\shutdown.txt
-		data\area\srefuge.are = data\area\srefuge.are
-		data\area\unholy.are = data\area\unholy.are
+		data\area\astral.lua = data\area\astral.lua
+		data\area\Build.lua = data\area\Build.lua
+		data\area\chapel.lua = data\area\chapel.lua
+		data\area\daycare.lua = data\area\daycare.lua
+		data\area\dwarven.lua = data\area\dwarven.lua
+		data\area\export.lua = data\area\export.lua
+		data\area\gallery.lua = data\area\gallery.lua
+		data\area\gardenillusion.lua = data\area\gardenillusion.lua
+		data\area\gods.lua = data\area\gods.lua
+		data\area\grave.lua = data\area\grave.lua
+		data\area\grove.lua = data\area\grove.lua
+		data\area\haon.lua = data\area\haon.lua
+		data\area\help.lua = data\area\help.lua
+		data\area\limbo.lua = data\area\limbo.lua
+		data\area\manor.lua = data\area\manor.lua
+		data\area\midennir.lua = data\area\midennir.lua
+		data\area\newacad.lua = data\area\newacad.lua
+		data\area\newdark.lua = data\area\newdark.lua
+		data\area\newgate.lua = data\area\newgate.lua
+		data\area\pixie.lua = data\area\pixie.lua
+		data\area\plains.lua = data\area\plains.lua
+		data\area\redferne.lua = data\area\redferne.lua
+		data\area\sewer.lua = data\area\sewer.lua
+		data\area\srefuge.lua = data\area\srefuge.lua
+		data\area\tree.lua = data\area\tree.lua
+		data\area\trolls.lua = data\area\trolls.lua
+		data\area\unholy.lua = data\area\unholy.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "boards", "boards", "{7C54FF06-9C6B-43F9-BCCF-CD5685725E0F}"
@@ -174,7 +175,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\bugs.txt = data\system\bugs.txt
 		data\system\ccount.txt = data\system\ccount.txt
 		data\system\colors.dat = data\system\colors.dat
-		data\system\commands (2).dat = data\system\commands (2).dat
 		data\system\commands.dat = data\system\commands.dat
 		data\system\dns.dat = data\system\dns.dat
 		data\system\fixed.txt = data\system\fixed.txt
@@ -196,9 +196,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\planes.dat = data\system\planes.dat
 		data\system\REQUESTS = data\system\REQUESTS
 		data\system\RETIREDLIST = data\system\RETIREDLIST
-		data\system\skills (2).dat = data\system\skills (2).dat
 		data\system\skills.dat = data\system\skills.dat
-		data\system\socials (2).dat = data\system\socials (2).dat
 		data\system\socials.dat = data\system\socials.dat
 		data\system\specfuns.dat = data\system\specfuns.dat
 		data\system\StarMap.txt = data\system\StarMap.txt
@@ -225,6 +223,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mudprogs", "mudprogs", "{61
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{C28149F0-D9AC-4485-914F-F798E7BB5BC3}"
 	ProjectSection(SolutionItems) = preProject
+		module_area.lua = module_area.lua
 		data\modules\module_base.lua = data\modules\module_base.lua
 		data\modules\module_mobs.lua = data\modules\module_mobs.lua
 		data\modules\types.lua = data\modules\types.lua
@@ -237,6 +236,55 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Weather", "SmaugCS.Weather\SmaugCS.Weather.csproj", "{149A131D-F10D-43C2-B49E-BE0B56363A24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Language", "SmaugCS.Language\SmaugCS.Language.csproj", "{0E01A79F-5582-4797-AF09-12DE27901885}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{FF3CCE80-4483-42BB-A295-67F0C172EFB2}"
+	ProjectSection(SolutionItems) = preProject
+		Notes.txt = Notes.txt
+		Resets.txt = Resets.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Original", "Original", "{2BC26F47-22B4-4BE8-AAA9-64FB81430861}"
+	ProjectSection(SolutionItems) = preProject
+		doc\act.txt = doc\act.txt
+		doc\area.txt = doc\area.txt
+		doc\class.txt = doc\class.txt
+		doc\command.txt = doc\command.txt
+		doc\contrib.txt = doc\contrib.txt
+		doc\drool.txt = doc\drool.txt
+		doc\FAQ.txt = doc\FAQ.txt
+		doc\hacker.txt = doc\hacker.txt
+		doc\hacker2.txt = doc\hacker2.txt
+		doc\license.diku = doc\license.diku
+		doc\license.merc = doc\license.merc
+		doc\license.txt = doc\license.txt
+		doc\Mob.help = doc\Mob.help
+		doc\Object.help = doc\Object.help
+		doc\olc.txt = doc\olc.txt
+		doc\pfile.txt = doc\pfile.txt
+		doc\player.txt = doc\player.txt
+		doc\Prog.help = doc\Prog.help
+		doc\readme.txt = doc\readme.txt
+		doc\Resets.help = doc\Resets.help
+		doc\Room.help = doc\Room.help
+		doc\security.txt = doc\security.txt
+		doc\skill.txt = doc\skill.txt
+		doc\smaug.txt = doc\smaug.txt
+		doc\SMAUGDOC = doc\SMAUGDOC
+		doc\smaugspells.txt = doc\smaugspells.txt
+		doc\vnum.txt = doc\vnum.txt
+		doc\WeatherHowTo.txt = doc\WeatherHowTo.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MudProgs", "MudProgs", "{1C88C8F6-11B5-4F07-80E7-BF73F0C6D95A}"
+	ProjectSection(SolutionItems) = preProject
+		doc\mudprogs\Beggar.prg = doc\mudprogs\Beggar.prg
+		doc\mudprogs\CHANGES = doc\mudprogs\CHANGES
+		doc\mudprogs\DOC = doc\mudprogs\DOC
+		doc\mudprogs\Example.are = doc\mudprogs\Example.are
+		doc\mudprogs\FOO = doc\mudprogs\FOO
+		doc\mudprogs\INSTALL = doc\mudprogs\INSTALL
+		doc\mudprogs\TRIGGER.txt = doc\mudprogs\TRIGGER.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -550,5 +598,7 @@ Global
 		{7B298DBA-0A84-48E8-9BC9-072EAE306710} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{6112574E-7533-4D87-BB51-2DFF6C9364FB} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{C28149F0-D9AC-4485-914F-F798E7BB5BC3} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
+		{2BC26F47-22B4-4BE8-AAA9-64FB81430861} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
+		{1C88C8F6-11B5-4F07-80E7-BF73F0C6D95A} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
 	EndGlobalSection
 EndGlobal

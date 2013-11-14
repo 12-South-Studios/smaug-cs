@@ -6,6 +6,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Database
 {
@@ -50,13 +51,15 @@ namespace SmaugCS.Database
                     Count = 1,
                     ShortDescription = parent.ShortDescription,
                     Description = parent.Description,
-                    ActionDescription = parent.ActionDescription,
+                    Action = parent.Action,
                     ItemType = parent.Type,
                     ExtraFlags = new ExtendedBitvector(parent.ExtraFlags),
-                    WearFlags = parent.WearFlags,
                     Weight = parent.Weight,
                     Cost = parent.Cost
                 };
+
+            foreach (var wearLoc in parent.GetWearFlags())
+                obj.WearFlags += (int) wearLoc;
 
             Array.Copy(parent.Value, obj.Value, 5);
 

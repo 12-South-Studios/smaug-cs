@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -67,17 +68,17 @@ namespace SmaugCS.Data.Templates
 
         public ExitData GetExit(int dir)
         {
-            return Exits.FirstOrDefault(exit => exit.vdir == dir);
+            return Exits.FirstOrDefault(exit => (int)exit.Direction == dir);
         }
 
         public ExitData GetExit(DirectionTypes dir)
         {
-            return Exits.FirstOrDefault(exit => exit.vdir == (int)dir);
+            return Exits.FirstOrDefault(exit => exit.Direction == dir);
         }
 
         public ExitData GetExitTo(int dir, long vnumTo)
         {
-            return Exits.FirstOrDefault(exit => exit.vdir == dir && exit.vnum == vnumTo);
+            return Exits.FirstOrDefault(exit => (int)exit.Direction == dir && exit.vnum == vnumTo);
         }
 
         public ExitData GetExitNumber(int count)
@@ -86,6 +87,28 @@ namespace SmaugCS.Data.Templates
             return Exits.FirstOrDefault(exit => ++x == count);
         }
 
+        public void AddExit(string direction, int destination, string description)
+        {
+            DirectionTypes dir = EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
+            if (Exits.Any(x => x.Direction == dir))
+                return;
+
+            ExitData newExit = new ExitData((int)dir, direction)
+                                   {
+                                       Destination = destination,
+                                       Description = description,
+                                       Direction = dir,
+                                       Keywords = direction
+                                   };
+            Exits.Add(newExit);
+        }
+        public void AddExit(ExitData exit)
+        {
+            if (Exits.Any(x => x.Direction == exit.Direction))
+                return;
+
+            Exits.Add(exit);
+        }
         #endregion
 
         public bool IsPrivate()
@@ -97,28 +120,71 @@ namespace SmaugCS.Data.Templates
         }
 
         #region IHasExtraDescriptions Implementation
-        public ExtraDescriptionData Add(string keywords)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="description"></param>
+        public void AddExtraDescription(string keywords, string description)
         {
-            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.IsEqual(keywords));
-            if (foundEd == null)
+            string[] words = keywords.Split(new[] { ' ' });
+            foreach (string word in words)
             {
-                foundEd = new ExtraDescriptionData { Keyword = keywords, Description = "" };
-                ExtraDescriptions.Add(foundEd);
+                ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
+                if (foundEd == null)
+                {
+                    foundEd = new ExtraDescriptionData { Keyword = keywords, Description = description };
+                    ExtraDescriptions.Add(foundEd);
+                }
             }
-
-            return foundEd;
         }
 
-        public bool Delete(string keywords)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public bool DeleteExtraDescription(string keyword)
         {
-            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keywords));
+            ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
             if (foundEd == null)
                 return false;
 
             ExtraDescriptions.Remove(foundEd);
             return true;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public ExtraDescriptionData GetExtraDescription(string keyword)
+        {
+            return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
+        }
+
         #endregion
+
+        public void AddReset(ResetData reset)
+        {
+            Resets.Add(reset);
+        }
+
+        public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
+        {
+            ResetTypes resetType = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type);
+            ResetData newReset = new ResetData { Type = resetType, Extra = extra, Command = type[0].ToString() };
+            newReset.Args[0] = arg1;
+            newReset.Args[1] = arg2;
+            newReset.Args[2] = arg3;
+            Resets.Add(newReset);
+        }
+
+        public void SetSector(string sector)
+        {
+            SectorType = EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
+        }
 
         /*public void SaveFUSS(TextWriterProxy proxy, bool install)
         {

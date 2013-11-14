@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -30,7 +27,7 @@ namespace SmaugCS.Constants.Enums
         xAuto = 1 << 19,
         NoFlee = 1 << 20,
         xSearchable = 1 << 21,
-        Bashed = 1 << 22, 
+        Bashed = 1 << 22,
         BashProof = 1 << 23,
         NoMob = 1 << 24,
         Window = 1 << 25,

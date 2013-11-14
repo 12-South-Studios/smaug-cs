@@ -1,12 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
-using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Database
 {
@@ -15,6 +17,27 @@ namespace SmaugCS.Database
     /// </summary>
     public class MobileRepository : Repository<long, MobTemplate>
     {
+        private MobTemplate LastMob { get; set; }
+
+        [LuaFunction("LProcessMob", "Processes a mob script", "script text")]
+        public static MobTemplate LuaProcessMob(string text)
+        {
+            LuaManager.Instance.Proxy.DoString(text);
+            return DatabaseManager.Instance.MOBILE_INDEXES.LastMob;
+        }
+
+        [LuaFunction("LCreateMobile", "Creates a new mob", "Id of the Mobile", "Name of the Mobile")]
+        public static MobTemplate LuaCreateMob(string id, string name)
+        {
+            long mobId = Convert.ToInt64(id);
+            if (DatabaseManager.Instance.MOBILE_INDEXES.Contains(mobId))
+                throw new DuplicateEntryException("Repository contains Mob with Id {0}", mobId);
+
+            MobTemplate newMob = DatabaseManager.Instance.MOBILE_INDEXES.Create(mobId, name);
+            LuaManager.Instance.Proxy.CreateTable("mobile");
+            return newMob;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -37,11 +60,10 @@ namespace SmaugCS.Database
             MobTemplate cloneMob = Get(cvnum);
             if (cloneMob != null)
             {
-                newMob.ShortDescription = cloneMob.ShortDescription;
                 newMob.LongDescription = cloneMob.LongDescription;
                 newMob.Description = cloneMob.Description;
-                newMob.Act = new ExtendedBitvector(cloneMob.Act);
-                newMob.AffectedBy = new ExtendedBitvector(cloneMob.AffectedBy);
+                newMob.Act = cloneMob.Act;
+                newMob.AffectedBy = cloneMob.AffectedBy;
                 newMob.SpecialFunction = cloneMob.SpecialFunction;
                 newMob.Statistics[StatisticTypes.Alignment] = cloneMob.GetStatistic(StatisticTypes.Alignment);
                 newMob.Level = cloneMob.Level;
@@ -68,8 +90,8 @@ namespace SmaugCS.Database
                 newMob.Susceptibility = cloneMob.Susceptibility;
                 newMob.Immunity = cloneMob.Immunity;
                 newMob.NumberOfAttacks = cloneMob.NumberOfAttacks;
-                newMob.Attacks = new ExtendedBitvector(cloneMob.Attacks);
-                newMob.Defenses = new ExtendedBitvector(cloneMob.Defenses);
+                newMob.Attacks = cloneMob.Attacks;
+                newMob.Defenses = cloneMob.Defenses;
             }
 
             return newMob;
@@ -90,15 +112,17 @@ namespace SmaugCS.Database
                         throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
                 });
 
-            MobTemplate newMob = new MobTemplate(vnum, string.Format("A newly created {0}", name))
+            MobTemplate newMob = new MobTemplate(vnum, name)
                                      {
-                                         Vnum = vnum,
+                                         ShortDescription = string.Format("A newly created {0}", name),
                                          LongDescription =
                                              string.Format("Somebody abandoned a newly created {0} here.", name),
                                          Level = 1,
-                                         Position = PositionTypes.Standing,
-                                         DefPosition = PositionTypes.Standing,
-                                         Class = 3
+                                         Position = "standing",
+                                         DefPosition = "standing",
+                                         Class = "warrior",
+                                         Race = "human",
+                                         Gender = "male"
                                      };
             newMob.Statistics[StatisticTypes.Strength] = 13;
             newMob.Statistics[StatisticTypes.Dexterity] = 13;
@@ -107,10 +131,10 @@ namespace SmaugCS.Database
             newMob.Statistics[StatisticTypes.Charisma] = 13;
             newMob.Statistics[StatisticTypes.Constitution] = 13;
             newMob.Statistics[StatisticTypes.Luck] = 13;
-            newMob.Act.SetBit((int)ActFlags.IsNpc);
-            newMob.Act.SetBit((int)ActFlags.Prototype);
+            newMob.Act = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
 
             Add(vnum, newMob);
+            LastMob = newMob;
             return newMob;
         }
     }

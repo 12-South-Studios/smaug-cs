@@ -39,7 +39,7 @@ namespace SmaugCS.Common
             string flagString = string.Empty;
             string[] flagArray = flags.ToArray();
 
-            for (int x = 0; x < 32; ++x )
+            for (int x = 0; x < 32; ++x)
             {
                 if (value.IsSet(1 << x))
                 {
@@ -83,7 +83,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static int SetBit(this int value, int bit)
         {
-            return value | bit;
+            return value |= bit;
         }
 
 
@@ -95,7 +95,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static uint SetBit(this uint value, int bit)
         {
-            return value | (uint)bit;
+            return value |= (uint)bit;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static int RemoveBit(this int value, int bit)
         {
-            return value & ~bit;
+            return value &= ~bit;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static uint RemoveBit(this uint value, int bit)
         {
-            return value & ~(uint)bit;
+            return value &= ~(uint)bit;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static int ToggleBit(this int value, int bit)
         {
-            return value ^ bit;
+            return value ^= bit;
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static uint ToggleBit(this uint value, int bit)
         {
-            return value ^ (uint)bit;
+            return value ^= (uint)bit;
         }
 
         /// <summary>

@@ -12,42 +12,44 @@ area.this = newArea;
 area.this.Author = "Andi";
 area.this.WeatherX = 0;
 area.this.WeatherY = 0;
-area.this:SetRanges(15, 35, 0, 60);
-area.this:SetEconomy(0, 2064393);
+area.this.LowSoftRange = 15;
+area.this.HighSoftRange = 35;
+area.this.LowHardRange = 0;
+area.this.HighHardRange = 60;
+area.this.HighEconomy = 2064393;
 area.this.ResetMessage = "The astral field glitters with a thousand points of light for a moment...";
 
 systemLog("=================== AREA 'ASTRAL' - MOBILES ===================");
-newMobile = LCreateMobile(800, "the astral guardian");
+newMobile = LCreateMobile(800, "astral guardian figure");
 mobile.this = newMobile;
-mobile.this.Keywords = "astral guardian figure";
 mobile.this.ShortDescription = "the astral guardian";
 mobile.this.LongDescription = "A shimmering grey figure stands vigil before the pearly gate.";
 mobile.this.Description = [[You see a shimmering grey figure, vaguely humanoid in shape. Its sole 
 striking feature is the item it wields: a pearl wand. The astral guardian seems to notice your 
 attention and shifts uneasily.]];
-mobile.this:SetRace("magical");
-mobile.this:SetClass("warrior");
-mobile.this:SetPosition("standing");
-mobile.this:SetDefensivePosition("standing");
-mobile.this:SetGender("neuter");
-mobile.this:SetActFlags("npc sentinel");
-mobile.this:SetAffected("detect_invis detect_hidden sanctuary protect truesight");
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc sentinel";
+mobile.this.AffectedBy = "detect_invis detect_hidden sanctuary protect truesight";
 mobile.this:SetStats1(0, 38, -20, -15, 100000, 600000);
 mobile.this:SetStats2(1, 1, 825);
 mobile.this:SetStats3(8, 12, 100);
 mobile.this:SetStats4(0, 0, 3, 0, 0);
-mobile.this:SetSpeaks("magical");
-mobile.this:SetSpeaking("common magical");
-mobile.this:SetBodyParts("guts");
-mobile.this:SetResistance("pierce magic");
-mobile.this:SetImmunity("charm");
-mobile.this:SetAttacks("punch trip curse fireball");
-mobile.this:SetDefenses("parry dodge disarm");
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common magical";
+mobile.this.BodyParts = "guts";
+mobile.this.Resistance = "pierce magic";
+mobile.this.Immunity = "charm";
+mobile.this.Attacks = "punch trip curse fireball";
+mobile.this.Defenses = "parry dodge disarm";
 
 newProg = LCreateMudProg("greet_prog");
 mprog.this = newProg;
-mprog.this:SetArgList("100");
-mprog.this:SetScript([[
+mprog.this.ArgList = "100";
+mprog.this.Script = [[
 local ch = LGetCurrentCharacter();
 if (ch is nil) then
 	LLogError("Current character is nil");
@@ -65,11 +67,11 @@ else
 	end
 end
 ]]);
-mobile.this:AddProg(mprog.this);
+mobile.this:AddMudProg(mprog.this);
 newProg = LCreateMudProg("speech_prog");
 mprog.this = newProg;
-mprog.this:SetArgList("p I wish to enter the astral plane");
-mprog.this:SetScript([[
+mprog.this.ArgList = "p I wish to enter the astral plane";
+mprog.this.Script = [[
 local ch = LGetCurrentCharacter();
 if (ch is nil) then
 	LLogError("Current character is nil");
@@ -92,11 +94,11 @@ else
 	end
 end
 ]]);
-mobile.this:AddProg(mprog.this);
+mobile.this:AddMudProg(mprog.this);
 newProg = LCreateMudProg("fight_prog");
 mprog.this = newProg;
-mprog.this:SetArgList("40");
-mprog.this:SetScript([[
+mprog.this.ArgList = "40";
+mprog.this.Script = [[
 local ch = LGetCurrentCharacter();
 if (ch is nil) then
 	LLogError("Current character is nil");
@@ -114,857 +116,725 @@ else
 	MPDamage(ch, 100);
 end
 ]]);
-mobile.this:AddProg(mprog.this);
+mobile.this:AddMudProg(mprog.this);
 
-newMobile = LCreateMobile(801, "a pitch-black nightmare");
+newMobile = LCreateMobile(801, "nightmare");
 mobile.this = newMobile;
-mobile.this.Keywords = "nightmare";
 mobile.this.ShortDescription = "A pitch-black nightmare";
 mobile.this.LongDescription = "A nightmare is here, kicking at you with its flaming hooves.";
 mobile.this.Description = [[The nightmare is a wholly evil being, sent out by the rulers of the lower 
 planes to torment mortals.  It vaguely resembles a horse, with a hide blacker
 than the darkest night, and hooves that burn with unholy fires.]]
-mobile.this:SetRace("horse");
-mobile.this:SetClass("warrior");
-mobile.this:SetPosition("standing");
-mobile.this:SetDefensivePosition("standing");
-mobile.this:SetGender("neuter");
-mobile.this:SetActFlag("npc stayarea mountable");
-mobile.this:SetAffected("detect_evil detect_magic hold infrared curse _flaming _paralysis sneak fireshield");
+mobile.this.Race = "horse";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc stayarea mountable";
+mobile.this.AffectedBy = "detect_evil detect_magic hold infrared curse _flaming _paralysis sneak fireshield";
 mobile.this:SetStats1(-950, 18, 2, -2, 6000, 32000);
 mobile.this:SetStats2(18, 18, 180);
 mobile.this:SetStats3(5, 3, 10);
 mobile.this:SetStats4(0, 0, 2, 0, 0);
-mobile.this:SetSpeaks("magical");
-mobile.this:SetSpeaking("magical");
-mobile.this:SetBodyParts("head legs heart guts feet");
-mobile.this:SetAttacks("kick firebreath");
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "magical";
+mobile.this.BodyParts = "head legs heart guts feet";
+mobile.this.Attacks = "kick firebreath";
 
-newMobile = LCreateMobile(802, "An evil night hag");
+newMobile = LCreateMobile(802, "night hag");
 mobile.this = newMobile;
-mobile.this.Keywords = "night hag";
 mobile.this.ShortDescription = "An evil night hag";
 mobile.this.LongDescription = "A night hag reaches out to steal your soul.";
 mobile.this.Description = [[You see a shadowy creature with long talons and an evil grin, whose sole 
 purpose is to hunt down and slay mortals in order to obtain souls for her foul
 master to torment.]]
-mobile.this:SetRace("undead");
-mobile.this:SetClass("warrior");
-mobile.this:SetPosition("standing");
-mobile.this:SetDefensivePosition("standing");
-mobile.this:SetSpecFun("spec_cast_mage");
-mobile.this:SetActFlags("npc aggressive stayarea");
-mobile.this:SetGender("female");
-mobile.this:SetAffected("detect_invis infrared");
+mobile.this.Race = "undead";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_mage";
+mobile.this.Act = "npc aggressive stayarea";
+mobile.this.Gender = "female";
+mobile.this.AffectedBy = "detect_invis infrared";
 mobile.this:SetStats1(-1000, 24, 0, -1, 12500, 67500);
 mobile.this:SetStats2(24, 24, 240);
 mobile.this:SetStats3(5, 5, 5);
-mobile.this:SetSpeaks("common");
-mobile.this:SetSpeaking("common");
-mobile.this:SetBodyParts("head arms legs heart guts hands feet");
-mobile.this:SetResist("sleep charm hold");
-mobile.this:SetSuscept("fire blunt");
-mobile.this:SetAttacks("claws blindness curse");
+mobile.this.Speaks = "common";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet";
+mobile.this.Resistance = "sleep charm hold";
+mobile.this.Susceptible = "fire blunt";
+mobile.this.Attacks = "claws blindness curse";
 
 newProg = LCreateMudProg("greet_prog");
 mprog.this = newProg;
-mprog.this:SetArgList("100");
-mprog.this:SetScript([[
+mprog.this.ArgList = "100";
+mprog.this.Script = [[
 LMobCommand("cac");
 LMobSay("Now your soul shall be mine!");
-]]);
-mobile.this:AddProg(mprog.this);
+]];
+mobile.this:AddMudProg(mprog.this);
 
-newMobile = LCreateMobile(803, "An invisible stalker");
+newMobile = LCreateMobile(803, "stalker invisible");
 mobile.this = newMobile;
-mobile.this.Keywords = "stalker invisible";
 mobile.this.ShortDescription = "An invisible stalker";
 mobile.this.LongDescription = "You see a wavy distortion in the air";
 mobile.this.Description = [[ou see only a wavy distortion in the air.  You reach out to touch it, and
 feel nothing, not even the slightest of motions.]]
-mobile.this:SetRace("magical");
-mobile.this:SetClass("warrior");
-mobile.this:SetPosition("standing");
-mobile.this:SetDefensivePosition("standing");
-mobile.this:SetGender("neuter");
-mobile.this:SetActFlags("npc stayarea");
-mobile.this:SetAffected("invisible detect_evil detect_invis hold sanctuary curse _flaming _paralysis sneak hide");
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc stayarea";
+mobile.this.AffectedBy = "invisible detect_evil detect_invis hold sanctuary curse _flaming _paralysis sneak hide";
 mobile.this:SetStats1(200, 20, 3, 0, 0, 19000);
 mobile.this:SetStats2(17, 17, 170);
 mobile.this:SetStats3(2, 7, 6);
-mobile.this:SetSpeaks("magical");
-mobile.this:SetSpeaking("magical");
-mobile.this:SetBodyParts("head arms legs heart guts hands feet eye");
-mobile.this:SetAttacks("bash gouge harm");
-mobile.this:SetDefenses("dodge");
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "magical";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "bash gouge harm";
+mobile.this.Defenses = "dodge";
 
+newMobile = LCreateMobile(804, "soulless one being");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A poor soulless being";
+mobile.this.LongDescription = "The soulless one wanders mindlessly.";
+mobile.this.Description = [[This unfortunate being has had its very soul torn from its body.  It now roams
+mindlessly, unaware of its surroundings.]]
+mobile.this.Race = "spirit";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefensivePosition = "standing";
+mobile.this.Gender = "neuter";
+mobile.this.ActFlgas = "npc stayarea wimpy";
+mobile.this:SetStats1(0, 12, 8, 5, 250, 7500);
+mobile.this:SetStats2(10, 10, 100);
+mobile.this:SetStats3(1, 6, 2);
+mobile.this.Speaks = "spiritual";
+mobile.this.Speaking = "spiritual";
+mobile.this.Immunity = "nonmagic";
+mobile.this.Attacks = "causecritical harm";
 
-#MOBILE
-Vnum       804
-Keywords   soulless one being~
-Short      A poor soulless being~
-Long       The soulless one wanders mindlessly.
-~
-Desc       This unfortunate being has had its very soul torn from its body.  It now roams
-mindlessly, unaware of its surroundings.
-~
-Race       spirit~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     neuter~
-Actflags   npc stayarea wimpy~
-Stats1     0 12 8 5 250 7500
-Stats2     10 10 100
-Stats3     1 6 2
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     spiritual~
-Speaking   spiritual~
-Immune     nonmagic~
-Attacks    causecritical harm~
-#MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   moan
-~
-#ENDPROG
+newProg = LCreateMudProg("greet_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "100";
+mprog.this.Script = [[
+LMobCommand("moan");
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#ENDMOBILE
+newMobile = LCreateMobile(805, "githyanki hunter");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A githyanki hunter";
+mobile.this.LongDescription = "A githyanki hunter searches for signs of the githzerai."
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands almost as tall as a
+normal man.  Like all githyanki, his teeth are fanged and his eyes hollow and sunken.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefensivePosition = "standing";
+mobile.this.SpecFun = "spec_thief";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc scavenger stayarea";
+mobile.this.AffectedBy = "infrared sneak";
+mobile.this:SetStats1(-500, 11, 6, 6, 1000, 8000);
+mobile.this:SetStats2(11, 11, 110);
+mobile.this:SetStats3(1, 5, 4);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "punch bash";
+mobile.this.Defenses = "disarm";
 
-#MOBILE
-Vnum       805
-Keywords   githyanki hunter~
-Short      A githyanki hunter~
-Long       A githyanki hunter searches for signs of the githzerai.
-~
-Desc       You see a leathery-skinned humanoid creature that stands almost as tall as a
-normal man.  Like all githyanki, his teeth are fanged and his eyes hollow
-and sunken.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_thief~
-Gender     male~
-Actflags   npc scavenger stayarea~
-Affected   infrared sneak~
-Stats1     -500 11 6 6 1000 8000
-Stats2     11 11 110
-Stats3     1 5 4
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet eye~
-Attacks    punch bash~
-Defenses   disarm~
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   , examines this portion of the astral field for signs of the githzerai.
-~
-#ENDPROG
+newProg = LCreateMudProg("rand_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "5";
+mprog.this.Script = [[
+LMobEmote(", examines this portion of the astral field for signs of the githzerai.");
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#ENDMOBILE
-
-#MOBILE
-Vnum       806
-Keywords   githyanki warrior figure~
-Short      A githyanki warrior~
-Long       You see a humanoid figure clad in splinted armor.
-~
-Desc       You see a leathery-skinned humanoid creature that stands as tall as a normal
+newMobile = LCreateMobile(806, "githyanki warrior figure");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A githyanki warrior";
+mobile.this.LongDescription = "You see a humanoid figure clad in splinted armor.";
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands as tall as a normal
 man.  Like all githyanki, his teeth are fanged and his eyes hollow and sunken.
 He is clad in ornately designed splinted armor, and wields a sword that
-whistles through the air as it slices towards your neck.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     male~
-Actflags   npc stayarea prototype~
-Affected   infrared~
-Stats1     -500 15 4 6 2500 15000
-Stats2     15 15 150
-Stats3     1 5 6
-Stats4     0 0 2 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common elvish pixie orcish rodent mammal spiritual magical god ancient clan~
-Speaking   common elvish pixie orcish rodent mammal spiritual magical god ancient clan~
-Bodyparts  head arms legs heart guts hands feet eye~
-Attacks    kick~
-Defenses   dodge~
-#ENDMOBILE
+whistles through the air as it slices towards your neck.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc stayarea prototype";
+mobile.this.AffectedBy = "infrared";
+mobile.this:SetStats1(-500, 15, 4, 6, 2500, 15000);
+mobile.this:SetStats2(15, 15, 150);
+mobile.this:SetStats3(1, 5, 6);
+mobile.this:SetStats4(0, 0, 2, 0, 0);
+mobile.this.Speaks = "common elvish pixie orcish rodent mammal spiritual magical god ancient clan";
+mobile.this.Speaking = "common elvish pixie orcish rodent mammal spiritual magical god ancient clan";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "kick";
+mobile.this.Defenses = "dodge";
 
-#MOBILE
-Vnum       807
-Keywords   guardian githyanki figure~
-Short      A githyanki guardian~
-Long       A humanoid figure clad in splinted armor blocks your way.
-~
-Desc       You see a leathery-skinned humanoid creature that stands as tall as a normal
+newMobile = LCreateMobile(807, "guardian githyanki figure");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A githyanki warrior";
+mobile.this.LongDescription = "You see a humanoid figure clad in splinted armor.";
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands as tall as a normal
 man.  Like all githyanki, his teeth are fanged and his eyes hollow and sunken.
 He is clad in ornately designed splinted armor, and wields a sword that
-whistles through the air as it slices towards your neck.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     male~
-Actflags   npc sentinel aggressive~
-Affected   infrared~
-Stats1     -500 15 4 6 6000 15000
-Stats2     15 15 150
-Stats3     1 5 6
-Stats4     0 0 2 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet~
-Attacks    punch gouge~
-Defenses   shockshield disarm~
-#ENDMOBILE
+whistles through the air as it slices towards your neck.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc sentinel aggressive";
+mobile.this.AffectedBy = "infrared";
+mobile.this:SetStats1(-500, 15, 4, 6, 6000, 15000);
+mobile.this:SetStats2(15, 15, 150);
+mobile.this:SetStats3(1, 5, 6);
+mobile.this:SetStats4(0, 0, 2, 0, 0);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet";
+mobile.this.Attacks = "punch gouge";
+mobile.this.Defenses = "shockshield disarm";
 
-#MOBILE
-Vnum       808
-Keywords   knight figure githyanki~
-Short      A githyanki knight~
-Long       A tall figure armored in black observes you quietly.
-~
-Desc       You see a leathery-skinned humanoid creature that stands a full foot taller
+newMobile = LCreateMobile(808, "knight figure githyanki");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A githyanki knight";
+mobile.this.LongDescription = "A tall figure armored in black observes you quietly.";
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands a full foot taller
 than a normal man.  His features are obscured by a suit of ornately designed
 splinted armor -- you only hear the hissing of his breath and the scraping
-of his sword against its scabbard as it is unsheathed.
-~
-Race       human~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     male~
-Actflags   npc stayarea~
-Affected   infrared~
-Stats1     -500 25 -2 6 10000 90000
-Stats2     25 25 250
-Stats3     1 5 15
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet eye~
-Attacks    punch kick trip drain~
-Defenses   parry~
-#ENDMOBILE
+of his sword against its scabbard as it is unsheathed.]]
+mobile.this.Race = "human";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc stayarea";
+mobile.this.AffectedBy = "infrared";
+mobile.this:SetStats1(-500, 25, -2, 6, 10000, 90000);
+mobile.this:SetStats2(25, 25, 250);
+mobile.this:SetStats3(1, 5, 15);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "punch kick trip drain";
+mobile.this.Defenses = "parry";
 
-#MOBILE
-Vnum       809
-Keywords   githyanki knight protector~
-Short      A githyanki protector~
-Long       A black knight of the githyanki protects his queen.
-~
-Desc       You see a leathery-skinned humanoid creature that stands a full foot taller
+newMobile = LCreateMobile(809, "githyanki knight protector");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A githyanki protector";
+mobile.this.LongDescription = "A black knight of the githyanki protects his queen.";
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands a full foot taller
 than a normal man.  His features are obscured by a suit of ornately designed
 splinted armor -- you only hear the hissing of his breath and the scraping
-of his sword against its scabbard as it is unsheathed.
-~
-Race       human~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     male~
-Actflags   npc sentinel aggressive~
-Affected   detect_invis detect_hidden infrared truesight~
-Stats1     -500 25 -2 6 10000 90000
-Stats2     25 25 250
-Stats3     1 5 15
-Stats4     0 0 3 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts feet eye~
-Attacks    punch trip gouge~
-Defenses   dodge~
-#MUDPROG
-Progtype  greet_prog~
-Arglist   50~
-Comlist   say None may approach the Queen of the Gith!
-, sheathes his blade and charges into battle!
-~
-#ENDPROG
+of his sword against its scabbard as it is unsheathed.]]
+mobile.this.Race = "human";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc sentinel aggressive";
+mobile.this.AffectedBy = "detect_invis detect_hidden infrared truesight";
+mobile.this:SetStats1(-500, 25, -2, 6, 10000, 90000);
+mobile.this:SetStats2(25, 25, 250);
+mobile.this:SetStats3(1, 5, 15);
+mobile.this:SetStats4(0, 0, 3, 0, 0);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "punch trip gouge";
+mobile.this.Defenses = "dodge";
 
-#ENDMOBILE
+newProg = LCreateMudProg("greet_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "50";
+mprog.this.Script = [[
+LMobSay("None may approach the Queen of the Gith!");
+LMobEmote(", sheathes his blade and charges into battle!");
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#MOBILE
-Vnum       810
-Keywords   githyanki gish~
-Short      An evil gish~
-Long       A small githyanki laughs at you through fanged teeth.
-~
-Desc       You see a leathery-skinned humanoid creature that stands nearly as tall as a
+newMobile = LCreateMobile(810, "githyanki gish");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "An evil gish";
+mobile.this.LongDescription = "A small githyanki laughs at you through fanged teeth.";
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands nearly as tall as a
 normal man.  Like all githyanki, his teeth are fanged and his eyes hollow and
 sunken.  The gish are well-versed in the arcane arts, unlike the normal gith
-people.  You notice this from the blast of lightning headed towards you.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_mage~
-Gender     male~
-Actflags   npc stayarea wimpy~
-Affected   infrared~
-Stats1     -500 11 6 6 3000 12500
-Stats2     11 11 110
-Stats3     1 5 2
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   magical~
-Bodyparts  head arms legs heart guts hands feet eye~
-Attacks    claws gouge~
-#ENDMOBILE
+people.  You notice this from the blast of lightning headed towards you.]]
+mobile.this.Race = "human";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_mage";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc stayarea wimpy";
+mobile.this.AffectedBy = "infrared";
+mobile.this:SetStats1(-500, 11, 6, 6, 3000, 12500);
+mobile.this:SetStats2(11, 11, 110);
+mobile.this:SetStats3(1, 5, 2);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "magical";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "claws gouge";
 
-#MOBILE
-Vnum       811
-Keywords   githyanki gish~
-Short      An evil gish~
-Long       A gish laughs as flame leaps from his hands towards your face.
-~
-Desc       You see a leathery-skinned humanoid creature that stands nearly as tall as a
+newMobile = LCreateMobile(811, "githyanki gish");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "An evil gish";
+mobile.this.LongDescription = "A gish laughs as flame leaps from his hands towards your face.";
+mobile.this.Description = [[You see a leathery-skinned humanoid creature that stands nearly as tall as a
 normal man.  Like all githyanki, his teeth are fanged and his eyes hollow and
 sunken.  The gish are well-versed in the arcane arts, unlike the normal gith
-people.  You notice this from the blast of lightning headed towards you.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_mage~
-Gender     male~
-Actflags   npc scavenger aggressive stayarea~
-Affected   infrared~
-Stats1     -500 11 6 6 3000 12500
-Stats2     11 11 110
-Stats3     1 5 2
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms heart guts hands feet~
-Immune     fire~
-Suscept    cold~
-Attacks    gouge fireball~
-#ENDMOBILE
+people.  You notice this from the blast of lightning headed towards you.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_mage";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc scavenger aggressive stayarea";
+mobile.this.AffectedBy = "infrared";
+mobile.this:SetStats1(-500, 11, 6, 6, 3000, 12500);
+mobile.this:SetStats2(11, 11, 110);
+mobile.this:SetStats3(1, 5, 2);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms heart guts hands feet";
+mobile.this.Immunity = "fire";
+mobile.this.Susceptibility = "cold";
+mobile.this.Attacks = "gouge fireball";
 
-#MOBILE
-Vnum       812
-Keywords   gith githyanki warlock figure humanoid~
-Short      A warlock of the Gith~
-Long       A humanoid figure stands here, holding a silvery sword.
-~
-Desc       You see a leathery-skinned creature, clad all in black and bearing a silvery-
+newMobile = LCreateMobile(812, "gith githyanki warlock figure humanoid");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A warlock of the Gith";
+mobile.this.LongDescription = "A humanoid figure stands here, holding a silvery sword.";
+mobile.this.Description = [[You see a leathery-skinned creature, clad all in black and bearing a silvery-
 colored sword.  Like all githyanki, his teeth are fanged and his eyes hollow
 and sunken.  As you turn to flee, you feel the impact of a fireball against
-your back.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_mage~
-Gender     male~
-Actflags   npc aggressive stayarea~
-Affected   detect_invis detect_magic infrared~
-Stats1     -500 30 0 2 10000 55000
-Stats2     20 20 200
-Stats3     1 5 8
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 -10
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet eye~
-Immune     charm nonmagic~
-Attacks    gouge fireball~
-Defenses   dodge disarm~
-#MUDPROG
-Progtype  fight_prog~
-Arglist   50~
-Comlist   , prays a mantra to his Queen for aid.
-mpechoat $n Suddenly, floating haunting eyes appear and gaze at you.  Two bolts
-mpechoat $n of blazing blue lightning erupt from them, striking you!
-mpechoaround $n of blazing blue lightning erupt from them, striking $n!
-c lightning $n
-c lightning $n
-~
-#ENDPROG
+your back.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_mage";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc aggressive stayarea";
+mobile.this.AffectedBy = "detect_invis detect_magic infrared";
+mobile.this:SetStats1(-500, 30, 0, 2, 10000, 55000);
+mobile.this:SetStats2(20, 20, 200);
+mobile.this:SetStats3(1, 5, 8);
+mobile.this:SetSaves(0, 0, 0, 0, -10);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms heart guts hands feet eye";
+mobile.this.Immunity = "charm nonmagic";
+mobile.this.Attacks = "gouge fireball";
+mobile.this.Defenses = "dodge disarm";
 
-#MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   if rand(60)
-mpecho In a final effort to destroy you, the warlock slits his wrists in
+newProg = LCreateMudProg("fight_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "50";
+mprog.this.Script = [[
+local ch = LGetCurrentCharacter();
+if (ch is nil) then
+	LLogError("Current character is nil");
+	return;	
+end
+
+LMobEmote(", prays a mantra to his Queen for aid.");
+MPEchoAt(ch, "Suddenly, floating haunting eyes appear and gaze at you.  Two bolts of blazing blue lightning erupt from them, striking you!");
+MPEchoAround(ch, "Suddenly, floating haunting eyes appear and gaze at $n!  Two bolts of blazing blue lightning erupt from them, striking $n!");
+LMobCommand("c lightning $n");
+LMobCommand("c lightning $n");
+]]);
+mobile.this:AddMudProg(mprog.this);
+
+newProg = LCreateMudProg("death_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "100";
+mprog.this.Script = [[
+if (LRandomPercent() <= 60) then
+	MPEcho([[In a final effort to destroy you, the warlock slits his wrists in
 mpecho a sickening ritual.  Coils of dark energy begin to flow along the
-mpecho ground, forming into a nightmare.
-mpmload 801
-mpforce nightmare c fireball $n
+mpecho ground, forming into a nightmare.]]);
+	MPMLoad(801);
+	MPForce(LGetLastMob(), "c fireball $n");
 else
-mpecho With his dying words, the warlock recites a powerful scroll...
-mpjunk all.scroll
-mpdamage $r 100
-endif
-~
-#ENDPROG
+	MPEcho("With his dying words, the warlock recites a powerful scroll...");
+	MPJunk("all.scroll");
+	MPDamage(LGetLastRoom(), 100);
+end
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#ENDMOBILE
-
-#MOBILE
-Vnum       813
-Keywords   githyanki lich queen~
-Short      The lich-queen~
-Long       The evil lich-queen of the Gith reaches out to destroy you.
-~
-Desc       The lich-queen of the githyanki was once human, but no longer.  Her skin has
+newMobile = LCreateMobile(813, "githyanki lich queen");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "The lich-queen";
+mobile.this.LongDescription = "The evil lich-queen of the Gith reaches out to destroy you.";
+mobile.this.Description = [[The lich-queen of the githyanki was once human, but no longer.  Her skin has
 completely shrunken around her skull, held together solely by the force of
 unholy magic and the powers of this plane of existence.  The cold glare of her
-hollow eyes sends you into paroxysms of fright.
-~
-Race       undead~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_undead~
-Gender     female~
-Actflags   npc sentinel aggressive~
-Affected   detect_invis detect_magic detect_hidden sanctuary infrared shockshield~
-Stats1     -750 30 -8 -8 100000 475000
-Stats2     30 30 300
-Stats3     4 5 20
-Stats4     0 0 4 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet eye~
-Resist     cold sleep charm hold~
-Immune     charm~
-Suscept    fire blunt~
-Attacks    claws trip gouge drain poison~
-Defenses   parry dodge disarm~
-#MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mptransfer $n 878
-mpgoto 878
-mpecho As the killing blow destroys the lich-queen's corporeal form, wisps
-mpecho of her spirit arise from the floor.  A haunting voice whispers words
-mpecho of a spidery language and the floor suddenly cracks and opens.  You
-mpecho fall through the chasm about the altar into a swirling field of
-mpecho blackness, the cackles of a witch following your descent...
-~
-#ENDPROG
+hollow eyes sends you into paroxysms of fright.]]
+mobile.this.Race = "undead";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_undead";
+mobile.this.Gender = "female";
+mobile.this.Act = "npc aggressive sentinel";
+mobile.this.AffectedBy = "detect_invis detect_magic detect_hidden sanctuary infrared shockshield";
+mobile.this:SetStats1(-750, 30, -8, -8, 100000, 475000);
+mobile.this:SetStats2(30, 30, 300);
+mobile.this:SetStats3(4, 5, 20);
+mobile.this:SetSaves(0, 0, 4, 0, 0);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms heart guts hands feet eye";
+mobile.this.Immunity = "charm";
+mobile.this.Susceptibility = "fire blunt";
+mobile.this.Attacks = "claws trip gouge drain poison";
+mobile.this.Defenses = "parry dodge disarm";
 
-#MUDPROG
-Progtype  fight_prog~
-Arglist   100~
-Comlist   if rand(10)
-, summons her minions from the lower planes...
-mpmload 802
-mpmload 809
-else
-if rand(40)
-, curls her flail past $r's defenses, mauling him!
-mpdamage $r 80
-else
-, sneers at you.
-c 'acid blast' $n
-endif
-endif
-~
-#ENDPROG
+newProg = LCreateMudProg("death_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "100";
+mprog.this.Script = [[
+local ch = LGetCurrentCharacter();
 
-#MUDPROG
-Progtype  greet_prog~
-Arglist   60~
-Comlist   say Yes...more souls to dine on at my leisure!
-mpecho Deadly flames erupt from the lich-queen's fingers!
-c 'burning hands' $n
-~
-#ENDPROG
+MPTransfer(ch, 878);
+MPGoto(878);
+MPEcho([[As the killing blow destroys the lich-queen's corporeal form, wisps of her spirit arise from the floor.  
+A haunting voice whispers words of a spidery language and the floor suddenly cracks and opens.  You fall through 
+the chasm about the altar into a swirling field of blackness, the cackles of a witch following your descent...]]);
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#ENDMOBILE
+newProg = LCreateMudProg("fight_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "100";
+mprog.this.Script = [[
+local ch = LGetCurrentCharacter();
 
-#MOBILE
-Vnum       814
-Keywords   lady gith~
-Short      Lady Gith~
-Long       Lady Gith forms from a cloud of blackness, her face drenched in tears.
-~
-Desc       A beautiful human maiden stands before you, tears streaming down her face.
+if (LRandomPercent() <= 10) then
+	LMobEmote(", summons her minions from the lower planes...");
+	MPMLoad(802);
+	MPMLoad(809);
+else 
+	if (LRandomPercent() <= 40) then
+		LMobEmote(", curls her flail past $r's defenses, mauling him!", ch);
+		MPDamage(ch, 80);
+	else 
+		LMobEmote(", sneers at you.");
+		LMobCommand("c 'acid blast' $n", ch);
+	end
+end
+]]);
+mobile.this:AddMudProg(mprog.this);
+
+newProg = LCreateMudProg("greet_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "60";
+mprog.this.Script = [[
+local ch = LGetLastCharacter();
+
+LMobCommand("say Yes...more souls to dine on at my leisure!");
+MPEcho("Deadly flames erupt from the lich-queen's fingers!");
+LMobCOmmand("c 'burning hands' $n", ch);
+]]);
+mobile.this:AddMudProg(mprog.this);
+
+newMobile = LCreateMobile(814, "lady gith");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "Lady Gith";
+mobile.this.LongDescription = "Lady Gith forms from a cloud of blackness, her face drenched in tears.";
+mobile.this.Description = [[A beautiful human maiden stands before you, tears streaming down her face.
 Once a mighty warrior, she led the githyanki to freedom from their formers
 enslavers, the mind flayers.  She is now imprisoned in this prison due to
 an unholy alliance broken by the traitorous lich-queen.  She is consumed
 by eternal grief for her people, who have been twisted into monsters by
-their ruler.
-~
-Race       human~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     female~
-Actflags   npc sentinel~
-Affected   detect_invis detect_hidden sanctuary infrared protect fireshield iceshield~
-Stats1     1000 35 -15 -10 5000 750000
-Stats2     35 35 350
-Stats3     10 3 50
-Stats4     0 0 0 0 0
-Attribs    18 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common magical~
-Bodyparts  head arms legs heart guts hands feet eye~
-Resist     fire cold sleep charm hold~
-Immune     sleep charm nonmagic~
-Suscept    electricity energy blunt~
-Attacks    punch kick bash gouge weaken~
-Defenses   parry dodge disarm~
-#MUDPROG
-Progtype  greet_prog~
-Arglist   75~
-Comlist   cry
-say There is no hope for my people.  Though you have defeated their 
-say horrible leader, she will return...
-~
-#ENDPROG
+their ruler.]]
+mobile.this.Race = "human";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "female";
+mobile.this.Act = "npc sentinel";
+mobile.this.AffectedBy = "detect_invis detect_hidden sanctuary infrared protect fireshield iceshield";
+mobile.this:SetStats1(1000, 35, -15, -10, 5000, 750000);
+mobile.this:SetStats2(35, 35, 350);
+mobile.this:SetStats3(10, 3, 50);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common magical";
+mobile.this.BodyParts = "head arms heart guts hands feet eye";
+mobile.this.Resistance = "fire cold sleep charm hold";
+mobile.this.Immunity = "charm sleep nonmagic";
+mobile.this.Susceptibility = "electricity energy blunt";
+mobile.this.Attacks = "punch kick bash gouge weaken";
+mobile.this.Defenses = "parry dodge disarm";
 
-#MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   , weeps softly.
-~
-#ENDPROG
+newProg = LCreateMudProg("greet_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "75";
+mprog.this.Script = [[
+LMobCommand("say There is no hope for my people.  Though you have defeated their horrible leader, she will return...");
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   say If you wish to leave this lair of despair, you have but to say
-say so.  Only my brethren and I are truly chained here...
-~
-#ENDPROG
+newProg = LCreateMudProg("rand_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "3";
+mprog.this.Script = [[
+LMobEmote(", weeps softly.");
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#MUDPROG
-Progtype  speech_prog~
-Arglist   p I wish to leave this lair of despair~
-Comlist   nod
-say Goodbye, $n...
-mpechoaround $n White light flows from Gith's outstretched fingers and
-mpechoaround $n swirls about $n.
-mpechoat $n White light flows from Gith's outstretched fingers and
-mpechoat $n swirls about you.
-mptransfer $n 21000
-if ispkill($n)
-  mptrans 0.$n 3009
-else
-  mptrans 0.$n 21000
-endif
-~
-#ENDPROG
+newProg = LCreateMudProg("rand_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "2";
+mprog.this.Script = [[
+LMobCommand("say If you wish to leave this lair of despair, you have but to say so.  Only my brethren and I are truly chained here...");
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#MUDPROG
-Progtype  speech_prog~
-Arglist   p I wish to leave this lair of despair.~
-Comlist   nod
-say Goodbye, $n...
-mpechoaround $n White light flows from Gith's outstretched fingers and
-mpechoaround $n swirls about $n.
-mpechoat $n White light flows from Gith's outstretched fingers and
-mpechoat $n swirls about you.
-mptransfer $n 21000
-~
-#ENDPROG
+newProg = LCreateMudProg("speech_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "p I wish to leave this lair of despair";
+mprog.this.Script = [[
+local ch = GetLastCharacter();
 
-#MUDPROG
-Progtype  fight_prog~
-Arglist   50~
-Comlist   say If only I could die.  This place allows none of my kind peace!
-mpecho With unparalleled rage, Lady Gith summons forth a torrent of acid!
-c 'acid blast' $n
-c 'acid blast' $n
-~
-#ENDPROG
+LMobCommand("nod");
+LMobCommand("say Goodbye, $n", ch);
+MPEchoAround("hite light flows from Gith's outstretched fingers and swirls about $n.", ch);
+MPEchoAt(ch, "White light flows from Gith's outstretched fingers and swirls about you.");
+MPTransfer(ch, 21000);
 
-#ENDMOBILE
+if (IsPKill(ch)) then
+	MPTrans(ch, 3009);
+else 
+	MPTrans(ch, 21000);
+end
+]]);
+mobile.this:AddMudProg(mprog.this);
 
-#MOBILE
-Vnum       815
-Keywords   ghost~
-Short      An insubstantial ghost~
-Long       A ghost wanders here, intent on destroying all life.
-~
-Desc       The ghost makes no sound.  It is a shadowy shell of its former self, cursed
+newProg = LCreateMudProg("fight_prog");
+mprog.this = newProg;
+mprog.this.ArgList = "50";
+mprog.this.Script = [[
+local ch = GetLastCharacter();
+
+LMobCommand("say If only I could die.  This place allows none of my kind peace!");
+MPEcho("With unparalleled rage, Lady Gith summons forth a torrent of acid!");
+LMobCommand("c 'acid blast' $n", ch);
+LMobCommand("c 'acid blast' $n", ch);
+]]);
+mobile.this:AddMudProg(mprog.this);
+
+newMobile = LCreateMobile(815, "ghost");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "An insubstantial ghost";
+mobile.this.LongDescription = "A ghost wanders here, intent on destroying all life.";
+mobile.this.Description = [[The ghost makes no sound.  It is a shadowy shell of its former self, cursed
 now to roam forever without rest.  The mind of this creature has been twisted
 and destroyed in this torment, and it now intends to destroy all true living
-beings it encounters, including you.
-~
-Race       undead~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_undead~
-Gender     neuter~
-Actflags   npc stayarea~
-Affected   detect_evil detect_invis hold sanctuary infrared curse _flaming _paralysis sneak pass_door~
-Stats1     -1000 16 2 0 0 19000
-Stats2     16 16 160
-Stats3     2 9 2
-Stats4     0 0 2 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common~
-Speaking   common~
-Resist     cold sleep charm hold~
-Immune     nonmagic~
-Suscept    fire blunt~
-Attacks    drain~
-#ENDMOBILE
+beings it encounters, including you.]]
+mobile.this.Race = "undead";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_undead";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc stayarea";
+mobile.this.AffectedBy = "detect_evil detect_invis hold sanctuary infrared curse _flaming _paralysis sneak pass_door";
+mobile.this:SetStats1(-1000, 16, 2, 0, 0, 19000);
+mobile.this:SetStats2(16, 16, 160);
+mobile.this:SetStats3(2, 9, 2);
+mobile.this:SetStats4(0, 0, 2, 0, 0);
+mobile.this.Speaks = "common";
+mobile.this.Speaking = "common";
+mobile.this.Resistance = "cold sleep charm hold";
+mobile.this.Immunity = "nonmagic";
+mobile.this.Susceptibility = "fire blunt";
+mobile.this.Attacks = "drain";
 
-#MOBILE
-Vnum       816
-Keywords   githzerai prisoner~
-Short      An imprisoned githzerai~
-Long       A githzerai plots his escape plan.
-~
-Desc       You see a conniving humanoid, a descendant of a race of humans once enslaved
+newMobile = LCreateMobile(816, "githzerai prisoner");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "An imprisoned githzerai";
+mobile.this.LongDescription = "A githzerai plots his escape plan.";
+mobile.this.Description = [[You see a conniving humanoid, a descendant of a race of humans once enslaved
 by the mind flayers and related to the githyanki.  Unfortunately, the two races
-are bitter enemies, and this one happened to get caught.  He intends to escape.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     male~
-Actflags   npc stayarea~
-Affected   infrared~
-Stats1     -250 10 8 8 0 6000
-Stats2     10 10 100
-Stats3     1 4 4
-Stats4     0 0 1 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet eye~
-Attacks    kick~
-Defenses   dodge~
-#ENDMOBILE
+are bitter enemies, and this one happened to get caught.  He intends to escape.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc stayarea";
+mobile.this.AffectedBy = "infrared";
+mobile.this:SetStats1(-250, 10, 8, 8, 0, 6000);
+mobile.this:SetStats2(10, 10, 100);
+mobile.this:SetStats3(1, 4, 4);
+mobile.this:SetStats4(0, 0, 1, 0, 0);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye";
+mobile.this.Attacks = "kick";
+mobile.this.Defenses = "didge";
 
-#MOBILE
-Vnum       817
-Keywords   mind flayer prisoner~
-Short      a tortured mind flayer~
-Long       A mind flayer lies here, scarred from the torture inflicted by the githyanki.
-~
-Desc       You see a formerly tall humanoid creature, with four tentacles hanging from the
+newMobile = LCreateMobile(817, "mind flayer prisoner");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "a tortured mind flayer";
+mobile.this.LongDescription = "A mind flayer lies here, scarred from the torture inflicted by the githyanki.";
+mobile.this.Description = [[You see a formerly tall humanoid creature, with four tentacles hanging from the
 middle of its head.  It is hunched over, bent and scarred from torture
-inflicted by the githyanki.  It cringes as you approach.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_mage~
-Gender     neuter~
-Actflags   npc sentinel~
-Stats1     0 8 13 2 0 3000
-Stats2     8 8 80
-Stats3     3 4 5
-Stats4     0 0 2 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     magical~
-Speaking   common~
-Bodyparts  head arms legs heart guts hands feet eye tentacles~
-Immune     sleep charm~
-Attacks    drain~
-#ENDMOBILE
+inflicted by the githyanki.  It cringes as you approach.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_mage";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc sentinel";
+mobile.this:SetStats1(0, 8, 13, 2, 0, 3000);
+mobile.this:SetStats2(8, 8, 80);
+mobile.this:SetStats3(3, 4, 5);
+mobile.this:SetStats4(0, 0, 2, 0, 0);
+mobile.this.Speaks = "magical";
+mobile.this.Speaking = "common";
+mobile.this.BodyParts = "head arms legs heart guts hands feet eye tentacles";
+mobile.this.Immunity = "sleep charm";
+mobile.this.Attacks = "drain";
 
-#MOBILE
-Vnum       818
-Keywords   dragon red slave~
-Short      The enslaved red dragon~
-Long       A giant red dragon is chained here, his breath heating the furnace.
-~
-Desc       The mighty scaled beast has been magically bound and subdued by the residents
+newMobile = LCreateMobile(818, "dragon red slave");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "The enslaved red dragon";
+mobile.this.LongDescription = "A giant red dragon is chained here, his breath heating the furnace.";
+mobile.this.Description = [[The mighty scaled beast has been magically bound and subdued by the residents
 of the keep.  Nevertheless, he is still an impressive sight, some twenty feet
 in length with an even more massive wingspan.  He watches you, smoke drifting
-from his open mouth.
-~
-Race       dragon~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_cast_mage~
-Gender     male~
-Actflags   npc sentinel~
-Affected   detect_invis infrared~
-Stats1     -400 28 -3 -6 100000 350000
-Stats2     28 28 280
-Stats3     3 5 25
-Stats4     0 0 3 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common elvish dragon magical~
-Speaking   dragon~
-Bodyparts  head heart guts feet wings claws horns~
-Resist     fire magic~
-Immune     charm~
-Suscept    cold~
-Attacks    bite claws tail firebreath~
-#ENDMOBILE
+from his open mouth.]]
+mobile.this.Race = "dragon";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_cast_mage";
+mobile.this.Gender = "male";
+mobile.this.Act = "npc sentinel";
+mobile.this.AffectedBy = "detect_invis infrared";
+mobile.this:SetStats1(-400, 28, -3, -6, 100000, 3500000);
+mobile.this:SetStats2(28, 28, 280);
+mobile.this:SetStats3(3, 5, 25);
+mobile.this:SetStats4(0, 0, 3, 0, 0);
+mobile.this.Speaks = "common elvish dragon magical";
+mobile.this.Speaking = "dragon";
+mobile.this.BodyParts = "head heart guts feet wings claws horns";
+mobile.this.Resistance = "fire magic";
+mobile.this.Immunity = "charm";
+mobile.this.Susceptibility = "cold";
+mobile.this.Attacks = "bite claws tail firebreath";
 
-#MOBILE
-Vnum       819
-Keywords   fire furnace flame~
-Short      A massive blast of fire~
-Long       The fires of the furnace burn away at your skin!
-~
-Desc       The fire feeds on your skin like a living being, licking out at your hair.
-~
-Race       magical~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Specfun    spec_breath_fire~
-Gender     neuter~
-Actflags   npc sentinel aggressive stayarea~
-Affected   infrared fireshield~
-Stats1     0 13 5 5 0 10000
-Stats2     13 13 130
-Stats3     3 3 3
-Stats4     0 0 1 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common elvish pixie orcish rodent mammal spiritual magical god ancient clan~
-Speaking   common elvish pixie orcish rodent mammal spiritual magical god ancient clan~
-Resist     fire~
-Immune     fire~
-Suscept    cold~
-Attacks    fireball~
-#ENDMOBILE
+newMobile = LCreateMobile(819, "fire furnace flame");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "A massive blast of fire";
+mobile.this.LongDescription = "The fires of the furnace burn away at your skin!";
+mobile.this.Description = [[The fire feeds on your skin like a living being, licking out at your hair.]]
+mobile.this.Race = "magical";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.SpecFun = "spec_breath_fire";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc sentinel aggressive stayarea";
+mobile.this.AffectedBy = "infrared fireshield";
+mobile.this:SetStats1(0, 13, 5, 5, 0, 10000);
+mobile.this:SetStats2(13, 13, 130);
+mobile.this:SetStats3(3, 3, 3);
+mobile.this:SetStats4(0, 0, 1, 0, 0);
+mobile.this.Speaks = "common elvish pixie orcish rodent mammal spiritual magical god ancient clan";
+mobile.this.Speaking = "common elvish pixie orcish rodent mammal spiritual magical god ancient clan";
+mobile.this.Resistance = "fire";
+mobile.this.Immunity = "fire";
+mobile.this.Susceptibility = "cold";
+mobile.this.Attacks = "fireball";
 
-#MOBILE
-Vnum       899
-Keywords   border mob~
-Short      a newly created border mob~
-Long       Some god abandoned a newly created border mob here.
-~
-Race       human~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     neuter~
-Actflags   npc prototype~
-Stats1     0 1 0 0 0 0
-Stats2     0 0 0
-Stats3     0 0 0
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common~
-Speaking   common~
-#ENDMOBILE
+newMobile = LCreateMobile(899, "border mo");
+mobile.this = newMobile;
+mobile.this.ShortDescription = "a newly created border mob";
+mobile.this.LongDescription = "Some god abandoned a newly created border mob here.";
+mobile.this.Race = "human";
+mobile.this.Class = "warrior";
+mobile.this.Position = "standing";
+mobile.this.DefPosition = "standing";
+mobile.this.Gender = "neuter";
+mobile.this.Act = "npc prototype";
+mobile.this:SetStats1(0, 1, 0, 0, 0, 0);
+mobile.this.Speaks = "common";
+mobile.this.Speaking = "common";
 
-#OBJECT
-Vnum     800
-Keywords pearl wand~
-Type     weapon~
-Short    a pearl wand~
-Long     The ground seems to cradle a pearl wand here.~
-Action   blast~
-Flags    magic antigood antievil~
-WFlags   take wield~
-Values   12 4 8 6 0 0
-Stats    5 1000000 -31072 0 0
-Affect       -1 -1 60 12 0
-Affect       -1 -1 20 13 0
-Affect       -1 -1 5 18 0
-Affect       -1 -1 8 19 0
-#EXDESC
-ExDescKey    wand pearl~
-ExDesc       An intricate number of nooks have been engraved in the end of the wand,
-as though it was a key of some sort...
-~
-#ENDEXDESC
+systemLog("=================== AREA 'ASTRAL' - OBJECTS ===================");
+newObject = LCreateObject(800, "pearl wand");
+object.this = newObject;
+object.this.Type = "weapon";
+object.this.ShortDescription = "a pearl wand";
+object.this.LongDescription = "The ground seems to cradle a pearl wand here.";
+object.this.Action = "blast";
+object.this.Flags = "magic antigood antievil";
+object.this.WearFlags = "take wield";
+object.this:SetValues(12, 4, 8, 6, 0, 0);
+object.this:AddAffect(-1, -1, 60, 12, 0);
+object.this:AddAffect(-1, -1, 20, 13, 0);
+object.this:AddAffect(-1, -1, 5, 18, 0);
+object.this:AddAffect(-1, -1, 8, 19, 0);
+object.this:SetExtraDescription("wand pearl", "An intricate number of nooks have been engraved in the end of the wand, as though it was a key of some sort...");
 
-#ENDOBJECT
+newObject = LCreateObject(801, "scroll violet");
+object.this = newObject;
+object.this.Type = "scroll";
+object.this.ShortDescription = "a violet scroll";
+object.this.LongDescription = "A rolled piece of violet parchment lies on the floor.";
+object.this.Flags = "bless";
+object.this.WearFlags = "take";
+object.this:SetValues(15, -1, -1, -1, 0, 0);
+object.this:SetStats(1, 2500, 250, 0, 0);
+object.this:AddSpell("armor");
+object.this:AddSpell("bless");
+object.this:AddSpell("shield");
+object.this:SetExtraDescription("scroll violet", "The scroll is written on soft violet parchment that has a pleasing smell to it.");
 
-#OBJECT
-Vnum     801
-Keywords scroll violet~
-Type     scroll~
-Short    a violet scroll~
-Long     A rolled piece of violet parchment lies on the floor.~
-Flags    bless~
-WFlags   take~
-Values   15 -1 -1 -1 0 0
-Stats    1 2500 250 0 0
-Spells   'armor' 'bless' 'shield'
-#EXDESC
-ExDescKey    scroll violet~
-ExDesc       The scroll is written on soft violet parchment that has a pleasing smell to it.
-~
-#ENDEXDESC
+newObject = LCreateObject(802, "tablet scroll black");
+object.this = newObject;
+object.this.Type = "scroll";
+object.this.ShortDescription = "a black etched tablet";
+object.this.LongDescription = "Lying on the ground is a jet black stone tablet.";
+object.this.Flags = "evil";
+object.this.WearFlags = "take";
+object.this:SetValues(30, -1, -1, -1, 0, 0);
+object.this:SetStats(5, 15000, 1500, 0, 0);
+object.this:AddSpell("blazebane");
+object.this:AddSpell("inner warmth");
+object.this:AddExtraDescription("tablet scroll black", [[The tablet is an unreflective black rectangular piece of stone, with strange
+writings etched deep into its surface.]]);
 
-#ENDOBJECT
+newObject = LCreateObject(803, "scroll githyanki");
+object.this = newObject;
+object.this.Type = "scroll";
+object.this.ShortDescription = "a scroll with githyanki writings on it";
+object.this.LongDescription = "You see a scroll written in an alien tongue.";
+object.this.WearFlags = "take";
+object.this:SetValues(24, -1, -1, -1, 0, 0);
+object.this:SetStats(1, 7500, 750, 0, 0);
+object.this:AddSpell("lightning bolt");
+object.this:AddExtraDescription("scroll githyanki", "The scroll has writings on it that you cannot comprehend.");
 
-#OBJECT
-Vnum     802
-Keywords tablet scroll black~
-Type     scroll~
-Short    a black etched tablet~
-Long     Lying on the ground is a jet black stone tablet.~
-Flags    evil~
-WFlags   take~
-Values   30 -1 -1 -1 0 0
-Stats    5 15000 1500 0 0
-Spells   'blazebane' 'inner warmth' 'NONE'
-#EXDESC
-ExDescKey    tablet scroll black~
-ExDesc       The tablet is an unreflective black rectangular piece of stone, with strange
-writings etched deep into its surface.
-~
-#ENDEXDESC
-
-#ENDOBJECT
-
-#OBJECT
-Vnum     803
-Keywords scroll githyanki~
-Type     scroll~
-Short    a scroll with githyanki writings on it~
-Long     You see a scroll written in an alien tongue.~
-WFlags   take~
-Values   24 -1 -1 -1 0 0
-Stats    1 7500 750 0 0
-Spells   'lightning bolt' 'lightning bolt' 'NONE'
-#EXDESC
-ExDescKey    scroll githyanki~
-ExDesc       The scroll has writings on it that you cannot comprehend.
-~
-#ENDEXDESC
-
-#ENDOBJECT
 
 #OBJECT
 Vnum     804
@@ -1481,273 +1351,100 @@ Values   0 0 0 0 0 0
 Stats    1 0 0 0 0
 #ENDOBJECT
 
-#ROOM
-Vnum     800
-Name     The Bottom of the Rainbow~
-Sector   air~
-Desc     You are standing before a shimmering rainbow arching high up into the
-sky.  You feel somehow separated from the natural world, even though the
-city of Darkhaven lies below you.
-~
-#EXIT
-Direction up~
-ToRoom    801
-Desc      The rainbow extends above you, fading out of existence only meters away.
-~
-#ENDEXIT
+systemLog("=================== AREA 'ASTRAL' - ROOMS ===================");
+newRoom = LCreateRoom(800, "The Bottom of the Rainbow");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("air");
+room.this.Description = [[You are standing before a shimmering rainbow arching high up into the
+sky.  You feel somehow separated from the natural world, even though the city of Darkhaven lies below you.]]
+room.this:AddExit("up", 801, "The rainbow extends above you, fading out of existence only meters away.");
+room.this:AddExit("down", 21338, "You can see the Temple of Darkhaven below you.");
+room.this:AddExtraDescription("rainbow", "The rainbow softly glows with beams of light in colors that defy description.");
 
-#EXIT
-Direction down~
-ToRoom    21338
-Desc      You can see the Temple of Darkhaven below you.
-~
-#ENDEXIT
+newRoom = LCreateRoom(801, "On the Rainbow");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("air");
+room.this.Description = [[You are standing on the rainbow, surrounded by many beams of multicolored
+light.  Through the bottom of the rainbow you can barely make out the cathedral of Darkhaven.]]
+room.this:AddExit("up", 802, "The rainbow extends far above you, slowly fading into darkness.");
+room.this:AddExit("down", 800, "The rainbow extends below you towards Darkhaven.");
+room.this:AddExtraDescription("rainbow", "The rainbow softly glows with beams of light in colors that defy description.");
 
-#EXDESC
-ExDescKey    rainbow~
-ExDesc       The rainbow softly glows with beams of light in colors that defy
-description.
-~
-#ENDEXDESC
+newRoom = LCreateRoom(802, "On the Rainbow");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("air");
+room.this.Description = [[You are standing on the rainbow, surrounded by many beams of multicolored
+light.  Through the bottom of the rainbow you can see the city of Darkhaven and the land surrounding it.  
+The vast landscape seems to be leagues below you.]]
+room.this:AddExit("up", 803, "The rainbow extends far above you, slowly fading into darkness.");
+room.this:AddExit("down", 801, "The rainbow extends below you towards the land you once knew as home.");
+room.this:AddExtraDescription("rainbow", "The rainbow softly glows with beams of light in colors that defy description.");
 
-#ENDROOM
+newRoom = LCreateRoom(803, "On the Rainbow");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("air");
+room.this.Description = [[You are standing on the rainbow, surrounded by many beams of multicolored
+light.  Through the bottom of the rainbow you can see the city of Darkhaven and the land surrounding it.  
+The vast landscape seems to be leagues below you.]]
+room.this:AddExit("up", 804, "The rainbow extends far above you, slowly fading into darkness.");
+room.this:AddExit("down", 802, "The rainbow extends below you towards the land you once knew as home.");
+room.this:AddExtraDescription("rainbow", "The rainbow softly glows with beams of light in colors that defy description.");
 
-#ROOM
-Vnum     801
-Name     On the Rainbow~
-Sector   air~
-Desc     You are standing on the rainbow, surrounded by many beams of multicolored
-light.  Through the bottom of the rainbow you can barely make out the
-cathedral of Darkhaven.
-~
-#EXIT
-Direction up~
-ToRoom    802
-Desc      The rainbow extends far above you, slowly fading into darkness.
-~
-#ENDEXIT
+newRoom = LCreateRoom(804, "On the Rainbow");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("air");
+room.this.Description = [[You are standing on the rainbow, surrounded by many beams of multicolored
+light.  Through the bottom of the rainbow you can see the city of Darkhaven and the land surrounding it.  
+The vast landscape seems to be leagues below you.]]
+room.this:AddExit("up", 805, "The rainbow extends far above you, slowly fading into darkness.");
+room.this:AddExit("down", 803, "The rainbow extends below you towards the land you once knew as home.");
+room.this:AddExtraDescription("rainbow", "The rainbow softly glows with beams of light in colors that defy description.");
+room.this:AddExtraDescription("motes star stars dust", [[The star-like motes dance before your eyes.  They are incredibly beautiful yet
+intangible -- your hand passes right through them.]]);
+room.this:AddExtraDescription("bridge", "The colors of the rainbow seem to converge into a glowing bridge that leads to a massive white gate.");
 
-#EXIT
-Direction down~
-ToRoom    800
-Desc      The rainbow extends below you towards Darkhaven.
-~
-#ENDEXIT
-
-#EXDESC
-ExDescKey    rainbow~
-ExDesc       The rainbow softly glows with beams of light in colors that defy
-description.
-~
-#ENDEXDESC
-
-#ENDROOM
-
-#ROOM
-Vnum     802
-Name     On the Rainbow~
-Sector   air~
-Desc     You are standing on the rainbow, surrounded by many beams of multicolored
-light.  Through the bottom of the rainbow you can see the city of Darkhaven and
-the land surrounding it.  The vast landscape seems to be leagues below you.
-~
-#EXIT
-Direction up~
-ToRoom    803
-Desc      The rainbow extends far above you, slowly fading into darkness.
-~
-#ENDEXIT
-
-#EXIT
-Direction down~
-ToRoom    801
-Desc      The rainbow extends below you towards the land you once knew as home.
-~
-#ENDEXIT
-
-#EXDESC
-ExDescKey    rainbow~
-ExDesc       The rainbow softly glows with beams of light in colors that defy
-description.
-~
-#ENDEXDESC
-
-#ENDROOM
-
-#ROOM
-Vnum     803
-Name     On the Rainbow~
-Sector   air~
-Desc     You are standing on the rainbow, surrounded by many beams of multicolored
-light.  The rainbow extends above and below you as far as you can see.
-~
-#EXIT
-Direction up~
-ToRoom    804
-Desc      The rainbow extends far above you.  You see a glowing white light at the 
-rainbow's end.
-~
-#ENDEXIT
-
-#EXIT
-Direction down~
-ToRoom    802
-Desc      The rainbow extends far below you, slowly fading into darkness.
-~
-#ENDEXIT
-
-#EXDESC
-ExDescKey    rainbow~
-ExDesc       The rainbow brightly glows with beams of light in colors that defy
-description.
-~
-#ENDEXDESC
-
-#ENDROOM
-
-#ROOM
-Vnum     804
-Name     On the Rainbow~
-Sector   air~
-Desc     You are nearing the end of the rainbow.  The beams of multicolored
-light have begun to merge and solidify.  All around you you see glowing
-star-like motes of dust.  High above you is a floating bridge.
-~
-#EXIT
-Direction up~
-ToRoom    805
-Desc      The rainbow extends above you, merging into a brilliant glowing
-bridge.
-~
-#ENDEXIT
-
-#EXIT
-Direction down~
-ToRoom    803
-Desc      The rainbow extends far below you, slowly fading into darkness.
-~
-#ENDEXIT
-
-#EXDESC
-ExDescKey    rainbow~
-ExDesc       The rainbow brilliantly glows with beams of blinding light, in colors
-that sweep together and merge before your eyes.
-~
-#ENDEXDESC
-
-#EXDESC
-ExDescKey    motes star stars dust~
-ExDesc       The star-like motes dance before your eyes.  They are incredibly beautiful yet
-intangible -- your hand passes right through them.
-~
-#ENDEXDESC
-
-#EXDESC
-ExDescKey    bridge~
-ExDesc       The colors of the rainbow seem to converge into a glowing bridge that leads
-to a massive white gate.
-~
-#ENDEXDESC
-
-#ENDROOM
-
-#ROOM
-Vnum     805
-Name     The Glowing Bridge at the Rainbow's End~
-Sector   city~
-Desc     After a long climb you have reached the end of the rainbow.  The brilliant
+newRoom = LCreateRoom(805, "The Glowing Bridge at the Rainbow's End");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("city");
+room.this.Description = [[After a long climb you have reached the end of the rainbow.  The brilliant
 colors have twisted and merged into a beautiful glowing bridge that leads
 toward a massive white gate to the north.  All around you is a soft, peaceful 
-glow interrupted only by the passing of star-like dust motes before your eyes.
-~
-#EXIT
-Direction north~
-ToRoom    806
-Desc      The bridge leads on to a massive white gate.  You see a large grey figure
-standing there.
-~
-#ENDEXIT
+glow interrupted only by the passing of star-like dust motes before your eyes.]]
+room.this:AddExit("north", 806, "The bridge leads on to a massive white gate.  You see a large grey figure standing there.");
+room.this:AddExit("down", 804, "The bridge fragments into a beautiful spectrum of colors that drops out of sight below you.");
+room.this:AddExtraDescription("rainbow", "The rainbow seems to be forming directly from the light of the bridge.  It drops out of sight below you.");
+room.this:AddExtraDescription("motes star stars dust", [[The star-like motes dance before your eyes.  They are incredibly beautiful yet
+intangible -- your hand passes right through them.]]);
+room.this:AddExtraDescription("bridge", "The bridge glows with an unearthly light.");
+room.this:AddExtraDescription("gate", [[The gate towers ten feet above your head. Beyond it is a field of utter
+blackness from which the motes of light seem to issue forth.]]);
 
-#EXIT
-Direction down~
-ToRoom    804
-Desc      The bridge fragments into a beautiful spectrum of colors that drops out of sight below you.
-~
-#ENDEXIT
-
-#EXDESC
-ExDescKey    rainbow~
-ExDesc       The rainbow seems to be forming directly from the light of the bridge.  It
-drops out of sight below you.
-~
-#ENDEXDESC
-
-#EXDESC
-ExDescKey    motes star stars dust~
-ExDesc       The star-like motes dance before your eyes.  They are incredibly beautiful yet
-intangible -- your hand passes right through them.
-~
-#ENDEXDESC
-
-#EXDESC
-ExDescKey    bridge~
-ExDesc       The bridge glows with an unearthly light.
-~
-#ENDEXDESC
-
-#EXDESC
-ExDescKey    gate~
-ExDesc       The gate towers ten feet above your head. Beyond it is a field of utter
-blackness from which the motes of light seem to issue forth.
-~
-#ENDEXDESC
-
-#ENDROOM
-
-#ROOM
-Vnum     806
-Name     The Astral Gate~
-Sector   city~
-Desc     The bridge ends here before a massive, pearly-colored gate beyond which
+newRoom = LCreateRoom(806, "The Astral Gate");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("city");
+room.this.Description = [[The bridge ends here before a massive, pearly-colored gate beyond which
 you can see a field of blackness filled with silvery snake-like tendrils,
 stars, and occasional flashes of light.  A slate plaque inset in the wall
-next to the gate catches your eye.
-~
-#EXIT
-Direction north~
-ToRoom    807
-Key       800
-Desc      Through the gate you see a massive field of blackness that extends as far
-as you can see.
-~
-Keywords  gate~
-Flags     isdoor closed locked pickproof nopassdoor~
-#ENDEXIT
-
-#EXIT
-Direction south~
-ToRoom    805
-Desc      The bridge extends towards the rainbow, which drops out of sight
-below you.
-~
-#ENDEXIT
-
-Reset M 0 800 1 806
-  Reset E 0 800 0 16
-  Reset G 1 826 1
-Reset D 0 806 0 2
-#EXDESC
-ExDescKey    gate~
-ExDesc       You see a huge, glowing gate wrought from an incredibly hard translucent 
+next to the gate catches your eye.]]
+newExit = LCreateExit("north", 807, "Through the gate you see a massive field of blackness that extends as far as you can see.");
+exit.this = newExit;
+exit.this.Key = 800;
+exit.this.Keywords = "gate";
+exit.this.Flags = "isdoor closed locked pickproof nopassdoor";
+room.this:AddExit(exit.this);
+room.this:AddExit("south", 805, "The bridge extends towards the rainbow, which drops out of sight below you.");
+room.this:AddExtraDescription("gate", [[You see a huge, glowing gate wrought from an incredibly hard translucent 
 material.  Each of the intricately carved bars of this mighty gate are about 
 as thick as a man's wrist, rising from the floor to a height of ten feet. A
-plaque is inset into the wall next to the gate.
-~
-#ENDEXDESC
-
-#EXDESC
-ExDescKey    plaque~
-ExDesc       The plaque reads: 
+plaque is inset into the wall next to the gate.]]
+room.this:AddExtraDescription("plaque", [[The plaque reads: 
 
 Let this gate stand to protect mortal man for all time against the perils of 
 the outer planes of existence and the creatures fair and foul that dwell
@@ -1757,77 +1454,37 @@ within.
  Andersen for any standard Merc 2.0 mud.)
  
 (This zone was later renovated and spiced up by Lord Rennard for the
-Realms of Despair.)
-~
-#ENDEXDESC
+Realms of Despair.)]]
+room.this:AddReset("mobile", 0, 800, 1, 806);
+room.this:AddReset("equipment", 0, 800, 0, 16);
+room.this:AddReset("inventory", 1, 826, 1);
+room.this:AddReset("door", 0, 806, 0, 2);
 
-#ENDROOM
-
-#ROOM
-Vnum     807
-Name     Into the Astral Plane~
-Sector   field~
-Flags    nomob indoors~
-Desc     You find yourself floating in a field of blackness, filled with tiny tendrils
+newRoom = LCreateRoom(807, "Into the Astral Plane");
+room.this = newRoom;
+area.this:AddRoom(room.this);
+room.this:SetSector("field");
+room.this.Flags = "nomob indoors";
+room.this.Description = [[You find yourself floating in a field of blackness, filled with tiny tendrils
 of silvery light and insubstantial shining motes of dust.  The weightlessness
 of this environment is very disorienting.  To the south is a set of pearly
-gates: the sole mundane manner of leaving the Astral Plane.
-~
-#EXIT
-Direction north~
-ToRoom    808
-Desc      The astral field leads off into infinity.
-~
-#ENDEXIT
+gates: the sole mundane manner of leaving the Astral Plane.]]
+room.this:AddExit("north", 808, "The astral field leads off into infinity.");
+room.this:AddExit("east", 809, "The astral field leads off into infinity.");
 
-#EXIT
-Direction east~
-ToRoom    809
-Desc      The astral field leads off into infinity.
-~
-#ENDEXIT
+newExit = LCreateExit("south", 806, "The astral gate leads back to your world.");
+exit.this = newExit;
+exit.this.Key = 800;
+exit.this.Keywords = "gate";
+exit.this:SetFlags("isdoor closed locked pickproof nopassdoor");
+room.this:AddExit(exit.this);
+room.this:AddExit("west", 810, "The astral field leads off into infinity.");
+room.this:AddExit("up", 811, "The astral field leads off into infinity.");
+room.this:AddExit("down", 812, "The astral field leads off into infinity.");
+room.this:AddReset("door", 0, 807, 2, 2);
+room.this:AddExtraDescription("gate", [[From here the pearly-colored gate seems very small and insubstantial.
+Through its bars you can see the astral guardian, protecting Despair from the perils of the Astral Plane.]]
 
-#EXIT
-Direction south~
-ToRoom    806
-Key       800
-Desc      The astral gate leads back to your world.
-~
-Keywords  gate~
-Flags     isdoor closed locked pickproof nopassdoor~
-#ENDEXIT
-
-#EXIT
-Direction west~
-ToRoom    810
-Desc      The astral field leads off into infinity.
-~
-#ENDEXIT
-
-#EXIT
-Direction up~
-ToRoom    811
-Desc      The astral field leads off into infinity.
-~
-#ENDEXIT
-
-#EXIT
-Direction down~
-ToRoom    812
-Desc      The astral field leads off into infinity.
-~
-#ENDEXIT
-
-Reset D 0 807 2 2
-#EXDESC
-ExDescKey    gate~
-ExDesc       From here the pearly-colored gate seems very small and insubstantial.
-Through its bars you can see the astral guardian, protecting Despair from the
-perils of the Astral Plane.
-~
-#ENDEXDESC
-
-#ENDROOM
 
 #ROOM
 Vnum     808

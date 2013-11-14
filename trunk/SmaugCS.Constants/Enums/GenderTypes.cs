@@ -3,7 +3,7 @@ namespace SmaugCS.Constants.Enums
 {
     public enum GenderTypes
     {
-        Neutral = 0,
+        Neuter = 0,
         Male = 1,
         Female = 2
     }

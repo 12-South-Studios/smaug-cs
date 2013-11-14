@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SmaugCS.Common;
 
-namespace SmaugCS.Tests
+namespace SmaugCS.Tests.Extensions
 {
     [TestFixture]
     public class NumberExtensionTests

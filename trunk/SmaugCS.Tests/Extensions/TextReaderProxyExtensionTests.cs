@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Realm.Library.Common;
 using SmaugCS.Common;
 
-namespace SmaugCS.Tests
+namespace SmaugCS.Tests.Extensions
 {
     [TestFixture]
     public class TextReaderProxyExtensionTests

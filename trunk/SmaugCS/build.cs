@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -14,7 +15,6 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Managers;
-using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -135,7 +135,7 @@ namespace SmaugCS
                 return false;
             if (ch.Trust >= Program.LEVEL_GOD)
                 return true;
-            if (!mob.Act.IsSet((int)ActFlags.Prototype))
+            if (!mob.GetActFlags().IsSet((int)ActFlags.Prototype))
             {
                 color.send_to_char("You cannot modify this mobile.\r\n", ch);
                 return false;
@@ -153,39 +153,14 @@ namespace SmaugCS
             return false;
         }
 
-        private static int GetIndexOf(string value, List<string> sourceList)
-        {
-            return sourceList.FindIndex(x => x.Equals(value, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public static int get_otype(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.o_types);
-        }
-
-        public static int get_aflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.a_flags);
-        }
-
-        public static int get_trapflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.trap_flags);
-        }
-
-        public static int get_atype(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.a_types);
-        }
-
         public static int get_npc_class(string value)
         {
-            return GetIndexOf(value, GameConstants.npc_class);
+            return Lookup.GetIndexOf(value, GameConstants.npc_class);
         }
 
         public static int get_npc_race(string value)
         {
-            return GetIndexOf(value, GameConstants.npc_race);
+            return Lookup.GetIndexOf(value, GameConstants.npc_race);
         }
 
         public static int get_pc_class(string value)
@@ -196,112 +171,6 @@ namespace SmaugCS
         public static int get_pc_race(string value)
         {
             return db.RACES.FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public static int get_wearloc(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.wear_locs);
-        }
-
-        public static int get_secflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.sec_flags);
-        }
-
-        public static int get_exflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.ex_flags);
-        }
-
-        public static int get_pulltype(string value)
-        {
-            if (value.Equals("none", StringComparison.OrdinalIgnoreCase)
-                || value.Equals("clear", StringComparison.OrdinalIgnoreCase))
-                return 0;
-
-            int index = GetIndexOf(value, BuilderConstants.ex_pmisc);
-            if (index > -1)
-                return index + (int)PlaneTypes.Water;
-
-            index = GetIndexOf(value, BuilderConstants.ex_pair);
-            if (index > -1)
-                return index + (int)PlaneTypes.Air;
-
-            index = GetIndexOf(value, BuilderConstants.ex_pearth);
-            if (index > -1)
-                return index + (int)PlaneTypes.Earth;
-
-            index = GetIndexOf(value, BuilderConstants.ex_pfire);
-            if (index > -1)
-                return index + (int)PlaneTypes.Fire;
-
-            return -1;
-        }
-
-        public static int get_attackflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.attack_flags);
-        }
-        public static int get_rflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.r_flags);
-        }
-        public static int get_mpflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.mprog_flags);
-        }
-        public static int get_oflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.o_flags);
-        }
-        public static int get_areaflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.area_flags);
-        }
-
-        public static int get_wflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.w_flags);
-        }
-
-        public static int get_actflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.act_flags);
-        }
-
-        public static int get_pcflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.pc_flags);
-        }
-
-        public static int get_plrflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.plr_flags);
-        }
-
-        public static int get_risflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.ris_flags);
-        }
-
-        public static int get_cmdflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.cmd_flags);
-        }
-
-        public static int get_trigflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.trig_flags);
-        }
-
-        public static int get_partflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.part_flags);
-        }
-
-        public static int get_defenseflag(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.defense_flags);
         }
 
         public static int get_langflag(string value)
@@ -326,16 +195,6 @@ namespace SmaugCS
                 count++;
             }
             return -1;
-        }
-
-        public static int get_npc_position(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.npc_position);
-        }
-
-        public static int get_npc_sex(string value)
-        {
-            return GetIndexOf(value, BuilderConstants.npc_sex);
         }
 
         public static string strip_cr(string str)
@@ -517,7 +376,7 @@ namespace SmaugCS
                 return;
             }
 
-            int loc = get_atype(arg2);
+            int loc = Lookup.get_atype(arg2);
             if (loc < 1)
             {
                 color.ch_printf(ch, "Unknown field: %s\r\n", arg2);
@@ -532,7 +391,7 @@ namespace SmaugCS
             {
                 Tuple<string, string> tuple2 = arg.FirstArgument();
 
-                value = get_aflag(tuple2.Item2);
+                value = Lookup.get_aflag(tuple2.Item2);
                 if (value < 0 || value >= EnumerationFunctions.Max<AffectedByTypes>())
                     color.ch_printf(ch, "Unknown affect: %s\r\n", tuple2.Item2);
                 else
@@ -545,7 +404,7 @@ namespace SmaugCS
                 List<string> words = arg.ToWords();
                 foreach (string word in words)
                 {
-                    value = get_risflag(word);
+                    value = Lookup.get_risflag(word);
                     if (value < 0 || value > 31)
                         color.ch_printf(ch, "Unknown flag: %s\r\n", value);
                     else

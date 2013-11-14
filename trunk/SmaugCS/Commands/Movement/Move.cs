@@ -44,7 +44,7 @@ namespace SmaugCS.Commands.Movement
 #if DEBUG
             if (exit != null)
             {
-                LogManager.Log("{0} to door {1}", ch.Name, pexit.vdir);
+                LogManager.Log("{0} to door {1}", ch.Name, pexit.Direction);
             }
 #endif
 
@@ -94,7 +94,7 @@ namespace SmaugCS.Commands.Movement
                 return ReturnTypes.None;
             }
 
-            door = exit.vdir;
+            door = (int)exit.Direction;
             int distance = exit.Distance;
 
             // Exit is only a "window", there is no way to travel in that direction unless it's a door with a window in it 
@@ -135,7 +135,7 @@ namespace SmaugCS.Commands.Movement
                                  ToTypes.Character);
                     }
                     else
-                        comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, exit.Keyword,
+                        comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, exit.Keywords,
                                  ToTypes.Character);
                 }
                 else
