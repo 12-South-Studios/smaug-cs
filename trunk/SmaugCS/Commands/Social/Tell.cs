@@ -67,7 +67,7 @@ namespace SmaugCS.Commands.Social
             }
 
             if (!victim.IsNpc() && victim.Switched != null
-                && (ch.Trust > Program.LEVEL_AVATAR)
+                && (ch.Trust > Program.GetLevel("avatar"))
                 && !victim.Switched.IsAffected(AffectedByTypes.Possess))
             {
                 color.send_to_char("That player is switched.\r\n", ch);
@@ -114,7 +114,7 @@ namespace SmaugCS.Commands.Social
 
             if (victim.Descriptor != null
                 && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing
-                && ch.Trust < Program.LEVEL_GOD)
+                && ch.Trust < Program.GetLevel("god"))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer. Please try again later.", ch, null, victim, ToTypes.Character);
                 return;
@@ -158,8 +158,7 @@ namespace SmaugCS.Commands.Social
 
             if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
             {
-                int speakswell = SmaugCS.Common.Check.Minimum(victim.KnowsLanguage(ch.Speaking, ch),
-                                                  ch.KnowsLanguage(ch.Speaking, victim));
+                int speakswell = victim.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, victim));
                 if (speakswell < 85)
                     comm.act(ATTypes.AT_TELL, "$n tells you '$t'", ch, act_comm.TranslateLanguage(speakswell, argumentString,
                         GameConstants.LanguageTable[speaking]), victim, ToTypes.Victim);

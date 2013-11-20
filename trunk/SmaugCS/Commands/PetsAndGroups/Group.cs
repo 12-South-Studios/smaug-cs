@@ -29,7 +29,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             CharacterInstance leader = ch.Leader ?? ch;
             color.set_char_color(ATTypes.AT_DGREEN, ch);
             color.ch_printf(ch, "\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
-                            Macros.PERS(leader, ch), ch.Level < Program.LEVEL_AVATAR ? " [to lvl]" : "");
+                            Macros.PERS(leader, ch), ch.Level < Program.GetLevel("avatar") ? " [to lvl]" : "");
 
             foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
@@ -106,7 +106,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 color.ch_printf(ch, "%6s ", GetRaceShortName(gch.CurrentRace));
                 color.set_char_color(ATTypes.AT_GREEN, ch);
 
-                if (gch.Level < Program.LEVEL_AVATAR)
+                if (gch.Level < Program.GetLevel("avatar"))
                     color.ch_printf(ch, "%8d ", gch.GetExperienceLevel(gch.Level + 1) - gch.Experience);
 
                 color.send_to_char("\r\n", ch);

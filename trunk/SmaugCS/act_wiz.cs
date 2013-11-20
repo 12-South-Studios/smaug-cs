@@ -202,7 +202,7 @@ namespace SmaugCS
                     fight.stop_fighting(ech, true);
                 if (ech.IsNpc())
                 {
-                    if ((Check.Range(pArea.LowMobNumber, ech.MobIndex.Vnum, pArea.HighMobNumber) == ech.MobIndex.Vnum)
+                    if ((ech.MobIndex.Vnum.GetNumberThatIsBetween(pArea.LowMobNumber, pArea.HighMobNumber) == ech.MobIndex.Vnum)
                         || (ech.CurrentRoom != null && ech.CurrentRoom.Area == pArea))
                         handler.extract_char(ech, true);
                     continue;
@@ -215,7 +215,7 @@ namespace SmaugCS
 
             foreach (ObjectInstance eobj in DatabaseManager.Instance.OBJECTS.Values)
             {
-                if ((Check.Range(pArea.LowObjectNumber, eobj.ObjectIndex.Vnum, pArea.HighObjectNumber) == eobj.ObjectIndex.Vnum)
+                if ((eobj.ObjectIndex.Vnum.GetNumberThatIsBetween(pArea.LowObjectNumber, pArea.HighObjectNumber) == eobj.ObjectIndex.Vnum)
                     || (eobj.InRoom != null && eobj.InRoom.Area == pArea))
                     handler.extract_obj(eobj);
             }

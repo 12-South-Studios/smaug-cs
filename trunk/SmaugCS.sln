@@ -64,6 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "area", "area", "{E74C8BB0-D
 		data\area\grove.lua = data\area\grove.lua
 		data\area\haon.lua = data\area\haon.lua
 		data\area\help.lua = data\area\help.lua
+		data\area\InnSevenRealms.lua = data\area\InnSevenRealms.lua
 		data\area\limbo.lua = data\area\limbo.lua
 		data\area\manor.lua = data\area\manor.lua
 		data\area\midennir.lua = data\area\midennir.lua
@@ -223,7 +224,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mudprogs", "mudprogs", "{61
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{C28149F0-D9AC-4485-914F-F798E7BB5BC3}"
 	ProjectSection(SolutionItems) = preProject
-		module_area.lua = module_area.lua
+		data\modules\module_area.lua = data\modules\module_area.lua
 		data\modules\module_base.lua = data\modules\module_base.lua
 		data\modules\module_mobs.lua = data\modules\module_mobs.lua
 		data\modules\types.lua = data\modules\types.lua
@@ -241,6 +242,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 	ProjectSection(SolutionItems) = preProject
 		Notes.txt = Notes.txt
 		Resets.txt = Resets.txt
+		values.txt = values.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Original", "Original", "{2BC26F47-22B4-4BE8-AAA9-64FB81430861}"

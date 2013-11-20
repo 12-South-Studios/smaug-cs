@@ -1,6 +1,5 @@
 ﻿using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
-using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Managers
 {
@@ -50,6 +49,8 @@ namespace SmaugCS.Managers
             Proxy = proxy ?? new LuaInterfaceProxy();
             var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaManager));
             Proxy.RegisterFunctions(luaFuncRepo);
+
+            LogManager.BootLog("LuaProxy initialized.");
         }
 
         /// <summary>

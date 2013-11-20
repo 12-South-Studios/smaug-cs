@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
-using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Database;
@@ -64,8 +62,8 @@ namespace SmaugCS.Managers
             special.load_specfuns();
 
             LogManager.Log("Loading sysdata configuration...");
-            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, Program.LEVEL_DEMI);
-            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, Program.LEVEL_IMMORTAL);
+            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, Program.GetLevel("demi"));
+            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, Program.GetLevel("immortal"));
             // TODO Do the rest of the system data
 
             if (db.load_systemdata(db.SystemData))
@@ -159,7 +157,7 @@ namespace SmaugCS.Managers
             Macros.ASSIGN_GSN("evasive style");
             // TODO Assign remainder
 
-            bool usePlanes = ConstantConfigurationSection.GetConfig().Constants["UsePlanes"].Value.ToBoolean();
+            bool usePlanes = Program.GetBooleanConstant("UsePlanes");
             if (usePlanes)
             {
                 LogManager.Log("Reading in plane file...");

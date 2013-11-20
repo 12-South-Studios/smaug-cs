@@ -7,6 +7,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -15,6 +16,30 @@ namespace SmaugCS
     public static class LuaFunctions
     {
         public static object LastObject { get; private set; }
+
+        [LuaFunction("LGetLastEntity", "Retrieves the Last Entity")]
+        public static object LuaGetLastEntity()
+        {
+            return LastObject;
+        }
+
+        [LuaFunction("LGetRoom", "Retrieves a room with a given ID", "ID of the room")]
+        public static RoomTemplate LuaGetRoom(long id)
+        {
+            return DatabaseManager.Instance.ROOMS.Get(id);
+        }
+
+        [LuaFunction("LGetMobile", "Retrieves a mob with a given ID", "ID of the mobile")]
+        public static MobTemplate LuaGetMobile(long id)
+        {
+            return DatabaseManager.Instance.MOBILE_INDEXES.Get(id);
+        }
+
+        [LuaFunction("LGetObject", "Retrieves an object with a given ID", "ID of the object")]
+        public static ObjectTemplate LuaGetObject(long id)
+        {
+            return DatabaseManager.Instance.OBJECT_INDEXES.Get(id);
+        }
 
         [LuaFunction("CheckNumber", "Validates a vnum for range", "Number to check")]
         public static bool LuaCheckNumber(int vnum)
@@ -26,6 +51,12 @@ namespace SmaugCS
             }
 
             return true;
+        }
+
+        [LuaFunction("LDataPath", "Retrieves the game's data path")]
+        public static string LuaGetDataPath()
+        {
+            return Program.GetDataPath();
         }
 
         [LuaFunction("FindInstance", "Locates a character matching the given name", "Instance executing this search", "String argument")]

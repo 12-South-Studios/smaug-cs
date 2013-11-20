@@ -71,7 +71,7 @@ namespace SmaugCS
 
         public static bool can_oedit(CharacterInstance ch, ObjectTemplate obj)
         {
-            if (ch.IsNpc() || ch.Trust < Program.LEVEL_GOD)
+            if (ch.IsNpc() || ch.Trust < Program.GetLevel("god"))
                 return false;
             if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype))
             {
@@ -133,7 +133,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc())
                 return false;
-            if (ch.Trust >= Program.LEVEL_GOD)
+            if (ch.Trust >= Program.GetLevel("god"))
                 return true;
             if (!mob.GetActFlags().IsSet((int)ActFlags.Prototype))
             {
@@ -392,7 +392,7 @@ namespace SmaugCS
                 Tuple<string, string> tuple2 = arg.FirstArgument();
 
                 value = Lookup.get_aflag(tuple2.Item2);
-                if (value < 0 || value >= EnumerationFunctions.Max<AffectedByTypes>())
+                if (value < 0 || value >= EnumerationFunctions.MaximumEnumValue<AffectedByTypes>())
                     color.ch_printf(ch, "Unknown affect: %s\r\n", tuple2.Item2);
                 else
                     found = true;
@@ -575,7 +575,7 @@ namespace SmaugCS
                 if (exit)
                     return;
 
-                if (ch.Trust > Program.LEVEL_IMMORTAL && arg1.Equals("/!"))
+                if (ch.Trust > Program.GetLevel("immortal") && arg1.Equals("/!"))
                 {
                     // do last command
                     return;
@@ -641,7 +641,7 @@ namespace SmaugCS
             color.send_to_char("/f <format>     format text in buffer\r\n", ch);
             color.send_to_char("/r <old> <new>  global replace\r\n", ch);
             color.send_to_char("/a              abort editing\r\n", ch);
-            if (ch.Trust > Program.LEVEL_IMMORTAL)
+            if (ch.Trust > Program.GetLevel("immortal"))
                 color.send_to_char("/! <command>    execute command (do not use another editing command)\r\n", ch);
             color.send_to_char("/s              save buffer\r\n\r\n> ", ch);
             return true;
@@ -834,7 +834,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc())
                 return;
-            if (ch.Trust <= Program.LEVEL_IMMORTAL || ch.PlayerData.r_range_lo <= 0 || ch.PlayerData.r_range_hi <= 0)
+            if (ch.Trust <= Program.GetLevel("immortal") || ch.PlayerData.r_range_lo <= 0 || ch.PlayerData.r_range_hi <= 0)
                 return;
 
             AreaData area = ch.PlayerData.BuilderArea;

@@ -1,36 +1,31 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace SmaugCS.Constants.Config
 {
+    [ConfigurationCollection(typeof(Constant))]
     public class ConstantCollection : ConfigurationElementCollection
     {
-        public Constant this[int index]
+        private const string PropertyName = "Constant";
+
+        public override ConfigurationElementCollectionType CollectionType
         {
-            get
-            {
-                return base.BaseGet(index) as Constant;
-            }
-            set
-            {
-                if (base.BaseGet(index) != null)
-                {
-                    base.BaseRemoveAt(index);
-                }
-                this.BaseAdd(index, value);
-            }
+            get { return ConfigurationElementCollectionType.BasicMapAlternate; }
         }
 
-        public new Constant this[string responseString]
+        protected override string ElementName
         {
-            get { return (Constant)BaseGet(responseString); }
-            set
-            {
-                if (BaseGet(responseString) != null)
-                {
-                    BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
-                }
-                BaseAdd(value);
-            }
+            get { return PropertyName; }
+        }
+
+        protected override bool IsElementName(string elementName)
+        {
+            return elementName.Equals(PropertyName, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public override bool IsReadOnly()
+        {
+            return false;
         }
 
         protected override ConfigurationElement CreateNewElement()
@@ -40,7 +35,17 @@ namespace SmaugCS.Constants.Config
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((Constant)element).Key;
+            return ((Constant)(element)).Key;
+        }
+
+        public Constant this[int idx]
+        {
+            get { return (Constant)BaseGet(idx); }
+        }
+
+        public Constant this[string key]
+        {
+            get { return (Constant)BaseGet(key); }
         }
     }
 }

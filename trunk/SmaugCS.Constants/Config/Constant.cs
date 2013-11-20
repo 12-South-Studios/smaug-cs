@@ -4,16 +4,21 @@ namespace SmaugCS.Constants.Config
 {
     public class Constant : ConfigurationElement
     {
-        [ConfigurationProperty("key", IsRequired = true)]
+        private const string ATTRIBUTE_KEY = "key";
+        private const string ATTRIBUTE_VALUE = "value";
+
+        [ConfigurationProperty(ATTRIBUTE_KEY, IsRequired = true, IsKey = true)]
         public string Key
         {
-            get { return this["key"] as string; }
+            get { return (string)this[ATTRIBUTE_KEY]; }
+            set { this[ATTRIBUTE_KEY] = value; }
         }
 
-        [ConfigurationProperty("value", IsRequired = true)]
+        [ConfigurationProperty(ATTRIBUTE_VALUE, IsRequired = true, IsKey = false)]
         public string Value
         {
-            get { return this["value"] as string; }
+            get { return (string)this[ATTRIBUTE_VALUE]; }
+            set { this[ATTRIBUTE_VALUE] = value; }
         }
     }
 }

@@ -10,11 +10,6 @@ namespace SmaugCS.Common
     /// </summary>
     public static class StringExtensions
     {
-        /// <summary>
-        /// Removes the hash-mark from the end of the string
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static string TrimHash(this string value)
         {
             return value.TrimEnd(new[] { '~' });
@@ -29,19 +24,16 @@ namespace SmaugCS.Common
         {
             string[] words = value.Split('.');
 
-            if (words.Length >= 2)
+            if (words.Length >= 2 && words[0].IsNumber())
             {
-                if (words[0].IsNumber())
-                {
-                    int val;
-                    Int32.TryParse(words[0], out val);
+                int val;
+                Int32.TryParse(words[0], out val);
 
-                    string outVal = string.Empty;
-                    for (int i = 1; i < words.Length; i++)
-                        outVal += words[i];
+                string outVal = string.Empty;
+                for (int i = 1; i < words.Length; i++)
+                    outVal += words[i];
 
-                    return new Tuple<int, string>(val, outVal);
-                }
+                return new Tuple<int, string>(val, outVal);
             }
 
             return new Tuple<int, string>(1, value);
@@ -55,9 +47,7 @@ namespace SmaugCS.Common
         /// <remarks>Was formerly known as one_argument</remarks>
         public static Tuple<string, string> FirstArgument(this string value)
         {
-            string arg1 = value.FirstWord();
-            string arg2 = value.RemoveWord(1);
-            return new Tuple<string, string>(arg1, arg2);
+            return new Tuple<string, string>(value.FirstWord(), value.RemoveWord(1));
         }
 
         /// <summary>

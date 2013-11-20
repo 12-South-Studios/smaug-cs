@@ -17,9 +17,15 @@ namespace SmaugCS.Database
     /// <summary>
     /// 
     /// </summary>
-    public class ObjectRepository : Repository<long, ObjectTemplate>
+    public class ObjectRepository : Repository<long, ObjectTemplate>, ITemplateRepository<ObjectTemplate>
     {
         private ObjectTemplate LastObject { get; set; }
+
+        [LuaFunction("LGetLastObj", "Retrieves the Last Object")]
+        public static ObjectTemplate LuaGetLastObj()
+        {
+            return DatabaseManager.Instance.OBJECT_INDEXES.LastObject;
+        }
 
         [LuaFunction("LProcessObject", "Processes an object script", "script text")]
         public static ObjectTemplate LuaProcessObject(string text)
@@ -40,12 +46,6 @@ namespace SmaugCS.Database
             return newObj;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public ObjectTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
@@ -57,12 +57,13 @@ namespace SmaugCS.Database
 
 
             ObjectTemplate newObject = new ObjectTemplate(vnum, name)
-            {
-                ShortDescription = string.Format("A newly created {0}", name),
-                Description = string.Format("Somebody dropped a newly created {0} here.", name),
-                Type = ItemTypes.Trash,
-                Weight = 1,
-            };
+                                           {
+                                               ShortDescription = string.Format("A newly created {0}", name),
+                                               Description =
+                                                   string.Format("Somebody dropped a newly created {0} here.", name),
+                                               Type = ItemTypes.Trash,
+                                               Weight = 1,
+                                           };
             newObject.ExtraFlags.SetBit((int)ItemExtraFlags.Prototype);
 
             Add(vnum, newObject);
@@ -70,13 +71,6 @@ namespace SmaugCS.Database
             return newObject;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="cvnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public ObjectTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
@@ -89,24 +83,29 @@ namespace SmaugCS.Database
                 });
 
             ObjectTemplate newObject = Create(vnum, name);
+
             ObjectTemplate cloneObject = Get(cvnum);
             if (cloneObject != null)
-            {
-                newObject.ShortDescription = cloneObject.ShortDescription;
-                newObject.LongDescription = cloneObject.LongDescription;
-                newObject.Description = cloneObject.Description;
-                newObject.Action = cloneObject.Action;
-                newObject.Type = cloneObject.Type;
-                newObject.ExtraFlags = new ExtendedBitvector(cloneObject.ExtraFlags);
-                newObject.Flags = cloneObject.Flags;
-                newObject.WearFlags = cloneObject.WearFlags;
-                Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);
-                newObject.Weight = cloneObject.Weight;
-                newObject.Cost = cloneObject.Cost;
-                newObject.ExtraDescriptions = new List<ExtraDescriptionData>(cloneObject.ExtraDescriptions);
-                newObject.Affects = new List<AffectData>(cloneObject.Affects);
-            }
+                CloneObjectTemplate(newObject, cloneObject);
+
             return newObject;
+        }
+
+        private static void CloneObjectTemplate(ObjectTemplate newObject, ObjectTemplate cloneObject)
+        {
+            newObject.ShortDescription = cloneObject.ShortDescription;
+            newObject.LongDescription = cloneObject.LongDescription;
+            newObject.Description = cloneObject.Description;
+            newObject.Action = cloneObject.Action;
+            newObject.Type = cloneObject.Type;
+            newObject.ExtraFlags = new ExtendedBitvector(cloneObject.ExtraFlags);
+            newObject.Flags = cloneObject.Flags;
+            newObject.WearFlags = cloneObject.WearFlags;
+            Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);
+            newObject.Weight = cloneObject.Weight;
+            newObject.Cost = cloneObject.Cost;
+            newObject.ExtraDescriptions = new List<ExtraDescriptionData>(cloneObject.ExtraDescriptions);
+            newObject.Affects = new List<AffectData>(cloneObject.Affects);
         }
     }
 }

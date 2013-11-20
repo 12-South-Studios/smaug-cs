@@ -15,9 +15,15 @@ namespace SmaugCS.Database
     /// <summary>
     /// 
     /// </summary>
-    public class MobileRepository : Repository<long, MobTemplate>
+    public class MobileRepository : Repository<long, MobTemplate>, ITemplateRepository<MobTemplate>
     {
         private MobTemplate LastMob { get; set; }
+
+        [LuaFunction("LGetLastMob", "Retrieves the Last Mob")]
+        public static MobTemplate LuaGetLastMob()
+        {
+            return DatabaseManager.Instance.MOBILE_INDEXES.LastMob;
+        }
 
         [LuaFunction("LProcessMob", "Processes a mob script", "script text")]
         public static MobTemplate LuaProcessMob(string text)
@@ -38,13 +44,6 @@ namespace SmaugCS.Database
             return newMob;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="cvnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public MobTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
@@ -57,52 +56,50 @@ namespace SmaugCS.Database
                 });
 
             MobTemplate newMob = Create(vnum, name);
+
             MobTemplate cloneMob = Get(cvnum);
             if (cloneMob != null)
-            {
-                newMob.LongDescription = cloneMob.LongDescription;
-                newMob.Description = cloneMob.Description;
-                newMob.Act = cloneMob.Act;
-                newMob.AffectedBy = cloneMob.AffectedBy;
-                newMob.SpecialFunction = cloneMob.SpecialFunction;
-                newMob.Statistics[StatisticTypes.Alignment] = cloneMob.GetStatistic(StatisticTypes.Alignment);
-                newMob.Level = cloneMob.Level;
-                newMob.Statistics[StatisticTypes.ToHitArmorClass0] = cloneMob.GetStatistic(StatisticTypes.ToHitArmorClass0);
-                newMob.Statistics[StatisticTypes.ArmorClass] = cloneMob.GetStatistic(StatisticTypes.ArmorClass);
-                newMob.HitDice = new DiceData(cloneMob.HitDice);
-                newMob.DamageDice = new DiceData(cloneMob.DamageDice);
-                newMob.Gold = cloneMob.Gold;
-                newMob.Experience = cloneMob.Experience;
-                newMob.Position = cloneMob.Position;
-                newMob.DefPosition = cloneMob.DefPosition;
-                newMob.Gender = cloneMob.Gender;
-                newMob.Statistics[StatisticTypes.Strength] = cloneMob.GetStatistic(StatisticTypes.Strength);
-                newMob.Statistics[StatisticTypes.Dexterity] = cloneMob.GetStatistic(StatisticTypes.Dexterity);
-                newMob.Statistics[StatisticTypes.Intelligence] = cloneMob.GetStatistic(StatisticTypes.Intelligence);
-                newMob.Statistics[StatisticTypes.Wisdom] = cloneMob.GetStatistic(StatisticTypes.Wisdom);
-                newMob.Statistics[StatisticTypes.Charisma] = cloneMob.GetStatistic(StatisticTypes.Charisma);
-                newMob.Statistics[StatisticTypes.Constitution] = cloneMob.GetStatistic(StatisticTypes.Constitution);
-                newMob.Statistics[StatisticTypes.Luck] = cloneMob.GetStatistic(StatisticTypes.Luck);
-                newMob.Race = cloneMob.Race;
-                newMob.Class = cloneMob.Class;
-                newMob.ExtraFlags = cloneMob.ExtraFlags;
-                newMob.Resistance = cloneMob.Resistance;
-                newMob.Susceptibility = cloneMob.Susceptibility;
-                newMob.Immunity = cloneMob.Immunity;
-                newMob.NumberOfAttacks = cloneMob.NumberOfAttacks;
-                newMob.Attacks = cloneMob.Attacks;
-                newMob.Defenses = cloneMob.Defenses;
-            }
+                CloneMobTemplate(newMob, cloneMob);
 
             return newMob;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        private static void CloneMobTemplate(MobTemplate newMob, MobTemplate cloneMob)
+        {
+            newMob.LongDescription = cloneMob.LongDescription;
+            newMob.Description = cloneMob.Description;
+            newMob.Act = cloneMob.Act;
+            newMob.AffectedBy = cloneMob.AffectedBy;
+            newMob.SpecialFunction = cloneMob.SpecialFunction;
+            newMob.Statistics[StatisticTypes.Alignment] = cloneMob.GetStatistic(StatisticTypes.Alignment);
+            newMob.Level = cloneMob.Level;
+            newMob.Statistics[StatisticTypes.ToHitArmorClass0] = cloneMob.GetStatistic(StatisticTypes.ToHitArmorClass0);
+            newMob.Statistics[StatisticTypes.ArmorClass] = cloneMob.GetStatistic(StatisticTypes.ArmorClass);
+            newMob.HitDice = new DiceData(cloneMob.HitDice);
+            newMob.DamageDice = new DiceData(cloneMob.DamageDice);
+            newMob.Gold = cloneMob.Gold;
+            newMob.Experience = cloneMob.Experience;
+            newMob.Position = cloneMob.Position;
+            newMob.DefPosition = cloneMob.DefPosition;
+            newMob.Gender = cloneMob.Gender;
+            newMob.Statistics[StatisticTypes.Strength] = cloneMob.GetStatistic(StatisticTypes.Strength);
+            newMob.Statistics[StatisticTypes.Dexterity] = cloneMob.GetStatistic(StatisticTypes.Dexterity);
+            newMob.Statistics[StatisticTypes.Intelligence] = cloneMob.GetStatistic(StatisticTypes.Intelligence);
+            newMob.Statistics[StatisticTypes.Wisdom] = cloneMob.GetStatistic(StatisticTypes.Wisdom);
+            newMob.Statistics[StatisticTypes.Charisma] = cloneMob.GetStatistic(StatisticTypes.Charisma);
+            newMob.Statistics[StatisticTypes.Constitution] = cloneMob.GetStatistic(StatisticTypes.Constitution);
+            newMob.Statistics[StatisticTypes.Luck] = cloneMob.GetStatistic(StatisticTypes.Luck);
+            newMob.Race = cloneMob.Race;
+            newMob.Class = cloneMob.Class;
+            newMob.ExtraFlags = cloneMob.ExtraFlags;
+            newMob.Resistance = cloneMob.Resistance;
+            newMob.Susceptibility = cloneMob.Susceptibility;
+            newMob.Immunity = cloneMob.Immunity;
+            newMob.NumberOfAttacks = cloneMob.NumberOfAttacks;
+            newMob.Attacks = cloneMob.Attacks;
+            newMob.Defenses = cloneMob.Defenses;
+        }
+
         public MobTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());

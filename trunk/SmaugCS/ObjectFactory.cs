@@ -164,7 +164,7 @@ namespace SmaugCS
         {
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.Get(Program.OBJ_VNUM_BLOOD), 0);
             obj.Timer = (short)SmaugRandom.Between(2, 4);
-            obj.Value[1] = SmaugRandom.Between(3, Check.Minimum(5, ch.Level));
+            obj.Value[1] = SmaugRandom.Between(3, 5.GetLowestOfTwoNumbers(ch.Level));
             ch.CurrentRoom.ToRoom(obj);
         }
 

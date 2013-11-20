@@ -116,19 +116,14 @@ namespace Realm.Library.Common
             List<string> lines = ReadIntoList();
             List<TextSection> sections = new List<TextSection>();
 
-            if (headerChars == null
-                || (commentChars != null && headerChars.Any(commentChars.Contains))
-                || (footerChars != null && headerChars.Any(footerChars.Contains))
-                || (!String.IsNullOrWhiteSpace(endOfFile) && headerChars.Contains(endOfFile)))
+            if (HasInvalidSectionParameters(headerChars, commentChars, footerChars, endOfFile))
                 return sections;
 
             TextSection section = null;
-
-            foreach (string line in lines.Where(line => commentChars == null || !commentChars.Any(line.StartsWith)))
+            foreach (string line in lines
+                    .Where(line => commentChars == null || !commentChars.Any(line.StartsWith))
+                    .Where(line => String.IsNullOrWhiteSpace(endOfFile) || !line.StartsWith(endOfFile)))
             {
-                if (!String.IsNullOrWhiteSpace(endOfFile) && line.StartsWith(endOfFile))
-                    continue;
-
                 if (headerChars.Any(c => line.StartsWith(c)))
                 {
                     section = new TextSection { Header = line.Substring(1) };
@@ -145,6 +140,16 @@ namespace Realm.Library.Common
                 section.Lines.Add(line);
             }
             return sections;
+        }
+
+        private static bool HasInvalidSectionParameters(string[] headerChars = null,
+                                                        IEnumerable<string> commentChars = null,
+                                                        IEnumerable<string> footerChars = null, string endOfFile = "")
+        {
+            return headerChars == null
+                   || (commentChars != null && headerChars.Any(commentChars.Contains))
+                   || (footerChars != null && headerChars.Any(footerChars.Contains))
+                   || (!String.IsNullOrWhiteSpace(endOfFile) && headerChars.Contains(endOfFile));
         }
 
         #region Implementation of IDisposable

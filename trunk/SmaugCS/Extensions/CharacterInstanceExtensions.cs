@@ -147,12 +147,12 @@ namespace SmaugCS.Extensions
 
         public static bool IsImmortal(this CharacterInstance ch)
         {
-            return ch.Trust >= Program.LEVEL_IMMORTAL;
+            return ch.Trust >= Program.GetLevel("immortal");
         }
 
         public static bool IsHero(this CharacterInstance ch)
         {
-            return ch.Trust >= Program.LEVEL_HERO;
+            return ch.Trust >= Program.GetLevel("hero");
         }
 
         public static int GetArmorClass(this CharacterInstance ch)
@@ -254,8 +254,8 @@ namespace SmaugCS.Extensions
             IEnumerable<AffectData> matchingAffects = ch.Affects.Where(x => x.Type == paf.Type);
             foreach (var affect in matchingAffects)
             {
-                paf.Duration = Check.Minimum(1000000, paf.Duration + affect.Duration);
-                paf.Modifier = paf.Modifier > 0 ? Check.Minimum(5000, paf.Modifier + affect.Modifier) : affect.Modifier;
+                paf.Duration = 1000000.GetLowestOfTwoNumbers(paf.Duration + affect.Duration);
+                paf.Modifier = paf.Modifier > 0 ? 5000.GetLowestOfTwoNumbers(paf.Modifier + affect.Modifier) : affect.Modifier;
                 ch.RemoveAffect(affect);
                 break;
             }
@@ -367,7 +367,7 @@ namespace SmaugCS.Extensions
             if (add)
                 ch.PlayerData.Learned[sn] += mod;
             else
-                ch.PlayerData.Learned[sn] = Check.Range(0, ch.PlayerData.Learned[sn] + mod, Macros.GET_ADEPT(ch, sn));
+                ch.PlayerData.Learned[sn] = (ch.PlayerData.Learned[sn] + mod).GetNumberThatIsBetween(0, Macros.GET_ADEPT(ch, sn));
         }
 
         #region Experience
@@ -383,7 +383,7 @@ namespace SmaugCS.Extensions
                 wexp += (int)(wexp * 1.2);
             if (ch.IsAffected(AffectedByTypes.ShockShield))
                 wexp += (int)(wexp * 1.2);
-            return Check.Range(Program.MIN_EXP_WORTH, wexp, Program.MAX_EXP_WORTH);
+            return wexp.GetNumberThatIsBetween(Program.MIN_EXP_WORTH, Program.MAX_EXP_WORTH);
         }
 
         public static int GetExperienceBase(this CharacterInstance ch)
@@ -395,12 +395,12 @@ namespace SmaugCS.Extensions
 
         public static int GetExperienceLevel(this CharacterInstance ch, int level)
         {
-            return ((int)Math.Pow(Check.Maximum(0, level - 1), 3) * ch.GetExperienceBase());
+            return ((int)Math.Pow(0.GetHighestOfTwoNumbers(level - 1), 3) * ch.GetExperienceBase());
         }
 
         public static int GetLevelExperience(this CharacterInstance ch, int cexp)
         {
-            int x = Program.LEVEL_SUPREME;
+            int x = Program.GetLevel("supreme");
             int lastx = x;
             int y = 0;
 
@@ -416,7 +416,7 @@ namespace SmaugCS.Extensions
                     y = x;
             }
 
-            return y < 1 ? 1 : y > Program.LEVEL_SUPREME ? Program.LEVEL_SUPREME : y;
+            return y < 1 ? 1 : y > Program.GetLevel("supreme") ? Program.GetLevel("supreme") : y;
         }
         #endregion
 
@@ -452,44 +452,44 @@ namespace SmaugCS.Extensions
 
         public static int GetCurrentStrength(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentStrength + ch.ModStrength, ch.GetCurrentStat(ApplyTypes.Strength));
+            return (ch.PermanentStrength + ch.ModStrength).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Strength));
         }
 
         public static int GetCurrentIntelligence(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentIntelligence + ch.ModIntelligence, ch.GetCurrentStat(ApplyTypes.Intelligence));
+            return (ch.PermanentIntelligence + ch.ModIntelligence).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Intelligence));
         }
 
         public static int GetCurrentWisdom(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentWisdom + ch.ModWisdom, ch.GetCurrentStat(ApplyTypes.Wisdom));
+            return (ch.PermanentWisdom + ch.ModWisdom).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Wisdom));
         }
 
         public static int GetCurrentDexterity(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentDexterity + ch.ModDexterity, ch.GetCurrentStat(ApplyTypes.Dexterity));
+            return (ch.PermanentDexterity + ch.ModDexterity).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Dexterity));
         }
 
         public static int GetCurrentConstitution(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentConstitution + ch.ModConstitution, ch.GetCurrentStat(ApplyTypes.Constitution));
+            return (ch.PermanentConstitution + ch.ModConstitution).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Constitution));
         }
 
         public static int GetCurrentCharisma(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentCharisma + ch.ModCharisma, ch.GetCurrentStat(ApplyTypes.Charisma));
+            return (ch.PermanentCharisma + ch.ModCharisma).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Charisma));
         }
 
         public static int GetCurrentLuck(this CharacterInstance ch)
         {
-            return Check.Range(3, ch.PermanentLuck + ch.ModLuck, ch.GetCurrentStat(ApplyTypes.Luck));
+            return (ch.PermanentLuck + ch.ModLuck).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Luck));
         }
 
         public static int CanCarryN(this CharacterInstance ch)
         {
             int penalty = 0;
 
-            if (!ch.IsNpc() && ch.Level >= Program.LEVEL_IMMORTAL)
+            if (!ch.IsNpc() && ch.Level >= Program.GetLevel("immortal"))
                 return ch.Trust * 200;
             if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return ch.Level * 200;
@@ -503,12 +503,12 @@ namespace SmaugCS.Extensions
                 ++penalty;
             if (ch.GetEquippedItem(WearLocations.Shield) != null)
                 ++penalty;
-            return Check.Range(5, (ch.Level + 15) / 5 + ch.GetCurrentDexterity() - 13 - penalty, 20);
+            return ((ch.Level + 15) / 5 + ch.GetCurrentDexterity() - 13 - penalty).GetNumberThatIsBetween(5, 20);
         }
 
         public static int CanCarryMaxWeight(this CharacterInstance ch)
         {
-            if (!ch.IsNpc() && ch.Level >= Program.LEVEL_IMMORTAL)
+            if (!ch.IsNpc() && ch.Level >= Program.GetLevel("immortal"))
                 return 1000000;
             if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return 1000000;
@@ -569,9 +569,9 @@ namespace SmaugCS.Extensions
             int add_move = SmaugCS.Common.SmaugRandom.Between(5, (ch.GetCurrentConstitution() + ch.GetCurrentDexterity()) / 4);
             int add_prac = GameConstants.wis_app[ch.GetCurrentWisdom()].practice;
 
-            add_hp = Check.Maximum(1, add_hp);
-            add_mana = Check.Maximum(0, add_mana);
-            add_move = Check.Maximum(10, add_move);
+            add_hp = 1.GetHighestOfTwoNumbers(add_hp);
+            add_mana = 0.GetHighestOfTwoNumbers(add_mana);
+            add_move = 10.GetHighestOfTwoNumbers(add_move);
 
             if (ch.IsPKill())
             {
@@ -589,9 +589,9 @@ namespace SmaugCS.Extensions
             if (!ch.IsNpc())
                 ch.Act.RemoveBit((int)PlayerFlags.BoughtPet);
 
-            if (ch.Level == Program.LEVEL_AVATAR)
+            if (ch.Level == Program.GetLevel("avatar"))
                 ch.AdvanceLevelAvatar();
-            if (ch.Level < Program.LEVEL_IMMORTAL)
+            if (ch.Level < Program.GetLevel("immortal"))
             {
                 if (ch.IsVampire())
                     buffer = string.Format("Your gain is: {0}/{1} hp, {2}/{3} bp, {4}/{5} mv, {6}/{7} prac.\r\n",
@@ -624,7 +624,7 @@ namespace SmaugCS.Extensions
 
         public static void GainXP(this CharacterInstance ch, int gain)
         {
-            if (ch.IsNpc() || (ch.Level >= Program.LEVEL_AVATAR))
+            if (ch.IsNpc() || (ch.Level >= Program.GetLevel("avatar")))
                 return;
 
             double modgain = gain;
@@ -664,8 +664,8 @@ namespace SmaugCS.Extensions
                 }
             }
 
-            modgain = Check.Minimum((int)modgain, ch.GetExperienceLevel(ch.Level + 2) - ch.GetExperienceLevel(ch.Level + 1));
-            ch.Experience = Check.Maximum(0, ch.Experience + (int)modgain);
+            modgain = ((int)modgain).GetLowestOfTwoNumbers(ch.GetExperienceLevel(ch.Level + 2) - ch.GetExperienceLevel(ch.Level + 1));
+            ch.Experience = 0.GetHighestOfTwoNumbers(ch.Experience + (int)modgain);
 
             if (ch.IsNotAuthorized() && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
@@ -674,7 +674,7 @@ namespace SmaugCS.Extensions
                 return;
             }
 
-            while (ch.Level < Program.LEVEL_AVATAR && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
+            while (ch.Level < Program.GetLevel("avatar") && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
                 color.set_char_color(ATTypes.AT_WHITE | ATTypes.AT_BLINK, ch);
                 ch.Level += 1;
@@ -691,10 +691,10 @@ namespace SmaugCS.Extensions
                 gain = ch.Level * 3 / 2;
                 if (ch.IsAffected(AffectedByTypes.Poison))
                     gain /= 4;
-                return Check.Minimum(gain, ch.MaximumHealth - ch.CurrentHealth);
+                return gain.GetLowestOfTwoNumbers(ch.MaximumHealth - ch.CurrentHealth);
             }
 
-            gain = Check.Minimum(5, ch.Level);
+            gain = 5.GetLowestOfTwoNumbers(ch.Level);
             switch (ch.CurrentPosition)
             {
                 case PositionTypes.Dead:
@@ -722,7 +722,7 @@ namespace SmaugCS.Extensions
 
             if (ch.IsAffected(AffectedByTypes.Poison))
                 gain /= 4;
-            return Check.Minimum(gain, ch.MaximumHealth - ch.CurrentHealth);
+            return gain.GetLowestOfTwoNumbers(ch.MaximumHealth - ch.CurrentHealth);
         }
 
         public static int ManaGain(this CharacterInstance ch)
@@ -735,10 +735,10 @@ namespace SmaugCS.Extensions
 
                 if (ch.IsAffected(AffectedByTypes.Poison))
                     gain /= 4;
-                return Check.Minimum(gain, ch.MaximumMana - ch.CurrentMana);
+                return gain.GetLowestOfTwoNumbers(ch.MaximumMana - ch.CurrentMana);
             }
 
-            gain = Check.Minimum(5, ch.Level / 2);
+            gain = 5.GetLowestOfTwoNumbers(ch.Level / 2);
             if (ch.CurrentPosition < PositionTypes.Sleeping)
                 return 0;
             switch (ch.CurrentPosition)
@@ -758,7 +758,7 @@ namespace SmaugCS.Extensions
 
             if (ch.IsAffected(AffectedByTypes.Poison))
                 gain /= 4;
-            return Check.Minimum(gain, ch.MaximumMana - ch.CurrentMana);
+            return gain.GetLowestOfTwoNumbers(ch.MaximumMana - ch.CurrentMana);
         }
 
         public static int MovementGain(this CharacterInstance ch)
@@ -770,10 +770,10 @@ namespace SmaugCS.Extensions
                 gain = ch.Level;
                 if (ch.IsAffected(AffectedByTypes.Poison))
                     gain /= 4;
-                return Check.Minimum(gain, ch.MaximumMovement - ch.CurrentMovement);
+                return gain.GetLowestOfTwoNumbers(ch.MaximumMovement - ch.CurrentMovement);
             }
 
-            gain = Check.Maximum(15, 2 * ch.Level);
+            gain = 15.GetHighestOfTwoNumbers(2 * ch.Level);
 
             switch (ch.CurrentPosition)
             {
@@ -803,7 +803,7 @@ namespace SmaugCS.Extensions
             if (ch.IsAffected(AffectedByTypes.Poison))
                 gain /= 4;
 
-            return Check.Minimum(gain, ch.MaximumMovement - ch.CurrentMovement);
+            return gain.GetLowestOfTwoNumbers(ch.MaximumMovement - ch.CurrentMovement);
         }
 
         private static int GetModifiedStatGainForVampire(this CharacterInstance ch, int gain)

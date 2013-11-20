@@ -56,8 +56,8 @@ namespace SmaugCS
             ch.wait = (short)((!ch.IsNpc()
                 && ch.PlayerData.Nuisance != null
                 && (ch.PlayerData.Nuisance.Flags > 4))
-                ? Check.Maximum(ch.wait, (npulse + (ch.PlayerData.Nuisance.Flags - 4) + (short)ch.PlayerData.Nuisance.Power))
-                          : Check.Maximum(ch.wait, npulse));
+                ? ch.wait.GetHighestOfTwoNumbers((npulse + (ch.PlayerData.Nuisance.Flags - 4) + (short)ch.PlayerData.Nuisance.Power))
+                          : ch.wait.GetHighestOfTwoNumbers(npulse));
         }
 
         public static ExitData EXIT(CharacterInstance ch, short door)
@@ -191,7 +191,7 @@ namespace SmaugCS
 
         public static int LEARNED(CharacterInstance ch, int sn)
         {
-            return ch.IsNpc() ? 80 : Check.Range(0, ch.PlayerData.Learned[sn], 101);
+            return ch.IsNpc() ? 80 : ch.PlayerData.Learned[sn].GetNumberThatIsBetween(0, 101);
         }
     }
 }

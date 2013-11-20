@@ -2,11 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using SmaugCS.Constants.Constants;
-using SmaugCS.Constants.Enums;
-using log4net;
 using Realm.Library.Common;
 using Realm.Library.Common.Objects;
+using SmaugCS.Constants.Enums;
+using log4net;
 
 namespace SmaugCS.Managers
 {
@@ -49,7 +48,7 @@ namespace SmaugCS.Managers
 
         public static void BootLog(string str, params object[] args)
         {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.Bootlog);
+            string path = "Boot.log";
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
             {
                 StringBuilder sb = new StringBuilder();

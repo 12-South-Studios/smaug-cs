@@ -18,7 +18,7 @@ namespace SmaugCS
                 && ch.PlayerData.CurrentDeity.Alignment != 0)
             {
                 ch.PlayerData.Favor -= 2;
-                ch.PlayerData.Favor = Check.Range(-2500, ch.PlayerData.Favor, 2500);
+                ch.PlayerData.Favor = ch.PlayerData.Favor.GetNumberThatIsBetween(-2500, 2500);
 
                 UpdateCharacterBits(ch);
                 CheckForExtremeFavor(ch, oldfavor);
@@ -26,7 +26,7 @@ namespace SmaugCS
             else
             {
                 ch.PlayerData.Favor += ch.PlayerData.CurrentDeity.FuzzifyFavor(field, mod < 1 ? 1 : mod);
-                ch.PlayerData.Favor = Check.Range(-2500, ch.PlayerData.Favor, 2500);
+                ch.PlayerData.Favor = ch.PlayerData.Favor.GetNumberThatIsBetween(-2500, 2500);
             }
         }
 

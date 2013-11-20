@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Commands.Social;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
@@ -94,8 +95,7 @@ namespace SmaugCS
                 return null;
             }
 
-            int speakswell = Common.Check.Minimum(keeper.KnowsLanguage(ch.Speaking, ch),
-                                              ch.KnowsLanguage(ch.Speaking, keeper));
+            int speakswell = keeper.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, keeper));
             if ((Common.SmaugRandom.Percent() % 65) > speakswell)
             {
                 string buffer;
@@ -132,8 +132,8 @@ namespace SmaugCS
             if (fBuy)
             {
                 profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0)
-                            + ((Common.Check.Range(5, ch.Level, Program.LEVEL_AVATAR) - 20) / 2);
-                cost = (obj.Cost * Common.Check.Maximum(shop.ProfitSell + 1, shop.ProfitBuy + profitMod) / 100);
+                            + ((ch.Level.GetNumberThatIsBetween(5, Program.GetLevel("avatar")) - 20) / 2);
+                cost = (obj.Cost * (shop.ProfitSell + 1).GetHighestOfTwoNumbers(shop.ProfitBuy + profitMod) / 100);
             }
             else
             {
@@ -142,7 +142,7 @@ namespace SmaugCS
                 {
                     if (shop.ItemTypes.ToList().Contains(obj.ItemType))
                     {
-                        cost = (obj.Cost * Common.Check.Minimum(shop.ProfitBuy - 1, shop.ProfitSell + profitMod)) / 100;
+                        cost = (obj.Cost * (shop.ProfitBuy - 1).GetLowestOfTwoNumbers(shop.ProfitSell + profitMod)) / 100;
                         break;
                     }
                 }

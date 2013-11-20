@@ -76,7 +76,7 @@ namespace SmaugCS.Commands.Social
 
             if (victim.Descriptor != null
                 && (victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing)
-                && (ch.Trust < Program.LEVEL_GOD))
+                && (ch.Trust < Program.GetLevel("god")))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer.  Please try again in a few minutes.",
                     ch, 0, victim, ToTypes.Character);
@@ -103,8 +103,7 @@ namespace SmaugCS.Commands.Social
 #if !SCRAMBLE
             if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
             {
-                int speakswell = SmaugCS.Common.Check.Minimum(victim.KnowsLanguage(ch.Speaking, ch),
-                                             ch.KnowsLanguage(ch.Speaking, victim));
+                int speakswell = victim.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, victim));
                 if (speakswell < 85)
                     comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'",
                              ch, act_comm.TranslateLanguage(speakswell, argumentString,

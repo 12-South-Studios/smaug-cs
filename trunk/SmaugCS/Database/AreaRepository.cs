@@ -14,6 +14,12 @@ namespace SmaugCS.Database
     {
         private AreaData LastArea { get; set; }
 
+        [LuaFunction("LGetLastArea", "Retrieves the Last Area")]
+        public static AreaData LuaGetLastArea()
+        {
+            return DatabaseManager.Instance.AREAS.LastArea;
+        }
+
         [LuaFunction("LProcessArea", "Processes an area script", "script text")]
         public static AreaData LuaProcessArea(string text)
         {

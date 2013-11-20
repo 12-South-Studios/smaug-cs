@@ -11,7 +11,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
-using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -413,9 +412,9 @@ namespace SmaugCS
             if (arg2.IsNumber())
             {
                 level = arg2.ToInt32();
-                if (level < 0 || level > Program.LEVEL_SUPREME)
+                if (level < 0 || level > Program.GetLevel("supreme"))
                 {
-                    color.ch_printf(ch, "Level range is from 0 to %d.\r\n", Program.LEVEL_SUPREME);
+                    color.ch_printf(ch, "Level range is from 0 to %d.\r\n", Program.GetLevel("supreme"));
                     level = 0;
                 }
                 return level;
@@ -424,13 +423,13 @@ namespace SmaugCS
             switch (arg2.ToLower())
             {
                 case "all":
-                    level = Program.LEVEL_SUPREME;
+                    level = Program.GetLevel("supreme");
                     break;
                 case "newbie":
                     level = 1;
                     break;
                 case "mortal":
-                    level = Program.LEVEL_AVATAR;
+                    level = Program.GetLevel("avatar");
                     break;
                 case "warn":
                     level = (int)BanTypes.Warn;
@@ -511,7 +510,7 @@ namespace SmaugCS
         {
             string host = d.host.ToLower();
 
-            foreach (BanData ban in db.BANS.Where(ban => ban.Level == Program.LEVEL_SUPREME))
+            foreach (BanData ban in db.BANS.Where(ban => ban.Level == Program.GetLevel("supreme")))
             {
                 if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
                     return CheckBanExpiration(ban);
