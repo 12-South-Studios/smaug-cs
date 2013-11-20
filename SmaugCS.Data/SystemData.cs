@@ -69,8 +69,8 @@ namespace SmaugCS.Data
         public Dictionary<PlayerPermissionTypes, int> PlayerPermissions = new Dictionary<PlayerPermissionTypes, int>()
             /*{
                 {PlayerPermissionTypes.ReadAllMail, Program.LEVEL_DEMI},
-                {PlayerPermissionTypes.ReadMailFree, Program.LEVEL_IMMORTAL},
-                {PlayerPermissionTypes.WriteMailFree, Program.LEVEL_IMMORTAL},
+                {PlayerPermissionTypes.ReadMailFree, Program.GetLevel("immortal")},
+                {PlayerPermissionTypes.WriteMailFree, Program.GetLevel("immortal")},
                 {PlayerPermissionTypes.TakeOthersMail, Program.LEVEL_DEMI},
                 {PlayerPermissionTypes.MuseLevel, Program.LEVEL_DEMI},
                 {PlayerPermissionTypes.ThinkLevel, Program.LEVEL_HIGOD},

@@ -12,7 +12,6 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
-using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -179,47 +178,30 @@ namespace SmaugCS
 
                 case (int)ApplyTypes.Full:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Full] = Check.Range(0,
-                                                                                               ch.PlayerData
-                                                                                                 .ConditionTable[
-                                                                                                     ConditionTypes.Full
-                                                                                                   ] + mod, 48);
+                        ch.PlayerData.ConditionTable[ConditionTypes.Full] = 
+                            (ch.PlayerData.ConditionTable[ConditionTypes.Full] + mod).GetNumberThatIsBetween(0, 48);
                     break;
                 case (int)ApplyTypes.Thirst:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = Check.Range(0,
-                                                                                                  ch.PlayerData
-                                                                                                    .ConditionTable[
-                                                                                                        ConditionTypes
-                                                                                                            .Thirsty] +
-                                                                                                  mod, 48);
+                        ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = 
+                            (ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] + mod).GetNumberThatIsBetween(0, 48);
                     break;
                 case (int)ApplyTypes.Drunk:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Drunk] = Check.Range(0,
-                                                                                                ch.PlayerData
-                                                                                                  .ConditionTable[
-                                                                                                      ConditionTypes
-                                                                                                          .Drunk] + mod,
-                                                                                                48);
+                        ch.PlayerData.ConditionTable[ConditionTypes.Drunk] = 
+                            (ch.PlayerData.ConditionTable[ConditionTypes.Drunk] + mod).GetNumberThatIsBetween(0, 48);
                     break;
                 case (int)ApplyTypes.Blood:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = Check.Range(0,
-                                                                                                       ch.PlayerData
-                                                                                                         .ConditionTable
-                                                                                                           [
-                                                                                                               ConditionTypes
-                                                                                                                   .Bloodthirsty
-                                                                                                           ] + mod,
-                                                                                                       ch.Level + 10);
+                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = 
+                            (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] + mod).GetNumberThatIsBetween(0, ch.Level + 10);
                     break;
 
                 case (int)ApplyTypes.MentalState:
-                    ch.MentalState = Check.Range(-100, ch.MentalState + mod, 100);
+                    ch.MentalState = (ch.MentalState + mod).GetNumberThatIsBetween(-100, 100);
                     break;
                 case (int)ApplyTypes.Emotion:
-                    ch.EmotionalState = Check.Range(-100, ch.EmotionalState, 100);
+                    ch.EmotionalState = (ch.EmotionalState).GetNumberThatIsBetween(-100, 100);
                     break;
 
                 case (int)ApplyTypes.StripSN:
@@ -518,7 +500,7 @@ namespace SmaugCS
                 return ch;
 
             int vnum;
-            if (ch.Trust >= Program.LEVEL_SAVIOR && arg.IsNumeric())
+            if (ch.Trust >= Program.GetLevel("savior") && arg.IsNumeric())
                 vnum = Convert.ToInt32(arg);
             else
                 vnum = -1;
@@ -569,7 +551,7 @@ namespace SmaugCS
                 return ch;
 
             // Allow reference by vnum
-            int vnum = (ch.Trust >= Program.LEVEL_SAVIOR && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= Program.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
 
@@ -698,7 +680,7 @@ namespace SmaugCS
             int number = tuple.Item1;
             string arg = tuple.Item2;
 
-            int vnum = (ch.Trust >= Program.LEVEL_SAVIOR && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= Program.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
             foreach (ObjectInstance obj in ch.Carrying
@@ -741,7 +723,7 @@ namespace SmaugCS
             int number = tuple.Item1;
             string arg = tuple.Item2;
 
-            int vnum = (ch.Trust >= Program.LEVEL_SAVIOR && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= Program.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
             foreach (ObjectInstance obj in ch.Carrying
@@ -807,7 +789,7 @@ namespace SmaugCS
             int number = tuple.Item1;
             string arg = tuple.Item2;
 
-            int vnum = (ch.Trust >= Program.LEVEL_SAVIOR && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= Program.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
             foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.Values
@@ -863,15 +845,15 @@ namespace SmaugCS
             int ms = ch.MentalState;
 
             // We're going to be nice and let nothing weird happen unless you're a tad messed up
-            int drunk = Check.Maximum(1, ch.IsNpc() ? 0 : ch.PlayerData.ConditionTable[ConditionTypes.Drunk]);
+            int drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ch.PlayerData.ConditionTable[ConditionTypes.Drunk]);
             if (Math.Abs(ms) + (drunk / 3) < 30)
                 return false;
             if ((SmaugRandom.Percent() + (ms < 0 ? 15 : 5)) > Math.Abs(ms) / 2 + drunk / 4)
                 return false;
 
             string output = (ms > 15)
-                ? ObjectMessageLargeMap[SmaugRandom.Between(Check.Maximum(1, (ms / 5 - 15)), (ms + 4) / 5)]
-                : ObjectMessageSmallMap[SmaugRandom.Between(1, (Check.Range(1, Math.Abs(ms) / 2 + drunk, 60)) / 10)];
+                ? ObjectMessageLargeMap[SmaugRandom.Between(1.GetHighestOfTwoNumbers(ms / 5 - 15), (ms + 4) / 5)]
+                : ObjectMessageSmallMap[SmaugRandom.Between(1, ((Math.Abs(ms) / 2 + drunk).GetNumberThatIsBetween(1, 60)) / 10)];
 
             color.send_to_char(output, ch);
             return true;

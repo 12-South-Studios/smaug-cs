@@ -6,6 +6,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Common;
 
 namespace SmaugCS.Weather
 {
@@ -262,14 +263,14 @@ namespace SmaugCS.Weather
 
                     PrecipFuncs[precipType].Invoke(cell, delta);
 
-                    cell.Temperature = SmaugCS.Common.Check.Range(-30, cell.Temperature + delta.Temperature, 100);
-                    cell.Pressure = SmaugCS.Common.Check.Range(0, cell.Pressure + delta.Pressure, 100);
-                    cell.CloudCover = SmaugCS.Common.Check.Range(0, cell.CloudCover + delta.CloudCover, 100);
-                    cell.Energy = SmaugCS.Common.Check.Range(0, cell.Energy + delta.Energy, 100);
-                    cell.Humidity = SmaugCS.Common.Check.Range(0, cell.Humidity + delta.Humidity, 100);
-                    cell.Precipitation = SmaugCS.Common.Check.Range(0, cell.Precipitation + delta.Precipitation, 100);
-                    cell.WindSpeedX = SmaugCS.Common.Check.Range(-100, cell.WindSpeedX + delta.WindSpeedX, 100);
-                    cell.WindSpeedY = SmaugCS.Common.Check.Range(-100, cell.WindSpeedY + delta.WindSpeedY, 100);
+                    cell.Temperature = (cell.Temperature + delta.Temperature).GetNumberThatIsBetween(-30, 100);
+                    cell.Pressure = (cell.Pressure + delta.Pressure).GetNumberThatIsBetween(0, 100);
+                    cell.CloudCover = (cell.CloudCover + delta.CloudCover).GetNumberThatIsBetween(0, 100);
+                    cell.Energy = (cell.Energy + delta.Energy).GetNumberThatIsBetween(0, 100);
+                    cell.Humidity = (cell.Humidity + delta.Humidity).GetNumberThatIsBetween(0, 100);
+                    cell.Precipitation = (cell.Precipitation + delta.Precipitation).GetNumberThatIsBetween(0, 100);
+                    cell.WindSpeedX = (cell.WindSpeedX + delta.WindSpeedX).GetNumberThatIsBetween(-100, 100);
+                    cell.WindSpeedY = (cell.WindSpeedY + delta.WindSpeedY).GetNumberThatIsBetween(-100, 100);
                 }
             }
         }

@@ -1,1 +1,3 @@
 http://www.smaugmuds.org/index.php?a=files&cid=3
+
+Lua Reset Scripts: http://www.gammon.com.au/forum/?id=8027

@@ -226,7 +226,7 @@ namespace SmaugCS
                                     attacktype = -1;
                                     break;
                                 }
-                                attacktype = SmaugRandom.Between(7, EnumerationFunctions.Max<AttackTypes>() - 1);
+                                attacktype = SmaugRandom.Between(7, EnumerationFunctions.MaximumEnumValue<AttackTypes>() - 1);
                                 if (ch.Attacks.IsSet(attacktype))
                                     break;
                             }
@@ -374,7 +374,7 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                lvl = Check.Maximum(1, ch.Level - 10 / 2);
+                lvl = 1.GetHighestOfTwoNumbers(ch.Level - 10 / 2);
                 if (SmaugRandom.Percent() + (victim.Level - lvl) < 40)
                 {
                     if (ch.CanPKill() && victim.CanPKill())
@@ -504,7 +504,7 @@ namespace SmaugCS
                 thac0_32 = db.GetClass(ch.CurrentClass).ToHitArmorClass32;
             }
             thac0_00 = ch.Level.Interpolate(thac0_00, thac0_32) - ch.GetHitroll();
-            int victimArmorClass = Check.Maximum(-19, victim.GetArmorClass() / 10);
+            int victimArmorClass = -19.GetHighestOfTwoNumbers(victim.GetArmorClass() / 10);
 
             // if you can't see what;s coming
             if (wield != null && !handler.can_see_obj(victim, wield))
@@ -569,9 +569,9 @@ namespace SmaugCS
             if (!victim.IsAwake())
                 damage *= 2;
             if (dt == db.LookupSkill("backstab"))
-                damage *= (2 + Check.Range(2, ch.Level - (victim.Level / 4), 30) / 8);
+                damage *= (2 + (ch.Level - (victim.Level / 4)).GetNumberThatIsBetween(2, 30) / 8);
             if (dt == db.LookupSkill("circle"))
-                damage *= (2 + Check.Range(2, ch.Level - (victim.Level / 4), 30) / 16);
+                damage *= (2 + (ch.Level - (victim.Level / 4)).GetNumberThatIsBetween(2, 30) / 16);
             if (damage <= 0)
                 damage = 1;
 
@@ -592,7 +592,7 @@ namespace SmaugCS
             if (damage > 0)
             {
                 if (plusRIS > 0)
-                    plusRIS = (int)ResistanceTypes.Plus1 << Check.Minimum(plusRIS, 7);
+                    plusRIS = (int)ResistanceTypes.Plus1 << plusRIS.GetLowestOfTwoNumbers(7);
 
                 int imm = -1, res = -1, sus = 1;
 
@@ -815,7 +815,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (!ch.IsNpc() && ch.Level >= Program.LEVEL_IMMORTAL)
+            if (!ch.IsNpc() && ch.Level >= Program.GetLevel("immortal"))
                 return false;
 
             if (!ch.IsNpc() && !victim.IsNpc() && ch != victim
@@ -918,8 +918,8 @@ namespace SmaugCS
                     int levelRatio = 0;
 
                     levelRatio = victim.Level < 1
-                        ? Check.Range(1, ch.Level, Program.MAX_LEVEL)
-                        : Check.Range(1, ch.Level / victim.Level, Program.MAX_LEVEL);
+                        ? ch.Level.GetNumberThatIsBetween(1, Program.MAX_LEVEL)
+                        : (ch.Level / victim.Level).GetNumberThatIsBetween(1, Program.MAX_LEVEL);
 
                     if (ch.PlayerData.Clan != null)
                         ch.PlayerData.Clan.PvEKills++;
@@ -940,7 +940,7 @@ namespace SmaugCS
             }
 
             // if you kill yourself, nothing happens
-            if (ch == victim || ch.Level >= Program.LEVEL_IMMORTAL)
+            if (ch == victim || ch.Level >= Program.GetLevel("immortal"))
                 return;
 
             // Any character in the arena is okay to kill
@@ -1076,7 +1076,7 @@ namespace SmaugCS
                     victim.PlayerData.PvEDeaths++;
                     victim.CurrentRoom.Area.PvEDeaths++;
 
-                    int levelRatio = Check.Range(1, ch.Level / victim.Level, Program.LEVEL_AVATAR);
+                    int levelRatio = (ch.Level / victim.Level).GetNumberThatIsBetween(1, Program.GetLevel("avatar"));
                     if (victim.PlayerData.CurrentDeity != null)
                     {
                         if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCRace)
@@ -1165,7 +1165,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (ch.IsNpc() || ch == victim || ch.Level >= Program.LEVEL_IMMORTAL ||
+            if (ch.IsNpc() || ch == victim || ch.Level >= Program.GetLevel("immortal") ||
                 ch.Act.IsSet((int)PlayerFlags.Attacker) || ch.Act.IsSet((int)PlayerFlags.Killer))
                 return;
 

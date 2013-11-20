@@ -1,0 +1,19 @@
+.Text_Main {  font-family: Georgia, "Times New Roman", Times, serif; font-size: 14px; line-height: 18px}
+
+.Text_Comment {  font-family: Georgia, "Times New Roman", Times, serif; font-size: 12px; line-height: 14px}
+
+.Table_Head {  font-family: Georgia, "Times New Roman", Times, serif; font-size: 12px;  line-height: 14px; font-weight: bold; padding-right: 3px; padding-left: 3px; padding-top: 2px; padding-bottom: 2px; font-style: normal; text-decoration: none; text-align: left; text-indent: 1px; white-space: normal; vertical-align: baseline; margin-left: 3px}
+
+.Table_Text { font-family: Georgia, "Times New Roman", Times, serif; font-size: 12px;  line-height: 14px; padding-right: 3px; padding-left: 3px; padding-top: 1px; padding-bottom: 1px; clip:    rect(   ); margin-left: 2px; font-style: normal; white-space: nowrap; text-decoration: none; text-align: left; text-indent: 1px; vertical-align: baseline}
+
+.Copyright {  font-family: Georgia, "Times New Roman", Times, serif; font-size: 10px; line-height: 12px}
+
+.Syntax {  font-family: "Courier New", Courier, mono; font-size: 14px; line-height: 18px; font-weight: bold}
+
+.Command {  font-family: "Courier New", Courier, mono; font-size: 14px; line-height: 18px;  text-decoration: underline}
+
+.HeadA {  font-family: Arial, Impact, Charcoal, Helvetica, sans-serif; font-size: 20px; line-height: 24px; color: #663300; text-decoration: underline; font-style: italic; font-weight: bold; padding-top: 18px}
+
+.HeadB { font-family: Arial, Impact, Charcoal, Helvetica, sans-serif; font-size: 17px; line-height: 18px; color: #663300; text-decoration: underline; font-style: italic; font-weight: bold }
+
+.HeadC { font-family: Georgia, "Times New Roman", Times, serif; font-size: 14px; line-height: 18px; color: #663300; font-weight: bold}

@@ -424,7 +424,7 @@ namespace SmaugCS.Data.Organizations
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
             {
                 int templvl = ch.Level;
-                ch.Level = Program.LEVEL_HERO;
+                ch.Level = Program.GetLevel("hero");
                 List<ObjectInstance> contents = ch.CurrentRoom.Contents;
 
                 if (contents.Any())

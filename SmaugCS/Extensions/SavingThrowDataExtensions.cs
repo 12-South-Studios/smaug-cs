@@ -10,7 +10,7 @@ namespace SmaugCS.Extensions
         public static bool CheckSaveVsPoisonDeath(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
             int save = 50 + (victim.Level - level - victim.SavingThrows.SaveVsPoisonDeath) * 5;
-            save = Check.Range(5, save, 95);
+            save = save.GetNumberThatIsBetween(5, 95);
             return handler.chance(victim, (short)save);
         }
 
@@ -20,21 +20,21 @@ namespace SmaugCS.Extensions
                 return true;
 
             int save = 50 + (victim.Level - level - victim.SavingThrows.SaveVsWandRod) * 5;
-            save = Check.Range(5, save, 95);
+            save = save.GetNumberThatIsBetween(5, 95);
             return handler.chance(victim, (short)save);
         }
 
         public static bool CheckSaveVsParalysisPetrify(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
             int save = 50 + (victim.Level - level - victim.SavingThrows.SaveVsParalysisPetrify) * 5;
-            save = Check.Range(5, save, 95);
+            save = save.GetNumberThatIsBetween(5, 95);
             return handler.chance(victim, (short)save);
         }
 
         public static bool CheckSaveVsBreath(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
             int save = 50 + (victim.Level - level - victim.SavingThrows.SaveVsBreath) * 5;
-            save = Check.Range(5, save, 95);
+            save = save.GetNumberThatIsBetween(5, 95);
             return handler.chance(victim, (short)save);
         }
 
@@ -46,7 +46,7 @@ namespace SmaugCS.Extensions
                 level -= 5;
 
             int save = 50 + (victim.Level - level - victim.SavingThrows.SaveVsSpellStaff) * 5;
-            save = Check.Range(5, save, 95);
+            save = save.GetNumberThatIsBetween(5, 95);
             return handler.chance(victim, (short)save);
         }
     }

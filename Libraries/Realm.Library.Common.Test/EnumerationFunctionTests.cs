@@ -27,7 +27,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void GetValuesTest()
         {
-            IEnumerable<Test> list = EnumerationFunctions.GetValues<Test>();
+            IEnumerable<Test> list = EnumerationFunctions.GetAllEnumValues<Test>();
 
             Assert.That(list, Is.Not.Null);
 
@@ -39,13 +39,13 @@ namespace Realm.Library.Common.Test
         [Test]
         public void MaxTest()
         {
-            Assert.That(EnumerationFunctions.Max<Test>(), Is.EqualTo(2));
+            Assert.That(EnumerationFunctions.MaximumEnumValue<Test>(), Is.EqualTo(2));
         }
 
         [Test]
         public void MinTest()
         {
-            Assert.That(EnumerationFunctions.Min<Test>(), Is.EqualTo(1));
+            Assert.That(EnumerationFunctions.MinimumEnumValue<Test>(), Is.EqualTo(1));
         }
     }
 }

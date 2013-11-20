@@ -36,10 +36,10 @@ namespace SmaugCS.Loaders
                         switch (line.ToLower())
                         {
                             case "level":
-                                if (low < Program.LEVEL_IMMORTAL)
+                                if (low < Program.GetLevel("immortal"))
                                 {
                                     LogManager.Bug("God file {0} with level {1} < {2}", file, low,
-                                                   Program.LEVEL_IMMORTAL);
+                                                   Program.GetLevel("immortal"));
                                     badFile = true;
                                 }
                                 break;

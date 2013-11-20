@@ -1,0 +1,70 @@
+What the Values array is used for in different object types:
+
+http://www.realmsofdespair.com/smaug/herne/smaug/olc-objects.html#H4
+
+Abacus		None
+Armor		V0=Current AC, V1=Original AC
+Container	V0=Capacity, V1=Flags, V2=Key Vnum, V3=Condition
+DrinkCont	V0=Capacity, V1=Quantity, V2=Liquid #, V3=Poison
+Food		V0=Food Value, V1=Condition, V3=Poison
+Herb		V1=Charges, V2=Herb #
+Key			V0=Lock #
+KeyRing		V0=Capacity
+Lever		V0=LeverFlags, V1=Vnum/SN, V2=Vnum, V3=Vnum/Val
+Light		V0=Current AC, V1=Lightable?, V2=Hours Left, V3=Flags**
+Missiles	V0=Condition, V2=Damage Bonus, V3=WeaponTYpe, V4=Range
+Money		V0=# of Coins, V1=Coin Type
+Piece		V0=Prev Vnum, V1=Next Vnum, V2=Final Vnum
+Pill		V0=Spell Level, V1=SN #1, V2=SN #2, V3=SN #3, V4=Food Value
+Pipe		V0=Capacity, V1=# of Draws, V2=Herb SN, V3=Flags**
+Potion		V0=Spell Level, V1=SN #1, V2=SN #2, V3=SN #3
+Projectile	None
+Puddle		V0=Capacity, V1=Quantity, V2=Liquid #, V3=Poison
+Quiver		V0=Capacity, V1=Flgas, V2=Key Vnum, V3=Condition
+Salve		V0=Spell Level, V1=Charges, V2=Max Charges, V3=Delay, V4=SN, V5=SN
+Scroll		V0=Spell Level, V1=SN #1, V2=SN #2, V3=SN #3
+Staff		V0=Spell Level, V1=Max Charges, V2=Charges, V3=SN
+Switch		V0=Lever Flags, V1=Vnum/SN, V2=Vnum, V3=Vnum/Val
+Trap		V0=Charges, V1=Type, V3=Level, V4=Flags
+Treasure	V0=Type, V1=Condition
+Wand		V0=Level, V1=Max Charges, V2=Charges, V3=SN
+Weapon		V0=Condition, V1=Num Dice, V2=Size Dice, V3=Weapon Type
+Furniture	V2=FurniturePositionFlags, V3=Max People, V4=Max Weight
+
+Condition Values
+0 = Broken
+...
+12 = In Superb Condition
+
+Damage Values
+Level	Damage Range (Average)
+1		1-6 (3)
+5		2-10 (6)
+10		5-13 (9)
+15		5-17 (11)
+20		6-22 (14)
+25		10-24 (17)
+30		8-30 (19)
+35		11-32 (21)
+40		12-38 (25)
+45		14-41 (27)
+50		15-43 (29)
+
+Weapon Types
+0 = hit		general		pugilism
+1 = slice	knife/sword	long blades
+2 = stab	dagger		short blades
+3 = slash	sword		long blades
+4 = whip	whip		flexible arms
+5 = claw	claw		talonous arms
+6 = blast	magical		pugilism
+7 = pound	club/hammer	bludgeons
+8 = crush	club/hammer	bludgeons
+10 = bite				
+11 = pierce	dagger		short blades
+12 = suction 
+13 = bolt	crossbow
+14 = arrow	bow
+15 = dart	pipe	
+16 = stone	sling
+17 = pea	peashooter

@@ -78,7 +78,7 @@ namespace SmaugCS
 
             SectorTypes sector = room.SectorType;
             //room.Name = GameConstants.SectorNames[(int)sector].Key;
-            int nRand = SmaugRandom.Between(1, Check.Minimum(8, GameConstants.SentTotals[(int)sector]));
+            int nRand = SmaugRandom.Between(1, 8.GetLowestOfTwoNumbers(GameConstants.SentTotals[(int)sector]));
 
             for (int iRand = 0; iRand < nRand; iRand++)
                 previous[iRand] = -1;
@@ -162,7 +162,7 @@ namespace SmaugCS
 
                 brvnum = r1;
                 backroom = room;
-                serial = (Check.Maximum(r1, r2) << 16) | Check.Minimum(r1, r2);
+                serial = (r1.GetHighestOfTwoNumbers(r2) << 16) | r1.GetLowestOfTwoNumbers(r2);
                 distance = exit.Distance - 1;
                 roomnum = r1 < r2 ? 1 : distance;
             }
@@ -315,7 +315,7 @@ namespace SmaugCS
 
                 string buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
                 //log_string(buffer);
-                ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)Program.LEVEL_IMMORTAL);
+                ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)Program.GetLevel("immortal"));
                 handler.extract_char(ch, false);
             }
         }
@@ -371,7 +371,7 @@ namespace SmaugCS
                 return ReturnTypes.None;
 
             int pull = xit.Pull;
-            int pullfact = Check.Range(1, 20 - (Math.Abs(pull) / 5), 20);
+            int pullfact = (20 - (Math.Abs(pull) / 5)).GetNumberThatIsBetween(1, 20);
 
             if ((pulse % pullfact) != 0)
             {
@@ -379,7 +379,7 @@ namespace SmaugCS
                     .Where(exit => exit.Pull > 0 && exit.Destination != null))
                 {
                     pull = exit.Pull;
-                    pullfact = Check.Range(1, 20 - (Math.Abs(pull) / 5), 20);
+                    pullfact = (20 - (Math.Abs(pull) / 5)).GetNumberThatIsBetween(1, 20);
                     if ((pulse % pullfact) == 0)
                         break;
                 }

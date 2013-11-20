@@ -51,5 +51,16 @@ namespace Realm.Library.Common.Extensions
                 return objList.First();
             return index >= objList.Count() - 1 ? objList.Last() : objList.ElementAt(index + 1);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="compareTo"></param>
+        /// <returns></returns>
+        public static bool ContainsIgnoreCase(this IEnumerable<string> values, string compareTo)
+        {
+            return values.Any(value => value.EqualsIgnoreCase(compareTo));
+        }
     }
 }

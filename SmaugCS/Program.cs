@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Text;
-using SmaugCS.Constants.Config;
+using Realm.Library.Lua;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Database;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -72,21 +78,6 @@ namespace SmaugCS
         // 32 USED! DO NOT ADD MORE! SB 
         #endregion
 
-        #region Configuration Functions
-        public static Int32 GetIntegerConstant(string name)
-        {
-            return Convert.ToInt32(ConstantConfigurationSection.GetConfig().Constants[name].Value);
-        }
-        public static String GetStringConstant(string name)
-        {
-            return Convert.ToString(ConstantConfigurationSection.GetConfig().Constants[name].Value);
-        }
-        public static Int32 GetVnum(string name)
-        {
-            return Convert.ToInt32(VnumConfigurationSection.GetConfig().Vnums[name].Value);
-        }
-        #endregion
-
         #region String and Memory Management Parameters
         public static int MAX_KEY_HASH = 2048;
         public static int MAX_STRING_LENGTH = 4096;
@@ -154,27 +145,44 @@ namespace SmaugCS
         public static int MAX_DISEASE = 20;
         public static int MAX_PERSONAL = 5; // Max personal skills
         public static int MAX_WHERE_NAME = 29;
-        public static int LEVEL_HERO = (MAX_LEVEL - 15);
-        public static int LEVEL_IMMORTAL = (MAX_LEVEL - 14);
-        public static int LEVEL_SUPREME = MAX_LEVEL;
-        public static int LEVEL_INFINITE = (MAX_LEVEL - 1);
-        public static int LEVEL_ETERNAL = (MAX_LEVEL - 2);
-        public static int LEVEL_IMPLEMENTOR = (MAX_LEVEL - 3);
-        public static int LEVEL_SUB_IMPLEM = (MAX_LEVEL - 4);
-        public static int LEVEL_ASCENDANT = (MAX_LEVEL - 5);
-        public static int LEVEL_GREATER = (MAX_LEVEL - 6);
-        public static int LEVEL_GOD = (MAX_LEVEL - 7);
-        public static int LEVEL_LESSER = (MAX_LEVEL - 8);
-        public static int LEVEL_TRUEIMM = (MAX_LEVEL - 9);
-        public static int LEVEL_DEMI = (MAX_LEVEL - 10);
-        public static int LEVEL_SAVIOR = (MAX_LEVEL - 11);
-        public static int LEVEL_CREATOR = (MAX_LEVEL - 12);
-        public static int LEVEL_ACOLYTE = (MAX_LEVEL - 13);
-        public static int LEVEL_NEOPHYTE = (MAX_LEVEL - 14);
-        public static int LEVEL_AVATAR = (MAX_LEVEL - 15);
 
-        public static int LEVEL_LOG = LEVEL_LESSER;
-        public static int LEVEL_HIGOD = LEVEL_GOD;
+        private static readonly Dictionary<string, int> LevelMap = new Dictionary<string, int>()
+            {
+                 {"hero", -15},
+                 {"immortal", -14},
+                 {"supreme", 0},
+                 {"infinite", -1},
+                 {"eternal", -2},
+                 {"implementor", -3},
+                 {"sub implementor", -4},
+                 {"ascendant", -5},
+                 {"greater", -6},
+                 {"god", -7},
+                 {"lesser", -8},
+                 {"true immortal", -9},
+                 {"demi", -10},
+                 {"savior", -11},
+                 {"creator", -12},
+                 {"acolyte", -13},
+                 {"neophyte", -14},
+                 {"avatar", -15}
+
+            };
+
+        public static int GetLevel(string type)
+        {
+            return LevelMap.ContainsKey(type.ToLower()) ? MAX_LEVEL - LevelMap[type.ToLower()] : MAX_LEVEL;
+        }
+
+        public static int LEVEL_LOG
+        {
+            get { return GetLevel("lesser"); }
+        }
+
+        public static int LEVEL_HIGOD
+        {
+            get { return GetLevel("god"); }
+        }
 
         public bool DONT_UPPER { get; set; }
 
@@ -511,9 +519,69 @@ namespace SmaugCS
 
         #endregion
 
+        public static LogManager _logMgr;
+        public static LuaManager _luaMgr;
+        public static DatabaseManager _dbMgr;
+        public static GameManager _gameMgr;
+
+        #region Configuration Functions
+        public static Int32 GetIntegerConstant(string name)
+        {
+            NameValueCollection settings = ConfigurationManager.GetSection("Constants") as NameValueCollection;
+            return Convert.ToInt32(settings[name]);
+        }
+        public static String GetStringConstant(string name)
+        {
+            NameValueCollection settings = ConfigurationManager.GetSection("Constants") as NameValueCollection;
+            return Convert.ToString(settings[name]);
+        }
+        public static Boolean GetBooleanConstant(string name)
+        {
+            NameValueCollection settings = ConfigurationManager.GetSection("Constants") as NameValueCollection;
+            return Convert.ToBoolean(settings[name]);
+        }
+        public static Int32 GetVnum(string name)
+        {
+            NameValueCollection settings = ConfigurationManager.GetSection("Vnums") as NameValueCollection;
+            return Convert.ToInt32(settings[name]);
+        }
+        #endregion
+
+        public static string GetDataPath()
+        {
+            return GetStringConstant("DataPath");
+        }
 
         static void Main(string[] args)
         {
+            LogManager.BootLog("Starting up the MUD");
+
+            SystemConstants.LoadSystemDirectories(GetDataPath() + "//SystemDirectories.txt");
+            LogManager.BootLog("SystemDirectories loaded.");
+
+            SystemConstants.LoadSystemFiles(GetDataPath() + "//SystemFiles.txt");
+            LogManager.BootLog("SystemFiles loaded.");
+
+            // Setup the Managers
+            _logMgr = LogManager.Instance;
+            _luaMgr = LuaManager.Instance;
+            _luaMgr.InitDataPath(GetDataPath());
+
+            LuaInterfaceProxy proxy = new LuaInterfaceProxy();
+            var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(MobileRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(AreaRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(ObjectRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(RoomRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaFunctions));
+            proxy.RegisterFunctions(luaFuncRepo);
+            _luaMgr.InitProxy(proxy);
+
+            _dbMgr = DatabaseManager.Instance;
+            _dbMgr.Initialize(false);
+
+            _gameMgr = GameManager.Instance;
+
+            // TODO more here
 
         }
     }

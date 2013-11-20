@@ -528,7 +528,7 @@ namespace SmaugCS.Loaders
                         break;
                     case "sector":
                         int sector = Lookup.get_secflag(proxy.ReadFlagString());
-                        if (sector < 0 || sector > EnumerationFunctions.Max<SectorTypes>())
+                        if (sector < 0 || sector > EnumerationFunctions.MaximumEnumValue<SectorTypes>())
                         {
                             LogManager.Bug("Room {0} has bad sector type {1}", room.Vnum, sector);
                             sector = 1;

@@ -52,8 +52,7 @@ namespace SmaugCS.Commands.Social
 #if !SCRAMBLE
                 if (speaking != -1 && (!ch.IsNpc() || ch.Speaking != 0))
                 {
-                    int speakswell = SmaugCS.Common.Check.Minimum(vch.KnowsLanguage(ch.Speaking, ch),
-                                                  ch.KnowsLanguage(ch.Speaking, vch));
+                    int speakswell = vch.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, vch));
                     if (speakswell < 75)
                         sbuf = act_comm.TranslateLanguage(speakswell, argument, GameConstants.LanguageTable[speaking]);
                 }

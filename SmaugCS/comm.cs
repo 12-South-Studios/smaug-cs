@@ -5,7 +5,6 @@ using System.Threading;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -56,8 +55,8 @@ namespace SmaugCS
         /// </remarks>
         public static bool check_parse_name(string name, bool newchar)
         {
-            if (name.Length < ConstantConfigurationSection.GetConfig().Constants["MinNameLength"].Value.ToInt32()
-                || name.Length > ConstantConfigurationSection.GetConfig().Constants["MaxNameLength"].Value.ToInt32())
+            if (name.Length < Program.GetIntegerConstant("MinNameLength")
+                || name.Length > Program.GetIntegerConstant("MaxNameLength"))
                 return false;
 
             return name.IsAlphaNum();

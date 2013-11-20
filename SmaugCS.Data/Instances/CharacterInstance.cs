@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Realm.Library.Common;
-using Realm.Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
+using Realm.Library.Lua;
 
 namespace SmaugCS.Data.Instances
 {

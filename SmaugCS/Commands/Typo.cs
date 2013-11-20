@@ -16,13 +16,13 @@ namespace SmaugCS.Commands
             if (string.IsNullOrWhiteSpace(argument))
             {
                 color.send_to_char("\r\nUsage:  'typo <message>'  (your location is automatically recorded)\r\n", ch);
-                if (ch.Trust >= Program.LEVEL_ASCENDANT)
+                if (ch.Trust >= Program.GetLevel("ascendant"))
                     color.send_to_char("Usage:  'typo list' or 'typo clear now'\r\n", ch);
                 return;
             }
 
             if (argument.Equals("clear now", StringComparison.OrdinalIgnoreCase)
-                && ch.Trust >= Program.LEVEL_ASCENDANT)
+                && ch.Trust >= Program.GetLevel("ascendant"))
             {
                 string path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
                 using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path, false)))

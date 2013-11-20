@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants.Constants
@@ -40,9 +41,9 @@ namespace SmaugCS.Constants.Constants
         }
 
 
-        public static void LoadSystemDirectories()
+        public static void LoadSystemDirectories(string path)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader("../data/SystemDirectories.txt")))
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 while (!proxy.EndOfStream)
                 {
@@ -51,15 +52,14 @@ namespace SmaugCS.Constants.Constants
 
                     SystemDirectoryTypes dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(words[0]);
                     SystemDirectories.Add(dirType, words[1]);
-
-                    // TODO Log it
                 }
             }
         }
 
-        public static void LoadSystemFiles()
+        private static readonly string[] BooleanConstants = new[] { "true", "false", "1", "0", "yes", "no" };
+        public static void LoadSystemFiles(string path)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader("../data/SystemFiles.txt")))
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 while (!proxy.EndOfStream)
                 {
@@ -67,11 +67,9 @@ namespace SmaugCS.Constants.Constants
                     string[] words = line.Split(new[] { ',' });
 
                     SystemFileTypes fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(words[0]);
-                    bool useSystemDirectory = Convert.ToBoolean(words[2]);
+                    bool useSystemDirectory = Convert.ToBoolean(BooleanConstants.ContainsIgnoreCase(words[2]));
 
                     SystemFiles.Add(fileType, new KeyValuePair<string, bool>(words[1], useSystemDirectory));
-
-                    // TODO Log it
                 }
             }
         }

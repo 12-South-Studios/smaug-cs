@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
@@ -39,8 +40,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 #if !SCRAMBLE
                 if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
                 {
-                    int speakswell = SmaugCS.Common.Check.Minimum(gch.KnowsLanguage(ch.Speaking, ch),
-                                                      ch.KnowsLanguage(ch.Speaking, gch));
+                    int speakswell = gch.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, gch));
                     color.ch_printf(gch, "%s tells the group '%s'.\r\n", ch.Name,
                                     speakswell < 85
                                         ? act_comm.TranslateLanguage(speakswell, argument, GameConstants.LanguageTable[speaking])

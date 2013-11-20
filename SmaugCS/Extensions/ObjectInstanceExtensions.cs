@@ -33,7 +33,7 @@ namespace SmaugCS.Extensions
                 || obj.ItemType == ItemTypes.Weapon)
                 resist += (obj.Value[0] / 2) - 2;
 
-            return Check.Range(10, resist, 99);
+            return resist.GetNumberThatIsBetween(10, 99);
         }
 
         public static bool InMagicContainer(this ObjectInstance obj)

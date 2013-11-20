@@ -189,11 +189,11 @@ namespace SmaugCS
 
         public static string hallucinated_object(int ms, bool fShort)
         {
-            int sms = Check.Range(1, (ms + 10) / 5, 20);
+            int sms = ((ms + 10) / 5).GetNumberThatIsBetween(1, 20);
 
             return fShort
-                ? GameConstants.HallucinatedObjectShort[SmaugRandom.Between(6 - Check.Range(1, sms / 2, 5), sms) - 1]
-                : GameConstants.HallucinatedObjectLong[SmaugRandom.Between(6 - Check.Range(1, sms / 2, 5), sms) - 1];
+                ? GameConstants.HallucinatedObjectShort[SmaugRandom.Between(6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1]
+                : GameConstants.HallucinatedObjectLong[SmaugRandom.Between(6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1];
         }
 
         public static string num_punct(int foo)
@@ -247,7 +247,7 @@ namespace SmaugCS
             int offcount;
             if (Math.Abs(ms) > 40)
             {
-                offcount = Check.Range(-count, (count * ms) / 100, count * 2);
+                offcount = ((count * ms) / 100).GetNumberThatIsBetween(-count, count * 2);
                 if (offcount < 0)
                     offcount += SmaugRandom.Between(0, Math.Abs(offcount));
                 else if (offcount > 0)
@@ -482,7 +482,7 @@ namespace SmaugCS
 
             if (!victim.IsNpc())
             {
-                if (victim.IsImmortal() && victim.Level > Program.LEVEL_AVATAR)
+                if (victim.IsImmortal() && victim.Level > Program.GetLevel("avatar"))
                     color.send_to_char_color("&P(&WImmortal&P) ", ch);
                 if (victim.PlayerData.Clan != null
                     && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
@@ -490,7 +490,7 @@ namespace SmaugCS
                     && (victim.PlayerData.Clan.ClanType != ClanTypes.Order
                     || victim.PlayerData.Clan.ClanType != ClanTypes.Guild))
                     color.ch_printf_color(ch, "%s ", victim.PlayerData.Clan.Badge);
-                else if (victim.CanPKill() && victim.Level < Program.LEVEL_IMMORTAL)
+                else if (victim.CanPKill() && victim.Level < Program.GetLevel("immortal"))
                     color.send_to_char_color("&P(&wUnclanned&P) ", ch);
             }
 

@@ -100,8 +100,7 @@ namespace SmaugCS
             {
                 mana = ch.IsNpc()
                            ? 0
-                           : Check.Maximum(skill.MinimumMana,
-                                           100 / (2 + ch.Level - skill.RaceLevel[(int)ch.CurrentRace]));
+                           : skill.MinimumMana.GetHighestOfTwoNumbers(100 / (2 + ch.Level - skill.RaceLevel[(int)ch.CurrentRace]));
                 if (ch.IsVampire())
                 {
                     if (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] < blood)
@@ -332,7 +331,7 @@ namespace SmaugCS
                 else if (schance - percent > 25)
                     return;
 
-                ch.PlayerData.Learned[sn] = Check.Minimum(adept, ch.PlayerData.Learned[sn] + learn);
+                ch.PlayerData.Learned[sn] = adept.GetLowestOfTwoNumbers(ch.PlayerData.Learned[sn] + learn);
 
                 int gain = 0;
                 if (ch.PlayerData.Learned[sn] == adept)
