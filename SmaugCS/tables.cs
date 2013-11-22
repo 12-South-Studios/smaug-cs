@@ -96,28 +96,32 @@ namespace SmaugCS
             return buffer;
         }
 
-        private static readonly Dictionary<string, Func<int, int, CharacterInstance, object, int>> spell_functions = new Dictionary<string, Func<int, int, CharacterInstance, object, int>>();
-        private static readonly Dictionary<string, Action<CharacterInstance, string>> skill_functions = new Dictionary<string, Action<CharacterInstance, string>>();
+        private static readonly Dictionary<string, Func<int, int, CharacterInstance, object, ReturnTypes>>
+            SpellFunctions = new Dictionary<string, Func<int, int, CharacterInstance, object, ReturnTypes>>()
+                {
+                    {"spell_smaug", Spells.Smaug.Smaug.spell_smaug}
+                };
+        private static readonly Dictionary<string, Action<CharacterInstance, string>> SkillFunctions = new Dictionary<string, Action<CharacterInstance, string>>();
 
-        public static Func<int, int, CharacterInstance, object, int> spell_function(string name)
+        public static Func<int, int, CharacterInstance, object, ReturnTypes> GetSpellFunction(string name)
         {
-            return spell_functions.ContainsKey(name.ToLower())
-                       ? spell_functions[name.ToLower()]
+            return SpellFunctions.ContainsKey(name.ToLower())
+                       ? SpellFunctions[name.ToLower()]
                        : SpellNotfound;
         }
-        private static int SpellNotfound(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes SpellNotfound(int sn, int level, CharacterInstance ch, object vo)
         {
             // TODO send_to_char("That's not a spell!\r\n", ch);
-            return (int)ReturnTypes.None;
+            return ReturnTypes.None;
         }
 
-        public static Action<CharacterInstance, string> skill_function(string name)
+        public static Action<CharacterInstance, string> GetSkillFunction(string name)
         {
-            return skill_functions.ContainsKey(name.ToLower())
-                       ? skill_functions[name.ToLower()]
+            return SkillFunctions.ContainsKey(name.ToLower())
+                       ? SkillFunctions[name.ToLower()]
                        : SkillNotfound;
         }
-        private static void SkillNotfound(CharacterInstance ch, string argument)
+        public static void SkillNotfound(CharacterInstance ch, string argument)
         {
             // TODO: send_to_char("Huh?\r\n", ch);
         }

@@ -991,9 +991,9 @@ namespace SmaugCS.Extensions
 
                     if (language.IsSet(i) && ch.Speaks.IsSet(i))
                     {
-                        SkillData skill = db.GetSkill(GameConstants.LanguageTable[i]);
-                        if (skill.slot != -1)
-                            return ch.PlayerData.Learned[skill.slot];
+                        SkillData skill = DatabaseManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
+                        if (skill.Slot != -1)
+                            return ch.PlayerData.Learned[skill.Slot];
                     }
                 }
             }
@@ -1022,7 +1022,7 @@ namespace SmaugCS.Extensions
                         if (((int)LanguageTypes.ValidLanguages & i) == 0)
                             return false;
 
-                        SkillData skill = db.GetSkill(GameConstants.LanguageTable[i]);
+                        SkillData skill = DatabaseManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
                         if (skill == null)
                         {
                             LogManager.Bug("can_learn_lang: valid language without sn: %d", i);

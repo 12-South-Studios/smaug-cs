@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data
@@ -27,6 +28,24 @@ namespace SmaugCS.Data
         public LiquidData()
         {
             Mods = new Dictionary<ConditionTypes, int>();
+        }
+
+        public void SetType(string type)
+        {
+            Type = EnumerationExtensions.GetEnumIgnoreCase<LiquidTypes>(type);
+        }
+
+        public void AddMods(int mod1, int mod2, int mod3, int mod4)
+        {
+            Mods[ConditionTypes.Drunk] = mod1;
+            Mods[ConditionTypes.Full] = mod2;
+            Mods[ConditionTypes.Thirsty] = mod3;
+            Mods[ConditionTypes.Bloodthirsty] = mod4;
+        }
+
+        public int GetMod(ConditionTypes type)
+        {
+            return Mods.ContainsKey(type) ? Mods[type] : -1;
         }
     }
 }

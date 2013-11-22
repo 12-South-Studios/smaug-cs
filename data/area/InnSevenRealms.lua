@@ -1,9 +1,9 @@
--- ARAN.LUA
--- This is the zone-file for the city of Aran
--- Revised: 2013.11.13
+-- INNSEVENREALMS.LUA
+-- This is the zone-file for the Inn of the Seven Realms
+-- Revised: 2013.11.20
 -- Author: Jason Murdick
 -- Version: 1.0
-f = loadfile(GetAppSetting("dataPath") .. "\\modules\\module_area.lua")();
+f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 
 LoadArea()	-- EXECUTE THE AREA
 
@@ -38,14 +38,23 @@ function FirstFloorMobs()
 
 	-- Create a shop for Bron
 	shop.this = CreateShop(130, 90, 7, 21);
-
+	
+	-- MUDPROG
+	-- Wipe down the bar
+	-- Stare wistfully up at the crest on the wall
+	
 	mobile.this = CreateMobile(101, "chalan cook", "Chalan Ma'Ganor, Cook");
 	mobile.this.LongDescription = "A large woman with dark, brown hair and a kind face is here.";
 	mobile.this.Description = [[Wife of Bron, the proprietor of the Inn, Chalan does 
 	most of the cooking and runs the household staff.   She is a large woman with 
 	dark brown hair and a sharp tongue, but a kind face.]];
 	mobile.this.Gender = "female";
-
+	-- MUDPROG
+	-- Stir the cauldron
+	-- Check the oven
+	-- Mutter about the "lazy barmaids"
+	-- Mutter about "that blasted Bard"
+	
 	mobile.this = CreateMobile(102, "rashan leftenant soldier", "Leftenant Rashan Aseph");
 	mobile.this.LongDescription = "An exhausted soldier of medium height is here.";
 	mobile.this.Description = [[A thick man of medium height with a dark, trimmed 
@@ -54,7 +63,7 @@ function FirstFloorMobs()
 	should.  But, there is also a sense of strength, of force of will, about him and he 
 	carries himself with assurance and steadfastness.]];
 	mobile.this.Attacks = "trip kick";
-	mobile.this.DEfenses = "dodge parry";
+	mobile.this.Defenses = "dodge parry";
 
 	mobile.this = CreateMobile(103, "liase healer", "Liase Al'verran");
 	mobile.this.LongDescription = "A young enthusiastic cleric is here.";
@@ -91,44 +100,42 @@ function FirstFloorMobs()
 	mobile.this.Attacks = "gouge kick";
 	mobile.this.Defenses = "parry";
 
-	newMob = LCreateMob(107, "patron");
-	mobile.this = newMob;
-	mobile.this.ShortDescription = "Bar Patron";
+	mobile.this = CreateMobile(107, "patron", "Bar Patron");
 	mobile.this.LongDescription = "A bar patron is here.";
 	mobile.this.Description = [[A nondescript person is common clothes is drinking a mug of ale.]]
 	mobile.this.ActFlags = "npc stayarea";
 
-	newMob = LCreateMob(108, "adventurer weary");
-	mobile.this = newMob;
-	mobile.this.ShortDescription = "Weary Adventurer";
+	mobile.this = CreateMobile(108, "adventurer weary", "Weary Adventurer");
 	mobile.this.LongDescription = "A weary adventurer is here."
 	mobile.this.Description = [[A nondescript person who is looking for adventure, but is wearily eating 
 	a bowl of stew and drinking from a tankard of ale.]];
 	mobile.this.ActFlags = "npc stayarea";
+	-- MUD PROG
 	-- Randomly say something about the War or the Undead or some facet of the Realms
 
-	newMob = LCreateMob(109, "barmaid server");
-	mobile.this = newMob;
-	mobile.this.ShortDescription = "Barmaid";
+	mobile.this = CreateMobile(109, "barmaid server", "Barmaid");
 	mobile.this.LongDescription = "A barmaid is here."; 
 	mobile.this.Description = [[A nondescript woman who deftly weaves through the patrons and tables to 
 	serve steaming bowls of food and tankards of ale.]];
 	mobile.this.Gender = "female";
 	mobile.this.ActFlags = "npc stayarea wimpy";
 
-	newMob = LCreateMob(110, "bouncer");
-	mobile.this = newMob;
-	mobile.this.ShortDescription = "Burly Bouncer";
+	mobile.this = CreateMobile(110, "bouncer", "Burly Bouncer");
 	mobile.this.LongDescription = "A very large man with massive arms is here.";
 	mobile.this.Description = [[A very large man with arms as thick as tree trunks.  He has a very sour look 
 	on his face and appears to be someone you don’t wish to mess with.]];
 	mobile.this.ActFlags = "npc stayarea";
 	mobile.this.Attacks = "punch";
-	-- Randomly cross arms and glare
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "25", 
+	[[
+		LMobEmote(" crosses his arms and glares at everyone around him.");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "25", 
+	[[
+		LMobEmote(" snorts and glares at everyone around him.");
+	]]));
 
-	newMob = LCreateMob(111, "storyteller bard");
-	mobile.this = newMob;
-	mobile.this.ShortDescription = "Lively Bard";
+	mobile.this = CreateMobile(111, "storyteller bard", "Lively Bard");
 	mobile.this.LongDescription = "A lively and enthusiastic storyteller is here.";
 	mobile.this.Description = [[An older man with long hair tied into braids and a long, curled and waxed 
 	mustache that he continually twists, the Bard plays and sings with equal talent. He songs tell stories 
@@ -138,9 +145,54 @@ function FirstFloorMobs()
 	mobile.this.Class = "Thief";
 	mobile.this.Attacks = "backstab";
 	mobile.this.Defenses = "dodge";
-	-- MUD PROGS
-	-- Singing
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "15", 
+	[[
+		LMobEmote(", sings 'Fa la la la la, la la la la'");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "15", 
+	[[
+		LMobEmote(", sings 'Do Re Mi Fa So La Ti Do'");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "15", 
+	[[
+		LMobEmote(", sings 'Mi Mi Mi Mi'");
+		LMobCommand("cough");
+		LMobEmote(", sings 'La La La La'");
+	]]));
+	
 	-- Wink or pinch barmaids as they pass by
+	
+	mobile.this = CreateMobile(118, "cat tabby", "Tabby Cat");
+	mobile.this.LongDescription = "A tabby cat is purring here.";
+	mobile.this.Description = [[This small tabby cat has orange fur, white whiskers, and a demanding attitude. 
+	She looks at you with obvious disdain.]];
+	mobile.this.Race = "cat";
+	mobile.this.Gender = "female";
+	mobile.this.ActFlags = "wimpy";
+	mobile.this.Speaks = "mammal";
+	mobile.this.Speaking = "mammal";
+	mobile.this.BodyParts = "head legs heart brains guts feet eye tail claws";
+	mobile.this.Attacks = "claws bite";
+	mobile.this.ActFlags = "npc stayarea wimpy";
+	mobile.this.AffectedBy = "infrared detect_invis";
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "10", 
+	[[ 
+		LMobEmote(" flicks her tail.");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "10", 
+	[[ 
+		LMobEmote(" purrs contentedly.");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "10", 
+	[[ 
+		LMobEmote(" begins to clean her paw.");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "10", 
+	[[ 
+		LMobEmote(" paws at the ground looking for a good spot to sleep.");
+	]]));
+
+	-- Random on entry, rubs against player's leg
 end
 
 function SecondFloorMobs()
@@ -181,8 +233,10 @@ end
 function BasementMobs()
 	systemLog("=================== AREA 'INN OF THE SEVEN REALMS' - BASEMENT MOBS ===================");
 	mobile.this = CreateMobile(117, "giant rat", "Giant Rat");
-	mobile.this.LongDescription = ";
-	mobile.this.Description = [[]];
+	mobile.this.LongDescription = "A massive rat with red eyes glares at you.";
+	mobile.this.Description = [[This rat is a monstrosity!  Its easily larger than your average dog and 
+	has reddish eyes that glare back at you.  Its tail is long, pink and flicks about nervously or 
+	angrily, you cannot tell.  Bits and scraps of food hang from its mouth and are stuck in its fur.]];
 	mobile.this.Race = "rat";
 	mobile.this.Speaks = "rodent";
 	mobile.this.Speaking = "rodent";
@@ -291,39 +345,46 @@ function Objects()
 	object.this.WearFlags = "take legs";
 	object.this:SetStats(20, 400, 0, 0, 0);
 	
-	-- Jeweled Earrings
-	-- Short Sword
-	-- Woolen Shirt
-	-- Woolen Pants
-	-- Leather Boots
-	-- Dagger
-	-- Woolen Dress
-	-- Slippers
-	-- Empty Tankard
-	-- Leather Straps
-	-- Mug of Ale
-	-- Glass of Wine
-	-- Day-old Bread
-	-- Bowl of Stew
-	-- Hunk of Hard Cheese
+	-- 116 Jeweled Earrings
+	-- 117 Short Sword
+	-- 118 Woolen Shirt
+	-- 119 Woolen Pants
+	-- 120 Leather Boots
+	-- 121 Dagger
+	-- 122 Woolen Dress
+	-- 123 Slippers
+	-- 124 Empty Tankard
+	-- 125 Leather Straps
+	-- 126 Mug of Ale
+	-- 127 Glass of Wine
+	-- 128 Day-old Bread
+	-- 129 Bowl of Stew
+	-- 130 Hunk of Hard Cheese
 
-	-- Huge Cask
-	-- Tall Candelabra
-	-- Table
-	-- Stone Oven
-	-- Large Cauldron
-	-- Cupboard
-	-- Barrel
-	-- Crate
-	-- Small Bed
-	-- Small Dresser
-	-- Large Bed
-	-- Large Dresser
-	-- Metal-bound Chest
-	-- Wooden Chest
-	-- Small Metallic Key
-	-- Broken Crate
-	-- Table
+	-- 131 Huge Cask
+	-- 132 Tall Candelabra
+	-- 133 Table
+	-- 134 Stone Oven
+	-- 135 Large Cauldron
+	-- 136 Cupboard
+	-- 137 Barrel
+	-- 138 Crate
+	-- 139 Small Bed
+	-- 140 Small Dresser
+	-- 141 Large Bed
+	-- 142 Large Dresser
+	-- 143 Metal-bound Chest
+	-- 144 Wooden Chest
+	-- 145 Small Metallic Key
+	-- 146 Broken Crate
+	-- 147 Table
+	-- 148 Fireplace
+	-- 149 Debris
+	
+	-- 150 Boiled Leather Jerkin
+	-- 151 Double-Bladed Axe
+	-- 152 Greatsword
+	-- 153 Leather Shoes
 end
 
 function FirstFloorRooms()
@@ -336,7 +397,9 @@ function FirstFloorRooms()
 	of the room.  It appears to be made of river stone, worn by years of water and later by the hands of many 
 	visitors.  No decorations adorn the mantle atop the hearth.]]);
 	AddExitToRoom(room.this, "east", 101, "A wooden door is to the east", "isdoor closed");
-
+	AddObjectToRoom(room.this, 148, 100, 1);	-- Fireplace
+	AddDoorReset(room.this, "north", "closed");	-- Close the Door
+	
 	room.this = CreateRoom(101, "Common Room (Northwest)", "inside", area.this);
 	room.this.Description = [[This huge room is noisy and filled with numerous tables, patrons, and above all 
 	else, noise.  Dozens of people of all stripes, creeds, and origin are enjoying themselves at the tables while 
@@ -347,10 +410,12 @@ function FirstFloorRooms()
 	room.this:AddExit(103, "south", "A path amongst the tables leads south");
 	room.this:AddExit(104, "north", "An arched doorway leads out of the Common Room");
 	room.this:AddExit(100, "west", "A wooden door leads west out of the room");
-
-	SetupBarPatron(room.this, 101, 2);
-	SetupWearingAdventurer(room.this, 101, 1);
-
+	AddObjectToRoom(room.this, 133, 101, 1);	-- Table
+	AddObjectToRoom(room.this, 132, 101, 1);	-- Candelabra
+	SetupBarPatron(room.this, 101, 2);			-- Bar Patron	
+	SetupWearyAdventurer(room.this, 101, 1);	-- Weary Adventurer
+	AddDoorReset(room.this, "west", "closed");	-- Close the Door
+	
 	room.this = CreateRoom(102, "Common Room (North)", "inside", area.this);
 	room.this.Description = [[This huge room is noisy and filled with numerous tables, patrons, and above all else, 
 	noise.  Dozens of people of all stripes, creeds, and origin are enjoying themselves at the tables while a host of 
@@ -364,21 +429,21 @@ function FirstFloorRooms()
 	room.this:AddExit(101, "west", "A path amongst the tables leads west");
 	room.this:AddExit(105, "east", "A path amongst the tables leads east");
 	room.this:AddExit(107, "south", "A path amongst the tables leads south");
-	-- Huge Cask
+	AddObjectToRoom(room.this, 131, 102, 1);	-- Large Cask
+	AddObjectToRoom(room.this, 132, 102, 1);	-- Candelabra
+	SetupBarmaid(room.this, 102, 1);			-- Barmaid
 	
-	-- Spawn Bron with an Apron here
+	-- Bron Ma'Ganor
 	reset.this = AddMobileToRoom(room.this, 100, 102, 1);
 	EquipOnMobile(reset.this, 100, 3);
-	-- Metal Key
-	
-	-- Bron sells:
-	-- Mug of Ale
-	-- Glass of Wine
-	-- Day-old Bread
-	-- Bowl of Stew
-	-- Hunk of Hard Cheese
+	EquipOnMobile(reset.this, 145, 0);
 
-	SetupBarmaid(room.this, 102, 1);
+	-- Bron's Items for Sale
+	GiveToMobile(reset.this, 126, 99);			-- Mug of Ale
+	GiveToMobile(reset.this, 127, 99);			-- Glass of Wine
+	GiveToMobile(reset.this, 128, 99);			-- Day-old Bread
+	GiveToMobile(reset.this, 129, 99);			-- Bowl of Stew
+	GiveToMobile(reset.this, 130, 99);			-- Hunk of Hard Cheese
 
 	room.this = CreateRoom(103, "Common Room (Southwest)", "inside", area.this);
 	room.this.Description = [[This huge room is noisy and filled with numerous tables, patrons, and above all else, 
@@ -388,84 +453,125 @@ function FirstFloorRooms()
 	room.this:AddExit(101, "north", "A path amongst the tables leads north");
 	room.this:AddExit(107, "east", "A path amongst the tables leads east");
 	room.this:AddExit(114, "up", "A stairwell to the west leads up");
-
-	-- Alania
-		-- silken robe, fine slippers
-	reset.this = AddMobileToRoom(room.this, 105, 1);
-
-	SetupBarmaid(room.this, 103, 1);
+	AddObjectToRoom(room.this, 133, 103, 1);	-- Table
+	AddObjectToRoom(room.this, 132, 103, 1);	-- Candelabra
+	SetupBarmaid(room.this, 103, 1);			-- Barmaid
+	
+	-- Alania Telkhat
+	reset.this = AddMobileToRoom(room.this, 105, 103, 1);
+	EquipOnMobile(reset.this, 108, 3);			-- Long Silken Robe
+	EquipOnMobile(reset.this, 109, 6);			-- Fine Slippers
 
 	room.this = CreateRoom(104, "Hallway", "inside", area.this);
 	room.this:AddExit(108, "west", "An open doorway leads into a kitchen to the west");
 	room.this:AddExit(110, "east", "The hallway continues to the east");
-	AddExitToRoom(room.this, "south", 111, "A wooden door is to the north", "isdoor closed locked");
+	AddExitToRoom(room.this, "south", 111, "A wooden door is to the north", "isdoor closed");
+	AddDoorReset(room.this, "north", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(105, "Common Room (Northeast)", "inside", area.this);
 	room.this:AddExit(106, "south", "A path amongst the tables leads south");
 	room.this:AddExit(102, "west", "A path amongst the tables leads west");
-	-- Liase
-		-- robe, fine slippers, symbol of melesa
-	SetupBarmaid(room.this, 105, 1);
+	AddObjectToRoom(room.this, 133, 105, 2);	-- Table
+	AddObjectToRoom(room.this, 132, 105, 1);	-- Candelabra
+	SetupBarmaid(room.this, 105, 1);			-- Barmaid
+	
+	-- Liase Al'verran
+	reset.this = AddMobileToRoom(room.this, 103, 105, 1);
+	EquipOnMobile(reset.this, 108, 3);			-- Long Silken Robe
+	EquipOnMobile(reset.this, 109, 6);			-- Fine Slippers
+	EquipOnMobile(reset.this, 110, 14);			-- Symbol of Melesa
 
 	room.this = CreateRoom(106, "Common Room (Southeast)", "inside", area.this);
 	room.this:AddExit(105, "north", "A path amongst the tables leads north");
 	room.this:AddExit(107, "west", "A path amongst the tables leads west");
-
-	-- Spawn Rashan
-		-- hauberk, linen pants, leather boots, cloak, longsowrd, and parchment
+	AddObjectToRoom(room.this, 133, 106, 2);	-- Table
+	AddObjectToRoom(room.this, 132, 106, 1);	-- Candelabra
+	SetupBarPatron(room.this, 106, 1);			-- Bar Patron
+	SetupWearyAdventurer(room.this, 106, 2);	-- Weary Adventurer
+	
+	-- Rashan Aseph
 	reset.this = AddMobileToRoom(room.this, 103, 106, 1);
-
-	SetupBarPatron(room.this, 106, 1);
-	SetupWearingAdventurer(room.this, 106, 2);
-
+	EquipOnMobile(reset.this, 102, 3);			-- Battered Mail Hauberk
+	EquipOnMobile(reset.this, 103, 5);			-- Linen Pants
+	EquipOnMobile(reset.this, 104, 6);			-- Leather Boots
+	EquipOnMobile(reset.this, 105, 19);			-- Fine Blue Cloak
+	EquipOnMobile(reset.this, 106, 13);			-- Longsword (TODO Sheathed)
+	EquipOnMobile(reset.this, 107, 14);			-- Parchment
+	
 	room.this = CreateRoom(107, "Common Room (South)", "inside", area.this);
 	room.this:AddExit(106, "east", "A path amongst the tables leads east");
 	room.this:AddExit(102, "north", "A path amongst the tables leads north");
 	room.this:AddExit(103, "west", "A path amongst the tables leads west");
+	AddObjectToRoom(room.this, 133, 107, 1);	-- Table
+	AddObjectToRoom(room.this, 132, 107, 1);	-- Candelabra
 	
-	-- Attan
-		-- linen shirt, leather pants, leather boots, jeweled earrings, short sword
-	-- Bouncer
-		-- leather pants, leather boots, leather straps
+	-- Attan Al'sha'if
+	reset.this = AddMobileToRoom(room.this, 106, 107, 1);
+	EquipOnMobile(reset.this, 114, 3);			-- Linen Shirt
+	EquipOnMobile(reset.this, 115, 5);			-- Leather Pants
+	EquipOnMobile(reset.this, 120, 6);			-- Leather Boots
+	EquipOnMobile(reset.this, 116, 16);			-- Jeweled Earrings
+	EquipOnMobile(reset.this, 117, 13);			-- Short Sword (TODO Sheathed)
+		
+	-- Burly Bouncer
+	reset.this = AddMobileToRoom(room.this, 110, 107, 2);
+	EquipOnMobile(reset.this, 115, 5);			-- Leather Pants
+	EquipOnMobile(reset.this, 120, 6);			-- Leather Boots
+	EquipOnMobile(reset.this, 125, 3);			-- Leather Straps
 
 	room.this = CreateRoom(108, "Kitchen", "inside", area.this);
 	room.this:AddExit(109, "north", "The kitchen continues to the north");
 	room.this:AddExit(104, "east", "An open doorway leads out of the kitchen to the east");
-	-- Stone Oven
-	-- Large Cauldron
+	AddObjectToRoom(room.this, 134, 108, 1);	-- Stone Oven
+	AddObjectToRoom(room.this, 135, 108, 1);	-- Cauldron
+	AddObjectToRoom(room.this, 132, 108, 1);	-- Candelabra
 	
-	-- Spawn Chalon
-		-- apron, wooden spoon
+	-- Chalon Ma'Ganor
 	reset.this = AddMobileToRoom(room.this, 101, 108, 1);
-
+	EquipOnMobile(reset.this, 100, 3);			-- Stained Apron
+	EquipOnMobile(reset.this, 101, 14);			-- Wooden Spoon
+	
 	room.this = CreateRoom(109, "Kitchen", "inside", area.this);
 	room.this:AddExit(108, "south", "The kitchen continues to the south");
-	-- Cupboard
-	-- Barrel
-	-- Crate
+	AddObjectToRoom(room.this, 136, 109, 1);	-- Cupboard
+	AddObjectToRoom(room.this, 137, 109, 2);	-- Barrel
+	AddObjectToRoom(room.this, 138, 109, 2);	-- Crate
 	
-	-- Spawn Natania
-		 -- wrinkled tunic, linen hose, and battered pot
+	-- Natania Ma'Ganor
 	reset.this = AddMobileToRoom(room.this, 104, 109, 1);
+	EquipOnMobile(reset.this, 111, 3);			-- Wrinkled Tunic
+	EquipOnMobile(reset.this, 112, 5);			-- Linen Hose
+	EquipOnMobile(reset.this, 113, 14);			-- Battered Pot
 	
 	room.this = CreateRoom(110, "Hallway", "inside", area.this);
 	room.this:AddExit(104, "west", "The hallway continues to the west");
-	AddExitToRoom(room.this, "east", 113, "A wooden door is to the east", "isdoor closed locked");
+	exit.this = AddExitToRoom(room.this, "east", 113, "A wooden door is to the east", "isdoor closed locked");
+	exit.this.Key = 145;
+	AddDoorReset(room.this, "east", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(111, "Bedroom", "inside", area.this);
-	AddExitToRoom(room.this, "south", 104, "A wooden door is to the south", "isdoor closed locked");
+	AddExitToRoom(room.this, "south", 104, "A wooden door is to the south", "isdoor closed");
 	room.this:AddExit(112, "east", "The bedroom continues to the west");
-	-- Table
-	-- Wooden Chest
+	AddObjectToRoom(room.this, 147, 111, 1);	-- Table
+	AddObjectToRoom(room.this, 144, 111, 1);	-- Wooden Chest
+	AddObjectToRoom(room.this, 132, 111, 1);	-- Candelabra
+	AddDoorReset(room.this, "west", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(112, "Bedroom", "inside", area.this);
 	room.this:AddExit(111, "west", "The bedroom continues to the east");
-	-- Small Bed
-	-- Small Dresser
+	AddObjectToRoom(room.this, 139, 112, 1);	-- Small Bed
+	AddObjectToRoom(room.this, 140, 112, 1);	-- Small Dresser
+	AddMobileToRoom(room.this, 118, 112, 1);	-- Cat
 	
 	room.this = CreateRoom(113, "Storeroom", "inside", area.this);
 	room.this:AddExit(125, "north", "Stairs to the north lead down into the basement");
-	AddExitToRoom(room.this, "west", 110, "A wooden door is to the west", "isdoor closed locked");
+	exit.this = AddExitToRoom(room.this, "west", 110, "A wooden door is to the west", "isdoor closed locked");
+	exit.this.Key = 145;
+	
+	AddObjectToRoom(room.this, 137, 113, 4);	-- Barrel
+	AddObjectToRoom(room.this, 138, 113, 2);	-- Crate
+	AddObjectToRoom(room.this, 131, 113, 1);	-- Large Cask
+	AddDoorReset(room.this, "west", "closed");	-- Close the Door
 end
 	
 function SecondFloorRooms()
@@ -478,57 +584,86 @@ function SecondFloorRooms()
 	room.this:AddExit(114, "west", "The hallway continues to the west");
 	room.this:AddExit(116, "east", "The hallway continues to the east");
 	AddExitToRoom(room.this, "south", 119, "A wooden door is to the south", "isdoor closed");
+	AddDoorReset(room.this, "south", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(116, "Hallway (2nd Floor)", "inside", area.this);
 	room.this:AddExit(115, "west", "The hallway continues to the west");
 	room.this:AddExit(117, "north", "The hallway continues to the north");
 	AddExitToRoom(room.this, "south", 120, "A wooden door is to the south", "isdoor closed");
+	AddDoorReset(room.this, "south", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(117, "Hallway (2nd Floor)", "inside", area.this);
 	room.this:AddExit(116, "south", "The hallway continues to the south");
 	room.this:AddExit(118, "north", "The hallway continues to the north");
 	AddExitToRoom(room.this, "west", 121, "A wooden door is to the west", "isdoor closed");
+	AddDoorReset(room.this, "west", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(118, "Hallway (2nd Floor)", "inside", area.this);
 	room.this:AddExit(117, "south", "The hallway continues to the south");	
 	AddExitToRoom(room.this, "west", 122, "A wooden door is to the west", "isdoor closed");
 	AddExitToRoom(room.this, "east", 123, "A wooden door is to the east", "isdoor closed");
+	AddObjectToRoom(room.this, 147, 118, 1);	-- Table
+	AddObjectToRoom(room.this, 132, 118, 1);	-- Candelabra
+	AddDoorReset(room.this, "west", "closed");	-- Close the Door
+	AddDoorReset(room.this, "east", "closed");	-- Close the Door
 	-- Dazhor Ren
+		-- Leather Pants
+		-- Leather Jerkin
+		-- Heavy Leather Boots
+		-- Double-Bladed Axe
 	-- Grizzled Mercenary
+		-- Leather Pants
+		-- Leather Jerkin
+		-- Heavy Leather Boots
+		-- Greatsword
 	
 	room.this = CreateRoom(119, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room.this, "north", 115, "A wooden door is to the north", "isdoor closed");
+	AddObjectToRoom(room.this, 139, 119, 1);	-- Small Bed
+	AddObjectToRoom(room.this, 140, 119, 1);	-- Small Dresser
+	AddDoorReset(room.this, "north", "closed");	-- Close the Door
 	-- Ismail Nikhet
-	-- Small Bed
-	-- Small Dresser
+		-- Linen Pants
+		-- Linen Shirt
+		-- Leather Shoes
 	
 	room.this = CreateRoom(120, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room.this, "south", 116, "A wooden door is to the north", "isdoor closed");
-	-- Small Bed
-	-- Small Dresser
+	AddObjectToRoom(room.this, 139, 119, 1);	-- Small Bed
+	AddObjectToRoom(room.this, 140, 119, 1);	-- Small Dresser
+	AddDoorReset(room.this, "north", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(121, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room.this, "east", 117, "A wooden door is to the east", "isdoor closed");
-	-- Small Bed
-	-- Small Dresser
+	AddObjectToRoom(room.this, 139, 119, 1);	-- Small Bed
+	AddObjectToRoom(room.this, 140, 119, 1);	-- Small Dresser
+	AddDoorReset(room.this, "east", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(122, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room.this, "east", 118, "A wooden door is to the east", "isdoor closed");
-	-- Small Bed
-	-- Small Dresser
+	AddObjectToRoom(room.this, 139, 119, 1);	-- Small Bed
+	AddObjectToRoom(room.this, 140, 119, 1);	-- Small Dresser
+	AddDoorReset(room.this, "east", "closed");	-- Close the Door
 	
 	room.this = CreateRoom(123, "Inn Suite (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room.this, "west", 118, "A wooden door is to the west", "isdoor closed");
 	room.this:AddExit(124, "south", "The suite continues to the south");
-	-- Large Bed
-	-- Large Dresser
-	-- Metal-bound Chest
-	
-	-- Arina Tal'shon
+	AddObjectToRoom(room.this, 147, 123, 1);	-- Table
+	AddObjectToRoom(room.this, 132, 123, 1);	-- Candelabra
+	AddDoorReset(room.this, "west", "closed");	-- Close the Door
 	-- Elderly Manservant
-	
+		-- Woolen Pants
+		-- Woolen Shirt
+		-- Leather Shoes
+		
 	room.this = CreateRoom(124, "Inn Suite (2nd Floor)", "inside", area.this);
 	room.this:AddExit(123, "north", "The suite continues to the north");
+	AddObjectToRoom(room.this, 141, 124, 1);	-- Large Bed
+	AddObjectToRoom(room.this, 142, 124, 1);	-- Large Dresser
+	AddObjectToRoom(room.this, 143, 124, 1);	-- Metal-bound Chest
+	-- Arina Tal'shon
+		-- Silk Robe
+		-- Slippers
 end
 	
 function BasementRooms()
@@ -541,6 +676,7 @@ function BasementRooms()
 	room.this:AddExit(126, "west", "A path amongst the debris leads west");
 	room.this:AddExit(130, "east", "A path amongst the debris leads east");
 	room.this:AddExit(128, "north", "A path amongst the debris leads north");
+	AddObjectToRoom(room.this, 149, 125, 2);	-- Debris
 	
 	room.this = CreateRoom(126, "Basement(Southwest)", "inside", area.this);
 	room.this.Description = [[Years ago this basement may have been used for storage, but now it is 
@@ -548,7 +684,9 @@ function BasementRooms()
 	piles of detritus cover the stone floor.]];
 	room.this:AddExit(125, "east", "A path amongst the debris leads east");
 	room.this:AddExit(127, "north", "A path amongst the debris leads north");
-	AddMobileToRoom(room.this, 117, 126, 3);
+	AddMobileToRoom(room.this, 117, 126, 3);	-- Giant Rats
+	AddObjectToRoom(room.this, 146, 126, 2);	-- Broken Crate
+	AddObjectToRoom(room.this, 149, 126, 1);	-- Debris
 	
 	room.this = CreateRoom(127, "Basement(Northwest)", "inside", area.this);
 	room.this.Description = [[Years ago this basement may have been used for storage, but now it is 
@@ -556,7 +694,9 @@ function BasementRooms()
 	piles of detritus cover the stone floor.]];
 	room.this:AddExit(126, "south", "A path amongst the debris leads south");
 	room.this:AddExit(128, "east", "A path amongst the debris leads east");
-		
+	AddObjectToRoom(room.this, 146, 127, 1);	-- Broken Crate
+	AddObjectToRoom(room.this, 149, 127, 2);	-- Debris
+	
 	room.this = CreateRoom(128, "Basement(North)", "inside", area.this);
 	room.this.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
@@ -568,7 +708,8 @@ function BasementRooms()
 	room.this:AddExit(125, "south", "A path amongst the debris leads south");
 	room.this:AddExit(129, "east", "A path amongst the debris leads east");
 	-- TODO Add exit here to Catacombs
-	AddMobileToRoom(room.this, 117, 128, 2);
+	AddMobileToRoom(room.this, 117, 128, 2);	-- Giant Rats
+	AddObjectToRoom(room.this, 149, 126, 2);	-- Debris
 	
 	room.this = CreateRoom(129, "Basement(Northeast)", "inside", area.this);
 	room.this.Description = [[Years ago this basement may have been used for storage, but now it is 
@@ -576,50 +717,41 @@ function BasementRooms()
 	piles of detritus cover the stone floor.]];
 	room.this:AddExit(128, "west", "A path amongst the debris leads west");
 	room.this:AddExit(130, "south", "A path amongst the debris leads south");
-	AddMobileToRoom(room.this, 117, 129, 3);
-		
+	AddMobileToRoom(room.this, 117, 129, 3);	-- Giant Rats
+	AddObjectToRoom(room.this, 146, 129, 2);	-- Broken Crate
+	AddObjectToRoom(room.this, 149, 129, 1);	-- Debris
+	
 	room.this = CreateRoom(130, "Basement(Southeast)", "inside", area.this);
 	room.this.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.]];
 	room.this:AddExit(129, "north", "A path amongst the debris leads north");
 	room.this:AddExit(125, "west", "A path amongst the debris leads west");
-	AddMobileToRoom(room.this, 117, 130, 2);
+	AddMobileToRoom(room.this, 117, 130, 2);	-- Giant Rats
+	AddObjectToRoom(room.this, 146, 127, 1);	-- Broken Crate
+	AddObjectToRoom(room.this, 149, 127, 2);	-- Debris
 end
 
 function SetupBarPatron(room, location, quantity)
-	newReset = LCreateReset("mob", 0, 107, location, quantity);
-	reset.this = newReset;
-	room:AddReset(reset.this);
-	
-	--reset.this:AddReset("equip", 0, object, location, 0);
-	-- Woolen Shirt
-	-- Woolen Pants
-	-- Leather Boots
-	-- Dagger (Sheathed)
+	reset.this = AddMobileToRoom(room, 107, location, quantity);
+	EquipOnMobile(reset.this, 118, 3);			-- Woolen Shirt
+	EquipOnMobile(reset.this, 119, 5);			-- Woolen Pants
+	EquipOnMobile(reset.this, 120, 6);			-- Leather Boots
 end
 
 function SetupWearyAdventurer(room, location, quantity)
-	newReset = LCreateReset("mob", 0, 108, location, quantity);
-	reset.this = newReset;
-	room:AddReset(reset.this);
-	
-	--reset.this:AddReset("equip", 0, object, location, 0);
-	-- Woolen Shirt
-	-- Woolen Pants
-	-- Leather Boots
-	-- Dagger (Sheathed)
+	reset.this = AddMobileToRoom(room, 108, location, quantity);
+	EquipOnMobile(reset.this, 118, 3);			-- Woolen Shirt
+	EquipOnMobile(reset.this, 119, 5);			-- Woolen Pants
+	EquipOnMobile(reset.this, 120, 6);			-- Leather Boots
+	EquipOnMobile(reset.this, 121, 13);			-- Dagger (TODO Sheathed)
 end
 
 function SetupBarmaid(room, location, quantity)
-	newReset = LCreateReset("mob", 0, 109, location, quantity);
-	reset.this = newReset;
-	room:AddReset(reset.this);
-	
-	--reset.this:AddReset("equip", 0, object, location, 0);
-	-- Woolen Dress
-	-- Slippers
-	-- Empty Tankard
+	reset.this = AddMobileToRoom(room, 109, location, quantity);
+	EquipOnMobile(reset.this, 122, 3);			-- Woolen Dress
+	EquipOnMobile(reset.this, 123, 6);			-- Slippers
+	EquipOnMobile(reset.this, 124, 14);			-- Empty Tankard
 end
 
 -- EOF 

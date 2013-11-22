@@ -128,12 +128,13 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_ThrowsException()
         {
             var repo = new RoomRepository();
 
-            repo.Create(1, null);
+            var result = repo.Create(1, null);
+
+            Assert.That(result.Name, Is.EqualTo("Floating in a Void"));
         }
 
         [Test]

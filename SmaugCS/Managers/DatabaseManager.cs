@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Database;
@@ -25,6 +28,10 @@ namespace SmaugCS.Managers
             MOBILE_INDEXES = new MobileRepository();
             CHARACTERS = new CharacterRepository();
             //OBJECTS = new ObjInstanceRepository(Program.MAX_WEAR, Program.MAX_LAYERS);
+            LIQUIDS = new List<LiquidData>();
+            HERBS = new List<SkillData>();
+            SKILLS = new List<SkillData>();
+            SPEC_FUNS = new List<SpecialFunction>();
         }
 
         /// <summary>
@@ -49,26 +56,31 @@ namespace SmaugCS.Managers
         public CharacterRepository CHARACTERS { get; private set; }
         public ObjInstanceRepository OBJECTS { get; private set; }
 
+        private void DoLuaScript(string file)
+        {
+            LuaManager.Instance.Proxy.DoFile(SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + file);
+        }
+
         public void Initialize(bool fCopyOver)
         {
             LogManager.BootLog("---------------------[ Boot Log ]--------------------");
 
             db.SystemData = new SystemData();
 
-            LogManager.Log("Loading commands...");
-            tables.load_commands();
+            LogManager.BootLog("Loading commands...");
+            DoLuaScript("commands.lua");
 
-            LogManager.Log("Loading spec funs...");
-            special.load_specfuns();
+            LogManager.BootLog("Loading spec funs...");
+            DoLuaScript("specfuns.lua");
 
-            LogManager.Log("Loading sysdata configuration...");
+            LogManager.BootLog("Loading sysdata configuration...");
             db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, Program.GetLevel("demi"));
             db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, Program.GetLevel("immortal"));
             // TODO Do the rest of the system data
 
             if (db.load_systemdata(db.SystemData))
             {
-                LogManager.Log("Not found. Creating new configuration.");
+                LogManager.BootLog("Not found. Creating new configuration.");
                 db.SystemData.alltimemax = 0;
                 db.SystemData.MudTitle = "(Name not set)";
                 act_wiz.update_timers();
@@ -76,48 +88,44 @@ namespace SmaugCS.Managers
                 db.save_sysdata(db.SystemData);
             }
 
-            LogManager.Log("Loading socials");
-            tables.load_socials();
+            LogManager.BootLog("Loading socials");
+            DoLuaScript("socials.lua");
 
-            LogManager.Log("Loading skill table");
-            tables.load_skill_table();
-            tables.remap_slot_numbers();
-
+            LogManager.BootLog("Loading skill table");
+            //tables.load_skill_table();
+            //tables.remap_slot_numbers();
             //db.NumberSortedSkills = db.SKILLS.Count;
+            DoLuaScript("skills.lua");
 
-            LogManager.Log("Loading classes");
+            LogManager.BootLog("Loading classes");
             tables.load_classes();
 
-            LogManager.Log("Loading races");
+            LogManager.BootLog("Loading races");
             tables.load_races();
 
-            LogManager.Log("Loading news data");
+            LogManager.BootLog("Loading news data");
             news.load_news();
 
-            LogManager.Log("Loading liquids");
-            LiquidLoader lLoader = new LiquidLoader();
-            _loaders.Add(lLoader);
-            lLoader.Load();
+            LogManager.BootLog("Loading liquids");
+            DoLuaScript("liquids.lua");
 
-            LogManager.Log("Loading mixtures");
-            MixtureLoader mLoader = new MixtureLoader();
-            _loaders.Add(mLoader);
-            mLoader.Load();
+            LogManager.BootLog("Loading mixtures");
+            DoLuaScript("mixtures.lua");
 
-            LogManager.Log("Loading herbs");
-            tables.load_herb_table();
+            LogManager.BootLog("Loading herbs");
+            DoLuaScript("herbs.lua");
 
-            LogManager.Log("Loading tongues");
+            LogManager.BootLog("Loading tongues");
             tables.load_tongues();
 
-            LogManager.Log("Making wizlist");
+            LogManager.BootLog("Making wizlist");
             db.make_wizlist();
 
             // TODO Had auction stuff, not sure why it was needed
 
             // TODO Save equipment is inside each object now
 
-            LogManager.Log("Setting time and weather.");
+            LogManager.BootLog("Setting time and weather.");
             TimeLoader timeLoader = new TimeLoader();
             TimeInfoData timeInfo = timeLoader.LoadTimeInfo();
             if (timeInfo != null)
@@ -146,99 +154,180 @@ namespace SmaugCS.Managers
                 // TODO Fatal
             }*/
 
-            LogManager.Log("Loading holiday chart...");
+            LogManager.BootLog("Loading holiday chart...");
             HolidayLoader hLoader = new HolidayLoader();
             hLoader.Load();
 
             // TODO DNS Cache
 
             // TODO Assign GSNs
-            LogManager.Log("Assigning GSN's");
+            LogManager.BootLog("Assigning GSN's");
             Macros.ASSIGN_GSN("evasive style");
             // TODO Assign remainder
 
-            bool usePlanes = Program.GetBooleanConstant("UsePlanes");
-            if (usePlanes)
-            {
-                LogManager.Log("Reading in plane file...");
-                planes.load_planes();
-            }
+            LogManager.BootLog("Loading planes...");
+            DoLuaScript("planes.lua");
 
             AreaListLoader aLoader = new AreaListLoader();
             _loaders.Add(aLoader);
             aLoader.Load();
 
-            if (usePlanes)
-            {
-                LogManager.Log("Making sure rooms are planed...");
-                //planes.check_planes();
-            }
-
             // TODO init_supermob();
 
-            LogManager.Log("Fixing exits");
+            LogManager.BootLog("Fixing exits");
             db.FixExits();
 
-            LogManager.Log("Initializing economy");
+            LogManager.BootLog("Initializing economy");
             db.initialize_economy();
 
             if (fCopyOver)
             {
-                LogManager.Log("Loading world state...");
+                LogManager.BootLog("Loading world state...");
                 hotboot.load_world();
             }
 
-            LogManager.Log("Resetting areas");
+            LogManager.BootLog("Resetting areas");
             db.area_update();
 
-            LogManager.Log("Loading buildlist");
+            LogManager.BootLog("Loading buildlist");
             db.load_buildlist();
 
-            LogManager.Log("Loading boards");
+            LogManager.BootLog("Loading boards");
             boards.load_boards();
 
-            LogManager.Log("Loading clans");
+            LogManager.BootLog("Loading clans");
             ClanLoader clLoader = new ClanLoader();
             _loaders.Add(clLoader);
             clLoader.Load();
 
-            LogManager.Log("Loading Councils");
+            LogManager.BootLog("Loading Councils");
             CouncilLoader coLoader = new CouncilLoader();
             _loaders.Add(coLoader);
             coLoader.Load();
 
-            LogManager.Log("Loading deities");
+            LogManager.BootLog("Loading deities");
             DeityListLoader dLoader = new DeityListLoader();
             _loaders.Add(dLoader);
             dLoader.Load();
 
-            LogManager.Log("Loading watches");
+            LogManager.BootLog("Loading watches");
             WatchListLoader wLoader = new WatchListLoader();
             _loaders.Add(wLoader);
             wLoader.Load();
 
-            LogManager.Log("Loading bans");
+            LogManager.BootLog("Loading bans");
             ban.load_banlist();
 
-            LogManager.Log("Loading reserved names");
+            LogManager.BootLog("Loading reserved names");
             db.load_reserved();
 
-            LogManager.Log("Loading corpses");
+            LogManager.BootLog("Loading corpses");
             save.load_corpses();
 
-            LogManager.Log("Loading Immortal Hosts");
+            LogManager.BootLog("Loading Immortal Hosts");
             // TODO load_imm_host();
 
-            LogManager.Log("Loading projects");
+            LogManager.BootLog("Loading projects");
             db.load_projects();
 
-            LogManager.Log("Loading morphs");
-            // TODO load_morphs();
+            LogManager.BootLog("Loading morphs");
+            DoLuaScript("morph.lua");
 
             // TODO MOBTrigger = true;
 
             // TODO init_chess();
 
         }
+
+        #region Liquids
+        public List<LiquidData> LIQUIDS;
+        public LiquidData GetLiquid(string str)
+        {
+            return str.IsNumber()
+                ? LIQUIDS.FirstOrDefault(x => x.Vnum == str.ToInt32())
+                : LIQUIDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
+        }
+        public LiquidData GetLiquid(int vnum)
+        {
+            return LIQUIDS.FirstOrDefault(x => x.Vnum == vnum);
+        }
+        #endregion
+
+        #region Herbs
+        public List<SkillData> HERBS;
+        public SkillData GetHerb(string name)
+        {
+            return HERBS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+        }
+        public bool IsValidHerb(int sn)
+        {
+            return sn >= 0 && sn < HERBS.Count && HERBS[sn] != null && !HERBS[sn].Name.IsNullOrEmpty();
+        }
+        #endregion
+
+        #region Skills
+
+        public readonly List<SkillData> SKILLS;
+
+        public SkillData GetSkill(string name)
+        {
+            return SKILLS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public SkillData GetSkill(int skillNumber)
+        {
+            return SKILLS.FirstOrDefault(x => x.ID == skillNumber);
+        }
+
+        public IEnumerable<SkillData> GetSkills(SkillTypes type)
+        {
+            return SKILLS.Where(x => x.Type == type);
+        }
+
+        /// <summary>
+        /// Lookup a skill by name (or partial)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int LookupSkill(string name)
+        {
+            // Try to find an exact match for this skill
+            SkillData skill = SKILLS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+            if (skill == null)
+            {
+                // Try to find a prefix match
+                IEnumerable<SkillData> skills = SKILLS.Where(x => x.Name.StartsWithIgnoreCase(name));
+                if (!skills.Any())
+                {
+                    LogManager.Bug("Skill entry {0} not found", name);
+                    return -1;
+                }
+
+                skill = skills.First();
+            }
+
+            return skill.ID;
+        }
+
+        public int AddSkill(string name)
+        {
+            if (LookupSkill(name) > -1)
+                return -1;
+
+            int newId = SKILLS.Max(x => x.ID) + 1;
+            SKILLS.Add(new SkillData(Program.MAX_CLASS, Program.MAX_RACE) { Name = name, ID = newId });
+            return newId;
+        }
+
+        #endregion
+
+        #region SpecFuns
+        public List<SpecialFunction> SPEC_FUNS;
+
+        public SpecialFunction GetSpecFun(string name)
+        {
+            return SPEC_FUNS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+        }
+        #endregion
     }
 }

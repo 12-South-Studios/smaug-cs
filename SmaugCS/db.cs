@@ -103,60 +103,6 @@ namespace SmaugCS
         }
         #endregion
 
-        #region Skills
-
-        public static readonly List<SkillData> SKILLS = new List<SkillData>();
-        public static SkillData GetSkill(string name)
-        {
-            return SKILLS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public static SkillData GetSkill(int skillNumber)
-        {
-            return SKILLS.FirstOrDefault(x => x.ID == skillNumber);
-        }
-
-        public static IEnumerable<SkillData> GetSkills(SkillTypes type)
-        {
-            return SKILLS.Where(x => x.Type == type);
-        }
-
-        /// <summary>
-        /// Lookup a skill by name (or partial)
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static int LookupSkill(string name)
-        {
-            // Try to find an exact match for this skill
-            SkillData skill = SKILLS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-            if (skill == null)
-            {
-                // Try to find a prefix match
-                IEnumerable<SkillData> skills = SKILLS.Where(x => x.Name.StartsWithIgnoreCase(name));
-                if (!skills.Any())
-                {
-                    LogManager.Bug("Skill entry {0} not found", name);
-                    return -1;
-                }
-
-                skill = skills.First();
-            }
-
-            return skill.ID;
-        }
-
-        public static int AddSkill(string name)
-        {
-            if (LookupSkill(name) > -1)
-                return -1;
-
-            int newId = SKILLS.Max(x => x.ID) + 1;
-            SKILLS.Add(new SkillData(Program.MAX_CLASS, Program.MAX_RACE) { Name = name, ID = newId });
-            return newId;
-        }
-
-        #endregion
-
         #region Races
         public static List<RaceData> RACES = new List<RaceData>();
         public static RaceData GetRace(RaceTypes type)
@@ -292,32 +238,11 @@ namespace SmaugCS
             return MIXTURES.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
         }
 
-        #region Liquids
-        public static List<LiquidData> LIQUIDS = new List<LiquidData>();
-        public static LiquidData GetLiquid(string str)
-        {
-            return str.IsNumber()
-                ? LIQUIDS.FirstOrDefault(x => x.Vnum == str.ToInt32())
-                : LIQUIDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
-        }
-        public static LiquidData GetLiquid(int vnum)
-        {
-            return LIQUIDS.FirstOrDefault(x => x.Vnum == vnum);
-        }
-        #endregion
-
         public static List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
-        public static List<SpecialFunction> SPEC_LIST = new List<SpecialFunction>();
-
+        
         public static List<WatchData> WATCHES = new List<WatchData>();
 
         public static Dictionary<string, Dictionary<string, string>> TITLES = new Dictionary<string, Dictionary<string, string>>();
-
-        public static List<SkillData> HERBS = new List<SkillData>();
-        public static SkillData GetHerb(string name)
-        {
-            return HERBS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-        }
 
         public static List<SkillData> DISEASES = new List<SkillData>();
         public static SkillData GetDisease(string name)

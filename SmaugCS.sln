@@ -176,15 +176,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\bugs.txt = data\system\bugs.txt
 		data\system\ccount.txt = data\system\ccount.txt
 		data\system\colors.dat = data\system\colors.dat
-		data\system\commands.dat = data\system\commands.dat
+		data\system\commands.lua = data\system\commands.lua
 		data\system\dns.dat = data\system\dns.dat
 		data\system\fixed.txt = data\system\fixed.txt
-		data\system\herbs.dat = data\system\herbs.dat
+		data\system\herbs.lua = data\system\herbs.lua
 		data\system\ideas.txt = data\system\ideas.txt
 		data\system\immortal.host = data\system\immortal.host
-		data\system\liquids.dat = data\system\liquids.dat
+		data\system\liquids.lua = data\system\liquids.lua
 		data\system\login.msg = data\system\login.msg
-		data\system\mixtures.dat = data\system\mixtures.dat
+		data\system\mixtures.lua = data\system\mixtures.lua
 		data\system\moblog.txt = data\system\moblog.txt
 		data\system\MoonMap.txt = data\system\MoonMap.txt
 		data\system\morph.dat = data\system\morph.dat
@@ -198,8 +198,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\REQUESTS = data\system\REQUESTS
 		data\system\RETIREDLIST = data\system\RETIREDLIST
 		data\system\skills.dat = data\system\skills.dat
-		data\system\socials.dat = data\system\socials.dat
-		data\system\specfuns.dat = data\system\specfuns.dat
+		data\system\skills.lua = data\system\skills.lua
+		data\system\socials.lua = data\system\socials.lua
+		data\system\specfuns.lua = data\system\specfuns.lua
 		data\system\StarMap.txt = data\system\StarMap.txt
 		data\system\SunMap.txt = data\system\SunMap.txt
 		data\system\sysdata.dat = data\system\sysdata.dat
@@ -226,7 +227,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{C281
 	ProjectSection(SolutionItems) = preProject
 		data\modules\module_area.lua = data\modules\module_area.lua
 		data\modules\module_base.lua = data\modules\module_base.lua
-		data\modules\module_mobs.lua = data\modules\module_mobs.lua
 		data\modules\types.lua = data\modules\types.lua
 	EndProjectSection
 EndProject
@@ -602,5 +602,8 @@ Global
 		{C28149F0-D9AC-4485-914F-F798E7BB5BC3} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{2BC26F47-22B4-4BE8-AAA9-64FB81430861} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
 		{1C88C8F6-11B5-4F07-80E7-BF73F0C6D95A} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -9,7 +10,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static bool check_save(int sn, int level, CharacterInstance ch, CharacterInstance victim)
         {
-            SkillData skill = db.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
             bool saved = false;
 
             if (Macros.SPELL_FLAG(skill, (int)SkillFlags.PKSensitive)

@@ -38,7 +38,7 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = db.SKILLS[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                         ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
@@ -53,7 +53,7 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = db.SKILLS[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         LogManager.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
@@ -222,7 +222,7 @@ namespace SmaugCS
                         return;
 
                     mod = Math.Abs(mod);
-                    SkillData skill = db.SKILLS[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
@@ -239,7 +239,7 @@ namespace SmaugCS
                     break;
 
                 case (int)ApplyTypes.Track:
-                    ch.ModifySkill((int)db.GetSkill("track").Type, mod, add);
+                    ch.ModifySkill((int)DatabaseManager.Instance.GetSkill("track").Type, mod, add);
                     break;
 
                 // TODO Add the rest

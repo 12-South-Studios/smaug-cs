@@ -78,7 +78,7 @@ namespace SmaugCS
             if (sn == -1)
                 return false;
 
-            SkillData skill = db.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
             if (skill.SkillFunction == null || skill.SpellFunction == null
                 || can_use_skill(ch, 0, sn))
                 return false;
@@ -228,7 +228,7 @@ namespace SmaugCS
                         break;
                 }
 
-                Macros.WAIT_STATE(ch, skill.Beats);
+                Macros.WAIT_STATE(ch, skill.Rounds);
 
                 //// Check for failure
                 if ((SmaugRandom.Percent() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, skill.ID)))
@@ -314,7 +314,7 @@ namespace SmaugCS
             if (ch.IsNpc() || ch.PlayerData.Learned[sn] <= 0)
                 return;
 
-            SkillData skill = db.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
             int adept = skill.RaceAdept[(int)ch.CurrentRace];
             int skillLevel = skill.RaceLevel[(int)ch.CurrentRace];
 

@@ -120,8 +120,9 @@
     <Compile Include="Shops\RepairShopData.cs" />
     <Compile Include="Shops\ShopData.cs" />
     <Compile Include="SkillData.cs" />
-    <Compile Include="smaug_affect.cs" />
+    <Compile Include="SmaugAffect.cs" />
     <Compile Include="snswap_data.cs" />
+    <Compile Include="SocialData.cs" />
     <Compile Include="SpecialFunction.cs" />
     <Compile Include="SpellFunction.cs" />
     <Compile Include="SystemData.cs" />

@@ -26,5 +26,7 @@ luanet.import_type("SmaugCS.Data.Instances.ObjectInstance");
 luanet.import_type("SmaugCS.Data.MudProgData");
 luanet.import_type("SmaugCS.Data.ExitData");
 luanet.import_type("SmaugCS.Data.ExtraDescriptionData");
+luanet.import_type("SmaugCS.Data.LiquidData");
+luanet.import_type("SmaugCS.Data.SkillData");
 
 -- EOF

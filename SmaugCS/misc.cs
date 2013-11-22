@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -27,7 +28,7 @@ namespace SmaugCS
                     return;
 
                 case ItemTypes.DrinkContainer:
-                    LiquidData liq = db.GetLiquid(obj.Value[2]);
+                    LiquidData liq = DatabaseManager.Instance.GetLiquid(obj.Value[2]);
                     comm.act(ATTypes.AT_ACTION, charbuf, ch, obj, liq.Name, ToTypes.Character);
                     comm.act(ATTypes.AT_ACTION, roombuf, ch, obj, liq.Name, ToTypes.Room);
                     return;
