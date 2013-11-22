@@ -2,13 +2,18 @@
 #sidebar SideBarTableOfContents
 
 Code Coverage Statistics:
- * SmaugCS and SmaugCS.Common (110 tests, covering 3.95%)
-  * SmaugCS (0.15%)
-  * SmaugCS.Common (91.61%)
- 
- * Realm.Libraries (391 tests, covering 46.08%)
-  * Realm.Library.Common (48.87%)
-  * Realm.Library.NCalcExt (?)
+ * SmaugCS Projects (112 tests)
+  * SmaugCS (4.44%)
+  * SmaugCS.Common (77.63%)
+  * SmaugCS.Constants (0.00%)
+  * SmaugCS.Data (26.23%)
+  * SmaugCS.Language (0.00%)
+  * SmaugCS.Weather (0.00%)
+
+ * Realm.Libraries (438 tests)
+  * Realm.Library.Common (55.31%)
+  * Realm.Library.Lua (27.89%)
+  * Realm.Library.NCalcExt (96.88%))
   * Realm.Library.Patterns.Command (100.0%)
   * Realm.Library.Patterns.Decorator (100.0%)
   * Realm.Library.Patterns.Factory (0.00%)
