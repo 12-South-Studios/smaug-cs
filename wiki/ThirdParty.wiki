@@ -3,15 +3,14 @@
 
 The following third-party libraries have been used (thus far) in the project.
 
+For the Project:
  * NCalc (v1.3.8)
   * http://ncalc.codeplex.com/
  * Log4net (v2.0.0)
   * http://logging.apache.org/log4net/
- * zlibnet (v1.3)
-  * http://zlibnet.codeplex.com/
+ * VikingErik.LuaInterface (v1.0.42)
+  * http://www.nuget.org/packages/VikingErik.LuaInterface
  * NUnit (v2.6.2)
   * http://nunit.org/
- * Moq (v4.1.1)
+ * Moq (v4.1.13)
   * https://code.google.com/p/moq/
- * NewtonSoft JSON (v5.0.8)
-  * http://james.newtonking.com/json
