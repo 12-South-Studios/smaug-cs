@@ -7,3 +7,5 @@
   * http://www.jetbrains.com/resharper/
  * Remco Software NCrunch 1.46
   * http://www.ncrunch.net/
+ * Notepad++ (for Lua development)
+  * http://notepad-plus-plus.org/
