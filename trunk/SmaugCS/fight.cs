@@ -144,7 +144,7 @@ namespace SmaugCS
                         if (pafNext == null || pafNext.Type != paf.Type
                             || pafNext.Duration > 0)
                         {
-                            SkillData skill = db.GetSkill((int)paf.Type);
+                            SkillData skill = DatabaseManager.Instance.GetSkill((int)paf.Type);
                             if (paf.Type > 0 && skill != null && !string.IsNullOrEmpty(skill.WearOffMessage))
                             {
                                 color.set_char_color(ATTypes.AT_WEAROFF, ch);
@@ -153,7 +153,7 @@ namespace SmaugCS
                             }
                         }
 
-                        if ((int)paf.Type == db.LookupSkill("possess"))
+                        if ((int)paf.Type == DatabaseManager.Instance.LookupSkill("possess"))
                         {
                             ch.Descriptor.Character = ch.Descriptor.Original;
                             ch.Descriptor.Original = null;
@@ -330,32 +330,32 @@ namespace SmaugCS
                 case DamageTypes.Suction:
                 case DamageTypes.Bite:
                 case DamageTypes.Blast:
-                    sn = db.LookupSkill("pugilism");
+                    sn = DatabaseManager.Instance.LookupSkill("pugilism");
                     break;
                 case DamageTypes.Slash:
                 case DamageTypes.Slice:
-                    sn = db.LookupSkill("long blades");
+                    sn = DatabaseManager.Instance.LookupSkill("long blades");
                     break;
                 case DamageTypes.Pierce:
                 case DamageTypes.Stab:
-                    sn = db.LookupSkill("short blades");
+                    sn = DatabaseManager.Instance.LookupSkill("short blades");
                     break;
                 case DamageTypes.Whip:
-                    sn = db.LookupSkill("flexible arms");
+                    sn = DatabaseManager.Instance.LookupSkill("flexible arms");
                     break;
                 case DamageTypes.Claw:
-                    sn = db.LookupSkill("talonous arms");
+                    sn = DatabaseManager.Instance.LookupSkill("talonous arms");
                     break;
                 case DamageTypes.Pound:
                 case DamageTypes.Crush:
-                    sn = db.LookupSkill("bludgeons");
+                    sn = DatabaseManager.Instance.LookupSkill("bludgeons");
                     break;
                 case DamageTypes.Bolt:
                 case DamageTypes.Arrow:
                 case DamageTypes.Dart:
                 case DamageTypes.Stone:
                 case DamageTypes.Pea:
-                    sn = db.LookupSkill("missile weapons");
+                    sn = DatabaseManager.Instance.LookupSkill("missile weapons");
                     break;
             }
 
@@ -560,17 +560,17 @@ namespace SmaugCS
             // Calculate damage modifiers from attacker's fighting style
             damage = ModifyDamageByFightingStyle(ch, damage);
 
-            if (!ch.IsNpc() && ch.PlayerData.Learned[db.LookupSkill("enhanced damage")] > 0)
+            if (!ch.IsNpc() && ch.PlayerData.Learned[DatabaseManager.Instance.LookupSkill("enhanced damage")] > 0)
             {
-                damage += damage * Macros.LEARNED(ch, db.LookupSkill("enhanced damage") / 120);
-                skills.learn_from_success(ch, db.LookupSkill("enhanced damage"));
+                damage += damage * Macros.LEARNED(ch, DatabaseManager.Instance.LookupSkill("enhanced damage") / 120);
+                skills.learn_from_success(ch, DatabaseManager.Instance.LookupSkill("enhanced damage"));
             }
 
             if (!victim.IsAwake())
                 damage *= 2;
-            if (dt == db.LookupSkill("backstab"))
+            if (dt == DatabaseManager.Instance.LookupSkill("backstab"))
                 damage *= (2 + (ch.Level - (victim.Level / 4)).GetNumberThatIsBetween(2, 30) / 8);
-            if (dt == db.LookupSkill("circle"))
+            if (dt == DatabaseManager.Instance.LookupSkill("circle"))
                 damage *= (2 + (ch.Level - (victim.Level / 4)).GetNumberThatIsBetween(2, 30) / 16);
             if (damage <= 0)
                 damage = 1;
@@ -633,7 +633,7 @@ namespace SmaugCS
             // immune to damage
             if (damage == -1)
             {
-                SkillData skill = db.GetSkill(dt);
+                SkillData skill = DatabaseManager.Instance.GetSkill(dt);
                 if (skill != null)
                 {
                     if (!skill.ImmuneCharacterMessage.IsNullOrEmpty())
@@ -670,8 +670,8 @@ namespace SmaugCS
                 {
                     if (aff.Location == ApplyTypes.WeaponSpell
                         && Macros.IS_VALID_SN(aff.Modifier)
-                        && db.GetSkill(aff.Modifier).SpellFunction != null)
-                        retcode = db.GetSkill(aff.Modifier)
+                        && DatabaseManager.Instance.GetSkill(aff.Modifier).SpellFunction != null)
+                        retcode = DatabaseManager.Instance.GetSkill(aff.Modifier)
                                     .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3) / 3, ch, victim);
                 }
 
@@ -684,8 +684,8 @@ namespace SmaugCS
                 {
                     if (aff.Location == ApplyTypes.WeaponSpell
                         && Macros.IS_VALID_SN(aff.Modifier)
-                        && db.GetSkill(aff.Modifier).SpellFunction != null)
-                        retcode = db.GetSkill(aff.Modifier)
+                        && DatabaseManager.Instance.GetSkill(aff.Modifier).SpellFunction != null)
+                        retcode = DatabaseManager.Instance.GetSkill(aff.Modifier)
                                     .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3) / 3, ch, victim);
                 }
 
@@ -698,31 +698,31 @@ namespace SmaugCS
             // Magic shields that retaliate
             if (victim.IsAffected(AffectedByTypes.FireShield)
                 && !ch.IsAffected(AffectedByTypes.FireShield))
-                retcode = Smaug.spell_smaug(db.LookupSkill("flare"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("flare"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.IceShield)
                 && !ch.IsAffected(AffectedByTypes.IceShield))
-                retcode = Smaug.spell_smaug(db.LookupSkill("iceshard"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("iceshard"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.ShockShield)
             && !ch.IsAffected(AffectedByTypes.ShockShield))
-                retcode = Smaug.spell_smaug(db.LookupSkill("torrent"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("torrent"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.AcidMist)
             && !ch.IsAffected(AffectedByTypes.AcidMist))
-                retcode = Smaug.spell_smaug(db.LookupSkill("acidshot"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("acidshot"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.VenomShield)
             && !ch.IsAffected(AffectedByTypes.VenomShield))
-                retcode = Smaug.spell_smaug(db.LookupSkill("venomshot"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("venomshot"), off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
@@ -1303,7 +1303,7 @@ namespace SmaugCS
             {
                 // TODO affect_strip
                 color.set_char_color(ATTypes.AT_WEAROFF, ch);
-                color.send_to_char(db.GetSkill("berserk").WearOffMessage, ch);
+                color.send_to_char(DatabaseManager.Instance.GetSkill("berserk").WearOffMessage, ch);
                 color.send_to_char("\r\n", ch);
             }
         }

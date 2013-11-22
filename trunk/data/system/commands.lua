@@ -1,176 +1,36 @@
-#COMMAND
-Name        '~
-Code        do_say
-Position    106
-Level       0
-Log         0
-End
+-- COMMANDS.LUA
+-- This is the Commands data file for the MUD
+-- Revised: 2013.11.22
+-- Author: Jason Murdick
+-- Version: 1.0
 
-#COMMAND
-Name        ,~
-Code        do_emote
-Position    106
-Level       0
-Log         0
-End
+LoadCommands();
 
-#COMMAND
-Name        .~
-Code        do_chat
-Position    104
-Level       0
-Log         0
-Flags       1
-End
+function LoadCommands()
+	LCreateCommand("'~", "do_say", 106, 0, 0, 0);
+	LCreateCommand(",~", "do_emote", 106, 0, 0, 0);
+	LCreateCommand(".~", "do_chat", 104, 0, 0, 1);
+	LCreateCommand(":~", "do_immtalk", 100, 51, 0, 1);
+	LCreateCommand(":~", "do_avtalk", 100, 50, 0, 1);
+	LCreateCommand(";~", "do_gtell", 100, 0, 0, 0);
+	LCreateCommand("authorize", "do_authorize", 100, 51, 1, 0);
+	LCreateCommand("at", "do_at", 100, 52, 0, 0);
+	LCreateCommand("affected", "do_affected", 104, 0, 0, 0);
+	LCreateCommand("afk", "do_afk", 104, 0, 0, 0);
+	LCreateCommand("ansi", "do_ansi", 100, 0, 0, 0);
+	LCreateCommand("answer", "do_answer", 104, 0, 0, 1);
+	LCreateCommand("aassign", "do_aassign", 100, 53, 1, 0);
+	LCreateCommand("advance", "do_advance", 100, 61, 1, 0);
+	LCreateCommand("allow", "do_allow", 100, 58, 1, 0);
+	LCreateCommand("appraise", "do_appraise", 106, 0, 0, 0);
+	LCreateCommand("areas", "do_areas", 100, 0, 0, 0);
+	LCreateCommand("aset", "do_aset", 100, 59, 1, 0);
+	LCreateCommand("ask", "do_ask", 104, 0, 0, 1);
+	LCreateCommand("astat", "do_astat", 100, 59, 0, 0);
+end
 
-#COMMAND
-Name        :~
-Code        do_immtalk
-Position    100
-Level       51
-Log         0
-Flags       1
-End
 
-#COMMAND
-Name        :~
-Code        do_avtalk
-Position    100
-Level       50
-Log         0
-Flags       1
-End
-
-#COMMAND
-Name        ;~
-Code        do_gtell
-Position    100
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        authorize~
-Code        do_authorize
-Position    100
-Level       51
-Log         1
-End
-
-#COMMAND
-Name        auction~
-Code        do_auction
-Position    104
-Level       5
-Log         0
-Flags       1
-End
-
-#COMMAND
-Name        at~
-Code        do_at
-Position    100
-Level       52
-Log         0
-End
-
-#COMMAND
-Name        affected~
-Code        do_affected
-Position    104
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        afk~
-Code        do_afk
-Position    104
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        ansi~
-Code        do_ansi
-Position    100
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        answer~
-Code        do_answer
-Position    104
-Level       0
-Log         0
-Flags       1
-End
-
-#COMMAND
-Name        aassign~
-Code        do_aassign
-Position    100
-Level       53
-Log         1
-End
-
-#COMMAND
-Name        advance~
-Code        do_advance
-Position    100
-Level       61
-Log         1
-End
-
-#COMMAND
-Name        allow~
-Code        do_allow
-Position    100
-Level       58
-Log         1
-End
-
-#COMMAND
-Name        appraise~
-Code        do_appraise
-Position    106
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        areas~
-Code        do_areas
-Position    100
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        aset~
-Code        do_aset
-Position    100
-Level       59
-Log         1
-End
-
-#COMMAND
-Name        ask~
-Code        do_ask
-Position    104
-Level       0
-Log         0
-Flags       1
-End
-
-#COMMAND
-Name        astat~
-Code        do_astat
-Position    100
-Level       59
-Log         0
-End
+--[[
 
 #COMMAND
 Name        avtalk~
@@ -3645,3 +3505,6 @@ Log         0
 End
 
 #END
+--]]
+
+-- EOF

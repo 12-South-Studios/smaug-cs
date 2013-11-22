@@ -13,7 +13,7 @@ namespace SmaugCS
 
         public static int figure_liq_vnum()
         {
-            return db.LIQUIDS.Max(x => x.Vnum) + 1;
+            return DatabaseManager.Instance.LIQUIDS.Max(x => x.Vnum) + 1;
         }
 
         public static void displaymixture(CharacterInstance ch, MixtureData mix)
@@ -35,8 +35,8 @@ namespace SmaugCS
 
             if (!mix.Object)
             {
-                LiquidData ingredient1 = db.GetLiquid(mix.Data[0]);
-                LiquidData ingredient2 = db.GetLiquid(mix.Data[1]);
+                LiquidData ingredient1 = DatabaseManager.Instance.GetLiquid(mix.Data[0]);
+                LiquidData ingredient2 = DatabaseManager.Instance.GetLiquid(mix.Data[1]);
                 color.send_to_pager("&wCombine two liquids to create this mixture:\r\n", ch);
 
                 if (ingredient1 == null)
@@ -58,7 +58,7 @@ namespace SmaugCS
                     return;
                 }
 
-                LiquidData ingredient1 = db.GetLiquid(mix.Data[1]);
+                LiquidData ingredient1 = DatabaseManager.Instance.GetLiquid(mix.Data[1]);
                 color.send_to_pager("Combine an object and a liquid in this mixture\r\n", ch);
                 color.pager_printf(ch, "&wMix &G%s&w (%d)\r\n", obj.Name, mix.Data[0]);
                 color.pager_printf(ch, "&winto one part &G%s&w (%d)&D\r\n", ingredient1.Name, mix.Data[1]);
@@ -74,7 +74,7 @@ namespace SmaugCS
             if (mixture == null || mixture.Data[2] == -1)
                 return null;
 
-            LiquidData liquid = db.GetLiquid(mixture.Data[2]);
+            LiquidData liquid = DatabaseManager.Instance.GetLiquid(mixture.Data[2]);
             if (liquid == null)
                 return null;
 
@@ -95,7 +95,7 @@ namespace SmaugCS
             if (mixture == null || mixture.Data[2] == -1)
                 return null;
 
-            LiquidData liquid = db.GetLiquid(mixture.Data[2]);
+            LiquidData liquid = DatabaseManager.Instance.GetLiquid(mixture.Data[2]);
             if (liquid == null)
                 return null;
 

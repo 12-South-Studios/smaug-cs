@@ -424,7 +424,7 @@ namespace SmaugCS
                      || loc == (int)ApplyTypes.StripSN
                      || loc == (int)ApplyTypes.RecurringSpell)
             {
-                value = db.LookupSkill(arg);
+                value = DatabaseManager.Instance.LookupSkill(arg);
                 if (!Macros.IS_VALID_SN(value))
                     color.ch_printf(ch, "Invalid spell: %s", arg);
                 else

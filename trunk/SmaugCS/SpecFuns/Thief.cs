@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.SpecFuns
 {
-    class AcidBreath
+    class Thief
     {
-        public static int spell_acid_breath(int sn, int level, CharacterInstance ch, object vo)
+        public static bool spec_thief(CharacterInstance ch)
         {
             // TODO
-            return 0;
+            return false;
         }
     }
 }

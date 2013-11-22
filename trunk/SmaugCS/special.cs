@@ -1,145 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
     public static class special
     {
-        public static void free_specfuns()
+        public static Dictionary<string, Func<CharacterInstance, bool>> SpecialFuncLookupTable =
+            new Dictionary<string, Func<CharacterInstance, bool>>()
+                {
+                    {"spec_breath_any", SpecFuns.BreathAny.spec_breath_any},
+                    {"spec_breath_acid", SpecFuns.BreathAcid.spec_breath_acid},
+                    {"spec_breath_fire", SpecFuns.BreathFire.spec_breath_fire},
+                    {"spec_breath_frost", SpecFuns.BreathFrost.spec_breath_frost},
+                    {"spec_breath_gas", SpecFuns.BreathGas.spec_breath_gas},
+                    {"spec_breath_lightning", SpecFuns.BreathLightning.spec_breath_lightning},
+                    {"spec_cast_adept", SpecFuns.CastAdept.spec_cast_adept},
+                    {"spec_cast_cleric", SpecFuns.CastCleric.spec_cast_cleric},
+                    {"spec_cast_mage", SpecFuns.CastMage.spec_cast_mage},
+                    {"spec_cast_undead", SpecFuns.CastUndead.spec_cast_undead},
+                    {"spec_executioner", SpecFuns.Executioner.spec_executioner},
+                    {"spec_fido", SpecFuns.Fido.spec_fido},
+                    {"spec_guard", SpecFuns.Guard.spec_guard},
+                    {"spec_janitor", SpecFuns.Janitor.spec_janitor},
+                    {"spec_mayor", SpecFuns.Mayor.spec_mayor},
+                    {"spec_poison", SpecFuns.Poison.spec_poison},
+                    {"spec_thief", SpecFuns.Thief.spec_thief},
+                    {"spec_wanderer", SpecFuns.Wanderer.spec_wanderer}
+                };
+
+        public static Func<CharacterInstance, bool> GetSpecFunReference(string name)
         {
-            db.SPEC_LIST.Clear();
+            return SpecialFuncLookupTable.ContainsKey(name.ToLower())
+                       ? SpecialFuncLookupTable[name.ToLower()]
+                       : null;
         }
 
-        public static void load_specfuns()
+        public static bool IsValidSpecFun(string name)
         {
-            // TODO
+            return DatabaseManager.Instance.SPEC_FUNS.Any(s => s.Name.EqualsIgnoreCase(name));
         }
 
-        public static bool validate_spec_fun(string name)
+        public static SpecialFunction GetSpecFun(string name)
         {
-            return db.SPEC_LIST.Any(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public static SpecialFunction spec_lookup(string name)
-        {
-            return db.SPEC_LIST.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return DatabaseManager.Instance.SPEC_FUNS.FirstOrDefault(s => s.Name.EqualsIgnoreCase(name));
         }
 
         public static void summon_if_hating(CharacterInstance ch)
         {
             // TODO
-        }
-
-        public static bool dragon(CharacterInstance ch, string fspell_name)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_breath_any(CharacterInstance ch)
-        {
-            if (ch.CurrentPosition != PositionTypes.Fighting
-                && ch.CurrentPosition != PositionTypes.Evasive
-                && ch.CurrentPosition != PositionTypes.Defensive
-                && ch.CurrentPosition != PositionTypes.Aggressive
-                && ch.CurrentPosition != PositionTypes.Berserk)
-                return false;
-
-            switch (SmaugCS.Common.SmaugRandom.Bits(3))
-            {
-                case 0:
-                    return dragon(ch, "fire breath");
-                case 1:
-                case 2:
-                    return dragon(ch, "lightning breath");
-                case 3:
-                    return spec_breath_gas(ch);
-                case 4:
-                    return dragon(ch, "acid breath");
-                default:
-                    return dragon(ch, "frost breath");
-            }
-        }
-
-        public static bool spec_breath_gas(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_cast_adept(CharacterInstance ch)
-        {
-            // tODO
-            return false;
-        }
-
-        public static bool spec_cast_cleric(CharacterInstance ch)
-        {
-            // tODO
-            return false;
-        }
-
-        public static bool spec_cast_mage(CharacterInstance ch)
-        {
-            // tODO
-            return false;
-        }
-
-        public static bool spec_cast_undead(CharacterInstance ch)
-        {
-            // tODO
-            return false;
-        }
-
-        public static bool spec_executioner(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_fido(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_guard(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_janitor(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_mayor(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_poison(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_thief(CharacterInstance ch)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool spec_wanderer(CharacterInstance ch)
-        {
-            // TODO
-            return false;
         }
     }
 }

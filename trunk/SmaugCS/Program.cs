@@ -556,10 +556,10 @@ namespace SmaugCS
         {
             LogManager.BootLog("Starting up the MUD");
 
-            SystemConstants.LoadSystemDirectories(GetDataPath() + "//SystemDirectories.txt");
+            SystemConstants.LoadSystemDirectories(GetDataPath());
             LogManager.BootLog("SystemDirectories loaded.");
 
-            SystemConstants.LoadSystemFiles(GetDataPath() + "//SystemFiles.txt");
+            SystemConstants.LoadSystemFiles(GetDataPath());
             LogManager.BootLog("SystemFiles loaded.");
 
             // Setup the Managers
@@ -568,7 +568,8 @@ namespace SmaugCS
             _luaMgr.InitDataPath(GetDataPath());
 
             LuaInterfaceProxy proxy = new LuaInterfaceProxy();
-            var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(MobileRepository));
+            LuaFunctionRepository luaFuncRepo = new LuaFunctionRepository();
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(MobileRepository));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(AreaRepository));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(ObjectRepository));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(RoomRepository));

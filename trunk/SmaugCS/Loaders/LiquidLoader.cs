@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
 {
@@ -14,14 +15,14 @@ namespace SmaugCS.Loaders
 
         public override string Filename
         {
-            get { return SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "liquids.dat"; }
+            get { return SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "liquids.lua"; }
         }
 
         public override void Save()
         {
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
-                foreach (LiquidData liquid in db.LIQUIDS)
+                foreach (LiquidData liquid in DatabaseManager.Instance.LIQUIDS)
                 {
                     proxy.Write("#LIQUID\n");
                     proxy.Write("Name      {0}~\n", liquid.Name);
@@ -38,6 +39,11 @@ namespace SmaugCS.Loaders
 
                 proxy.Write("#END\n");
             }
+        }
+
+        public void LoadLua()
+        {
+            LuaManager.Instance.Proxy.DoFile(Filename);
         }
 
         public override void Load()
@@ -63,7 +69,7 @@ namespace SmaugCS.Loaders
 
                         // TODO Verify the vnum isn't already present
 
-                        db.LIQUIDS.Add(liquid);
+                        DatabaseManager.Instance.LIQUIDS.Add(liquid);
                     }
                 } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#end"));
             }

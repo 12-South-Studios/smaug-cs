@@ -124,7 +124,7 @@ namespace SmaugCS.Loaders
             else
             {
                 string skillName = proxy.ReadNextWord();
-                int sn = db.LookupSkill(skillName);
+                int sn = DatabaseManager.Instance.LookupSkill(skillName);
                 if (sn < 0)
                     LogManager.Bug("Unknown skill {0}", skillName);
                 else
@@ -642,21 +642,21 @@ namespace SmaugCS.Loaders
                             || obj.Type == ItemTypes.Potion
                             || obj.Type == ItemTypes.Scroll)
                         {
-                            obj.Value[1] = db.LookupSkill(proxy.ReadNextWord());
-                            obj.Value[2] = db.LookupSkill(proxy.ReadNextWord());
-                            obj.Value[3] = db.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[1] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[2] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
                             break;
                         }
                         if (obj.Type == ItemTypes.Staff
                             || obj.Type == ItemTypes.Wand)
                         {
-                            obj.Value[3] = db.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
                             break;
                         }
                         if (obj.Type == ItemTypes.Salve)
                         {
-                            obj.Value[4] = db.LookupSkill(proxy.ReadNextWord());
-                            obj.Value[5] = db.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[4] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value[5] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
                         }
                         break;
                     case "stats":

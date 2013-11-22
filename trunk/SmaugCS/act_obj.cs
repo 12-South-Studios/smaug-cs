@@ -298,7 +298,7 @@ namespace SmaugCS
 
         public static bool could_dual(CharacterInstance ch)
         {
-            return ch.IsNpc() || ch.PlayerData.Learned[db.GetSkill("dual wield").ID] > 0;
+            return ch.IsNpc() || ch.PlayerData.Learned[DatabaseManager.Instance.GetSkill("dual wield").ID] > 0;
         }
 
         public static bool can_dual(CharacterInstance ch)

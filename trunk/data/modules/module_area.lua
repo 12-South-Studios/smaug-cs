@@ -3,15 +3,26 @@
 -- Revised: 2013.11.18
 -- Author: Jason Murdick
 
-function AddMobileToRoom(room, mob, room, limit)
+function AddMobileToRoom(roomRef, mob, room, limit)
 	newReset = LCreateReset("mob", 0, mob, room, limit);
 	reset.this = newReset;
-	room:AddReset(reset.this);
+	roomRef:AddReset(reset.this);
 	return reset.this;
 end
 
-function EquipOnMobile(masterReset, object, location)
+function AddObjectToRoom(roomRef, object, room, limit)
+	newReset = LCreateReset("obj", 0, object, room, limit);
+	reset.this = newReset;
+	roomRef:AddReset(reset.this);
+	return reset.this;
+end
+
+function EquipOnMobile(parentReset, object, location)
 	parentReset:AddReset("equip", 0, object, location, 0);
+end
+
+function GiveToMobile(parentReset, object, quantity)
+	parentReset:AddReset("give", 0, object, quantity, 0);
 end
 
 function AddExitToRoom(room, direction, location, description, flags)
@@ -22,10 +33,17 @@ function AddExitToRoom(room, direction, location, description, flags)
 	return exit.this;
 end
 
+function AddDoorReest(roomRef, direction, state)
+	newReset = LCreateReset("door", 0, DirectionToNumber(direction), DoorStateToNumber(state));
+	reset.this = newReset;
+	roomRef:AddReset(reset.this);
+	return reset.this;
+end
+
 function CreateMobile(vnum, keywords, name)
-	newMob = LCreateMobile(100, "bron barkeep");
+	newMob = LCreateMobile(100, keywords);
 	mobile.this = newMob;
-	mobile.this.ShortDescription = "Bron Ma'Ganor, Barkeep";
+	mobile.this.ShortDescription = name;
 	mobile.this.Speaks = "common";
 	mobile.this.Speaking = "common";
 	mobile.this.BodyParts = "head arms legs heart guts hands feet ear eye";
@@ -59,6 +77,56 @@ function CreateRoom(vnum, name, sector, area)
 	area:AddRoom(room.this);
 	room.this:SetSector(sector);
 	return room.this;
+end
+
+function CreateMudProg(progType, progArgList, progScript)
+	newProg = LCreateMudProg(progType);
+	mprog.this = newProg;
+	mprog.this.ArgList = progArgList;
+	mprog.this.Script = progScript;
+	return mprog.this;
+end
+
+function DirectionToNumber(direction)
+	local directions = {}
+	directions["north"] = 0;
+	directions["n"] = 0;
+	directions["east"] = 1;
+	directions["e"] = 1;
+	directions["south"] = 2;
+	directions["s"] = 2;
+	directions["west"] = 3;
+	directions["w"] = 3;
+	directions["up"] = 4;
+	directions["u"] = 4;
+	directions["down"] = 5;
+	directions["d"] = 5;
+	directions["northeast"] = 6;
+	directions["ne"] = 6;
+	directions["northwest"] = 7;
+	directions["nw"] = 7;
+	directions["southeast"] = 8;
+	directions["se"] = 8;
+	directions["southwest"] = 9;
+	directions["sw"] = 9;
+	directions["somewhere"] = 10;
+	
+	val = directions[direction];
+	if (val = nil) then
+		val = 10;
+	end
+	
+	return val;
+end
+
+function DoorStateToNumber(state)
+	val = 0;
+	
+	if (state = "closed") then
+		val = 1;
+	end
+	
+	return val;
 end
 
 -- EOF

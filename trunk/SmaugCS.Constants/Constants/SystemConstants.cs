@@ -43,7 +43,7 @@ namespace SmaugCS.Constants.Constants
 
         public static void LoadSystemDirectories(string path)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path + "\\SystemDirectories.txt")))
             {
                 while (!proxy.EndOfStream)
                 {
@@ -51,7 +51,7 @@ namespace SmaugCS.Constants.Constants
                     string[] words = line.Split(new[] { ',' });
 
                     SystemDirectoryTypes dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(words[0]);
-                    SystemDirectories.Add(dirType, words[1]);
+                    SystemDirectories.Add(dirType, path + "\\" + words[1]);
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace SmaugCS.Constants.Constants
         private static readonly string[] BooleanConstants = new[] { "true", "false", "1", "0", "yes", "no" };
         public static void LoadSystemFiles(string path)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path + "\\SystemFiles.txt")))
             {
                 while (!proxy.EndOfStream)
                 {

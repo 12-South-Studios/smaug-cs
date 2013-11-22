@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
@@ -15,7 +16,20 @@ namespace SmaugCS
 {
     public static class LuaFunctions
     {
+        #region LastObject
+        private static readonly Dictionary<Type, object> LastObjects = new Dictionary<Type, object>(); 
         public static object LastObject { get; private set; }
+
+        private static void AddLastObject(object obj)
+        {
+            LastObjects[obj.GetType()] = obj;
+            LastObject = obj;
+        }
+        public static object GetLastObject(Type type)
+        {
+            return LastObjects.ContainsKey(type) ? LastObjects[type] : LastObject;
+        }
+        #endregion
 
         [LuaFunction("LGetLastEntity", "Retrieves the Last Entity")]
         public static object LuaGetLastEntity()
@@ -77,7 +91,7 @@ namespace SmaugCS
         {
             MudProgData newMudProg = new MudProgData { Type = EnumerationExtensions.GetEnumByName<MudProgTypes>(progType) };
             LuaManager.Instance.Proxy.CreateTable("mprog");
-            LastObject = newMudProg;
+            AddLastObject(newMudProg);
             return newMudProg;
         }
 
@@ -92,7 +106,7 @@ namespace SmaugCS
                                        Keywords = direction
                                    };
             LuaManager.Instance.Proxy.CreateTable("exit");
-            LastObject = newExit;
+            AddLastObject(newExit);
             return newExit;
         }
 
@@ -110,7 +124,7 @@ namespace SmaugCS
                                        };
 
             LuaManager.Instance.Proxy.CreateTable("shop");
-            LastObject = newShop;
+            AddLastObject(newShop);
             return newShop;
         }
 
@@ -125,8 +139,130 @@ namespace SmaugCS
             newReset.SetArgs(arg1, arg2, arg3);
 
             LuaManager.Instance.Proxy.CreateTable("reset");
-            LastObject = newReset;
+            AddLastObject(newReset);
             return newReset;
+        }
+
+        [LuaFunction("LCreateLiquid", "Creates a new Liquid", "Liquid ID", "Liquid Name")]
+        public static LiquidData LuaCreateLiquid(int id, string name)
+        {
+            LiquidData newLiquid = new LiquidData {Vnum = id, Name = name};
+
+            LuaManager.Instance.Proxy.CreateTable("liquid");
+            AddLastObject(newLiquid);
+            DatabaseManager.Instance.LIQUIDS.Add(newLiquid);
+            return newLiquid;
+        }
+
+        [LuaFunction("LCreateSkill", "Creates a new skill", "Skill Name", "Skill Type")]
+        public static SkillData LuaCreateSkill(string name, string type)
+        {
+            SkillData newSkill = new SkillData(99, 99)
+                {
+                    Name = name,
+                    Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type)
+                };
+
+            if (type.EqualsIgnoreCase("herb"))
+            {
+                DatabaseManager.Instance.HERBS.Add(newSkill);
+                LuaManager.Instance.Proxy.CreateTable("herb");
+            }
+            else
+            {
+                DatabaseManager.Instance.SKILLS.Add(newSkill);
+                LuaManager.Instance.Proxy.CreateTable("skill");
+            }
+
+            AddLastObject(newSkill);
+            return newSkill;
+        }
+
+        [LuaFunction("LSetCode", "Sets the skill function on a skill", "Skill reference", "function")]
+        public static void LuaSetCode(SkillData skill, string function)
+        {
+            Action<CharacterInstance, string> skillFunc = tables.GetSkillFunction(function);
+            if (skillFunc != null && skillFunc != tables.SkillNotfound)
+            {
+                skill.SkillFunctionName = function;
+                skill.SkillFunction = new DoFunction {Value = skillFunc};
+                return;
+            }
+
+            Func<int, int, CharacterInstance, object, ReturnTypes> spellFunc = tables.GetSpellFunction(function);
+            if (spellFunc != null && spellFunc != tables.SpellNotfound)
+            {
+                skill.SpellFunctionName = function;
+                skill.SpellFunction = new SpellFunction() {Value = spellFunc};
+                return;
+            }
+        }
+
+        [LuaFunction("LCreateSmaugAffect", "Creates a new Smaug Affect", "duration", "location", "modifier", "flags")]
+        public static SmaugAffect LuaCreateSmaugAffect(string duration, int location, string modifier, int flags)
+        {
+            SmaugAffect newAffect = new SmaugAffect
+                {
+                    Duration = duration,
+                    Location = location,
+                    Modifier = modifier,
+                    Flags = flags
+                };
+
+            LuaManager.Instance.Proxy.CreateTable("affect");
+            AddLastObject(newAffect);
+
+            return newAffect;
+        }
+
+        [LuaFunction("LCreateSpecFun", "Creates a new special function", "Name of the function")]
+        public static SpecialFunction LuaCreateSpecialFunction(string name)
+        {
+            SpecialFunction newSpecFun = new SpecialFunction
+                {
+                    Name = name,
+                    Value = special.GetSpecFunReference(name)
+                };
+
+            LuaManager.Instance.Proxy.CreateTable("specfun");
+            AddLastObject(newSpecFun);
+            DatabaseManager.Instance.SPEC_FUNS.Add(newSpecFun);
+            return newSpecFun;
+        }
+
+        [LuaFunction("LCreateCommand", "Creates a new command", "Name of the command", "Command function", "Position",
+            "Min Level", "Log Flag", "Flags")]
+        public static CommandData LuaCreateCommand(string name, string function, int position, int level, int log,
+                                                   int flags)
+        {
+            CommandData newCommand = new CommandData
+                {
+                    Name = name,
+                    Flags = flags,
+                    Position = position,
+                    Level = level,
+                    Log = log,
+                    FunctionName = function,
+                    DoFunction = new DoFunction()
+                };
+            newCommand.Position = newCommand.GetModifiedPosition();
+            newCommand.DoFunction.Value = tables.GetSkillFunction(function);
+
+            LuaManager.Instance.Proxy.CreateTable("command");
+            AddLastObject(newCommand);
+            db.COMMANDS.Add(newCommand);
+            return newCommand;
+        }
+
+        [LuaFunction("LCreateSocial", "Creates a new Social", "Name of the social")]
+        public static SocialData LuaCreateSocial(string name)
+        {
+            SocialData newSocial = new SocialData() {Name = name};
+
+            LuaManager.Instance.Proxy.CreateTable("social");
+            AddLastObject(newSocial);
+            db.SOCIALS.Add(newSocial);
+            return newSocial;
         }
     }
 }

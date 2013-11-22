@@ -60,7 +60,7 @@ namespace SmaugCS.Loaders
                 foreach (CommandData command in db.COMMANDS
                     .Where(command => command.Name.EqualsIgnoreCase(watch.TargetName)))
                 {
-                    command.flags.SetBit((int)CommandFlags.Watch);
+                    command.Flags.SetBit((int)CommandFlags.Watch);
                     break;
                 }
 

@@ -1,14 +1,32 @@
-#SOCIAL
-Name        accuse~
-CharNoArg   Accuse whom?~
-OthersNoArg $n is in an accusing mood.~
-CharFound   You look accusingly at $N.~
-OthersFound $n looks accusingly at $N.~
-VictFound   $n looks accusingly at you.~
-CharAuto    You accuse yourself.~
-OthersAuto  $n seems to have a bad conscience.~
-End
+-- SOCIALS.LUA
+-- This is the Socials data file for the MUD
+-- Revised: 2013.11.22
+-- Author: Jason Murdick
+-- Version: 1.0
 
+LoadSocials();
+
+function LoadSocials()
+	social.this = CreateSocial("accuse");
+	social.this.CharNoArg = "Accuse whom?";
+	social.this.OthersNoArg = "$n is in an accusing mood.";
+	social.this.CharFound = "You look accusingly at $N.";
+	social.this.OthersFound = "$n looks accusingly at $N.";
+	social.this.VictFound = "$n looks accusingly at you.";
+	social.this.CharAuto = "You accuse yourself.";
+	social.this.OthersAuto = "$n seems to have a bad conscience.";
+	
+	
+
+end
+
+function CreateSocial(name)
+	newSocial = LCreateSocial(name);
+	social.this = newSocial;
+	return social.this;
+end
+
+--[[
 #SOCIAL
 Name        ack~
 CharNoArg   You gasp and say 'ACK!' at your mistake.~
@@ -5255,3 +5273,6 @@ OthersAuto  $n asks 'Zuh?' of no one in particular. Must be those voices again.~
 End
 
 #END
+--]]
+
+-- EOF
