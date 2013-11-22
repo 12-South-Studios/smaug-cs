@@ -22,6 +22,18 @@ function LoadSkills()
 	skill.this:AddAffect(CreateSmaugAffect("10", 13, "-75", -1));
 	skill.this:AddAffect(CreateSmaugAffect("10", 31, "-3", -1));	
 	
+	skill.this = CreateSkill("astral walk", "spell", 112, 90, 30);
+	skill.this.MinimumMana = 60;
+	skill.this.Rounds = 12;
+	skill.this.WearOffMessage = "!Astral Walk!");
+	LSetCode(skill.this, "spell_astral_walk");
+	
+	LoadBuffSpells();
+	LoadAcidSpells();
+	LoadDeathSpells();
+end
+
+function LoadBuffSpells()
 	skill.this = CreateSkill("alertness", "spell", 111, 102, 23);
 	skill.this:SetTargetByValue(3);
 	skill.this.MinimumMana = 60;
@@ -32,24 +44,64 @@ function LoadSkills()
 	LSetCode(skill.this, "spell_smaug");
 	skill.this:AddAffect(CreateSmaugAffect("l*15", 27, "1024", -1));
 
+	skill.this = CreateSkill("antimagic shell", "spell", 111, 224, 17);
+	skill.this:SetTargetByValue(3);
+	skill.this.MinimumMana = 40;
+	skill.this.Rounds = 12;
+	skill.this.WearOffMessage = "The shimmering shell and its protection from magic fade away.";
+	skill.this.HitVictimMessage = "A shimmering translucent shell forms about you.";
+	skill.this.HItRoomMessage = "A shimmering translucent shell forms about $N.";
+	LSetCode(skill.this, "spell_smaug");
+	skill.this:AddAffect(CreateSmaugAffect("l*23", 27, "1048576", -1));
 	
-	LoadAcidSpells();
-	LoadDeathSpells();
-end
-
-function CreateSkill(name, skillType, minPosition, slot, minLevel)
-	newSkill = LCreateSkill(name, skillType);
-	skill.this = newSkill;
-	skill.this.MinimumPosition = minPosition;
-	skill.this.Slot = slot;
-	skill.this.MinimumLevel = minLevel;
-	return skill.this;
-end
-
-function CreateSmaugAffect(duration, location, modifier, flags)
-	newAffect = LCreateSmaugAffect(duration, location, modifier, flags);
-	affect.this = newAffect;
-	return affect.this;
+	skill.this = CreateSkill("aqua breath", "spell", 112, 236, 14);
+	skill.this:SetFlags("noscribe");
+	skill.this:SetTargetByValue(2);
+	skill.this.MinimumMana = 50;
+	skill.this.Rounds = 12;
+	skill.this.WearOffMessage = "Your lungs revert to their original state.";
+	skill.this.HitCharacterMessage = "$N's lungs take on the ability to breathe water...";
+	skill.this.HitVictimMessage = "Your lungs take on the ability to breathe water...";
+	skill.this.HitRoomMessage = "$N's lungs take on the ability to breathe water...";
+	LSetCode(skill.this, "spell_smaug");
+	skill.this:AddAffect(CreateSmaugAffect("l*23", 26, "aqua breath", 31));
+	
+	skill.this = CreateSkill("armor", "spell", 111, 1, 1);
+	skill.this:SetTargetByValue(2);
+	skill.this.MinimumMana = 5;
+	skill.this.Rounds = 12;
+	skill.this.WearOffMessage = "Your armor returns to its mundane value.";
+	skill.this.HitCharacterMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
+	skill.this.HitVictimMessage = "Your armor begins to glow softly as it is enhanced by a cantrip.";
+	skill.this.HItRoomMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
+	LSetCode(skill.this, "spell_smaug");
+	skill.this:AddAffect(CreateSmaugAffect("l*10", 17, "-20", -1));
+	
+	skill.this = CreateSkill("benediction", "spell", 110, 95, 19);
+	skill.this:SetTargetByValue(2);
+	skill.this.Info = 840;
+	skill.this.MinimumMana = 15;
+	skill.this.Rounds = 15;
+	skill.this.Flags = 14336;
+	skill.this.WearOffMessage = "Your time in The Protection of The High Gods is over.";
+	skill.this.HitCharacterMessage = "You lay The Protection of The High Gods upon $N.";
+	skill.this.HitVictimMessage = "The Protection of The High Gods is temporarily given to you.";
+	skill.this.HitRoomMessage = "The Protection of The High Gods is temporarily given to $N.";
+	LSetCode(skill.this, "spell_smaug");
+	skill.this:AddAffect(CreateSmaugAffect("l", 26, "protection", 13));
+	
+	skill.this = CreateSkill("benefic aura", "spell", 111, 342, 30);
+	skill.this:SetTargetByValue(3);
+	skill.this.MinimumMana = 50;
+	skill.this.Rounds = 12;
+	skill.this.WearOffMessage = "Your protection from evil slowly unravels.";
+	skill.this.HitVictimMessage = "A faint glow rises about you as you are instilled with a ward against evil.";
+	skill.this.HitRoomMessage = "A faint glow rises protectively about $N.";
+	LSetCode(skill.this, "spell_smaug");
+	skill.this:AddAffect(CreateSmaugAffect("l*7", 26, "protect", 13));
+	skill.this:AddComponent(CreateSpellComponent("V", "65", "@"));
+	
+	
 end
 
 function LoadAcidSpells()
@@ -97,123 +149,28 @@ function LoadDeathSpells()
 	LSetCode(skill.this, "spell_animate_dead");
 end
 
+function CreateSkill(name, skillType, minPosition, slot, minLevel)
+	newSkill = LCreateSkill(name, skillType);
+	skill.this = newSkill;
+	skill.this.MinimumPosition = minPosition;
+	skill.this.Slot = slot;
+	skill.this.MinimumLevel = minLevel;
+	return skill.this;
+end
+
+function CreateSmaugAffect(duration, location, modifier, flags)
+	newAffect = LCreateSmaugAffect(duration, location, modifier, flags);
+	affect.this = newAffect;
+	return affect.this;
+end
+
+function CreateSpellComponent(requiredType, dataValue, operatorType)
+	newComponent = LCreateSpellComponent(requiredType, dataValue, operatorType);
+	component.this = newComponent;
+	return component.this;
+end
+
 --[[
-
-
-#SKILL
-Name         antimagic shell~
-Type         Spell
-Info         0
-Flags        0
-Target       3
-Minpos       111
-Slot         224
-Mana         40
-Rounds       12
-Code         spell_smaug
-Dammsg       ~
-Wearoff      The shimmering shell and its protection from magic fade away...~
-Hitvict      A shimmering translucent shell forms about you.~
-Hitroom      A shimmering translucent shell forms about $N.~
-Affect       'l*23' 27 '1048576' -1
-Minlevel     17
-End
-
-#SKILL
-Name         aqua breath~
-Type         Spell
-Info         0
-Flags        1024
-Target       2
-Minpos       112
-Slot         236
-Mana         50
-Rounds       12
-Code         spell_smaug
-Dammsg       ~
-Wearoff      Your lungs revert to their original state.~
-Hitchar      $N's lungs take on the ability to breathe water...~
-Hitvict      Your lungs take on the ability to breathe water...~
-Hitroom      $N's lungs take on the ability to breathe water...~
-Affect       'l*23' 26 'aqua breath' 31
-Minlevel     14
-End
-
-#SKILL
-Name         armor~
-Type         Spell
-Info         0
-Flags        0
-Target       2
-Minpos       111
-Slot         1
-Mana         5
-Rounds       12
-Code         spell_smaug
-Dammsg       ~
-Wearoff      Your armor returns to its mundane value.~
-Hitchar      $N's armor begins to glow softly as it is enhanced by a cantrip.~
-Hitvict      Your armor begins to glow softly as it is enhanced by a cantrip.~
-Hitroom      $N's armor begins to glow softly as it is enhanced by a cantrip.~
-Affect       'l*10' 17 '-20' -1
-Minlevel     1
-End
-
-#SKILL
-Name         astral walk~
-Type         Spell
-Info         0
-Flags        0
-Minpos       112
-Slot         90
-Mana         60
-Rounds       12
-Code         spell_astral_walk
-Dammsg       ~
-Wearoff      !Astral Walk!~
-Minlevel     30
-End
-
-#SKILL
-Name         benediction~
-Type         Spell
-Info         840
-Flags        14336
-Target       2
-Minpos       110
-Slot         95
-Mana         15
-Rounds       15
-Code         spell_smaug
-Dammsg       ~
-Wearoff      Your time in The Protection of The High Gods is over.~
-Hitchar      You lay The Protection of The High Gods upon $N.~
-Hitvict      The Protection of The High Gods is temporarily given to you.~
-Hitroom      The Protection of The High Gods is temporarily given to $N.~
-Affect       'l' 26 'protection' 13
-Minlevel     19
-End
-
-#SKILL
-Name         benefic aura~
-Type         Spell
-Info         0
-Flags        0
-Target       3
-Minpos       111
-Slot         342
-Mana         50
-Rounds       12
-Code         spell_smaug
-Dammsg       ~
-Wearoff      Your protection from evil slowly unravels.~
-Hitvict      A faint glow rises about you as you are instilled with a ward against evil.~
-Hitroom      A faint glow rises protectively about $N.~
-Components   V@65~
-Affect       'l*7' 26 'protect' 13
-Minlevel     30
-End
-
 #SKILL
 Name         bethsaidean touch~
 Type         Spell

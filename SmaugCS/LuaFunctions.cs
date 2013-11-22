@@ -264,5 +264,23 @@ namespace SmaugCS
             db.SOCIALS.Add(newSocial);
             return newSocial;
         }
+
+        [LuaFunction("LCreateSpellComponent", "Creates a new spell component", "Required Component Type",
+            "Component Data", "Component Operator Type")]
+        public static SpellComponent LuaCreateSpellComponent(string requiredType, string data, string operatorType)
+        {
+            SpellComponent newComponent = new SpellComponent
+                {
+                    RequiredType = EnumerationExtensions.GetEnumByName<ComponentRequiredTypes>(requiredType),
+                    RequiredData = data
+                };
+
+            if (!operatorType.IsNullOrEmpty())
+                newComponent.OperatorType = EnumerationExtensions.GetEnumByName<ComponentOperatorTypes>(operatorType);
+
+            LuaManager.Instance.Proxy.CreateTable("component");
+            AddLastObject(newComponent);
+            return newComponent;
+        }
     }
 }

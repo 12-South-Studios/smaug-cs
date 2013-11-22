@@ -9,7 +9,7 @@ LoadArea()	-- EXECUTE THE AREA
 
 function LoadArea()
 	systemLog("=================== AREA 'INN OF THE SEVEN REALMS' INITIALIZING ===================");
-	newArea = LCreateArea(1, "Inn of the Seven Realms");
+	newArea = LCreateArea(2, "Inn of the Seven Realms");
 	area.this = newArea;
 	area.this.Author = "AmonGwareth";
 	area.this.HighSoftRange = 60;
