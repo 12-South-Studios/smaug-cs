@@ -122,6 +122,14 @@ namespace SmaugCS.Tests
             sb.Append("social.this.CharNoArg = \"Accuse whom?\";");
             return sb.ToString();
         }
+
+        private static string GetSpellCommponentLuaScript()
+        {
+            var sb = new StringBuilder();
+            sb.Append("newComponent = LCreateSpellComponent(\"V\", \"65\", \"@\");");
+            sb.Append("component.this = newComponent;");
+            return sb.ToString();
+        }
         #endregion
 
         [SetUp]
@@ -302,6 +310,18 @@ namespace SmaugCS.Tests
             Assert.That(result, Is.Not.Null); 
             Assert.That(result.Name, Is.EqualTo("accuse"));
             Assert.That(result.CharNoArg, Is.EqualTo("Accuse whom?"));
+        }
+
+        [Test]
+        public void LuaCreateSpellComponent_Test()
+        {
+            LuaManager.Instance.Proxy.DoString(GetSpellCommponentLuaScript());
+            var result = LuaFunctions.LastObject.CastAs<SpellComponent>();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.RequiredType, Is.EqualTo(ComponentRequiredTypes.ItemVnum));
+            Assert.That(result.RequiredData, Is.EqualTo("65"));
+            Assert.That(result.OperatorType, Is.EqualTo(ComponentOperatorTypes.DecreaseValue0));
         }
     }
 }

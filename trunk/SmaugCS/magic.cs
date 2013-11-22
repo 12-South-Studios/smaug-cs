@@ -414,7 +414,7 @@ namespace SmaugCS
         {
             SkillData skill = DatabaseManager.Instance.GetSkill(sn);
 
-            if (skill == null || skill.Components.IsNullOrEmpty())
+            if (skill == null || skill.Components.Count == 0)
                 return true;
 
             // TODO: how to handle this?

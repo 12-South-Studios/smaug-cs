@@ -124,6 +124,7 @@
     <Compile Include="snswap_data.cs" />
     <Compile Include="SocialData.cs" />
     <Compile Include="SpecialFunction.cs" />
+    <Compile Include="SpellComponent.cs" />
     <Compile Include="SpellFunction.cs" />
     <Compile Include="SystemData.cs" />
     <Compile Include="TeleportData.cs" />

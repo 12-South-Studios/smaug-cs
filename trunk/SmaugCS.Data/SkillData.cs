@@ -63,7 +63,7 @@ namespace SmaugCS.Data
         public SaveVsTypes SaveVs { get; set; }
         public char difficulty { get; set; }
         public List<SmaugAffect> Affects { get; set; }
-        public string Components { get; set; }
+        public List<SpellComponent> Components { get; set; }
         public string teachers { get; set; }
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
@@ -75,6 +75,7 @@ namespace SmaugCS.Data
             RaceLevel = new int[maxRaces];
             RaceAdept = new int[maxRaces];
             Affects = new List<SmaugAffect>();
+            Components = new List<SpellComponent>();
         }
 
         public static int Compare(SkillData sk1, SkillData sk2)
@@ -162,6 +163,11 @@ namespace SmaugCS.Data
             {
                 Flags += (int)EnumerationExtensions.GetEnumIgnoreCase<SkillFlags>(word);
             }
+        }
+
+        public void AddComponent(SpellComponent component)
+        {
+            Components.Add(component);
         }
     }
 }

@@ -90,6 +90,8 @@
     <Compile Include="Enums\CharacterSubStates.cs" />
     <Compile Include="Enums\ClassTypes.cs" />
     <Compile Include="Enums\CommandFlags.cs" />
+    <Compile Include="Enums\ComponentOperatorTypes.cs" />
+    <Compile Include="Enums\ComponentRequiredTypes.cs" />
     <Compile Include="Enums\ConditionTypes.cs" />
     <Compile Include="Enums\ConnectionTypes.cs" />
     <Compile Include="Enums\ContainerFlags.cs" />

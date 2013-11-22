@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Data
@@ -113,6 +114,15 @@ namespace SmaugCS.Data
         {
             if (Rooms.All(x => x.ID != room.ID))
                 Rooms.Add(room);
+        }
+
+        public void SetFlags(string flags)
+        {
+            string[] words = flags.Split(new[] { ' ' });
+            foreach (string word in words)
+            {
+                Flags += (int)EnumerationExtensions.GetEnumIgnoreCase<AreaFlags>(word);
+            }
         }
 
         /*public void SaveHeader(TextWriterProxy proxy, bool install)

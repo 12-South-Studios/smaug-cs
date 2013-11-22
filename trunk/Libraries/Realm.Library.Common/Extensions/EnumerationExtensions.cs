@@ -152,7 +152,7 @@ namespace Realm.Library.Common
                     return value;
             }
 
-            throw new InvalidEnumArgumentException(string.Format("{0} not found in Enum Type {1}", name, typeof(T)));
+            return GetEnumIgnoreCase<T>(name);
         }
 
         /// <summary>

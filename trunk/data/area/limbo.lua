@@ -1,57 +1,60 @@
-#FUSSAREA
-#AREADATA
-Version      1
-Name         Limbo~
-Author       RoD~
-WeatherX     0
-WeatherY     0
-Ranges       0 60 0 60
-Economy      0 33928447
-ResetMsg     A dim pulse of light filters through the swirling mists.~
-ResetFreq    60
-Flags        noteleport~
-#ENDAREADATA
+-- LIMBO.LUA
+-- This is the zone-file for Limbo
+-- Revised: 2013.11.22
+-- Author: Jason Murdick
+-- Version: 1.0
+f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 
-#MOBILE
-Vnum       1
-Keywords   Puff~
-Short      Puff~
-Long       Puff the Fractal Dragon is here, contemplating a higher reality.
-~
-Race       dragon~
-Class      mage~
-Position   standing~
-DefPos     standing~
-Specfun    spec_breath_gas~
-Gender     female~
-Actflags   npc sentinel~
-Affected   detect_invis detect_hidden sanctuary infrared protect truesight~
-Stats1     1000 50 20 -30 10000 1000
-Stats2     5 10 30550
-Stats3     4 10 200
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common elvish orcish trollese insectoid spiritual magical clan gnome~
-Speaking   common elvish orcish trollese insectoid spiritual magical clan gnome~
-Immune     sleep charm nonmagic magic paralysis~
-Attacks    claws~
-Defenses   parry dodge~
-#MUDPROG
-Progtype  rand_prog~
-Arglist   50~
-Comlist   mpat 4 mppurge
-~
-#ENDPROG
+LoadArea()	-- EXECUTE THE AREA
 
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   mpe To escape Limbo, type a command or say "return" ...
-~
-#ENDPROG
+function LoadArea()
+	systemLog("=================== AREA 'LIMBO' INITIALIZING ===================");
+	newArea = LCreateArea(1, "Limbo");
+	area.this = newArea;
+	area.this.Author = "RoD";
+	area.this.HighSoftRange = 60;
+	area.this.HighHardRange = 60;
+	area.this.HighEconomy = 33928447;
+	area.this.ResetMessage = "A dim pulse of light filters through the swirling mists.";
+	area.this.ResetFrequency = 60;
+	area.this:SetFlags("noteleport");
+	
+	Mobs();
+	Objects();
+	Rooms();
+	systemLog("=================== AREA 'LIMBO' - COMPLETED ================");
+end
 
-#ENDMOBILE
+function Mobs()
+	systemLog("=================== AREA 'LIMBO' - MOBS ===================");
+	mobile.this = CreateMobile(1, "puff", "Puff");
+	mobile.this.LongDescription = "Puff the Fractal Dragon is here, contemplating a higher reality.";
+	mobile.this.Race = "dragon";
+	mobile.this.Class = "mage";
+	mobile.this.Position = "standing";
+	mobile.this.DefensivePosition = "standing";
+	mobile.this.Gender = "female";
+	mobile.this.SpecFun = "spec_breath_gas";
+	mobile.this.ActFlags = "npc sentinel";
+	mobile.this.AffectedBy = "detect_invis detect_hidden sanctuary infrared protect truesight";
+	mobile.this:SetStats1(1000, 50, 20, -30, 10000, 1000);
+	mobile.this:SetStats2(5, 10, 30550);
+	mobile.this:SetStats3(4, 10, 200);
+	mobile.this.Speaks = "common elvish orcish trollese insectoid spiritual magical clan gnome";
+	mobile.this.Speaking = "common elvish orcish trollese insectoid spiritual magical clan gnome";
+	mobile.this.Immunity = "sleep charm nonmagic magic paralysis";
+	mobile.this.Attacks = "claws";
+	mobile.this.Defenses = "parry dodge";
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "50", 
+	[[
+		MPAt(4, "MPPurge");
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "5", 
+	[[ 
+		MPE("To escape Limbo, type a command or say 'return' ...");
+	]]));
+	
+--[[
 
 #MOBILE
 Vnum       2
@@ -843,8 +846,12 @@ Saves      0 0 0 0 0
 Speaks     common~
 Speaking   common~
 #ENDMOBILE
+--]]
+end
 
-#OBJECT
+function Objects()
+	systemLog("=================== AREA 'LIMBO' - OBJECTS ===================");
+--[[#OBJECT
 Vnum     2
 Keywords coin gold~
 Type     money~
@@ -1877,8 +1884,12 @@ Flags    prototype~
 Values   0 0 0 0 0 0
 Stats    1 0 0 0 0
 #ENDOBJECT
+--]]
+end
 
-#ROOM
+function Rooms()
+	systemLog("=================== AREA 'LIMBO' - ROOMS ====================");
+--[[#ROOM
 Vnum     2
 Name     Limbo~
 Sector   city~
@@ -4730,4 +4741,7 @@ endif
 
 #ENDROOM
 
-#ENDAREA
+#ENDAREA--]]
+end
+
+-- EOF
