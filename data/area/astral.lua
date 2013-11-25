@@ -51,10 +51,6 @@ mprog.this = newProg;
 mprog.this.ArgList = "100";
 mprog.this.Script = [[
 local ch = LGetCurrentCharacter();
-if (ch is nil) then
-	LLogError("Current character is nil");
-	return;	
-end
 
 if (ch.Level < 10) then
 	LMobSay("You may not pass $n, for you will only find death beyond this gate.");
@@ -73,10 +69,6 @@ mprog.this = newProg;
 mprog.this.ArgList = "p I wish to enter the astral plane";
 mprog.this.Script = [[
 local ch = LGetCurrentCharacter();
-if (ch is nil) then
-	LLogError("Current character is nil");
-	return;	
-end
 
 if (ch.Level < 10) then
 	LMobEmote("gives you an irritated glare but makes no action.");
@@ -100,10 +92,6 @@ mprog.this = newProg;
 mprog.this.ArgList = "40";
 mprog.this.Script = [[
 local ch = LGetCurrentCharacter();
-if (ch is nil) then
-	LLogError("Current character is nil");
-	return;	
-end
 
 if (ch.Level < 30) then
 	LMobSay("You should not have toyed with my powers!");

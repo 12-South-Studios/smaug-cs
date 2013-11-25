@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Linq;
 using System.Text;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
+using SmaugCS.Constants;
+using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Database;
@@ -256,17 +260,10 @@ namespace SmaugCS
         public static int SSAV_MASK = ALL_BITS & ~(BV11 | BV12 | BV13);
 
         #region Well-known object vnums
-        public static int OBJ_VNUM_MONEY_ONE
-        {
-            get { return GetVnum("ObjectMoneySingle"); }
-        }
-        public static int OBJ_VNUM_MONEY_SOME
-        {
-            get { return GetVnum("ObjectMoneyMulti"); }
-        }
-
-        public static int OBJ_VNUM_CORPSE_NPC = 10;
-        public static int OBJ_VNUM_CORPSE_PC = 11;
+        public static int OBJ_VNUM_MONEY_ONE { get { return GetVnum("ObjectMoneySingle"); } }
+        public static int OBJ_VNUM_MONEY_SOME { get { return GetVnum("ObjectMoneyMulti"); } }
+        public static int OBJ_VNUM_CORPSE_NPC { get { return GetVnum("ObjectCorpseNPC"); } }
+        public static int OBJ_VNUM_CORPSE_PC { get { return GetVnum("ObjectCorpsePC"); } }
         public static int OBJ_VNUM_SEVERED_HEAD = 12;
         public static int OBJ_VNUM_TORN_HEART = 13;
         public static int OBJ_VNUM_SLICED_ARM = 14;
@@ -283,8 +280,8 @@ namespace SmaugCS
         public static int OBJ_VNUM_SHOPPING_BAG = 25;
         public static int OBJ_VNUM_BLOODLET = 26;
 
-        public static int OBJ_VNUM_FIRE = 30;
-        public static int OBJ_VNUM_TRAP = 31;
+        public static int OBJ_VNUM_FIRE { get { return GetVnum("ObjectFire"); } }
+        public static int OBJ_VNUM_TRAP { get { return GetVnum("ObjectTrap"); } }
         public static int OBJ_VNUM_PORTAL = 32;
         public static int OBJ_VNUM_BLACK_POWDER = 33;
         public static int OBJ_VNUM_SCROLL_SCRIBING = 34;
@@ -519,63 +516,98 @@ namespace SmaugCS
 
         #endregion
 
+        #region Static Singleton References
         public static LogManager _logMgr;
         public static LuaManager _luaMgr;
         public static DatabaseManager _dbMgr;
         public static GameManager _gameMgr;
-
-        #region Configuration Functions
-        public static Int32 GetIntegerConstant(string name)
-        {
-            NameValueCollection settings = ConfigurationManager.GetSection("Constants") as NameValueCollection;
-            return Convert.ToInt32(settings[name]);
-        }
-        public static String GetStringConstant(string name)
-        {
-            NameValueCollection settings = ConfigurationManager.GetSection("Constants") as NameValueCollection;
-            return Convert.ToString(settings[name]);
-        }
-        public static Boolean GetBooleanConstant(string name)
-        {
-            NameValueCollection settings = ConfigurationManager.GetSection("Constants") as NameValueCollection;
-            return Convert.ToBoolean(settings[name]);
-        }
-        public static Int32 GetVnum(string name)
-        {
-            NameValueCollection settings = ConfigurationManager.GetSection("Vnums") as NameValueCollection;
-            return Convert.ToInt32(settings[name]);
-        }
         #endregion
 
+        #region Configuration Functions
+        public static string GetAppSetting(string name)
+        {
+            return ConfigurationManager.AppSettings[name];
+        }
+
+        private static ConstantElement GetConfigConstant(string elementName)
+        {
+            var section = ConfigurationManagerFunctions.GetSection<ConstantConfigurationSection>("ConstantSection");
+            return section.Constants.Cast<ConstantElement>().FirstOrDefault(element => element.Name.EqualsIgnoreCase(elementName));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Int32 GetIntegerConstant(string name)
+        {
+            var element = GetConfigConstant(name);
+            return element != null ? Convert.ToInt32(element.Value) : -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static String GetStringConstant(string name)
+        {
+            var element = GetConfigConstant(name);
+            return element != null ? element.Value : string.Empty;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Boolean GetBooleanConstant(string name)
+        {
+            var element = GetConfigConstant(name);
+            return element != null && Convert.ToBoolean(element.Value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Int32 GetVnum(string name)
+        {
+            var section = ConfigurationManagerFunctions.GetSection<VnumConfigurationSection>("VnumSection");
+            var element =
+                (section.RoomVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name)) ??
+                 section.MobileVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name))) ??
+                section.ObjectVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
+            return element != null ? Convert.ToInt32(element.Value) : -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static string GetDataPath()
         {
             return GetStringConstant("DataPath");
         }
+        #endregion
 
         static void Main(string[] args)
         {
             LogManager.BootLog("Starting up the MUD");
 
-            SystemConstants.LoadSystemDirectories(GetDataPath());
+            SystemConstants.LoadSystemDirectoriesFromConfig(GetDataPath());
             LogManager.BootLog("SystemDirectories loaded.");
 
-            SystemConstants.LoadSystemFiles(GetDataPath());
+            SystemConstants.LoadSystemFilesFromConfig(GetDataPath());
             LogManager.BootLog("SystemFiles loaded.");
 
             // Setup the Managers
             _logMgr = LogManager.Instance;
             _luaMgr = LuaManager.Instance;
             _luaMgr.InitDataPath(GetDataPath());
-
-            LuaInterfaceProxy proxy = new LuaInterfaceProxy();
-            LuaFunctionRepository luaFuncRepo = new LuaFunctionRepository();
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(MobileRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(AreaRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(ObjectRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(RoomRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaFunctions));
-            proxy.RegisterFunctions(luaFuncRepo);
-            _luaMgr.InitProxy(proxy);
+            InitializeLuaFunctions();
 
             _dbMgr = DatabaseManager.Instance;
             _dbMgr.Initialize(false);
@@ -584,6 +616,19 @@ namespace SmaugCS
 
             // TODO more here
 
+        }
+
+        private static void InitializeLuaFunctions()
+        {
+            var proxy = new LuaInterfaceProxy();
+            var luaFuncRepo = new LuaFunctionRepository();
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(MobileRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(AreaRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(ObjectRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(RoomRepository));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaFunctions));
+            proxy.RegisterFunctions(luaFuncRepo);
+            _luaMgr.InitProxy(proxy);  
         }
     }
 }

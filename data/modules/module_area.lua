@@ -48,6 +48,8 @@ function CreateMobile(vnum, keywords, name)
 	mobile.this.Speaking = "common";
 	mobile.this.BodyParts = "head arms legs heart guts hands feet ear eye";
 	mobile.this.ActFlags = "npc sentinel";
+	mobile.this.Position = "standing";
+	mobile.this.DefensivePosition = "standing";
 	return mobile.this;
 end
 

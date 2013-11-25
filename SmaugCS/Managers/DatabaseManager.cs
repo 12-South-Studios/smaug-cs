@@ -68,10 +68,10 @@ namespace SmaugCS.Managers
             db.SystemData = new SystemData();
 
             LogManager.BootLog("Loading commands...");
-            DoLuaScript("commands.lua");
+            DoLuaScript(Program.GetAppSetting("CommandsFile"));
 
             LogManager.BootLog("Loading spec funs...");
-            DoLuaScript("specfuns.lua");
+            DoLuaScript(Program.GetAppSetting("SpecFunsFile"));
 
             LogManager.BootLog("Loading sysdata configuration...");
             db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, Program.GetLevel("demi"));
@@ -89,13 +89,13 @@ namespace SmaugCS.Managers
             }
 
             LogManager.BootLog("Loading socials");
-            DoLuaScript("socials.lua");
+            DoLuaScript(Program.GetAppSetting("SocialsFile"));
 
             LogManager.BootLog("Loading skill table");
             //tables.load_skill_table();
             //tables.remap_slot_numbers();
             //db.NumberSortedSkills = db.SKILLS.Count;
-            DoLuaScript("skills.lua");
+            DoLuaScript(Program.GetAppSetting("SkillsFile"));
 
             LogManager.BootLog("Loading classes");
             tables.load_classes();
@@ -107,13 +107,13 @@ namespace SmaugCS.Managers
             news.load_news();
 
             LogManager.BootLog("Loading liquids");
-            DoLuaScript("liquids.lua");
+            DoLuaScript(Program.GetAppSetting("LiquidsFile"));
 
             LogManager.BootLog("Loading mixtures");
-            DoLuaScript("mixtures.lua");
+            DoLuaScript(Program.GetAppSetting("MixturesFile"));
 
             LogManager.BootLog("Loading herbs");
-            DoLuaScript("herbs.lua");
+            DoLuaScript(Program.GetAppSetting("HerbsFile"));
 
             LogManager.BootLog("Loading tongues");
             tables.load_tongues();
@@ -166,7 +166,7 @@ namespace SmaugCS.Managers
             // TODO Assign remainder
 
             LogManager.BootLog("Loading planes...");
-            DoLuaScript("planes.lua");
+            DoLuaScript(Program.GetAppSetting("PlanesFile"));
 
             AreaListLoader aLoader = new AreaListLoader();
             _loaders.Add(aLoader);
@@ -231,7 +231,7 @@ namespace SmaugCS.Managers
             db.load_projects();
 
             LogManager.BootLog("Loading morphs");
-            DoLuaScript("morph.lua");
+            DoLuaScript(Program.GetAppSetting("MorphsFile"));
 
             // TODO MOBTrigger = true;
 

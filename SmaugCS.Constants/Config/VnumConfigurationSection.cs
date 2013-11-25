@@ -4,20 +4,22 @@ namespace SmaugCS.Constants.Config
 {
     public class VnumConfigurationSection : ConfigurationSection
     {
-        public static VnumConfigurationSection GetConfig()
+        [ConfigurationProperty("RoomVnums")]
+        public VnumElementCollection RoomVnums
         {
-            return (VnumConfigurationSection)ConfigurationManager.GetSection("VnumConfigurationSection") ??
-                   new VnumConfigurationSection();
+            get { return (VnumElementCollection)this["RoomVnums"]; }
         }
 
-        [ConfigurationProperty("VnumCollection")]
-        [ConfigurationCollection(typeof(VnumCollection), AddItemName = "Vnum")]
-        public VnumCollection Vnums
+        [ConfigurationProperty("MobileVnums")]
+        public VnumElementCollection MobileVnums
         {
-            get
-            {
-                return this["VnumCollection"] as VnumCollection;
-            }
+            get { return (VnumElementCollection)this["MobileVnums"]; }
+        }
+
+        [ConfigurationProperty("ObjectVnums")]
+        public VnumElementCollection ObjectVnums
+        {
+            get { return (VnumElementCollection)this["ObjectVnums"]; }
         }
     }
 }

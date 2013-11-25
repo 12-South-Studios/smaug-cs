@@ -5,10 +5,9 @@ namespace SmaugCS.Constants.Config
     public class ConstantConfigurationSection : ConfigurationSection
     {
         [ConfigurationProperty("Constants")]
-        public ConstantCollection Constants
+        public ConstantElementCollection Constants
         {
-            get { return ((ConstantCollection)(base["Constants"])); }
-            set { base["Constants"] = value; }
+            get { return (ConstantElementCollection)this["Constants"]; }
         }
     }
 }
