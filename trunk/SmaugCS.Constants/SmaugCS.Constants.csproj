@@ -65,12 +65,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\ConfigSettings.cs" />
-    <Compile Include="Config\Constant.cs" />
-    <Compile Include="Config\ConstantCollection.cs" />
+    <Compile Include="ConfigurationManagerFunctions.cs" />
+    <Compile Include="ConfigurationSectionNotFoundException.cs" />
+    <Compile Include="Config\ConstantElement.cs" />
+    <Compile Include="Config\ConstantElementCollection.cs" />
     <Compile Include="Config\ConstantConfigurationSection.cs" />
-    <Compile Include="Config\Vnum.cs" />
-    <Compile Include="Config\VnumCollection.cs" />
+    <Compile Include="Config\SystemDataConfigurationSection.cs" />
+    <Compile Include="Config\SystemDirectoryElement.cs" />
+    <Compile Include="Config\SystemDirectoryElementCollection.cs" />
+    <Compile Include="Config\SystemFileElement.cs" />
+    <Compile Include="Config\SystemFileElementCollection.cs" />
+    <Compile Include="Config\VnumElement.cs" />
+    <Compile Include="Config\VnumElementCollection.cs" />
     <Compile Include="Config\VnumConfigurationSection.cs" />
     <Compile Include="Constants\BuilderConstants.cs" />
     <Compile Include="Constants\SystemConstants.cs" />

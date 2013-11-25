@@ -1,6 +1,6 @@
--- LIMBO.LUA
--- This is the zone-file for Limbo
--- Revised: 2013.11.22
+-- THEVOID.LUA
+-- This is the zone-file for The Void
+-- Revised: 2013.11.23
 -- Author: Jason Murdick
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
@@ -8,8 +8,8 @@ f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 LoadArea()	-- EXECUTE THE AREA
 
 function LoadArea()
-	systemLog("=================== AREA 'LIMBO' INITIALIZING ===================");
-	newArea = LCreateArea(1, "Limbo");
+	systemLog("=================== AREA 'THE VOID' INITIALIZING ===================");
+	newArea = LCreateArea(1, "The Void");
 	area.this = newArea;
 	area.this.Author = "RoD";
 	area.this.HighSoftRange = 60;
@@ -21,221 +21,145 @@ function LoadArea()
 	
 	Mobs();
 	Objects();
-	Rooms();
-	systemLog("=================== AREA 'LIMBO' - COMPLETED ================");
+	SystemRooms();
+	Arena();
+	OtherRooms();
+	
+	systemLog("=================== AREA 'THE VOID' - COMPLETED ================");
 end
 
 function Mobs()
-	systemLog("=================== AREA 'LIMBO' - MOBS ===================");
-	mobile.this = CreateMobile(1, "puff", "Puff");
-	mobile.this.LongDescription = "Puff the Fractal Dragon is here, contemplating a higher reality.";
-	mobile.this.Race = "dragon";
+	systemLog("=================== AREA 'THE VOID' - MOBS ===================");
+	mobile.this = CreateMobile(1, "translucent figure", "A translucent figure");
+	mobile.this.LongDescription = "A translucent figure is here, contemplating a higher reality.";
 	mobile.this.Class = "mage";
-	mobile.this.Position = "standing";
-	mobile.this.DefensivePosition = "standing";
-	mobile.this.Gender = "female";
-	mobile.this.SpecFun = "spec_breath_gas";
-	mobile.this.ActFlags = "npc sentinel";
+	mobile.this.ActFlags = "npc sentinel noattack";
 	mobile.this.AffectedBy = "detect_invis detect_hidden sanctuary infrared protect truesight";
 	mobile.this:SetStats1(1000, 50, 20, -30, 10000, 1000);
 	mobile.this:SetStats2(5, 10, 30550);
 	mobile.this:SetStats3(4, 10, 200);
-	mobile.this.Speaks = "common elvish orcish trollese insectoid spiritual magical clan gnome";
-	mobile.this.Speaking = "common elvish orcish trollese insectoid spiritual magical clan gnome";
-	mobile.this.Immunity = "sleep charm nonmagic magic paralysis";
-	mobile.this.Attacks = "claws";
-	mobile.this.Defenses = "parry dodge";
+	mobile.this.Speaks = "all";
+	mobile.this.Speaking = "all";
 	mobile.this:AddMudProg(CreateMudProg("rand_prog", "50", 
 	[[
 		MPAt(4, "MPPurge");
 	]]));
 	mobile.this:AddMudProg(CreateMudProg("rand_prog", "5", 
 	[[ 
-		MPE("To escape Limbo, type a command or say 'return' ...");
+		MPE("To escape the Void, type a command or say 'return' ...");
+	]]));
+	
+	mobile.this = CreateMobile(2, "demon imp", "A demon imp");
+	mobile.this.LongDescription = "A demon imp hovers nearby...drooling constantly with a fiendish grin.";
+	mobile.this.Description = [[This demon is clearly something that you don't want to mess with...
+		It appears to be very agile, and very strong.]];
+	mobile.this.Gender = "neuter";
+	mobile.this.ActFlags = "detect_invis detect_hidden";
+	mobile.this:SetStats1(-1000, 50, 1, -300, 10000, 155000);
+	mobile.this:SetStats2(5, 10, 31550);
+	mobile.this:SetStats3(1, 2, 2);
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p disappears in a column of divine power", 
+	[[ 
+		local ch = LGetCurrentCharacter();
+		if (LIsInRoom(ch, 6)) then
+			MPTransfer(ch, 6);
+			MPForce(ch, "look");
+		else 
+			MPTransfer(ch, 8);
+		end
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p has entered the game", 
+	[[
+		local ch = LGetCurrentCharacter();
+		if (not LIsInRoom(ch, 8) and not LIsImmortal(ch)) then
+			MEA(ch, "_yel Your time in hell has expired, and you have been released.");
+			if (LIsPKill(ch)) then
+				MPTransfer(ch, 3001);
+			else 
+				MPTransfer(ch, 21000);
+			end
+			MPAt(ch, "MPForce(ch, \"look\");");
+		end
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is incapacitated", 
+	[[
+		MPRestore(LGetCurrentCharacter(), 1000);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is mortally wounded", 
+	[[ 
+		MPRestore(LGetCurrentCharacter(), 1000);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "1", 
+	[[ 
+		local ch = LGetCurrentCharacter();
+		if (not LIsImmortal(ch) and LIsClass(ch, "vampire")) then
+			MPForce(ch, "drink blood");
+			MPRestore(ch, 100);
+		end
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is suffering from lack of blood", 
+	[[
+		local ch = LGetCurrentCharacter();
+		MPForce(ch, "drink blood");
+		MPRestore(ch, 500);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is DEAD", 
+	[[ 
+		local ch = LGetCurrentCharacter();
+		if (LIsInRoom(ch, 6)) then
+			MPTransfer(ch, 6);
+		else 
+			MPTransfer(ch, 8);
+		end
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p wields", 
+	[[
+		MPRestore(LGetCurrentCharacter(), 500);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p wears", 
+	[[
+		MPRestore(LGetCurrentCharacter(), 500);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p shivers and", 
+	[[
+		local ch = LGetCurrentCharacter();
+		LMobCastSpell("cure poison", ch);
+		MPRestore(ch, 500);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p bashes against", 
+	[[
+		MPRestore(LGetCurrentCharacter(), 500);
+	]]));
+	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is starved", 
+	[[
+		local ch = LGetCurrentCharacter();
+		local obj = MPOLoad(20);
+		
+		LMobCommand("give mushroom $n", ch);
+		MPForce(ch, "eat mushroom");
+		MPRestore(ch, 500);
+	]]));
+	
+	mobile.this = CreateMobile(3, "supermob", "the supermob");
+	mobile.this.LongDescription = "The supermob is here.  He looks busy as hell.";
+	mobile.this.Description = "How clever he looks!";
+	mobile.this.Gender = "neuter";
+	mobile.this.ActFlags = "npc polyself secretive mobinvis prototype";
+	mobile.this.AffectedBy = "invisible detect_invis detect_hidden hide truesight";
+	mobile.this:SetStats1(-1000, 56, 1, -300, 10000, 155000);
+	mobile.this:SetStats2(1, 2, 2);
+	mobile.this:SetAttributes(13, 13, 13, 13, 13, 13, 25);
+	mobile.this.Immunity = "blunt pierce slash sleep charm nonmagic paralysis";
+	mobile.this.Defenses = "parry dodge";
+	mobile.this:AddMudProg(CreateMudProg("rand_prog", "10", 
+	[[
+		MPInvis(51);
+		if (not LIsMobInvisible(LGetMobile(3)) then
+			MPInvis();
+		end
 	]]));
 	
 --[[
-
-#MOBILE
-Vnum       2
-Keywords   freddy imp~
-Short      A demon imp~
-Long       A demon imp hovers nearby...drooling constantly with a fiendish grin.
-~
-Desc       This demon is clearly something that you don't want to mess with...
-It appears to be very agile, and very strong.  
-~
-Race       human~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     neuter~
-Actflags   npc sentinel~
-Affected   detect_invis detect_hidden~
-Stats1     -1000 50 1 -300 10000 155000
-Stats2     5 10 31550
-Stats3     1 2 2
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 13
-Saves      0 0 0 0 0
-Speaks     common~
-Speaking   common~
-#MUDPROG
-Progtype  act_prog~
-Arglist   p disappears in a column of divine power.~
-Comlist   if inroom($i) == 6
-  mptransfer 0.$n 6
-  mpforce 0.$n look
-else
-  mptransfer 0.$n 8
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p has entered the game.~
-Comlist   if inroom($i) == 8
-or isimmort($n)
-else
-  if ishelled($n) == 0
-     mea 0.$n _yel Your time in hell has expired, and you have been released.
-     if ispkill($n)
-       mptransfer 0.$n 3001
-     else
-       mptransfer 0.$n 21000
-     endif
-     mpat 0.$n mpforce 0.$n look
-  endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is incapacitated, and will die slowly soon if not aided.~
-Comlist   mprestore $n 1000
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is mortally wounded, and will die soon, if not aided.~
-Comlist   mprestore $n 1000
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   1~
-Comlist   if isimmort($r)
-else
-  if class($r) == vampire
-    mpforce $r drink blood
-    mprestore $r 100
-  endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is suffering from lack of blood!~
-Comlist   mpforce $n drink blood
-mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is DEAD!!~
-Comlist   if inroom($i) == 6
-   mptransfer 0.$n 6
-  else
-  mptransfer 0.$n 8
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p wields~
-Comlist   mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p wears~
-Comlist   mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p shivers and~
-Comlist   cast 'cure poison' $n
-mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bashes against~
-Comlist   mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mprestore $n 500
-~
-#ENDPROG
-
-#ENDMOBILE
-
-#MOBILE
-Vnum       3
-Keywords   supermob~
-Short      the supermob~
-Long       The supermob is here.  He looks busy as hell.
-~
-Desc       How clever he looks!
-~
-Race       human~
-Class      warrior~
-Position   standing~
-DefPos     standing~
-Gender     neuter~
-Actflags   npc polyself secretive mobinvis prototype~
-Affected   invisible detect_invis detect_hidden hide truesight~
-Stats1     -1000 56 1 -300 10000 155000
-Stats2     5 10 31550
-Stats3     1 2 2
-Stats4     0 0 0 0 0
-Attribs    13 13 13 13 13 13 25
-Saves      0 0 0 0 0
-Speaks     common~
-Speaking   common~
-Immune     blunt pierce slash sleep charm nonmagic paralysis~
-Defenses   parry dodge~
-#MUDPROG
-Progtype  rand_prog~
-Arglist   10~
-Comlist   mpinvis 51
-if ismobinvis($i)
-else
-  mpinvis
-endif
-~
-#ENDPROG
-
-#ENDMOBILE
-
 #MOBILE
 Vnum       4
 Keywords   fharlangan god traveler~
@@ -850,104 +774,62 @@ Speaking   common~
 end
 
 function Objects()
-	systemLog("=================== AREA 'LIMBO' - OBJECTS ===================");
---[[#OBJECT
-Vnum     2
-Keywords coin gold~
-Type     money~
-Short    a gold coin~
-Long     One miserable gold coin.~
-WFlags   take~
-Values   1 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     3
-Keywords coins gold~
-Type     money~
-Short    %d gold coins~
-Long     A pile of gold coins.~
-WFlags   take~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     7
-Keywords board of marks~
-Type     trash~
-Short    the Marks Board~
-Long     A large bullseye sits in the far corner, riddled with arrows.~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     8
-Keywords board vnum/area~
-Type     trash~
-Short    the Vnum/Area Board~
-Long     The Vnum/Area Board is hanging on the wall here.~
-Flags    prototype~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     9
-Keywords board vnum~
-Type     trash~
-Short    the Vnum Board~
-Long     A small bulletin board sits atop a desk in the far corner.~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     10
-Keywords corpse~
-Type     corpse~
-Short    the corpse of %s~
-Long     The corpse of %s lies here.~
-WFlags   take~
-Values   0 0 0 1 0 0
-Stats    100 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     11
-Keywords corpse~
-Type     corpse_pc~
-Short    the corpse of %s~
-Long     The corpse of %s is lying here.~
-Values   0 0 0 1 0 0
-Stats    100 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     12
-Keywords head~
-Type     cook~
-Short    the decapitated head of %s~
-Long     The head of %s lies here, a vacant stare of shock on its face.~
-Action   %s gobble$q down $p with gusto... disgusting!~
-WFlags   take~
-Values   10 0 0 0 0 0
-Stats    5 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     13
-Keywords heart~
-Type     cook~
-Short    the torn-out heart of %s~
-Long     The torn-out heart of %s lies here, no longer beating with life.~
-Action   %s savagely devour$q $p!~
-WFlags   take~
-Values   16 0 0 0 0 0
-Stats    2 0 0 0 0
-#ENDOBJECT
+	systemLog("=================== AREA 'THE VOID' - COMMON OBJECTS ===================");
+	object.this = CreateObject(2, "coin gold", "money");
+	object.this.ShortDescription = "a gold coin";
+	object.this.LongDescription = "One miserable gold coin.";
+	object.this:SetStats(1, 0, 0, 0, 0);
+	object.this:SetValues(1, 0, 0, 0, 0);
+	
+	object.this = CreateObject(3, "coins gold", "money");
+	object.this.ShortDescription = "%d gold coins";
+	object.this.LongDescription = "A pile of gold coins.";
+	object.this:SetStats(1, 0, 0, 0, 0);
+	
+	object.this = CreateObject(7, "board marks", "trash");
+	object.this.ShortDescription = "the Marks Board";
+	object.this.LongDescription = "A large bullseye riddled with arrows is here.";
+	object.this:SetStats(1, 0, 0, 0, 0);
+	
+	object.this = CreateObject(8, "board vnum area", "trash");
+	object.this.ShortDescription = "the Vnum/Area Board";
+	object.this.LongDescription = "The Vnum/Area Board is hanging on the wall here.";
+	object.this.Flags = "prototype";
+	object.this:SetStats(1, 0, 0, 0, 0);
+	
+	object.this = CreateObject(9, "board vnum", "trash");
+	object.this.ShortDescription = "the Vnum Board";
+	object.this.LongDescription = "A small bulletin board is here.";
+	object.this:SetStats(1, 0, 0, 0, 0);
+	
+	object.this = CreateObject(10, "corpse", "corpse");
+	object.this.ShortDescription = "the corpse of %s";
+	object.this.LongDescription = "The corpse of %s lies here.";
+	object.this:SetValues(0, 0, 0, 1, 0, 0);
+	object.this:SetStats(100, 0, 0, 0, 0);
+	
+	object.this = CreateObject(11, "corpse", "corpse_pc");
+	object.this.ShortDescription = "the corpse of %s";
+	object.this.LongDescription = "The corpse of %s lies here.";
+	object.this:SetValues(0, 0, 0, 1, 0, 0);
+	object.this:SetStats(100, 0, 0, 0, 0);
+	
+	object.this = CreateObject(12, "head", "cook");
+	object.this.ShortDescription = "the decapitated head of %s";
+	object.this.LongDescription = "The head of %s lies here, a vacant stare of shock on its face.";
+	object.this.Action = "%s gobble$q down $p with gusto... disgusting!";
+	object.this:SetValues(10, 0, 0, 0, 0, 0);
+	object.this:SetStats(5, 0, 0, 0, 0);
+	
+	object.this = CreateObject(13, "heart", "cook");
+	object.this.ShortDescription = "the torn-out heart of %s";
+	object.this.LongDescription = "The torn-out heart of %s lies here, no longer beating with life.";
+	object.this.Action = "%s savagely devour$q $p!";
+	object.this:SetValues(16, 0, 0, 0, 0, 0);
+	object.this:SetStats(2, 0, 0, 0, 0);
+	
+	
+--[[
 
 #OBJECT
 Vnum     14
@@ -1887,642 +1769,106 @@ Stats    1 0 0 0 0
 --]]
 end
 
-function Rooms()
-	systemLog("=================== AREA 'LIMBO' - ROOMS ====================");
---[[#ROOM
-Vnum     2
-Name     Limbo~
-Sector   city~
-Flags    nomob indoors safe norecall nosummon noastral~
-Desc     You float in a formless void, detached from all sensation of physical
-matter, surrounded by swirling glowing light which fades into the
-relative darkness around you without any trace of edge or shadow.
-~
-#EXIT
-Direction north~
-ToRoom    21000
-#ENDEXIT
+function SystemRooms()
+	systemLog("=================== AREA 'THE VOID' - ROOMS ====================");
+	room.this = CreateRoom(2, "Limbo", "city", area.this);
+	room.this.Description = [[You float in a formless void, detached from all sensation of physical
+		matter, surrounded by swirling glowing light which fades into the
+		relative darkness around you without any trace of edge or shadow.]];
+	room.this:SetFlags("nomob indoors safe norecall nosummon noastral");
+	room.this:AddExit("north", 2100, "north");
+	AddMobileToRoom(room.this, 1, 2, 1);			-- Puff the Dragon
+	AddObjectToRoom(room.this, 22, 2, 1);		-- Mystical Spring
+	AddObjectToRoom(room.this, 60, 2, 1);		-- Fountain of Blood
+	room.this:AddMudProg(CreateMudProg("speech_prog", "p return", 
+	[[ 
+		local ch = LGetCurrentCharacter();
+		if (ch.Level > 1) then
+			MPTrans(ch, 21001);
+		end
+	]]));
+	room.this:AddMudProg(CreateMudProg("act_prog", "p has lost", 
+	[[
+		local ch = LGetCurrentCharacter();
+		MPMSet(ch, "full 50");
+		MPMSet(ch, "thirst 100");
+		MPRestore(ch, 2);
+	]]));
+	room.this:AddMudProg(CreateMudPRog("act_prog", "is", 
+	[[
+		local ch = LGetCurrentCharacter();
+		MPMSet(ch, "full 50");
+		MPMSet(ch, "thirst 100");
+		MPRestore(ch, 2);
+	]]));
+	
+	room.this = CreateRoom(3, "Storage", "city", area.this);
+	room.this.Description = [[This room is reserved for storage of polymorphed players.]];
+	room.this:SetFlags("death nomob private solitary nosummon noastral");
+	
+	room.this = CreateRoom(4, "Deity Purge Room", "city", area.this);
+	room.this.Description = [[This room handles the purging of unused deities.]];
+	room.this:SetFlags("nomob indoors nosummon noastral");
+	
+	room.this = CreateRoom(6, "Hell", "city", area.this);
+	room.this.Description = [[As if picked up by the scruff of your neck by a mighty hand, you find
+		yourself unceremoniously dumped at a strange gateway.  Here is the
+		place which will determine your fate.  Whether you will be sent back
+		to life as you once knew it, or proceed onto a far yet bleaker pathway.
+		The time has come for you to plead your case and await judgement for the
+		crimes that have been placed upon your head.  Speak wisely and choose
+		your words carefully, for your testimony will be written in the ledgers
+		of the Gods, and will determine the path you will ultimately travel.]];
+	room.this:SetFlags("nomob indoors chaotic safe norecall logspeech nosummon noastral nosupplicate");
+	AddObjectToRoom(room.this, 22, 6, 1);		-- Mystical Spring
+	AddObjectToRoom(room.this, 60, 6, 1);		-- Fountain of Blood		
+	AddMobileToRoom(room.this, 2, 6, 2);			-- demon imp
+	
+	room.this = CreateRoom(8, "Hell", "city", area.this);
+	room.this.Description = [[As if picked up by the scruff of your neck by a mighty hand, you find
+		yourself unceremoniously dumped at a strange gateway.  Here is the
+		place which will determine your fate.  Whether you will be sent back
+		to life as you once knew it, or proceed onto a far yet bleaker pathway.
+		The time has come for you to plead your case and await judgement for the
+		crimes that have been placed upon your head.  Speak wisely and choose
+		your words carefully, for your testimony will be written in the ledgers
+		of the Gods, and will determine the path you will ultimately travel.
+						L|J(_)
+					)    | (")      (
+					,(.  |`/ \- y  (,`)
+				   )' (' | \ /\/  ) (.
+				  (' ),) | _W_   (,)' ).]];
+	room.this:SetFlags("nomob indoors chaotic nomagic safe norecall logspeech nosummon noastral nosupplicate");
+	AddObjectToRoom(room.this, 22, 8, 1);		-- Mystical Spring
+	AddObjectToRoom(room.this, 60, 8, 1);		-- Fountain of Blood
+	AddMobileToRoom(room.this, 2, 8, 2);			-- demon imp
+	room.this:AddMudProg(CreateMudProg("death_prog", "100", 
+	[[
+		local ch = LGetCurrentCharacter();
+		if (ch.IsNpc()) then
+			MPTransfer(ch, 8);
+			MPForce(ch, "drink blood");
+			MPForce(ch, "drink blood");
+			MPForce(ch, "drink blood");
+			MPForce(ch, "drink blood");
+			MPForce(ch, "drink blood");
+			MPForce(ch, "drink water");
+			MPForce(ch, "drink water");
+			MPForce(ch, "drink water");
+			MPForce(ch, "drink water");
+			MPForce(ch, "drink water");
+		end
+	]]));
+	
+	room.this = CreateRoom(9, "Task Room", "city", area.this);
+	room.this.Description = "Any mob here is probably performing tasks.  Mess with it and I will kill your dog.  -- Blodkai";
+	room.this:SetFlags("nomob nodrop nosummon noastral");
+	room.this:AddExit("down", 10300, "The Academy of Darkhaven");
+	AddExitToRoom(room.this, "somewhere", 10300, "vnums", "hidden auto");
+end
 
-Reset M 0 1 1 2
-Reset O 0 22 1 2
-Reset O 0 60 1 2
-#MUDPROG
-Progtype  speech_prog~
-Arglist   p return~
-Comlist   if level($n) > 1
-  mptrans $n 21001
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p has lost~
-Comlist   mpmset $n full 50
-mpmset $n thirst 100
-mprestore $n 2
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   is~
-Comlist   mpmset $n full 50
-mpmset $n thirst 100
-mprestore $n 2
-~
-#ENDPROG
-
-#ENDROOM
-
-#ROOM
-Vnum     3
-Name     Storage~
-Sector   city~
-Flags    death nomob private solitary nosummon noastral~
-Desc     This room is reserved for storage of polymorphed players.
-~
-#ENDROOM
-
-#ROOM
-Vnum     4
-Name     Deity purge room~
-Sector   city~
-Flags    nomob indoors nosummon noastral~
-Desc     This room handles the purging of unused deities.
-~
-#ENDROOM
-
-#ROOM
-Vnum     6
-Name     Hell~
-Sector   city~
-Flags    nomob indoors chaotic safe norecall logspeech nosummon noastral nosupplicate~
-Desc     As if picked up by the scruff of your neck by a mighty hand, you find
-yourself unceremoniously dumped at a strange gateway.  Here is the
-place which will determine your fate.  Whether you will be sent back
-to life as you once knew it, or proceed onto a far yet bleaker pathway.
-The time has come for you to plead your case and await judgement for the
-crimes that have been placed upon your head.  Speak wisely and choose
-your words carefully, for your testimony will be written in the ledgers
-of the Gods, and will determine the path you will ultimately travel.
-~
-Reset O 0 22 1 6
-Reset O 0 60 1 6
-Reset M 0 2 2 6
-#ENDROOM
-
-#ROOM
-Vnum     8
-Name     Hell~
-Sector   city~
-Flags    nomob indoors chaotic nomagic safe norecall logspeech nosummon noastral nosupplicate~
-Desc     As if picked up by the scruff of your neck by a mighty hand, you find
-yourself unceremoniously dumped at a strange gateway.  Here is the
-place which will determine your fate.  Whether you will be sent back
-to life as you once knew it, or proceed onto a far yet bleaker pathway.
-The time has come for you to plead your case and await judgement for the
-crimes that have been placed upon your head.  Speak wisely and choose
-your words carefully, for your testimony will be written in the ledgers
-of the Gods, and will determine the path you will ultimately travel.
-                L|J(_)
-            )    | (")      (
-            ,(.  |`/ \- y  (,`)
-           )' (' | \ /\/  ) (.
-          (' ),) | _W_   (,)' ).
-~
-Reset M 0 2 2 8
-Reset O 0 22 1 8
-Reset O 0 66 1 8
-#MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   if ispc($n)
-mptransfer $n 8
-mpforce $n drink blood
-mpforce $n drink blood
-mpforce $n drink blood
-mpforce $n drink blood
-mpforce $n drink blood
-mpforce $n drink water
-mpforce $n drink water
-mpforce $n drink water
-mpforce $n drink water
-mpforce $n drink water
-endif
-~
-#ENDPROG
-
-#ENDROOM
-
-#ROOM
-Vnum     9
-Name     Task Room~
-Sector   city~
-Flags    nomob nodrop nosummon noastral~
-Desc     Any mob here is probably performing tasks.  Mess with it and I will
-kill your dog.
--- Blodkai
-~
-#EXIT
-Direction down~
-ToRoom    10300
-Desc      The Academy of Darkhaven
-~
-#ENDEXIT
-
-#EXIT
-Direction somewhere~
-ToRoom    10300
-Keywords  VNUMS~
-Flags     hidden auto~
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     10
-Name     Immortal Hall of Rules~
-Sector   city~
-Flags    nomob indoors nosummon noastral~
-Desc     Welcome to the immortal community of Realms of Despair!
-Being an immortal is not all the fun and games of being a mortal...
-It involves some responsibility, common sense, and some creative role-
-playing too.
-
-                      THE COMMANDMENTS
-                      ----------------
-
-1) Absolutely NO helping mortals out to an unfair advantage!
-   This includes:
-     - giving, selling or auctioning equipment to mortals
-     - giving gold to mortals
-     - assisting mortals in killing mobiles/monsters
-     - giveaway hints and clues to locations... secret doors... etc.
-     - corpse retrievals are up to your own descretion... use your
-       best judgement. You are allowed to cast kindred strength and
-       give detect invisible to mortals when doing CR's, if required.
-     - if there is no one else to help a newbie get started, or a newbie
-       loses their newbie equipment for some strange reason, you ARE
-       permitted to give them a little assistance (levels 1-5 only).
-
-(Continued in room #11)
-~
-#ENDROOM
-
-#ROOM
-Vnum     11
-Name     Immortal Hall of Rules~
-Sector   city~
-Flags    nomob indoors nosummon noastral~
-Desc     2) Switching into a mobile is a power given to you to make the game more
-   interesting to mortals.  Care must be taken to play the role of the
-   mobile... don't act silly, or say "hey! it's me Joe!"  And please
-   avoid using the chat channels too much while switched.
-   Be sure NOT to do anything to make the mobile harder or easier to kill
-   and never reveal statistics of the mobile to any players... ie: hit
-   points, gold, items carried, hitroll/damroll etc.
-
-3) Set a good example for the mortals... You are there to keep an eye
-   on things... moderate the chat channels, break up arguments, get rid
-   of nuisance players... etc.  Summon or transfer any "problem" players
-   to room #6 (HELL).  All conversation in that location will be LOGGED
-   for review purposes... Don't warn the players about it... ;)
-
-4) Keep an eye on other immortals.  Report any problems to a higher god,
-   or to me, Thoric.  Send me email: Thoric@realms.game.org if need be.
-
-5) We are all here to have fun.  There are certain rules to ensure that
-   players don't get out of hand, and ruin the game for everyone. There
-   are also rules for you to make sure that you don't ruin the game for
-   everyone either. Use your own common sense. If in question, ask a
-   higher level god. Immortality is a privilage, not a right.
-~
-#ENDROOM
-
-#ROOM
-Vnum     12
-Name     Immortal Hall of Rules~
-Sector   city~
-Flags    nomob nosummon noastral~
-Desc     Immortal Guidelines and Promotion Criteria
- 
-*Under no circumstances is an immortal to switch into a mob and remove its
-equipment. Such action will result in immediate recommendation for demotion.
-*Immortals are expected to monitor new players applying for authorization
-and authorize in a timely manner.
-*immortals are expected to enforce the rules of the mud, as well as comply
-with them.
-~
-#ENDROOM
-
-#ROOM
-Vnum     13
-Name     Immortal Hall of Rules~
-Sector   city~
-Flags    nomob nosummon noastral~
-Desc     Creator Guidelines and Promotion Criteria
- 
- 
-In addition to all the guidelines and requirements for immortals, the 
-following areas will be reviewed when considering a creator for promotion
-to saint.
- 
-*A creator is strongly recommended to build a unique area for incorporation
-into the mud. Although there is no set timeline for its completion, steady
-progress on the area is expected.
-*A creator is expected to demonstrate a willingness to offer constructive
-input into the operarion of the mud.
-*A creator is expected to demonstrate the ability to deal with problem
-situations without the assisttance of higher level immortals.
- 
-**Promotions to saint are not taken lightly, creators must understand that
-the council will want to observe a potential candidtate for a period of
-time prior to making a recommendation.
-~
-#ENDROOM
-
-#ROOM
-Vnum     14
-Name     Mortal Hall of Rules~
-Sector   city~
-Flags    nomob indoors safe noastral teleport teleshowdesc~
-Stats    250 15 0
-Desc     1) No form of harassment or spamming will be tolerated.  Spamming is
-repeatedly communicating to one or more players a message in a 
-short duration of time.
- 
-2) The only form of player killing allowed is between two players whose
-names appear under the "Deadly Clans" section of the who list.  Even
-in this case the parties must be withing 10 levels of each other.
- 
-3) Profanity and other lewd comments will not be tolerated.  Please 
-remain civil when communicating with others.
- 
-4) Do not attack or cast spells on any of the Darkhaven storekeepers.  If
-it displays its wares when you type list it is a storekeeper.
- 
-5) When any rank of Immortal speaks with you answer their questions quickly
-and honestly.  This will help to ensure things stay fair for all players
-and that any issues that arise are taken care of promptly.
- 
-(Please be patient, you will be transported to the next room shortly)
-~
-#ENDROOM
-
-#ROOM
-Vnum     15
-Name     Mortal Hall of Rules~
-Sector   city~
-Flags    nomob indoors safe noastral teleport teleshowdesc~
-Stats    250 21194 0
-Desc     6) Player killing is decided the instant you cast any hostile spell or 
-make any aggressive action against a player...actually killing the target
-means little.
- 
-7) Do not summon or lead any aggressive monsters to areas where the level
-range is lower then that of the monster's level.  (See areas command
-for a listing of areas and their level range)
- 
-8) Multiplaying is allowed to those not listed in the "Deadly Clans" 
-section of the who list.  If any of your characters appears in this
-section of the who list do not bring any of your other charcters online.
- 
-9) Finally, if you have any problems with the game or players please feel
-free to contact any visible immortal logged on.  If none are present
-do not take action yourself, rather post a note in the board room
-(south and west of the healers) or wait for an immortal to enter the
-game.
- 
- 
-You will be transported to the Temple of Darkhaven Shortly
-~
-#ENDROOM
-
-#ROOM
-Vnum     16
-Name     The Hall of Creation --- Overview~
-Sector   inside~
-Flags    nomob indoors noastral~
-Desc     Within these halls are the standard rules and guidelines of area
-building. To the aspiring creator, these rules should be followed as
-much as possible.
-
-THEME --- Before beginning your area, check to make sure no one is using
-  your area theme in mind. Try to have a single idea in your area, rather
-  than many smaller, conflicting ones. Since we are playing in the "Realms
-  of Despair," the area should have a dark, occult feel to it. No items,
-  mobs or rooms in the area should be futuristic or even close to modern
-  day.
-MAZES --- The creation of mazes is encouraged, for it gives the player a
-  mental challenge. However, the area council will not carefully go through
-  it. It is up to the creator to pass through every room and make sure it
-  works properly.
-AREA APPROVAL --- When your area is completed, go through it a couple times
-  to make sure everything is as you want it. Upon doing so, post a note to
-  the area council and they will get around to checking and authorizing it.
-~
-#EXIT
-Direction north~
-ToRoom    17
-Desc      The Hall of Creation stretches northward.
-~
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     17
-Name     The Hall of Creation --- Rooms~
-Sector   inside~
-Flags    nomob indoors noastral~
-Desc     Here are the general rules to be followed when making your rooms.
- 
-ROOM NAMES --- Standard names should have all important words capitalized
-  and should end with no punctuation mark.
-  Good example: Wandering the Dark Lands of Ered Mithik
-  Bad example:  Wandering The Dark Lands Of Ered Mithik.
-DESCRIPTIONS --- Skimpy 2-3 sentence room descriptions should be avoided
-  as much as possible. The description should invoke a mental image of
-  the room. Builders should try to avoid describing player actions and
-  emotions in a description, as well as the presence and actions of a
-  mobile in the room (use mobprograms for those).
-SECTORS --- All room sectors must be filled out. Note that the inside
-  sector signifies that there is a roof over the player's head, while
-  the city sector means there is none. All rooms with the inside sector
-  must be accompanied by the indoors flag.
-FLAGS --- Room flags should be carefully thought out so you understand
-  how the players will get to and fight in certain room, as well as how
-  difficult it will be for them to retrieve their corpse.
-EXDESCS --- Exit descriptions should be filled in, especially ones that
-  lead in/out of building and other places of import. An exdesc for a DT
-  is absolutely necessary.
-ROOM PROGS --- Feel free to use room programs if needed. These can be used
-  to confuse players or add mood. Depending on your creativity however,
-  there are many things possible with room progs. (This is for level 54+)
-~
-#EXIT
-Direction north~
-ToRoom    18
-Desc      The Hall of Creation continues to the north.
-~
-#ENDEXIT
-
-#EXIT
-Direction south~
-ToRoom    16
-Desc      The Hall of Creation stretches southward.
-~
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     18
-Name     The Hall of Creation --- Mobiles (level 53+)~
-Sector   inside~
-Flags    nomob indoors noastral~
-Desc     Here are the general rules to be followed when making your mobs.
- 
-MOB NAMES --- The short description of a mob is up to the builder, yet
-  should never have any kind of ending punctuation. Also, don't capitalize
-  words like 'of' or 'the'.
-NPC RACES, CLASSES AND BODYPARTS --- All new mobs should have these filled
-  in. Although they do not affect anything at the moment, they will in the
-  future.
-HITDIE --- The hitnumdie+hitsizedie+hitplus should be used to determine
-  a mob's hp.
-  Example: 2d5+10 means 12-20 hp. If you want to have a mob's hp always set
-  to the same thing, put the hitnumdie and hitsizedie to 1 and set the
-  hitplus to the hp desired.
-DAMDIE --- This is the amount of damage the mobile does with each non-
-  wielding attack. It uses the same system as hitdie.
-NUMATTACKS --- This is the number of attacks the mobile can have each round,
-  be sure to fill it in.
-LANGUAGES --- Make sure all your mobiles are speaking and can understand
-  the proper languages. If you wish to ensure that all players will be able
-  to understand it, have it speak common.
-MOB DESCS: All mobs should have a description upon looking at them.
-MOB RIS: Mobiles can have all kinds of resists, suscepts and immunities.
-  However, if the mobile has an immunity to anything, it MUST have immune
-  charm also.
-~
-#EXIT
-Direction north~
-ToRoom    19
-Desc      The Hall of Creation stretches northward.
-~
-#ENDEXIT
-
-#EXIT
-Direction south~
-ToRoom    17
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     19
-Name     The Hall of Creation --- Mobiles and Objects (level 53+)~
-Sector   inside~
-Flags    nomob indoors noastral~
-Desc     Continuation of mobile guidelines and beginning of object rules.
- 
-MOBILE DIFFICULTY --- Be sure that your mobiles are not a piece of cake
-  for their equipment and also for leveling. High level mobs which do
-  very little or no damage will not be accepted due to the lack of
-  difficulty for levelling.
-MOBPROGS --- Mob programs are starting to become a standard thing on many
-  mobiles. Feel free to use them in a number of ways. The mppractice and
-  mpadvance commands should not be used without permission from the area
-  council. (This is for level 54+)
- 
-OBJECT NAMES --- The short description of an object should follow the same
-  rules as a room name: no ending punctuation and capitalization of
-  important words only. However, the builder may leave his words without
-  capital letters at his discretion.
-  Good examples: 'lifebane' 'the Ring of Wizardry'
-  Bad example: 'The Devilish Blade Of Lore.'
-RIS AND AFFECTS --- RIS (Resistant, immune and susceptible) and spell affects
-  can be placed on objects. Certain things will not be accepted however.
-  Immunities and affect_santuary, _shockshield, _fireshield or _iceshield
-  will not be approved. Susceptibilities are ok. Resists and other affects
-  are ok also, but should be relatively rare. A list of items with affects
-  or any RIS should be made and sent to the area council.
-~
-#EXIT
-Direction north~
-ToRoom    20
-#ENDEXIT
-
-#EXIT
-Direction south~
-ToRoom    18
-Desc      The Hall of Creation continues south of here.
-~
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     20
-Name     The Hall of Creation --- Objects (level 53+)~
-Sector   inside~
-Flags    nomob indoors noastral~
-Desc     Continuation of object rules.
- 
-OBJECT POWER --- Use your good judgement to decide how powerful your items
-  should be. Try comparing the difficulty of reaching and killing your
-  mobile to the difficulty of reaching and killing other mobs with similar
-  equipment which are currently in the game.
-OBJECT PROGS --- Feel free to use object programs to enhance the theme of
-  your objects. Obj progs that cast spells or aid the the player in any
-  way should be listed for approval with the RIS and affects. (This is for
-  level 54+)
- 
-There are the general rules to be followed. Thank you for showing an
-interest in contributing to the Realms of Despair.
-~
-#EXIT
-Direction south~
-ToRoom    19
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     21
-Name     The Hall of Malkavians~
-Sector   inside~
-Flags    nomob indoors norecall~
-Desc     This is the clan for all those who should have been retired to the
-asylum.  Nuts in every sense of the word, these are the true chaotic
-element to the game of clans.
-This clan is led by Bassam and worships the goddess Demora.
-~
-#ENDROOM
-
-#ROOM
-Vnum     22
-Name     Tidal Pool~
-Sector   inside~
-Flags    nomob indoors safe norecall nosummon noastral nosupplicate~
-Desc     Wading into this small body of water, you frolic in the
-cool water. The water here isn't quite as cold as that from
-the shore as it has collected here and has been warmed by the
-sun. The splish-splash of your footsteps sounds like a small
-snare drum being struck in the midst of an orchestra of large
-kettle drums. The waves crash against a rock nearby and sends
-the spray into your face and drenches your body. A large albatross
-sitting opposite you opens it's mouth to caw, but decides that it's
-pretty obvious what's so funny. Admonishing your wet clothes you
-strip them off slowly and leave them on a rock. Without a moment
-of hesitation you sit right down into the water....ker-plop.
- 
-~
-Reset O 0 89 1 22
-Reset O 0 88 1 22
-Reset M 0 72 1 22
-#ENDROOM
-
-#ROOM
-Vnum     23
-Name     The Hall of Doom~
-Sector   inside~
-Flags    indoors~
-Desc     This is the clan of mercenaries.  Their services are open to the 
-highest bidder, and their skill is legend.
-This clan is led by Lanfear and worships the goddess Caryn.
-~
-#EXIT
-Direction north~
-ToRoom    22
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     24
-Name     The Hall of Maidenstone~
-Sector   inside~
-Flags    indoors~
-Desc     The women of Maidenstone are a dangerous bunch.  Their organization is
-above average, and most tend to underestimate them due to their female
-only stance.  A clan of warrior women, these are some of the deadliest
-of the deadly.
-This clan is led by Min and worships the goddess Circe.
-~
-#EXIT
-Direction east~
-ToRoom    25
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     25
-Name     The Hall of Golconda~
-Sector   inside~
-Flags    indoors~
-Desc     The ancient Inconnu strive endlessly to attain Golconda, the personal
-perfection of knowledge, ability, and control over the bestial self of
-the vampire.  The mastery of one aspect serves only to mark a beginning
-anew of the trek for perfection down new paths.  Largely indifferent to
-joy or sorrow, pleasure or pain, and choosing to live in seclusion from
-the world they often despise, the Inconnu care little for their lesser
-brethren yet harbor no inherent desire to bring harm.  Slow to anger,
-but formidable when aroused, their elder status and power affords
-them an uncommon respect.
- 
-The Inconnu are led by Eric, and worship the god Blodkai.
-~
-#EXIT
-Direction west~
-ToRoom    24
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     26
-Name     The Hall of Terror~
-Sector   inside~
-Flags    indoors~
-Desc     This is the realm of Terror.  As the hands of the gods, these are those
-who carry out the policy of the Immortals of the Realms.  Their word is
-law, their power unimaginable, their job more than most would desire.
-Terror is led by Kandrin and worships all Immortals equally.
-~
-#EXIT
-Direction north~
-ToRoom    18
-#ENDEXIT
-
-#EXIT
-Direction south~
-ToRoom    19
-#ENDEXIT
-
-#ENDROOM
-
-#ROOM
-Vnum     27
-Name     The Darkblade of Evil~
-Sector   inside~
-Flags    nomob indoors safe~
-Desc     From time immemorial the cold shadow of clan Darkblade flowed silent
-and merciless over the whole of the Realms, vanquishing the strong,
-slaughtering the weak and subjugating the innocent.  Fiercely loyal,
-highly knowledgeable and shunning of outsiders, Darkblade existed
-solely to kill and die for the greater glory of the clan.  Yet where
-enemies alone failed, time, corruption and sloth succeeded in bringing
-the once-proud clan to the brink of destruction.  It now attempts to
-begin anew with a fresh start and a clean slate, returning to the old
-ways and ideals that once made clan Darkblade the bane of the Realms.
-Darkblade is led by Monica, and worships the god Scarab.
-~
-#ENDROOM
-
+function Arena()
+--[[
 #ROOM
 Vnum     29
 Name     The Arena~
@@ -3321,7 +2667,12 @@ endif
 #ENDPROG
 
 #ENDROOM
+--]]
+end
 
+-- These may be obsolete, appears to be an intro area, why is it part of Limbo?
+function OtherRooms()
+--[[
 #ROOM
 Vnum     44
 Name     The Shores of The Dragon Sea~

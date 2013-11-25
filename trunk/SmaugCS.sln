@@ -240,6 +240,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Language", "SmaugCS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{FF3CCE80-4483-42BB-A295-67F0C172EFB2}"
 	ProjectSection(SolutionItems) = preProject
+		doc\Building and Creation Guide.docx = doc\Building and Creation Guide.docx
+		doc\Immortal Rules.docx = doc\Immortal Rules.docx
+		doc\Mortal Rules.docx = doc\Mortal Rules.docx
 		Notes.txt = Notes.txt
 		Resets.txt = Resets.txt
 		values.txt = values.txt
