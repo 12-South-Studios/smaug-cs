@@ -73,6 +73,7 @@
     <Compile Include="BoardData.cs" />
     <Compile Include="CharacterMorph.cs" />
     <Compile Include="ClassData.cs" />
+    <Compile Include="ClassSkillAdeptData.cs" />
     <Compile Include="CommandData.cs" />
     <Compile Include="DeityData.cs" />
     <Compile Include="DescriptorData.cs" />

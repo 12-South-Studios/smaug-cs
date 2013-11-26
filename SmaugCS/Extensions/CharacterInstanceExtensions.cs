@@ -435,16 +435,16 @@ namespace SmaugCS.Extensions
             return age;
         }
 
-        public static int GetCurrentStat(this CharacterInstance ch, ApplyTypes statistic)
+        public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
             ClassData currentClass = db.CLASSES.First(x => x.Type == ch.CurrentClass);
             int max = 20;
 
-            if (ch.IsNpc() || currentClass.PrimaryAttribute == (int)statistic)
+            if (ch.IsNpc() || currentClass.PrimaryAttribute == statistic)
                 max = 25;
-            if (currentClass.SecondaryAttribute == (int)statistic)
+            if (currentClass.SecondaryAttribute == statistic)
                 max = 22;
-            if (currentClass.DeficientAttribute == (int)statistic)
+            if (currentClass.DeficientAttribute == statistic)
                 max = 16;
 
             return max;
@@ -452,37 +452,37 @@ namespace SmaugCS.Extensions
 
         public static int GetCurrentStrength(this CharacterInstance ch)
         {
-            return (ch.PermanentStrength + ch.ModStrength).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Strength));
+            return (ch.PermanentStrength + ch.ModStrength).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Strength));
         }
 
         public static int GetCurrentIntelligence(this CharacterInstance ch)
         {
-            return (ch.PermanentIntelligence + ch.ModIntelligence).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Intelligence));
+            return (ch.PermanentIntelligence + ch.ModIntelligence).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Intelligence));
         }
 
         public static int GetCurrentWisdom(this CharacterInstance ch)
         {
-            return (ch.PermanentWisdom + ch.ModWisdom).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Wisdom));
+            return (ch.PermanentWisdom + ch.ModWisdom).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Wisdom));
         }
 
         public static int GetCurrentDexterity(this CharacterInstance ch)
         {
-            return (ch.PermanentDexterity + ch.ModDexterity).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Dexterity));
+            return (ch.PermanentDexterity + ch.ModDexterity).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Dexterity));
         }
 
         public static int GetCurrentConstitution(this CharacterInstance ch)
         {
-            return (ch.PermanentConstitution + ch.ModConstitution).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Constitution));
+            return (ch.PermanentConstitution + ch.ModConstitution).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Constitution));
         }
 
         public static int GetCurrentCharisma(this CharacterInstance ch)
         {
-            return (ch.PermanentCharisma + ch.ModCharisma).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Charisma));
+            return (ch.PermanentCharisma + ch.ModCharisma).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Charisma));
         }
 
         public static int GetCurrentLuck(this CharacterInstance ch)
         {
-            return (ch.PermanentLuck + ch.ModLuck).GetNumberThatIsBetween(3, ch.GetCurrentStat(ApplyTypes.Luck));
+            return (ch.PermanentLuck + ch.ModLuck).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Luck));
         }
 
         public static int CanCarryN(this CharacterInstance ch)
@@ -562,7 +562,7 @@ namespace SmaugCS.Extensions
             ClassData myClass = db.GetClass(ch.CurrentClass);
 
             int add_hp = GameConstants.con_app[ch.GetCurrentConstitution()].hitp +
-                         SmaugCS.Common.SmaugRandom.Between(myClass.MinimumHealth, myClass.MaximumHealth);
+                         SmaugCS.Common.SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
             int add_mana = myClass.UseMana
                                ? SmaugCS.Common.SmaugRandom.Between(2, (2 * ch.GetCurrentIntelligence() + ch.GetCurrentWisdom()) / 8)
                                : 0;

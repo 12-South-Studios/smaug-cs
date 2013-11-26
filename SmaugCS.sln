@@ -114,9 +114,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "classes", "classes", "{22E3
 		data\classes\Pirate.class = data\classes\Pirate.class
 		data\classes\Ranger.class = data\classes\Ranger.class
 		data\classes\Savage.class = data\classes\Savage.class
-		data\classes\Thief.class = data\classes\Thief.class
+		data\classes\Thief.lua = data\classes\Thief.lua
 		data\classes\Vampire.class = data\classes\Vampire.class
-		data\classes\Warrior.class = data\classes\Warrior.class
+		data\classes\Warrior.lua = data\classes\Warrior.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "color", "color", "{10B1ED79-3B1C-45F4-A768-8C3F9CF1B809}"
@@ -161,7 +161,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "races", "races", "{48A88E85
 		data\races\Half-Orc.race = data\races\Half-Orc.race
 		data\races\Half-Troll.race = data\races\Half-Troll.race
 		data\races\Halfling.race = data\races\Halfling.race
-		data\races\Human.race = data\races\Human.race
+		data\races\Human.lua = data\races\Human.lua
 		data\races\Lizardman.race = data\races\Lizardman.race
 		data\races\oldgnome.race = data\races\oldgnome.race
 		data\races\Pixie.race = data\races\Pixie.race
@@ -187,17 +187,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\mixtures.lua = data\system\mixtures.lua
 		data\system\moblog.txt = data\system\moblog.txt
 		data\system\MoonMap.txt = data\system\MoonMap.txt
-		data\system\morph.dat = data\system\morph.dat
+		data\system\morph.lua = data\system\morph.lua
 		data\system\mssp.dat = data\system\mssp.dat
 		data\system\mudrip.rip = data\system\mudrip.rip
 		data\system\mudtitle.ans = data\system\mudtitle.ans
 		data\system\mudtitle.asc = data\system\mudtitle.asc
 		data\system\mudtitle.rip = data\system\mudtitle.rip
 		data\system\news.dat = data\system\news.dat
-		data\system\planes.dat = data\system\planes.dat
+		data\system\planes.lua = data\system\planes.lua
 		data\system\REQUESTS = data\system\REQUESTS
 		data\system\RETIREDLIST = data\system\RETIREDLIST
-		data\system\skills.dat = data\system\skills.dat
 		data\system\skills.lua = data\system\skills.lua
 		data\system\socials.lua = data\system\socials.lua
 		data\system\specfuns.lua = data\system\specfuns.lua
@@ -605,8 +604,5 @@ Global
 		{C28149F0-D9AC-4485-914F-F798E7BB5BC3} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{2BC26F47-22B4-4BE8-AAA9-64FB81430861} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
 		{1C88C8F6-11B5-4F07-80E7-BF73F0C6D95A} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

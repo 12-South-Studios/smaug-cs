@@ -3,8 +3,7 @@
 -- Revised: 2013.11.22
 -- Author: Jason Murdick
 -- Version: 1.0
-
-LoadCommands();
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadCommands()
 	LCreateCommand("'~", "do_say", 106, 0, 0, 0);
@@ -27,125 +26,25 @@ function LoadCommands()
 	LCreateCommand("aset", "do_aset", 100, 59, 1, 0);
 	LCreateCommand("ask", "do_ask", 104, 0, 0, 1);
 	LCreateCommand("astat", "do_astat", 100, 59, 0, 0);
+	LCreateCommand("avtalk", "do_avtalk", 100, 51, 0, 1);
+	LCreateCommand("apply", "do_apply", 100, 1, 0, 0);
+	LCreateCommand("atobj", "do_atobj", 100, 52, 0, 0);
+	LCreateCommand("alinks", "do_alinks", 100, 51, 0, 0);
+	LCreateCommand("buy", "do_buy", 106, 0, 0, 0);
+	LCreateCommand("brandish", "do_brandish", 108, 0, 0, 0);
+	LCreateCommand("bs", "do_backstab", 112, 0, 0, 0);
+	LCreateCommand("balzhur", "do_balzhur", 108, 59, 1, 4);
+	LCreateCommand("bamfin", "do_bamfin", 100, 51, 0, 0);
+	LCreateCommand("bamfout", "do_bamfout", 100, 51, 0, 0);
+	LCreateCommand("ban", "do_ban", 100, 58, 1, 0);
+	LCreateCommand("bestow", "do_bestow", 100, 62, 1, 0);
+	LCreateCommand("bio", "do_bio", 100, 1, 0, 0);
+	LCreateCommand("bodybag", "do_bodybag", 100, 51, 1, 0);
 end
 
+LoadCommands();
 
 --[[
-
-#COMMAND
-Name        avtalk~
-Code        do_avtalk
-Position    100
-Level       51
-Log         0
-Flags       1
-End
-
-#COMMAND
-Name        apply~
-Code        do_apply
-Position    100
-Level       1
-Log         0
-End
-
-#COMMAND
-Name        atobj~
-Code        do_atobj
-Position    100
-Level       52
-Log         0
-End
-
-#COMMAND
-Name        alinks~
-Code        do_alinks
-Position    100
-Level       51
-Log         0
-End
-
-#COMMAND
-Name        buy~
-Code        do_buy
-Position    106
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        brandish~
-Code        do_brandish
-Position    108
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        bs~
-Code        do_backstab
-Position    112
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        balzhur~
-Code        do_balzhur
-Position    108
-Level       59
-Log         1
-Flags       4
-End
-
-#COMMAND
-Name        bamfin~
-Code        do_bamfin
-Position    100
-Level       51
-Log         0
-End
-
-#COMMAND
-Name        bamfout~
-Code        do_bamfout
-Position    100
-Level       51
-Log         0
-End
-
-#COMMAND
-Name        ban~
-Code        do_ban
-Position    100
-Level       58
-Log         1
-End
-
-#COMMAND
-Name        bestow~
-Code        do_bestow
-Position    100
-Level       62
-Log         1
-End
-
-#COMMAND
-Name        bio~
-Code        do_bio
-Position    100
-Level       1
-Log         0
-End
-
-#COMMAND
-Name        bodybag~
-Code        do_bodybag
-Position    100
-Level       51
-Log         1
-End
-
 #COMMAND
 Name        boards~
 Code        do_boards

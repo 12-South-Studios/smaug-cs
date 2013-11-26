@@ -595,13 +595,13 @@ namespace SmaugCS
 
         static void Main(string[] args)
         {
-            LogManager.BootLog("Starting up the MUD");
+            LogManager.BootLog("---------------------[ Boot Log ]--------------------");
 
-            SystemConstants.LoadSystemDirectoriesFromConfig(GetDataPath());
-            LogManager.BootLog("SystemDirectories loaded.");
+            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GetDataPath());
+            LogManager.BootLog("{0} SystemDirectories loaded.", loaded);
 
-            SystemConstants.LoadSystemFilesFromConfig(GetDataPath());
-            LogManager.BootLog("SystemFiles loaded.");
+            loaded = SystemConstants.LoadSystemFilesFromConfig(GetDataPath());
+            LogManager.BootLog("{0} SystemFiles loaded.", loaded);
 
             // Setup the Managers
             _logMgr = LogManager.Instance;
