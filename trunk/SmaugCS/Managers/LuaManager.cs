@@ -1,5 +1,8 @@
-﻿using Realm.Library.Common.Objects;
+﻿using LuaInterface;
+using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Managers
 {
@@ -59,6 +62,26 @@ namespace SmaugCS.Managers
         public void InitVirtualMachine()
         {
             LUA = new LuaVirtualMachine(1, null, new LuaFunctionRepository(), Proxy);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="useSystemFile"></param>
+        public void DoLuaScript(string file, bool useSystemFile = false)
+        {
+            var path = useSystemFile ? SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + file : file;
+
+            try
+            {
+                Proxy.DoFile(path);
+            }
+            catch (LuaException ex)
+            {
+                LogManager.BootLog(ex);
+                throw;
+            }
         }
     }
 }

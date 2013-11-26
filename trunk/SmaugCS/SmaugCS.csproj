@@ -171,6 +171,8 @@
     <Compile Include="Extensions\SavingThrowDataExtensions.cs" />
     <Compile Include="Extensions\WeatherManagerExtensions.cs" />
     <Compile Include="GameConstants.cs" />
+    <Compile Include="Loaders\ClassLoader.cs" />
+    <Compile Include="Loaders\RaceLoader.cs" />
     <Compile Include="LuaFunctions.cs" />
     <Compile Include="Managers\LuaManager.cs" />
     <Compile Include="SpecFuns\BreathAcid.cs" />

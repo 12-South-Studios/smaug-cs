@@ -73,5 +73,11 @@ namespace SmaugCS.Data
             WhereNames = new List<string>(maxWhereNames);
             SavingThrows = new SavingThrowData();
         }
+
+        public void AddWhereName(string name)
+        {
+            if (!WhereNames.Contains(name))
+                WhereNames.Add(name);
+        }
     }
 }

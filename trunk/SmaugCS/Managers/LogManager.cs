@@ -48,13 +48,16 @@ namespace SmaugCS.Managers
 
         public static void BootLog(string str, params object[] args)
         {
-            string path = "Boot.log";
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
+            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter("Boot.log", true)))
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendFormat(str, args);
-                proxy.Write("[*****] BOOT: {0}\n", sb.ToString());
+                proxy.Write("[{0}] {1}\n", DateTime.Now.ToString(), sb.ToString());
             }
+        }
+        public static void BootLog(Exception ex)
+        {
+             BootLog(ex.Message + "\n{0}", ex.StackTrace);   
         }
 
         public static void Log(LogTypes logType, int level, string fmt, params object[] args)

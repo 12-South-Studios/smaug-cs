@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using LuaInterface;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Constants.Constants;
@@ -56,22 +59,18 @@ namespace SmaugCS.Managers
         public CharacterRepository CHARACTERS { get; private set; }
         public ObjInstanceRepository OBJECTS { get; private set; }
 
-        private void DoLuaScript(string file)
-        {
-            LuaManager.Instance.Proxy.DoFile(SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + file);
-        }
-
         public void Initialize(bool fCopyOver)
         {
-            LogManager.BootLog("---------------------[ Boot Log ]--------------------");
-
+            LogManager.BootLog("Initializing the Database");
             db.SystemData = new SystemData();
 
             LogManager.BootLog("Loading commands...");
-            DoLuaScript(Program.GetAppSetting("CommandsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("CommandsFile"), true);
+            LogManager.BootLog("{0} Commands loaded.", db.COMMANDS.Count);
 
             LogManager.BootLog("Loading spec funs...");
-            DoLuaScript(Program.GetAppSetting("SpecFunsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("SpecFunsFile"), true);
+            LogManager.BootLog("{0} SpecFuns loaded.", SPEC_FUNS.Count);
 
             LogManager.BootLog("Loading sysdata configuration...");
             db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, Program.GetLevel("demi"));
@@ -89,31 +88,42 @@ namespace SmaugCS.Managers
             }
 
             LogManager.BootLog("Loading socials");
-            DoLuaScript(Program.GetAppSetting("SocialsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("SocialsFile"), true);
+            LogManager.BootLog("{0} Socials loaded.", db.SOCIALS.Count);
 
             LogManager.BootLog("Loading skill table");
             //tables.load_skill_table();
             //tables.remap_slot_numbers();
             //db.NumberSortedSkills = db.SKILLS.Count;
-            DoLuaScript(Program.GetAppSetting("SkillsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("SkillsFile"), true);
+            LogManager.BootLog("{0} Skills loaded.", SKILLS.Count);
 
             LogManager.BootLog("Loading classes");
-            tables.load_classes();
+            ClassLoader classLoader = new ClassLoader();
+            _loaders.Add(classLoader);
+            classLoader.Load();
+            LogManager.BootLog("{0} Classes loaded.", db.CLASSES.Count);
 
             LogManager.BootLog("Loading races");
-            tables.load_races();
+            RaceLoader raceLoader = new RaceLoader();
+            _loaders.Add(raceLoader);
+            raceLoader.Load();
+            LogManager.BootLog("{0} Races loaded.", db.RACES.Count);
 
             LogManager.BootLog("Loading news data");
             news.load_news();
 
             LogManager.BootLog("Loading liquids");
-            DoLuaScript(Program.GetAppSetting("LiquidsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("LiquidsFile"), true);
+            LogManager.BootLog("{0} Liquids loaded.", LIQUIDS.Count);
 
             LogManager.BootLog("Loading mixtures");
-            DoLuaScript(Program.GetAppSetting("MixturesFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("MixturesFile"), true);
+            LogManager.BootLog("{0} Mixtures loaded.", db.MIXTURES.Count);
 
             LogManager.BootLog("Loading herbs");
-            DoLuaScript(Program.GetAppSetting("HerbsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("HerbsFile"), true);
+            LogManager.BootLog("{0} Herbs loaded.", HERBS.Count);
 
             LogManager.BootLog("Loading tongues");
             tables.load_tongues();
@@ -166,7 +176,7 @@ namespace SmaugCS.Managers
             // TODO Assign remainder
 
             LogManager.BootLog("Loading planes...");
-            DoLuaScript(Program.GetAppSetting("PlanesFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("PlanesFile"), true);
 
             AreaListLoader aLoader = new AreaListLoader();
             _loaders.Add(aLoader);
@@ -231,7 +241,7 @@ namespace SmaugCS.Managers
             db.load_projects();
 
             LogManager.BootLog("Loading morphs");
-            DoLuaScript(Program.GetAppSetting("MorphsFile"));
+            LuaManager.Instance.DoLuaScript(Program.GetAppSetting("MorphsFile"), true);
 
             // TODO MOBTrigger = true;
 

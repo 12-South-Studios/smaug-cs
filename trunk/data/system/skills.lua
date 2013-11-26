@@ -1,32 +1,31 @@
 -- SKILLS.LUA
--- This is the Skills data file for the MUD
+-- This is the skills data file for the MUD
 -- Revised: 2013.11.22
 -- Author: Jason Murdick
 -- Version: 1.0
-
-LoadSkills();
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadSkills()
-	skill.this = CreateSkill("reserved", "spell", 112, 95, 51);
-	skill.this.WearOffMessage = "???";
-	LSetCode(skill.this, "spell_null");
+	skill = CreateSkill("reserved", "spell", 112, 95, 51);
+	skill.WearOffMessage = "???";
+	LSetCode(skill, "spell_null");
 	
-	skill.this = CreateSkill("venomshield", "unknown", 0, 0, 51);
-	LSetCode(skill.this, "spell_smaug");
+	skill = CreateSkill("venomshield", "unknown", 0, 0, 51);
+	LSetCode(skill, "spell_smaug");
 	
-	skill.this = CreateSkill("wrath of dominus", "spell", 109, 246, 51);
-	skill.this:SetFlags("secretskill noscribe");
-	skill.this:SetTargetByValue(2);
-	skill.this.MinimumMana = 10;
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("10", 13, "-75", -1));
-	skill.this:AddAffect(CreateSmaugAffect("10", 31, "-3", -1));	
+	skill = CreateSkill("wrath of dominus", "spell", 109, 246, 51);
+	skill:SetFlags("secretskill noscribe");
+	skill:SetTargetByValue(2);
+	skill.MinimumMana = 10;
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("10", 13, "-75", -1));
+	skill:AddAffect(CreateSmaugAffect("10", 31, "-3", -1));	
 	
-	skill.this = CreateSkill("astral walk", "spell", 112, 90, 30);
-	skill.this.MinimumMana = 60;
-	skill.this.Rounds = 12;
-	skill.this.WearOffMessage = "!Astral Walk!");
-	LSetCode(skill.this, "spell_astral_walk");
+	skill = CreateSkill("astral walk", "spell", 112, 90, 30);
+	skill.MinimumMana = 60;
+	skill.Rounds = 12;
+	skill.WearOffMessage = "!Astral Walk!";
+	LSetCode(skill, "spell_astral_walk");
 	
 	LoadBuffSpells();
 	LoadAcidSpells();
@@ -34,119 +33,124 @@ function LoadSkills()
 end
 
 function LoadBuffSpells()
-	skill.this = CreateSkill("alertness", "spell", 111, 102, 23);
-	skill.this:SetTargetByValue(3);
-	skill.this.MinimumMana = 60;
-	skill.this.Rounds = 15;
-	skill.this.WearOffMessage = "You are suddenly less alert.";
-	skill.this.HitVictimMessage = "You suddenly feel alert.";
-	skill.this.HitRoomMessage = "$N's eyes dart about the room in an alert manner.";
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("l*15", 27, "1024", -1));
+	skill = CreateSkill("alertness", "spell", 111, 102, 23);
+	skill:SetTargetByValue(3);
+	skill.MinimumMana = 60;
+	skill.Rounds = 15;
+	skill.WearOffMessage = "You are suddenly less alert.";
+	skill.HitVictimMessage = "You suddenly feel alert.";
+	skill.HitRoomMessage = "$N's eyes dart about the room in an alert manner.";
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("l*15", 27, "1024", -1));
 
-	skill.this = CreateSkill("antimagic shell", "spell", 111, 224, 17);
-	skill.this:SetTargetByValue(3);
-	skill.this.MinimumMana = 40;
-	skill.this.Rounds = 12;
-	skill.this.WearOffMessage = "The shimmering shell and its protection from magic fade away.";
-	skill.this.HitVictimMessage = "A shimmering translucent shell forms about you.";
-	skill.this.HItRoomMessage = "A shimmering translucent shell forms about $N.";
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("l*23", 27, "1048576", -1));
+	skill = CreateSkill("antimagic shell", "spell", 111, 224, 17);
+	skill:SetTargetByValue(3);
+	skill.MinimumMana = 40;
+	skill.Rounds = 12;
+	skill.WearOffMessage = "The shimmering shell and its protection from magic fade away.";
+	skill.HitVictimMessage = "A shimmering translucent shell forms about you.";
+	skill.HitRoomMessage = "A shimmering translucent shell forms about $N.";
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("l*23", 27, "1048576", -1));
 	
-	skill.this = CreateSkill("aqua breath", "spell", 112, 236, 14);
-	skill.this:SetFlags("noscribe");
-	skill.this:SetTargetByValue(2);
-	skill.this.MinimumMana = 50;
-	skill.this.Rounds = 12;
-	skill.this.WearOffMessage = "Your lungs revert to their original state.";
-	skill.this.HitCharacterMessage = "$N's lungs take on the ability to breathe water...";
-	skill.this.HitVictimMessage = "Your lungs take on the ability to breathe water...";
-	skill.this.HitRoomMessage = "$N's lungs take on the ability to breathe water...";
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("l*23", 26, "aqua breath", 31));
+	skill = CreateSkill("aqua breath", "spell", 112, 236, 14);
+	skill:SetFlags("noscribe");
+	skill:SetTargetByValue(2);
+	skill.MinimumMana = 50;
+	skill.Rounds = 12;
+	skill.WearOffMessage = "Your lungs revert to their original state.";
+	skill.HitCharacterMessage = "$N's lungs take on the ability to breathe water...";
+	skill.HitVictimMessage = "Your lungs take on the ability to breathe water...";
+	skill.HitRoomMessage = "$N's lungs take on the ability to breathe water...";
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("l*23", 26, "aqua breath", 31));
 	
-	skill.this = CreateSkill("armor", "spell", 111, 1, 1);
-	skill.this:SetTargetByValue(2);
-	skill.this.MinimumMana = 5;
-	skill.this.Rounds = 12;
-	skill.this.WearOffMessage = "Your armor returns to its mundane value.";
-	skill.this.HitCharacterMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
-	skill.this.HitVictimMessage = "Your armor begins to glow softly as it is enhanced by a cantrip.";
-	skill.this.HItRoomMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("l*10", 17, "-20", -1));
+	skill = CreateSkill("armor", "spell", 111, 1, 1);
+	skill:SetTargetByValue(2);
+	skill.MinimumMana = 5;
+	skill.Rounds = 12;
+	skill.WearOffMessage = "Your armor returns to its mundane value.";
+	skill.HitCharacterMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
+	skill.HitVictimMessage = "Your armor begins to glow softly as it is enhanced by a cantrip.";
+	skill.HitRoomMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("l*10", 17, "-20", -1));
 	
-	skill.this = CreateSkill("benediction", "spell", 110, 95, 19);
-	skill.this:SetTargetByValue(2);
-	skill.this.Info = 840;
-	skill.this.MinimumMana = 15;
-	skill.this.Rounds = 15;
-	skill.this.Flags = 14336;
-	skill.this.WearOffMessage = "Your time in The Protection of The High Gods is over.";
-	skill.this.HitCharacterMessage = "You lay The Protection of The High Gods upon $N.";
-	skill.this.HitVictimMessage = "The Protection of The High Gods is temporarily given to you.";
-	skill.this.HitRoomMessage = "The Protection of The High Gods is temporarily given to $N.";
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("l", 26, "protection", 13));
+	skill = CreateSkill("benediction", "spell", 110, 95, 19);
+	skill:SetTargetByValue(2);
+	skill.Info = 840;
+	skill.MinimumMana = 15;
+	skill.Rounds = 15;
+	skill.Flags = 14336;
+	skill.WearOffMessage = "Your time in The Protection of The High Gods is over.";
+	skill.HitCharacterMessage = "You lay The Protection of The High Gods upon $N.";
+	skill.HitVictimMessage = "The Protection of The High Gods is temporarily given to you.";
+	skill.HitRoomMessage = "The Protection of The High Gods is temporarily given to $N.";
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("l", 26, "protection", 13));
 	
-	skill.this = CreateSkill("benefic aura", "spell", 111, 342, 30);
-	skill.this:SetTargetByValue(3);
-	skill.this.MinimumMana = 50;
-	skill.this.Rounds = 12;
-	skill.this.WearOffMessage = "Your protection from evil slowly unravels.";
-	skill.this.HitVictimMessage = "A faint glow rises about you as you are instilled with a ward against evil.";
-	skill.this.HitRoomMessage = "A faint glow rises protectively about $N.";
-	LSetCode(skill.this, "spell_smaug");
-	skill.this:AddAffect(CreateSmaugAffect("l*7", 26, "protect", 13));
-	skill.this:AddComponent(CreateSpellComponent("V", "65", "@"));
+	skill = CreateSkill("benefic aura", "spell", 111, 342, 30);
+	skill:SetTargetByValue(3);
+	skill.MinimumMana = 50;
+	skill.Rounds = 12;
+	skill.WearOffMessage = "Your protection from evil slowly unravels.";
+	skill.HitVictimMessage = "A faint glow rises about you as you are instilled with a ward against evil.";
+	skill.HitRoomMessage = "A faint glow rises protectively about $N.";
+	LSetCode(skill, "spell_smaug");
+	skill:AddAffect(CreateSmaugAffect("l*7", 26, "protect", 13));
+	skill:AddComponent(CreateSpellComponent("V", "65", "@"));
 	
+	skill = CreateSkill("bethsaidean touch", "spell", 111, 343, 9);
+	skill:SetTargetByValue(2);
+	skill.MinimumMana = 30;
+	skill.Rounds = 12;
+	LSetCode(skill, "spell_bethsaidean_touch");
 	
 end
 
 function LoadAcidSpells()
-	skill.this = CreateSkill("acetum primus", "spell", 105, 302, 37);
-	skill.this.Info = 909;
-	skill.this:SetTargetByValue(1);
-	skill.this.MinimumMana = 15;
-	skill.this.Rounds = 8;
-	skill.this.DamageMessage = "Acetum Primus";
-	skill.this.WearOffMessage = "!WEAROFF!";
-	LSetCode(skill.this, "spell_acetum_primus");
+	skill = CreateSkill("acetum primus", "spell", 105, 302, 37);
+	skill.Info = 909;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 15;
+	skill.Rounds = 8;
+	skill.DamageMessage = "Acetum Primus";
+	skill.WearOffMessage = "!WEAROFF!";
+	LSetCode(skill, "spell_acetum_primus");
 	
-	skill.this = CreateSkill("acid blast", "spell", 109, 70, 20);
-	skill.this.Info = 5;
-	skill.this:SetTargetByValue(1);
-	skill.this.MinimumMana = 20;
-	skill.this.Rounds = 12;
-	skill.this.DamageMessage = "Acid Blast";
-	skill.this.WearOffMessage = "!Acid Blast!";
-	LSetCode(skill.this, "spell_acid_blast");
+	skill = CreateSkill("acid blast", "spell", 109, 70, 20);
+	skill.Info = 5;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 20;
+	skill.Rounds = 12;
+	skill.DamageMessage = "Acid Blast";
+	skill.WearOffMessage = "!Acid Blast!";
+	LSetCode(skill, "spell_acid_blast");
 	
-	skill.this = CreateSkill("acid breath", "spell", 109, 200, 43);
-	skill.this.Info = 2053;
-	skill.this:SetFlags("stoponfail");
-	skill.this:SetTargetByValue(1);
-	skill.this.Saves = 5;
-	skill.this.MinimumMana = 20;
-	skill.this.Rounds = 4;
-	skill.this.DamageMessage = "Blast of Acid";
-	skill.this.WearOffMessage = "!Acid Breath!";
-	LSetCode(skill.this, "spell_acid_breath");
+	skill = CreateSkill("acid breath", "spell", 109, 200, 43);
+	skill.Info = 2053;
+	skill:SetFlags("stoponfail");
+	skill:SetTargetByValue(1);
+	skill:SetSaveVsByValue(5);
+	skill.MinimumMana = 20;
+	skill.Rounds = 4;
+	skill.DamageMessage = "Blast of Acid";
+	skill.WearOffMessage = "!Acid Breath!";
+	LSetCode(skill, "spell_acid_breath");
 	
-	skill.this = CreateSkill("acidmist", "spell", 0, 256, 51);
-	skill.this.Info = 397;
-	skill.this:SetTargetByValue(1);
-	skill.this.Rounds = 20;
-	LSetCode(skill.this, "spell_smaug");
+	skill = CreateSkill("acidmist", "spell", 0, 256, 51);
+	skill.Info = 397;
+	skill:SetTargetByValue(1);
+	skill.Rounds = 20;
+	LSetCode(skill, "spell_smaug");
 end
 
 function LoadDeathSpells()
-	skill.this = CreateSkill("animate dead", "spell", 110, 231, 23);
-	skill.this.MinimumMana = 220;
-	skill.this.Rounds = 12;
-	skill.this.WearOffMessage = "!Animate Dead!";
-	LSetCode(skill.this, "spell_animate_dead");
+	skill = CreateSkill("animate dead", "spell", 110, 231, 23);
+	skill.MinimumMana = 220;
+	skill.Rounds = 12;
+	skill.WearOffMessage = "!Animate Dead!";
+	LSetCode(skill, "spell_animate_dead");
 end
 
 function CreateSkill(name, skillType, minPosition, slot, minLevel)
@@ -170,22 +174,9 @@ function CreateSpellComponent(requiredType, dataValue, operatorType)
 	return component.this;
 end
 
---[[
-#SKILL
-Name         bethsaidean touch~
-Type         Spell
-Info         0
-Flags        0
-Target       2
-Minpos       111
-Slot         343
-Mana         30
-Rounds       12
-Code         spell_bethsaidean_touch
-Dammsg       ~
-Minlevel     9
-End
+LoadSkills();
 
+--[[
 #SKILL
 Name         black breath~
 Type         Spell
@@ -2628,7 +2619,7 @@ Code         spell_smaug
 Dammsg       ~
 Wearoff      Your pulse returns to a normal rate.~
 Hitvict      You feel your pulse quicken!~
-Missvict     You fail to gather enough magic to perform this spell.~
+Missvict     You fail to gather enough magic to perform. spell.~
 Affect       'l+50' 26 'quickening' -1
 Affect       'l+50' 2 '+2' -1
 Minlevel     21

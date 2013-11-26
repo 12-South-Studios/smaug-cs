@@ -3,11 +3,12 @@
 -- Revised: 2013.11.22
 -- Author: Jason Murdick
 -- Version: 1.0
-
-LoadMorphs();
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadMorphs()
 
 end
+
+LoadMorphs();
 
 -- EOF

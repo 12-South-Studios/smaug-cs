@@ -1,23 +1,33 @@
-Name        Warrior~
-Class       3
-AttrPrime   1
-AttrSecond   0
-AttrDeficient   0
-Weapon      10313
-Guild       3022
-Skilladept  85
-Thac0       18
-Thac32      6
-Hpmin       11
-Hpmax       15
-Mana        0
-Expbase     1150
-Affected    0
-Resist	 0
-Suscept	 0
-Skill 'aggressive style' 1 95
-Skill 'aid' 6 80
-Skill 'bash' 30 85
+-- WARRIOR.LUA
+-- This is the Warrior Class file for the MUD
+-- Revised: 2013.11.25
+-- Author: Jason Murdick
+-- Version: 1.0
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
+
+function LoadClass()
+	newClass = LCreateClass("Warrior", 3);
+	class.this = newClass;
+	class.this:SetPrimaryAttribute("strength");
+	class.this.Weapon = 10313;
+	class.this.Guild = 3022;
+	class.this.SkillAdept = 85;
+	class.this.ToHitArmorClass0 = 18;
+	class.this.ToHitArmorClass32 = 6;
+	class.this.MinimumHealthGain = 11;
+	class.this.MaximumHealthGain = 15;
+	class.this.BaseExperience = 1150;
+
+	LoadClassSkills(class.this);
+	LoadClassTitles(class.this);
+end
+
+function LoadClassSkills(class)
+	class:AddSkill("aggressive style", 1, 95);
+	class:AddSkill("aid", 6, 80);
+	class:AddSkill("bash", 30, 85);
+
+--[[
 Skill 'berserk style' 10 95
 Skill 'blitz' 28 80
 Skill 'bludgeons' 1 95
@@ -71,12 +81,14 @@ Skill 'third attack' 23 95
 Skill 'track' 38 85
 Skill 'trollese' 1 99
 Skill 'uppercut' 28 80
-Title
-Man~
-Woman~
-Title
-Swordpupil~
-Swordpupil~
+--]]
+end
+
+function LoadClassTitles(class)
+	class:AddTitle(0, "Man", "Woman");
+	class:Addtitle(1, "Swordpupil", "Swordpupil");
+	
+--[[
 Title
 Recruit~
 Recruit~
@@ -270,3 +282,9 @@ Title
 Supreme Entity~
 Supreme Entity~
 End
+--]]
+end
+
+LoadClass();
+
+-- EOF

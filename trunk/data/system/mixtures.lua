@@ -3,11 +3,12 @@
 -- Revised: 2013.11.22
 -- Author: Jason Murdick
 -- Version: 1.0
-
-LoadMixtures()
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadMixtures()
 
 end
+
+LoadMixtures();
 
 -- EOF

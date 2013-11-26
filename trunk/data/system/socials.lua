@@ -3,21 +3,27 @@
 -- Revised: 2013.11.22
 -- Author: Jason Murdick
 -- Version: 1.0
-
-LoadSocials();
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadSocials()
-	social.this = CreateSocial("accuse");
-	social.this.CharNoArg = "Accuse whom?";
-	social.this.OthersNoArg = "$n is in an accusing mood.";
-	social.this.CharFound = "You look accusingly at $N.";
-	social.this.OthersFound = "$n looks accusingly at $N.";
-	social.this.VictFound = "$n looks accusingly at you.";
-	social.this.CharAuto = "You accuse yourself.";
-	social.this.OthersAuto = "$n seems to have a bad conscience.";
+	social = CreateSocial("accuse");
+	social.CharNoArg = "Accuse whom?";
+	social.OthersNoArg = "$n is in an accusing mood.";
+	social.CharFound = "You look accusingly at $N.";
+	social.OthersFound = "$n looks accusingly at $N.";
+	social.VictFound = "$n looks accusingly at you.";
+	social.CharAuto = "You accuse yourself.";
+	social.OthersAuto = "$n seems to have a bad conscience.";
 	
+	social = CreateSocial("ack");
+	social.CharNoArg = "You gasp and say 'ACK!' at your mistake.";
+	social.OthersNoArg = "$n ACKS at $s big mistake.";
+	social.CharFound = "You ACK $M.";
+	social.OthersFound = "$n ACKS $N.";
+	social.VictFound = "$n ACKS you.";
+	social.CharAuto = "You ACK yourself.";
+	social.OthersAuto = "$n ACKS $mself.  Must be a bad day.";
 	
-
 end
 
 function CreateSocial(name)
@@ -25,6 +31,8 @@ function CreateSocial(name)
 	social.this = newSocial;
 	return social.this;
 end
+
+LoadSocials();
 
 --[[
 #SOCIAL

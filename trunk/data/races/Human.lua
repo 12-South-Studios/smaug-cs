@@ -1,34 +1,28 @@
-Name        Human~
-Race        0
-Classes     512
-Str_Plus    0
-Dex_Plus    0
-Wis_Plus    0
-Int_Plus    0
-Con_Plus    0
-Cha_Plus    0
-Lck_Plus    0
-Hit         0
-Mana        0
-Affected    0
-Resist      0
-Suscept     0
-Language    1
-Align       0
-Min_Align  -1000
-Max_Align	1000
-AC_Plus    0
-Exp_Mult   100
-Attacks    0
-Defenses   0
-Height     66
-Weight     150
-Hunger_Mod  0
-Thirst_mod  0
-Mana_Regen  0
-HP_Regen    0
-Race_Recall 0
-WhereName  <used as light>     ~
+-- HUMAN.LUA
+-- This is the Human Race file for the MUD
+-- Revised: 2013.11.25
+-- Author: Jason Murdick
+-- Version: 1.0
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
+
+function LoadRace()
+	newRace = LCreateRace("Human", 0);
+	race.this = newRace;
+	race.this.ClassRestriction = 512;
+	race.this.Language = 1;
+	race.this.MinimumAlignment = -1000;
+	race.this.MaximumAlignment = 1000;
+	race.this.ExperienceMultiplier = 100;
+	race.this.Height = 66;
+	race.this.Weight = 150;
+	
+	LoadWhereNames(race.this);
+end
+
+function LoadWhereNames(race)
+	race:AddWhereName("<used as light>     ");
+
+--[[	
 WhereName  <worn on finger>    ~
 WhereName  <worn on finger>    ~
 WhereName  <worn around neck>  ~
@@ -58,3 +52,9 @@ WhereName  <BUG Inform Nivek>  ~
 WhereName  <BUG Inform Nivek>  ~
 WhereName  <BUG Inform Nivek>  ~
 End
+--]]
+end
+
+LoadRace();
+
+-- EOF

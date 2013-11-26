@@ -114,7 +114,7 @@ namespace SmaugCS.Constants.Constants
         /// 
         /// </summary>
         /// <param name="path"></param>
-        public static void LoadSystemDirectoriesFromConfig(string path)
+        public static int LoadSystemDirectoriesFromConfig(string path)
         {
             var section = (SystemDataConfigurationSection) ConfigurationManager.GetSection("SystemDataSection");
             var collection = section.SystemDirectories;
@@ -124,13 +124,15 @@ namespace SmaugCS.Constants.Constants
                 var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(element.Name);
                 SystemDirectories.Add(dirType, path + "\\" + element.Path);
             }
+
+            return SystemDirectories.Count;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="path"></param>
-        public static void LoadSystemFilesFromConfig(string path)
+        public static int LoadSystemFilesFromConfig(string path)
         {
             var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
             var collection = section.SystemFiles;
@@ -139,7 +141,9 @@ namespace SmaugCS.Constants.Constants
             {
                 var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(element.Name);
                 SystemFiles.Add(fileType, new KeyValuePair<string, bool>(element.Filename, element.UseSystemFolder));
-            } 
+            }
+
+            return SystemFiles.Count;
         }
     }
 }

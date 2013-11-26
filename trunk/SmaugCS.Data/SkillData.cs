@@ -169,5 +169,10 @@ namespace SmaugCS.Data
         {
             Components.Add(component);
         }
+
+        public void SetSaveVsByValue(int value)
+        {
+            SaveVs = EnumerationExtensions.GetEnum<SaveVsTypes>(value);
+        }
     }
 }

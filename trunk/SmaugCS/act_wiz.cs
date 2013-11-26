@@ -303,8 +303,8 @@ namespace SmaugCS
             cls.SkillAdept = 0;
             cls.ToHitArmorClass0 = 0;
             cls.ToHitArmorClass32 = 0;
-            cls.MaximumHealth = 0;
-            cls.MinimumHealth = 0;
+            cls.MaximumHealthGain = 0;
+            cls.MinimumHealthGain = 0;
             cls.UseMana = false;
             cls.BaseExperience = 1000;
 

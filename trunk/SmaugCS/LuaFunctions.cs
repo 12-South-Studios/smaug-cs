@@ -282,5 +282,35 @@ namespace SmaugCS
             AddLastObject(newComponent);
             return newComponent;
         }
+
+        [LuaFunction("LCreateClass", "Creates a new class", "Name of the class", "Numeric type of the class")]
+        public static ClassData LuaCreateClass(string name, int type)
+        {
+            ClassData newClass = new ClassData
+                {
+                    Name = name, 
+                    Type = EnumerationExtensions.GetEnum<ClassTypes>(type)
+                };
+
+            LuaManager.Instance.Proxy.CreateTable("class");
+            AddLastObject(newClass);
+            db.CLASSES.Add(newClass);
+            return newClass;
+        }
+
+        [LuaFunction("LCreateRace", "Creates a new Race", "Name of the Race", "Numeric type of the race")]
+        public static RaceData LuaCreateRace(string name, int type)
+        {
+            RaceData newRace = new RaceData(99)
+                {
+                    Name = name, 
+                    Type = EnumerationExtensions.GetEnum<RaceTypes>(type)
+                };
+
+            LuaManager.Instance.Proxy.CreateTable("race");
+            AddLastObject(newRace);
+            db.RACES.Add(newRace);
+            return newRace;
+        }
     }
 }

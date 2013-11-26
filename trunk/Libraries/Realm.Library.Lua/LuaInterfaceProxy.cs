@@ -33,9 +33,21 @@ namespace Realm.Library.Lua
             return _lua.DoFile(fileName);
         }
 
+        public object[] DoFileWithLoad(string fileName)
+        {
+            var luaFunc = _lua.LoadFile(fileName);
+            return luaFunc.Call(null);
+        }
+
         public object[] DoString(string chunk)
         {
             return _lua.DoString(chunk);
+        }
+
+        public object[] DoStringWithLoad(string chunk, string func)
+        {
+            var luaFunc = _lua.LoadString(chunk, func);
+            return luaFunc.Call(null);
         }
 
         public LuaFunction GetFunction(string fullPath)
