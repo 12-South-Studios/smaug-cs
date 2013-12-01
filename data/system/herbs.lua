@@ -17,7 +17,7 @@ function LoadHerbs()
 	herb.MinimumPosition = 7;
 	herb.Slot = 1;
 	herb.HitVictimMessage = "You start to cough and choke!";
-	LSetCode(herb, "spell_smaug");
+	herb.SpellFunctionName = "spell_smaug";
 	herb:AddAffect(CreateSmaugAffect("", 13, "-10", 0));
 
 	herb = CreateHerb("vermeir");
@@ -27,7 +27,7 @@ function LoadHerbs()
 	herb:SetTargetByValue(3);
 	herb.MinimumPosition = 5;
 	herb.Slot = 2;
-	LSetCode(herb, "spell_smaug");
+	herb.SpellFunctionName = "spell_smaug";
 	herb:AddAffect(CreateSmaugAffect("", 14, '20', 0));
 
 	herb = CreateHerb("nooracht");
@@ -38,7 +38,7 @@ function LoadHerbs()
 	herb:SetTargetByValue(3);
 	herb.MinimumPosition = 5;
 	herb.Slot = 3;
-	LSetCode(herb, "spell_smaug");
+	herb.SpellFunctionName = "spell_smaug";
 	herb:AddAffect(CreateSmaugAffect("", 12, "20", 0));
 	herb:AddAffect(CreateSmaugAffect("30", 0, "", 2097152));
 	
@@ -47,7 +47,7 @@ function LoadHerbs()
 	herb.HitRoomMessage = "$N's eyes water as the smoke flows around $m.";
 	herb:SetTargetByValue(3);
 	herb.Slot = 4;
-	LSetCode(herb, "spell_smaug");
+	herb.SpellFunctionName = "spell_smaug";
 	herb:AddAffect(CreateSmaugAffect("", 13, "20", 0));
 	
 	herb = CreateHerb("breadl");
@@ -57,7 +57,7 @@ function LoadHerbs()
 	herb.WearOffMessage = "Everything about you takes on it's normal drab tone.";
 	herb.HitVictimMessage = "Life takes on a brighter, crisper outlook as you savor the breadl's flavor.";
 	herb.HitRoomMessage = "$N smiles as $s enjoys the mellow flavor of the breadl.";
-	LSetCode(herb, "spell_smaug");
+	herb.SpellFunctionName = "spell_smaug";
 	herb:AddAffect(CreateSmaugAffect("10", 0, "", 4194304));
 end
 

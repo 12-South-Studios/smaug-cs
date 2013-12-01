@@ -68,16 +68,15 @@ namespace SmaugCS.Data
 
         public int RaceRecallRoom { get; set; }
 
-        public RaceData(int maxWhereNames)
+        public RaceData()
         {
-            WhereNames = new List<string>(maxWhereNames);
+            WhereNames = new List<string>();
             SavingThrows = new SavingThrowData();
         }
 
         public void AddWhereName(string name)
         {
-            if (!WhereNames.Contains(name))
-                WhereNames.Add(name);
+            WhereNames.Add(name);
         }
     }
 }

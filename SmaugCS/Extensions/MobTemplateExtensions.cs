@@ -20,7 +20,7 @@ namespace SmaugCS.Extensions
 
         public static PositionTypes GetDefensivePosition(this MobTemplate template)
         {
-            return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefPosition);
+            return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefensivePosition);
         }
 
         public static GenderTypes GetGender(this MobTemplate template)
@@ -64,7 +64,7 @@ namespace SmaugCS.Extensions
         public static ExtendedBitvector GetActFlags(this MobTemplate template)
         {
             ExtendedBitvector bv = new ExtendedBitvector();
-            string[] words = template.Act.Split(new[] { ' ' });
+            string[] words = template.ActFlags.Split(new[] { ' ' });
             foreach (string word in words)
             {
                 bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));

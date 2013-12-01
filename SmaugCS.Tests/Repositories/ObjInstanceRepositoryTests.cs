@@ -13,7 +13,7 @@ namespace SmaugCS.Tests.Repositories
             var objRepo = new ObjectRepository();
             var obj = objRepo.Create(1, "TestObj");
 
-            var repo = new ObjInstanceRepository(5, 5);
+            var repo = new ObjInstanceRepository();
             var actual = repo.Create(obj, 5);
 
             Assert.That(actual, Is.Not.Null);
@@ -24,19 +24,8 @@ namespace SmaugCS.Tests.Repositories
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_InvalidParent()
         {
-            var repo = new ObjInstanceRepository(5, 5);
-            repo.Create(null, 0);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_InvalidLevel()
-        {
-            var objRepo = new ObjectRepository();
-            var obj = objRepo.Create(1, "TestObj");
-
-            var repo = new ObjInstanceRepository(5, 5);
-            repo.Create(obj, 0);
+            var repo = new ObjInstanceRepository();
+            repo.Create(null, null);
         }
     }
 }

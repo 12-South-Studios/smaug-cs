@@ -11,6 +11,11 @@ namespace SmaugCS.Language
         [XmlElement]
         public string NewValue { get; set; }
 
+        public LanguageConversionData()
+        {
+            
+        }
+
         public LanguageConversionData(string line)
         {
             string[] words = line.Split(new[] { ' ' });

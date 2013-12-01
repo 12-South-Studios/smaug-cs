@@ -178,7 +178,7 @@ namespace SmaugCS.Extensions
             CharacterInstance ch = obj.CarriedBy;
             if (ch == null)
             {
-                LogManager.Bug("%s: null ch", "obj_from_char");
+                LogManager.Instance.Bug("%s: null ch", "obj_from_char");
                 return;
             }
 
@@ -205,7 +205,7 @@ namespace SmaugCS.Extensions
         {
             if (obj == o)
             {
-                LogManager.Bug("Trying to put object inside itself: vnum {0}", obj.ObjectIndex.Vnum);
+                LogManager.Instance.Bug("Trying to put object inside itself: vnum {0}", obj.ObjectIndex.Vnum);
                 return obj;
             }
 
@@ -232,7 +232,7 @@ namespace SmaugCS.Extensions
         {
             if (obj.InObject != o)
             {
-                LogManager.Bug("null objectFrom");
+                LogManager.Instance.Bug("null objectFrom");
                 return;
             }
 

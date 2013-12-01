@@ -29,7 +29,7 @@ namespace SmaugCS
                     if (ReadBanTable.ContainsKey(banType))
                         ReadBanTable[banType].Invoke(section);
                     else
-                        LogManager.Bug("Invalid ban type {0} for Section {1}", banType, section.ToString());
+                        LogManager.Instance.Bug("Invalid ban type {0} for Section {1}", banType, section.ToString());
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace SmaugCS
                         newBan.Note = section.Lines[i].TrimEnd('~');
                         break;
                     default:
-                        LogManager.Bug("Unknown line '{0}' in Ban section {1}", section.Lines[i], section.Header);
+                        LogManager.Instance.Bug("Unknown line '{0}' in Ban section {1}", section.Lines[i], section.Header);
                         break;
                 }
             }
@@ -119,7 +119,7 @@ namespace SmaugCS
                         newBan.Note = section.Lines[i].TrimEnd('~');
                         break;
                     default:
-                        LogManager.Bug("Unknown line '{0}' in Ban section {1}", section.Lines[i], section.Header);
+                        LogManager.Instance.Bug("Unknown line '{0}' in Ban section {1}", section.Lines[i], section.Header);
                         break;
                 }
             }
@@ -161,7 +161,7 @@ namespace SmaugCS
                         newBan.Note = section.Lines[i].TrimEnd('~');
                         break;
                     default:
-                        LogManager.Bug("Unknown line '{0}' in Ban section {1}", section.Lines[i], section.Header);
+                        LogManager.Instance.Bug("Unknown line '{0}' in Ban section {1}", section.Lines[i], section.Header);
                         break;
                 }
             }
@@ -245,7 +245,7 @@ namespace SmaugCS
                             else
                             {
                                 int count = 0;
-                                foreach (ClassData cls in db.CLASSES)
+                                foreach (ClassData cls in DatabaseManager.Instance.CLASSES)
                                 {
                                     if (cls.Name.EqualsIgnoreCase(arg))
                                         break;
@@ -254,7 +254,7 @@ namespace SmaugCS
                                 value = count;
                             }
 
-                            if (value < 0 || value >= db.CLASSES.Count)
+                            if (value < 0 || value >= DatabaseManager.Instance.CLASSES.Count())
                             {
                                 color.send_to_char("Unknown class.\r\n", ch);
                                 return 0;
@@ -282,7 +282,7 @@ namespace SmaugCS
                                 return 1;
                             }
 
-                            newBan.Name = db.CLASSES[value].Name;
+                            newBan.Name = DatabaseManager.Instance.CLASSES.ToList()[value].Name;
                             newBan.Flag = value;
                             newBan.Level = level;
                             newBan.BannedBy = ch.Name;
@@ -294,7 +294,7 @@ namespace SmaugCS
                             else
                             {
                                 int count = 0;
-                                foreach (RaceData race in db.RACES)
+                                foreach (RaceData race in DatabaseManager.Instance.RACES)
                                 {
                                     if (race.Name.EqualsIgnoreCase(arg))
                                         break;
@@ -303,7 +303,7 @@ namespace SmaugCS
                                 value = count;
                             }
 
-                            if (value < 0 || value >= db.RACES.Count)
+                            if (value < 0 || value >= DatabaseManager.Instance.RACES.Count())
                             {
                                 color.send_to_char("Unknown race.\r\n", ch);
                                 return 0;
@@ -330,7 +330,7 @@ namespace SmaugCS
                                 color.send_to_char("Updated entry.\r\n", ch);
                                 return 1;
                             }
-                            newBan.Name = db.RACES[value].Name;
+                            newBan.Name = DatabaseManager.Instance.RACES.ToList()[value].Name;
                             newBan.Flag = value;
                             newBan.Level = level;
                             newBan.BannedBy = ch.Name;
@@ -365,7 +365,7 @@ namespace SmaugCS
                             // TODO Finish site bans
                             break;
                         default:
-                            LogManager.Bug("Bad type {0}", type);
+                            LogManager.Instance.Bug("Bad type {0}", type);
                             return 0;
                     }
 
@@ -383,7 +383,7 @@ namespace SmaugCS
                     BanData ban = ch.DestinationBuffer.CastAs<BanData>();
                     if (ban == null)
                     {
-                        LogManager.Bug("Null Dest_buff in Character {0}", ch.Name);
+                        LogManager.Instance.Bug("Null Dest_buff in Character {0}", ch.Name);
                         ch.SubState = CharacterSubStates.None;
                         return 0;
                     }
@@ -401,7 +401,7 @@ namespace SmaugCS
                         color.ch_printf(ch, "%s banned forever.\r\n", ban.Name);
                     return 1;
                 default:
-                    LogManager.Bug("Illegal substate {0}", ch.SubState);
+                    LogManager.Instance.Bug("Illegal substate {0}", ch.SubState);
                     return 0;
             }
         }
@@ -435,7 +435,7 @@ namespace SmaugCS
                     level = (int)BanTypes.Warn;
                     break;
                 default:
-                    LogManager.Bug("Bad string for flag {0}", arg2);
+                    LogManager.Instance.Bug("Bad string for flag {0}", arg2);
                     level = 0;
                     break;
             }
@@ -474,7 +474,7 @@ namespace SmaugCS
                     color.send_to_pager("[ #] Warn (Lv) Time                     By              For   Class\r\n", ch);
                     break;
                 default:
-                    LogManager.Bug("Invalid type {0}", type);
+                    LogManager.Instance.Bug("Invalid type {0}", type);
                     return;
             }
 
@@ -566,7 +566,7 @@ namespace SmaugCS
                     }
                     break;
                 default:
-                    LogManager.Bug("Invalid ban type {0}", type);
+                    LogManager.Instance.Bug("Invalid ban type {0}", type);
                     return false;
             }
 
@@ -595,7 +595,7 @@ namespace SmaugCS
 
             if (ban.UnbanDate <= DateTime.Now)
             {
-                //LogManager.Log(LogTypes.Warn, db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel),
+                //LogManager.Instance.Log(LogTypes.Warn, db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel),
                 //               "{0} ban has expired.", ban.Name);
                 return true;
             }
@@ -609,7 +609,7 @@ namespace SmaugCS
                                 && type != (int)BanTypes.Race
                                 && type != (int)BanTypes.Site))
             {
-                LogManager.Bug("Unknown Ban Type {0}", type);
+                LogManager.Instance.Bug("Unknown Ban Type {0}", type);
                 return;
             }
 

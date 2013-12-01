@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
@@ -38,12 +39,12 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                         ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
                     else
-                        LogManager.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
+                        LogManager.Instance.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
                 }
             }
             else
@@ -53,10 +54,10 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS.ToList()[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
-                        LogManager.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
+                        LogManager.Instance.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
                     ch.AffectedBy.RemoveBit((int)AffectedByTypes.RecurringSpell);
                     return;
                 }
@@ -208,7 +209,7 @@ namespace SmaugCS
                     if (Macros.IS_VALID_SN(mod))
                         ch.StripAffects(mod);
                     else
-                        LogManager.Bug("apply_modify: ApplyTypes.StripSN invalid SN %d", mod);
+                        LogManager.Instance.Bug("apply_modify: ApplyTypes.StripSN invalid SN %d", mod);
                     break;
 
                 case (int)ApplyTypes.WearSpell:
@@ -222,14 +223,14 @@ namespace SmaugCS
                         return;
 
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
                         if (skill.Target == TargetTypes.Ignore ||
                             skill.Target == TargetTypes.InventoryObject)
                         {
-                            LogManager.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
+                            LogManager.Instance.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
                             return;
                         }
                         ReturnTypes retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
@@ -245,7 +246,7 @@ namespace SmaugCS
                 // TODO Add the rest
 
                 default:
-                    LogManager.Bug("affect_modify: unknown location %d", affect.Location);
+                    LogManager.Instance.Bug("affect_modify: unknown location %d", affect.Location);
                     return;
             }
 
@@ -271,7 +272,7 @@ namespace SmaugCS
         {
             if (obj_extracted(obj))
             {
-                LogManager.Bug("Object {0} already extracted", obj.ObjectIndex.Vnum);
+                LogManager.Instance.Bug("Object {0} already extracted", obj.ObjectIndex.Vnum);
                 return;
             }
 
@@ -319,7 +320,7 @@ namespace SmaugCS
                 db.RELATIONS.Remove(relation);
             }
 
-            DatabaseManager.Instance.OBJECTS.Delete(obj.ID);
+            DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
 
             queue_extracted_obj(obj);
 
@@ -339,25 +340,25 @@ namespace SmaugCS
         {
             if (ch == null)
             {
-                LogManager.Bug("null ch");
+                LogManager.Instance.Bug("null ch");
                 return;
             }
 
             if (ch.CurrentRoom == null)
             {
-                LogManager.Bug("{0} in null room", !string.IsNullOrEmpty(ch.Name) ? ch.Name : "???");
+                LogManager.Instance.Bug("{0} in null room", !string.IsNullOrEmpty(ch.Name) ? ch.Name : "???");
                 return;
             }
 
             if (ch == db.Supermob)
             {
-                LogManager.Bug("ch == supermob");
+                LogManager.Instance.Bug("ch == supermob");
                 return;
             }
 
             if (ch.CharDied())
             {
-                LogManager.Bug("{0} already died!", ch.Name);
+                LogManager.Instance.Bug("{0} already died!", ch.Name);
                 return;
             }
 
@@ -395,7 +396,7 @@ namespace SmaugCS
             if (ch.IsNpc())
             {
                 ch.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
-                foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
+                foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
                     wch.CurrentPosition = PositionTypes.Standing;
@@ -428,13 +429,13 @@ namespace SmaugCS
             {
                 RoomTemplate location = null;
                 if (!ch.IsNpc() && ch.PlayerData.Clan != null)
-                    location = DatabaseManager.Instance.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(ch.PlayerData.Clan.RecallRoom);
 
                 if (location == null)
-                    location = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_ALTAR);
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_ALTAR);
 
                 if (location == null)
-                    location = DatabaseManager.Instance.ROOMS.Get(1);
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(1);
 
                 location.ToRoom(ch);
 
@@ -467,7 +468,7 @@ namespace SmaugCS
             if (ch.Switched != null && ch.Switched.Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (wch.ReplyTo == ch)
                     wch.ReplyTo = null;
@@ -475,12 +476,12 @@ namespace SmaugCS
                     wch.RetellTo = null;
             }
 
-            DatabaseManager.Instance.CHARACTERS.Delete(ch.ID);
+            DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
 
             if (ch.Descriptor != null)
             {
                 if (ch.Descriptor.Character != ch)
-                    LogManager.Bug("Char's descriptor points to another char");
+                    LogManager.Instance.Bug("Char's descriptor points to another char");
                 else
                 {
                     ch.Descriptor.Character = null;
@@ -568,7 +569,7 @@ namespace SmaugCS
 
             // Check the world for an exact match
             count = 0;
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                                             .Where(wch => can_see(ch, wch) && arg.IsAnyEqual(wch.Name)
                                                           || (wch.IsNpc() && vnum == wch.MobIndex.Vnum)))
             {
@@ -596,7 +597,7 @@ namespace SmaugCS
 
             // If no prefix match was found in room, check the world
             count = 0;
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                                             .Where(wch => can_see(ch, wch) && arg.IsAnyEqualPrefix(wch.Name)))
             {
                 if (number == 0 && !wch.IsNpc())
@@ -792,7 +793,7 @@ namespace SmaugCS
             int vnum = (ch.Trust >= Program.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
-            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.Values
+            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values
                                          .Where(obj => can_see_obj(ch, obj) && (arg.IsAnyEqual(obj.Name)
                                                                                 || obj.ObjectIndex.Vnum == vnum)))
             {
@@ -807,7 +808,7 @@ namespace SmaugCS
             // if we didn't find an exact match, run through the list again for a partial match
             // i.e. swo == sword
             count = 0;
-            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.Values
+            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values
                                          .Where(obj => can_see_obj(ch, obj) && arg.IsAnyEqualPrefix(obj.Name)))
             {
                 count += obj.Count;

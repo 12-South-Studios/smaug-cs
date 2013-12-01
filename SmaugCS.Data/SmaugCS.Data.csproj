@@ -88,6 +88,7 @@
     <Compile Include="HolidayData.cs" />
     <Compile Include="HuntHateFearData.cs" />
     <Compile Include="IgnoreData.cs" />
+    <Compile Include="Interfaces\IInstanceRepository.cs" />
     <Compile Include="Instances\CharacterInstance.cs" />
     <Compile Include="Instances\Instance.cs" />
     <Compile Include="Instances\ObjectInstance.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Interfaces\IHasExtraFlags.cs" />
     <Compile Include="Interfaces\IHasMudProgs.cs" />
     <Compile Include="Interfaces\IPersistable.cs" />
+    <Compile Include="Interfaces\ITemplateRepository.cs" />
     <Compile Include="killed_data.cs" />
     <Compile Include="LiquidData.cs" />
     <Compile Include="mccp_data.cs" />

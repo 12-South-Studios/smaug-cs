@@ -19,7 +19,7 @@ namespace SmaugCS.Data.Organizations
         {
             if (string.IsNullOrWhiteSpace(Filename))
             {
-                LogManager.Bug("Council {0} has no filename", Name);
+                LogManager.Instance.Bug("Council {0} has no filename", Name);
                 return;
             }
 
@@ -84,7 +84,7 @@ namespace SmaugCS.Data.Organizations
                             Powers = tuple.Item2.TrimHash();
                             break;
                         default:
-                            LogManager.Bug("Unknown clan parameter {0} for {1}", tuple.Item1, path);
+                            LogManager.Instance.Bug("Unknown clan parameter {0} for {1}", tuple.Item1, path);
                             break;
                     }
                 }

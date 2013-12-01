@@ -433,7 +433,7 @@ namespace SmaugCS
             switch (skill.Target)
             {
                 default:
-                    LogManager.Bug("Bad target for SN {0}", sn);
+                    LogManager.Instance.Bug("Bad target for SN {0}", sn);
                     return -1;
                 case TargetTypes.Ignore:
                     break;
@@ -656,7 +656,7 @@ namespace SmaugCS
             switch (skill.Target)
             {
                 default:
-                    LogManager.Bug("Bad target for sn {0}", sn);
+                    LogManager.Instance.Bug("Bad target for sn {0}", sn);
                     return (int)ReturnTypes.Error;
 
                 case TargetTypes.Ignore:

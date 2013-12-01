@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -81,9 +83,9 @@ namespace SmaugCS
         public static RoomTemplate find_location(CharacterInstance ch, string arg)
         {
             if (arg.IsNumber())
-                return DatabaseManager.Instance.ROOMS.Get(arg.ToInt32());
+                return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(arg.ToInt32());
             if (arg.Equals("pk"))
-                return DatabaseManager.Instance.ROOMS.Get(db.LastPKRoom);
+                return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
 
             CharacterInstance victim = handler.get_char_world(ch, arg);
             if (victim != null)
@@ -111,7 +113,7 @@ namespace SmaugCS
         {
             if (victim.CurrentRoom == null)
             {
-                LogManager.Bug("Victim {0} in null room", victim.Name);
+                LogManager.Instance.Bug("Victim {0} in null room", victim.Name);
                 return;
             }
 
@@ -196,7 +198,7 @@ namespace SmaugCS
 
         public static void close_area(AreaData pArea)
         {
-            foreach (CharacterInstance ech in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (CharacterInstance ech in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (ech.CurrentFighting != null)
                     fight.stop_fighting(ech, true);
@@ -213,7 +215,7 @@ namespace SmaugCS
                 }
             }
 
-            foreach (ObjectInstance eobj in DatabaseManager.Instance.OBJECTS.Values)
+            foreach (ObjectInstance eobj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values)
             {
                 if ((eobj.ObjectIndex.Vnum.GetNumberThatIsBetween(pArea.LowObjectNumber, pArea.HighObjectNumber) == eobj.ObjectIndex.Vnum)
                     || (eobj.InRoom != null && eobj.InRoom.Area == pArea))
@@ -287,10 +289,10 @@ namespace SmaugCS
 
         public static bool create_new_class(int rcindex, string argument)
         {
-            if (rcindex >= db.CLASSES.Count || db.CLASSES[rcindex] == null)
+            if (rcindex >= DatabaseManager.Instance.CLASSES.Count() || DatabaseManager.Instance.CLASSES.ToList()[rcindex] == null)
                 return false;
 
-            ClassData cls = db.CLASSES[rcindex];
+            ClassData cls = DatabaseManager.Instance.CLASSES.ToList()[rcindex];
 
             cls.AffectedBy.ClearBits();
             cls.PrimaryAttribute = 0;
@@ -319,12 +321,12 @@ namespace SmaugCS
 
         public static bool create_new_race(int rcindex, string argument)
         {
-            if (rcindex >= db.RACES.Count || db.RACES[rcindex] == null)
+            if (rcindex >= DatabaseManager.Instance.RACES.Count() || DatabaseManager.Instance.RACES.ToList()[rcindex] == null)
                 return false;
 
             // snprintf?
 
-            RaceData race = db.RACES[rcindex];
+            RaceData race = DatabaseManager.Instance.RACES.ToList()[rcindex];
             race.ClassRestriction = 0;
             race.StrengthBonus = 0;
             race.DexterityBonus = 0;

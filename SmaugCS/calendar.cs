@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
@@ -60,7 +62,7 @@ namespace SmaugCS
             act_wiz.echo_to_all(ATTypes.AT_CYAN, "Freshwater bodies everywhere have frozen over.\r\n", (int)EchoTypes.All);
 
             WinterFreeze = true;
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.DeepWater
                     || x.SectorType == SectorTypes.ShallowWater))
             {
@@ -75,7 +77,7 @@ namespace SmaugCS
             act_wiz.echo_to_all(ATTypes.AT_BLUE, "Freshwater bodies everywhere have thawed out.\r\n", (int)EchoTypes.All);
 
             WinterFreeze = true;
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.Ice
                     && x.SectorType != SectorTypes.Unknown))
             {
@@ -108,7 +110,7 @@ namespace SmaugCS
             if (db.GameTime.Season == SeasonTypes.Winter && !WinterFreeze)
             {
                 WinterFreeze = true;
-                foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values
+                foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                     .Where(x => x.SectorType == SectorTypes.DeepWater
                         || x.SectorType == SectorTypes.ShallowWater))
                 {

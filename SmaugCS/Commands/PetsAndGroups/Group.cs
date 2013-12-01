@@ -1,7 +1,9 @@
 ﻿
 using System;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
@@ -31,7 +33,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             color.ch_printf(ch, "\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                             Macros.PERS(leader, ch), ch.Level < Program.GetLevel("avatar") ? " [to lvl]" : "");
 
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch)))
             {
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
                 string buffer = string.Empty;
@@ -41,7 +43,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                     color.ch_printf(ch,
                                     "[%2d %s] %-16s %4s/%4s hp %4s/%4s %s %4s/%4s mv %5s xp\r\n",
                                     gch.Level,
-                                    gch.IsNpc() ? "Mob" : db.GetClass(gch.CurrentClass).Name,
+                                    gch.IsNpc() ? "Mob" : DatabaseManager.Instance.GetClass(gch.CurrentClass).Name,
                                     Macros.PERS(gch, ch).CapitalizeFirst(),
                                     "????", "????", "????", "????", gch.IsVampire() ? "bp" : "mana", "????",
                                     "????", "?????");
@@ -53,7 +55,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 color.send_to_char("[", ch);
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
                 color.ch_printf(ch, "%-2d %2.2s %3.3s", gch.Level, buffer,
-                                gch.IsNpc() ? "Mob" : db.GetClass(gch.CurrentClass).Name);
+                                gch.IsNpc() ? "Mob" : DatabaseManager.Instance.GetClass(gch.CurrentClass).Name);
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
                 color.send_to_char("]  ", ch);
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
@@ -175,7 +177,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             }
 
             int count = 0;
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch) && x != ch))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch) && x != ch))
             {
                 gch.Leader = null;
                 gch.Master = null;

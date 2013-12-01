@@ -2,10 +2,14 @@
 using System.IO;
 using System.Text;
 using NUnit.Framework;
+using Realm.Library.Common;
 using Realm.Library.Lua;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Templates;
 using SmaugCS.Database;
 using SmaugCS.Exceptions;
+using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Tests.Repositories
@@ -45,21 +49,24 @@ namespace SmaugCS.Tests.Repositories
         [SetUp]
         public void OnSetup()
         {
-            DatabaseManager.Instance.OBJECT_INDEXES.Clear();
+            LuaObjectFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+
+            DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Clear();
 
             _proxy = new LuaInterfaceProxy();
 
-            var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(ObjectRepository));
-            luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaFunctions));
+            var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaObjectFunctions));
+            luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));
             _proxy.RegisterFunctions(luaFuncRepo);
 
-            LuaManager.Instance.InitProxy(_proxy);
+            LuaManager.Instance.InitializeLuaProxy(_proxy);
         }
 
         [Test]
         public void LuaCreateObjectTest()
         {
-            var result = ObjectRepository.LuaProcessObject(GetObjectLuaScript());
+            var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.ID, Is.EqualTo(800));
@@ -81,7 +88,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateObject_Values_Test()
         {
-            var result = ObjectRepository.LuaProcessObject(GetObjectLuaScript());
+            var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Value[0], Is.EqualTo(12));
@@ -95,7 +102,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateObject_Affects_Test()
         {
-            var result = ObjectRepository.LuaProcessObject(GetObjectLuaScript());
+            var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Affects.Count, Is.GreaterThanOrEqualTo(1));
@@ -109,7 +116,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateObject_ExtraDescriptions_Test()
         {
-            var result = ObjectRepository.LuaProcessObject(GetObjectLuaScript());
+            var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.ExtraDescriptions.Count, Is.GreaterThanOrEqualTo(1));
@@ -120,7 +127,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateObject_MudProgs_Test()
         {
-            var result = ObjectRepository.LuaProcessObject(GetObjectLuaScript());
+            var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.MudProgs.Count, Is.EqualTo(1));

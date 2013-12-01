@@ -8,6 +8,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
 using SmaugCS.Managers;
@@ -20,31 +21,6 @@ namespace SmaugCS.Database
     public class ObjectRepository : Repository<long, ObjectTemplate>, ITemplateRepository<ObjectTemplate>
     {
         private ObjectTemplate LastObject { get; set; }
-
-        [LuaFunction("LGetLastObj", "Retrieves the Last Object")]
-        public static ObjectTemplate LuaGetLastObj()
-        {
-            return DatabaseManager.Instance.OBJECT_INDEXES.LastObject;
-        }
-
-        [LuaFunction("LProcessObject", "Processes an object script", "script text")]
-        public static ObjectTemplate LuaProcessObject(string text)
-        {
-            LuaManager.Instance.Proxy.DoString(text);
-            return DatabaseManager.Instance.OBJECT_INDEXES.LastObject;
-        }
-
-        [LuaFunction("LCreateObject", "Creates a new object", "Id of the Object", "Name of the Object")]
-        public static ObjectTemplate LuaCreateObject(string id, string name)
-        {
-            long objId = Convert.ToInt64(id);
-            if (DatabaseManager.Instance.OBJECT_INDEXES.Contains(objId))
-                throw new DuplicateEntryException("Repository contains Object with Id {0}", objId);
-
-            ObjectTemplate newObj = DatabaseManager.Instance.OBJECT_INDEXES.Create(objId, name);
-            LuaManager.Instance.Proxy.CreateTable("object");
-            return newObj;
-        }
 
         public ObjectTemplate Create(long vnum, string name)
         {

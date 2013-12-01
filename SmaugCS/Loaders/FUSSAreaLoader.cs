@@ -4,6 +4,7 @@ using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Exceptions;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -42,7 +43,7 @@ namespace SmaugCS.Loaders
 
                     if (c != '#')
                     {
-                        LogManager.Bug("LoadFUSSArea: # not found. Invalid format for Area File {0}", AreaName);
+                        LogManager.Instance.Bug("LoadFUSSArea: # not found. Invalid format for Area File {0}", AreaName);
                         if (BootDb)
                             throw new InitializationException("Invalid format for Area File {0}", AreaName);
                         break;
@@ -69,7 +70,7 @@ namespace SmaugCS.Loaders
                         case "ENDAREA":
                             break;
                         default:
-                            LogManager.Bug("Bad section header {0} in Area file {1}", word, AreaName);
+                            LogManager.Instance.Bug("Bad section header {0} in Area file {1}", word, AreaName);
                             proxy.ReadToEnd();
                             break;
                     }
@@ -102,7 +103,7 @@ namespace SmaugCS.Loaders
                     case "#endexdesc":
                         if (string.IsNullOrEmpty(ed.Keyword))
                         {
-                            LogManager.Bug("Missing Keyword");
+                            LogManager.Instance.Bug("Missing Keyword");
                             return null;
                         }
                         break;
@@ -126,7 +127,7 @@ namespace SmaugCS.Loaders
                 string skillName = proxy.ReadNextWord();
                 int sn = DatabaseManager.Instance.LookupSkill(skillName);
                 if (sn < 0)
-                    LogManager.Bug("Unknown skill {0}", skillName);
+                    LogManager.Instance.Bug("Unknown skill {0}", skillName);
                 else
                     af.Type = EnumerationExtensions.GetEnum<AffectedByTypes>(sn);
             }
@@ -170,7 +171,7 @@ namespace SmaugCS.Loaders
                         int door = (int)build.get_dir(proxy.ReadFlagString());
                         if (door < 0 || door > (int)DirectionTypes.Somewhere)
                         {
-                            LogManager.Bug("Vnum {0} has bad door number {1}", room.Vnum, door);
+                            LogManager.Instance.Bug("Vnum {0} has bad door number {1}", room.Vnum, door);
                             if (BootDb)
                                 return;
                         }
@@ -181,9 +182,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in exitflags)
                         {
-                            int value = Lookup.get_exflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_exflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
-                                LogManager.Bug("Unknown exit flag {0}", c);
+                                LogManager.Instance.Bug("Unknown exit flag {0}", c);
                             else
                                 exit.Flags.SetBit(1 << value);
                         }
@@ -235,9 +236,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_areaflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_areaflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             else
                                 area.Flags.SetBit(1 << value);
                         }
@@ -271,7 +272,7 @@ namespace SmaugCS.Loaders
                         area.WeatherY = proxy.ReadNumber();
                         break;
                     default:
-                        LogManager.Log("Area {0} found no matching value {1}", area.Filename, word);
+                        LogManager.Instance.Log("Area {0} found no matching value {1}", area.Filename, word);
                         proxy.ReadToEndOfLine();
                         break;
                 }
@@ -333,7 +334,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endmobile":
-                        DatabaseManager.Instance.MOBILE_INDEXES.Add(mob.Vnum, mob);
+                        DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Add(mob.Vnum, mob);
                         break;
                     case "#mudprog":
                         MudProgData prog = ReadMudProg(proxy, mob);
@@ -345,9 +346,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_actflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_actflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             //else
                             //    mob.Act.SetBit(value);
                         }
@@ -357,9 +358,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_aflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_aflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             // else
                             //     mob.AffectedBy.SetBit(value);
                         }
@@ -369,9 +370,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_attackflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_attackflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             //else
                             //    mob.Attacks.SetBit(value);
                         }
@@ -392,9 +393,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_partflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_partflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             else
                                 mob.ExtraFlags.SetBit(1 << value);
                         }
@@ -403,7 +404,7 @@ namespace SmaugCS.Loaders
                         int npcClass = build.get_npc_class(proxy.ReadString().TrimHash());
                         if (npcClass < 0 || npcClass >= GameConstants.npc_class.Count)
                         {
-                            LogManager.Bug("Vnum {0} has invalid class {1}", mob.Vnum, npcClass);
+                            LogManager.Instance.Bug("Vnum {0} has invalid class {1}", mob.Vnum, npcClass);
                             npcClass = build.get_npc_class("warrior");
                         }
                         //mob.Class = npcClass;
@@ -413,9 +414,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_defenseflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_defenseflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             // else
                             //    mob.Defenses.SetBit(value);
                         }
@@ -484,7 +485,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endroom":
-                        DatabaseManager.Instance.ROOMS.Add(room.Vnum, room);
+                        DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(room.Vnum, room);
                         return;
                     case "#exit":
                         ReadExit(proxy, room);
@@ -513,9 +514,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_rflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_rflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > ExtendedBitvector.MAX_BITS)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             else
                                 room.Flags.SetBit(value);
                         }
@@ -527,10 +528,10 @@ namespace SmaugCS.Loaders
                         // TODO load room reset
                         break;
                     case "sector":
-                        int sector = Lookup.get_secflag(proxy.ReadFlagString());
+                        int sector = FlagLookup.get_secflag(proxy.ReadFlagString());
                         if (sector < 0 || sector > EnumerationFunctions.MaximumEnumValue<SectorTypes>())
                         {
-                            LogManager.Bug("Room {0} has bad sector type {1}", room.Vnum, sector);
+                            LogManager.Instance.Bug("Room {0} has bad sector type {1}", room.Vnum, sector);
                             sector = 1;
                         }
 
@@ -545,17 +546,17 @@ namespace SmaugCS.Loaders
                     case "vnum":
                         bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
-                        if (DatabaseManager.Instance.ROOMS.Get(vnum) != null)
+                        if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum) != null)
                         {
                             if (tmpBootDb)
                             {
-                                LogManager.Bug("Vnum {0} duplicated", vnum);
+                                LogManager.Instance.Bug("Vnum {0} duplicated", vnum);
                                 DatabaseManager.BootDb = false;
                             }
                             else
                             {
-                                room = DatabaseManager.Instance.ROOMS.Get(vnum);
-                                LogManager.Log(LogTypes.Build,
+                                room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum);
+                                LogManager.Instance.Log(LogTypes.Build,
                                                db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning room {0}", vnum);
                                 handler.clean_room(room);
@@ -595,7 +596,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endobject":
-                        DatabaseManager.Instance.OBJECT_INDEXES.Add(obj.Vnum, obj);
+                        DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Add(obj.Vnum, obj);
                         return;
                     case "#exdesc":
                         ExtraDescriptionData ed = ReadExtraDescription(proxy);
@@ -621,9 +622,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_oflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_oflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             else
                                 obj.ExtraFlags.SetBit(value);
                         }
@@ -668,11 +669,11 @@ namespace SmaugCS.Loaders
                         obj.Layers = words[4].ToInt32();
                         break;
                     case "type":
-                        int otype = Lookup.get_otype(proxy.ReadFlagString());
+                        int otype = FlagLookup.get_otype(proxy.ReadFlagString());
                         if (otype < 0)
                         {
-                            LogManager.Bug("Vnum {0} object has invalid type {1}", obj.Vnum, otype);
-                            otype = Lookup.get_otype("trash");
+                            LogManager.Instance.Bug("Vnum {0} object has invalid type {1}", obj.Vnum, otype);
+                            otype = FlagLookup.get_otype("trash");
                         }
                         obj.Type = EnumerationExtensions.GetEnum<ItemTypes>(otype);
                         break;
@@ -688,17 +689,17 @@ namespace SmaugCS.Loaders
                     case "vnum":
                         bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
-                        if (DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum) != null)
+                        if (DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum) != null)
                         {
                             if (tmpBootDb)
                             {
-                                LogManager.Bug("Vnum {0} duplicated", vnum);
+                                LogManager.Instance.Bug("Vnum {0} duplicated", vnum);
                                 DatabaseManager.BootDb = false;
                             }
                             else
                             {
-                                obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum);
-                                LogManager.Log(LogTypes.Build,
+                                obj = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum);
+                                LogManager.Instance.Log(LogTypes.Build,
                                                db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning object {0}", vnum);
                                 handler.clean_obj(obj);
@@ -725,9 +726,9 @@ namespace SmaugCS.Loaders
 
                         foreach (char c in flags)
                         {
-                            int value = Lookup.get_wflag(c.ToString(CultureInfo.InvariantCulture));
+                            int value = FlagLookup.get_wflag(c.ToString(CultureInfo.InvariantCulture));
                             if (value < 0 || value > 31)
-                                LogManager.Bug("Unknown flag {0}", c);
+                                LogManager.Instance.Bug("Unknown flag {0}", c);
                             //else
                             //    obj.WearFlags.SetBit(1 << value);
                         }

@@ -12,6 +12,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
+using SmaugCS.Managers;
 using SmaugCS.Weather;
 
 namespace SmaugCS
@@ -746,7 +747,7 @@ namespace SmaugCS
 
                     if (!victim.IsNpc())
                     {
-                        RaceData race = db.GetRace(victim.CurrentRace);
+                        RaceData race = DatabaseManager.Instance.GetRace(victim.CurrentRace);
                         color.send_to_char(race.WhereNames[i], ch);
                     }
                     else
@@ -767,7 +768,8 @@ namespace SmaugCS
                     color.ch_printf(ch, "\r\n%s ", victim.Name);
 
                 color.ch_printf(ch, "is a level %d %s %s.\r\n", victim.Level,
-                                db.GetRace(victim.CurrentRace).Name, db.GetClass(victim.CurrentClass).Name);
+                                DatabaseManager.Instance.GetRace(victim.CurrentRace).Name,
+                                DatabaseManager.Instance.GetClass(victim.CurrentClass).Name);
             }
 
             if (SmaugRandom.Percent() < Macros.LEARNED(ch, 0)) // TODO: gsn_peek

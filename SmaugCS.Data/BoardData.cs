@@ -103,7 +103,7 @@ namespace SmaugCS.Data
                         BoardObjectVnum = remainder.ToInt32();
                         break;
                     default:
-                        //LogManager.Bug("Unknown Value {0}", line);
+                        //LogManager.Instance.Bug("Unknown Value {0}", line);
                         continue;
                 }
             }
@@ -182,7 +182,7 @@ namespace SmaugCS.Data
         {
             if (note == null)
             {
-                //LogManager.Bug("Note were null");
+                //LogManager.Instance.Bug("Note were null");
                 return;
             }
 

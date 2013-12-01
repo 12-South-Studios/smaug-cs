@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -11,6 +10,7 @@ using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Database;
+using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -595,40 +595,54 @@ namespace SmaugCS
 
         static void Main(string[] args)
         {
-            LogManager.BootLog("---------------------[ Boot Log ]--------------------");
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+            LogManager.Instance.BootLog("---------------------[ Boot Log ]--------------------");
 
             var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GetDataPath());
-            LogManager.BootLog("{0} SystemDirectories loaded.", loaded);
+            LogManager.Instance.BootLog("{0} SystemDirectories loaded.", loaded);
 
             loaded = SystemConstants.LoadSystemFilesFromConfig(GetDataPath());
-            LogManager.BootLog("{0} SystemFiles loaded.", loaded);
+            LogManager.Instance.BootLog("{0} SystemFiles loaded.", loaded);
 
-            // Setup the Managers
-            _logMgr = LogManager.Instance;
-            _luaMgr = LuaManager.Instance;
-            _luaMgr.InitDataPath(GetDataPath());
+            LuaManager.Instance.InitializeManager(LogManager.Instance, GetDataPath());
+            InitializeLuaInjections();
             InitializeLuaFunctions();
 
-            _dbMgr = DatabaseManager.Instance;
-            _dbMgr.Initialize(false);
-
-            _gameMgr = GameManager.Instance;
+            DatabaseManager.Instance.Initialize(false);
 
             // TODO more here
 
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        {
+            LogManager.Instance.BootLog((Exception)unhandledExceptionEventArgs.ExceptionObject);
+        }
+
+        private static void InitializeLuaInjections()
+        {
+            LuaAreaFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, GetDataPath());
+            LuaMobFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaObjectFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaRoomFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
         }
 
         private static void InitializeLuaFunctions()
         {
             var proxy = new LuaInterfaceProxy();
             var luaFuncRepo = new LuaFunctionRepository();
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(MobileRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(AreaRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(ObjectRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(RoomRepository));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaAreaFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaGetFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaMobFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaObjectFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LuaRoomFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LogManager));
             proxy.RegisterFunctions(luaFuncRepo);
-            _luaMgr.InitProxy(proxy);  
+            LuaManager.Instance.InitializeLuaProxy(proxy);  
         }
     }
 }

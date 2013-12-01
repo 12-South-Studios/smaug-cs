@@ -21,38 +21,31 @@ end
 
 function LoadWhereNames(race)
 	race:AddWhereName("<used as light>     ");
-
---[[	
-WhereName  <worn on finger>    ~
-WhereName  <worn on finger>    ~
-WhereName  <worn around neck>  ~
-WhereName  <worn around neck>  ~
-WhereName  <worn on body>      ~
-WhereName  <worn on head>      ~
-WhereName  <worn on legs>      ~
-WhereName  <worn on feet>      ~
-WhereName  <worn on hands>     ~
-WhereName  <worn on arms>      ~
-WhereName  <worn as shield>    ~
-WhereName  <worn about body>   ~
-WhereName  <worn about waist>  ~
-WhereName  <worn around wrist> ~
-WhereName  <worn around wrist> ~
-WhereName  <wielded>           ~
-WhereName  <held>              ~
-WhereName  <dual wielded>      ~
-WhereName  <worn on ears>      ~
-WhereName  <worn on eyes>      ~
-WhereName  <missile wielded>   ~
-WhereName  <worn on back>  ~
-WhereName  <worn over face>  ~
-WhereName  <worn around ankle>  ~
-WhereName  <worn around ankle>  ~
-WhereName  <BUG Inform Nivek>  ~
-WhereName  <BUG Inform Nivek>  ~
-WhereName  <BUG Inform Nivek>  ~
-End
---]]
+	race:AddWhereName("<worn on finger>    ");
+	race:AddWhereName("<worn on finger>    ");
+	race:AddWhereName("<worn around neck>  ");
+	race:AddwhereName("<worn around neck>  ");
+	race:AddWhereName("<worn on body>      ");
+	race:AddwhereName("<worn on head>      ");
+	race:AddWhereName("<worn on legs>      ");
+	race:AddWhereName("<worn on feet>      ");
+	race:AddWhereName("<worn on hands>     ");
+	race:AddWhereName("<worn on arms>      ");
+	race:AddWhereName("<worn as shield>    ");
+	race:AddWhereName("<worn about body>   ");
+	race:AddWhereName("<worn about waist>  ");
+	race:AddWhereName("<worn around wrist> ");
+	race:AddWhereName("<worn around wrist> ");
+	race:AddWhereName("<wielded>           ");
+	race:AddWhereName("<held>              ");
+	race:AddWhereName("<dual wielded>      ");
+	race:AddWhereName("<worn on ears>      ");
+	race:AddWhereName("<worn on eyes>      ");
+	race:AddWhereName("<missile wielded>   ");
+	race:AddWhereName("<worn on back>      ");
+	race:AddWhereName("<worn over face>    ");
+	race:AddWhereName("<worn around ankle> ");
+	race:AddWhereName("<worn around ankle> ");
 end
 
 LoadRace();

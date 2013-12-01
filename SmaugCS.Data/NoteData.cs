@@ -57,7 +57,7 @@
                         inTextSection = true;
                         break;
                     default:
-                        LogManager.Bug("Unknown parameter {0}", firstWord);
+                        LogManager.Instance.Bug("Unknown parameter {0}", firstWord);
                         break;
                 }
             }

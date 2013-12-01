@@ -44,7 +44,7 @@ namespace SmaugCS.Loaders
                 {
                     if (dayCount >= db.SystemData.MaxHolidays)
                     {
-                        LogManager.Bug("Exceeded maximum holidays {0}", dayCount);
+                        LogManager.Instance.Bug("Exceeded maximum holidays {0}", dayCount);
                         return;
                     }
 

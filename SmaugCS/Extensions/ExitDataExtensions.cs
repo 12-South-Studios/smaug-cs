@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Realm.Library.Common;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
@@ -15,7 +17,7 @@ namespace SmaugCS.Extensions
 
         public static RoomTemplate GetDestination(this ExitData exit)
         {
-            return DatabaseManager.Instance.ROOMS.Values.ToList().Find(x => x.Vnum == exit.Destination);
+            return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.ToList().Find(x => x.Vnum == exit.Destination);
         }
 
         public static void SetBExitFlag(this ExitData exit, int flag)

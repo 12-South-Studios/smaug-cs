@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Realm.Library.Common;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -16,7 +18,7 @@ namespace SmaugCS.Extensions
         {
             if (ch.CurrentRoom != room)
             {
-                LogManager.Bug("Character {0} is not in Room {1}", ch.Name, room.Vnum);
+                LogManager.Instance.Bug("Character {0} is not in Room {1}", ch.Name, room.Vnum);
                 return;
             }
 
@@ -53,15 +55,15 @@ namespace SmaugCS.Extensions
 
             if (ch == null)
             {
-                LogManager.Bug("%s: NULL ch!", "char_to_room");
+                LogManager.Instance.Bug("%s: NULL ch!", "char_to_room");
                 return;
             }
 
-            if (DatabaseManager.Instance.ROOMS.Get(room.ID) == null)
+            if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {
-                LogManager.Bug("%s: %s -> NULL room! Putting char in limbo (%d)",
+                LogManager.Instance.Bug("%s: %s -> NULL room! Putting char in limbo (%d)",
                     "char_to_room", ch.Name, Program.ROOM_VNUM_LIMBO);
-                localRoom = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_LIMBO);
+                localRoom = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_LIMBO);
             }
 
             ch.CurrentRoom = localRoom;
@@ -135,7 +137,7 @@ namespace SmaugCS.Extensions
         {
             if (obj.InRoom != room)
             {
-                LogManager.Bug("Object {0} is not in Room {1}", obj.Name, room.ID);
+                LogManager.Instance.Bug("Object {0} is not in Room {1}", obj.Name, room.ID);
                 return;
             }
 

@@ -26,12 +26,12 @@ function LoadClassSkills(class)
 	class:AddSkill("aggressive style", 1, 95);
 	class:AddSkill("aid", 6, 80);
 	class:AddSkill("bash", 30, 85);
-
+	class:AddSkill("berserk style", 10 ,95);
+	class:AddSkill("blitz", 28, 80);
+	class:AddSkill("bludgeons", 1, 95);
+	class:AddSkill("climb", 2, 85);
+	
 --[[
-Skill 'berserk style' 10 95
-Skill 'blitz' 28 80
-Skill 'bludgeons' 1 95
-Skill 'climb' 2 85
 Skill 'common' 1 99
 Skill 'cook' 1 95
 Skill 'defensive style' 2 95
@@ -86,30 +86,16 @@ end
 
 function LoadClassTitles(class)
 	class:AddTitle(0, "Man", "Woman");
-	class:Addtitle(1, "Swordpupil", "Swordpupil");
+	class:AddTitle(1, "Swordpupil", "Swordpupil");
+	class:AddTitle(2, "Recruit", "Recruit");
+	class:AddTitle(3, "Sentry", "Sentress");
+	class:AddTitle(4, "Fighter", "Fighter");
+	class:AddTitle(5, "Soldier", "Soldier");
+	class:AddTitle(6, "Warrior", "Warrior");
+	class:AddTitle(7, "Veteran", "Veteran");
+	class:AddTitle(8, "Swordsman", "Swordswoman");
 	
 --[[
-Title
-Recruit~
-Recruit~
-Title
-Sentry~
-Sentress~
-Title
-Fighter~
-Fighter~
-Title
-Soldier~
-Soldier~
-Title
-Warrior~
-Warrior~
-Title
-Veteran~
-Veteran~
-Title
-Swordsman~
-Swordswoman~
 Title
 Fencer~
 Fenceress~

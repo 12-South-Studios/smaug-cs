@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -35,17 +36,7 @@ namespace SmaugCS
         public static RoomTemplate[] VROOM_HASH = new RoomTemplate[64];
         public static CommandData[] COMMAND_HASH = new CommandData[126];
 
-        public static List<CommandData> COMMANDS = new List<CommandData>();
-        public static CommandData GetCommand(string command)
-        {
-            return COMMANDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(command));
-        }
 
-        public static List<SocialData> SOCIALS = new List<SocialData>();
-        public static SocialData GetSocial(string command)
-        {
-            return SOCIALS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(command));
-        }
 
         #region Objects
         public static int NumberOfObjectsLoaded { get; set; }
@@ -63,20 +54,6 @@ namespace SmaugCS
         public static bool CurrentCharDied { get; set; }
         #endregion
 
-        #region Languages
-        public static List<LanguageData> LANGUAGES = new List<LanguageData>();
-        public static LanguageData GetLanguage(string name)
-        {
-            return LANGUAGES.FirstOrDefault(x => x.Name.Equals(name));
-        }
-        public static int GetLanguageCount(int languages)
-        {
-            return GameConstants.LanguageTable.Keys.ToList()
-                     .Where(x => x != (int)LanguageTypes.Clan
-                         && x != (int)LanguageTypes.Unknown)
-                     .Select(x => (languages & x) > 0).Count();
-        }
-        #endregion
 
         #region Areas
         public static List<AreaData> AREAS = new List<AreaData>();
@@ -89,52 +66,11 @@ namespace SmaugCS
         public static string HelpGreeting { get; set; }
         #endregion
 
-        #region Organizations
-        public static List<ClanData> CLANS = new List<ClanData>();
-        public static ClanData GetClan(string name)
-        {
-            return CLANS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
 
-        public static List<CouncilData> COUNCILS = new List<CouncilData>();
-        public static CouncilData GetCouncil(string name)
-        {
-            return COUNCILS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        #endregion
 
-        #region Races
-        public static List<RaceData> RACES = new List<RaceData>();
-        public static RaceData GetRace(RaceTypes type)
-        {
-            return RACES.FirstOrDefault(x => x.Type == type);
-        }
-        public static RaceData GetRace(string name)
-        {
-            return RACES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public static RaceData GetRace(int id)
-        {
-            return RACES.FirstOrDefault(x => (int)x.Type == id);
-        }
-        #endregion
 
-        #region Classes
 
-        public static List<ClassData> CLASSES = new List<ClassData>();
-        public static ClassData GetClass(ClassTypes type)
-        {
-            return CLASSES.FirstOrDefault(x => x.Type == type);
-        }
-        public static ClassData GetClass(string name)
-        {
-            return CLASSES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public static ClassData GetClass(int id)
-        {
-            return CLASSES.FirstOrDefault(x => (int)x.Type == id);
-        }
-        #endregion
+
 
         #region Bans
         public static List<BanData> BANS = new List<BanData>();
@@ -191,12 +127,6 @@ namespace SmaugCS
         {
             return HOLIDAYS.FirstOrDefault(holiday => month + 1 == holiday.Month
                 && day + 1 == holiday.Day);
-        }
-
-        public static List<DeityData> DEITIES = new List<DeityData>();
-        public static DeityData GetDeity(string name)
-        {
-            return DEITIES.Single(x => x.Name.EqualsIgnoreCase(name));
         }
 
 
@@ -267,13 +197,13 @@ namespace SmaugCS
 
         public static void FixExits()
         {
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values)
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
                 bool fexit = false;
                 foreach (ExitData exit in room.Exits)
                 {
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = DatabaseManager.Instance.ROOMS.Get(exit.vnum).ID;
+                    exit.Destination = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                     if (exit.vnum <= 0 || exit.Destination <= 0)
                     {
                         if (DatabaseManager.BootDb)
@@ -281,7 +211,7 @@ namespace SmaugCS
                             // TODO boot_log error
                         }
 
-                        LogManager.Bug("Deleting %s exit in room %d", GameConstants.dir_name[(int)exit.Direction], room.Vnum);
+                        LogManager.Instance.Bug("Deleting %s exit in room %d", GameConstants.dir_name[(int)exit.Direction], room.Vnum);
                         handler.extract_exit(room, exit);
                     }
                     else
@@ -292,7 +222,7 @@ namespace SmaugCS
                     room.Flags.SetBit((int)RoomFlags.NoMob);
             }
 
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.Values)
+            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
                 foreach (ExitData exit in room.Exits)
                 {
@@ -318,7 +248,7 @@ namespace SmaugCS
         {
             if (HELPS.Any(x => x.Level == newHelp.Level && x.Keyword.Equals(newHelp.Keyword)))
             {
-                LogManager.Bug("Duplicate Help {0}", newHelp.Keyword);
+                LogManager.Instance.Bug("Duplicate Help {0}", newHelp.Keyword);
                 return;
             }
 
@@ -425,7 +355,7 @@ namespace SmaugCS
 
                 for (int x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.Get(x);
+                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.Gold * 10);
                 }
@@ -464,7 +394,7 @@ namespace SmaugCS
                                         ? area.ResetMessage + "\r\n"
                                         : "You hear some squeaking sounds...\r\n";
 
-                    foreach (CharacterInstance pch in DatabaseManager.Instance.CHARACTERS.Values
+                    foreach (CharacterInstance pch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                         .Where(pch => !pch.IsNpc()
                             && pch.IsAwake()
                             && pch.CurrentRoom != null
@@ -482,7 +412,7 @@ namespace SmaugCS
                     area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
-                    RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_SCHOOL);
+                    RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_SCHOOL);
                     if (room != null && room.Area == area && area.ResetFrequency == 0)
                         area.Age = 15 - 3;
                 }
@@ -588,7 +518,7 @@ namespace SmaugCS
             }
 
             ch.Comments.Clear();
-            DatabaseManager.Instance.CHARACTERS.Delete(ch.ID);
+            DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
         }
 
         public static string get_extra_descr(string name, IEnumerable<ExtraDescriptionData> extraDescriptions)
@@ -802,7 +732,7 @@ namespace SmaugCS
                     if (type == MudProgTypes.Error
                         || type == MudProgTypes.InFile)
                     {
-                        LogManager.Bug("Invalid mud prog type {0} in file {1}", type, path);
+                        LogManager.Instance.Bug("Invalid mud prog type {0} in file {1}", type, path);
                         continue;
                     }
 
@@ -831,7 +761,7 @@ namespace SmaugCS
                     return;
                 if (letter != '>')
                 {
-                    LogManager.Bug("Vnum {0} MudProg Char", index.Vnum);
+                    LogManager.Instance.Bug("Vnum {0} MudProg Char", index.Vnum);
                     throw new Exception();
                 }
 
@@ -841,7 +771,7 @@ namespace SmaugCS
                 MudProgTypes type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
                 if (type == MudProgTypes.Error)
                 {
-                    LogManager.Bug("Invalid mud prog type {0} for Index {1}", type, index.Vnum);
+                    LogManager.Instance.Bug("Invalid mud prog type {0} for Index {1}", type, index.Vnum);
                     throw new Exception();
                 }
                 prog.Type = type;
@@ -864,7 +794,7 @@ namespace SmaugCS
 
         public static void delete_room(RoomTemplate room)
         {
-            RoomTemplate limbo = DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_LIMBO);
+            RoomTemplate limbo = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_LIMBO);
 
             CharacterInstance ch;
             while ((ch = room.Persons.FirstOrDefault()) != null)
@@ -878,7 +808,7 @@ namespace SmaugCS
                     handler.extract_char(ch, true);
             }
 
-            foreach (CharacterInstance och in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (CharacterInstance och in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (och.PreviousRoom == room)
                     och.PreviousRoom = och.CurrentRoom;
@@ -911,25 +841,25 @@ namespace SmaugCS
             room.Exits.ForEach(x => handler.extract_exit(room, x));
             room.MudProgActs.Clear();
             room.MudProgs.Clear();
-            DatabaseManager.Instance.ROOMS.Delete(room.Vnum);
+            DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Delete(room.Vnum);
 
             // TODO: Room hash stuff here, but can be removed?
         }
 
         public static void delete_obj(ObjectTemplate obj)
         {
-            DatabaseManager.Instance.OBJECTS.Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
+            DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
             obj.ExtraDescriptions.Clear();
             obj.Affects.Clear();
             obj.MudProgs.Clear();
-            DatabaseManager.Instance.OBJECT_INDEXES.Delete(obj.Vnum);
+            DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Delete(obj.Vnum);
 
             // TODO Object hash stuff here, but can be removed?
         }
 
         public static void delete_mob(MobTemplate mob)
         {
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (ch.MobIndex == mob)
                     handler.extract_char(ch, true);
@@ -951,7 +881,7 @@ namespace SmaugCS
                 SHOP.Remove(mob.Shop);
             if (mob.RepairShop != null)
                 REPAIR.Remove(mob.RepairShop);
-            DatabaseManager.Instance.MOBILE_INDEXES.Delete(mob.Vnum);
+            DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Delete(mob.Vnum);
 
             // TODO Mob hash stuff here, but can be removed?
         }
@@ -993,7 +923,7 @@ namespace SmaugCS
         {
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
-                RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(rnum);
+                RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
                 if (room == null)
                     continue;
 
@@ -1002,7 +932,7 @@ namespace SmaugCS
                 {
                     fexit = true;
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = exit.vnum <= 0 ? 0 : DatabaseManager.Instance.ROOMS.Get(exit.vnum).ID;
+                    exit.Destination = exit.vnum <= 0 ? 0 : DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                 }
                 if (!fexit)
                     room.Flags.SetBit((int)RoomFlags.NoMob);
@@ -1010,7 +940,7 @@ namespace SmaugCS
 
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
-                RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(rnum);
+                RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
                 if (room == null)
                     continue;
 
@@ -1040,7 +970,7 @@ namespace SmaugCS
             string buffer = string.Format("{0}:\n\tRooms: {1} - {2}\n\tObjects: {3} - {4}\n\tMobs: {5} - {6}\n",
                                           area.Filename, area.LowRoomNumber, area.HighRoomNumber, area.LowObjectNumber,
                                           area.HighObjectNumber, area.LowMobNumber, area.HighMobNumber);
-            LogManager.BootLog(buffer);
+            LogManager.Instance.BootLog(buffer);
 
             area.status.SetBit((int)AreaFlags.Loaded);
         }
@@ -1211,7 +1141,7 @@ namespace SmaugCS
         {
             if (type < 0 || name.IsNullOrEmpty())
             {
-                LogManager.Bug("Bad name {0} or type {1} for Login Message", name, type);
+                LogManager.Instance.Bug("Bad name {0} or type {1} for Login Message", name, type);
                 return;
             }
 
@@ -1238,7 +1168,7 @@ namespace SmaugCS
             {
                 if (loginMessage.Type > Program.MAX_MSG)
                 {
-                    LogManager.Bug("Unknown login message type {0} for {1}", loginMessage.Type, ch.Name);
+                    LogManager.Instance.Bug("Unknown login message type {0} for {1}", loginMessage.Type, ch.Name);
                     continue;
                 }
 
@@ -1269,7 +1199,7 @@ namespace SmaugCS
         {
             if (!lmsg.Text.IsNullOrEmpty())
             {
-                LogManager.Bug("NULL loginMessage text for type 0");
+                LogManager.Instance.Bug("NULL loginMessage text for type 0");
                 return;
             }
 
@@ -1279,7 +1209,7 @@ namespace SmaugCS
         {
             if (!lmsg.Text.IsNullOrEmpty())
             {
-                LogManager.Bug("NULL loginMessage text for type 17");
+                LogManager.Instance.Bug("NULL loginMessage text for type 17");
                 return;
             }
 
@@ -1290,7 +1220,7 @@ namespace SmaugCS
         {
             if (!lmsg.Text.IsNullOrEmpty())
             {
-                LogManager.Bug("NULL loginMessage text for type 18");
+                LogManager.Instance.Bug("NULL loginMessage text for type 18");
                 return;
             }
 

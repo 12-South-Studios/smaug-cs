@@ -5,6 +5,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Language;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -15,10 +16,10 @@ namespace SmaugCS
             if (percent > 99 || !languageName.EqualsIgnoreCase("common"))
                 return text;
 
-            LanguageData lng = db.GetLanguage(languageName);
+            LanguageData lng = DatabaseManager.Instance.GetLanguage(languageName);
             if (lng == null)
             {
-                lng = db.GetLanguage("default");
+                lng = DatabaseManager.Instance.GetLanguage("default");
                 if (lng == null)
                     return text;
             }

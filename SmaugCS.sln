@@ -90,7 +90,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "boards", "boards", "{7C54FF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clans", "clans", "{893C56A7-CDB7-4556-9CE2-1F85865587D1}"
 	ProjectSection(SolutionItems) = preProject
-		data\clans\augurer.gui = data\clans\augurer.gui
+		data\clans\augurer.lua = data\clans\augurer.lua
 		data\clans\clan.lst = data\clans\clan.lst
 		data\clans\cleric.gui = data\clans\cleric.gui
 		data\clans\druid.gui = data\clans\druid.gui
@@ -134,6 +134,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deity", "deity", "{4154C014-3FB4-42C6-8874-6C56DA9E822C}"
 	ProjectSection(SolutionItems) = preProject
 		data\deity\deity.lst = data\deity\deity.lst
+		data\deity\maron.lua = data\deity\maron.lua
 		data\deity\test.dty = data\deity\test.dty
 	EndProjectSection
 EndProject
@@ -204,7 +205,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\SunMap.txt = data\system\SunMap.txt
 		data\system\sysdata.dat = data\system\sysdata.dat
 		data\system\time.dat = data\system\time.dat
-		data\system\tongues.dat = data\system\tongues.dat
+		data\system\tongues.lua = data\system\tongues.lua
 		data\system\typos.txt = data\system\typos.txt
 		data\system\weather.dat = data\system\weather.dat
 		data\system\weathermap.dat = data\system\weathermap.dat
@@ -289,6 +290,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MudProgs", "MudProgs", "{1C
 		doc\mudprogs\INSTALL = doc\mudprogs\INSTALL
 		doc\mudprogs\TRIGGER.txt = doc\mudprogs\TRIGGER.txt
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B105B699-9854-46E6-A275-70AB683676B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.ScriptTester", "Tools\SmaugCS.ScriptTester\SmaugCS.ScriptTester.csproj", "{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -570,6 +575,18 @@ Global
 		{0E01A79F-5582-4797-AF09-12DE27901885}.Work|Any CPU.ActiveCfg = Release|Any CPU
 		{0E01A79F-5582-4797-AF09-12DE27901885}.Work|Any CPU.Build.0 = Release|Any CPU
 		{0E01A79F-5582-4797-AF09-12DE27901885}.Work|x86.ActiveCfg = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Home|Any CPU.ActiveCfg = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Home|Any CPU.Build.0 = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Home|x86.ActiveCfg = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Release|x86.ActiveCfg = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Work|Any CPU.ActiveCfg = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Work|Any CPU.Build.0 = Release|Any CPU
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}.Work|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -604,5 +621,6 @@ Global
 		{C28149F0-D9AC-4485-914F-F798E7BB5BC3} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{2BC26F47-22B4-4BE8-AAA9-64FB81430861} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
 		{1C88C8F6-11B5-4F07-80E7-BF73F0C6D95A} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
+		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B} = {B105B699-9854-46E6-A275-70AB683676B5}
 	EndGlobalSection
 EndGlobal

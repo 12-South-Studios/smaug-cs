@@ -44,7 +44,7 @@ namespace SmaugCS.Commands.Movement
 #if DEBUG
             if (exit != null)
             {
-                LogManager.Log("{0} to door {1}", ch.Name, pexit.Direction);
+                LogManager.Instance.Log("{0} to door {1}", ch.Name, pexit.Direction);
             }
 #endif
 

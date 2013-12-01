@@ -7,7 +7,7 @@ using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants
 {
-    public static class Lookup
+    public static class FlagLookup
     {
         public static int GetIndexOf(string value, List<string> sourceList)
         {

@@ -138,7 +138,7 @@ namespace SmaugCS
                             if (vd.Type == VariableTypes.Integer)
                                 tag_char(ch, vd, 1);
                             else
-                                LogManager.Bug("%s: invalid/incomplete variable: %s",
+                                LogManager.Instance.Bug("%s: invalid/incomplete variable: %s",
                                     "fread_variable", vd.Tag);
                         }
                         break;
@@ -149,7 +149,7 @@ namespace SmaugCS
                         if (word.Equals("Int", StringComparison.OrdinalIgnoreCase))
                         {
                             if (vd.Type != VariableTypes.Integer)
-                                LogManager.Bug("%s: Type mismatch -- type(%d) != vtInt",
+                                LogManager.Instance.Bug("%s: Type mismatch -- type(%d) != vtInt",
                                        "fread_variable", vd.Type);
                             else
                                 vd.Data = proxy.ReadNumber();
@@ -165,7 +165,7 @@ namespace SmaugCS
                         if (word.Equals("Str", StringComparison.OrdinalIgnoreCase))
                         {
                             if (vd.Type != VariableTypes.String)
-                                LogManager.Bug("%s: Type mismatch -- type(%d) != String",
+                                LogManager.Instance.Bug("%s: Type mismatch -- type(%d) != String",
                                        "fread_variable", vd.Type);
                             else
                                 vd.Data = proxy.ReadString();
@@ -183,7 +183,7 @@ namespace SmaugCS
                         if (word.Equals("Xbit", StringComparison.OrdinalIgnoreCase))
                         {
                             if (vd.Type != VariableTypes.ExtendedBit)
-                                LogManager.Bug("%s: Type mismatch -- type(%d) != ExtendedBit",
+                                LogManager.Instance.Bug("%s: Type mismatch -- type(%d) != ExtendedBit",
                                        "fread_variable", vd.Type);
                             else
                                 vd.Data = proxy.ReadBitvector();
