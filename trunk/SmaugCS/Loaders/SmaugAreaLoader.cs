@@ -33,7 +33,7 @@ namespace SmaugCS.Loaders
                     char c = proxy.ReadNextLetter();
                     if (c != '#')
                     {
-                        LogManager.Bug("LoadArea: # not found in area file %s", AreaName);
+                        LogManager.Instance.Bug("LoadArea: # not found in area file %s", AreaName);
                         throw new InitializationException("# not found in area file");
                     }
 
@@ -102,7 +102,7 @@ namespace SmaugCS.Loaders
                             area.SpellLimit = proxy.ReadNumber();
                             break;
                         default:
-                            LogManager.Bug("LoadArea: Area %s: bad section name %s", AreaName, word);
+                            LogManager.Instance.Bug("LoadArea: Area %s: bad section name %s", AreaName, word);
                             if (BootDb)
                                 throw new InitializationException("Area {0} had a bad section name {1}", AreaName, word);
                             return null;

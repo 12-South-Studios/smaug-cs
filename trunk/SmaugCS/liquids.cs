@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Realm.Library.Common;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
@@ -51,7 +53,7 @@ namespace SmaugCS
             }
             else
             {
-                ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(mix.Data[0]);
+                ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(mix.Data[0]);
                 if (obj == null)
                 {
                     color.pager_printf(ch, "%s has a bad object vnum %d, inform an Admin\r\n", mix.Name, mix.Data[0]);

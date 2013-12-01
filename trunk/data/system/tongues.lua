@@ -1,81 +1,87 @@
-* common elvish dwarven pixie ogre orcish trollese rodent insectoid mammal
-* reptile dragon spiritual magical goblin god ancient halfling clan gith
+-- AUGURER.LUA
+-- This is the Augurer Clan file for the MUD
+-- Revised: 2013.11.27
+-- Author: Jason Murdick
+-- Version: 1.0
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
-* structure is:
-* #language
-* pre-conversions~
-* alphabet~
-* conversions~
+function LoadTongues()
+	newLang = LCreateLanguage("common");
+	lang.this = newLang;
+	lang.this.Alphabet = "abcdefghijklmnopqrstuvwxyz";
+	
+	newLang = LCreateLanguage("default");
+	lang.this = newLang;
+	lang.this.Alphabet = "ekjrugtlohfqbxyvndwmaczsip";
+	
+	LoadHalfling();
+	LoadElvish();
+end
 
-#common
-~
-abcdefghijklmnopqrstuvwxyz~
-~
+function LoadHalfling()
+	newLang = LCreateLanguage("halfling");
+	lang.this = newLang;
+	lang.this:AddPreConversion("halfling", "banakil");
+	lang.this:AddPreConversion("hobbit", "kuduk");
+	lang.this:AddPreConversion("horrible terrible bad", "balc");
+	lang.this:AddPreConversion("simple base single", "banazir");
+	lang.this:AddPreConversion("half", "ban");
+	lang.this:AddPreConversion("quick fast", "bara");
+	lang.this:AddPreConversion("wich", "bas");
+	lang.this:AddPreConversion("talk talker speak", "batta");
+	lang.this:AddPreConversion("bulge hill pile", "bolg");
+	lang.this:AddPreConversion("heady", "bralda");
+	lang.this:AddPreConversion("border march", "branda");
+	lang.this:AddPreConversion("coin gold", "castar");
+	lang.this:AddPreConversion("stay stand", "gad");
+	lang.this:AddPreConversion("game play", "galab");
+	lang.this:AddPreConversion("goat", "gamba");
+	lang.this:AddPreConversion("valley gulch", "gul");
+	lang.this:AddPreConversion("ale", "him");
+	lang.this:AddPreConversion("cottage cot house", "hloth");
+	lang.this:AddPreConversion("cotton cloth", "hlothran");
+	lang.this:AddPreConversion("merry jolly gay happy", "kali");
+	lang.this:AddPreConversion("cloven split", "karnin");
+	lang.this:AddPreConversion("bag sack", "laban");
+	lang.this:AddPreConversion("fluff", "luthran");
+	lang.this:AddPreConversion("dwarf dwarven", "narag");
+	lang.this:AddPreConversion("people men human", "nas");
+	lang.this:AddPreConversion("end final stop", "neg");
+	lang.this:AddPreConversion("water", "nin");
+	lang.this:AddPreConversion("speech orate", "phare");
+	lang.this:AddPreConversion("delve dig mine", "phur");
+	lang.this:AddPreConversion("blower", "puta");
+	lang.this:AddPreConversion("blow", "put");
+	lang.this:AddPreConversion("village town", "ran");
+	lang.this:AddPreConversion("burr", "raph");
+	lang.this:AddPreConversion("horn", "ras");
+	lang.this:AddPreConversion("stranger outsider", "raza");
+	lang.this:AddPreConversion("apple", "razar");
+	lang.this:AddPreConversion("common", "soval");
+	lang.this:AddPreConversion("shire region", "suza");
+	lang.this:AddPreConversion("rabbit coney", "rapuc");
+	lang.this:AddPreConversion("quarter fourth", "tharantin");
+	lang.this:AddPreConversion("smial", "tran");
+	lang.this:AddPreConversion("guard soldier warrior", "tudnas");
+	lang.this:AddPreConversion("old elder", "zara");
+	lang.this:AddPreConversion("wise wisdom", "zir");
+	lang.this:AddPreConversion("butter", "zilib");
+	lang.this.Alphabet = "epcdalbhojcrnmigqfsbuvvxyz";
+end
 
-#default * for any language without a table
-~
-ekjrugtlohfqbxyvndwmaczsip~
-~
+function LoadElvish()
+	newLang = LCreateLanguage("elvish");
+	lang.this = newLang;
+	lang.this:AddPreConversion("the hour", "lumenn");
+	lang.this:AddPreConversion("our meeting", "omentielvo");
+	lang.this:AddPreConversion("shines", "sila");
+	
+	lang.this.Alphabet = "iqqdakvtujfwghepcrslybszoz";
+	lang.this:AddPostConversion("rr", "r");
+	lang.this:AddPostConversion("qq", "q");
+end
 
-#halfling
-'halfling' 'banakil'
-'hobbit' 'kuduk'
-'horrible' 'balc'
-'simple' 'banazir'
-'half' 'ban'
-'quick' 'bara'
-'wich' 'bas'
-'talker' 'batta'
-'bulge' 'bolg'
-'heady' 'bralda'
-'border' 'branda'
-'march' 'branda'
-'coin' 'castar'
-'gold' 'castar'
-'stay' 'gad'
-'game' 'galab'
-'goat' 'gamba'
-'valley' 'gul'
-'ale' 'him'
-'beer' 'him'
-'cottage' 'hloth'
-'cot' 'hloth'
-'cotton' 'hlothran'
-'merry' 'kali'
-'jolly' 'kali'
-'gay' 'kali'
-'cloven' 'karnin'
-'bag' 'laban'
-'fluff' 'luthran'
-'dwarf' 'narag'
-'people' 'nas'
-'men' 'nas'
-'end' 'neg'
-'water' 'nin'
-'speech' 'phare'
-'delve' 'phur'
-'blower' 'puta'
-'blow' 'put'
-'village' 'ran'
-'burr' 'raph'
-'horn' 'ras'
-'stranger' 'raza'
-'apple' 'razar'
-'common' 'soval'
-'shire' 'suza'
-'rabbit' 'tapuc'
-'coney' 'tapuc'
-'quarter' 'tharantin'
-'fourth' 'tharantin'
-'smial' 'tran'
-'guard' 'tudnas'
-'old' 'zara'
-'wise' 'zir'
-'butter' 'zilib'
-~
-epcdalbhojcrnmigqfsbuvvxyz~
-~
-
+--[[
 
 #elvish   * 'flutey' language.. slam some harsh sounds..
 'the hour' 'lumenn'
@@ -443,3 +449,8 @@ abqezyopuytrwiasdfghjzxnlk~
 ~
 
 #end
+--]]
+
+LoadTongues();
+
+-- EOF

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
@@ -69,7 +70,7 @@ namespace SmaugCS.Loaders
 
                         // TODO Verify the vnum isn't already present
 
-                        DatabaseManager.Instance.LIQUIDS.Add(liquid);
+                        DatabaseManager.Instance.LIQUIDS.ToList().Add(liquid);
                     }
                 } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#end"));
             }

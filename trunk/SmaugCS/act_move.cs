@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
@@ -153,7 +155,7 @@ namespace SmaugCS
                     ++roomnum;
                     distance = exit.Distance - 1;
                 }
-                backroom = DatabaseManager.Instance.ROOMS.Get(brvnum);
+                backroom = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(brvnum);
             }
             else
             {
@@ -170,7 +172,7 @@ namespace SmaugCS
             bool found = false;
 
             RoomTemplate foundRoom =
-                DatabaseManager.Instance.ROOMS.Values.FirstOrDefault(
+                DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
                     x => x.Vnum == serial && x.TeleportToVnum == roomnum);
             if (foundRoom != null)
                 found = true;
@@ -187,7 +189,7 @@ namespace SmaugCS
                         Flags = room.Flags
                     };
                 decorate_room(newRoom);
-                DatabaseManager.Instance.ROOMS.Add(newRoom.Vnum, newRoom);
+                DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
             }
 
             ExitData xit = newRoom.GetExit(vdir);
@@ -322,10 +324,10 @@ namespace SmaugCS
 
         public static void teleport(CharacterInstance ch, int room, int flags)
         {
-            RoomTemplate dest = DatabaseManager.Instance.ROOMS.Get(room);
+            RoomTemplate dest = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
             if (dest == null)
             {
-                LogManager.Bug("bad room vnum {0}", room);
+                LogManager.Instance.Bug("bad room vnum {0}", room);
                 return;
             }
 
@@ -355,7 +357,7 @@ namespace SmaugCS
         {
             if (ch.CurrentRoom == null)
             {
-                LogManager.Bug("{0} not in a room?!?", ch.Name);
+                LogManager.Instance.Bug("{0} not in a room?!?", ch.Name);
                 return ReturnTypes.None;
             }
 

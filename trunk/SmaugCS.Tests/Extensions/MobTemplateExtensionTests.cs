@@ -35,7 +35,7 @@ namespace SmaugCS.Tests.Extensions
         {
             var template = new MobTemplate(1, "Test")
                                {
-                                   DefPosition = "sitting"
+                                   DefensivePosition = "sitting"
                                };
 
             Assert.That(template.GetDefensivePosition(), Is.EqualTo(PositionTypes.Sitting));

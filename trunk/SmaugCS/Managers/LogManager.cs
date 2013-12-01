@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using Realm.Library.Common;
 using Realm.Library.Common.Objects;
+using Realm.Library.Lua;
 using SmaugCS.Constants.Enums;
 using log4net;
 
 namespace SmaugCS.Managers
 {
-    public sealed class LogManager : GameSingleton
+    public sealed class LogManager : GameSingleton, ILogManager
     {
         private static LogManager _instance;
         private static readonly object Padlock = new object();
 
-        private static readonly ILog Logger = log4net.LogManager.GetLogger("SMAUG");
+        private static string _dataPath;
+        private static readonly ILog Logger = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private LogManager()
         {
@@ -34,7 +37,12 @@ namespace SmaugCS.Managers
             }
         }
 
-        public static void Bug(string str, params object[] args)
+        public void InitializeManager(string path)
+        {
+            _dataPath = path;
+        }
+
+        public void Bug(string str, params object[] args)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -46,31 +54,40 @@ namespace SmaugCS.Managers
             Logger.Error(sb.ToString());
         }
 
-        public static void BootLog(string str, params object[] args)
+        [LuaFunction("LBootLog", "Logs an entry to the boot log", "Text to log")]
+        public void LuaBootLog(string txt)
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter("Boot.log", true)))
+            BootLog(txt);
+        }
+        public void BootLog(string str, params object[] args)
+        {
+            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(_dataPath + "//Boot.log", true)))
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendFormat(str, args);
                 proxy.Write("[{0}] {1}\n", DateTime.Now.ToString(), sb.ToString());
             }
+            //StringBuilder sb = new StringBuilder();
+            //sb.AppendFormat(str, args);
+            //Logger.Info(string.Format("[{0}] {1}\n", DateTime.Now, sb));
         }
-        public static void BootLog(Exception ex)
+
+        public void BootLog(Exception ex)
         {
              BootLog(ex.Message + "\n{0}", ex.StackTrace);   
         }
 
-        public static void Log(LogTypes logType, int level, string fmt, params object[] args)
+        public void Log(LogTypes logType, int level, string fmt, params object[] args)
         {
             Log(string.Format(fmt, args), logType, level);
         }
 
-        public static void Log(string fmt, params object[] args)
+        public void Log(string fmt, params object[] args)
         {
             Log(string.Format(fmt, args), LogTypes.Normal, Program.LEVEL_LOG);
         }
 
-        public static void Log(string str, LogTypes logType, int level)
+        public void Log(string str, LogTypes logType, int level)
         {
             string buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
             switch (logType)
@@ -92,7 +109,8 @@ namespace SmaugCS.Managers
             }
         }
 
-        public static void Log(string txt)
+        [LuaFunction("LLog", "Logs a string", "Text to log")]
+        public void Log(string txt)
         {
             Log(txt, (short)LogTypes.Normal, (short)Program.LEVEL_LOG);
         }

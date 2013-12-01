@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Organizations
 {
@@ -28,7 +29,7 @@ namespace SmaugCS.Commands.Organizations
             argument = tuple.Item2;
             string arg = tuple.Item1;
 
-            ClanData clan = db.GetClan(arg);
+            ClanData clan = DatabaseManager.Instance.GetClan(arg);
             if (clan == null)
             {
                 color.ch_printf(ch, "No such guild or clan known as %s.\r\n", arg);

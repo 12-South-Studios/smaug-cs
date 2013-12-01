@@ -25,11 +25,23 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
+            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Area);
+            IEnumerable<string> areaList = Program.GetAppSetting("Areas").Split(new[] { ',' });
+
+            foreach (string areaName in areaList)
+            {
+                LuaManager.Instance.DoLuaScript(path + "\\" + areaName + ".lua");
+                LogManager.Instance.BootLog("Loaded Area {0}", areaName);
+            }
+        }
+
+        /*public override void Load()
+        {
             List<AreaLoader> loaders = new List<AreaLoader>();
 
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
-                LogManager.Log("Reading Area List...");
+                LogManager.Instance.Log("Reading Area List...");
                 List<string> areaNames = proxy.ReadIntoList();
 
                 foreach (string areaName in areaNames.Where(x => !x.Equals("$")))
@@ -37,7 +49,7 @@ namespace SmaugCS.Loaders
                     AreaType areaType = ReadAreaFileVersion(areaName);
                     if (areaType == AreaType.Error)
                     {
-                        LogManager.Bug("Unable to determine area type for area file {0}", areaName);
+                        LogManager.Instance.Bug("Unable to determine area type for area file {0}", areaName);
                         continue;
                     }
 
@@ -68,7 +80,7 @@ namespace SmaugCS.Loaders
                 string word = proxy.ReadNextWord();
                 if (!word.StartsWith("#"))
                 {
-                    LogManager.Bug("No # found at start of area file: {0}", filename);
+                    LogManager.Instance.Bug("No # found at start of area file: {0}", filename);
 
                     if (DatabaseManager.BootDb)
                         throw new InitializationException("Invalid Area File {0}", filename);
@@ -92,18 +104,18 @@ namespace SmaugCS.Loaders
             int count = 0;
             foreach (AreaLoader loader in areaLoaders)
             {
-                LogManager.Log("Loading area {0}", loader.AreaName);
+                LogManager.Instance.Log("Loading area {0}", loader.AreaName);
                 AreaData area = loader.LoadArea(null);
                 if (area == null)
                 {
-                    LogManager.Bug("Failed to load area {0}", loader.AreaName);
+                    LogManager.Instance.Bug("Failed to load area {0}", loader.AreaName);
                     continue;
                 }
 
                 count++;
             }
 
-            LogManager.Log("Loaded {0} areas.", count);
-        }
+            LogManager.Instance.Log("Loaded {0} areas.", count);
+        }*/
     }
 }

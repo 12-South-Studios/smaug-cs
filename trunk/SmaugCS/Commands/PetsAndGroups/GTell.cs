@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Realm.Library.Common;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -33,7 +35,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch)))
             {
                 color.set_char_color(ATTypes.AT_GTELL, gch);
 

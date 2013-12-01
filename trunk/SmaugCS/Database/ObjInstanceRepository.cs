@@ -5,6 +5,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 
@@ -13,55 +14,42 @@ namespace SmaugCS.Database
     /// <summary>
     /// 
     /// </summary>
-    public class ObjInstanceRepository : Repository<long, ObjectInstance>
+    public class ObjInstanceRepository : Repository<long, ObjectInstance>, IInstanceRepository<ObjectInstance>
     {
         private static long _idSpace = 1;
         private static long GetNextId { get { return _idSpace++; } }
-
-        private readonly int _maxWear;
-        private readonly int _maxLayers;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="maxWear"></param>
-        /// <param name="maxLayers"></param>
-        public ObjInstanceRepository(int maxWear, int maxLayers)
-        {
-            _maxWear = maxWear;
-            _maxLayers = maxLayers;
-        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="parent"></param>
-        /// <param name="level"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
-        public ObjectInstance Create(ObjectTemplate parent, int level)
+        public ObjectInstance Create(Template parent, params object[] args)
         {
             Validation.IsNotNull(parent, "parent");
-            Validation.Validate(level > 0, "Invalid level {0}", level);
+            Validation.Validate(parent is ObjectTemplate, "Invalid Template Type");
 
-            ObjectInstance obj = new ObjectInstance(GetNextId, parent.Name, _maxWear, _maxLayers)
+            ObjectTemplate objParent = parent.CastAs<ObjectTemplate>();
+            ObjectInstance obj = new ObjectInstance(GetNextId, parent.Name, 99, 99)
                 {
                     Parent = parent,
-                    Level = level,
+                    Level = (args == null || args.Length == 0) ? 1 : (int)args[0],
                     WearLocation = WearLocations.None,
                     Count = 1,
-                    ShortDescription = parent.ShortDescription,
+                    ShortDescription = objParent.ShortDescription,
                     Description = parent.Description,
-                    Action = parent.Action,
-                    ItemType = parent.Type,
-                    ExtraFlags = new ExtendedBitvector(parent.ExtraFlags),
-                    Weight = parent.Weight,
-                    Cost = parent.Cost
+                    Action = objParent.Action,
+                    ItemType = objParent.Type,
+                    ExtraFlags = new ExtendedBitvector(objParent.ExtraFlags),
+                    Weight = objParent.Weight,
+                    Cost = objParent.Cost
                 };
 
-            foreach (var wearLoc in parent.GetWearFlags())
+            foreach (var wearLoc in objParent.GetWearFlags())
                 obj.WearFlags += (int) wearLoc;
 
-            Array.Copy(parent.Value, obj.Value, 5);
+            Array.Copy(objParent.Value, obj.Value, 5);
 
             if (ObjectActionTable.ContainsKey(obj.ItemType))
                 ObjectActionTable[obj.ItemType].Invoke(obj);

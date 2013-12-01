@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Data.Instances;
 
@@ -124,11 +125,16 @@ namespace SmaugCS.Data.Organizations
             Members.Clear();
         }
 
+        public void SetTypeByValue(int type)
+        {
+            ClanType = EnumerationExtensions.GetEnum<ClanTypes>(type);
+        }
+
         /* public override void Save()
          {
              if (string.IsNullOrWhiteSpace(Filename))
              {
-                 LogManager.Bug("Clan {0} has no filename", Name);
+                 LogManager.Instance.Bug("Clan {0} has no filename", Name);
                  return;
              }
 
@@ -185,7 +191,7 @@ namespace SmaugCS.Data.Organizations
         {
             if (string.IsNullOrWhiteSpace(Filename))
             {
-                LogManager.Bug("Clan {0} has no filename", Name);
+                LogManager.Instance.Bug("Clan {0} has no filename", Name);
                 return;
             }
 
@@ -343,7 +349,7 @@ namespace SmaugCS.Data.Organizations
                      words = tuple.Item2.Split(' ');
                      if (words.Length < 7)
                      {
-                         LogManager.Bug("Not enough death range values {0}", path);
+                         LogManager.Instance.Bug("Not enough death range values {0}", path);
                          break;
                      }
 
@@ -359,7 +365,7 @@ namespace SmaugCS.Data.Organizations
                      words = tuple.Item2.Split(' ');
                      if (words.Length < 7)
                      {
-                         LogManager.Bug("Not enough kill range values {0}", path);
+                         LogManager.Instance.Bug("Not enough kill range values {0}", path);
                          break;
                      }
 
@@ -393,7 +399,7 @@ namespace SmaugCS.Data.Organizations
                      ClanType = EnumerationExtensions.GetEnum<ClanTypes>(tuple.Item2.ToInt32());
                      break;
                  default:
-                     LogManager.Bug("Unknown clan parameter {0} for {1}", tuple.Item1, path);
+                     LogManager.Instance.Bug("Unknown clan parameter {0} for {1}", tuple.Item1, path);
                      break;
              }
 

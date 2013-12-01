@@ -63,10 +63,10 @@ function CreateObject(vnum, name, objectTypes)
 	newObject = LCreateObject(vnum, name);	
 	object.this = newObject;
 	
-	if (objectTypes = nil) then
+	if (objectTypes == nil) then
 		object.this.Type = "none";
 	else 
-		object.this.Type = objectTypes;
+		object.this.Type = objectTypes;	
 	end
 	
 	object.this.WearFlags = "take";
@@ -113,18 +113,20 @@ function DirectionToNumber(direction)
 	directions["sw"] = 9;
 	directions["somewhere"] = 10;
 	
-	val = directions[direction];
-	if (val = nil) then
+	local val;
+	if (not directions.contains(direction)) then
 		val = 10;
+	else 
+		val = directions[direction];
 	end
 	
 	return val;
 end
 
 function DoorStateToNumber(state)
-	val = 0;
+	local val = 0;
 	
-	if (state = "closed") then
+	if (state == "closed") then
 		val = 1;
 	end
 	

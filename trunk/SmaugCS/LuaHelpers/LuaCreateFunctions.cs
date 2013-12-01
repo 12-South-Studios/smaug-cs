@@ -6,16 +6,18 @@ using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Language;
 using SmaugCS.Managers;
 
-namespace SmaugCS
+namespace SmaugCS.LuaHelpers
 {
-    public static class LuaFunctions
+    public static class LuaCreateFunctions
     {
+        private static ILuaManager _luaManager;
+        private static IDatabaseManager _dbManager;
+
         #region LastObject
         private static readonly Dictionary<Type, object> LastObjects = new Dictionary<Type, object>(); 
         public static object LastObject { get; private set; }
@@ -31,66 +33,17 @@ namespace SmaugCS
         }
         #endregion
 
-        [LuaFunction("LGetLastEntity", "Retrieves the Last Entity")]
-        public static object LuaGetLastEntity()
+        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager)
         {
-            return LastObject;
-        }
-
-        [LuaFunction("LGetRoom", "Retrieves a room with a given ID", "ID of the room")]
-        public static RoomTemplate LuaGetRoom(long id)
-        {
-            return DatabaseManager.Instance.ROOMS.Get(id);
-        }
-
-        [LuaFunction("LGetMobile", "Retrieves a mob with a given ID", "ID of the mobile")]
-        public static MobTemplate LuaGetMobile(long id)
-        {
-            return DatabaseManager.Instance.MOBILE_INDEXES.Get(id);
-        }
-
-        [LuaFunction("LGetObject", "Retrieves an object with a given ID", "ID of the object")]
-        public static ObjectTemplate LuaGetObject(long id)
-        {
-            return DatabaseManager.Instance.OBJECT_INDEXES.Get(id);
-        }
-
-        [LuaFunction("CheckNumber", "Validates a vnum for range", "Number to check")]
-        public static bool LuaCheckNumber(int vnum)
-        {
-            if (vnum < 1 || vnum > Program.MAX_VNUM)
-            {
-                LogManager.Bug("Vnum {0} is out of range (1 to {1})", vnum, Program.MAX_VNUM);
-                return false;
-            }
-
-            return true;
-        }
-
-        [LuaFunction("LDataPath", "Retrieves the game's data path")]
-        public static string LuaGetDataPath()
-        {
-            return Program.GetDataPath();
-        }
-
-        [LuaFunction("FindInstance", "Locates a character matching the given name", "Instance executing this search", "String argument")]
-        public static CharacterInstance LuaFindCharacter(CharacterInstance instance, string arg)
-        {
-            if (arg.EqualsIgnoreCase("self"))
-                return instance;
-
-            return
-                instance.CurrentRoom.Persons.FirstOrDefault(
-                    vch => handler.can_see(instance, vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg)) ??
-                DatabaseManager.Instance.CHARACTERS.Values.FirstOrDefault(
-                    vch => handler.can_see(instance, vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg));
+            _luaManager = luaManager;
+            _dbManager = dbManager;
         }
 
         [LuaFunction("LCreateMudProg", "Creates a new mudprog", "Type of Prog")]
         public static MudProgData LuaCreateMudProg(string progType)
         {
             MudProgData newMudProg = new MudProgData { Type = EnumerationExtensions.GetEnumByName<MudProgTypes>(progType) };
-            LuaManager.Instance.Proxy.CreateTable("mprog");
+            _luaManager.Proxy.CreateTable("mprog");
             AddLastObject(newMudProg);
             return newMudProg;
         }
@@ -105,7 +58,7 @@ namespace SmaugCS
                                        Direction = dir,
                                        Keywords = direction
                                    };
-            LuaManager.Instance.Proxy.CreateTable("exit");
+            _luaManager.Proxy.CreateTable("exit");
             AddLastObject(newExit);
             return newExit;
         }
@@ -123,7 +76,7 @@ namespace SmaugCS
                                            ProfitSell = sellRate
                                        };
 
-            LuaManager.Instance.Proxy.CreateTable("shop");
+            _luaManager.Proxy.CreateTable("shop");
             AddLastObject(newShop);
             return newShop;
         }
@@ -138,7 +91,7 @@ namespace SmaugCS
                                      };
             newReset.SetArgs(arg1, arg2, arg3);
 
-            LuaManager.Instance.Proxy.CreateTable("reset");
+            _luaManager.Proxy.CreateTable("reset");
             AddLastObject(newReset);
             return newReset;
         }
@@ -148,9 +101,9 @@ namespace SmaugCS
         {
             LiquidData newLiquid = new LiquidData {Vnum = id, Name = name};
 
-            LuaManager.Instance.Proxy.CreateTable("liquid");
+            _luaManager.Proxy.CreateTable("liquid");
             AddLastObject(newLiquid);
-            DatabaseManager.Instance.LIQUIDS.Add(newLiquid);
+            _dbManager.LIQUIDS.ToList().Add(newLiquid);
             return newLiquid;
         }
 
@@ -165,37 +118,17 @@ namespace SmaugCS
 
             if (type.EqualsIgnoreCase("herb"))
             {
-                DatabaseManager.Instance.HERBS.Add(newSkill);
-                LuaManager.Instance.Proxy.CreateTable("herb");
+                _dbManager.HERBS.ToList().Add(newSkill);
+                _luaManager.Proxy.CreateTable("herb");
             }
             else
             {
-                DatabaseManager.Instance.SKILLS.Add(newSkill);
-                LuaManager.Instance.Proxy.CreateTable("skill");
+                _dbManager.SKILLS.ToList().Add(newSkill);
+                _luaManager.Proxy.CreateTable("skill");
             }
 
             AddLastObject(newSkill);
             return newSkill;
-        }
-
-        [LuaFunction("LSetCode", "Sets the skill function on a skill", "Skill reference", "function")]
-        public static void LuaSetCode(SkillData skill, string function)
-        {
-            Action<CharacterInstance, string> skillFunc = tables.GetSkillFunction(function);
-            if (skillFunc != null && skillFunc != tables.SkillNotfound)
-            {
-                skill.SkillFunctionName = function;
-                skill.SkillFunction = new DoFunction {Value = skillFunc};
-                return;
-            }
-
-            Func<int, int, CharacterInstance, object, ReturnTypes> spellFunc = tables.GetSpellFunction(function);
-            if (spellFunc != null && spellFunc != tables.SpellNotfound)
-            {
-                skill.SpellFunctionName = function;
-                skill.SpellFunction = new SpellFunction() {Value = spellFunc};
-                return;
-            }
         }
 
         [LuaFunction("LCreateSmaugAffect", "Creates a new Smaug Affect", "duration", "location", "modifier", "flags")]
@@ -209,7 +142,7 @@ namespace SmaugCS
                     Flags = flags
                 };
 
-            LuaManager.Instance.Proxy.CreateTable("affect");
+            _luaManager.Proxy.CreateTable("affect");
             AddLastObject(newAffect);
 
             return newAffect;
@@ -218,15 +151,11 @@ namespace SmaugCS
         [LuaFunction("LCreateSpecFun", "Creates a new special function", "Name of the function")]
         public static SpecialFunction LuaCreateSpecialFunction(string name)
         {
-            SpecialFunction newSpecFun = new SpecialFunction
-                {
-                    Name = name,
-                    Value = special.GetSpecFunReference(name)
-                };
+            SpecialFunction newSpecFun = new SpecialFunction { Name = name };
 
-            LuaManager.Instance.Proxy.CreateTable("specfun");
+            _luaManager.Proxy.CreateTable("specfun");
             AddLastObject(newSpecFun);
-            DatabaseManager.Instance.SPEC_FUNS.Add(newSpecFun);
+            _dbManager.SPEC_FUNS.ToList().Add(newSpecFun);
             return newSpecFun;
         }
 
@@ -242,15 +171,13 @@ namespace SmaugCS
                     Position = position,
                     Level = level,
                     Log = log,
-                    FunctionName = function,
-                    DoFunction = new DoFunction()
+                    FunctionName = function
                 };
             newCommand.Position = newCommand.GetModifiedPosition();
-            newCommand.DoFunction.Value = tables.GetSkillFunction(function);
 
-            LuaManager.Instance.Proxy.CreateTable("command");
+            _luaManager.Proxy.CreateTable("command");
             AddLastObject(newCommand);
-            db.COMMANDS.Add(newCommand);
+            _dbManager.COMMANDS.ToList().Add(newCommand);
             return newCommand;
         }
 
@@ -259,9 +186,9 @@ namespace SmaugCS
         {
             SocialData newSocial = new SocialData() {Name = name};
 
-            LuaManager.Instance.Proxy.CreateTable("social");
+            _luaManager.Proxy.CreateTable("social");
             AddLastObject(newSocial);
-            db.SOCIALS.Add(newSocial);
+            _dbManager.SOCIALS.ToList().Add(newSocial);
             return newSocial;
         }
 
@@ -278,7 +205,7 @@ namespace SmaugCS
             if (!operatorType.IsNullOrEmpty())
                 newComponent.OperatorType = EnumerationExtensions.GetEnumByName<ComponentOperatorTypes>(operatorType);
 
-            LuaManager.Instance.Proxy.CreateTable("component");
+            _luaManager.Proxy.CreateTable("component");
             AddLastObject(newComponent);
             return newComponent;
         }
@@ -292,25 +219,58 @@ namespace SmaugCS
                     Type = EnumerationExtensions.GetEnum<ClassTypes>(type)
                 };
 
-            LuaManager.Instance.Proxy.CreateTable("class");
+            _luaManager.Proxy.CreateTable("class");
             AddLastObject(newClass);
-            db.CLASSES.Add(newClass);
+            _dbManager.CLASSES.ToList().Add(newClass);
             return newClass;
         }
 
         [LuaFunction("LCreateRace", "Creates a new Race", "Name of the Race", "Numeric type of the race")]
         public static RaceData LuaCreateRace(string name, int type)
         {
-            RaceData newRace = new RaceData(99)
+            RaceData newRace = new RaceData()
                 {
                     Name = name, 
                     Type = EnumerationExtensions.GetEnum<RaceTypes>(type)
                 };
 
-            LuaManager.Instance.Proxy.CreateTable("race");
+            _luaManager.Proxy.CreateTable("race");
             AddLastObject(newRace);
-            db.RACES.Add(newRace);
+            _dbManager.RACES.ToList().Add(newRace);
             return newRace;
+        }
+
+        [LuaFunction("LCreateClan", "Creates a new Clan", "Name of the clan")]
+        public static ClanData LuaCreateClan(string name)
+        {
+            ClanData newClan = new ClanData {Name = name};
+
+            _luaManager.Proxy.CreateTable("clan");
+            AddLastObject(newClan);
+            _dbManager.CLANS.ToList().Add(newClan);
+            return newClan;
+        }
+
+        [LuaFunction("LCreateDeity", "Creates a new Deity", "Name of the Deity")]
+        public static DeityData LuaCreateDeity(string name)
+        {
+            DeityData newDeity = new DeityData(string.Empty) {Name = name};
+
+            _luaManager.Proxy.CreateTable("deity");
+            AddLastObject(newDeity);
+            _dbManager.DEITIES.ToList().Add(newDeity);
+            return newDeity;
+        }
+
+        [LuaFunction("LCreateLanguage", "Creates a new Language", "Name of the language")]
+        public static LanguageData LuaCreateLanguage(string name)
+        {
+            LanguageData newLang = new LanguageData {Name = name};
+
+            _luaManager.Proxy.CreateTable("lang");
+            AddLastObject(newLang);
+            _dbManager.LANGUAGES.ToList().Add(newLang);
+            return newLang;
         }
     }
 }

@@ -95,7 +95,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\ITemplateRepository.cs" />
     <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />
     <Compile Include="Extensions\MobTemplateExtensions.cs" />
@@ -173,7 +172,18 @@
     <Compile Include="GameConstants.cs" />
     <Compile Include="Loaders\ClassLoader.cs" />
     <Compile Include="Loaders\RaceLoader.cs" />
-    <Compile Include="LuaFunctions.cs" />
+    <Compile Include="Lookup\CommandLookupTable.cs" />
+    <Compile Include="Lookup\SkillLookupTable.cs" />
+    <Compile Include="Lookup\SpellLookupTable.cs" />
+    <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaMobFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
+    <Compile Include="Managers\IDatabaseManager.cs" />
+    <Compile Include="Managers\ILogManager.cs" />
+    <Compile Include="Managers\ILuaManager.cs" />
     <Compile Include="Managers\LuaManager.cs" />
     <Compile Include="SpecFuns\BreathAcid.cs" />
     <Compile Include="SpecFuns\BreathAny.cs" />

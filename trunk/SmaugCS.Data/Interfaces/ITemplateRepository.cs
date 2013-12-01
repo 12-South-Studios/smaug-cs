@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Database
+namespace SmaugCS.Data.Interfaces
 {
     public interface ITemplateRepository<out T> where T : Template
     {

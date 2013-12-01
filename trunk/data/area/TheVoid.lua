@@ -5,10 +5,8 @@
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 
-LoadArea()	-- EXECUTE THE AREA
-
 function LoadArea()
-	systemLog("=================== AREA 'THE VOID' INITIALIZING ===================");
+	LBootLog("=================== AREA 'THE VOID' INITIALIZING ===================");
 	newArea = LCreateArea(1, "The Void");
 	area.this = newArea;
 	area.this.Author = "RoD";
@@ -25,40 +23,40 @@ function LoadArea()
 	Arena();
 	OtherRooms();
 	
-	systemLog("=================== AREA 'THE VOID' - COMPLETED ================");
+	LBootLog("=================== AREA 'THE VOID' - COMPLETED ================");
 end
 
 function Mobs()
-	systemLog("=================== AREA 'THE VOID' - MOBS ===================");
-	mobile.this = CreateMobile(1, "translucent figure", "A translucent figure");
-	mobile.this.LongDescription = "A translucent figure is here, contemplating a higher reality.";
-	mobile.this.Class = "mage";
-	mobile.this.ActFlags = "npc sentinel noattack";
-	mobile.this.AffectedBy = "detect_invis detect_hidden sanctuary infrared protect truesight";
-	mobile.this:SetStats1(1000, 50, 20, -30, 10000, 1000);
-	mobile.this:SetStats2(5, 10, 30550);
-	mobile.this:SetStats3(4, 10, 200);
-	mobile.this.Speaks = "all";
-	mobile.this.Speaking = "all";
-	mobile.this:AddMudProg(CreateMudProg("rand_prog", "50", 
+	LBootLog("=================== AREA 'THE VOID' - MOBS ===================");
+	mobile = CreateMobile(1, "translucent figure", "A translucent figure");
+	mobile.LongDescription = "A translucent figure is here, contemplating a higher reality.";
+	mobile.Class = "mage";
+	mobile.ActFlags = "npc sentinel noattack";
+	mobile.AffectedBy = "detect_invis detect_hidden sanctuary infrared protect truesight";
+	mobile:SetStats1(1000, 50, 20, -30, 10000, 1000);
+	mobile:SetStats2(5, 10, 30550);
+	mobile:SetStats3(4, 10, 200);
+	mobile.Speaks = "all";
+	mobile.Speaking = "all";
+	mobile:AddMudProg(CreateMudProg("rand_prog", "50", 
 	[[
 		MPAt(4, "MPPurge");
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("rand_prog", "5", 
+	mobile:AddMudProg(CreateMudProg("rand_prog", "5", 
 	[[ 
 		MPE("To escape the Void, type a command or say 'return' ...");
 	]]));
 	
-	mobile.this = CreateMobile(2, "demon imp", "A demon imp");
-	mobile.this.LongDescription = "A demon imp hovers nearby...drooling constantly with a fiendish grin.";
-	mobile.this.Description = [[This demon is clearly something that you don't want to mess with...
+	mobile = CreateMobile(2, "demon imp", "A demon imp");
+	mobile.LongDescription = "A demon imp hovers nearby...drooling constantly with a fiendish grin.";
+	mobile.Description = [[This demon is clearly something that you don't want to mess with...
 		It appears to be very agile, and very strong.]];
-	mobile.this.Gender = "neuter";
-	mobile.this.ActFlags = "detect_invis detect_hidden";
-	mobile.this:SetStats1(-1000, 50, 1, -300, 10000, 155000);
-	mobile.this:SetStats2(5, 10, 31550);
-	mobile.this:SetStats3(1, 2, 2);
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p disappears in a column of divine power", 
+	mobile.Gender = "neuter";
+	mobile.ActFlags = "detect_invis detect_hidden";
+	mobile:SetStats1(-1000, 50, 1, -300, 10000, 155000);
+	mobile:SetStats2(5, 10, 31550);
+	mobile:SetStats3(1, 2, 2);
+	mobile:AddMudProg(CreateMudProg("act_prog", "p disappears in a column of divine power", 
 	[[ 
 		local ch = LGetCurrentCharacter();
 		if (LIsInRoom(ch, 6)) then
@@ -68,7 +66,7 @@ function Mobs()
 			MPTransfer(ch, 8);
 		end
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p has entered the game", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p has entered the game", 
 	[[
 		local ch = LGetCurrentCharacter();
 		if (not LIsInRoom(ch, 8) and not LIsImmortal(ch)) then
@@ -81,15 +79,15 @@ function Mobs()
 			MPAt(ch, "MPForce(ch, \"look\");");
 		end
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is incapacitated", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p is incapacitated", 
 	[[
 		MPRestore(LGetCurrentCharacter(), 1000);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is mortally wounded", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p is mortally wounded", 
 	[[ 
 		MPRestore(LGetCurrentCharacter(), 1000);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("rand_prog", "1", 
+	mobile:AddMudProg(CreateMudProg("rand_prog", "1", 
 	[[ 
 		local ch = LGetCurrentCharacter();
 		if (not LIsImmortal(ch) and LIsClass(ch, "vampire")) then
@@ -97,13 +95,13 @@ function Mobs()
 			MPRestore(ch, 100);
 		end
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is suffering from lack of blood", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p is suffering from lack of blood", 
 	[[
 		local ch = LGetCurrentCharacter();
 		MPForce(ch, "drink blood");
 		MPRestore(ch, 500);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is DEAD", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p is DEAD", 
 	[[ 
 		local ch = LGetCurrentCharacter();
 		if (LIsInRoom(ch, 6)) then
@@ -112,25 +110,25 @@ function Mobs()
 			MPTransfer(ch, 8);
 		end
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p wields", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p wields", 
 	[[
 		MPRestore(LGetCurrentCharacter(), 500);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p wears", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p wears", 
 	[[
 		MPRestore(LGetCurrentCharacter(), 500);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p shivers and", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p shivers and", 
 	[[
 		local ch = LGetCurrentCharacter();
 		LMobCastSpell("cure poison", ch);
 		MPRestore(ch, 500);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p bashes against", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p bashes against", 
 	[[
 		MPRestore(LGetCurrentCharacter(), 500);
 	]]));
-	mobile.this:AddMudProg(CreateMudProg("act_prog", "p is starved", 
+	mobile:AddMudProg(CreateMudProg("act_prog", "p is starved", 
 	[[
 		local ch = LGetCurrentCharacter();
 		local obj = MPOLoad(20);
@@ -140,18 +138,18 @@ function Mobs()
 		MPRestore(ch, 500);
 	]]));
 	
-	mobile.this = CreateMobile(3, "supermob", "the supermob");
-	mobile.this.LongDescription = "The supermob is here.  He looks busy as hell.";
-	mobile.this.Description = "How clever he looks!";
-	mobile.this.Gender = "neuter";
-	mobile.this.ActFlags = "npc polyself secretive mobinvis prototype";
-	mobile.this.AffectedBy = "invisible detect_invis detect_hidden hide truesight";
-	mobile.this:SetStats1(-1000, 56, 1, -300, 10000, 155000);
-	mobile.this:SetStats2(1, 2, 2);
-	mobile.this:SetAttributes(13, 13, 13, 13, 13, 13, 25);
-	mobile.this.Immunity = "blunt pierce slash sleep charm nonmagic paralysis";
-	mobile.this.Defenses = "parry dodge";
-	mobile.this:AddMudProg(CreateMudProg("rand_prog", "10", 
+	mobile = CreateMobile(3, "supermob", "the supermob");
+	mobile.LongDescription = "The supermob is here.  He looks busy as hell.";
+	mobile.Description = "How clever he looks!";
+	mobile.Gender = "neuter";
+	mobile.ActFlags = "npc polyself secretive mobinvis prototype";
+	mobile.AffectedBy = "invisible detect_invis detect_hidden hide truesight";
+	mobile:SetStats1(-1000, 56, 1, -300, 10000, 155000);
+	mobile:SetStats2(1, 2, 2);
+	mobile:SetAttributes(13, 13, 13, 13, 13, 13, 25);
+	mobile.Immunity = "blunt pierce slash sleep charm nonmagic paralysis";
+	mobile.Defenses = "parry dodge";
+	mobile:AddMudProg(CreateMudProg("rand_prog", "10", 
 	[[
 		MPInvis(51);
 		if (not LIsMobInvisible(LGetMobile(3)) then
@@ -774,59 +772,59 @@ Speaking   common~
 end
 
 function Objects()
-	systemLog("=================== AREA 'THE VOID' - COMMON OBJECTS ===================");
-	object.this = CreateObject(2, "coin gold", "money");
-	object.this.ShortDescription = "a gold coin";
-	object.this.LongDescription = "One miserable gold coin.";
-	object.this:SetStats(1, 0, 0, 0, 0);
-	object.this:SetValues(1, 0, 0, 0, 0);
+	LBootLog("=================== AREA 'THE VOID' - COMMON OBJECTS ===================");
+	object = CreateObject(2, "coin gold", "money");
+	object.ShortDescription = "a gold coin";
+	object.LongDescription = "One miserable gold coin.";
+	object:SetStats(1, 0, 0, 0, 0);
+	object:SetValues(1, 0, 0, 0, 0);
 	
-	object.this = CreateObject(3, "coins gold", "money");
-	object.this.ShortDescription = "%d gold coins";
-	object.this.LongDescription = "A pile of gold coins.";
-	object.this:SetStats(1, 0, 0, 0, 0);
+	object = CreateObject(3, "coins gold", "money");
+	object.ShortDescription = "%d gold coins";
+	object.LongDescription = "A pile of gold coins.";
+	object:SetStats(1, 0, 0, 0, 0);
 	
-	object.this = CreateObject(7, "board marks", "trash");
-	object.this.ShortDescription = "the Marks Board";
-	object.this.LongDescription = "A large bullseye riddled with arrows is here.";
-	object.this:SetStats(1, 0, 0, 0, 0);
+	object = CreateObject(7, "board marks", "trash");
+	object.ShortDescription = "the Marks Board";
+	object.LongDescription = "A large bullseye riddled with arrows is here.";
+	object:SetStats(1, 0, 0, 0, 0);
 	
-	object.this = CreateObject(8, "board vnum area", "trash");
-	object.this.ShortDescription = "the Vnum/Area Board";
-	object.this.LongDescription = "The Vnum/Area Board is hanging on the wall here.";
-	object.this.Flags = "prototype";
-	object.this:SetStats(1, 0, 0, 0, 0);
+	object = CreateObject(8, "board vnum area", "trash");
+	object.ShortDescription = "the Vnum/Area Board";
+	object.LongDescription = "The Vnum/Area Board is hanging on the wall here.";
+	object.Flags = "prototype";
+	object:SetStats(1, 0, 0, 0, 0);
 	
-	object.this = CreateObject(9, "board vnum", "trash");
-	object.this.ShortDescription = "the Vnum Board";
-	object.this.LongDescription = "A small bulletin board is here.";
-	object.this:SetStats(1, 0, 0, 0, 0);
+	object = CreateObject(9, "board vnum", "trash");
+	object.ShortDescription = "the Vnum Board";
+	object.LongDescription = "A small bulletin board is here.";
+	object:SetStats(1, 0, 0, 0, 0);
 	
-	object.this = CreateObject(10, "corpse", "corpse");
-	object.this.ShortDescription = "the corpse of %s";
-	object.this.LongDescription = "The corpse of %s lies here.";
-	object.this:SetValues(0, 0, 0, 1, 0, 0);
-	object.this:SetStats(100, 0, 0, 0, 0);
+	object = CreateObject(10, "corpse", "corpse");
+	object.ShortDescription = "the corpse of %s";
+	object.LongDescription = "The corpse of %s lies here.";
+	object:SetValues(0, 0, 0, 1, 0, 0);
+	object:SetStats(100, 0, 0, 0, 0);
 	
-	object.this = CreateObject(11, "corpse", "corpse_pc");
-	object.this.ShortDescription = "the corpse of %s";
-	object.this.LongDescription = "The corpse of %s lies here.";
-	object.this:SetValues(0, 0, 0, 1, 0, 0);
-	object.this:SetStats(100, 0, 0, 0, 0);
+	object = CreateObject(11, "corpse", "corpse_pc");
+	object.ShortDescription = "the corpse of %s";
+	object.LongDescription = "The corpse of %s lies here.";
+	object:SetValues(0, 0, 0, 1, 0, 0);
+	object:SetStats(100, 0, 0, 0, 0);
 	
-	object.this = CreateObject(12, "head", "cook");
-	object.this.ShortDescription = "the decapitated head of %s";
-	object.this.LongDescription = "The head of %s lies here, a vacant stare of shock on its face.";
-	object.this.Action = "%s gobble$q down $p with gusto... disgusting!";
-	object.this:SetValues(10, 0, 0, 0, 0, 0);
-	object.this:SetStats(5, 0, 0, 0, 0);
+	object = CreateObject(12, "head", "cook");
+	object.ShortDescription = "the decapitated head of %s";
+	object.LongDescription = "The head of %s lies here, a vacant stare of shock on its face.";
+	object.Action = "%s gobble$q down $p with gusto... disgusting!";
+	object:SetValues(10, 0, 0, 0, 0, 0);
+	object:SetStats(5, 0, 0, 0, 0);
 	
-	object.this = CreateObject(13, "heart", "cook");
-	object.this.ShortDescription = "the torn-out heart of %s";
-	object.this.LongDescription = "The torn-out heart of %s lies here, no longer beating with life.";
-	object.this.Action = "%s savagely devour$q $p!";
-	object.this:SetValues(16, 0, 0, 0, 0, 0);
-	object.this:SetStats(2, 0, 0, 0, 0);
+	object = CreateObject(13, "heart", "cook");
+	object.ShortDescription = "the torn-out heart of %s";
+	object.LongDescription = "The torn-out heart of %s lies here, no longer beating with life.";
+	object.Action = "%s savagely devour$q $p!";
+	object:SetValues(16, 0, 0, 0, 0, 0);
+	object:SetStats(2, 0, 0, 0, 0);
 	
 	
 --[[
@@ -1770,31 +1768,31 @@ Stats    1 0 0 0 0
 end
 
 function SystemRooms()
-	systemLog("=================== AREA 'THE VOID' - ROOMS ====================");
-	room.this = CreateRoom(2, "Limbo", "city", area.this);
-	room.this.Description = [[You float in a formless void, detached from all sensation of physical
+	LBootLog("=================== AREA 'THE VOID' - ROOMS ====================");
+	room = CreateRoom(2, "Limbo", "city", area.this);
+	room.Description = [[You float in a formless void, detached from all sensation of physical
 		matter, surrounded by swirling glowing light which fades into the
 		relative darkness around you without any trace of edge or shadow.]];
-	room.this:SetFlags("nomob indoors safe norecall nosummon noastral");
-	room.this:AddExit("north", 2100, "north");
-	AddMobileToRoom(room.this, 1, 2, 1);			-- Puff the Dragon
-	AddObjectToRoom(room.this, 22, 2, 1);		-- Mystical Spring
-	AddObjectToRoom(room.this, 60, 2, 1);		-- Fountain of Blood
-	room.this:AddMudProg(CreateMudProg("speech_prog", "p return", 
+	room:SetFlags("nomob indoors safe norecall nosummon noastral");
+	room:AddExit("north", 2100, "north");
+	AddMobileToRoom(room, 1, 2, 1);			-- Puff the Dragon
+	AddObjectToRoom(room, 22, 2, 1);		-- Mystical Spring
+	AddObjectToRoom(room, 60, 2, 1);		-- Fountain of Blood
+	room:AddMudProg(CreateMudProg("speech_prog", "p return", 
 	[[ 
 		local ch = LGetCurrentCharacter();
 		if (ch.Level > 1) then
 			MPTrans(ch, 21001);
 		end
 	]]));
-	room.this:AddMudProg(CreateMudProg("act_prog", "p has lost", 
+	room:AddMudProg(CreateMudProg("act_prog", "p has lost", 
 	[[
 		local ch = LGetCurrentCharacter();
 		MPMSet(ch, "full 50");
 		MPMSet(ch, "thirst 100");
 		MPRestore(ch, 2);
 	]]));
-	room.this:AddMudProg(CreateMudPRog("act_prog", "is", 
+	room:AddMudProg(CreateMudPRog("act_prog", "is", 
 	[[
 		local ch = LGetCurrentCharacter();
 		MPMSet(ch, "full 50");
@@ -1802,16 +1800,16 @@ function SystemRooms()
 		MPRestore(ch, 2);
 	]]));
 	
-	room.this = CreateRoom(3, "Storage", "city", area.this);
-	room.this.Description = [[This room is reserved for storage of polymorphed players.]];
-	room.this:SetFlags("death nomob private solitary nosummon noastral");
+	room = CreateRoom(3, "Storage", "city", area.this);
+	room.Description = [[This room is reserved for storage of polymorphed players.]];
+	room:SetFlags("death nomob private solitary nosummon noastral");
 	
-	room.this = CreateRoom(4, "Deity Purge Room", "city", area.this);
-	room.this.Description = [[This room handles the purging of unused deities.]];
-	room.this:SetFlags("nomob indoors nosummon noastral");
+	room = CreateRoom(4, "Deity Purge Room", "city", area.this);
+	room.Description = [[This room handles the purging of unused deities.]];
+	room:SetFlags("nomob indoors nosummon noastral");
 	
-	room.this = CreateRoom(6, "Hell", "city", area.this);
-	room.this.Description = [[As if picked up by the scruff of your neck by a mighty hand, you find
+	room = CreateRoom(6, "Hell", "city", area.this);
+	room.Description = [[As if picked up by the scruff of your neck by a mighty hand, you find
 		yourself unceremoniously dumped at a strange gateway.  Here is the
 		place which will determine your fate.  Whether you will be sent back
 		to life as you once knew it, or proceed onto a far yet bleaker pathway.
@@ -1819,13 +1817,13 @@ function SystemRooms()
 		crimes that have been placed upon your head.  Speak wisely and choose
 		your words carefully, for your testimony will be written in the ledgers
 		of the Gods, and will determine the path you will ultimately travel.]];
-	room.this:SetFlags("nomob indoors chaotic safe norecall logspeech nosummon noastral nosupplicate");
-	AddObjectToRoom(room.this, 22, 6, 1);		-- Mystical Spring
-	AddObjectToRoom(room.this, 60, 6, 1);		-- Fountain of Blood		
-	AddMobileToRoom(room.this, 2, 6, 2);			-- demon imp
+	room:SetFlags("nomob indoors chaotic safe norecall logspeech nosummon noastral nosupplicate");
+	AddObjectToRoom(room, 22, 6, 1);		-- Mystical Spring
+	AddObjectToRoom(room, 60, 6, 1);		-- Fountain of Blood		
+	AddMobileToRoom(room, 2, 6, 2);			-- demon imp
 	
-	room.this = CreateRoom(8, "Hell", "city", area.this);
-	room.this.Description = [[As if picked up by the scruff of your neck by a mighty hand, you find
+	room = CreateRoom(8, "Hell", "city", area.this);
+	room.Description = [[As if picked up by the scruff of your neck by a mighty hand, you find
 		yourself unceremoniously dumped at a strange gateway.  Here is the
 		place which will determine your fate.  Whether you will be sent back
 		to life as you once knew it, or proceed onto a far yet bleaker pathway.
@@ -1838,11 +1836,11 @@ function SystemRooms()
 					,(.  |`/ \- y  (,`)
 				   )' (' | \ /\/  ) (.
 				  (' ),) | _W_   (,)' ).]];
-	room.this:SetFlags("nomob indoors chaotic nomagic safe norecall logspeech nosummon noastral nosupplicate");
-	AddObjectToRoom(room.this, 22, 8, 1);		-- Mystical Spring
-	AddObjectToRoom(room.this, 60, 8, 1);		-- Fountain of Blood
-	AddMobileToRoom(room.this, 2, 8, 2);			-- demon imp
-	room.this:AddMudProg(CreateMudProg("death_prog", "100", 
+	room:SetFlags("nomob indoors chaotic nomagic safe norecall logspeech nosummon noastral nosupplicate");
+	AddObjectToRoom(room, 22, 8, 1);		-- Mystical Spring
+	AddObjectToRoom(room, 60, 8, 1);		-- Fountain of Blood
+	AddMobileToRoom(room, 2, 8, 2);			-- demon imp
+	room:AddMudProg(CreateMudProg("death_prog", "100", 
 	[[
 		local ch = LGetCurrentCharacter();
 		if (ch.IsNpc()) then
@@ -1860,11 +1858,11 @@ function SystemRooms()
 		end
 	]]));
 	
-	room.this = CreateRoom(9, "Task Room", "city", area.this);
-	room.this.Description = "Any mob here is probably performing tasks.  Mess with it and I will kill your dog.  -- Blodkai";
-	room.this:SetFlags("nomob nodrop nosummon noastral");
-	room.this:AddExit("down", 10300, "The Academy of Darkhaven");
-	AddExitToRoom(room.this, "somewhere", 10300, "vnums", "hidden auto");
+	room = CreateRoom(9, "Task Room", "city", area.this);
+	room.Description = "Any mob here is probably performing tasks.  Mess with it and I will kill your dog.  -- Blodkai";
+	room:SetFlags("nomob nodrop nosummon noastral");
+	room:AddExit("down", 10300, "The Academy of Darkhaven");
+	AddExitToRoom(room, "somewhere", 10300, "vnums", "hidden auto");
 end
 
 function Arena()
@@ -4094,5 +4092,7 @@ endif
 
 #ENDAREA--]]
 end
+
+LoadArea();	-- EXECUTE THE AREA
 
 -- EOF

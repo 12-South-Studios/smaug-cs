@@ -56,7 +56,7 @@ namespace SmaugCS.Data
                         Year = tuple.Item2.ToInt32();
                         break;
                     default:
-                        //LogManager.Bug("Unknown time element {0}", tuple.Item1);
+                        //LogManager.Instance.Bug("Unknown time element {0}", tuple.Item1);
                         break;
                 }
             }

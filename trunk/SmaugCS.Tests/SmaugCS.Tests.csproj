@@ -102,7 +102,7 @@
     <Compile Include="Extensions\NumberExtensionTests.cs" />
     <Compile Include="ExtendedBitvectorTests.cs" />
     <Compile Include="CheckTests.cs" />
-    <Compile Include="LuaFunctionTests.cs" />
+    <Compile Include="LuaCreateFunctionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

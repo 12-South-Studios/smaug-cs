@@ -6,6 +6,7 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
 using SmaugCS.Managers;
@@ -18,31 +19,6 @@ namespace SmaugCS.Database
     public class MobileRepository : Repository<long, MobTemplate>, ITemplateRepository<MobTemplate>
     {
         private MobTemplate LastMob { get; set; }
-
-        [LuaFunction("LGetLastMob", "Retrieves the Last Mob")]
-        public static MobTemplate LuaGetLastMob()
-        {
-            return DatabaseManager.Instance.MOBILE_INDEXES.LastMob;
-        }
-
-        [LuaFunction("LProcessMob", "Processes a mob script", "script text")]
-        public static MobTemplate LuaProcessMob(string text)
-        {
-            LuaManager.Instance.Proxy.DoString(text);
-            return DatabaseManager.Instance.MOBILE_INDEXES.LastMob;
-        }
-
-        [LuaFunction("LCreateMobile", "Creates a new mob", "Id of the Mobile", "Name of the Mobile")]
-        public static MobTemplate LuaCreateMob(string id, string name)
-        {
-            long mobId = Convert.ToInt64(id);
-            if (DatabaseManager.Instance.MOBILE_INDEXES.Contains(mobId))
-                throw new DuplicateEntryException("Repository contains Mob with Id {0}", mobId);
-
-            MobTemplate newMob = DatabaseManager.Instance.MOBILE_INDEXES.Create(mobId, name);
-            LuaManager.Instance.Proxy.CreateTable("mobile");
-            return newMob;
-        }
 
         public MobTemplate Create(long vnum, long cvnum, string name)
         {
@@ -68,7 +44,7 @@ namespace SmaugCS.Database
         {
             newMob.LongDescription = cloneMob.LongDescription;
             newMob.Description = cloneMob.Description;
-            newMob.Act = cloneMob.Act;
+            newMob.ActFlags = cloneMob.ActFlags;
             newMob.AffectedBy = cloneMob.AffectedBy;
             newMob.SpecialFunction = cloneMob.SpecialFunction;
             newMob.Statistics[StatisticTypes.Alignment] = cloneMob.GetStatistic(StatisticTypes.Alignment);
@@ -80,7 +56,7 @@ namespace SmaugCS.Database
             newMob.Gold = cloneMob.Gold;
             newMob.Experience = cloneMob.Experience;
             newMob.Position = cloneMob.Position;
-            newMob.DefPosition = cloneMob.DefPosition;
+            newMob.DefensivePosition = cloneMob.DefensivePosition;
             newMob.Gender = cloneMob.Gender;
             newMob.Statistics[StatisticTypes.Strength] = cloneMob.GetStatistic(StatisticTypes.Strength);
             newMob.Statistics[StatisticTypes.Dexterity] = cloneMob.GetStatistic(StatisticTypes.Dexterity);
@@ -116,7 +92,7 @@ namespace SmaugCS.Database
                                              string.Format("Somebody abandoned a newly created {0} here.", name),
                                          Level = 1,
                                          Position = "standing",
-                                         DefPosition = "standing",
+                                         DefensivePosition = "standing",
                                          Class = "warrior",
                                          Race = "human",
                                          Gender = "male"
@@ -128,7 +104,7 @@ namespace SmaugCS.Database
             newMob.Statistics[StatisticTypes.Charisma] = 13;
             newMob.Statistics[StatisticTypes.Constitution] = 13;
             newMob.Statistics[StatisticTypes.Luck] = 13;
-            newMob.Act = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
+            newMob.ActFlags = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
 
             Add(vnum, newMob);
             LastMob = newMob;

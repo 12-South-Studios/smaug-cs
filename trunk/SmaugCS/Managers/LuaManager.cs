@@ -1,17 +1,15 @@
-﻿using LuaInterface;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
-using SmaugCS.Constants.Constants;
-using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Managers
 {
-    public sealed class LuaManager : GameSingleton
+    public sealed class LuaManager : GameSingleton, ILuaManager
     {
         private static LuaManager _instance;
         private static readonly object Padlock = new object();
 
         private string _dataPath;
+        private static ILogManager _logManager;
 
         public LuaVirtualMachine LUA { get; private set; }
         public LuaInterfaceProxy Proxy { get; private set; }
@@ -37,9 +35,10 @@ namespace SmaugCS.Managers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
-        public void InitDataPath(string path)
+        /// <param name="logManager"></param>
+        public void InitializeManager(ILogManager logManager, string path)
         {
+            _logManager = logManager;
             _dataPath = path;
         }
 
@@ -47,13 +46,11 @@ namespace SmaugCS.Managers
         /// 
         /// </summary>
         /// <param name="proxy"></param>
-        public void InitProxy(LuaInterfaceProxy proxy)
+        public void InitializeLuaProxy(LuaInterfaceProxy proxy)
         {
             Proxy = proxy ?? new LuaInterfaceProxy();
             var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaManager));
             Proxy.RegisterFunctions(luaFuncRepo);
-
-            LogManager.BootLog("LuaProxy initialized.");
         }
 
         /// <summary>
@@ -68,20 +65,9 @@ namespace SmaugCS.Managers
         /// 
         /// </summary>
         /// <param name="file"></param>
-        /// <param name="useSystemFile"></param>
-        public void DoLuaScript(string file, bool useSystemFile = false)
+        public void DoLuaScript(string file)
         {
-            var path = useSystemFile ? SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + file : file;
-
-            try
-            {
-                Proxy.DoFile(path);
-            }
-            catch (LuaException ex)
-            {
-                LogManager.BootLog(ex);
-                throw;
-            }
+            Proxy.DoFile(file);
         }
     }
 }

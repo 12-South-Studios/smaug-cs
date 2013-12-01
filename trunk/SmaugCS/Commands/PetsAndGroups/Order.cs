@@ -72,7 +72,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 
             if (found)
             {
-                LogManager.Log("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Normal, ch.Level));
+                LogManager.Instance.Log("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Normal, ch.Level));
                 color.send_to_char("Ok.\r\n", ch);
                 Macros.WAIT_STATE(ch, 12);
             }

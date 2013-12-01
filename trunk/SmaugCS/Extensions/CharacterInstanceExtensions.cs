@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
@@ -10,6 +11,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 
@@ -204,7 +206,7 @@ namespace SmaugCS.Extensions
         {
             if (ch.Affects == null || ch.Affects.Count == 0)
             {
-                LogManager.Bug("affect_remove (%s, %d): no affect", ch.Name, paf != null ? paf.Type : 0);
+                LogManager.Instance.Bug("affect_remove (%s, %d): no affect", ch.Name, paf != null ? paf.Type : 0);
                 return;
             }
 
@@ -220,7 +222,7 @@ namespace SmaugCS.Extensions
         {
             if (affect == null)
             {
-                LogManager.Bug("%s (%s, NULL)", "affect_to_char", ch.Name);
+                LogManager.Instance.Bug("%s (%s, NULL)", "affect_to_char", ch.Name);
                 return;
             }
 
@@ -299,12 +301,12 @@ namespace SmaugCS.Extensions
             ch.NoImmunity = 0;
             ch.NoSusceptibility = 0;
 
-            RaceData myRace = db.GetRace(ch.CurrentRace);
+            RaceData myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
             ch.AffectedBy.SetBits(myRace.AffectedBy);
             ch.Resistance.SetBit(myRace.Resistance);
             ch.Susceptibility.SetBit(myRace.Susceptibility);
 
-            ClassData myClass = db.GetClass(ch.CurrentClass);
+            ClassData myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
             ch.AffectedBy.SetBits(myClass.AffectedBy);
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);
@@ -390,7 +392,7 @@ namespace SmaugCS.Extensions
         {
             return ch.IsNpc()
                 ? 1000
-                : db.CLASSES.First(x => x.Type == ch.CurrentClass).BaseExperience;
+                : DatabaseManager.Instance.CLASSES.First(x => x.Type == ch.CurrentClass).BaseExperience;
         }
 
         public static int GetExperienceLevel(this CharacterInstance ch, int level)
@@ -437,7 +439,7 @@ namespace SmaugCS.Extensions
 
         public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
-            ClassData currentClass = db.CLASSES.First(x => x.Type == ch.CurrentClass);
+            ClassData currentClass = DatabaseManager.Instance.CLASSES.First(x => x.Type == ch.CurrentClass);
             int max = 20;
 
             if (ch.IsNpc() || currentClass.PrimaryAttribute == statistic)
@@ -559,7 +561,7 @@ namespace SmaugCS.Extensions
             string buffer = string.Format("the {0}", tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender));
             player.set_title(ch, buffer);
 
-            ClassData myClass = db.GetClass(ch.CurrentClass);
+            ClassData myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
 
             int add_hp = GameConstants.con_app[ch.GetCurrentConstitution()].hitp +
                          SmaugCS.Common.SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
@@ -652,7 +654,7 @@ namespace SmaugCS.Extensions
                 }
             }
 
-            RaceData myRace = db.GetRace(ch.CurrentRace);
+            RaceData myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
             modgain *= (myRace.ExperienceMultiplier / 100.0f);
 
             if (ch.IsPKill() && modgain < 0)
@@ -832,8 +834,8 @@ namespace SmaugCS.Extensions
 
         public static void CheckAlignment(this CharacterInstance ch)
         {
-            if (ch.CurrentAlignment < db.GetRace(ch.CurrentRace).MinimumAlignment
-                || ch.CurrentAlignment > db.GetRace(ch.CurrentRace).MaximumAlignment)
+            if (ch.CurrentAlignment < DatabaseManager.Instance.GetRace(ch.CurrentRace).MinimumAlignment
+                || ch.CurrentAlignment > DatabaseManager.Instance.GetRace(ch.CurrentRace).MaximumAlignment)
             {
                 color.set_char_color(ATTypes.AT_BLOOD, ch);
                 color.send_to_char("Your actions have been incompatible with the ideals of your race. This troubles you.", ch);
@@ -868,9 +870,9 @@ namespace SmaugCS.Extensions
             {
                 if (fall > 80)
                 {
-                    LogManager.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.Vnum);
+                    LogManager.Instance.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.Vnum);
                     ch.CurrentRoom.FromRoom(ch);
-                    DatabaseManager.Instance.ROOMS.Get(Program.ROOM_VNUM_TEMPLE).ToRoom(ch);
+                    DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_TEMPLE).ToRoom(ch);
                     return true;
                 }
 
@@ -887,7 +889,7 @@ namespace SmaugCS.Extensions
         {
             if (ch.Master != null)
             {
-                LogManager.Bug("non-null master");
+                LogManager.Instance.Bug("non-null master");
                 return;
             }
 
@@ -908,7 +910,7 @@ namespace SmaugCS.Extensions
         {
             if (ch.Master == null)
             {
-                LogManager.Bug("null master");
+                LogManager.Instance.Bug("null master");
                 return;
             }
 
@@ -944,7 +946,7 @@ namespace SmaugCS.Extensions
 
             ch.Leader = null;
 
-            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (fch.Master == ch)
                     ch.StopFollower();
@@ -981,7 +983,7 @@ namespace SmaugCS.Extensions
 
             if (!ch.IsNpc())
             {
-                if (db.GetRace(ch.CurrentRace).Language.IsSet(language))
+                if (DatabaseManager.Instance.GetRace(ch.CurrentRace).Language.IsSet(language))
                     return 100;
 
                 for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
@@ -1007,7 +1009,7 @@ namespace SmaugCS.Extensions
                 return false;
             if (ch.IsNpc() || ch.IsImmortal())
                 return false;
-            if ((db.GetRace(ch.CurrentRace).Language & language) > 0)
+            if ((DatabaseManager.Instance.GetRace(ch.CurrentRace).Language & language) > 0)
                 return false;
 
             if ((ch.Speaks & language) > 0)
@@ -1025,7 +1027,7 @@ namespace SmaugCS.Extensions
                         SkillData skill = DatabaseManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
                         if (skill == null)
                         {
-                            LogManager.Bug("can_learn_lang: valid language without sn: %d", i);
+                            LogManager.Instance.Bug("can_learn_lang: valid language without sn: %d", i);
                             continue;
                         }
                     }
@@ -1126,14 +1128,14 @@ namespace SmaugCS.Extensions
         {
             if (obj.CarriedBy != ch)
             {
-                LogManager.Bug("obj not being carried by ch");
+                LogManager.Instance.Bug("obj not being carried by ch");
                 return;
             }
 
             ObjectInstance temp = ch.GetEquippedItem(iWear);
             if (temp != null && (temp.ObjectIndex.Layers == 0 || obj.ObjectIndex.Layers == 0))
             {
-                LogManager.Bug("already equipped (%d)", iWear);
+                LogManager.Instance.Bug("already equipped (%d)", iWear);
                 return;
             }
 
@@ -1184,7 +1186,7 @@ namespace SmaugCS.Extensions
         {
             if (obj.WearLocation == WearLocations.None)
             {
-                LogManager.Bug("already unequipped");
+                LogManager.Instance.Bug("already unequipped");
                 return;
             }
 

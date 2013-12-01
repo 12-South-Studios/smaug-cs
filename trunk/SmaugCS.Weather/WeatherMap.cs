@@ -541,7 +541,7 @@ namespace SmaugCS.Weather
 
                     if (letter != '#')
                     {
-                        LogManager.Bug("%s: # not found (%c)", "load_weathermap", letter);
+                        LogManager.Instance.Bug("%s: # not found (%c)", "load_weathermap", letter);
                         return false;
                     }
 
@@ -554,7 +554,7 @@ namespace SmaugCS.Weather
                     else if (word.EqualsIgnoreCase("end"))
                         break;
                     else
-                        LogManager.Bug("No match for %s", word);
+                        LogManager.Instance.Bug("No match for %s", word);
 
                 } while (!proxy.EndOfStream);
             }

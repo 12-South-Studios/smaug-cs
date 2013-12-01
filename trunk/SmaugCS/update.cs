@@ -37,7 +37,7 @@ namespace SmaugCS
                     ConditionDrunk(ch, conditionValue);
                     break;
                 default:
-                    LogManager.Bug("Invalid condition type {0}", condition);
+                    LogManager.Instance.Bug("Invalid condition type {0}", condition);
                     break;
             }
         }

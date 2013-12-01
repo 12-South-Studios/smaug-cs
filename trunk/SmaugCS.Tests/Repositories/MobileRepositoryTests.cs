@@ -4,10 +4,13 @@ using System.Text;
 using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Lua;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
+using SmaugCS.Data.Templates;
 using SmaugCS.Database;
 using SmaugCS.Exceptions;
+using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Tests.Repositories
@@ -27,10 +30,10 @@ namespace SmaugCS.Tests.Repositories
             sb.Append("mobile.this.Race = \"magical\"");
             sb.Append("mobile.this.Class = \"warrior\"");
             sb.Append("mobile.this.Position = \"standing\"");
-            sb.Append("mobile.this.DefPosition = \"standing\"");
+            sb.Append("mobile.this.DefensivePosition = \"standing\"");
             sb.Append("mobile.this.Gender = \"neuter\"");
             sb.Append("mobile.this.SpecFun = \"spec_cast_mage\"");
-            sb.Append("mobile.this.Act = \"npc stayarea mountable\"");
+            sb.Append("mobile.this.ActFlags = \"npc stayarea mountable\"");
             sb.Append(
                 "mobile.this.AffectedBy = \"detect_evil detect_magic\"");
             sb.Append("mobile.this:SetStats1(-950, 18, 2, -2, 6000, 32000);");
@@ -68,21 +71,24 @@ namespace SmaugCS.Tests.Repositories
         [SetUp]
         public void OnSetup()
         {
-            DatabaseManager.Instance.MOBILE_INDEXES.Clear();
+            LuaMobFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+
+            DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Clear();
 
             _proxy = new LuaInterfaceProxy();
 
-            var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(MobileRepository));
-            luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaFunctions));
+            var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaMobFunctions));
+            luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));
             _proxy.RegisterFunctions(luaFuncRepo);
 
-            LuaManager.Instance.InitProxy(_proxy);
+            LuaManager.Instance.InitializeLuaProxy(_proxy);
         }
 
         [Test]
         public void LuaCreateMobileTest()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.ID, Is.EqualTo(801));
@@ -93,7 +99,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Race, Is.EqualTo("magical"));
             Assert.That(result.Class, Is.EqualTo("warrior"));
             Assert.That(result.Position, Is.EqualTo("standing"));
-            Assert.That(result.DefPosition, Is.EqualTo("standing"));
+            Assert.That(result.DefensivePosition, Is.EqualTo("standing"));
             Assert.That(result.Gender, Is.EqualTo("neuter"));
             Assert.That(result.SpecFun, Is.EqualTo("spec_cast_mage"));
             Assert.That(result.Speaks, Is.EqualTo("magical"));
@@ -109,7 +115,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_SetStats1_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.GetStatistic(StatisticTypes.Alignment), Is.EqualTo(-950));
@@ -123,7 +129,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_SetStats2_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.HitDice, Is.Not.Null);
@@ -135,7 +141,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_SetStats3_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.DamageDice, Is.Not.Null);
@@ -147,7 +153,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_SetStats4_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Height, Is.EqualTo(50));
@@ -160,7 +166,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_SetAttribs_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.GetStatistic(StatisticTypes.Strength), Is.EqualTo(11));
@@ -175,7 +181,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_SetSaves_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.SavingThrows, Is.Not.Null);
@@ -189,7 +195,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_MudProgs_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.MudProgs.Count, Is.EqualTo(1));
@@ -201,9 +207,7 @@ namespace SmaugCS.Tests.Repositories
         [Test]
         public void LuaCreateMobile_Shop_Test()
         {
-            var result = MobileRepository.LuaProcessMob(GetMobLuaScript());
-
-            Assert.That(result, Is.Not.Null);
+            var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Shop, Is.Not.Null);
@@ -220,15 +224,15 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(itemShop.ProfitSell, Is.EqualTo(90));
         }
 
-        [Test]
+        /*[Test]
         [ExpectedException(typeof(DuplicateEntryException))]
         public void LuaCreateMobileDuplicateTest()
         {
-            MobileRepository.LuaProcessMob(GetMobLuaScript());
-            MobileRepository.LuaProcessMob(GetMobLuaScript());
+            LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
+            LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.Fail("Unit test expected a DuplicateEntryException to be thrown!");
-        }
+        }*/
 
         [Test]
         public void Create()

@@ -285,14 +285,14 @@ namespace SmaugCS
             if (flags1 != (int)ActFFlags.None && flags1 != (int)ActFFlags.Text
                 && flags1 != (int)ActFFlags.CH && flags1 != (int)ActFFlags.OBJ)
             {
-                LogManager.Bug("More than one type {0} defined. Setting all null.", flags1);
+                LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags1);
                 obj1 = null;
             }
 
             if (flags2 != (int)ActFFlags.None && flags2 != (int)ActFFlags.Text
                 && flags2 != (int)ActFFlags.CH && flags2 != (int)ActFFlags.OBJ)
             {
-                LogManager.Bug("More than one type {0} defined. Setting all null.", flags2);
+                LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags2);
                 vch = null;
                 obj2 = null;
             }
@@ -370,7 +370,7 @@ namespace SmaugCS
 
             if (ch == null)
             {
-                LogManager.Bug("Null ch");
+                LogManager.Instance.Bug("Null ch");
                 return;
             }
 
@@ -425,7 +425,7 @@ namespace SmaugCS
         {
             act_wiz.echo_to_all(ATTypes.AT_IMMORT, "MUD shutting down by system operator NOW!!", (int)EchoTypes.All);
             db.shutdown_mud("MUD shutdown by system operator");
-            LogManager.Log("MUD shutdown by system operator");
+            LogManager.Instance.Log("MUD shutdown by system operator");
 
             Thread.Sleep(5000);
 

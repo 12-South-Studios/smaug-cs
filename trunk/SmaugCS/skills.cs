@@ -129,7 +129,7 @@ namespace SmaugCS
                 switch (skill.Target)
                 {
                     default:
-                        LogManager.Bug("Bad target to Skill {0}", sn);
+                        LogManager.Instance.Bug("Bad target to Skill {0}", sn);
                         color.send_to_char("Something went wrong...\r\n", ch);
                         return true;
 

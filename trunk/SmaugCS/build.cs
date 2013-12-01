@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
@@ -155,22 +156,24 @@ namespace SmaugCS
 
         public static int get_npc_class(string value)
         {
-            return Lookup.GetIndexOf(value, GameConstants.npc_class);
+            return FlagLookup.GetIndexOf(value, GameConstants.npc_class);
         }
 
         public static int get_npc_race(string value)
         {
-            return Lookup.GetIndexOf(value, GameConstants.npc_race);
+            return FlagLookup.GetIndexOf(value, GameConstants.npc_race);
         }
 
         public static int get_pc_class(string value)
         {
-            return db.CLASSES.FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
+            return
+                DatabaseManager.Instance.CLASSES.ToList()
+                               .FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
         }
 
         public static int get_pc_race(string value)
         {
-            return db.RACES.FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
+            return DatabaseManager.Instance.RACES.ToList().FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
         }
 
         public static int get_langflag(string value)
@@ -188,7 +191,7 @@ namespace SmaugCS
         public static int get_langnum(string value)
         {
             int count = 0;
-            foreach (LanguageData lang in db.LANGUAGES)
+            foreach (LanguageData lang in DatabaseManager.Instance.LANGUAGES)
             {
                 if (lang.Name.Equals(value, StringComparison.OrdinalIgnoreCase))
                     return count;
@@ -211,13 +214,13 @@ namespace SmaugCS
         {
             if (ch.Descriptor == null)
             {
-                LogManager.Bug("No descriptor");
+                LogManager.Instance.Bug("No descriptor");
                 return;
             }
 
             if (ch.SubState == CharacterSubStates.Restricted)
             {
-                LogManager.Bug("Restricted sub-state for Character {0}", ch.Name);
+                LogManager.Instance.Bug("Restricted sub-state for Character {0}", ch.Name);
                 return;
             }
 
@@ -326,7 +329,7 @@ namespace SmaugCS
 
             if (ch.Descriptor == null)
             {
-                LogManager.Bug("Missing descriptor {0}", ch.Name);
+                LogManager.Instance.Bug("Missing descriptor {0}", ch.Name);
                 return;
             }
 
@@ -376,7 +379,7 @@ namespace SmaugCS
                 return;
             }
 
-            int loc = Lookup.get_atype(arg2);
+            int loc = FlagLookup.get_atype(arg2);
             if (loc < 1)
             {
                 color.ch_printf(ch, "Unknown field: %s\r\n", arg2);
@@ -391,7 +394,7 @@ namespace SmaugCS
             {
                 Tuple<string, string> tuple2 = arg.FirstArgument();
 
-                value = Lookup.get_aflag(tuple2.Item2);
+                value = FlagLookup.get_aflag(tuple2.Item2);
                 if (value < 0 || value >= EnumerationFunctions.MaximumEnumValue<AffectedByTypes>())
                     color.ch_printf(ch, "Unknown affect: %s\r\n", tuple2.Item2);
                 else
@@ -404,7 +407,7 @@ namespace SmaugCS
                 List<string> words = arg.ToWords();
                 foreach (string word in words)
                 {
-                    value = Lookup.get_risflag(word);
+                    value = FlagLookup.get_risflag(word);
                     if (value < 0 || value > 31)
                         color.ch_printf(ch, "Unknown flag: %s\r\n", value);
                     else
@@ -539,14 +542,14 @@ namespace SmaugCS
             if (d.ConnectionStatus != ConnectionTypes.Editing)
             {
                 color.send_to_char("You can't do that!\r\n", ch);
-                LogManager.Bug("{0}: d.ConnectionStatus != Editing", ch.Name);
+                LogManager.Instance.Bug("{0}: d.ConnectionStatus != Editing", ch.Name);
                 return;
             }
 
             if ((int)ch.SubState <= (int)CharacterSubStates.Pause)
             {
                 color.send_to_char("You can't do that!\r\n", ch);
-                LogManager.Bug("{0}: Illegal Character SubState {1}", ch.Name, ch.SubState);
+                LogManager.Instance.Bug("{0}: Illegal Character SubState {1}", ch.Name, ch.SubState);
                 d.ConnectionStatus = ConnectionTypes.Playing;
                 return;
             }
@@ -554,7 +557,7 @@ namespace SmaugCS
             if (ch.CurrentEditor == null)
             {
                 color.send_to_char("You can't do that!\r\n", ch);
-                LogManager.Bug("{0}: Null Editor", ch.Name);
+                LogManager.Instance.Bug("{0}: Null Editor", ch.Name);
                 d.ConnectionStatus = ConnectionTypes.Playing;
                 return;
             }
@@ -851,7 +854,7 @@ namespace SmaugCS
             bool created = false;
             if (area == null)
             {
-                LogManager.Log(LogTypes.Normal, ch.Level, "Creating area entry for {0}", ch.Name);
+                LogManager.Instance.Log(LogTypes.Normal, ch.Level, "Creating area entry for {0}", ch.Name);
                 area = new AreaData(db.AREAS.Count + db.BUILD_AREAS.Count + 1,
                                     string.Format("{{PROTO}} {0}'s area in progress", ch.Name))
                            {
@@ -863,7 +866,7 @@ namespace SmaugCS
                 created = true;
             }
             else
-                LogManager.Log(LogTypes.Normal, ch.Level, "Updating area entry for {0}", ch.Name);
+                LogManager.Instance.Log(LogTypes.Normal, ch.Level, "Updating area entry for {0}", ch.Name);
 
             area.LowRoomNumber = ch.PlayerData.r_range_lo;
             area.LowObjectNumber = ch.PlayerData.o_range_lo;
@@ -910,19 +913,19 @@ namespace SmaugCS
 
                 for (int i = area.LowMobNumber; i <= area.HighMobNumber; ++i)
                 {
-                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.Get(i);
+                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long,MobTemplate>>().Get(i);
                     //if (mob != null)
                     //    mob.SaveFUSS(proxy, install);
                 }
                 for (int i = area.LowObjectNumber; i <= area.HighObjectNumber; ++i)
                 {
-                    ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.Get(i);
+                    ObjectTemplate obj = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(i);
                     //if (obj != null)
                     //    obj.SaveFUSS(proxy, install);
                 }
                 for (int i = area.LowRoomNumber; i <= area.HighRoomNumber; ++i)
                 {
-                    RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(i);
+                    RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(i);
                     //if (room != null)
                     //     room.SaveFUSS(proxy, install);
                 }
@@ -964,7 +967,7 @@ namespace SmaugCS
         {
             if (actor == null || subject == null)
             {
-                LogManager.Bug("Null actor or subject.");
+                LogManager.Instance.Bug("Null actor or subject.");
                 return;
             }
 
@@ -972,7 +975,7 @@ namespace SmaugCS
             {
                 if (relation.Types == tp && relation.Actor == actor && relation.Subject == subject)
                 {
-                    LogManager.Bug("Duplicated Relation");
+                    LogManager.Instance.Bug("Duplicated Relation");
                     return;
                 }
             }
@@ -990,7 +993,7 @@ namespace SmaugCS
         {
             if (actor == null || subject == null)
             {
-                LogManager.Bug("NULL actor or subject.");
+                LogManager.Instance.Bug("NULL actor or subject.");
                 return;
             }
 

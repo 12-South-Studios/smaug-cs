@@ -163,7 +163,7 @@
     <Compile Include="Enums\VariableTypes.cs" />
     <Compile Include="Enums\WearLocations.cs" />
     <Compile Include="Enums\WhoTypes.cs" />
-    <Compile Include="Lookup.cs" />
+    <Compile Include="FlagLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

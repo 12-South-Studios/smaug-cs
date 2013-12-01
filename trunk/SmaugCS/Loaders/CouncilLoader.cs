@@ -21,9 +21,19 @@ namespace SmaugCS.Loaders
 
         public override void Save()
         {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Load()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /*public override void Save()
+        {
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
-                foreach (CouncilData council in db.COUNCILS)
+                foreach (CouncilData council in COUNCILS)
                     proxy.Write("{0}\n", council.Filename);
                 proxy.Write("$\n");
             }
@@ -40,6 +50,6 @@ namespace SmaugCS.Loaders
                     db.COUNCILS.Add(council);
                 }
             }
-        }
+        }*/
     }
 }

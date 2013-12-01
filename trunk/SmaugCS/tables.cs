@@ -8,6 +8,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Language;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -96,35 +97,8 @@ namespace SmaugCS
             return buffer;
         }
 
-        private static readonly Dictionary<string, Func<int, int, CharacterInstance, object, ReturnTypes>>
-            SpellFunctions = new Dictionary<string, Func<int, int, CharacterInstance, object, ReturnTypes>>()
-                {
-                    {"spell_smaug", Spells.Smaug.Smaug.spell_smaug}
-                };
-        private static readonly Dictionary<string, Action<CharacterInstance, string>> SkillFunctions = new Dictionary<string, Action<CharacterInstance, string>>();
 
-        public static Func<int, int, CharacterInstance, object, ReturnTypes> GetSpellFunction(string name)
-        {
-            return SpellFunctions.ContainsKey(name.ToLower())
-                       ? SpellFunctions[name.ToLower()]
-                       : SpellNotfound;
-        }
-        public static ReturnTypes SpellNotfound(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO send_to_char("That's not a spell!\r\n", ch);
-            return ReturnTypes.None;
-        }
 
-        public static Action<CharacterInstance, string> GetSkillFunction(string name)
-        {
-            return SkillFunctions.ContainsKey(name.ToLower())
-                       ? SkillFunctions[name.ToLower()]
-                       : SkillNotfound;
-        }
-        public static void SkillNotfound(CharacterInstance ch, string argument)
-        {
-            // TODO: send_to_char("Huh?\r\n", ch);
-        }
 
         #region Skills
 
@@ -374,13 +348,13 @@ namespace SmaugCS
 
         public static void save_classes()
         {
-            foreach (ClassData data in db.CLASSES)
+            foreach (ClassData data in DatabaseManager.Instance.CLASSES)
                 write_class_file((int)data.Type);
         }
 
         public static void save_races()
         {
-            foreach (RaceData data in db.RACES)
+            foreach (RaceData data in DatabaseManager.Instance.RACES)
                 write_race_file((int)data.Type);
         }
 

@@ -50,6 +50,9 @@ namespace SmaugCS.Constants.Enums
         MudProgs,
         StarMap,
         SunMap,
-        MoonMap
+        MoonMap,
+        Liquids,
+        Mixtures,
+        SpecFuns
     }
 }

@@ -16,7 +16,7 @@ namespace SmaugCS.Data.Templates
         public int TimesKilled { get; set; }
         public string Gender { get; set; }
         public int Level { get; set; }
-        public string Act { get; set; }
+        public string ActFlags { get; set; }
         public string AffectedBy { get; set; }
         public string BodyParts { get; set; }
         public DiceData HitDice { get; set; }
@@ -33,7 +33,7 @@ namespace SmaugCS.Data.Templates
         public string Speaks { get; set; }
         public string Speaking { get; set; }
         public string Position { get; set; }
-        public string DefPosition { get; set; }
+        public string DefensivePosition { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
         public string Race { get; set; }
@@ -187,7 +187,7 @@ namespace SmaugCS.Data.Templates
             proxy.Write("Race       {0}~\n", db.GetRace(Race).Name);
             proxy.Write("Class      {0}~\n", db.GetClass(Class).Name);
             proxy.Write("Position   {0}~\n", BuilderConstants.npc_position[(int)Position]);
-            proxy.Write("DefPos     {0}~\n", BuilderConstants.npc_position[(int)DefPosition]);
+            proxy.Write("DefPos     {0}~\n", BuilderConstants.npc_position[(int)DefensivePosition]);
             if (SpecialFunction != null && !SpecialFunctionName.IsNullOrEmpty())
                 proxy.Write("Specfun    {0}~\n", SpecialFunctionName);
             proxy.Write("Gender     {0}~\n", BuilderConstants.npc_sex[Gender]);

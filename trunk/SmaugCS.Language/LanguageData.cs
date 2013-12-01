@@ -30,6 +30,15 @@ namespace SmaugCS.Language
             Conversion = new List<LanguageConversionData>();
         }
 
+        public void AddPreConversion(string part1, string part2)
+        {
+            PreConversion.Add(new LanguageConversionData {OldValue = part1, NewValue = part2});
+        }
+        public void AddPostConversion(string part1, string part2)
+        {
+            Conversion.Add(new LanguageConversionData { OldValue = part1, NewValue = part2 });
+        }
+
         public string Translate(int percent, string text)
         {
             char[] chars = text.ToCharArray();

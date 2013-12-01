@@ -5,6 +5,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
 {
@@ -20,6 +21,23 @@ namespace SmaugCS.Loaders
         }
 
         public override void Save()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Load()
+        {
+            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Deity);
+            IEnumerable<string> deityList = Program.GetAppSetting("Deities").Split(new[] { ',' });
+
+            foreach (string deityName in deityList)
+            {
+                LuaManager.Instance.DoLuaScript(path + "\\" + deityName + ".lua");
+                LogManager.Instance.BootLog("Loaded Deity {0}", deityName);
+            }
+        }
+
+        /*      public override void Save()
         {
 
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
@@ -41,6 +59,6 @@ namespace SmaugCS.Loaders
                     db.DEITIES.Add(deity);
                 }
             }
-        }
+        }*/
     }
 }

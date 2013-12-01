@@ -131,7 +131,7 @@ namespace SmaugCS
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.ClanStoreroom)
                 && (container == null || container.CarriedBy == null))
             {
-                foreach (ClanData clan in db.CLANS)
+                foreach (ClanData clan in DatabaseManager.Instance.CLANS)
                 {
                     //if (clan.StoreRoom == ch.CurrentRoom.Vnum)
                     //     clan.SaveStoreroom(ch);
@@ -467,7 +467,7 @@ namespace SmaugCS
                     ItemWearWield(obj, ch, fReplace, bit);
                 else
                 {
-                    LogManager.Bug("Unknown/Unused ItemWearFlag {0} ({1}}", wearLoc, 1 << bit);
+                    LogManager.Instance.Bug("Unknown/Unused ItemWearFlag {0} ({1}}", wearLoc, 1 << bit);
                     if (fReplace)
                         color.send_to_char("You can't wear, wield, or hold that.\r\n", ch);
                 }
@@ -1056,7 +1056,7 @@ namespace SmaugCS
 
             if (fall_count > 30)
             {
-                LogManager.Bug("Object falling in loop more than 30 times");
+                LogManager.Instance.Bug("Object falling in loop more than 30 times");
                 handler.extract_obj(obj);
                 fall_count = 0;
                 return;
@@ -1076,7 +1076,7 @@ namespace SmaugCS
 
                 if (obj.InRoom == to_room)
                 {
-                    LogManager.Bug("Object falling into same room {0}", to_room.Vnum);
+                    LogManager.Instance.Bug("Object falling into same room {0}", to_room.Vnum);
                     handler.extract_obj(obj);
                     return;
                 }

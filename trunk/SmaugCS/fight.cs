@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
@@ -111,7 +112,7 @@ namespace SmaugCS
         {
             Pulse = (Pulse + 1) % 100;
 
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values
+            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                 .Where(ch => !ch.CharDied()))
             {
                 //// Experience gained during battle decreases as the battle drags on
@@ -181,7 +182,7 @@ namespace SmaugCS
                 retCode = ReturnTypes.None;
                 if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe))
                 {
-                    LogManager.Log("{0} fighting {1} in a SAFE room.", ch.Name, victim.Name);
+                    LogManager.Instance.Log("{0} fighting {1} in a SAFE room.", ch.Name, victim.Name);
                     stop_fighting(ch, true);
                 }
                 else if (ch.IsAwake() && ch.CurrentRoom == victim.CurrentRoom)
@@ -500,8 +501,8 @@ namespace SmaugCS
             }
             else
             {
-                thac0_00 = db.GetClass(ch.CurrentClass).ToHitArmorClass0;
-                thac0_32 = db.GetClass(ch.CurrentClass).ToHitArmorClass32;
+                thac0_00 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass0;
+                thac0_32 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
             }
             thac0_00 = ch.Level.Interpolate(thac0_00, thac0_32) - ch.GetHitroll();
             int victimArmorClass = -19.GetHighestOfTwoNumbers(victim.GetArmorClass() / 10);
@@ -1057,7 +1058,7 @@ namespace SmaugCS
             {
                 if (ch.Master == null)
                 {
-                    LogManager.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+                    LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
                     // TODO: affect_strip
                     ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                     return;
@@ -1156,7 +1157,7 @@ namespace SmaugCS
             {
                 if (ch.Master == null)
                 {
-                    LogManager.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+                    LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
                     // TODO affect_strip
                     ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                     return;
@@ -1221,7 +1222,7 @@ namespace SmaugCS
         {
             if (ch.CurrentFighting != null)
             {
-                LogManager.Bug("{0} -> {1} is already fighting {2}", ch.Name, victim.Name, ch.CurrentFighting.Who.Name);
+                LogManager.Instance.Bug("{0} -> {1} is already fighting {2}", ch.Name, victim.Name, ch.CurrentFighting.Who.Name);
                 return;
             }
 
@@ -1316,7 +1317,7 @@ namespace SmaugCS
             if (!both)
                 return;
 
-            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.Values.Where(fch => who_fighting(fch) == ch))
+            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(fch => who_fighting(fch) == ch))
             {
                 free_fight(fch);
                 update_pos(fch);
@@ -1370,10 +1371,10 @@ namespace SmaugCS
 
             if (vnum > 0)
             {
-                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum);
+                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum);
                 if (template == null)
                 {
-                    LogManager.Bug("Invalid vnum");
+                    LogManager.Instance.Bug("Invalid vnum");
                     return;
                 }
 
@@ -1406,7 +1407,7 @@ namespace SmaugCS
         {
             if (victim.IsNotAuthorized())
             {
-                LogManager.Bug("Killing unauthorized");
+                LogManager.Instance.Bug("Killing unauthorized");
                 return null;
             }
 

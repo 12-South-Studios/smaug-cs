@@ -265,7 +265,7 @@ namespace SmaugCS
             {
                 if (d.PageSize > Program.MAX_STRING_LENGTH * 16)
                 {
-                    LogManager.Bug("Pager overflow. Ignoring.\r\n");
+                    LogManager.Instance.Bug("Pager overflow. Ignoring.\r\n");
                     d.PageTop = 0;
                     d.PagePoint = string.Empty;
                     d.PageBuffer = string.Empty;

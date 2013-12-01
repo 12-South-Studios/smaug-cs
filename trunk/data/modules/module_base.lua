@@ -5,6 +5,20 @@
 f = loadfile(LDataPath() .. "\\modules\\types.lua")();
 
 
+-- Does the table contain the value
+function SetContains(set, key)
+    return set[key] ~= nil
+end
+
+function table.contains(table, element)
+  for _, value in pairs(table) do
+    if value == element then
+      return true
+    end
+  end
+  return false
+end
+
 --==================================================================
  --FUNCTION: EXECUTE()
  --PARAM:    script / string
