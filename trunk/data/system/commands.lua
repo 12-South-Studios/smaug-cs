@@ -9,74 +9,52 @@ function LoadCommands()
 	LCreateCommand("'~", "do_say", 106, 0, 0, 0);
 	LCreateCommand(",~", "do_emote", 106, 0, 0, 0);
 	LCreateCommand(".~", "do_chat", 104, 0, 0, 1);
-	LCreateCommand(":~", "do_immtalk", 100, 51, 0, 1);
-	LCreateCommand(":~", "do_avtalk", 100, 50, 0, 1);
 	LCreateCommand(";~", "do_gtell", 100, 0, 0, 0);
-	LCreateCommand("authorize", "do_authorize", 100, 51, 1, 0);
-	LCreateCommand("at", "do_at", 100, 52, 0, 0);
 	LCreateCommand("affected", "do_affected", 104, 0, 0, 0);
 	LCreateCommand("afk", "do_afk", 104, 0, 0, 0);
 	LCreateCommand("ansi", "do_ansi", 100, 0, 0, 0);
 	LCreateCommand("answer", "do_answer", 104, 0, 0, 1);
-	LCreateCommand("aassign", "do_aassign", 100, 53, 1, 0);
-	LCreateCommand("advance", "do_advance", 100, 61, 1, 0);
-	LCreateCommand("allow", "do_allow", 100, 58, 1, 0);
 	LCreateCommand("appraise", "do_appraise", 106, 0, 0, 0);
 	LCreateCommand("areas", "do_areas", 100, 0, 0, 0);
-	LCreateCommand("aset", "do_aset", 100, 59, 1, 0);
 	LCreateCommand("ask", "do_ask", 104, 0, 0, 1);
-	LCreateCommand("astat", "do_astat", 100, 59, 0, 0);
-	LCreateCommand("avtalk", "do_avtalk", 100, 51, 0, 1);
 	LCreateCommand("apply", "do_apply", 100, 1, 0, 0);
 	LCreateCommand("atobj", "do_atobj", 100, 52, 0, 0);
-	LCreateCommand("alinks", "do_alinks", 100, 51, 0, 0);
 	LCreateCommand("buy", "do_buy", 106, 0, 0, 0);
 	LCreateCommand("brandish", "do_brandish", 108, 0, 0, 0);
 	LCreateCommand("bs", "do_backstab", 112, 0, 0, 0);
+	LCreateCommand("bio", "do_bio", 100, 1, 0, 0);
+	LCreateCommand("bug", "do_bug", 100, 0, 0, 0);
+	
+end
+
+function LoadAdminCommands()
+	LCreateCommand(":~", "do_immtalk", 100, 51, 0, 1);
+	LCreateCommand(":~", "do_avtalk", 100, 50, 0, 1);
+	LCreateCommand("authorize", "do_authorize", 100, 51, 1, 0);
+	LCreateCommand("at", "do_at", 100, 52, 0, 0);	
+	LCreateCommand("aassign", "do_aassign", 100, 53, 1, 0);
+	LCreateCommand("advance", "do_advance", 100, 61, 1, 0);
+	LCreateCommand("allow", "do_allow", 100, 58, 1, 0);
+	LCreateCommand("aset", "do_aset", 100, 59, 1, 0);
+	LCreateCommand("astat", "do_astat", 100, 59, 0, 0);
+	LCreateCommand("avtalk", "do_avtalk", 100, 51, 0, 1);
+	LCreateCommand("alinks", "do_alinks", 100, 51, 0, 0);	
 	LCreateCommand("balzhur", "do_balzhur", 108, 59, 1, 4);
 	LCreateCommand("bamfin", "do_bamfin", 100, 51, 0, 0);
 	LCreateCommand("bamfout", "do_bamfout", 100, 51, 0, 0);
 	LCreateCommand("ban", "do_ban", 100, 58, 1, 0);
 	LCreateCommand("bestow", "do_bestow", 100, 62, 1, 0);
-	LCreateCommand("bio", "do_bio", 100, 1, 0, 0);
 	LCreateCommand("bodybag", "do_bodybag", 100, 51, 1, 0);
+	LCreateCommand("boards", "do_boards", 100, 58, 0, 0);
+	LCreateCommand("bset", "do_bset", 100, 61, 1, 0);
+	LCreateCommand("bstat", "do_bstat", 100, 58, 0, 0);
+	
 end
 
 LoadCommands();
+LoadAdminCommands();
 
 --[[
-#COMMAND
-Name        boards~
-Code        do_boards
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
-Name        bset~
-Code        do_bset
-Position    100
-Level       61
-Log         1
-End
-
-#COMMAND
-Name        bstat~
-Code        do_bstat
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
-Name        bug~
-Code        do_bug
-Position    100
-Level       0
-Log         0
-End
-
 #COMMAND
 Name        bury~
 Code        do_bury

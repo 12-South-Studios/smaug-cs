@@ -5,19 +5,19 @@
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
-function LoadSkills()
+function LoadSpells()
 	skill = CreateSkill("reserved", "spell", 112, 95, 51);
 	skill.WearOffMessage = "???";
-	LSetCode(skill, "spell_null");
+	skill.SpellFunctionName = "spell_null";
 	
 	skill = CreateSkill("venomshield", "unknown", 0, 0, 51);
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	
 	skill = CreateSkill("wrath of dominus", "spell", 109, 246, 51);
 	skill:SetFlags("secretskill noscribe");
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 10;
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("10", 13, "-75", -1));
 	skill:AddAffect(CreateSmaugAffect("10", 31, "-3", -1));	
 	
@@ -25,14 +25,43 @@ function LoadSkills()
 	skill.MinimumMana = 60;
 	skill.Rounds = 12;
 	skill.WearOffMessage = "!Astral Walk!";
-	LSetCode(skill, "spell_astral_walk");
-	
-	LoadBuffSpells();
-	LoadAcidSpells();
-	LoadDeathSpells();
-end
+	skill.SpellFunctionName = "spell_astral_walk";
 
-function LoadBuffSpells()
+	skill = CreateSkill("acetum primus", "spell", 105, 302, 37);
+	skill.Info = 909;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 15;
+	skill.Rounds = 8;
+	skill.DamageMessage = "Acetum Primus";
+	skill.WearOffMessage = "!WEAROFF!";
+	skill.SpellFunctionName = "spell_acetum_primus";
+	
+	skill = CreateSkill("acid blast", "spell", 109, 70, 20);
+	skill.Info = 5;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 20;
+	skill.Rounds = 12;
+	skill.DamageMessage = "Acid Blast";
+	skill.WearOffMessage = "!Acid Blast!";
+	skill.SpellFunctionName = "spell_acid_blast";
+	
+	skill = CreateSkill("acid breath", "spell", 109, 200, 43);
+	skill.Info = 2053;
+	skill:SetFlags("stoponfail");
+	skill:SetTargetByValue(1);
+	skill:SetSaveVsByValue(5);
+	skill.MinimumMana = 20;
+	skill.Rounds = 4;
+	skill.DamageMessage = "Blast of Acid";
+	skill.WearOffMessage = "!Acid Breath!";
+	skill.SpellFunctionName = "spell_acid_breath";
+	
+	skill = CreateSkill("acidmist", "spell", 0, 256, 51);
+	skill.Info = 397;
+	skill:SetTargetByValue(1);
+	skill.Rounds = 20;
+	skill.SpellFunctionName = "spell_smaug";
+	
 	skill = CreateSkill("alertness", "spell", 111, 102, 23);
 	skill:SetTargetByValue(3);
 	skill.MinimumMana = 60;
@@ -40,7 +69,7 @@ function LoadBuffSpells()
 	skill.WearOffMessage = "You are suddenly less alert.";
 	skill.HitVictimMessage = "You suddenly feel alert.";
 	skill.HitRoomMessage = "$N's eyes dart about the room in an alert manner.";
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*15", 27, "1024", -1));
 
 	skill = CreateSkill("antimagic shell", "spell", 111, 224, 17);
@@ -50,7 +79,7 @@ function LoadBuffSpells()
 	skill.WearOffMessage = "The shimmering shell and its protection from magic fade away.";
 	skill.HitVictimMessage = "A shimmering translucent shell forms about you.";
 	skill.HitRoomMessage = "A shimmering translucent shell forms about $N.";
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*23", 27, "1048576", -1));
 	
 	skill = CreateSkill("aqua breath", "spell", 112, 236, 14);
@@ -62,7 +91,7 @@ function LoadBuffSpells()
 	skill.HitCharacterMessage = "$N's lungs take on the ability to breathe water...";
 	skill.HitVictimMessage = "Your lungs take on the ability to breathe water...";
 	skill.HitRoomMessage = "$N's lungs take on the ability to breathe water...";
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*23", 26, "aqua breath", 31));
 	
 	skill = CreateSkill("armor", "spell", 111, 1, 1);
@@ -73,7 +102,7 @@ function LoadBuffSpells()
 	skill.HitCharacterMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
 	skill.HitVictimMessage = "Your armor begins to glow softly as it is enhanced by a cantrip.";
 	skill.HitRoomMessage = "$N's armor begins to glow softly as it is enhanced by a cantrip.";
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*10", 17, "-20", -1));
 	
 	skill = CreateSkill("benediction", "spell", 110, 95, 19);
@@ -86,7 +115,7 @@ function LoadBuffSpells()
 	skill.HitCharacterMessage = "You lay The Protection of The High Gods upon $N.";
 	skill.HitVictimMessage = "The Protection of The High Gods is temporarily given to you.";
 	skill.HitRoomMessage = "The Protection of The High Gods is temporarily given to $N.";
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l", 26, "protection", 13));
 	
 	skill = CreateSkill("benefic aura", "spell", 111, 342, 30);
@@ -96,7 +125,7 @@ function LoadBuffSpells()
 	skill.WearOffMessage = "Your protection from evil slowly unravels.";
 	skill.HitVictimMessage = "A faint glow rises about you as you are instilled with a ward against evil.";
 	skill.HitRoomMessage = "A faint glow rises protectively about $N.";
-	LSetCode(skill, "spell_smaug");
+	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*7", 26, "protect", 13));
 	skill:AddComponent(CreateSpellComponent("V", "65", "@"));
 	
@@ -104,324 +133,155 @@ function LoadBuffSpells()
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 30;
 	skill.Rounds = 12;
-	LSetCode(skill, "spell_bethsaidean_touch");
+	skill.SpellFunctionName = "spell_bethsaidean_touch";
 	
-end
-
-function LoadAcidSpells()
-	skill = CreateSkill("acetum primus", "spell", 105, 302, 37);
-	skill.Info = 909;
-	skill:SetTargetByValue(1);
-	skill.MinimumMana = 15;
-	skill.Rounds = 8;
-	skill.DamageMessage = "Acetum Primus";
-	skill.WearOffMessage = "!WEAROFF!";
-	LSetCode(skill, "spell_acetum_primus");
-	
-	skill = CreateSkill("acid blast", "spell", 109, 70, 20);
-	skill.Info = 5;
-	skill:SetTargetByValue(1);
-	skill.MinimumMana = 20;
+	skill = CreateSkill("bless", "spell", 109, 3, 5);
+	skill:SetTargetByValue(2);
+	skill.MinimumMana = 5;
 	skill.Rounds = 12;
-	skill.DamageMessage = "Acid Blast";
-	skill.WearOffMessage = "!Acid Blast!";
-	LSetCode(skill, "spell_acid_blast");
+	skill.WearOffMessage = "The blessing fades away.";
+	skill.HitCharacterMessage = "You lay the blessing of your god upon $N.";
+	skill.HitVictimMessage = "A powerful blessing is laid upon you.";
+	skill.HitRoomMessage = "$N beams as a powerful blessing is laid upon $M.";
+	skill.SpellFunctionName = "spell_smaug";
+	skill:AddAffect(CreateSmaugAffect("", 60, "95", -1));
+	skill:AddAffect(CreateSmaugAffect("1*23", 24, "-(1/8)", -1));
+	skill:AddAffect(CreateSmaugAffect("1*23", 18, "1/8", -1));
 	
-	skill = CreateSkill("acid breath", "spell", 109, 200, 43);
-	skill.Info = 2053;
-	skill:SetFlags("stoponfail");
+	skill = CreateSkill("blindness", "spell", 105, 4, 5);
 	skill:SetTargetByValue(1);
-	skill:SetSaveVsByValue(5);
-	skill.MinimumMana = 20;
-	skill.Rounds = 4;
-	skill.DamageMessage = "Blast of Acid";
-	skill.WearOffMessage = "!Acid Breath!";
-	LSetCode(skill, "spell_acid_breath");
+	skill.MinimumMana = 5;
+	skill.Rounds = 12;
+	skill.SpellFunctionName = "spell_blindness";
+	skill.WearOffMessage = "You can see again.";
 	
-	skill = CreateSkill("acidmist", "spell", 0, 256, 51);
-	skill.Info = 397;
-	skill:SetTargetByValue(1);
-	skill.Rounds = 20;
-	LSetCode(skill, "spell_smaug");
-end
-
-function LoadDeathSpells()
 	skill = CreateSkill("animate dead", "spell", 110, 231, 23);
 	skill.MinimumMana = 220;
 	skill.Rounds = 12;
 	skill.WearOffMessage = "!Animate Dead!";
-	LSetCode(skill, "spell_animate_dead");
-end
+	skill.SpellFunctionName = "spell_animate_dead";
+	
+	skill = CreateSkill("black breath", "spell", 109, 403, 51);
+	skill.Info = 2440.
+	skill.Saves = 5;
+	skill.DamageMessage = "black breath";
+	skill.SpellFunctionName = "spell_smaug";
+	skill:SetFlags("area");
+	skill:AddAffect(CreateSmaugAffect("5", 26, "blind", 0));
+	
+	skill = CreateSkill("black fist", "spell", 109, 310, 23);
+	skill.Info = 911;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 15;
+	skill.Rounds = 8;
+	skill.SpellFunctionName = "spell_black_fist";
+	skill.DamageMessage = "Black Fist";
+	skill.WearOffMessage = "!WEAROFF!";
+	
+	skill = CreateSkill("black hand", "spell", 109, 301, 2);
+	skill.Info = 9;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 8;
+	skill.Rounds = 8;
+	skill.SpellFunctionName = "spell_black_hand";
+	skill.DamageMessage = "Black Hand";
+	skill.WearOffMessage = "!WEAROFF!";
+	skill:AddTeacher(10340);
+	
+	skill = CreateSkill("black lightning", "spell", 109, 303, 46);
+	skill.Info = 908;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 15;
+	skill.Rounds = 8;
+	skill.SpellFunctionName = "spell_black_lightning";
+	skill.DamageMessage = "Black Lightning";
+	skill.WearOffMessage = "!WEAROFF!";
 
-function CreateSkill(name, skillType, minPosition, slot, minLevel)
-	newSkill = LCreateSkill(name, skillType);
-	skill.this = newSkill;
-	skill.this.MinimumPosition = minPosition;
-	skill.this.Slot = slot;
-	skill.this.MinimumLevel = minLevel;
-	return skill.this;
-end
+	skill = CreateSkill("blasphemy", "spell", 110, 94, 30);
+	skill.Info = 1928;
+	skill.Flags = 38912;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 80;
+	skill.Rounds = 8;
+	skill.SpellFunctionName = "spell_smaug";
+	skill.DamageMessage = "blasphemy";
+	skill.WearOffMessage = "You are no longer afflicted by the curse of the Nephandi!";
+	skill.HitCharacterMessage = "You utter a curse against the Gods and bring their wrath upon $N!";
+	skill.HitVictimMessage = "$n has BLASPHEMED you!";
+	skill.HitRoomMessage = "$n utters Edaj and infuriates the Gods!";
+	skill.Dice = "50d1";
+	skill:AddComponent(CreateSpellComponent("V", "482", "+"));
+	skill:AddAffect(CreateSmaugAffect("", 60, "17", -1));
+	skill:AddAffect(CreateSmaugAffect("l*10", 31, "-3", -1));
+	skill.AddAffect(CreateSmaugAffect("l*3", 26, "curse", -1));
+	
+	skill = CreateSkill("call lightning", "spell", 109, 6, 12);
+	skill.Info = 3;
+	skill.Flags = 6144;
+	skill.MinimumMana = 15;
+	skill.Rounds = 12;
+	skill.SpellFunctionName = "spell_call_lightning";
+	skill.DamageMessage = "lightning bolt";
+	skill.WearOffMessage = "!Call Lightning!";
+	
+	skill = CreateSkill("blazebane", "spell", 110, 216, 30);
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 70;
+	skill.Rounds = 15;
+	skill.SpellFunctionName = "spell_smaug";
+	skill.WearOffMessage = "Your flesh grows less susceptible to fire.";
+	skill.HitCharacterMessage = "You place a fear of flames in $N's mind...";
+	skill.HitVictimMessage = "Your flesh grows more susceptible to fire.";
+	skill.HitRoomMessage = "$N begins to mutter about a fear of flames...";
+	skill.ImmortalCharacterMessage = "Mysteriously, $N was not affected by your spell.";
+	skill:AddAffect(CreateSmaugAffect("l*23", 29, "1", -1));
 
-function CreateSmaugAffect(duration, location, modifier, flags)
-	newAffect = LCreateSmaugAffect(duration, location, modifier, flags);
-	affect.this = newAffect;
-	return affect.this;
-end
-
-function CreateSpellComponent(requiredType, dataValue, operatorType)
-	newComponent = LCreateSpellComponent(requiredType, dataValue, operatorType);
-	component.this = newComponent;
-	return component.this;
-end
-
-LoadSkills();
-
+	skill = CreateSkill("blazeward", "spell", 112, 215, 27);
+	skill:SetTargetByValue(3);
+	skill.MinimumMana = 70;
+	skill.Rounds = 15;
+	skill.SpellFunctionName = "spell_smaug";
+	skill.WearOffMessage = "The ward of flames ceases to protect you.";
+	skill.HitCharacterMessage = "A yellow glow surrounds you, protecting you from intense heat.";
+	skill.HitVictimMessage = "$N begins to radiate a yellow light which repels intense heat.";
+	skill:AddAffect(CreateSmaugAffect("l*23", 27, "1", -1));
+	
+	skill = CreateSkill("burning hands", "spell", 109, 5, 5);
+	skill:SetTargetByValue(1);
+	skill.info = 1;
+	skill.MinimumMana = 15;
+	skill.Rounds = 12;
+	skill.SpellFunctionName = "spell_burning_hands";
+	skill.DamageMessage = "burning hand";
+	skill.WearOffMessage = "!Burning Hands!";
+	
+	skill = CreateSkill("cause critical", "spell", 109, 63, 9);
+	skill.Info = 4;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 20;
+	skill.Rounds = 12;
+	skill.SpellFunctionName = "spell_cause_critical";
+	skill.DamageMessage = "spell";
+	skill.WearOffMessage = "!Cause Critical!";
+	
+	skill = CreateSkill("cause light", "spell", 110, 62, 1);
+	skill.Info = 4;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 15;
+	skill.Rounds = 12;
+	skill.SpellFunctionName = "spell_cause_light";
+	skill.DamageMessage = "spell";
+	skill.WearOffMessage = "!Cause Light!";
+	
+	skill = CreateSkill("cause serious", "spell", 107, 64, 5);
+	skill.Info = 4;
+	skill:SetTargetByValue(1);
+	skill.MinimumMana = 17;
+	skill.Rounds = 12;
+	skill.SpellFunctionName = "spell_cause_serious";
+	skill.DamageMessage = "spell";
+	skill.WearOffMessage = "!Cause Serious!";
 --[[
-#SKILL
-Name         black breath~
-Type         Spell
-Info         2440
-Flags        16
-Minpos       109
-Saves        5
-Slot         403
-Code         spell_smaug
-Dammsg       black breath~
-Affect       '5' 26 'blind' 0
-Minlevel     51
-End
-
-#SKILL
-Name         black fist~
-Type         Spell
-Info         911
-Flags        0
-Target       1
-Minpos       109
-Slot         310
-Mana         15
-Rounds       8
-Code         spell_black_fist
-Dammsg       Black Fist~
-Wearoff      !WEAROFF!~
-Minlevel     23
-End
-
-#SKILL
-Name         black hand~
-Type         Spell
-Info         9
-Flags        0
-Target       1
-Minpos       109
-Slot         301
-Mana         8
-Rounds       8
-Code         spell_black_hand
-Dammsg       Black Hand~
-Wearoff      !WEAROFF!~
-Teachers     10340~
-Minlevel     2
-End
-
-#SKILL
-Name         black lightning~
-Type         Spell
-Info         908
-Flags        0
-Target       1
-Minpos       109
-Slot         303
-Mana         15
-Rounds       8
-Code         spell_black_lightning
-Dammsg       Black Lightning~
-Wearoff      !WEAROFF!~
-Minlevel     46
-End
-
-#SKILL
-Name         blasphemy~
-Type         Spell
-Info         1928
-Flags        38912
-Target       1
-Minpos       110
-Slot         94
-Mana         80
-Rounds       8
-Code         spell_smaug
-Dammsg       blasphemy~
-Wearoff      You are no longer afflicted by the curse of the Nephandi!~
-Hitchar      You utter a curse against the Gods and bring their wrath upon
-$N!~
-Hitvict      $n has BLASPHEMED you!~
-Hitroom      $n utters Edaj and infuriates the Gods!~
-Dice         50d1~
-Components   v+482~
-Affect       '' 60 '17' -1
-Affect       'l*10' 31 '-3' -1
-Affect       'l*3' 26 'curse' -1
-Minlevel     30
-End
-
-#SKILL
-Name         blazebane~
-Type         Spell
-Info         0
-Flags        0
-Target       1
-Minpos       110
-Slot         216
-Mana         70
-Rounds       15
-Code         spell_smaug
-Dammsg       ~
-Wearoff      Your flesh grows less susceptible to fire.~
-Hitchar      You place a fear of flames in $N's mind...~
-Hitvict      Your flesh grows more susceptible to fire.~
-Hitroom      $N begins to mutter about a fear of flames...~
-Immchar      Mysteriously, $N was not affected by your spell.~
-Affect       'l*23' 29 '1' -1
-Minlevel     30
-End
-
-#SKILL
-Name         blazeward~
-Type         Spell
-Info         0
-Flags        0
-Target       3
-Minpos       112
-Slot         215
-Mana         70
-Rounds       15
-Code         spell_smaug
-Dammsg       ~
-Wearoff      The ward of flames ceases to protect you.~
-Hitvict      A yellow glow surrounds you, protecting you from intense heat.~
-Hitroom      $N begins to radiate a yellow light which repels intense heat.~
-Affect       'l*23' 27 '1' -1
-Minlevel     27
-End
-
-#SKILL
-Name         bless~
-Type         Spell
-Info         0
-Flags        0
-Target       2
-Minpos       109
-Slot         3
-Mana         5
-Rounds       12
-Code         spell_smaug
-Dammsg       ~
-Wearoff      The blessing fades away.~
-Hitchar      You lay the blessing of your god upon $N.~
-Hitvict      A powerful blessing is laid upon you.~
-Hitroom      $N beams as a powerful blessing is laid upon $M.~
-Affect       '' 60 '95' -1
-Affect       'l*23' 24 '-(l/8)' -1
-Affect       'l*23' 18 'l/8' -1
-Minlevel     5
-End
-
-#SKILL
-Name         blindness~
-Type         Spell
-Info         0
-Flags        0
-Target       1
-Minpos       105
-Slot         4
-Mana         5
-Rounds       12
-Code         spell_blindness
-Dammsg       ~
-Wearoff      You can see again.~
-Minlevel     5
-End
-
-#SKILL
-Name         burning hands~
-Type         Spell
-Info         1
-Flags        0
-Target       1
-Minpos       109
-Slot         5
-Mana         15
-Rounds       12
-Code         spell_burning_hands
-Dammsg       burning hand~
-Wearoff      !Burning Hands!~
-Minlevel     5
-End
-
-#SKILL
-Name         call lightning~
-Type         Spell
-Info         3
-Flags        6144
-Minpos       109
-Slot         6
-Mana         15
-Rounds       12
-Code         spell_call_lightning
-Dammsg       lightning bolt~
-Wearoff      !Call Lightning!~
-Minlevel     12
-End
-
-#SKILL
-Name         cause critical~
-Type         Spell
-Info         4
-Flags        0
-Target       1
-Minpos       109
-Slot         63
-Mana         20
-Rounds       12
-Code         spell_cause_critical
-Dammsg       spell~
-Wearoff      !Cause Critical!~
-Minlevel     9
-End
-
-#SKILL
-Name         cause light~
-Type         Spell
-Info         4
-Flags        0
-Target       1
-Minpos       110
-Slot         62
-Mana         15
-Rounds       12
-Code         spell_cause_light
-Dammsg       spell~
-Wearoff      !Cause Light!~
-Minlevel     1
-End
-
-#SKILL
-Name         cause serious~
-Type         Spell
-Info         4
-Flags        0
-Target       1
-Minpos       107
-Slot         64
-Mana         17
-Rounds       12
-Code         spell_cause_serious
-Dammsg       spell~
-Wearoff      !Cause Serious!~
-Minlevel     5
-End
-
 #SKILL
 Name         caustic fount~
 Type         Spell
@@ -3586,90 +3446,48 @@ Affect       '50' 1012 'l/2' -1
 Affect       '' 60 '400' -1
 Minlevel     45
 End
+--]]
+end
 
-#SKILL
-Name         aggressive style~
-Type         Skill
-Info         0
-Flags        0
-Minpos       107
-Rounds       4
-Code         spell_null
-Dammsg       ~
-Wearoff      !aggressive style!~
-Teachers     10340 3004~
-Minlevel     1
-End
-
-#SKILL
-Name         aid~
-Type         Skill
-Info         0
-Flags        0
-Minpos       107
-Rounds       12
-Code         do_aid
-Dammsg       ~
-Wearoff      !Aid!~
-Minlevel     4
-End
-
-#SKILL
-Name         backstab~
-Type         Skill
-Info         0
-Flags        0
-Minpos       112
-Rounds       12
-Code         do_backstab
-Dammsg       backstab~
-Wearoff      !Backstab!~
-Minlevel     1
-End
-
-#SKILL
-Name         bash~
-Type         Skill
-Info         0
-Flags        0
-Target       1
-Minpos       105
-Rounds       26
-Code         do_bash
-Dammsg       bash~
-Wearoff      !Bash!~
-Minlevel     12
-End
-
-#SKILL
-Name         berserk~
-Type         Skill
-Info         0
-Flags        0
-Target       1
-Minpos       111
-Rounds       4
-Code         do_berserk
-Dammsg       ~
-Wearoff      You regain your composure...~
-Teachers     1~
-Minlevel     51
-End
-
-#SKILL
-Name         berserk style~
-Type         Skill
-Info         0
-Flags        0
-Minpos       110
-Rounds       4
-Code         spell_null
-Dammsg       ~
-Wearoff      !berserk style!~
-Teachers     10340 3004~
-Minlevel     5
-End
-
+function LoadSkills()
+	skill = CreateSkill("aggressive style", "skill", 107, 0, 1);
+	skill.Rounds = 4;
+	skill.WearOffMessage = "!aggressive style!";
+	skill:AddTeacher(10340);
+	skill:AddTeacher(3004);
+	
+	skill = CreateSkill("aid", "skill", 107, 0, 4);
+	skill.Rounds = 12;
+	skill.SkillFunctionName = "do_aid";
+	skill.WearOffMessage = "!Aid!";
+	
+	skill = CreateSkill("backstab", "skill", 112, 0, 1);
+	skill.Rounds = 12;
+	skill.SkillFunctionName = "do_backstab";
+	skill.DamageMessage = "backstab";
+	skill.WearOffMessage = "!Backstab!";
+	
+	skill = CreateSkill("bash", "skill", 105, 0, 12);
+	skill:SetTargetByValue(1);
+	skill.rounds = 26;
+	skill.SkillFunctionName = "do_bash";
+	skill.DamageMessage = "bash";
+	skill.WearOffMessage = "!Bash!";
+	
+	skill = CreateSkill("berserk", "skill", 111, 0, 51);
+	skill:SetTargetByValue(1);
+	skill.Rounds = 4;
+	skill.SkillFunctionName = "do_berserk";
+	skill.WearOffMessage = "You regain your composure...";
+	skill:AddTeacher(1);
+	
+	skill = CreateSkill("berserk style", "skill", 110, 0, 5);
+	skill.Rounds = 4;
+	skill.WearOffMessage = "!berserk style!";
+	skill:AddTeacher(10340);
+	skill:AddTeacher(3004);
+	
+--[[
 #SKILL
 Name         bite~
 Type         Skill
@@ -4877,189 +4695,59 @@ Affect       '12' 24 'l/18' -1
 Affect       '12' 31 '-1' -1
 Minlevel     13
 End
-
-#SKILL
-Name         bludgeons~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Wearoff      !Bludgeons!~
-Minlevel     1
-End
-
-#SKILL
-Name         flexible arms~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         long blades~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         missile weapons~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     20
-End
-
-#SKILL
-Name         pugilism~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         short blades~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         talonous arms~
-Type         Weapon
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         common~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         dwarven~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         elvish~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         gith~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         gnomish~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         goblin~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         halfling~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         ogre~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         orcish~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         pixie~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#SKILL
-Name         trollese~
-Type         Tongue
-Info         0
-Flags        0
-Code         spell_null
-Dammsg       ~
-Minlevel     1
-End
-
-#END
 --]]
+end
+
+function LoadWeapons()
+	skill = CreateSkill("bludgeons", "weapon", 0, 0, 1);
+	skill.WearOffMessage = "!Bludgeons!";
+	
+	CreateSkill("flexible arms", "weapon", 0, 0, 1);
+	CreateSkill("long blades", "weapon", 0, 0, 1);
+	CreateSkill("missile weapons", "weapon", 0, 0, 20);
+	CreateSkill("pugilism", "weapon", 0, 0, 1);
+	CreateSkill("short blades", "weapon", 0, 0, 1);
+	CreateSkill("talonous arms", "weapon", 0, 0, 1);
+end
+
+function LoadTongues()
+	CreateSkill("common", "tongue", 0, 0, 1);
+	CreateSkill("dwarven", "tongue", 0, 0, 1);
+	CreateSkill("elvish", "tongue", 0, 0, 1);
+	CreateSkill("gith", "tongue", 0, 0, 1);
+	CreateSkill("gnomish", "tongue", 0, 0, 1);
+	CreateSkill("goblin", "tongue", 0, 0, 1);
+	CreateSkill("halfling", "tongue", 0, 0, 1);
+	CreateSkill("ogre", "tongue", 0, 0, 1);
+	CreateSkill("orcish", "tongue", 0, 0, 1);
+	CreateSkill("pixie", "tongue", 0, 0, 1);
+	CreateSkill("trollese", "tongue", 0, 0, 1);
+end
+
+function CreateSkill(name, skillType, minPosition, slot, minLevel)
+	newSkill = LCreateSkill(name, skillType);
+	skill.this = newSkill;
+	skill.this.MinimumPosition = minPosition;
+	skill.this.Slot = slot;
+	skill.this.MinimumLevel = minLevel;
+	return skill.this;
+end
+
+function CreateSmaugAffect(duration, location, modifier, flags)
+	newAffect = LCreateSmaugAffect(duration, location, modifier, flags);
+	affect.this = newAffect;
+	return affect.this;
+end
+
+function CreateSpellComponent(requiredType, dataValue, operatorType)
+	newComponent = LCreateSpellComponent(requiredType, dataValue, operatorType);
+	component.this = newComponent;
+	return component.this;
+end
+
+LoadSpells();
+LoadSkills();
+LoadWeapons();
+LoadTongues();
 
 -- EOF
