@@ -826,259 +826,151 @@ function Objects()
 	object:SetValues(16, 0, 0, 0, 0, 0);
 	object:SetStats(2, 0, 0, 0, 0);
 	
+	object = CreateObject(14, "arm", "cook");
+	object.ShortDescription = "the mangled arm of %s";
+	object.LongDescription = "A writhing arm lies torn from the body of %s.";
+	object.Action = "%s chomp$q on $p.";
+	object:SetValues(30, 0, 0, 0, 0, 0);
+	object:SetStats(5, 0, 0, 0, 0);
+	
+	object = CreateObject(15, "leg", "cook");
+	object.ShortDescription = "the dismembered leg of %s";
+	object.LongDescription = "Still twitching as if to kick you, the leg of %s lies here.";
+	object.Action = "%s chomp$q on $p.";
+	object:SetValues(40, 0, 0, 0, 0, 0);
+	object:SetStats(5, 0, 0, 0, 0);
+	
+	object = CreateObject(16, "guts", "cook");
+	object.ShortDescription = "the spilled guts of %s";
+	object.LongDescription = "The disemboweled guts of %s swarm with maggots.";
+	object:SetValues(5, 0, 0, 1, 0, 0);
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(17, "blood", "blood");
+	object.ShortDescription = "the spilled blood";
+	object.LongDescription = "A pool of spilled blood is here.";
+	object:SetValues(5, 0, 0, 1, 0, 0);
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(18, "bloodstain", "bloodstain");
+	object.ShortDescription = "the bloodstain";
+	object.LongDescription = "Blood stains the ground.";
+	object:SetValues(5, 0, 0, 1, 0, 0);
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(19, "scraps remnants", "scraps");
+	object.ShortDescription = "the remnants of %s";
+	object.LongDescription = "The remnants of %s are strewn about.";
+	object:SetValues(5, 0, 0, 1, 0, 0);
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(20, "magic mushroom", "food");
+	object.ShortDescription = "a magic mushroom";
+	object.LongDescription = "A magic mushroom appears to have been left here.";
+	object.Action = "%s enjoy$q $p.";
+	object:SetValues(5, 0, 0, 0, 0, 0);
+	object:SetStats(1, 10, 1, 0, 0);
+	
+	object = CreateObject(21, "ball light", "light");
+	object.ShortDescription = "a ball of light";
+	object.LongDescription = "A ball of light.";
+	object.Flags = "glow magic";
+	object:SetValues(0, 0, -1, 0, 0, 0);
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(22, "mystical spring flowing", "fountain");
+	object.ShortDescription = "a mystical spring";
+	object.LongDescription = "A mystical spring flows majestically from a glowing circle of blue.";
+	object.Flags = "magic";
+	object:SetValues(0, 0, -1, 0, 0, 0);
+	object:SetStats(1, 0, 0, 0, 0);
+	object:AddMudProg(CreateMudProg("use_prog", "100", 
+	[[
+		local ch = LGetCurrentCharacter();
+		MPEchoAt(ch, "You drink deeply from the flow of mystical water.");
+		MPEchoAround(ch, "$n drinks deeply from the flow of mystical water.");
+	]]));
+	
+	object = CreateObject(23, "skin", "treasure");
+	object.ShortDescription = "the skin of %s";
+	object.LongDescription = "The skin of %s lies here.";
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(24, "meat fresh slice", "cook");
+	object.ShortDescription = "a slice of raw meat from %s";
+	object.LongDescription = "A slice of raw meat from %s is here.";
+	object.Flags = "organic";
+	object:SetValues(15, 0, 0, 0, 0, 0);
+	object:SetStats(2, 0, 0, 0, 0);
+	object:AddMudProg(CreateMudProg("use_prog", "100", 
+	[[
+		local ch = LGetCurrentCharacter();
+		MPEchoAt(ch, "Your mouth waters in delight as you enjoy the fresh meat.");
+		MPEchoAround(ch, "$n chews contentedly, enjoying the flavor of the fresh meat.");
+	]]));
+	
+	object = CreateObject(25, "shopping bag", "container");
+	object.ShortDescription = "a bag";
+	object.LongDescription = "A shopping bag is here.";
+	object.Flags = "groundrot";
+	object:SetValues(50, 0, 0, 0, 0, 0);
+	object:SetStats(2, 20, 2, 0, 0);
+	
+	object = CreateObject(26, "blood pool spill bloodlet", "blood");
+	object.ShortDescription = "a quantity of let blood";
+	object.LongDescription = "A pool of let blood glistens here.";
+	object:SetStats(1, 0, 0, 0, 0);
+	
+	object = CreateObject(30, "fire flame cloud", "fire");
+	object.ShortDescription = "a cloud of vaporous flame";
+	object.LongDescription = "A cloud of vaporous flame blazes here, defying the elements.";
+	object.Flags = "magic";
+	object:SetStats(10, 10, 1, 0, 0);
+	
+	object = CreateObject(31, "trap", "trap");
+	object.ShortDescription = "a trap";
+	object.LongDescription = "You detect a trap.";
+	object:SetStats(100, 10, 1, 0, 0);
+	
+	object = CreateObject(32, "portal whirling", "portal");
+	object.ShortDescription = "a whirling portal";
+	object.LongDescription = "A whirling portal of energy turns slowly, beckoning to the unknown.";
+	object.Flags = "magic";
+	object:SetStats(100, 10, 1, 0, 0);
+	
+	object = CreateObject(33, "black poison powder", "trash");
+	object.ShortDescription = "black poisoning powder";
+	object.LongDescription = "A small container filled with black powder is here.";
+	object.WearFlags = "take hold";
+	object:SetStats(1, 48000, 4800, 0, 0);
+	
+	object = CreateObject(34, "scroll scribing blank", "scroll");
+	object.ShortDescription = "a blank scroll";
+	object.LongDescription = "A blank scroll is here.";
+	object.WearFlags = "take hold";
+	object:SetValues(0, -1, -1, -1, 0, 0);
+	object:SetStats(2, 10000, 1000, 0, 0);
+	
+	object = CreateObject(35, "flask empty", "potion");
+	object.ShortDescription = "an empty flask";
+	object.LongDescription = "An empty flask is here.";
+	object.WearFlags = "take hold";
+	object:SetValues(1, -1, -1, -1, 0, 0);
+	object:SetStats(1, 15000, 1500, 0, 0);
+	
+	object = CreateObject(36, "parchment paper note", "paper");
+	object.ShortDescription = "a note";
+	object.LongDescription = "A note is here.";
+	object.WearFlags = "take hold";
+	object:SetStats(1, 1500, 150, 0, 0);
+	
+	object = CreateObject(37, "quill pen", "pen");
+	object.ShortDescription = "a quill";
+	object.LongDescription = "A feather used for writing is here.";
+	object:SetValues(15, 15, 0, 0, 0, 0);
+	object:SetStats(2, 2000, 200, 0, 0);
 	
 --[[
-
-#OBJECT
-Vnum     14
-Keywords arm~
-Type     cook~
-Short    the mangled arm of %s~
-Long     A writhing arm lies torn from the body of %s.~
-Action   %s chomp$q on $p.~
-WFlags   take~
-Values   30 0 0 0 0 0
-Stats    5 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     15
-Keywords leg~
-Type     cook~
-Short    the dismembered leg of %s~
-Long     Still twitching as if to kick you, the leg of %s lies here.~
-Action   %s chomp$q on $p.~
-WFlags   take~
-Values   40 0 0 0 0 0
-Stats    5 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     16
-Keywords guts~
-Type     cook~
-Short    the spilled guts of %s~
-Long     The disemboweled guts of %s swarm with maggots.~
-Values   5 0 0 1 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     17
-Keywords blood~
-Type     blood~
-Short    the spilled blood~
-Long     A pool of spilled blood lies here.~
-Values   5 0 0 1 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     18
-Keywords bloodstain~
-Type     bloodstain~
-Short    the bloodstain~
-Long     Blood stains the ground.~
-Values   5 0 0 1 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     19
-Keywords scraps remnants~
-Type     scraps~
-Short    the remnants of %s~
-Long     The remnants of %s are strewn about.~
-WFlags   take~
-Values   5 0 0 1 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     20
-Keywords a magic mushroom~
-Type     food~
-Short    a magic mushroom~
-Long     A magic mushroom appears to have been left here.~
-Action   %s enjoy$q $p.~
-WFlags   take~
-Values   5 0 0 0 0 0
-Stats    1 10 1 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     21
-Keywords ball light~
-Type     light~
-Short    a ball of light~
-Long     A ball of light.~
-Flags    glow magic~
-WFlags   take~
-Values   0 0 -1 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     22
-Keywords mystical spring flowing~
-Type     fountain~
-Short    a mystical spring~
-Long     A mystical spring flows majestically from a glowing circle of blue.~
-Flags    magic~
-Values   0 100 0 0 0 0
-Stats    10 0 1 0 0
-#MUDPROG
-Progtype  use_prog~
-Arglist   100~
-Comlist   mpechoat $n You drink deeply from the flow of mystical water.
-mpechoar $n $n drinks deeply from the flow of mystical water.
-~
-#ENDPROG
-
-#ENDOBJECT
-
-#OBJECT
-Vnum     23
-Keywords skin~
-Type     treasure~
-Short    the skin of %s~
-Long     The skin of %s lies here.~
-WFlags   take~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     24
-Keywords meat fresh slice~
-Type     cook~
-Short    a slice of raw meat from %s~
-Long     A slice of raw meat from %s lies lies on the ground.~
-Flags    organic~
-WFlags   take~
-Values   15 0 0 0 0 0
-Stats    2 0 0 0 0
-#MUDPROG
-Progtype  use_prog~
-Arglist   100~
-Comlist   mpechoat $n Your mouth waters in delight as you enjoy this fresh meat.
-mpechoaround $n $n chews contentedly, enjoying the flavor of the fresh meat.
-~
-#ENDPROG
-
-#ENDOBJECT
-
-#OBJECT
-Vnum     25
-Keywords shoppe bag shopping~
-Type     container~
-Short    a bag~
-Long     A shoppe bag lies discarded nearby.~
-Flags    groundrot~
-WFlags   take~
-Values   50 0 0 0 0 0
-Stats    2 20 2 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     26
-Keywords blood pool spill bloodlet~
-Type     blood~
-Short    a quantity of let blood~
-Long     A pool of let blood glistens here.~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     30
-Keywords fire flame cloud~
-Type     fire~
-Short    a cloud of vaporous flame~
-Long     A cloud of vaporous flame blazes here, defying the elements.~
-Flags    magic~
-Values   0 0 0 0 0 0
-Stats    10 10 1 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     31
-Keywords trap~
-Type     trap~
-Short    a trap~
-Long     You detect a trap.~
-Values   0 0 0 0 0 0
-Stats    100 10 1 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     32
-Keywords portal whirling~
-Type     portal~
-Short    a whirling portal~
-Long     A whirling portal of energy turns slowly, beckoning to the unknown.~
-Flags    magic~
-Values   0 0 0 0 0 0
-Stats    100 10 1 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     33
-Keywords black poison powder~
-Type     trash~
-Short    black poisoning powder~
-Long     A small amount of black poisoning powder sits in a small container on the ground.~
-WFlags   take hold~
-Values   0 0 0 0 0 0
-Stats    1 48000 4800 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     34
-Keywords scroll scribing blank~
-Type     scroll~
-Short    a blank scroll~
-Long     A blank scroll lays here gathering dust.~
-WFlags   take hold~
-Values   0 -1 -1 -1 0 0
-Stats    2 10000 1000 0 0
-Spells   'NONE' 'NONE' 'NONE'
-#ENDOBJECT
-
-#OBJECT
-Vnum     35
-Keywords flask empty~
-Type     potion~
-Short    an empty flask~
-Long     An empty flask lays here gathering dust.~
-WFlags   take hold~
-Values   1 -1 -1 -1 0 0
-Stats    1 15000 1500 0 0
-Spells   'NONE' 'NONE' 'NONE'
-#ENDOBJECT
-
-#OBJECT
-Vnum     36
-Keywords parchment paper note~
-Type     paper~
-Short    a note~
-Long     A note has been discarded here.~
-WFlags   take hold~
-Values   0 0 0 0 0 0
-Stats    1 1500 150 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     37
-Keywords quill pen~
-Type     pen~
-Short    a quill~
-Long     A feather dipped in ink lies here.~
-WFlags   take~
-Values   15 15 0 0 0 0
-Stats    2 2000 200 0 0
-#ENDOBJECT
-
 #OBJECT
 Vnum     38
 Keywords boots travel traveling~

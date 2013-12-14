@@ -43,10 +43,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realm.Library.Lua.Test", "Libraries\Realm.Library.Lua.Test\Realm.Library.Lua.Test.csproj", "{D822B027-D854-4081-B14D-8F7269207F61}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}"
-	ProjectSection(SolutionItems) = preProject
-		data\SystemDirectories.txt = data\SystemDirectories.txt
-		data\SystemFiles.txt = data\SystemFiles.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "area", "area", "{E74C8BB0-D610-4403-9D6B-64C1C65473B2}"
 	ProjectSection(SolutionItems) = preProject

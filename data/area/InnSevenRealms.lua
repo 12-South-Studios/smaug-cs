@@ -15,7 +15,9 @@ function LoadArea()
 	area.this.HighSoftRange = 60;
 	area.this.HighHardRange = 60;
 	area.this.HighEconomy = 45009000;
-
+	area.this.ResetFrequency = 60;
+	area.this:SetFlags("nopkill");
+	
 	FirstFloorMobs();
 	SecondFloorMobs();
 	BasementMobs();
@@ -28,16 +30,16 @@ end
 	
 function FirstFloorMobs()
 	systemLog("=================== AREA 'INN OF THE SEVEN REALMS' - 1ST FLOOR MOBS ===================");
-	mobile.this = CreateMobile(100, "bron barkeep", "Bron Ma'Ganor, Barkeep");
-	mobile.this.LongDescription = "A tall, but extremely fat man is here.";
-	mobile.this.Description = [[This tall, but extremely fat man of indeterminate age 
+	mobile = CreateMobile(100, "bron barkeep", "Bron Ma'Ganor, Barkeep");
+	mobile.LongDescription = "A tall, but extremely fat man is here.";
+	mobile.Description = [[This tall, but extremely fat man of indeterminate age 
 	stands behind the bar of this establishment.  His dark features mark him to be of 
 	southern descent.  He has dark hair and a bushy, dark beard which have been 
 	recently trimmed and his laugh echoes throughout the room.]];
-	mobile.this.Attacks = "kick";
-
+	mobile.Attacks = "kick";
+	mobile:SetStats1(0, 50, 
 	-- Create a shop for Bron
-	shop.this = CreateShop(130, 90, 7, 21);
+	shop = CreateShop(130, 90, 7, 21);
 	
 	-- MUDPROG
 	-- Wipe down the bar
