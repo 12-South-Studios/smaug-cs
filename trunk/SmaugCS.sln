@@ -46,35 +46,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{ED47B86C-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "area", "area", "{E74C8BB0-D610-4403-9D6B-64C1C65473B2}"
 	ProjectSection(SolutionItems) = preProject
-		data\area\area.lst = data\area\area.lst
-		data\area\astral.lua = data\area\astral.lua
-		data\area\Build.lua = data\area\Build.lua
-		data\area\chapel.lua = data\area\chapel.lua
-		data\area\daycare.lua = data\area\daycare.lua
-		data\area\dwarven.lua = data\area\dwarven.lua
-		data\area\export.lua = data\area\export.lua
-		data\area\gallery.lua = data\area\gallery.lua
-		data\area\gardenillusion.lua = data\area\gardenillusion.lua
-		data\area\gods.lua = data\area\gods.lua
-		data\area\grave.lua = data\area\grave.lua
-		data\area\grove.lua = data\area\grove.lua
-		data\area\haon.lua = data\area\haon.lua
+		data\area\Aran.lua = data\area\Aran.lua
 		data\area\help.lua = data\area\help.lua
 		data\area\InnSevenRealms.lua = data\area\InnSevenRealms.lua
-		data\area\limbo.lua = data\area\limbo.lua
-		data\area\manor.lua = data\area\manor.lua
-		data\area\midennir.lua = data\area\midennir.lua
-		data\area\newacad.lua = data\area\newacad.lua
-		data\area\newdark.lua = data\area\newdark.lua
-		data\area\newgate.lua = data\area\newgate.lua
-		data\area\pixie.lua = data\area\pixie.lua
-		data\area\plains.lua = data\area\plains.lua
-		data\area\redferne.lua = data\area\redferne.lua
-		data\area\sewer.lua = data\area\sewer.lua
-		data\area\srefuge.lua = data\area\srefuge.lua
-		data\area\tree.lua = data\area\tree.lua
-		data\area\trolls.lua = data\area\trolls.lua
-		data\area\unholy.lua = data\area\unholy.lua
+		data\area\TheVoid.lua = data\area\TheVoid.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "boards", "boards", "{7C54FF06-9C6B-43F9-BCCF-CD5685725E0F}"
@@ -236,6 +211,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Language", "SmaugCS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{FF3CCE80-4483-42BB-A295-67F0C172EFB2}"
 	ProjectSection(SolutionItems) = preProject
+		AreaNumberingSchema.txt = AreaNumberingSchema.txt
 		doc\Building and Creation Guide.docx = doc\Building and Creation Guide.docx
 		doc\Immortal Rules.docx = doc\Immortal Rules.docx
 		doc\Mortal Rules.docx = doc\Mortal Rules.docx
@@ -290,6 +266,54 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B105B699-9854-46E6-A275-70AB683676B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.ScriptTester", "Tools\SmaugCS.ScriptTester\SmaugCS.ScriptTester.csproj", "{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7RSourceMaterial", "7RSourceMaterial", "{1CDBF13F-AB21-4502-8697-61CEE92C120E}"
+	ProjectSection(SolutionItems) = preProject
+		doc\7RSourceMaterial\7p and nwn discussion with todd.txt = doc\7RSourceMaterial\7p and nwn discussion with todd.txt
+		doc\7RSourceMaterial\alania conversation.txt = doc\7RSourceMaterial\alania conversation.txt
+		doc\7RSourceMaterial\aran conversation tree with bron maganor.txt = doc\7RSourceMaterial\aran conversation tree with bron maganor.txt
+		doc\7RSourceMaterial\Aran.are = doc\7RSourceMaterial\Aran.are
+		doc\7RSourceMaterial\CCOMBS.ARE = doc\7RSourceMaterial\CCOMBS.ARE
+		doc\7RSourceMaterial\conversations for aran module.txt = doc\7RSourceMaterial\conversations for aran module.txt
+		doc\7RSourceMaterial\Lesser Dushara - Cinematics.doc = doc\7RSourceMaterial\Lesser Dushara - Cinematics.doc
+		doc\7RSourceMaterial\Lesser Dushara - Enemies.doc = doc\7RSourceMaterial\Lesser Dushara - Enemies.doc
+		doc\7RSourceMaterial\Lesser Dushara - Items.doc = doc\7RSourceMaterial\Lesser Dushara - Items.doc
+		doc\7RSourceMaterial\Lesser Dushara - Locations.doc = doc\7RSourceMaterial\Lesser Dushara - Locations.doc
+		doc\7RSourceMaterial\Lesser Dushara - NPCs.doc = doc\7RSourceMaterial\Lesser Dushara - NPCs.doc
+		doc\7RSourceMaterial\Lesser Dushara - Quests.doc = doc\7RSourceMaterial\Lesser Dushara - Quests.doc
+		doc\7RSourceMaterial\Lesser Dushara - Variables.doc = doc\7RSourceMaterial\Lesser Dushara - Variables.doc
+		doc\7RSourceMaterial\LESSER DUSHARA.doc = doc\7RSourceMaterial\LESSER DUSHARA.doc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "old_areas", "old_areas", "{34192FF7-273C-4423-87AA-0F1DD53BED6D}"
+	ProjectSection(SolutionItems) = preProject
+		data\old_areas\area.lst = data\old_areas\area.lst
+		data\old_areas\astral.lua = data\old_areas\astral.lua
+		data\old_areas\Build.lua = data\old_areas\Build.lua
+		data\old_areas\chapel.lua = data\old_areas\chapel.lua
+		data\old_areas\daycare.lua = data\old_areas\daycare.lua
+		data\old_areas\dwarven.lua = data\old_areas\dwarven.lua
+		data\old_areas\export.lua = data\old_areas\export.lua
+		data\old_areas\gallery.lua = data\old_areas\gallery.lua
+		data\old_areas\gardenillusion.lua = data\old_areas\gardenillusion.lua
+		data\old_areas\gods.lua = data\old_areas\gods.lua
+		data\old_areas\grave.lua = data\old_areas\grave.lua
+		data\old_areas\grove.lua = data\old_areas\grove.lua
+		data\old_areas\haon.lua = data\old_areas\haon.lua
+		data\old_areas\manor.lua = data\old_areas\manor.lua
+		data\old_areas\midennir.lua = data\old_areas\midennir.lua
+		data\old_areas\newacad.lua = data\old_areas\newacad.lua
+		data\old_areas\newdark.lua = data\old_areas\newdark.lua
+		data\old_areas\newgate.lua = data\old_areas\newgate.lua
+		data\old_areas\pixie.lua = data\old_areas\pixie.lua
+		data\old_areas\plains.lua = data\old_areas\plains.lua
+		data\old_areas\redferne.lua = data\old_areas\redferne.lua
+		data\old_areas\sewer.lua = data\old_areas\sewer.lua
+		data\old_areas\srefuge.lua = data\old_areas\srefuge.lua
+		data\old_areas\tree.lua = data\old_areas\tree.lua
+		data\old_areas\trolls.lua = data\old_areas\trolls.lua
+		data\old_areas\unholy.lua = data\old_areas\unholy.lua
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -615,8 +639,10 @@ Global
 		{7B298DBA-0A84-48E8-9BC9-072EAE306710} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{6112574E-7533-4D87-BB51-2DFF6C9364FB} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{C28149F0-D9AC-4485-914F-F798E7BB5BC3} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
+		{34192FF7-273C-4423-87AA-0F1DD53BED6D} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{2BC26F47-22B4-4BE8-AAA9-64FB81430861} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
 		{1C88C8F6-11B5-4F07-80E7-BF73F0C6D95A} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
+		{1CDBF13F-AB21-4502-8697-61CEE92C120E} = {FF3CCE80-4483-42BB-A295-67F0C172EFB2}
 		{14B56AA2-5101-4D9C-B3AE-BA4C3719D62B} = {B105B699-9854-46E6-A275-70AB683676B5}
 	EndGlobalSection
 EndGlobal

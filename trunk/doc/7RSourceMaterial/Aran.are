@@ -1,0 +1,2337 @@
+#AREA Aran of the Southern Gate~
+
+#AUTHOR Amon Gwareth {osiris@arkansas.net}~
+
+#RANGES
+0 65 0 65
+$
+
+#RESETMSG A shiver runs up your spine...~
+
+#FLAGS
+1 1
+
+#ECONOMY 0 0
+
+#MOBILES
+#9900
+bartender innkeeper bron ma'ganor~
+Bron Ma'Ganor, the InnKeeper~
+Bron Ma'Ganor, the InnKeeper of the Inn of the Seven Planes is here.
+~
+This tall, but extremely fat man of indeterminate age stands behind the bar of
+this establishment. His dark features mark him to be of southern descent. He
+has dark hair and a busy, dark beard which have been recently trimmed. He is
+wearing an apron that is covered with stains, probably food or beer, and has a
+laugh that echoes throughout the room.
+~
+3 0 0 C
+50 0 -212 1316d1+0 10d10+5
+1000 0
+8 8 1
+13 13 13 13 13 13 13
+10 10 10 10 10
+0 3 6 350 7 1 2
+50 50 2047 0 0 0 16 524289
+> speech_prog p about aviaes~
+if rand(76)
+     mpechoat $n Bron says, "The home of most of the Grey and High Elves here in Lesser Dushara, Aviaes is a strange town.  Several of the shops there sell magical equipment, if you believe in that sort of thing, though I have heard that they discriminate against all but their own kind."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif
+~
+> speech_prog p about untol~
+if rand(76)
+     mpechoat $n Bron snorts and says, "Home of thieves and a cursed place!  Stay away from there unless you have a deathwish.  I hear that the headquarters of the Thieves' Guild is in Untol and that there is a secret way out of the city, if you search hard enough."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about saios~
+if rand(76)
+     mpechoat $n Bron says, "Saios of Dushara is the seat of the Duke of Lesser Dushara and the home to many of the wealthy merchants and minor nobles.  The Duke often has quests for adventurers, such as yourself, but you will have to speak with him about that."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about itibonia~
+if rand(76)
+     mpechoat $n Bron frowns and says, "A very strange woman.  She keeps to herself and so I have heard little of consequence about her."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about againos~
+if rand(76)
+     mpechoat $n Bron says, "That temple has been vandalized quite a bit of late and I have heard that the priests of Vaitya are behind it.  Whatever you do, don't mention Vaitya to the priests of Againos!"
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about palurien~
+if rand(76)
+     mpechoat $n Bron says, "I hear little of Palurien these days.  Talk to the priests across the street if you want to know more."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about fulos kazar~
+if rand(76)
+     mpechoat $n Bron says, "The ruthless one of the brothers, and probably the one who instigated the relations between the Brothers Kazar and the Guild of Thieves.  Fulos is the one who usually travels the world in search of exotic foods and...spices.  Beware of his temper and watch your back!"
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about toc kazar~
+if rand(76)
+     mpechoat $n Bron says, "How far that store has fallen since the death of their father!  Toc, and his brother Fulos, have driven the store into the ground though they continue to make a profit.  I hear they are in league with the Thieves' Guild, though it is merely hearesay, of course."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about gisela batol~
+if rand(76)
+     mpechoat $n Bron laughs and says, "Hahaha!  Gisela, the whore.  She was once a wonderful and beautiful woman, but the years and her husbands have done strange things to her.  If I were you I would avoid her store at all costs!"
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> sleep_prog p about nelar atinae~
+if rand(76)
+     mpechoat $n Bron says, "A great warrior over a decade ago and descended from nobility, I hear.  He spent many a night in this very room after he was accused of murder and kicked out of the Dusharan Guard!  Oh the things I have heard from his mouth, though I may not speak of them."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about laeban tay~
+if rand(76)
+     mpechoat $n Bron says, "Laeban, you say?  A strange sort of Dwarf, even by Dwarven standards.  He has lived here in Aran more years than I, and that has been quite a few!  I've heard that he was exiled from The Empire many years ago, though for what reasons I do not know, and that he is quite bitter about it."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about aran~
+if rand(76)
+     mpechoat $n Bron says, "You want to know what i think about Aran of the Southern Gate?  Well, having lived here for so long I know quite a bit about its people, history, and more.  Aran is one of the most lively and...well...interesting cities i have ever lived in, and I have lived 	in a few!  It is especially good for the gossip, if you like that sort of thing, and the intrigue.  I, myself, prefer the gossip.  Why, the stories I could tell you about the Dwarves, or the Baron, or practically any topic.  I hear it all, being a bartender and an Innkeeper!"
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> speech_prog p about dushara~
+if rand(76)
+     mpechoat $n Bron says, "Ah, Dushara.  It is my second, but most favorite home, you know?  I have lived here, in Aran of the Southern Gate, for nearly forty years and I have yet to find something about it that I do not like.  <He makes a face>  Well, except, perhaps, for the relations between my race and the Cardolanians.  Ah well, can't have everything, now can I?  By the Light, I have been rambling while I should be working!  Thanks for the talk, friend."
+else
+     mpechoat $n Bron says, "I am very busy, friend, please leave me alone."
+endif~
+> rand_prog 40~
+if rand(26)
+     mpecho Bron whistles to himself as he wipes down the bar.
+else
+     if rand(51)
+          mpecho Bron hums a short tune and sets up a few over-turned chairs.
+     else
+          if rand(76)
+               mpecho Bron growls at one of the serving girls to get back to work.
+          else
+               mpecho Bron shouts, "Minstrel, a few lively bars, if you please!"
+               mpecho The minstrel happily begins playing a lively tune which gets a few of the patrons to singing and clapping.
+          endif
+     endif
+endif~
+> fight_prog 75~
+if isnpc($n)
+     mpecho Bron says, "Friend, we wish no trouble here."
+     mpforce $n out
+     mpecho A bouncer escorts $n out of the Inn.
+else
+     if level($n) <=15
+          mpechoat $n Bron says, "$n, you are a fool. Leave, if you value your life."
+          mpforce $n flee
+     else
+          if level($n) >=35
+               mpechoat $n Bron says, "So you want to fight? Very well!"
+               mpechoat bouncer assist_please
+         else
+               mpechoat $n Bron laughs deeply and says, "You are a fool, $n, and you will die for it!"
+               mpoload #9900
+               wield #9900
+               mpecho Bron gets a very large sword down from over the bar and holds it in his hands like a master.
+          endif
+     endif
+endif~
+> greet_prog 75~
+if name($n) == beggar
+     mpecho Bron shouts, "Hey!  Your kind isn't wanted in here. Get out!"
+     mpforce <1.bouncer> push $n east
+     mpecho The bouncer escorts the beggar out of the Inn.
+else
+     if isimmort($n)
+         mpecho Bron bows and says reverently, "Your godliness, Welcome."
+     else
+          if level($n) <=15
+               mpechoat $n Bron says, "Welcome to the Inn of the Seven Planes, $n. How may I help you?"
+          else
+               if level($n) >=35
+                    mpechoat $n Bron says, "Good day to you, $n. Please, we wish no trouble here."
+               else
+                    mpechoat $n Bron says, "Good day to you, adventurer, and welcome to the Inn of the Seven Planes."
+               endif
+           endif
+      endif
+endif
+~
+|
+#9901
+laeban tay shopkeeper armourer~
+Laeban Tay the Armourer~
+Laeban Tay, a burly Dwarven armourer, is working at the forge.
+~
+A squat and burly Dwarf who looks as though he has seen a few rough years is
+working hard at the forge. He has numerous scars on his arms, chest, and face
+which give him a surly appearance. However, you can see by the way he
+carefully beats the metal that he loves his work.
+~
+3 0 0 C
+45 0 -181 1668d1+0 20d20+50
+500 0
+8 8 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 3 4 150 5 1 2
+0 0 2047 256 0 0 16 524291
+> speech_prog p about untol~
+if rand(76)
+     mpechoat $n Laeban spits and says, "The city of thieves! Watch your purse and your back if you travel in Untol. I do hear that the Brothel has some hidden secrets."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about aviaes~
+if rand(76)
+     mpechoat $n Laeban laughs and says, "Hah! Given the past relations between my people and the Elves you can imagine my reluctance to visit the town which they inhabit except in the most dire of times."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about saios~
+if rand(76)
+     mpechoat $n Laeban says, "A town as corrupt as it is rich. Watch your purse and neck while in that town or you may find yourself lying in either a gutter or on the block!"
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about itibonia~
+if rand(76)
+     mpechoat $n Laeban says, "I know almost nothing of the woman."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about vaitya~
+if rand(76)
+     mpechoat $n Laeban says, "Considered by humans to be a goddess. Hah! The only true immortals are those in the Annals of History and I have never heard of Vaitya in that."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about againos~
+if rand(76)
+     mpechoat $n Laeban says, "I know little of Againos aside from what I have seen here in Aran. I have never seen nor read of her in the Annals of History."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about palurien~
+if rand(76)
+     mpechoat $n Laeban says, "Makh'dughor is a trusted friend of the Dwarves and has been for as long as the Annals of History have been recorded. The Weaponsmaster, as we Dwarves call him, taught my people the intricacies of strategy and tactics long ago."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> sleep_prog p about fulos kazar~
+if rand(76)
+     mpechoat $n Laeban says, "The more ruthless of the brothers, Fulos has killed several men from what I hear. You should watch your back while you are near him, for he might just stab it!"
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about toc kazar~
+if rand(76)
+     mpechoat $n Laeban says, "Toc's father was a good friend, but his sons are rotten to the core! I hear they hire their...goods...in the back room in a locked chest."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about gisela batol~
+if rand(76)
+     mpechoat $n Laeban says, "A woman whom I have learned to steer clear of. Gisela has approached me many a time and each time I have spurned her advances. Why she would want an old, grizzled dwarf like me is beyond my imagining!"
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about nelar atinae~
+if rand(76)
+     mpechoat $n Laeban says, "A trusted friend of mine and a great warrior, Nelar was framed by his superior officer! I suspect that one day he will take his revenge on the man. Who was the man, you ask? On my honor, I cannot say."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about bron ma'ganor~
+if rand(76)
+     mpechoat $n Laeban says, "A rich man, Bron is, but a foolish one. He speaks his mind far too often for my likes. Mind you, I hold no ill will against him, but I watch my words while around him simply because things have a tendency to get blown out of proportion and then spread around town very quickly!"
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about exile~
+if rand(76)
+     mpechoat $n Laeban growls, "Do you mock me? For your own sake, I should hope not! Yes, I was exiled from The Empire nearly one hundred and fifty years ago, but for reasons I shall not speak of at this time. If you wish to know more, then perhaps you should speak with my brethren in Bhakar of Dushara or in Tumun'khur."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> speech_prog p about dwarves~
+If rand(76)
+     mpechoat $n Laeban says, "Ahn'mar! The Dwarves. An interesting topic for you to bring up. Have you been speaking with Bron? He usually manages to bring up my name and my misfortune at some point in nearly every conversation he has! I have no wish to speak of the matter further."
+else
+     mpechoat $n Laeban says, "I have lived a long time, but I have never had much patience for being pestered. Leave me alone."
+endif~
+> rand_prog 40~
+if rand(26)
+     mpecho Laeban pumps the bellows and the fire rears back to life.
+else
+     if rand(51)
+          mpecho Laeban grabs a broom and sweeps some scrap metal off the floor and into a bin heaped with the stuff.
+     else
+          if rand(76)
+               mpecho Laeban pulls a large sheet of metal out of the forge and begins pounding on it with a heavy mallet.
+          else
+               mpecho Laeban pulls a small sheet of metal out of the fire, looks at it for several long minutes, curses loudly, and then shoves it back into the forge with disgust.
+          endif
+     endif
+endif~
+> fight_prog 90~
+if isnpc($n)
+     mpecho Laeban says, "You are trying my patience, %n.  Get out."
+     mpforce $n north
+     mpecho Laeban pushes $n out of the room.
+else
+     if level($n) <=15
+          mpechoat $n Laeban grins and says, "Do you wish to die, dimhbah?"
+          mpforce $n flee
+     else
+          if level($n) >=30
+               mpechoaround Laeban grabs his axe and shouts, "Renet dahm'bahz fahnat!"
+               mpoload greataxe
+               wield greataxe
+          else
+               mpechoaround Laeban shouts, "Dahn Tumunh!  Dahn Khah'sekhak!"
+         endif
+     endif
+endif~
+> greet_prog 75~
+if isnpc($n)
+     mpechoat $n Laeban nods and says, "Good day to you."
+else
+     if isimmort($n)
+           mpechoat $n Laeban nods and says, "Greetings."
+     else
+          mpechoat $n Laeban nods in your direction and says, "What do you want?"
+     endif
+endif~
+|
+#9902
+guard guardsman~
+Dusharan Guardsman~
+A Dusharan Guardsman stands here keeping the peace.
+~
+The guardsman has light skin, is tall, as most of his people are, and fair
+haired. His steel grey eyes watch the crowd intently for signs of trouble,
+though there seldom is any.
+~
+1 0 0 C
+15 0 7 183d1+0 0d0+0
+0 0
+8 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 3 0 0 0 0 0
+0 0 0 0 0 0 0 0
+> speech_prog p about dushara~
+if rand(76)
+     mpechoat $n The guardsman says, "Dushara is the greatest city and kingdom in the world! Do you not think so?"
+else
+     mpechoat $n The guardsman looks at you sternly and says, "Move along now!"
+endif~
+> fight_prog 75~
+if isnpc($n)
+     if rand(51)
+          mpecho The guardsman says, "You are pushing your luck, $n."
+     else
+          mpecho The guardsman says, "Guards! Take $n away!"
+          mptransfer $n jail
+     endif
+else
+     if level($n) >= 20
+          mpechoaround The guardsman shouts, "Guards! Arrest $n!"
+          mpecharound guard assist_please
+     else
+          mpechoaround The guardsman shouts, "Guard! Get $n!"
+          mpechoat guard assist_please
+     endif
+endif~
+> bribe_prog 500~
+if level($n) >= 20
+     mpechoaround The guardsman shouts, "Guards! $n just tried to bribe me!"
+     kill $n
+else
+     mpechoaround The guardsman says, "Guards! Arrest $n!"
+     mptransfer $n jail
+     mpechoat $n You are arrested by the Dusharan guard and thrown in jail!
+endif~
+> entry_prog 75~
+if rand(26)
+     mpecho The guardsman scans the area for signs of trouble.
+else
+     if rand(51)
+          mpecho The guardsman stares at you intently and mutters to himself.
+     else
+          if rand(76)
+               mpecho The guardsman leans on his spear and begins to snore faintly.
+          else
+               mpecho The guardsman looks at you and says, "Move along, traveller!"
+          endif
+     endif
+endif ~
+|
+#9903
+captain guard guardsman~
+Captain of the Guard~
+The Captain of the Dusharan Guard is ordering his troops around.
+~
+This tall, lean man looks as though he has seen many rough years. He looks to
+be in very good shape, is clean shaven, and his armor and weapons look like
+they are in excellent shape.
+
+He is ordering his troops around with an air of confidence and authority.
+~
+1 0 0 C
+25 0 -56 493d1+0 0d0+0
+0 0
+8 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 3 0 0 0 0 0
+0 0 0 0 0 0 0 0
+> fight_prog 76~
+if isnpc($n)
+     mpecho The Captain of the Guard says,  "Begone from my sight, fool! Guards, remove $n."
+     mpforce $n out
+else
+     if level($n) >= 25
+          mpechoaround The Captain of the Guard says, "How dare you!! Guards, kill $n!"
+          mpechoaround guard assist_please
+     else
+          mpechoaround The Captain of the Guard shouts, "You are a fool! Guards, arrest $n."
+          mptransfer $n jail
+          mpechoat $n You are arrested and thrown in jail by several burly guards.
+     endif
+endif~
+> bribe_prog 500~
+if rand(76)
+     mpechoat $n The Captain of the Guard says, "$n, did you think you could bribe me with this paltry amount of gold? You will die for this insult! Guards!"
+     mpechoaround guard assist_please
+     kill $n
+else
+     mpechoat $n The Captain of the Guard bows and says, "Thank you very much, $n."
+     mpechoat $n The Captain of the Guard chuckles and says, "$n, did you know that I once framed one of my best officers for a crime I committed? Hah! I cannot say who, of course, but no one ever figured it out and he took the blame."
+endif~
+|
+#9904
+nelar atinae shopkeeper weaponsmith~
+Nelar Atinae the Weaponsmith~
+Nelar Atinae, a large and mean looking man, is here beating on a rod of steel.
+~
+This tall, broad-shouldered man looks as though he could bite through the road
+of metal on which he is pounding furiously. He is wearing pants which are
+covered in grime and a smock which is also quite dirty. His face and hands are
+covered in soot from the forge fire, but his eyes gleam in the firelight and
+his teeth are extremely white.
+~
+1 0 0 C
+30 0 -87 635d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+> speech_prog p about dusharan guard~
+if rand(76)
+     mpechoat $n Nelar frowns and says, "Why do you ask me of that?  Have you not heard of my misfortune from Bron by now?  He lives to torment me!  I will not speak of it, even to the likes of you!"
+else
+     mpechoat $n Nelar says, "I have no time for the likes of you."
+endif~
+|
+#9905
+giseola batol shopkeeper~
+Gisela Batol~
+Gisela Batol, a plump woman watches you curiously from behind the counter.
+~
+This fairly large, plump, but somewhat exotic woman is standing behind the
+counter idly shuffling items while she attempts to hide the fact that she is
+watching you intently. You sense a strange air surrounding her, something
+predatory.
+~
+1 0 0 C
+25 0 -56 740d1+0 0d0+0
+0 0
+12 12 2
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9906
+high priest palurien trainer~
+High Priest of Palurien~
+The High Priest of Palurien is here instructing some of the lesser priests.
+~
+This tall, broad-shouldered man stands before you teaching several of the
+lesser priests of Palurien the travails of the god and also the arts of
+warfare. He resembles nothing like any of the other priests in the city,
+wearing studded leather armor and carrying a broadsword at his side.
+
+His face and arms are covered with scars. As you enter he turns towards you
+and you notice that his dark hair is pulled back into a pony tail which
+reaches to mid-back.
+~
+1 0 0 C
+30 0 -87 985d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9907
+priest palurien~
+Priest of Palurien~
+A Priest of Palurien stands before you.
+~
+This priest stands before you wearing studded leather armor and carrying a
+sword on his belt. His hair is pulled back and tied behind him.
+~
+1 0 0 C
+15 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9908
+healer palurien priest~
+Healer of Palurien~
+An elderly Priest of Palurien is kneeling at an altar.
+~
+This elderly man is wearing robes, in great contrast to the other priests you
+encountered in the temple, and he is kneeling in front of an ancient altar to
+Palurien. His white hair is long and cascades down over his shoulders.
+~
+1 0 0 C
+22 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9909
+toc kazar shopkeeper~
+Toc Kazar~
+Toc Kazar, the elder of the Kazar brothers, stands here stocking a shelf.
+~
+This man looks fairly well-travelled, but is otherwise rather unremarkable. He
+is wearing fine clothing of wool and looks like he grooms himself several
+times a day. He is whistling as he stocks some shelves with rare food items
+from Astabar.
+~
+1 0 0 C
+27 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9910
+fulos kazar~
+Fulos Kazar~
+Fulos Kazar, one of the Kazar brothers, stands here behind the counter.
+~
+An unremarkable man of medium-build with brown hair and eyes and a deceptively
+cheerful disposition. He is wearing expensive clothing which looks to have
+been made of silk or some other fine fabric and is wearing quite a bit of
+jewelry.
+~
+1 0 0 C
+25 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9911
+priest of againos~
+Priest of Againos~
+A Priest of Againos stands here worshipping the Goddess of Dreams.
+~
+This priest is dressed in white robes, looks well-groomed, and smiles as you
+enter. His face is open and full of compassion and peace.
+~
+1 0 0 C
+15 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9912
+high priest vaitya~
+High Priest of Vaitya~
+The High Priest of Vaitya is here preaching fire and brimstone.
+~
+This middle-aged man is dressed in finely-woven clothes and looks extremely
+well-groomed. He is waving his arms in the air and preaching loudly about the
+rewards for the faithful and the punishments for sinners. There is a strange
+look of a fanatic about him.
+~
+1 0 0 C
+27 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9913
+itibonia healer~
+Itibonia the Healer~
+Itibonia, an elderly High Elf sits here at her table meditating.
+~
+This ancient elf is dressed in a dress made of lace and has her hair pulled
+back into a long briad which nearly reaches the floor. Her long, slender hands
+are free of wrinkles, as is her still beutiful face. In fact, there is
+something other-wordly about her which you cannot place your finger on.
+~
+1 0 0 C
+35 0 0 8d1+0 0d0+0
+0 0
+12 12 2
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9914
+beggar~
+a beggar~
+A beggar is shambling along moaning of his woes.
+~
+This man is wearing filthy rags and is covered with mud and worse. It looks as
+if he lost one of his arms and one or both of his eyes at some point in time.
+~
+1 0 0 C
+1 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9915
+worshipper vaitya~
+Worshipper of Vaitya~
+A man worshipping the goddess Vaitya kneels here.
+~
+A well-dressed man is kneeling here worshipping the goddess Vaitya. His hands
+are clasped in front of him, his head is bowed in reverence, and he is
+murmuring prayers.
+~
+1 0 0 C
+5 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9916
+worshipper vaitya~
+Worshipper of Vaitya~
+A man worshipping the goddess Vaitya kneels here.
+~
+A well-dressed man is kneeling here worshipping the goddess Vaitya. His hands
+are clasped in front of him, his head is bowed in reverence, and he is
+murmuring prayers.
+~
+1 0 0 C
+5 0 0 8d1+0 0d0+0
+0 0
+12 12 2
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9917
+traveller~
+a Traveller~
+A traveller is here looking for a place to stay for the night.
+~
+This mud-splattered traveller is walking the streets looking for a place to
+stay for the night. Two bags are clasped tightly under one arm.
+~
+1 0 0 C
+1 0 0 8d1+0 0d0+0
+0 0
+12 12 2
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9918
+child~
+a child~
+A small child is here playing in the dirt.
+~
+This small child is covered in dust, but is smiling and playing with some
+sticks and toys in the dirt.
+~
+1 0 0 C
+1 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9919
+citizen~
+a citizen~
+A citizen of Dushara is here.
+~
+A well-dressed and upstanding citizen of Dushara is here enjoying the day.
+~
+1 0 0 C
+10 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9920
+adventurer~
+an adventurer~
+An adventurer who has seen many strange things is here.
+~
+This hardy and seasoned adventurer is wearing stained travelling clothes, a
+worn backpack, and carrying a walking stick.
+~
+1 0 0 C
+5 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9921
+pickpocket thief~
+a pickpocket~
+A young thief who has been picking pockets is here.
+~
+This young man is wearing clothes that look as if they do not fit very well
+and have not seen a good cleaning in quite a while. His pockets, however, are
+bulging with money, jewels, and other valuables which he has stolen from
+people on the streets of the city.
+~
+1 0 0 C
+5 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9922
+bouncer~
+a bouncer~
+A large and burly man is standing here.
+~
+This enormous man looks as if he could break steel with his bare hands.
+Wearing a tight-fitting leather top, breeches, and a permanent scowl, this man
+doesn't seem like someone to mess with.
+
+His eyes never stop moving and he seems to be watching everything and everyone
+at the same time.
+~
+1 0 0 C
+25 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9923
+priest drunk~
+drunken priest of Palurien~
+A drunked priest of Palurien is here.
+~
+This priest is wearing the armored garb of the other priests, though his are
+very stained. His beard is unkempt, fresh and dried spittle runs from his
+slack mouth, and his breath smells like a sewer. His skin is slightly
+pale-white, clammy to the touch, and covered in a thin sheen of perspiration.
+His eyes have a drunken and wild look to them.
+~
+1 0 0 C
+5 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#9924
+bartender shopkeeper priest~
+bartender of Palurien~
+A powerful-looking, but smiling bartender is here.
+~
+This bartender is wearing the garb of the other priests of Palurien, but seems
+to have a little more weight on him than the others. His thick fingers deftly
+handle the mugs and bottles behind the bar as easily as if he were swinging a
+sword.
+~
+1 0 0 C
+15 0 0 8d1+0 0d0+0
+0 0
+12 12 1
+13 13 13 13 13 13 13
+0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+#0
+
+#OBJECTS
+#9900
+greatsword sword weapon~
+a shiny greatsword~
+A very large and shiny sword lies here~
+This sword is quite large and heavy. There is a strange SCRIPT engraved on the
+blade of the weapon and the HILT is wrapped in a beautiful material. The sword
+itself is of superior quality and looks as if it has never seen a nick or
+scratch in its life, though you suepect it has seen many battles.
+~
+5 0 8193 0
+12 25 15 3
+10 5000 0
+E
+hilt~
+The hilt of this great weapon is wrapped with what looks to be cloth, but is
+shiny and resembles metal.
+~
+E
+script~
+An engraving on the blade of this great weapon is in a cursive script and
+appears to be an ancient form of Elven.
+~
+A
+18 7
+A
+19 7
+#9901
+stew food~
+steaming beef stew~
+A large bowl of steaming beef stew is here.~
+A large bowl of beef stew in a wooden bowl. There are large chunks of meat and
+potatoes amidst the dark broth. You can tell that the stew is fresh and hot
+because of the amount of steam coming off of it.
+~
+19 262144 16385 0
+6 12 0 0
+1 100 0
+#9902
+pheasant~
+a pheasant~
+A broiled pheasant is here.~
+This was a pheasant, but it has been cooked so that the skin is a dark brown.
+~
+19 0 16385 0
+4 12 0 0
+1 75 0
+#9903
+mug ale~
+mug of ale~
+A large mug of frothy ale is here.~
+This pewter mug is filled to the brim with a dark frothy ale.
+~
+17 0 16385 0
+128 128 0 0
+2 10 0
+#9904
+glass wine~
+a glass of wine~
+A glass filled with a rose-colored liquid is here.~
+This thin wine-glass made of crystal is filled with a rose-colored liquid.
+~
+17 0 16385 0
+32 32 0 0
+1 20 0
+#9905
+glass wine~
+a glass of wine~
+A glass containing a golden-colored liquid is here.~
+This thin crystal wine-glass is filled with a golden-colored liquid.
+~
+17 0 16385 0
+32 32 0 0
+1 20 0
+#9906
+chain greaves~
+a pair of chain sleeves~
+A pair of shiny chain sleeves lie here.~
+These sleeves are made of steel in a chain-link pattern. They appear to be
+quite new and shiny.
+~
+9 0 257 0
+0 0 0 0
+5 275 0
+#9907
+chain hauberk~
+a shiny chain hauberk~
+A shiny shuit of chain mail lies here.~
+~
+9 0 9 0
+0 0 0 0
+20 480 0
+#9908
+leather arm greaves~
+a pair of leather sleeves~
+A pair of leather sleeves lie here.~
+~
+9 0 257 0
+0 0 0 0
+7 150 0
+#9909
+leather leg greaves~
+a pair of leather leggings~
+A pair of leather leggings lie here.~
+~
+9 0 33 0
+0 0 0 0
+7 150 0
+#9910
+leather boots~
+a pair of leather boots~
+A pair of leather boots lie here.~
+~
+9 0 65 0
+0 0 0 0
+5 100 0
+#9911
+leather belt~
+a leather belt~
+A leather sword-belt lies here.~
+~
+9 0 2049 0
+0 0 0 0
+2 75 0
+#9912
+shield medium~
+a shiny medium shield~
+A shiny shield lies here.~
+~
+9 0 513 0
+0 0 0 0
+6 250 0
+#9913
+spear~
+a long spear~
+A long spear lies here.~
+~
+5 0 8193 0
+12 2 6 11
+10 200 0
+#9914
+coif chain~
+a shiny chain coif~
+A shiny chain coif lies here.~
+~
+9 0 17 0
+0 0 0 0
+7 250 0
+#9915
+cloak~
+a roughly woven red cloak~
+A roughly woven red cloak lies here.~
+~
+9 0 1025 0
+0 0 0 0
+3 100 0
+#9916
+gauntlets~
+shiny gauntlets~
+A pair of shiny gauntlets lie here.~
+~
+9 0 129 0
+0 0 0 0
+5 250 0
+#9917
+ring~
+Dusharan Guard signet ring~
+A shiny silver ring lies here.~
+~
+9 0 3 0
+0 0 0 0
+1 50 0
+#9918
+helm~
+Crested Helmet~
+A large helm with a crest lies here.~
+~
+9 0 17 0
+0 0 0 0
+10 500 0
+#9919
+cloak~
+a finely woven red cloak~
+A finely woven red cloak lies here.~
+~
+9 0 1025 0
+0 0 0 0
+3 350 0
+#9920
+broadsword sword~
+silver-engraved broadsword~
+A glittering silver broadsword lies here.~
+~
+5 0 8193 0
+13 0 0 3
+8 1500 0
+A
+18 1
+A
+19 1
+#9921
+broadsword sword~
+a broadsword~
+A broadsword lies here.~
+~
+5 0 8193 0
+12 0 0 3
+10 200 0
+#9922
+axe battle-axe~
+a battle-axe~
+A large axe lies here.~
+~
+5 0 8193 0
+12 0 0 3
+15 300 0
+#9923
+longsword sword~
+a longsword~
+A long sword lies here.~
+~
+5 0 8193 0
+12 0 0 3
+7 175 0
+#9924
+shortsword sword~
+a shortsword~
+A short sword lies here.~
+~
+5 0 8193 0
+12 0 0 3
+5 150 0
+#9925
+sword bastard~
+a bastard sword~
+A huge sword lies here.~
+~
+5 0 8193 0
+12 0 0 3
+15 225 0
+#9926
+dagger~
+a dagger~
+A small dagger lies here.~
+~
+5 0 8193 0
+12 0 0 1
+2 25 0
+#9927
+dirk~
+a dirk~
+A thin blade lies here.~
+~
+5 0 8193 0
+12 0 0 11
+1 15 0
+#9928
+hammer war~
+a war hammer~
+A large hammer lies here.~
+~
+5 0 8193 0
+12 0 0 27
+12 185 0
+#9929
+mace~
+a mace~
+A large mace lies here.~
+~
+5 0 8193 0
+12 0 0 7
+8 215 0
+#9930
+chain leg greaves~
+a pair of chain leggings~
+A pair of shiny chain leggings lie here.~
+~
+9 0 33 0
+0 0 0 0
+5 285 0
+#9931
+small shield~
+a small shield~
+A small shiny shield lies here.~
+~
+9 0 513 0
+0 0 0 0
+5 160 0
+#9932
+wall shield~
+a wall shield~
+A huge shiny shield lies here.~
+~
+9 0 513 0
+0 0 0 0
+20 490 0
+#9933
+scale armor~
+a suit of scale mail~
+A shiny suit of scaled armor lies here.~
+~
+9 0 9 0
+0 0 0 0
+15 1050 0
+#9934
+plate armor~
+a suit of plate armor~
+A large suit of plated armor lies here.~
+~
+9 0 9 0
+0 0 0 0
+30 1550 0
+#9935
+great helm~
+a great helm~
+A huge helmet lies here.~
+~
+9 0 17 0
+0 0 0 0
+15 750 0
+#9936
+full helm~
+a full helm~
+A large helm lies here.~
+~
+9 0 17 0
+0 0 0 0
+10 550 0
+#9937
+pot helm~
+a pot helm~
+A bowl-shaped helmet lies here.~
+~
+9 0 17 0
+0 0 0 0
+5 350 0
+#9938
+helm griffin~
+helm of the griffin~
+A large helm shapoed like a griffin lies here.~
+~
+9 0 17 0
+0 0 0 0
+10 1500 0
+#9939
+helm dragon~
+helm of the dragon~
+A large helm shaped like a dragon lies here.~
+~
+9 0 17 0
+0 0 0 0
+10 1500 0
+#9940
+helm eagle~
+helm of the eagle~
+A large helm shaped like an eagle lies here.~
+~
+9 0 17 0
+0 0 0 0
+10 1500 0
+#9941
+helm mantis~
+helm of the mantis~
+A large helm shaped like a praying mantis lies here.~
+~
+9 0 17 0
+0 0 0 0
+10 1500 0
+#9942
+candle~
+a candle~
+A small candle lies here.~
+~
+1 0 16385 0
+0 0 5 0
+1 5 0
+#9943
+burlap sack~
+a burlap sack~
+A roughly woven sack lies here.~
+~
+15 0 16385 0
+200 0 0 0
+2 25 0
+#9944
+backpack pack~
+a backpack~
+A backpack lies here.~
+~
+15 0 17409 0
+100 0 0 0
+4 100 0
+#9945
+belt pouch~
+a belt pouch~
+A small pouch lies here.~
+~
+15 0 18433 0
+50 0 0 0
+2 15 0
+#9946
+box~
+a box~
+A large wooden box lies here.~
+~
+15 0 16385 0
+1000 0 0 0
+20 25 0
+#9947
+torch~
+a torch~
+A torch lies here.~
+~
+1 0 16385 0
+0 0 10 0
+2 10 0
+#9948
+lantern~
+a lantern~
+A lantern lies here.~
+~
+1 0 16385 0
+0 0 20 0
+5 50 0
+#9949
+travel rations~
+some travel rations~
+A package of travel rations lies here.~
+~
+19 0 16385 0
+6 0 0 0
+2 50 0
+#9950
+stick~
+a walking stick~
+A long, finely crafted stick lies here.~
+~
+5 0 8193 0
+12 2 6 7
+4 10 0
+#9951
+waterskin skin~
+a waterskin~
+A small leather waterskin lies here.~
+~
+17 0 16385 0
+64 64 0 0
+1 10 0
+#9952
+venison~
+salted venison~
+A wrapped and salted portion of venison is here.~
+~
+19 0 16385 0
+6 0 0 0
+1 40 0
+#9953
+cheese~
+block of cheese~
+A block of cheese is here.~
+~
+19 0 16385 0
+3 0 0 0
+1 25 0
+#9954
+bread loaf wheat~
+loaf of wheat bread~
+A loaf of wheat bread lies here.~
+~
+19 0 16385 0
+4 0 0 0
+1 25 0
+#9955
+apple fruit~
+an apple~
+A red apple is here.~
+~
+19 0 16385 0
+2 0 0 0
+1 10 0
+#9956
+melon fruit~
+a melon~
+A green melon is here.~
+~
+19 0 16385 0
+3 0 0 0
+2 20 0
+#9957
+key~
+a long slender key~
+A small slender key lies here.~
+~
+18 0 16385 0
+0 0 0 0
+1 5 0
+#9958
+gloves leather~
+a pair of leather gloves~
+A pair of leather gloves lie here.~
+~
+9 0 129 0
+0 0 0 0
+3 100 0
+#9959
+blue key glass~
+a blue key~
+A key made of blue glass is here.~
+~
+18 0 16385 0
+0 0 0 0
+1 1 0
+#9960
+loaf bread rye~
+a loaf of rye bread~
+A loaf of rye bread is here.~
+~
+19 0 16385 0
+4 0 0 0
+1 25 0
+#9961
+loaf bread sour dough~
+loaf of sour dough bread~
+A loaf of sour dough bread is here.~
+~
+19 0 16385 0
+4 0 0 0
+1 25 0
+#9962
+pork~
+salted pork~
+A wrapped and salted portion of pork is here.~
+~
+19 0 16385 0
+6 0 0 0
+2 40 0
+#9963
+duck~
+salted duck~
+A wrapped and salted portion of duck is here.~
+~
+19 0 16385 0
+6 0 0 0
+2 40 0
+#9964
+rabbit~
+salted rabbit~
+A wrapped and salted portion of rabbit is here.~
+~
+19 0 16385 0
+6 0 0 0
+2 40 0
+#9965
+squirrel~
+salted squirrel~
+A wrapped and salted portion of squirrel is here.~
+~
+19 0 16385 0
+3 0 0 0
+1 40 0
+#9966
+fruit orange~
+an orange~
+An orange is here.~
+~
+19 0 16385 0
+2 0 0 0
+1 20 0
+#9967
+peach fruit~
+a peach~
+A peach is here.~
+~
+19 0 16385 0
+2 0 0 0
+1 20 0
+#9968
+grapes fruit bag~
+a bag of grapes~
+A bag of grapes is here.~
+~
+19 0 16385 0
+2 0 0 0
+2 25 0
+#9969
+potato vegetable~
+a potato~
+A potato is here.~
+~
+19 0 16401 0
+2 0 0 0
+1 10 0
+#9970
+tomato vegetable~
+a tomato~
+A tomato is here.~
+~
+19 0 16385 0
+2 0 0 0
+1 20 0
+#9971
+carrot vegetable~
+a carrot~
+A carrot is here.~
+~
+19 0 16385 0
+2 0 0 0
+1 5 0
+#9972
+stalk celery vegetable~
+a stalk of celery~
+A stalk of fresh celery is here.~
+~
+19 0 16385 0
+3 0 0 0
+1 10 0
+#9973
+salt package~
+a package of salt~
+A package of salt is here.~
+~
+26 0 16385 0
+0 0 0 0
+1 50 0
+#9974
+package sugar spice~
+a package of sugar~
+A package of sugar is here.~
+~
+26 0 16385 0
+10 95 0 0
+1 500 0
+#9975
+mug mead~
+mug of mead~
+A mug of mead is here.~
+~
+17 0 16385 0
+128 128 0 0
+2 15 0
+#0
+
+#ROOMS
+#9900
+Common Room of the Inn of the Seven Planes~
+You are standing in a large common room that is nearly filled to capacity with
+a variety of people and races. The room itself is a marvel of construction,
+nearly two stories tall, and covered with all manner of armor, weapons, and
+banners, some so old that you do not even recognize the crests. An enormous
+dark-wood bar dominates one side of the room as does the enormous bartender
+who stands behind it.
+
+The room is crowded with adventurers, common citizens, noblemen, whores, and
+people from all walks of life and from many different races.
+~
+0 8 0 0 0 100
+D1
+Beyond the doors of the common room you can see the busy streets of
+Aran. Several drunken patrons are stumbling through the doors and you can see
+several members of the Dusharan Guard lounging outside.
+~
+east out street khamlos avenue~
+0 0 9901 0
+E
+waitress girl server~
+These girls, numbering upwards of twenty, are all quite young and most are
+pretty. They weave between the tables and the customers gracefully, the smile
+on their faces never faltering.
+~
+S
+#9901
+Khamlos Avenue~
+You are standing in the middle of a broad and busy street which cuts through
+the middle of the city known as Aran of the Southern Gate. This main
+thoroughfare thruogh the city leads from the Southern Gate itself to the Inner
+Gate leading deeper into the metropolis known as Dushara.
+
+Tall and imposing buildings loom on either side of this busy avenue. To the
+west rises the six story building known as the Inn of the Seven Planes, which
+also serves as the Adventurer's Guild for the entire region. On the eastern
+side of the avenue lies the Temple of Palurien, a large and impressive
+structure which is perhaps the oldest structure in the city.
+~
+0 0 1 0 0 100
+D3
+The doors to the Inn are always open, day and night, and food and drink
+are always plentiful. You see several drunken patrons stumbling out of the
+common room, while several members of the Dusharan Guard lounge out front.
+~
+west inn guild~
+0 0 9900 0
+D0
+This broad avenue continues north, deeper into the city.
+~
+north~
+0 0 9902 0
+D1
+Broad marble steps climb up to huge stone doors which stand open and inviting.
+~
+east~
+0 0 9936 0
+D2
+This broad avenue continues south towards the Southern Gate.
+~
+south~
+0 0 9905 0
+E
+temple~
+The Temple of Palurien is thought to be the oldest or one of the oldest
+structures in Aran of the Southern Gate. It was built during the second
+millennia by a forgotten High King who was enamored by the many metals of the
+world and the arts of war. What he hoped to gain beyond the favor of Palurien
+is not know, but for many centuries the temple was the focus of the city and
+indeed of the region. The Temple is built of granite and is covered with
+ornamentations and statues, many of which are composed of rare metals. Most of
+the valuable metals, however, were removed long ago.
+~
+E
+inn~
+An enormous structure which rises six stories over the street. It has well
+over one hundred rooms, several large common rooms, a host of serving girls,
+and three thousand stones worth of bouncers. Run by Bron Ma'Ganor, a tall but
+fat man of indeterminate age, the inn's rooms are, for the most part, small
+and the prices aren't cheap, but they are clean, the stew is always warm, the
+bread fresh, and the ale good.
+~
+S
+#9902
+Intersection of Khamlos Avenue and Desara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+This avenue continues south towards the Southern Gate.
+~
+south~
+0 0 9901 0
+D0
+Exit description
+~
+north~
+0 0 9903 0
+D3
+Exit description
+~
+west~
+0 0 9920 0
+D1
+Exit description
+~
+east~
+0 0 9924 0
+S
+#9903
+Khamlos Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9904 0
+D2
+Exit description
+~
+south~
+0 0 9902 0
+D3
+Exit description
+~
+west~
+0 0 9929 0
+D1
+Exit description
+~
+east~
+0 0 9930 0
+S
+#9904
+Intersection of Khamlos Avenue and Osara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9903 0
+D3
+Exit description
+~
+west~
+0 0 9927 0
+D1
+Exit description
+~
+east~
+0 0 9926 0
+S
+#9905
+Intersection of Khamlos Avenue and Finara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9901 0
+D2
+Exit description
+~
+south~
+0 0 9906 0
+D3
+Exit description
+~
+west~
+0 0 9907 0
+D1
+Exit description
+~
+east~
+0 0 9908 0
+S
+#9906
+Inside the Southern Gate~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9905 0
+D3
+Exit description
+~
+west~
+0 0 9911 0
+D1
+Exit description
+~
+east~
+0 0 9912 0
+S
+#9907
+Finara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9905 0
+D3
+Exit description
+~
+west~
+0 0 9909 0
+D0
+Exit description
+~
+north~
+0 0 9915 0
+S
+#9908
+Finara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9905 0
+D1
+Exit description
+~
+east~
+0 0 9910 0
+D0
+Exit description
+~
+north~
+0 0 9916 0
+S
+#9909
+Intersection of Finara Avenue and Borto Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9907 0
+D9
+Exit description
+~
+southwest sw~
+0 0 9913 0
+D0
+Exit description
+~
+north~
+0 0 9917 0
+S
+#9910
+Intersection of Finara Avenue and Tiete Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9908 0
+D8
+Exit description
+~
+southeast se~
+0 0 9914 0
+S
+#9911
+Western Gatehouse~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9906 0
+S
+#9912
+Eastern Gatehouse~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9906 0
+S
+#9913
+Bottom Floor of the Southwest Tower~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D6
+Exit description
+~
+northeast ne~
+0 0 9909 0
+D4
+Exit description
+~
+up~
+0 0 9934 0
+S
+#9914
+Bottom Floor of the Southeast Tower~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D7
+Exit description
+~
+northwest nw~
+0 0 9910 0
+D4
+Exit description
+~
+up~
+0 0 9935 0
+S
+#9915
+Entrance to the Temple of Vaitya~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9907 0
+S
+#9916
+Grocery of the Southern Gate~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9908 0
+S
+#9917
+Borto Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9909 0
+D0
+Exit description
+~
+north~
+0 0 9918 0
+S
+#9918
+Intersection of Desara Avenue and Borto Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9917 0
+D0
+Exit description
+~
+north~
+0 0 9919 0
+D1
+Exit description
+~
+east~
+0 0 9920 0
+S
+#9919
+Borto Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9918 0
+D0
+Exit description
+~
+north~
+0 0 9928 0
+S
+#9920
+Desara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9918 0
+D1
+Exit description
+~
+east~
+0 0 9902 0
+D2
+Exit description
+~
+south~
+0 0 9933 0
+S
+#9921
+Tiete Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9910 0
+D0
+Exit description
+~
+north~
+0 0 9922 0
+D3
+Exit description
+~
+west~
+0 0 9932 0
+S
+#9922
+Intersection of Desara Avenue and Tiete Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9923 0
+D2
+Exit description
+~
+south~
+0 0 9921 0
+D3
+Exit description
+~
+west~
+0 0 9924 0
+S
+#9923
+Tiete Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9922 0
+D0
+Exit description
+~
+north~
+0 0 9925 0
+S
+#9924
+Desara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9902 0
+D1
+Exit description
+~
+east~
+0 0 9922 0
+S
+#9925
+Intersection of Osara Avenue and Tiete Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9923 0
+D3
+Exit description
+~
+west~
+0 0 9926 0
+S
+#9926
+Osara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9925 0
+D3
+Exit description
+~
+west~
+0 0 9904 0
+D2
+Exit description
+~
+south~
+0 0 9931 0
+S
+#9927
+Osara Avenue~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9904 0
+D3
+Exit description
+~
+west~
+0 0 9928 0
+S
+#9928
+Intersection of Osara Avenue and Borto Street~
+You stumble into a newly created room.
+~
+0 0 1 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9927 0
+D2
+Exit description
+~
+south~
+0 0 9919 0
+S
+#9929
+The Troll's Mane~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9903 0
+S
+#9930
+Atinae's Weapons~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9903 0
+S
+#9931
+Entrance to the Temple of Againos~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9926 0
+D2
+Exit description
+~
+south~
+0 0 9942 0
+S
+#9932
+House of Healing~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D1
+Exit description
+~
+east~
+0 0 9921 0
+S
+#9933
+Gisela's Generalities~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9920 0
+D4
+Exit description
+~
+up~
+0 0 9943 0
+S
+#9934
+Top Floor of the Southwest Tower~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D5
+Exit description
+~
+down~
+0 0 9913 0
+S
+#9935
+Top Floor of the Southeast Tower~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D5
+Exit description
+~
+down~
+0 0 9914 0
+S
+#9936
+Entrance to the Temple of Palurien~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9901 0
+D1
+Exit description
+~
+east~
+0 0 9937 0
+S
+#9937
+Narthex~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9936 0
+D0
+Exit description
+~
+north~
+0 0 9938 0
+D1
+Exit description
+~
+east~
+0 0 9940 0
+D2
+Exit description
+~
+south~
+0 0 9939 0
+S
+#9938
+Barracks~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D2
+Exit description
+~
+south~
+0 0 9937 0
+S
+#9939
+The Dented Shield~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9937 0
+S
+#9940
+Practice Chamber~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9937 0
+D1
+Exit description
+~
+east~
+0 0 9941 0
+S
+#9941
+Sanctuary of Palurien~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D3
+Exit description
+~
+west~
+0 0 9940 0
+S
+#9942
+Sanctuary of Againos~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D0
+Exit description
+~
+north~
+0 0 9931 0
+S
+#9943
+Bedroom~
+You stumble into a newly created room.
+~
+0 0 0 0 0 0
+D5
+Exit description
+~
+down~
+0 0 9933 0
+S
+#0
+
+#RESETS
+M 0 9923 1 9939  ; Mob: #9923 drunken priest of Palurien => #9939 The Dented Shield
+M 0 9924 1 9939  ; Mob: #9924 bartender of Palurien => #9939 The Dented Shield
+M 0 9913 1 9932  ; Mob: #9913 Itibonia the Healer => #9932 House of Healing
+M 0 9910 1 9916  ; Mob: #9910 Fulos Kazar => #9916 Grocery of the Southern Gate
+M 0 9909 1 9916  ; Mob: #9909 Toc Kazar => #9916 Grocery of the Southern Gate
+G 1 9973 1 ; -- Give:  #9973 a package of salt
+G 1 9972 1 ; -- Give:  #9972 a stalk of celery
+G 1 9971 1 ; -- Give:  #9971 a carrot
+G 1 9970 1 ; -- Give:  #9970 a tomato
+G 1 9969 1 ; -- Give:  #9969 a potato
+G 1 9968 1 ; -- Give:  #9968 a bag of grapes
+G 1 9967 1 ; -- Give:  #9967 a peach
+G 1 9966 1 ; -- Give:  #9966 an orange
+G 1 9965 1 ; -- Give:  #9965 salted squirrel
+G 1 9964 1 ; -- Give:  #9964 salted rabbit
+G 1 9963 1 ; -- Give:  #9963 salted duck
+G 1 9962 1 ; -- Give:  #9962 salted pork
+G 1 9961 1 ; -- Give:  #9961 loaf of sour dough bread
+G 1 9960 1 ; -- Give:  #9960 a loaf of rye bread
+G 1 9956 1 ; -- Give:  #9956 a melon
+G 1 9955 1 ; -- Give:  #9955 an apple
+G 1 9954 1 ; -- Give:  #9954 loaf of wheat bread
+G 1 9953 1 ; -- Give:  #9953 block of cheese
+G 1 9952 1 ; -- Give:  #9952 salted venison
+M 0 9908 1 9941  ; Mob: #9908 Healer of Palurien => #9941 Sanctuary of Palurien
+M 0 9907 2 9941  ; Mob: #9907 Priest of Palurien => #9941 Sanctuary of Palurien
+M 0 9907 1 9937  ; Mob: #9907 Priest of Palurien => #9937 Narthex
+M 0 9907 2 9938  ; Mob: #9907 Priest of Palurien => #9938 Barracks
+M 0 9907 4 9940  ; Mob: #9907 Priest of Palurien => #9940 Practice Chamber
+M 0 9906 1 9940  ; Mob: #9906 High Priest of Palurien => #9940 Practice Chamber
+M 0 9905 1 9933  ; Mob: #9905 Gisela Batol => #9933 Gisela's Generalities
+G 1 9951 1 ; -- Give:  #9951 a waterskin
+G 1 9950 1 ; -- Give:  #9950 a walking stick
+G 1 9949 1 ; -- Give:  #9949 some travel rations
+G 1 9948 1 ; -- Give:  #9948 a lantern
+G 1 9947 1 ; -- Give:  #9947 a torch
+G 1 9946 1 ; -- Give:  #9946 a box
+G 1 9945 1 ; -- Give:  #9945 a belt pouch
+G 1 9944 1 ; -- Give:  #9944 a backpack
+G 1 9943 1 ; -- Give:  #9943 a burlap sack
+G 1 9942 1 ; -- Give:  #9942 a candle
+M 0 9904 1 9930  ; Mob: #9904 Nelar Atinae the Weaponsmith => #9930 Atinae's Weapons
+G 1 9929 1 ; -- Give:  #9929 a mace
+G 1 9928 1 ; -- Give:  #9928 a war hammer
+G 1 9927 1 ; -- Give:  #9927 a dirk
+G 1 9926 1 ; -- Give:  #9926 a dagger
+G 1 9925 1 ; -- Give:  #9925 a bastard sword
+G 1 9924 1 ; -- Give:  #9924 a shortsword
+G 1 9923 1 ; -- Give:  #9923 a longsword
+G 1 9922 1 ; -- Give:  #9922 a battle-axe
+G 1 9921 1 ; -- Give:  #9921 a broadsword
+M 0 9901 1 9929  ; Mob: #9901 Laeban Tay the Armourer => #9929 The Troll's Mane
+G 1 9941 1 ; -- Give:  #9941 helm of the mantis
+G 1 9940 1 ; -- Give:  #9940 helm of the eagle
+G 1 9939 1 ; -- Give:  #9939 helm of the dragon
+G 1 9938 1 ; -- Give:  #9938 helm of the griffin
+G 1 9937 1 ; -- Give:  #9937 a pot helm
+G 1 9936 1 ; -- Give:  #9936 a full helm
+G 1 9935 1 ; -- Give:  #9935 a great helm
+G 1 9934 1 ; -- Give:  #9934 a suit of plate armor
+G 1 9933 1 ; -- Give:  #9933 a suit of scale mail
+G 1 9932 1 ; -- Give:  #9932 a wall shield
+G 1 9931 1 ; -- Give:  #9931 a small shield
+G 1 9930 1 ; -- Give:  #9930 a pair of chain leggings
+G 1 9906 1 ; -- Give:  #9906 a pair of chain sleeves
+M 0 9920 2 9900  ; Mob: #9920 an adventurer => #9900 Common Room of the Inn of the Seven Planes
+M 0 9922 2 9900  ; Mob: #9922 a bouncer => #9900 Common Room of the Inn of the Seven Planes
+M 0 9902 25 9901  ; Mob: #9902 Dusharan Guardsman => #9901 Khamlos Avenue
+E 0 9917 1 2  ; -- Equip: #9917 Dusharan Guard signet ring (Finger-R)
+E 0 9916 1 9  ; -- Equip: #9916 shiny gauntlets (Hands)
+E 0 9915 1 12  ; -- Equip: #9915 a roughly woven red cloak (About)
+E 0 9914 1 6  ; -- Equip: #9914 a shiny chain coif (Head)
+E 0 9913 1 16  ; -- Equip: #9913 a long spear (Wield)
+E 0 9912 1 11  ; -- Equip: #9912 a shiny medium shield (Shield)
+E 0 9911 1 13  ; -- Equip: #9911 a leather belt (Waist)
+E 0 9910 1 8  ; -- Equip: #9910 a pair of leather boots (Feet)
+E 0 9908 1 10  ; -- Equip: #9908 a pair of leather sleeves (Arms)
+E 0 9909 1 7  ; -- Equip: #9909 a pair of leather leggings (Legs)
+M 0 9900 1 9900  ; Mob: #9900 Bron Ma'Ganor, the InnKeeper => #9900 Common Room of the Inn of the Seven Planes
+G 1 9905 1 ; -- Give:  #9905 a glass of wine
+G 1 9904 1 ; -- Give:  #9904 a glass of wine
+G 1 9903 1 ; -- Give:  #9903 mug of ale
+G 1 9902 1 ; -- Give:  #9902 a pheasant
+G 1 9901 1 ; -- Give:  #9901 steaming beef stew
+S
+
+#SHOPS
+9900 0 0 0 0 0 120 100 0 23 ; Bron Ma'Ganor, the InnKeeper
+9901 9 0 0 0 0 120 90 0 23 ; Laeban Tay the Armourer
+9904 5 0 0 0 0 120 90 0 23 ; Nelar Atinae the Weaponsmith
+9905 0 0 0 0 0 120 90 0 23 ; Gisela Batol
+9909 0 0 0 0 0 120 90 0 23 ; Toc Kazar
+9913 0 0 0 0 0 120 90 0 23 ; Itibonia the Healer
+9924 0 0 0 0 0 120 90 0 23 ; bartender of Palurien
+0
+
+#SPECIALS
+M 9902 spec_guard   ; Dusharan Guardsman
+S
+
+#HELPS
+1 aran~
+Aran of the Southern Gate -- By Amon Gwareth (osiris@arkansas.net)
+written April 2001 for <mud name> - <mud address>
+
+Aran of the Southern Gate is a large suburb of Dushara, capital city of the
+Cardolania, and one of the largest and busiest cities in the world. Aran
+protects the Southern Gate into the city. Other smaller communities are
+located nearby, such as Untol, Saios, Aviaes, Bhakar, and a few others.
+~
+0 $~
+
+#$

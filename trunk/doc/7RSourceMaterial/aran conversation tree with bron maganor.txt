@@ -1,0 +1,143 @@
+Intro: Welcome, friend, to the Inn of the Seven Planes! My name is Bron Ma'Ganor, proprietor of the Inn.
+
+So, what can I interest you in this fine <morning/afternoon/evening/night>?
+
+1. I could sure use something to drink. What have you got?
+
+2. I'd like to know more about you.
+
+3. I'd like to know more about the Inn.
+
+4. Tell me about Aran of the Southern Gate.
+
+5. What about Dushara, across the river?
+
+6. Goodbye.
+
+
+== MENU ITEM #1 ==
+Show shop items for sale
+
+
+== MENU ITEM #2 ==
+Certainly. If there is one thing I like to do, its talk. But I'm afraid that I don't know your name yet, friend.
+
+1. My name is <first name>.
+
+2. That is my own business and not yours.
+
+3. I'd rather not say.
+
+4. I'd like to talk about other things. (POINT BACK TO MENU 1)
+
+5. Goodbye.
+
+
+== MENU ITEM #3 ==
+Ah, the Inn. I founded the Inn nearly forty years ago after arriving in Dushara. The largest Inn on this side of the River Osara. You'll find no friendlier or livelier place in all of Dushara, I can assure you.
+
+You may also be interested to know that the Inn serves as the local Adventurer's Guild so you can more than likely find a goodly amount of work, if thats what you're after.
+
+1. Who would I speak with about work?
+
+2. Do you have any rooms?
+
+3. I'd like to talk about other things. (POINT BACK TO MENU 1)
+
+4. Goodbye.
+
+== MENU ITEM #4 ==
+Aran is the largest part of Dushara on this side of the River Osara. Aran protects the Southern Gate to the city as well as the main road across the river.
+
+There are many shops and temples in Aran that cater to almost anyone's needs.
+
+1. Tell me about the shops.
+   -- There are many shops in Aran and I am the best person to speak with about them. Which one would you like to know about?
+   (SUB MENU #4a)
+
+2. Tell me about the temples.
+   -- There are quite a few temples here in Aran, dedicated to a variety of deities. I am not the most pious of men, but I can tell you a little. Ask away!
+   (SUB MENU #4b)
+
+3. What else is there in Aran?
+   -- What else is there? You must be new if you are asking me that! Let me tell you...
+   (SUB MENU #4c)
+
+4. I'd like to talk about other things. (POINT BACK TO MENU 1)
+
+5. Goodbye.
+
+== SUB MENU #4a ==
+1. How about armour, where can I buy it?
+   -- Atinae's Weapons is the place you seek! Run by Nelar Atinae, a great warrior over a decade ago and even descended from nobility, I hear. He spent many a night in this very room after he was accused of murder and kicked out of the Dusharan Guard!  Oh the things I have heard from his mouth, though I may not speak of them.
+   -- Continue (POINT BACK TO MENU #4a)
+
+2. What do you know of weapons?
+   -- The Troll's Mane is the place you are looking for! Run by a strange sort of Dwarf by the name of Laeban Tay, he has lived here in Aran more years than I, and that has been quite a few!  I've heard that he was exiled from The Empire many years ago, though for what reasons I do not know, and that he is quite bitter about it.
+   -- Continue (POINT BACK TO MENU #4a)
+
+3. Where can I buy supplies?
+   -- Hah!  You seek Gisela's Generalities, run by Gisela herself. She was once a wonderful and beautiful woman, but the years and her husbands have done strange things to her.  If I were you I would avoid her store at all costs!
+   -- Continue (POINT BACK TO MENU #4a)
+
+4. I am injured, where can I be healed?
+   -- Itibonia is the one you seek for healing, but she is a very strange woman.  She keeps to herself and so I have heard little of consequence about her.
+   -- Continue (POINT BACK TO MENU #4a)
+
+5. What about food? I'm hungry!
+   -- The Grocery of the Southern Gate is what you seek. Run by the ruthless Borthers Kazar, Toc and Tulos.
+   -- 1. What do you know of Fulos?
+      -- The ruthless one of the brothers, and probably the one who instigated the relations between the Brothers Kazar and the Guild of Thieves.  Fulos is the one who usually travels the world in search of exotic foods and...spices.  Beware of his temper and watch your back!
+      -- Continue (BACK)
+   -- 2. And what of Toc?
+      -- How far that store has fallen since the death of their father!  Toc, and his brother Fulos, have driven the store into the ground though they continue to make a profit.  I hear they are in league with the Thieves' Guild, though it is merely hearesay, of course.
+      -- Continue (BACK)
+   -- Nevermind. (POINT BACK TO MENU #4a)
+
+5. What else is there in Aran? (POINT BACK TO MENU 4)
+
+6. I'd like to talk about other things. (POINT BACK TO MENU 1)
+
+7. Goodbye
+
+
+== SUB MENU #4b ==
+1. Temple of Againos
+
+2. Temple of Palurien
+
+3. Temple of Vaitya
+
+4. What else is there in Aran
+
+5. talk about other things
+
+6. Goodbye
+
+
+== MENU ITEM #5 ==
+Dushara is one of the largest cities in the known world and the seat of the High King of Cardolania, his majesty, Basil Tiroun VII.
+
+Dushara is a major port town, straddling the mouth of the River Osara and lying on the Bay of Ilsaenar. The bulk of Dushara proper lies across the river to the north, but most of the demihuman races and common people live here on this side of the river in Aran, Saios, Aviaes, Bhakar, or Untol.
+
+1. Tell me about Saios.
+   -- Saios of Dushara is the seat of the Duke of Lesser Dushara and the home to many of the wealthy merchants and minor nobles.  The Duke often has quests for adventurers, such as yourself, but you will have to speak with him about that.
+   -- Continue (BACK TO MENU ITEM #5)
+
+2. Tell me about Aviaes.
+   -- The home of most of the Grey and High Elves here in Lesser Dushara, Aviaes is a strange town.  Several of the shops there sell magical equipment, if you believe in that sort of thing, though I have heard that they discriminate against all but their own kind.
+   -- Continue (BACK TO MENU ITEM #5)
+
+3. Tell me about Bhakar.
+   -- Bhakar is home to the Dwarves. Located in a hill closer to the bay, the Dwarves shun most visitors and spend most of their time inside their tunnels. But if you want the best arms and armour that gold can buy, that is where you'll want to go!
+   -- Continue (BACK TO MENU ITEM #5)
+
+4. Tell me about Untol.
+   -- Home of thieves and a cursed place!  Stay away from there unless you have a deathwish.  I hear that the headquarters of the Thieves' Guild is in Untol and that there is a secret way out of the city, if you search hard enough.
+   -- Continue (BACK TO MENU ITEM #5)
+
+5. Tell me about Aran. (POINT TO MENU 4)
+
+6. I'd like to talk about other things. (POINT BACK TO MENU 1)
+
+7. Goodbye

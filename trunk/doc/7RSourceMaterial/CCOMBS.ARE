@@ -1,0 +1,923 @@
+#AREA { 1 5} Osiris Catacombs of Dushara~
+
+#VERSION 1
+
+#CLIMATE 1 3 0
+
+#AUTHOR Amon Gwareth (osiris@arkansas.net)~
+
+#RANGES
+0 5 0 5
+$
+
+#RESETMSG A low moan echoes down the corridor and sends goosebumps up and down your spine...~
+
+#FLAGS
+5 0
+
+#ECONOMY 0 0
+
+#MOBILES
+#12200
+skeleton undead~
+a skeleton~
+A skeleton stands before you wearing tattered burial robes.
+~
+Once a tall and large person, it is now a creature of the undead and it looks
+back at you with an empty, but somehow menacing gaze.
+~
+101 0 0 C
+1 21 94 9d1+0 1d4+1
+50 50
+8 8 0
+13 13 13 13 13 13 13
+0 0 0 0 0
+60 3 6 110 1 1 1
+0 0 0 4 2100480 131 512 0
+> hitprcnt_prog 20~
+mpecho A powerful blast to the midsection of the skeleton sends one of its arms flying into the darkness and shatters most of its ribs.
+~
+|
+#12201
+zombie undead~
+a zombie~
+A partially decayed zombie approaches as you enter the room.
+~
+This was once a human being, but has since become some infinitely more
+hideous; a creature of the undead.  Bits and pieces of its flesh and
+clothing still cling to its body as it slowly approaches you.
+~
+97 0 0 C
+2 20 9 2d8+4 1d4+4
+100 75
+8 8 0
+13 13 13 13 13 13 13
+0 0 0 0 0
+71 3 0 0 1 1 0
+0 0 0 2097152 3328 1 2 0
+> entry_prog 76~
+mpasound You hear a low, but disturbingly close moan echo from somewhere in the darkness.
+~
+|
+#12202
+snake~
+a large snake~
+A large snake slithers by your feet.
+~
+This is a large snake with strange markings.  It slithers towards you and
+you realize that it must be nearly ten feet long and almost a foot thick!
+~
+65 0 0 C
+1 21 9 1d20+0 1d8+1
+0 50
+8 8 0
+13 13 13 13 13 13 13
+0 0 0 0 0
+62 3 0 0 1024 1024 0
+0 0 0 0 0 0 1 0
+#12203
+spider arachnid bug~
+a giant spider~
+A giant spider is hanging from its web.
+~
+This spider is nearly five feet tall and has legs that reach from one side
+of the corridor to the other.  Its mandibles look large enough to engulf
+your entire body and its many eyes stare at you balefully.
+~
+65 520 0 C
+2 20 9 2d8+10 1d4+2
+0 75
+8 8 0
+13 13 13 13 13 13 13
+0 0 0 0 0
+63 3 0 0 1 1 1
+0 0 268435504 0 256 0 1 0
+#12204
+rat rodent~
+a giant rat~
+A giant rat is here staring at you hungrily.
+~
+This rat is nearly as big as the dog you owned in your childhood!  And even
+worse, its red eyes are staring at you and you think it looks hungry.
+~
+225 33288 0 C
+1 21 9 1d12+5 1d2+1
+0 50
+8 8 0
+13 13 13 13 13 13 13
+0 0 0 0 0
+54 3 0 0 1 1 0
+0 0 0 0 0 0 1 0
+#12205
+warrior lost~
+the Lost Warrior~
+A lost warrior watches you warily!
+~
+This warrior looks tired, battered, and possibly a little crazy.  His armor
+hangs loosely from his gaunt frame and is damaged and battered in many
+places.  He watches you as though you were one of the undead which roam this
+cursed place!
+~
+193 0 0 C
+4 17 6 6d8+50 2d4+2
+200 150
+8 8 1
+15 10 8 12 14 6 9
+0 0 0 0 0
+0 3 6 150 1 1 1
+0 0 2047 6144 0 0 0 3
+#0
+
+#OBJECTS
+#12200
+lantern lamp~
+a battered lantern~
+A battered and discarded lantern rests here.~
+~
+1 0 16385 0
+0 0 10 0
+2 1 0
+#12201
+torch~
+a torch~
+A partially used torch lies here.~
+~
+1 0 16385 0
+0 0 2 0
+1 1 0
+#12202
+helm helmet~
+a rusty helmet~
+A rusty helmet lies here.~
+~
+9 0 17 0
+1 0 1 0
+3 1 0
+#12203
+suit chain mail~
+a suit of rusty chain mail~
+A suit of rusty chain mail lies here.~
+~
+9 0 9 0
+1 0 1 0
+8 1 0
+#12204
+chain sleeves~
+rusty chain sleeves~
+A pair of rusty chain sleeves lie here.~
+~
+9 0 257 0
+1 0 1 0
+5 1 0
+#12205
+chain leggings~
+rusty chain leggings~
+A pair of rusty chain leggings lie here.~
+~
+9 0 33 0
+1 0 1 0
+5 1 0
+#12206
+gauntlets~
+rusty gauntlets~
+A pair of rusty gauntlets lie here.~
+~
+9 0 129 0
+1 0 1 0
+3 1 0
+#12207
+dagger~
+a rusty dagger~
+A rusty dagger lies here.~
+~
+5 0 8193 0
+0 1 4 11
+1 1 0
+#12208
+sword~
+a broken sword~
+A broken sword lies here.~
+~
+5 0 8193 0
+0 1 6 3
+4 0 0
+#12209
+shield~
+a dented shield~
+A dented shield lies here.~
+~
+9 0 513 0
+0 1 0 1
+5 1 0
+#12210
+ring gold~
+a tarnished gold ring~
+A tarnished gold ring lies here.~
+~
+9 0 3 0
+0 0 0 0
+1 50 5
+A
+13 10
+#12211
+bone mace thigh~
+a thigh bone~
+A disgusting thigh bone lies here.~
+~
+5 0 8193 0
+0 1 4 7
+2 0 0
+#12212
+shield~
+a battered shield~
+A battered shield with a faded crest lies here.~
+~
+9 0 513 0
+0 1 0 1
+5 5 0
+#12213
+plate breastplate~
+battered breastplate~
+A battered breastplate lies here.~
+~
+9 0 9 0
+0 2 0 2
+10 20 2
+#12214
+helm helmet~
+a battered helmet~
+A battered helmet lies here.~
+~
+9 0 17 0
+0 1 0 1
+4 10 1
+#12215
+boots~
+tattered boots~
+A pair of tattered boots lie here.~
+~
+9 0 65 0
+0 0 0 0
+4 1 0
+#12216
+standard banner~
+an Ancient Standard~
+An Ancient Standard lies here in the dust.~
+~
+8 64 16385 0
+0 0 0 0
+5 100 10
+A
+13 10
+A
+4 2
+A
+5 2
+#12217
+robes~
+tattered burial robes~
+Some tattered burial robes lie here.~
+~
+9 0 9 0
+0 0 0 1
+2 0 0
+#12218
+sceptre~
+rotting sceptre~
+A rotting sceptre lies here.~
+~
+5 0 8193 0
+0 1 4 7
+2 0 0
+#12219
+sandals~
+rotting sandals~
+Some rotting sandals lie here.~
+~
+9 0 65 0
+0 0 0 0
+2 0 0
+#12220
+pendant~
+silver pendant~
+A tarnished silver pendant lies here.~
+~
+9 64 5 0
+0 0 0 0
+1 500 50
+A
+24 5
+#0
+
+#ROOMS
+#12200
+Cluttered Cellar~
+This room is small, dusty, and crammed with CRATES and BARRELS full of who
+knows what.  Shelves filled with BOXES and POTS, all covered with inches of
+dust and cobwebs, stand along the rough stone walls.
+
+A large, gaping hole stares at you from across the room.  Several large
+stones seem to have been pushed inwards and lay at the foot of your side of
+the hole.
+~
+0 1036 0 0 0 0
+D3
+This dark hole in the wall seems to have been formed by some force which
+pushed the stones inwards.  The darkness from beyond the portal seems
+oppressive and foreboding.~
+west hole~
+0 -1 12201 0
+E
+boxes~
+Inside the boxes you see a jumble of person items, probably stored here by
+Bron Ma'Ganor or by the Inn's previous owners and then forgotten.  You see
+nothing of any monetary value in any of the boxes.~
+E
+pots~
+There are many pots of various sizes located around the cellar, but none of
+them contain anything of value.  In fact, a great many of them contain only
+dust.~
+E
+crates~
+These crates contain items which have been stored down here, probably for
+many years.  After several minutes of searching through the dust-filled and
+cobweb-covered crates you decide that there is nothing of value in any of
+them.~
+E
+barrels~
+These barrels look and smell as if they once contained ale, or at least a
+brewed drink, but have been brought down here to be stored.  Most of them
+have broken or warped slats and are of little value to anyone.~
+S
+#12201
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock
+centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly,
+you can see FOOTPRINTS leading off into the gloom.
+
+The air seems very oppressive and the silence almost a physical weight upon
+you.  The darkness seems to be reaching out trying to put out your light
+source as you stand contemplating this foreboding place.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12218 0
+D1
+This dark hole in the wall seems to have been formed by some force which
+pushed the stones outwards.  You can see some sort of storeroom or cellar
+beyond the hole which looks infinitely more inviting than this horrifying
+place.~
+east hole~
+0 -1 12200 0
+D3
+The corridor continues west into the darkness.~
+west~
+0 -1 12202 0
+E
+footprints~
+These footprints look as if they were made by human feet and recently too.~
+S
+#12202
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the bedrock centuries
+ago.  Dust and cobwebs cover the walls and floor and, amazingly, you can see
+footprints leading off into the gloom.  A dark opening leads into the south
+wall.
+
+The air seems very oppressive and the silence almost a physical weight upon
+you.  The darkness seems to be reaching out trying to put out your light
+source as you stand contemplating this foreboding place.
+~
+0 9 13 0 0 0
+D1
+The corridor continues east into the darkness.~
+east~
+0 -1 12201 0
+D2
+An open doorway leads into a dark, musty room to the south.  You can see the
+rubble from the door which once blocked the entrance to the room lying about
+in the corridor.~
+south door~
+1 -1 12203 0
+D3
+The corridor leads further west into the darkness.~
+west~
+0 -1 12204 0
+S
+#12203
+A burial chamber~
+You are standing in the middle of a large burial chamber.  Several SARCOPHAGUS
+lie around the room, nearly all of which have been opened at one point in
+time.  Looking around the room you notice large, dust covered PILES, a few
+of which have bones sticking out of them.
+~
+0 9 13 0 0 0
+D0
+An open doorway leads out of this dark and musty room into a dark corridor.
+You can see the remnants of a stone door which once blocked entrance to this
+room lying in the corridor as if broken from within.~
+north door~
+1 -1 12202 0
+E
+sarcophagus~
+Looking into several of the large, stone coffins you see a piles of bones,
+some rotting clothing, and a few useless burial items.~
+E
+piles~
+Digging through the dust covered piles you discover the remnants of past
+adventurers, the people buried in this room, and burial furniture, but
+nothing of value.~
+S
+#12204
+Corridor in the Catacombs~
+This ancient halway seems to have been carved from the very bedrock centuries
+ago.  Dust and cobwebs cover the walls and floor and, amazingly, you can see
+footprints leading off into the gloom.  An open doorway lies to the north,
+inviting you to explore beyond its boundaries.
+
+The air seems very oppressive and the silcene almost a physical weight upon
+you.  The darkness seems to be reaching out trying to put out your light
+source as you stand contemplating this place.
+~
+0 9 13 0 0 0
+D0
+This doorway lies wide open and beyond you can see a chamber filled with
+rubble.  The wooden door which once blocked entrance to this chamber lies
+in the floor within the chamber, as if it was torn off its hinges and tossed
+aside.~
+north door~
+1 -1 12205 0
+D1
+The corridor continues further east into the darkness.~
+east~
+0 -1 12202 0
+D3
+The corridor continues west into the darkness.~
+west~
+0 -1 12206 0
+S
+#12205
+Partially collapsed chamber~
+This chamber seems to have suffered a cave-in at some point in the,
+hopefully, distant past.  Rocks and ceiling beams lie in a great pile which
+blocks your view of the far side of the room.  You can see several destroyed
+SARCOPHAGUS partially covered by the pile of debris and many bones sticking
+out at various angles from the mound.
+
+FOOTPRINTS on the ground lead from atop the great pile and out of the room.
+They look as though they were recently made.
+~
+0 9 13 0 0 0
+D2
+This door which once stood here lies in the floor beside your feet and looks
+as if it was torn from its hinges and tossed aside. All around the door
+frame and covering the door itself are marks which resemble scratches and
+gouges.~
+south out door~
+1 -1 12204 0
+E
+sarcophagus~
+You dig around in the partially destroyed sarcophagus and find very little
+aside from dust, rocks, and bones.~
+E
+footprints~
+These seem to be the same footprints which you saw earlier in the corridor.
+At least, these also resemble human feet, but they end at the edge of the
+pile of rubble and do not turn around.~
+S
+#12206
+Intersection in the Catacombs~
+You are standing in the middle of an intersection of three corridors, each
+leading in one of the cardinal directions.  A partially askew doorway lies
+to the south, as do several of the footprints which you noticed earlier.
+
+The air seems very oppressive, but you can faintly hear noises in the
+distance coming from one of the new corridors.  The darkness seems to be
+reaching out trying to put out your light source as your stand contemplating
+your predicament.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12210 0
+D1
+The corridor continues east into the darkness.~
+east~
+0 -1 12204 0
+D2
+The door blocking this doorway is hanging partially askew on its frame.
+Scratches and gouges marr its once polished surface, though you notice that
+most of the marks are on the inside of the door itself.~
+south door~
+1 -1 12207 0
+D3
+The corridor continues west into the darkness.~
+west~
+0 -1 12208 0
+S
+#12207
+A burial chamber~
+You are standing in the middle of a large burial chamber. Several SARCOPHAGUS
+lie around the room, nearly all of which have been opened at one point in
+time.  Along the far wall are quite a few NICHES which you can see contain
+the skeletons of the people who were buried here centuries ago. Dust covers
+everything, but you can quickly see that there is little of value or
+interest in this room.
+~
+0 9 13 0 0 0
+D0
+The door blocking this doorway is hanging partially askew on its frame.
+Scratches and gouges marr its once polished surface, though you notice that
+most of the marks are on the inside of the door itself.  ~
+north door~
+1 -1 12206 0
+E
+sarcophagus~
+You peer in at the contents of the open sarcophagus and see a few tattered
+robes and some burial items, but otherwise nothing of any value.~
+E
+niches~
+You search all of the niches along the walls and find several broken statues,
+probably of various gods and goddesses, and a variety of pots, most smashed
+to bits.~
+S
+#12208
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock
+centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly,
+you can see footprints leading off into the gloom.
+
+The air seems very oppressive and the silence almost a physical weight upon
+you.  The darkness seems to be reaching out trying to put out your light
+source as you stand contemplating this place.
+~
+0 9 13 0 0 0
+D1
+The corridor continues east into the darkness.~
+east~
+0 -1 12206 0
+D3
+The corridor continues west into the darkness.~
+west~
+0 -1 12209 0
+S
+#12209
+Corridor in the Catacombs~
+You are standing in an ancient hallway carved out of the very bedrock. However,
+the corridor comes to an abrupt end because of a large pile of ceiling stones
+and supports which block further movement forward.
+
+Strangely the footprints which you have noticed since you entered the
+catacombs lead up to the pile and then end.
+
+The air here is filled with dust, as if the cave-in happened recently, but
+the air still feels oppressive and the darkness just as insistent as it has
+been since entering this cursed place.
+~
+0 9 13 0 0 0
+D1
+The corridor continues east into the darkness.~
+east~
+0 -1 12208 0
+S
+#12210
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved out of the very bedrock
+centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly,
+you can see footprints leading off into the gloom.  A new corridor branches
+off, though you can distinquish little about it in the darkness.
+
+The air seems very oppressive and the darkness presses in at you as you
+stand contemplating this place.  You can hear the distant sounds of movement
+from further down this corridor.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12211 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12206 0
+S
+#12211
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock
+centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly,
+you can see footprints leading into the gloom.  A partially askew doorway
+lies to the south, as do several of the footprints you noticed earlier.
+
+The air here doesn't seem as oppressive as it did earlier and you think you
+can hear water dripping ahead.  The darkness seems to be reaching out trying
+to put out your light source as you stand contemplating this place.
+~
+0 9 13 0 0 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12210 0
+D3
+The door blocking this doorway is hanging partially askew on its frame.
+Scratches and gouges marr its once polished surface, though you notice that
+most of the marks are on the inside of the door itself.~
+west door~
+1 -1 12224 0
+S
+#12212
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock
+centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly,
+you can footprints leading off into the gloom.
+
+You can feel a slight breeze stirring the heavy, stagnant air and you are
+almost positive that you now hear dripping water from ahead. The darkness
+seems to be reaching out trying to put out your light source as you stand
+contemplating this place.
+~
+0 9 13 0 0 0
+D1
+The corridor continues east into the darkness.~
+east~
+0 0 12220 0
+D2
+An open doorway leads into a dark, musty room to the south. You can see rubble
+from the door which once blocked the entranced to the room lying about in the
+corridor.~
+south~
+1 0 12214 0
+S
+#12213
+Intersection in the Catacombs~
+You are standing in what appears to be an intersection of three corridors, all leading in the cardinal directions.  Ahead of you is a closed door, which you presume leads into some sort of chamber.  Footprints in the dust lead in all directions, including to the doorway.
+
+A slight breeze from the east is stirring the stagnant air, but it is also bringing the sounds of dripping water and other, unidentifiable, noises with it.  The darkness seems to be reaching out trying to put out your light source as you stand here contemplating your predicament.
+~
+0 131085 0 0 0 0
+S
+#12214
+A burial chamber~
+Standing in the middle of this burial chamber, you can just barely make out the far walls and what appears to be well over twenty sarcophagi lined up along the walls.  Tattered tapestries and curtains hang loosely from the once polished columns which run the length of the room.  Footprints lead from the doorway off into the gloom, but you are almost positive that they lead to, or perhaps from, each of the sarcophagi.
+
+The air seems very oppressive and the silence almost a physical weight upon you.  The darkness seems to be reaching out trying to put out your light source as you stand here contemplating this place.
+~
+0 131085 0 0 0 0
+D0
+~
+~
+0 0 12212 0
+S
+#12215
+A burial chamber~
+You are standing in the entrance to a small private burial chamber which contains two sarcophagi, one of which is open.  Long-faded tapestries and banners hang from the walls and rusted chests line the back wall.
+~
+0 131085 0 0 0 0
+S
+#12216
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly, you can see footprints leading off into the gloom.
+
+The air seems damper here, as if there was some source of water near, and the silence is broken by a faint scraping and moving from further down the corridor.  The darkness seems even more insistent as it reaches out towards you.
+~
+0 131085 0 0 0 0
+S
+#12217
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock centuries ago.  Two doorways, both smashed open, lead to the north and east.  Footprints lead into and out of both and most seem very new.
+
+The air and walls here are very damp and the sounds of movement are very evident and all around.
+~
+0 131085 0 0 0 0
+S
+#12218
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the bedrock centuries
+ago. Dust and cobwebs cover the walls and floor and, amazingly, you can see
+footprints leading off into the gloom.
+
+The air seems very oppressive and the silence almost a physical weight upon
+you.  The darkness seems to be reaching out trying to put out your light
+source as you stand contemplating as you stand contemplating this place.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12219 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12201 0
+S
+#12219
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the very bedrock
+centuries ago.  Dust and cobwebs cover the walls and floor and, amazingly,
+you can see footprints leading off into the gloom.
+
+The air seems very oppressive and the silence almost a physical weight upon
+you.  The darkness seems to be reaching out trying to put out your light
+source as you stand contemplating this place.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12220 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12218 0
+S
+#12220
+Intersection in the Catacombs~
+You are standing in the middle of an intersection of three corridors, each
+leading in one of the cardinal directions.
+
+The air seems very oppressive, but you can faintly hear noises in the
+distance coming from one of the new corridors. The darkness seems to be
+reaching out trying to put out your light source as you stand contemplating
+your predicament.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12221 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12219 0
+D3
+The corridor continues west into the darkness.~
+west~
+0 0 12212 0
+S
+#12221
+Corridor in the Catacombs~
+This ancient hallway seems to have been carved from the bedrock centuries
+ago. Dust and cobwebs cover the walls and floor and, amazingly, you can see
+footprints leading off into the gloom.
+
+You can hear a faint scraping noise coming from the north, but the air is
+otherwise still and oppressive. The darkness seems to be reaching out
+trying to put out your light source as you stand contemplating this place.
+~
+0 9 13 0 0 0
+D0
+The corridor continues north into the darkness.~
+north~
+0 -1 12222 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12220 0
+S
+#12222
+Corridor in the Catacombs~
+You are standing in an ancient hallway carved out of the very bedrock.
+However, the corridor comes to an abrupt end because of a large pile of
+ceiling stones and supports which block further movement forward. To the
+west is a closed door, which you presume leads into some sort of chamber.
+
+Strangely, the footprints you have noticed since you entered the catacombs
+lead up to the pile and then end.
+
+You can hear faint scraping sounds from behind the closed door and other,
+unidentifiable, noises with it.  The darkness seems to be reaching out
+trying to put out your light source as you stand here contemplating your
+predicament.
+~
+0 9 13 0 0 0
+D2
+The corridor continues south into the darkness.~
+south~
+0 -1 12221 0
+D3
+A closed doorway leads west into what you suspect is a burial chamber. You
+can see deep gouges in the surface of the door as if something has tried to
+claw its way through the doorway.
+~
+west door~
+3 -1 12223 0
+S
+#12223
+A burial chamber~
+You are standing in the entrance to a small private burial chamber which
+contains two sarcophagi, both of which are open. Long-faded tapestries and
+banners hang from the walls and rusted chests line the back wall.
+
+The darkness at the far end of the room is alive with movement and scraping
+noises, but still manages to seem as if it is reaching out trying to put out
+your light source.
+~
+0 9 13 0 0 0
+D1
+A closed door leads out of this dark and musty room. You can see deep gouges
+in the surface of the door as if something was attempting to get out.
+~
+east door~
+3 -1 12222 0
+S
+#12224
+A burial chamber~
+You are standing in the middle of a large burial chamber. Several SARCOPHAGUS
+lie around the room, nearly all of which have been opened at one point in
+time.  Looking around the room you notice several moldy piles of bones and
+shattered pottery.
+~
+0 9 13 0 0 0
+D1
+The door blocking this doorway is hanging partially askew on its frame.
+Scratches and gouges marr its once polished surface, though you notice that
+most of the marks are on the inside of the door itself.~
+east door~
+1 -1 12211 0
+S
+#0
+
+#RESETS
+M 1 12200 15 12206  ; Mob: #12200 a skeleton => #12206 Intersection in the Catacombs
+E 1 12203 100 5  ; -- Equip: #12203 a suit of rusty chain mail (Body)
+E 1 12202 100 6  ; -- Equip: #12202 a rusty helmet (Head)
+E 1 12205 100 7  ; -- Equip: #12205 rusty chain leggings (Legs)
+E 1 12206 100 9  ; -- Equip: #12206 rusty gauntlets (Hands)
+E 1 12204 100 10  ; -- Equip: #12204 rusty chain sleeves (Arms)
+E 1 12209 100 11  ; -- Equip: #12209 a dented shield (Shield)
+E 1 12207 100 16  ; -- Equip: #12207 a rusty dagger (Wield)
+M 1 12201 5 12206  ; Mob: #12201 a zombie => #12206 Intersection in the Catacombs
+E 1 12217 100 5  ; -- Equip: #12217 tattered burial robes (Body)
+M 1 12205 1 12213  ; Mob: #12205 the Lost Warrior => #12213 Intersection in the Catacombs
+E 1 12210 100 1  ; -- Equip: #12210 a tarnished gold ring (Finger-L)
+E 1 12213 100 5  ; -- Equip: #12213 battered breastplate (Body)
+E 1 12214 100 6  ; -- Equip: #12214 a battered helmet (Head)
+E 1 12215 100 8  ; -- Equip: #12215 tattered boots (Feet)
+E 1 12212 100 11  ; -- Equip: #12212 a battered shield (Shield)
+E 1 12208 100 16  ; -- Equip: #12208 a broken sword (Wield)
+E 1 12216 100 17  ; -- Equip: #12216 an Ancient Standard (Hold)
+M 1 12204 30 12215  ; Mob: #12204 a giant rat => #12215 A burial chamber
+D 1 12222 3 1  ; Door: #12222 Corridor in the Catacombs/West => closed
+M 1 12201 1 12223  ; Mob: #12201 a zombie => #12223 A burial chamber
+E 1 12220 100 3  ; -- Equip: #12220 silver pendant (Neck-1)
+E 1 12217 100 5  ; -- Equip: #12217 tattered burial robes (Body)
+E 1 12219 100 8  ; -- Equip: #12219 rotting sandals (Feet)
+M 1 12201 1 12223  ; Mob: #12201 a zombie => #12223 A burial chamber
+E 1 12217 100 5  ; -- Equip: #12217 tattered burial robes (Body)
+E 1 12219 100 8  ; -- Equip: #12219 rotting sandals (Feet)
+E 1 12218 100 16  ; -- Equip: #12218 rotting sceptre (Wield)
+D 1 12223 1 1  ; Door: #12223 A burial chamber/East => closed
+S
+
+#SPECIALS
+M 12202 spec_poison   ; a large snake
+M 12203 spec_poison   ; a giant spider
+S
+
+#HELPS
+-1 skeleton~
+Skeletons are creatures of the undead which have been animated by powerful
+magic of the Shadow.  They are usually no more than a skeleton, of any race,
+but are usually equipped with either all or some of the weapons and equipment
+that they once owned.
+
+For unknown reasons they exhibit no signs of intelligence, beyond the uncanny
+ability to battle effectively. Cutting them into pieces or using magic to
+destroy them are the only known ways of stopping them.~
+-1 zombie~
+Zombies are terrible creatures of the undead which have been animated by dark
+magic of the Shadow.  They are usually little more than a partially decomposed
+body.
+
+Be careful when dealing with these horrifying creatures for they often carry
+the plague! Cutting them to pieces, burning them, or destroying them by
+magic are the only known ways of stopping them.~
+-1 rats~
+Giant rats are a strange breed of the common rodent which seem to thrive
+deep underground and in abandoned dungeons and catacombs.  They are usually
+the size of a small dog and can weigh up to twenty pounds.  They are
+ferocious fighters and prefer to attack in large numbers.
+
+Be careful when fighting Giant Rats for they often carry the plague or at
+the very least can inflict serious wounds which have a tendency to fester
+if not treated quickly.~
+-1 spiders~
+These huge spiders are known to inhabit dungeons, catacombs, or mines which
+have been long abandoned.  Spinning their webs across the hallways to catch
+their prey they often attempt to herd unwary creatures or adventurers into
+their powerful webs.
+
+Though spider lairs have the possibility of containing the equipment of
+unfortunate adventurers, the bite of the giant spider is extremely poisonous
+and should be treated as quickly as possible.~
+-1 snake~
+These frightening and deadly snakes thrive on the giant rats which inhabit
+abandoned dungeons, catacombs, and mines.  Though they prefer smaller prey,
+they are usually not adverse to a large meal and have been known to attack
+adventurers.  Their bite is known to be deadly, the result of a fast-acting
+venom.~
+0 $~
+
+#$
