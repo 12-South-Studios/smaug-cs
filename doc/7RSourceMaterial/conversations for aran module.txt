@@ -1,0 +1,209 @@
+1. Add more depth to Rashan Aseph's conversations, including 2nd quest
+
+bt_HistoryofDushara_01
+bt_GeographyofMidalor_01
+bt_BiographyofHighKing_01
+
+Attan Al'sha'if
+<onClientEnter - 1st Time>
+- Here we are, friend. The Inn of the Seven Planes. As we discussed on my ship, you will find whatever it is you are seeking in this place. I am grateful for your company on the long journey here and Light-willing we will meet again.
+- continue
+- Now, I have much to do back on the docks, on my ship, and within the Great Market, so I must be going. Take care of the books you have, they cost me a fair number of Kaeresian Lances before I set sail.
+  - Where are you headed next?
+    - Wind and gods permitting, I will be headed east as far as Neamora and Vezeve.
+  - How long will you be in Dushara?
+    - For another three days, at most. The sails need patching before we sail and I must replace some of my crew.
+  - Where is your ship?
+    - The docks on this side of the river, the pier closest to The Fortress.
+  - Tell me of Dushara.
+    - A great city, with nearly everything you could ever want at your fingertips. Watch your purse and your step while you are here, my friend.
+  - Farewell
+    - Good journeys, my friend. We shall meet again.
+
+
+
+Rashan Aseph (2nd Quest)
+
+
+Elven Apprentice
+(if first time met)
+- Greetings, <sir/madam>. Allow me to introduce myself. I am Ismail Nikhet. And who might you be?
+  - I am <FirstName> <LastName>.
+    - Well met, <FirstName>!
+      - I have been sent by my Master to collect certain items. Perhaps you could assist me in this regard?
+        - Certainly!
+          - Excellent! My Master is in need of knucklebones from animated skeletons. I believe that the catacombs below provide an excellent opportunity to acquire a few. Are you still interested?
+            - Yes, continue.
+              - Spectactular! I will pay you 50 gold for each knucklebone that you bring to me. There is no limit as the more he has, the better.
+                - continue
+                  - Now go! And good hunting.
+            - You are mad. Forget it!
+              - Very well. Good journeys.
+        - Forget it!
+        - Tell me more about your master.
+          - There is nothing I can tell. My Master values his privacy and anonymity.
+        - Tell me more about yourself.
+          - Forgive me, <FirstName>, but I am unwilling to divulge any further information about myself. ANother time, perhaps.
+  - That is none of your business.
+    - Very well. Good journeys.
+
+(if not first time and quest has not been taken)
+- Hello again, <FirstName>. Have you reconsidered my offer?
+  - Yes, please tell me more.
+    - Link above
+  - No, forget it.
+    - Very well. Good journeys.
+
+(if not first time and quest has been taken)
+- Hello again, <FirstName>. Do you have anything that might be of interest to me?
+  - No, I have nothing.
+    - Another time perhaps. Farewell, <FirstName>.
+  - Yes, I have what you asked for.
+    - (if in inventory) Excellent! Here is your payment of N gold.
+    - (if not in inv) I'm sorry, <FirstName>, but you do not appear to have any at the moment. Come back when you do!
+
+
+
+House Guard
+- I will be watching you closely. Do not make any sudden moves around Lady Tal'shon.
+
+Elderly Manservant
+- Who are you?
+  - My name is not important. 
+    - What do you do?
+      - I serve the Lady and her family, a task that I have performed faithfully for over sixty years.
+- Tell me about Lady Tal'shon
+  - Though young, the Lady is a great woman. He family is one of the wealthiest and most powerful this side of the river. The Lady herself is well-respected among the nobles and has even visited the Palace of the High King on more than one occassion.
+- Goodbye
+  - Farewell, good <sir/madam>
+
+Dwarf Mercenary
+(if favor with Taemier is 90 or higher)
+- Waht do you want?
+  - Who are you?
+    - My name is Dazhor Ren'Karthek
+  - What are you doing here?
+    - Hunting renegades of The Empire, friend.
+      - What sort of renegades?
+        - Better that you do not know.
+      - What is The Empire?
+        - The home of the Dwarves, my home. To the west within the Arms of Tumun.
+  - Nevermind
+    - Zuruk te'dazh! (Go with honor)
+(otherwise)
+- what do you want?
+  - Who are you?
+    - I am called Dazhor Ren'Karthek
+  - What are you doing here?
+    - That is my own business, Grul'dek.
+  - Nevermind
+    - Begone Grul'dek!
+
+Natania:
+Statement before Quest is taken: Have you seen my brother?
+Statement before quest is finished: Have you found my brother yet?
+Statement after quest is finished: Why did the bad things kill my brother?
+nQuestfindSonTaken
+nQuestfindSonSolved
+
+
+Commoners
+Random Statements 1 to 12:
+- Good day/evening milord/milady
+- Well met, good sir/madam.
+- People are saying that the dead are awake beneath our feet!
+- Dushara will never fall! All Finarans will die by our swords first!
+- Be careful! It isn't safe to walk the streets after dark. Foul things, not all of them human, are afoot.
+- Watch your step, friend. Evil stalks the streets of Dushara by night.
+- Did you see the great ship that docked just yesterday? Some say it was manned by Dark Elves, the Uralei!
+- The Dwarves in their hillside town of Bhakar cannot be trusted! They mean to rule us again, like they did centuries ago.
+- Watch your step if you travel to Untol, friend. It is a dangerous place, even for the strong.
+- The Elves of Aviaes are not fond of visitors, especially those who aren't of The Blood.
+- His Majesty, Basil Tiroun VII, is having a grand ball in a week. Oh how I wish I could attend..
+<if male> To see the Royal Guard in all of their splendor. Glorious!
+<if female> To see the Lords and Ladies of the Court in all of their splendor! Oh!
+- HAve another drink, friend. Bron serves the best in DUshara!
+
+
+Liase Al'Verran
+There isn't much to tell, I'm afraid.
+- Where are you from?
+- - I am originally from Kaeres to the north.
+- - - What is Kaeres?
+- - - - You have not heard of Kaeres? Where are you from again?
+- - - - - Very well, <FirstName>. Kaeres is known as the Kingdom of the Cross. All aspects of life in Kaeres revolve around the worship of Maron. The Kingdom is ruled, unofficially, by the Albarian Knights.
+- - - - - - Who are these Knights you speak of?
+- - - - - - - The Albarian Knights are one of the most fearsome forces in Midalor. Powerful beyond measure, they fight the kingdom's battles and extend its influence. From what I hear they are fighting the Val'Atur in Deraka.
+- - - Why did you leave?
+- - - - Link to Statement below
+- Why are you here?
+- - There isn't much for a strong woman in Kaeres so I came here. Dushara is, afterall, the greatest city in the world.
+- - - What do you mean?
+- - - - Magic is not allowed in Kaeres, unless you serve the Church. And only men can serve Maron, according to those in power.
+- - - Tell me about Dushara
+- - - - There is so much to tell... Dushara is so huge and so busy that everyone comes here for everything. Others could tell you more, as I only arrived myself a few days ago.
+- Why haven't you gone below into the crypts?
+- - Um... Yes... Well, you see...
+- - - continue
+- - - - The truth of the matter is that I... um... I'm a little afraid of the dark... And of being alone...in the dark...
+
+
+Arina Tal'shon
+- If 1st Meeting & Player did not take Catacombs quesT:
+  Good <quarterday>. You should speak with Lieutenant Aseph as soon as possible and then return to me. We have much to discuss.
+- If 1st Meeting & player took Catacombs quest:
+  Good <quarterday>. I hear that you have spoken with Lieutenant Aseph and will be journeying into the catacombs beneath this Inn?
+  - Yes, that is true.
+    - Then perhaps you would be willing to help me out.
+      - I'd be happy to!
+        - I am pleased to hear that, <FirstName>.
+          - continue
+            - My family has resided in Aran of the Southern Gate for centuries. Before the Inn of the Seven Planes was built, a Temple stood on this very spot. 
+            - continue
+              - My ancestors were all buried in the catacombs beneath that Temple and this Inn. I have heard, as have many, that the dead have risen and are ravaging the catacombs, even coming up to the surface at night.
+                - continue
+                  - My ancestors were buried with precious heirlooms. You must retrieve them for me, <FirstName>! I will pay you 500 gold if you bring them all back to me!
+                    - I will do it!
+                    - (persuade) Give me 1000 and I will do it!
+                      - (success) You drive a hard bargain. Very well.
+                      - (failure) Forget it! 500 gold is all I will offer.
+                    - Forget it! 
+      - What's in it for me?
+        - I will pay you for your trouble. Will you hear me out?
+          - Yes, tell me what you would have me do.
+            - Link above
+          - Forget it!
+      - Forget it!
+  - No, I will not be.
+    - Ah, I see. Very well then. Farewell.
+- If Player has taken quest but not solved it
+  Have you found my family's heirlooms yet, <FirstName>?
+    - No, I have not.
+      - Please hurry! I pray they have not been stolen or destroyed.
+    - Yes, I have. Here they are!
+      - (pass check for items) The Light Shine on you, <FirstName>!
+      - (fail check for items) What trick is this? I see no heirlooms.
+        - (persuade) Of course this is them. Can't you tell?
+          - (success) You are a fool, <FirstName>. Begone from my sight!
+          - (failure) Guards! Kill this fool!
+- If Player has solved quest
+  Thank you for returning my family's heirlooms! I am forever in your debt.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

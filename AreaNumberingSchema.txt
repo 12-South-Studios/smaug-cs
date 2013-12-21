@@ -1,0 +1,50 @@
+Area Numbering Schema
+
+TheVoid
+- Range: 1 to 9999
+- Reason: TheVoid is used as a holder for all generic mobs and objects.  
+	IF they are to be used between areas, place them here instead of 
+	placing more into individual areas.
+
+InnSevenRealms
+- Range: 10000 to 10099
+
+Aran
+- Range: 10100 to 10199
+
+Catacombs
+- Range: 10200 to 10299
+
+Aviaes
+- Range: 10300 to 10399
+
+Untol
+- Range: 10400 to 10499
+
+Saios
+- Range: 10500 to 10599
+
+Bhakar
+- Range: 10600 to 10699
+
+Fortress
+- Range: 10700 to 10799
+
+TheBay
+- Range: 10800 to 10899
+
+Dushara
+- Range: 10900 to 10999
+
+FinaranArmyCamp
+- Range: 11000 to 11099
+
+DusharanSewers
+- Range: 11100 to 11199
+
+DusharanRoyalPalace
+- Range: 11200 to 11299
+
+
+
+  

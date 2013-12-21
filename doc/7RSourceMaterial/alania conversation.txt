@@ -1,0 +1,38 @@
+Alania Telkhat
+(1st Visit)
+Welcome to the Inn of the Seven Planes, stranger. I have not seen you around here before. Are you new to the city?
+- Yes I am. My name is <Name>.
+  - I am pleased to meet you, <FirstName>.
+    - Link to below
+- That is my own business. Leave me be.
+  - Very well. Good day to you.
+
+(After)
+Good day to you, <FirstName>. What can I do for you?
+- Who are you?
+  - My name is Alania Telkhat of the Caorlei.
+- What are you?
+  - I am a healer by trade. I travel the lands healing those in need and offering my services to others for a price. Do you require healing?
+- What are the Caorlei?
+  - We are the Chosen of Maron, the sons and daughters of Melesa. We are of the Blood, the Kaerove, and are favored of Laisi.
+    - Who is Maron?
+      - Surely you jest, <FirstName>? I will indulge you this time.
+        - Continue
+          - Maron is the Creator of All, The One Light.
+    - Who is Melesa?
+      - The Healer, Mother and one of the Thirteen.
+    - Who is Laisi?
+      - The Teacher, Keeper of Knowledge and one of the Thirteen. 
+    - What is the Kaerove?
+      - It means "Blood" in my language and refers to the Caorlei, the Teralei, the Uralei, and even the Denorlei. Or what you would call elves and half-elves.
+- What are you doing here?
+  - I am passing through Dushara on my way east.
+- Where can I find healing?
+  - Well, right here, of course. I am a healer by trade and would be happy to heal you. For a small price.
+    - Please heal me.
+      - (if healnig required) Here you go, <FirstName>.
+    - Nevermind
+- (if quest 1 taken) What do you know of the undead?
+  - I know enough. The undead began appearing only a few weeks ago from beneath the city. They have not yet reached the city streets, but unless something is done and soon they might. 
+- (if son_quest taken) Have you seen Chalan's son?
+  - Torval I believe his name was. I spoke with him three days ago, but have not seen him since. He asked me questions about the catacombs and the undead and I believe he meant to enter them himself. Brave, but foolish.
