@@ -8,14 +8,15 @@ namespace SmaugCS.Weather
     {
         public static readonly List<WeatherRangeData> WeatherData = new List<WeatherRangeData>();
 
-        public static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages = new Dictionary<PrecipitationTypes, List<string>>();
+        private static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages =
+            new Dictionary<PrecipitationTypes, List<string>>();
 
         public static List<string> GetWeatherMessages(PrecipitationTypes precip)
         {
             return WeatherMessages.ContainsKey(precip) ? WeatherMessages[precip] : new List<string>();
         }
 
-        public static readonly List<string> HemisphereNames = new List<string> { "northern", "southern" };
+        private static readonly List<string> HemisphereNames = new List<string> { "northern", "southern" };
         public static int GetHemisphere(string type)
         {
             return HemisphereNames.Contains(type)
@@ -23,7 +24,7 @@ namespace SmaugCS.Weather
                        : -1;
         }
 
-        public static readonly List<string> ClimateNames = new List<string>
+        private static readonly List<string> ClimateNames = new List<string>
                                                        {
                                                            "rainforest",
                                                            "savanna",

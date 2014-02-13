@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
@@ -22,66 +23,42 @@ namespace SmaugCS.Weather
 
         public void ChangeTemperature(int change)
         {
-            if (change > 0)
-                Temperature += change;
-            else
-                Temperature -= change;
+            Temperature += change;
         }
 
         public void ChangePrecip(int change)
         {
-            if (change > 0)
-                Precipitation += change;
-            else
-                Precipitation -= change;
+            Precipitation += change;
         }
 
         public void ChangePressure(int change)
         {
-            if (change > 0)
-                Pressure += change;
-            else
-                Pressure -= change;
+            Pressure += change;
         }
 
         public void ChangeEnergy(int change)
         {
-            if (change > 0)
-                Energy += change;
-            else
-                Energy -= change;
+            Energy += change;
         }
 
         public void ChangeCloudCover(int change)
         {
-            if (change > 0)
-                CloudCover += change;
-            else
-                CloudCover -= change;
+            CloudCover += change;
         }
 
         public void ChangeHumidity(int change)
         {
-            if (change > 0)
-                Humidity += change;
-            else
-                Humidity -= change;
+            Humidity += change;
         }
 
         public void ChangeWindSpeedX(int change)
         {
-            if (change > 0)
-                WindSpeedX += change;
-            else
-                WindSpeedX -= change;
+            WindSpeedX += change;
         }
 
         public void ChangeWindSpeedY(int change)
         {
-            if (change > 0)
-                WindSpeedY += change;
-            else
-                WindSpeedY -= change;
+            WindSpeedY += change;
         }
 
 
@@ -91,42 +68,12 @@ namespace SmaugCS.Weather
 
         public static CloudCoverTypes GetCloudCover(int cloudCover)
         {
-            if (cloudCover > 80)
-                return CloudCoverTypes.Extremely;
-            if (cloudCover > 60 && cloudCover <= 80)
-                return CloudCoverTypes.Moderately;
-            if (cloudCover > 40 && cloudCover <= 60)
-                return CloudCoverTypes.Partly;
-            if (cloudCover > 20 && cloudCover <= 40)
-                return CloudCoverTypes.Slightly;
-            return CloudCoverTypes.None;
+            return EnumerationExtensions.GetValueInRange(cloudCover, CloudCoverTypes.None);
         }
 
         public static TemperatureTypes GetTemperature(int temp)
         {
-            if (temp > 90)
-                return TemperatureTypes.Sweltering;
-            if (temp > 80 && temp <= 90)
-                return TemperatureTypes.VeryHot;
-            if (temp > 70 && temp <= 80)
-                return TemperatureTypes.Hot;
-            if (temp > 50 && temp <= 60)
-                return TemperatureTypes.Temperate;
-            if (temp > 40 && temp <= 50)
-                return TemperatureTypes.Cool;
-            if (temp > 30 && temp <= 40)
-                return TemperatureTypes.Chilly;
-            if (temp > 20 && temp <= 30)
-                return TemperatureTypes.Cold;
-            if (temp > 10 && temp <= 20)
-                return TemperatureTypes.Frosty;
-            if (temp > 0 && temp <= 10)
-                return TemperatureTypes.Freezing;
-            if (temp > -10 && temp <= 0)
-                return TemperatureTypes.ReallyCold;
-            if (temp > -20 && temp <= -10)
-                return TemperatureTypes.VeryCold;
-            return TemperatureTypes.ExtremelyCold;
+            return EnumerationExtensions.GetValueInRange(temp, TemperatureTypes.Temperate);
         }
 
         public static bool IsHighPressure(int pressure)
@@ -136,55 +83,17 @@ namespace SmaugCS.Weather
 
         public static HumidityTypes GetHumidity(int humidity)
         {
-            if (humidity > 60)
-                return HumidityTypes.Extremely;
-            if (humidity > 60 && humidity <= 80)
-                return HumidityTypes.Moderately;
-            if (humidity > 40 && humidity <= 60)
-                return HumidityTypes.Minorly;
-            if (humidity > 20 && humidity <= 40)
-                return HumidityTypes.Humid;
-            return HumidityTypes.None;
+            return EnumerationExtensions.GetValueInRange(humidity, HumidityTypes.None);
         }
 
         public static PrecipitationTypes GetPrecipitation(int precip)
         {
-            if (precip > 90)
-                return PrecipitationTypes.Torrential;
-            if (precip > 80 && precip <= 90)
-                return PrecipitationTypes.CatsAndDogs;
-            if (precip > 70 && precip <= 80)
-                return PrecipitationTypes.Pouring;
-            if (precip > 60 && precip <= 70)
-                return PrecipitationTypes.Heavily;
-            if (precip > 50 && precip <= 60)
-                return PrecipitationTypes.Downpour;
-            if (precip > 40 && precip <= 50)
-                return PrecipitationTypes.Steadily;
-            if (precip > 30 && precip <= 40)
-                return PrecipitationTypes.Raining;
-            if (precip > 20 && precip <= 30)
-                return PrecipitationTypes.Lightly;
-            if (precip > 10 && precip <= 20)
-                return PrecipitationTypes.Drizzling;
-            if (precip > 0 && precip <= 10)
-                return PrecipitationTypes.Misting;
-            return PrecipitationTypes.None;
+            return EnumerationExtensions.GetValueInRange(precip, PrecipitationTypes.None);
         }
 
         public static WindSpeedTypes GetWindSpeed(int speed)
         {
-            if (speed > 80)
-                return WindSpeedTypes.GaleForce;
-            if (speed < 60 && speed <= 80)
-                return WindSpeedTypes.Gusty;
-            if (speed > 40 && speed <= 60)
-                return WindSpeedTypes.Windy;
-            if (speed > 20 && speed <= 40)
-                return WindSpeedTypes.Blustery;
-            if (speed > 10 && speed <= 20)
-                return WindSpeedTypes.Breezy;
-            return WindSpeedTypes.Calm;
+            return EnumerationExtensions.GetValueInRange(speed, WindSpeedTypes.Calm);
         }
 
         #endregion

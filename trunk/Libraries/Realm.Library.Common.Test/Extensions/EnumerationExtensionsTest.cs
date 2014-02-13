@@ -29,6 +29,53 @@ namespace Realm.Library.Common.Test.Extensions
             Test
         }
 
+        private enum RangeTest
+        {
+            [Attributes.Range(Minimum = 5, Maximum = 10)]
+            Test1,
+
+            [Attributes.Range(Maximum = 5)]
+            Test2,
+
+            [Attributes.Range(Minimum = 11, Maximum = 20)]
+            Test3
+        }
+
+        [Test]
+        public void GetValueInRangeMatchTest()
+        {
+            var value = EnumerationExtensions.GetValueInRange(18, RangeTest.Test2);
+            Assert.That(value, Is.EqualTo(RangeTest.Test3));
+        }
+
+        [Test]
+        public void GetValueInRangeNoMatchTest()
+        {
+            var value = EnumerationExtensions.GetValueInRange(-2, RangeTest.Test2);
+            Assert.That(value, Is.EqualTo(RangeTest.Test2)); 
+        }
+
+        [Test]
+        public void GetMinimumRangeTest()
+        {
+            var value = RangeTest.Test1.GetMinimum();
+            Assert.That(value, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void GetMaximumRangeTest()
+        {
+            var value = RangeTest.Test1.GetMaximum();
+            Assert.That(value, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void GetMinimumRangeWhenNotSpecifiedTest()
+        {
+            var value = RangeTest.Test2.GetMinimum();
+            Assert.That(value, Is.EqualTo(Int32.MinValue));
+        }
+
         [Test]
         public void GetEnumIgnoreCaseTest()
         {
