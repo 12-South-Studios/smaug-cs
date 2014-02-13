@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Realm.Library.Common.Attributes;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Properties;
 
@@ -25,6 +26,34 @@ namespace Realm.Library.Common
             var field = value.GetType().GetField(value.ToString());
             var attribute = Attribute.GetCustomAttribute(field, typeof(EnumAttribute)) as EnumAttribute;
             return attribute == null ? value.ToString() : attribute.Name;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int GetMinimum(this Enum value)
+        {
+            Validation.IsNotNull(value, "value");
+
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field, typeof (RangeAttribute)) as RangeAttribute;
+            return attribute == null ? Int32.MinValue : attribute.Minimum;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int GetMaximum(this Enum value)
+        {
+            Validation.IsNotNull(value, "value");
+
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field, typeof(RangeAttribute)) as RangeAttribute;
+            return attribute == null ? Int32.MaxValue : attribute.Maximum;
         }
 
         /// <summary>
@@ -91,6 +120,32 @@ namespace Realm.Library.Common
             if (Enum.IsDefined(typeof(T), value))
                 return (T)Enum.ToObject(typeof(T), value);
             throw new ArgumentException(string.Format(Resources.ERR_NO_VALUE, typeof(T), value));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static T GetValueInRange<T>(int value, T defaultValue)
+        {
+            if (typeof(T).BaseType != typeof(Enum))
+                throw new ArgumentException("T must be of type System.Enum");
+
+            IEnumerable<T> values = GetValues<T>();
+            foreach (T val in values)
+            {
+                Enum convertedValue = val.CastAs<Enum>();
+                int min = GetMinimum(convertedValue);
+                int max = GetMaximum(convertedValue);
+
+                if ((value >= min || min == Int32.MinValue) && (value <= max || max == Int32.MaxValue))
+                    return val;
+            }
+
+            return defaultValue;
         }
 
         /// <summary>

@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleAppendOptions.cs" />
+    <Compile Include="Attributes\RangeAttribute.cs" />
     <Compile Include="Caching\CachedObjectRepository.cs" />
     <Compile Include="Caching\IMemoryCacheWrapper.cs" />
     <Compile Include="Caching\MemoryCacheWrapper.cs" />

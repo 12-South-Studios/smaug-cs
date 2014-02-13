@@ -11,10 +11,7 @@ namespace SmaugCS.Language
         [XmlElement]
         public string NewValue { get; set; }
 
-        public LanguageConversionData()
-        {
-            
-        }
+        public LanguageConversionData() { }
 
         public LanguageConversionData(string line)
         {
