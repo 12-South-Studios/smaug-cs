@@ -95,6 +95,8 @@
     <Compile Include="Repositories\CharacterRepositoryTests.cs" />
     <Compile Include="Repositories\ObjInstanceRepositoryTests.cs" />
     <Compile Include="Repositories\AreaRepositoryTests.cs" />
+    <Compile Include="SpecFuns\BreathSpecFunTests.cs" />
+    <Compile Include="SpecFuns\SpecFunLookupTests.cs" />
     <Compile Include="TablesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\TextReaderProxyExtensionTests.cs" />

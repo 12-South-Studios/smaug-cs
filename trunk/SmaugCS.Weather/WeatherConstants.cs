@@ -45,7 +45,7 @@ namespace SmaugCS.Weather
                        : -1;
         }
 
-        public static void InitializeeWeatherMessages(string filename)
+        public static void InitializeWeatherMessages(string filename)
         {
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(filename)))
             {

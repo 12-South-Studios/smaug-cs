@@ -234,14 +234,6 @@ namespace SmaugCS
 
         public bool MOBtrigger { get; set; }
 
-        #region Well known mob virtual numbers
-        public static int MOB_VNUM_CITYGUARD = 3060;
-        public static int MOB_VNUM_VAMPIRE = 80;
-        public static int MOB_VNUM_ANIMATED_CORPSE = 5;
-        public static int MOB_VNUM_DEITY = 17;
-        public static int MOB_VNUM_SUPERMOB = 3;
-        #endregion
-
 
         public static int AREA_DELETED = BV00;
         public static int AREA_LOADED = BV01;

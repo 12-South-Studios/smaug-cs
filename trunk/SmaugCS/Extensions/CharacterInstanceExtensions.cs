@@ -19,6 +19,15 @@ namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {
+        public static bool IsInCombatPosition(this CharacterInstance ch)
+        {
+            return (ch.CurrentPosition == PositionTypes.Fighting
+                    || ch.CurrentPosition == PositionTypes.Evasive
+                    || ch.CurrentPosition == PositionTypes.Defensive
+                    || ch.CurrentPosition == PositionTypes.Aggressive
+                    || ch.CurrentPosition == PositionTypes.Berserk);
+        }
+
         public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type)
         {
             ResistanceTypes resType = LookupManager.Instance.GetResistanceType(type);

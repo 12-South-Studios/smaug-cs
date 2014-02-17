@@ -7,11 +7,11 @@ using SmaugCS.Data.Instances;
 
 namespace SmaugCS.SpecFuns
 {
-    class BreathAcid
+    public static class BreathAcid
     {
-        public static bool spec_breath_acid(CharacterInstance ch)
+        public static bool DoSpecBreathAcid(CharacterInstance ch)
         {
-            return Dragon.dragon(ch, "acid breath");
+            return Dragon.DoSpecDragon(ch, "acid breath");
         }
     }
 }

@@ -570,7 +570,7 @@
     <Compile Include="Database\RoomRepository.cs" />
     <Compile Include="Exceptions\DuplicateIndexException.cs" />
     <Compile Include="Exceptions\DuplicateEntryException.cs" />
-    <Compile Include="Exceptions\SkillNotFoundException.cs" />
+    <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
     <Compile Include="Loaders\CommentLoader.cs" />
@@ -764,7 +764,7 @@
     <Compile Include="save.cs" />
     <Compile Include="shops.cs" />
     <Compile Include="skills.cs" />
-    <Compile Include="special.cs" />
+    <Compile Include="SpecFuns\SpecFunHandler.cs" />
     <Compile Include="tables.cs" />
     <Compile Include="update.cs" />
     <Compile Include="variables.cs" />

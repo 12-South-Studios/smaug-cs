@@ -15,6 +15,7 @@ using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Database;
+using SmaugCS.Exceptions;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Loaders;
@@ -70,7 +71,19 @@ namespace SmaugCS.Managers
         public ITemplateRepository<RoomTemplate> ROOMS { get; private set; }
         public IRepository<long, AreaData> AREAS { get; private set; }
         public ITemplateRepository<ObjectTemplate> OBJECT_INDEXES { get; private set; }
+        
         public ITemplateRepository<MobTemplate> MOBILE_INDEXES { get; private set; }
+        public MobTemplate GetMobTemplate(int vnum)
+        {
+            MobileRepository repo = (MobileRepository)MOBILE_INDEXES;
+
+            MobTemplate found = repo.Get(vnum);
+            if (found == null)
+                throw new EntryNotFoundException("Missing MobTemplate {0}", vnum);
+
+            return found;
+        }
+        
         public IInstanceRepository<CharacterInstance> CHARACTERS { get; private set; }
         public IInstanceRepository<ObjectInstance> OBJECTS { get; private set; }
 
