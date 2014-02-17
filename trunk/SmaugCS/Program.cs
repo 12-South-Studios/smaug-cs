@@ -9,7 +9,6 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Database;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 

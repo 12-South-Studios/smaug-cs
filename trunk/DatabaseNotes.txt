@@ -1,0 +1,5 @@
+Database Notes
+
+Password: Despair#1994
+Name: SmaugCS.sdf
+Purpose: Local Sql Server CE 4.0 database used for housing data such as Bans, Watches, etc.

@@ -99,12 +99,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=4.1.1309.1617, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -135,17 +132,9 @@
       <Project>{2bb2460c-a3c5-410b-b139-0e16e5077aac}</Project>
       <Name>Realm.Library.Patterns.Decorator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Realm.Library.Patterns.Factory\Realm.Library.Patterns.Factory.csproj">
-      <Project>{74a0765e-25ad-486e-8284-33fcecf636d1}</Project>
-      <Name>Realm.Library.Patterns.Factory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
       <Name>Realm.Library.Patterns.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Realm.Library.Patterns.Singleton\Realm.Library.Patterns.Singleton.csproj">
-      <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
-      <Name>Realm.Library.Patterns.Singleton</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

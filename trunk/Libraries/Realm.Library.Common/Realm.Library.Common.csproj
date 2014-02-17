@@ -115,8 +115,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -234,24 +235,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NCalcLicense.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Realm.Library.Patterns.Command\Realm.Library.Patterns.Command.csproj">
-      <Project>{dd42338b-fe18-406e-8084-f606825771f6}</Project>
-      <Name>Realm.Library.Patterns.Command</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Realm.Library.Patterns.Decorator\Realm.Library.Patterns.Decorator.csproj">
-      <Project>{2bb2460c-a3c5-410b-b139-0e16e5077aac}</Project>
-      <Name>Realm.Library.Patterns.Decorator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Realm.Library.Patterns.Factory\Realm.Library.Patterns.Factory.csproj">
-      <Project>{74a0765e-25ad-486e-8284-33fcecf636d1}</Project>
-      <Name>Realm.Library.Patterns.Factory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
       <Name>Realm.Library.Patterns.Repository</Name>
@@ -260,6 +243,9 @@
       <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
       <Name>Realm.Library.Patterns.Singleton</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

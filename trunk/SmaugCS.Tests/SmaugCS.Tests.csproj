@@ -61,23 +61,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="lua51">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\lua51.dll</HintPath>
-    </Reference>
-    <Reference Include="LuaInterface">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\LuaInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\packages\Moq.4.2.1312.1622\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="VikingErik.LuaInterface">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -141,10 +131,6 @@
     <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj">
       <Project>{0e01a79f-5582-4797-af09-12de27901885}</Project>
       <Name>SmaugCS.Language</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj">
-      <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>
-      <Name>SmaugCS.Weather</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS\SmaugCS.csproj">
       <Project>{30198591-fff9-488c-ab88-2b02d58900d4}</Project>

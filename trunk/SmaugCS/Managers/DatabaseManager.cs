@@ -14,12 +14,12 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
-using SmaugCS.Database;
 using SmaugCS.Exceptions;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Loaders;
 using SmaugCS.Lookup;
+using SmaugCS.Repositories;
 using SmaugCS.Weather;
 
 namespace SmaugCS.Managers

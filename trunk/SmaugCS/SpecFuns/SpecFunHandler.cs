@@ -6,9 +6,9 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Database;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
+using SmaugCS.Repositories;
 
 namespace SmaugCS.SpecFuns
 {
