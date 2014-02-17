@@ -6,14 +6,14 @@ using System.Text;
 namespace SmaugCS.Exceptions
 {
     [Serializable]
-    public class SkillNotFoundException : Exception
+    public class EntryNotFoundException : Exception
     {
-        public SkillNotFoundException() { }
+        public EntryNotFoundException() { }
 
-        public SkillNotFoundException(string message)
+        public EntryNotFoundException(string message)
             : base(message) { }
 
-        public SkillNotFoundException(string message, params object[] args)
+        public EntryNotFoundException(string message, params object[] args)
             : base(string.Format(message, args)) { }
     }
 }

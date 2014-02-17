@@ -8,8 +8,10 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
+using SmaugCS.Exceptions;
 using SmaugCS.Language;
 using SmaugCS.Managers;
+using SmaugCS.SpecFuns;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -151,7 +153,14 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSpecFun", "Creates a new special function", "Name of the function")]
         public static SpecialFunction LuaCreateSpecialFunction(string name)
         {
-            SpecialFunction newSpecFun = new SpecialFunction { Name = name };
+            SpecialFunction newSpecFun = new SpecialFunction
+                {
+                    Name = name,
+                    Value = SpecFunHandler.GetSpecFunReference(name)
+                };
+
+            if (newSpecFun.Value == null)
+                throw new EntryNotFoundException("SpecFun {0} not found", name);
 
             _luaManager.Proxy.CreateTable("specfun");
             AddLastObject(newSpecFun);

@@ -98,7 +98,7 @@ namespace SmaugCS.Weather
 
         #endregion
 
-        public void Load(TextReaderProxy proxy)
+        /*public void Load(TextReaderProxy proxy)
         {
             string word = string.Empty;
 
@@ -136,6 +136,6 @@ namespace SmaugCS.Weather
                         break;
                 }
             } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("end"));
-        }
+        }*/
     }
 }

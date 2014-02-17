@@ -9,9 +9,9 @@ namespace SmaugCS.SpecFuns
 {
     class BreathLightning
     {
-        public static bool spec_breath_lightning(CharacterInstance ch)
+        public static bool DoSpecBreathLightning(CharacterInstance ch)
         {
-            return Dragon.dragon(ch, "lightning breath");
+            return Dragon.DoSpecDragon(ch, "lightning breath");
         }
     }
 }

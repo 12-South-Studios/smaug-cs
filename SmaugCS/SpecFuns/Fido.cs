@@ -1,17 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
-    class Fido
+    public static class Fido
     {
-        public static bool spec_fido(CharacterInstance ch)
+        public static bool DoSpecFido(CharacterInstance ch)
         {
-            // TODO
+            if (!ch.IsAwake())
+                return false;
+
+            foreach (ObjectInstance corpse in ch.CurrentRoom.Contents.Where(obj => obj.ItemType == ItemTypes.NpcCorpse))
+            {
+                comm.act(ATTypes.AT_ACTION, "$n savagely devours a corpse.", ch, null, null, ToTypes.Room);
+
+                foreach (ObjectInstance obj in corpse.Contents)
+                {
+                    corpse.FromObject(obj);
+                    ch.CurrentRoom.ToRoom(obj);
+                }
+
+                handler.extract_obj(corpse);
+                return true;
+            }
+
             return false;
         }
     }

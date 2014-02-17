@@ -5,33 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
-    class BreathAny
+    public static class BreathAny
     {
-        public static bool spec_breath_any(CharacterInstance ch)
+        public static bool DoSpecBreathAny(CharacterInstance ch)
         {
-            if (ch.CurrentPosition != PositionTypes.Fighting
-                && ch.CurrentPosition != PositionTypes.Evasive
-                && ch.CurrentPosition != PositionTypes.Defensive
-                && ch.CurrentPosition != PositionTypes.Aggressive
-                && ch.CurrentPosition != PositionTypes.Berserk)
+            if (!ch.IsInCombatPosition())
                 return false;
 
             switch (Common.SmaugRandom.Bits(3))
             {
                 case 0:
-                    return Dragon.dragon(ch, "fire breath");
+                    return Dragon.DoSpecDragon(ch, "fire breath");
                 case 1:
                 case 2:
-                    return Dragon.dragon(ch, "lightning breath");
+                    return Dragon.DoSpecDragon(ch, "lightning breath");
                 case 3:
-                    return BreathGas.spec_breath_gas(ch);
+                    return BreathGas.DoSpecBreathGas(ch);
                 case 4:
-                    return Dragon.dragon(ch, "acid breath");
+                    return Dragon.DoSpecDragon(ch, "acid breath");
                 default:
-                    return Dragon.dragon(ch, "frost breath");
+                    return Dragon.DoSpecDragon(ch, "frost breath");
             }
         }
     }

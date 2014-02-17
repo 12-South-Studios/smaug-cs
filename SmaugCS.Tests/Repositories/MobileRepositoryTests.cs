@@ -32,7 +32,7 @@ namespace SmaugCS.Tests.Repositories
             sb.Append("mobile.this.Position = \"standing\"");
             sb.Append("mobile.this.DefensivePosition = \"standing\"");
             sb.Append("mobile.this.Gender = \"neuter\"");
-            sb.Append("mobile.this.SpecFun = \"spec_cast_mage\"");
+            sb.Append("mobile.this.SpecFun = \"DoSpecCastMage\"");
             sb.Append("mobile.this.ActFlags = \"npc stayarea mountable\"");
             sb.Append(
                 "mobile.this.AffectedBy = \"detect_evil detect_magic\"");
@@ -101,7 +101,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Position, Is.EqualTo("standing"));
             Assert.That(result.DefensivePosition, Is.EqualTo("standing"));
             Assert.That(result.Gender, Is.EqualTo("neuter"));
-            Assert.That(result.SpecFun, Is.EqualTo("spec_cast_mage"));
+            Assert.That(result.SpecFun, Is.EqualTo("DoSpecCastMage"));
             Assert.That(result.Speaks, Is.EqualTo("magical"));
             Assert.That(result.Speaking, Is.EqualTo("magical"));
             Assert.That(result.BodyParts, Is.EqualTo("head legs heart guts feet"));
