@@ -7,7 +7,6 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Database;
 using SmaugCS.Exceptions;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;

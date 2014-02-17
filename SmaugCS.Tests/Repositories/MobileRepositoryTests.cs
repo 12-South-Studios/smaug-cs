@@ -8,10 +8,10 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
-using SmaugCS.Database;
 using SmaugCS.Exceptions;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
+using SmaugCS.Repositories;
 
 namespace SmaugCS.Tests.Repositories
 {
