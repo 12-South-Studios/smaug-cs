@@ -1,4 +1,7 @@
-﻿using SmaugCS.Data.Instances;
+﻿using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Lookup;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
 {

@@ -15,6 +15,7 @@ using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
@@ -64,16 +65,6 @@ namespace SmaugCS
         #region Helps
         public static List<HelpData> HELPS = new List<HelpData>();
         public static string HelpGreeting { get; set; }
-        #endregion
-
-
-
-
-
-
-
-        #region Bans
-        public static List<BanData> BANS = new List<BanData>();
         #endregion
 
         #region Boards
@@ -412,7 +403,7 @@ namespace SmaugCS
                     area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
-                    RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_SCHOOL);
+                    RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
                     if (room != null && room.Area == area && area.ResetFrequency == 0)
                         area.Age = 15 - 3;
                 }
@@ -652,39 +643,39 @@ namespace SmaugCS
                     }
                     towizfile(string.Empty);
                     iLevel = wiz.Level;
-                    if (iLevel == Program.MAX_LEVEL)
+                    if (iLevel == LevelConstants.MAX_LEVEL)
                         towizfile(" Supreme Entity");
-                    else if (iLevel == Program.MAX_LEVEL - 1)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 1)
                         towizfile(" Infinite");
-                    else if (iLevel == Program.MAX_LEVEL - 2)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 2)
                         towizfile(" Eternal");
-                    else if (iLevel == Program.MAX_LEVEL - 3)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 3)
                         towizfile(" Ancient");
-                    else if (iLevel == Program.MAX_LEVEL - 4)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 4)
                         towizfile(" Exalted Gods");
-                    else if (iLevel == Program.MAX_LEVEL - 5)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 5)
                         towizfile(" Ascendant Gods");
-                    else if (iLevel == Program.MAX_LEVEL - 6)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 6)
                         towizfile(" Greater Gods");
-                    else if (iLevel == Program.MAX_LEVEL - 7)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 7)
                         towizfile(" Gods");
-                    else if (iLevel == Program.MAX_LEVEL - 8)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 8)
                         towizfile(" Lesser Gods");
-                    else if (iLevel == Program.MAX_LEVEL - 9)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 9)
                         towizfile(" Immortals");
-                    else if (iLevel == Program.MAX_LEVEL - 10)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 10)
                         towizfile(" Demi Gods");
-                    else if (iLevel == Program.MAX_LEVEL - 11)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 11)
                         towizfile(" Saviors");
-                    else if (iLevel == Program.MAX_LEVEL - 12)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 12)
                         towizfile(" Creators");
-                    else if (iLevel == Program.MAX_LEVEL - 13)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 13)
                         towizfile(" Acolytes");
-                    else if (iLevel == Program.MAX_LEVEL - 14)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 14)
                         towizfile(" Neophytes");
-                    else if (iLevel == Program.MAX_LEVEL - 15)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 15)
                         towizfile(" Retired");
-                    else if (iLevel == Program.MAX_LEVEL - 16)
+                    else if (iLevel == LevelConstants.MAX_LEVEL - 16)
                         towizfile(" Guests");
                     else
                         towizfile(" Servants");
@@ -794,7 +785,7 @@ namespace SmaugCS
 
         public static void delete_room(RoomTemplate room)
         {
-            RoomTemplate limbo = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_LIMBO);
+            RoomTemplate limbo = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
 
             CharacterInstance ch;
             while ((ch = room.Persons.FirstOrDefault()) != null)

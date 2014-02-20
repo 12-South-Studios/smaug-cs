@@ -5,6 +5,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -18,42 +19,42 @@ namespace SmaugCS
 
         public static int get_ssave(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_saves);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellSaves"));
         }
 
         public static int get_starget(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.target_type);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("TargetTypes"));
         }
 
         public static int get_sdamage(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_damage);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellDamageTypes"));
         }
 
         public static int get_saction(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_action);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellActionTypes"));
         }
 
         public static int get_ssave_effect(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_save_effect);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellSaveEffects"));
         }
 
         public static int get_sflag(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_flag);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellFlags"));
         }
 
         public static int get_spower(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_power);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellPowerTypes"));
         }
 
         public static int get_sclass(string name)
         {
-            return GameConstants.GetFlagIndex(name, GameConstants.spell_class);
+            return GameConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellClassTypes"));
         }
 
         public static bool is_legal_kill(CharacterInstance ch, CharacterInstance vch)

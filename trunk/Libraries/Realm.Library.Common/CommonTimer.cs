@@ -11,6 +11,15 @@ namespace Realm.Library.Common
     {
         private readonly Timer _timer = new Timer();
 
+        public CommonTimer() {}
+
+        public CommonTimer(int id)
+        {
+            Id = id;
+        }
+
+        public int Id { get; private set; }
+
         #region ITimer
 
         public void Start(double? interval = null)

@@ -13,6 +13,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Language;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
@@ -158,12 +159,12 @@ namespace SmaugCS.Extensions
 
         public static bool IsImmortal(this CharacterInstance ch)
         {
-            return ch.Trust >= Program.GetLevel("immortal");
+            return ch.Trust >= LevelConstants.GetLevel("immortal");
         }
 
         public static bool IsHero(this CharacterInstance ch)
         {
-            return ch.Trust >= Program.GetLevel("hero");
+            return ch.Trust >= LevelConstants.GetLevel("hero");
         }
 
         public static int GetArmorClass(this CharacterInstance ch)
@@ -394,7 +395,7 @@ namespace SmaugCS.Extensions
                 wexp += (int)(wexp * 1.2);
             if (ch.IsAffected(AffectedByTypes.ShockShield))
                 wexp += (int)(wexp * 1.2);
-            return wexp.GetNumberThatIsBetween(Program.MIN_EXP_WORTH, Program.MAX_EXP_WORTH);
+            return wexp.GetNumberThatIsBetween(GameConstants.MinimumExperienceWorth, GameConstants.MaximumExperienceWorth);
         }
 
         public static int GetExperienceBase(this CharacterInstance ch)
@@ -411,7 +412,7 @@ namespace SmaugCS.Extensions
 
         public static int GetLevelExperience(this CharacterInstance ch, int cexp)
         {
-            int x = Program.GetLevel("supreme");
+            int x = LevelConstants.GetLevel("supreme");
             int lastx = x;
             int y = 0;
 
@@ -427,7 +428,7 @@ namespace SmaugCS.Extensions
                     y = x;
             }
 
-            return y < 1 ? 1 : y > Program.GetLevel("supreme") ? Program.GetLevel("supreme") : y;
+            return y < 1 ? 1 : y > LevelConstants.GetLevel("supreme") ? LevelConstants.GetLevel("supreme") : y;
         }
         #endregion
 
@@ -500,7 +501,7 @@ namespace SmaugCS.Extensions
         {
             int penalty = 0;
 
-            if (!ch.IsNpc() && ch.Level >= Program.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
                 return ch.Trust * 200;
             if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return ch.Level * 200;
@@ -519,7 +520,7 @@ namespace SmaugCS.Extensions
 
         public static int CanCarryMaxWeight(this CharacterInstance ch)
         {
-            if (!ch.IsNpc() && ch.Level >= Program.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
                 return 1000000;
             if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return 1000000;
@@ -600,9 +601,9 @@ namespace SmaugCS.Extensions
             if (!ch.IsNpc())
                 ch.Act.RemoveBit((int)PlayerFlags.BoughtPet);
 
-            if (ch.Level == Program.GetLevel("avatar"))
+            if (ch.Level == LevelConstants.GetLevel("avatar"))
                 ch.AdvanceLevelAvatar();
-            if (ch.Level < Program.GetLevel("immortal"))
+            if (ch.Level < LevelConstants.GetLevel("immortal"))
             {
                 if (ch.IsVampire())
                     buffer = string.Format("Your gain is: {0}/{1} hp, {2}/{3} bp, {4}/{5} mv, {6}/{7} prac.\r\n",
@@ -635,7 +636,7 @@ namespace SmaugCS.Extensions
 
         public static void GainXP(this CharacterInstance ch, int gain)
         {
-            if (ch.IsNpc() || (ch.Level >= Program.GetLevel("avatar")))
+            if (ch.IsNpc() || (ch.Level >= LevelConstants.GetLevel("avatar")))
                 return;
 
             double modgain = gain;
@@ -685,7 +686,7 @@ namespace SmaugCS.Extensions
                 return;
             }
 
-            while (ch.Level < Program.GetLevel("avatar") && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
+            while (ch.Level < LevelConstants.GetLevel("avatar") && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
                 color.set_char_color(ATTypes.AT_WHITE | ATTypes.AT_BLINK, ch);
                 ch.Level += 1;
@@ -881,7 +882,7 @@ namespace SmaugCS.Extensions
                 {
                     LogManager.Instance.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.Vnum);
                     ch.CurrentRoom.FromRoom(ch);
-                    DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_TEMPLE).ToRoom(ch);
+                    DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_TEMPLE).ToRoom(ch);
                     return true;
                 }
 

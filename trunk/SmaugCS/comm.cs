@@ -10,6 +10,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -55,8 +56,8 @@ namespace SmaugCS
         /// </remarks>
         public static bool check_parse_name(string name, bool newchar)
         {
-            if (name.Length < Program.GetIntegerConstant("MinNameLength")
-                || name.Length > Program.GetIntegerConstant("MaxNameLength"))
+            if (name.Length < GameConstants.GetIntegerConstant("MinNameLength")
+                || name.Length > GameConstants.GetIntegerConstant("MaxNameLength"))
                 return false;
 
             return name.IsAlphaNum();

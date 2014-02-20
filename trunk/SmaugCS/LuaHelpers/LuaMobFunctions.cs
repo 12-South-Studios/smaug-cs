@@ -1,5 +1,6 @@
 ﻿using System;
 using Realm.Library.Lua;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Managers;
 

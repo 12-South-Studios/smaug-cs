@@ -30,7 +30,7 @@ namespace SmaugCS.SpecFuns
                 if (trash.ItemType == ItemTypes.DrinkContainer 
                     || trash.ItemType == ItemTypes.Trash 
                     || trash.Cost < 10
-                    || (trash.ObjectIndex.Vnum == Program.GetVnum("ObjectShoppingBag")  
+                    || (trash.ObjectIndex.Vnum == GameConstants.GetVnum("ObjectShoppingBag")  
                         && trash.Contents.First() == null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n picks up some trash.", ch, null, null, ToTypes.Room);

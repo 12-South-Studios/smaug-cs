@@ -132,7 +132,7 @@ namespace SmaugCS
             if (fBuy)
             {
                 profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0)
-                            + ((ch.Level.GetNumberThatIsBetween(5, Program.GetLevel("avatar")) - 20) / 2);
+                            + ((ch.Level.GetNumberThatIsBetween(5, LevelConstants.GetLevel("avatar")) - 20) / 2);
                 cost = (obj.Cost * (shop.ProfitSell + 1).GetHighestOfTwoNumbers(shop.ProfitBuy + profitMod) / 100);
             }
             else

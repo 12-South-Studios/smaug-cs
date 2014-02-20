@@ -1,5 +1,7 @@
 ﻿using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
+using SmaugCS.Data.Interfaces;
+using SmaugCS.Logging;
 
 namespace SmaugCS.Managers
 {
@@ -36,7 +38,7 @@ namespace SmaugCS.Managers
         /// 
         /// </summary>
         /// <param name="logManager"></param>
-        public void InitializeManager(ILogManager logManager, string path)
+        public void Initialize(ILogManager logManager, string path)
         {
             _logManager = logManager;
             _dataPath = path;

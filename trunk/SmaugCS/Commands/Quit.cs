@@ -3,6 +3,7 @@ using SmaugCS.Commands.Skills;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands
@@ -76,9 +77,9 @@ namespace SmaugCS.Commands
 
             // TODO saving_char = null;
 
-            for (int x = 0; x < Program.MAX_WEAR; x++)
+            for (int x = 0; x < GameConstants.MaximumWearLocations; x++)
             {
-                for (int y = 0; y < Program.MAX_LAYERS; y++)
+                for (int y = 0; y < GameConstants.MaximumWearLayers; y++)
                 {
                     // TODO Save equipment
                 }

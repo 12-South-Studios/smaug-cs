@@ -6,6 +6,7 @@ using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -36,10 +37,10 @@ namespace SmaugCS.Loaders
                         switch (line.ToLower())
                         {
                             case "level":
-                                if (low < Program.GetLevel("immortal"))
+                                if (low < LevelConstants.GetLevel("immortal"))
                                 {
                                     LogManager.Instance.Bug("God file {0} with level {1} < {2}", file, low,
-                                                   Program.GetLevel("immortal"));
+                                                   LevelConstants.GetLevel("immortal"));
                                     badFile = true;
                                 }
                                 break;

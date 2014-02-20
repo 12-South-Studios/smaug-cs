@@ -12,6 +12,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -317,7 +318,7 @@ namespace SmaugCS
 
                 string buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
                 //log_string(buffer);
-                ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)Program.GetLevel("immortal"));
+                ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.GetLevel("immortal"));
                 handler.extract_char(ch, false);
             }
         }

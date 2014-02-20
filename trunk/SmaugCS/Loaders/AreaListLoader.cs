@@ -7,6 +7,7 @@ using Realm.Library.Common.Exceptions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -26,7 +27,7 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Area);
-            IEnumerable<string> areaList = Program.GetAppSetting("Areas").Split(new[] { ',' });
+            IEnumerable<string> areaList = GameConstants.GetAppSetting("Areas").Split(new[] { ',' });
 
             foreach (string areaName in areaList)
             {

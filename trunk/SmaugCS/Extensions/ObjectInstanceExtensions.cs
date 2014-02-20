@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
@@ -82,9 +83,9 @@ namespace SmaugCS.Extensions
 
             if (handler.LoadingCharacter == ch)
             {
-                for (int i = 0; i < Program.MAX_WEAR; i++)
+                for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
                 {
-                    for (int j = 0; j < Program.MAX_LAYERS; j++)
+                    for (int j = 0; j < GameConstants.MaximumWearLayers; j++)
                     {
                         if (ch.IsNpc())
                         {

@@ -54,7 +54,7 @@ namespace SmaugCS.SpecFuns
             if (ch.CharDied())
                 return true;
 
-            int vnum = Program.GetVnum("MobileCityGuard");
+            int vnum = GameConstants.GetVnum("MobileCityGuard");
             MobTemplate cityguard = DatabaseManager.Instance.GetMobTemplate(vnum);
 
             CharacterInstance newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);

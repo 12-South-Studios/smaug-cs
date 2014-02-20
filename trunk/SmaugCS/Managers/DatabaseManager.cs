@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using LuaInterface;
-using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Library.Patterns.Repository;
@@ -18,6 +15,7 @@ using SmaugCS.Exceptions;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Loaders;
+using SmaugCS.Logging;
 using SmaugCS.Lookup;
 using SmaugCS.Repositories;
 using SmaugCS.Weather;
@@ -38,7 +36,7 @@ namespace SmaugCS.Managers
             OBJECT_INDEXES = new ObjectRepository();
             MOBILE_INDEXES = new MobileRepository();
             CHARACTERS = new CharacterRepository();
-            //OBJECTS = new ObjInstanceRepository(Program.MAX_WEAR, Program.MAX_LAYERS);
+            //OBJECTS = new ObjInstanceRepository(Program.MaximumWearLocations, Program.MaximumWearLayers);
             LIQUIDS = new List<LiquidData>();
             HERBS = new List<SkillData>();
             SKILLS = new List<SkillData>();
@@ -100,8 +98,8 @@ namespace SmaugCS.Managers
             LogManager.Instance.BootLog("{0} SpecFuns loaded.", SPEC_FUNS.Count());
             // TODO: Update function references
 
-            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, Program.GetLevel("demi"));
-            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, Program.GetLevel("immortal"));
+            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, LevelConstants.GetLevel("demi"));
+            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, LevelConstants.GetLevel("immortal"));
             // TODO Do the rest of the system data
 
             if (!db.load_systemdata(db.SystemData))
@@ -199,7 +197,7 @@ namespace SmaugCS.Managers
             LogManager.Instance.BootLog("{0} Planes loaded.", 0);
 
             // Pre-Tests the module_Area to catch any errors early before area load
-            LuaManager.Instance.DoLuaScript(Program.GetDataPath() + "//modules//module_area.lua");
+            LuaManager.Instance.DoLuaScript(GameConstants.GetDataPath() + "//modules//module_area.lua");
 
             AreaListLoader aLoader = new AreaListLoader();
             _loaders.Add(aLoader);
@@ -249,8 +247,8 @@ namespace SmaugCS.Managers
             wLoader.Load();
             LogManager.Instance.BootLog("{0} Watches loaded.", db.WATCHES.Count);
 
-            ban.load_banlist();
-            LogManager.Instance.BootLog("{0} Bans loaded.", db.BANS.Count);
+            //ban.load_banlist();
+            //LogManager.Instance.BootLog("{0} Bans loaded.", db.BANS.Count);
 
             db.load_reserved();
             LogManager.Instance.BootLog("{0} Reserved Names loaded.", db.ReservedNames.Count);

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ADA623A7-32EF-402D-9A12-DB64077ED303}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmaugCS.Ban</RootNamespace>
+    <AssemblyName>SmaugCS.Ban</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ban.cs" />
+    <Compile Include="BanData.cs" />
+    <Compile Include="BanManager.cs" />
+    <Compile Include="BanTypes.cs" />
+    <Compile Include="IBanManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlProcedureStatics.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
+      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
+      <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Singleton\Realm.Library.Patterns.Singleton.csproj">
+      <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
+      <Name>Realm.Library.Patterns.Singleton</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
+      <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
+      <Name>SmallDBConnectivity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
+      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
+      <Name>SmaugCS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
+      <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
+      <Name>SmaugCS.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -163,5 +163,13 @@ namespace SmallDBConnectivity.Test
             Assert.That(result, Is.InstanceOf<FakeObject>());
             Assert.That(result.Name, Is.EqualTo("Fake"));
         }
+
+        [TestCase("select something from table", true)]
+        [TestCase("drop table", false)]
+        [TestCase("whatever this is", false)]
+        public void IsInternalSqlTest(string sql, bool expectedValue)
+        {
+            Assert.That(SmallDb.IsInternalSql(sql), Is.EqualTo(expectedValue));
+        }
    }
 }

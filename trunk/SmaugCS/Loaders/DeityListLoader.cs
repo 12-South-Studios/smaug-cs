@@ -5,6 +5,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -28,7 +29,7 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Deity);
-            IEnumerable<string> deityList = Program.GetAppSetting("Deities").Split(new[] { ',' });
+            IEnumerable<string> deityList = GameConstants.GetAppSetting("Deities").Split(new[] { ',' });
 
             foreach (string deityName in deityList)
             {

@@ -116,71 +116,71 @@ namespace SmaugCS
                 glowsee = true;
 
             if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Invisible))
-                sb.Append(GameConstants.ObjectAffectStrings[0]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 0));
             if ((ch.IsAffected(AffectedByTypes.DetectEvil)
                  || ch.CurrentClass == ClassTypes.Paladin)
                 && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Evil))
-                sb.Append(GameConstants.ObjectAffectStrings[1]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 1));
 
             if (ch.CurrentClass == ClassTypes.Paladin)
             {
                 if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
                     && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
                     && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
-                    sb.Append(GameConstants.ObjectAffectStrings[2]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 2));
                 if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
                     && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
                     && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
-                    sb.Append(GameConstants.ObjectAffectStrings[3]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 3));
                 if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
                     && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
                     && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
-                    sb.Append(GameConstants.ObjectAffectStrings[4]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 4));
 
                 if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
                     && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
                     && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
-                    sb.Append(GameConstants.ObjectAffectStrings[5]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 5));
                 if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
                     && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
                     && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
-                    sb.Append(GameConstants.ObjectAffectStrings[6]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 6));
                 if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
                     && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
                     && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
-                    sb.Append(GameConstants.ObjectAffectStrings[7]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 7));
             }
 
             if ((ch.IsAffected(AffectedByTypes.DetectMagic)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
                 && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
-                sb.Append(GameConstants.ObjectAffectStrings[8]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 8));
             if (!glowsee && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Glow))
-                sb.Append(GameConstants.ObjectAffectStrings[9]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 9));
             if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Hum))
-                sb.Append(GameConstants.ObjectAffectStrings[10]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 10));
             if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Hidden))
-                sb.Append(GameConstants.ObjectAffectStrings[11]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 11));
             if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Buried))
-                sb.Append(GameConstants.ObjectAffectStrings[12]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 12));
             if (ch.IsImmortal() && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype))
-                sb.Append(GameConstants.ObjectAffectStrings[13]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 13));
             if ((ch.IsAffected(AffectedByTypes.DetectTraps)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
                 && handler.is_trapped(obj))
-                sb.Append(GameConstants.ObjectAffectStrings[14]);
+                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 14));
 
             if (fShort)
             {
                 if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
-                    sb.Append(GameConstants.ObjectAffectStrings[15]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 15));
                 else if (!string.IsNullOrWhiteSpace(obj.ShortDescription))
                     sb.Append(obj.ShortDescription);
             }
             else
             {
                 if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
-                    sb.Append(GameConstants.ObjectAffectStrings[16]);
+                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 16));
                 else if (!string.IsNullOrWhiteSpace(obj.Description))
                     sb.Append(obj.Description);
             }
@@ -483,7 +483,7 @@ namespace SmaugCS
 
             if (!victim.IsNpc())
             {
-                if (victim.IsImmortal() && victim.Level > Program.GetLevel("avatar"))
+                if (victim.IsImmortal() && victim.Level > LevelConstants.GetLevel("avatar"))
                     color.send_to_char_color("&P(&WImmortal&P) ", ch);
                 if (victim.PlayerData.Clan != null
                     && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
@@ -491,7 +491,7 @@ namespace SmaugCS
                     && (victim.PlayerData.Clan.ClanType != ClanTypes.Order
                     || victim.PlayerData.Clan.ClanType != ClanTypes.Guild))
                     color.ch_printf_color(ch, "%s ", victim.PlayerData.Clan.Badge);
-                else if (victim.CanPKill() && victim.Level < Program.GetLevel("immortal"))
+                else if (victim.CanPKill() && victim.Level < LevelConstants.GetLevel("immortal"))
                     color.send_to_char_color("&P(&wUnclanned&P) ", ch);
             }
 
@@ -730,7 +730,7 @@ namespace SmaugCS
             show_condition(ch, victim);
 
             bool found = false;
-            for (int i = 0; i < Program.MAX_WEAR; i++)
+            for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
             {
                 ObjectInstance obj = victim.GetEquippedItem(i);
                 if (obj != null && handler.can_see_obj(ch, obj))
