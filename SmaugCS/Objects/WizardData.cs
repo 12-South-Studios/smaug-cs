@@ -28,9 +28,9 @@ namespace SmaugCS.Objects
                     case "pcflags":
                         int flags = tuple.Item2.ToInt32();
                         if (flags.IsSet((int)PCFlags.Retired))
-                            level = Program.MAX_LEVEL - 15;
+                            level = LevelConstants.MAX_LEVEL - 15;
                         if (flags.IsSet((int)PCFlags.Guest))
-                            level = Program.MAX_LEVEL - 16;
+                            level = LevelConstants.MAX_LEVEL - 16;
                         break;
                 }
             }

@@ -14,6 +14,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Spells.Smaug;
 
@@ -816,7 +817,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (!ch.IsNpc() && ch.Level >= Program.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
                 return false;
 
             if (!ch.IsNpc() && !victim.IsNpc() && ch != victim
@@ -919,8 +920,8 @@ namespace SmaugCS
                     int levelRatio = 0;
 
                     levelRatio = victim.Level < 1
-                        ? ch.Level.GetNumberThatIsBetween(1, Program.MAX_LEVEL)
-                        : (ch.Level / victim.Level).GetNumberThatIsBetween(1, Program.MAX_LEVEL);
+                        ? ch.Level.GetNumberThatIsBetween(1, LevelConstants.MAX_LEVEL)
+                        : (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.MAX_LEVEL);
 
                     if (ch.PlayerData.Clan != null)
                         ch.PlayerData.Clan.PvEKills++;
@@ -941,7 +942,7 @@ namespace SmaugCS
             }
 
             // if you kill yourself, nothing happens
-            if (ch == victim || ch.Level >= Program.GetLevel("immortal"))
+            if (ch == victim || ch.Level >= LevelConstants.GetLevel("immortal"))
                 return;
 
             // Any character in the arena is okay to kill
@@ -1077,7 +1078,7 @@ namespace SmaugCS
                     victim.PlayerData.PvEDeaths++;
                     victim.CurrentRoom.Area.PvEDeaths++;
 
-                    int levelRatio = (ch.Level / victim.Level).GetNumberThatIsBetween(1, Program.GetLevel("avatar"));
+                    int levelRatio = (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.GetLevel("avatar"));
                     if (victim.PlayerData.CurrentDeity != null)
                     {
                         if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCRace)
@@ -1166,7 +1167,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (ch.IsNpc() || ch == victim || ch.Level >= Program.GetLevel("immortal") ||
+            if (ch.IsNpc() || ch == victim || ch.Level >= LevelConstants.GetLevel("immortal") ||
                 ch.Act.IsSet((int)PlayerFlags.Attacker) || ch.Act.IsSet((int)PlayerFlags.Killer))
                 return;
 
@@ -1353,7 +1354,7 @@ namespace SmaugCS
                 {
                     if (ch.HasBodyPart(cindex))
                     {
-                        msg = GameConstants.PartMessages[shift];
+                        msg = LookupManager.Instance.GetLookup("PartMessages", shift);
                         vnum = GameConstants.PartVnums[shift];
                         break;
                     }

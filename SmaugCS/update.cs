@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -12,7 +13,7 @@ namespace SmaugCS
     {
         public static void gain_condition(CharacterInstance ch, ConditionTypes condition, int value)
         {
-            if (value == 0 || ch.IsNpc() || ch.Level >= Program.GetLevel("immortal")
+            if (value == 0 || ch.IsNpc() || ch.Level >= LevelConstants.GetLevel("immortal")
                 || ch.IsNotAuthorized())
                 return;
 
@@ -46,7 +47,7 @@ namespace SmaugCS
         {
             int retcode = (int)ReturnTypes.None;
 
-            if (ch.Level < Program.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
+            if (ch.Level < LevelConstants.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
             {
                 color.set_char_color(ATTypes.AT_HUNGRY, ch);
                 color.send_to_char(ConditionMessageTableTable[ConditionTypes.Full][conditionValue * 2], ch);
@@ -73,7 +74,7 @@ namespace SmaugCS
         {
             int retcode = (int)ReturnTypes.None;
 
-            if (ch.Level < Program.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
+            if (ch.Level < LevelConstants.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
             {
                 color.set_char_color(ATTypes.AT_THIRSTY, ch);
                 color.send_to_char(ConditionMessageTableTable[ConditionTypes.Thirsty][conditionValue * 2], ch);
@@ -96,7 +97,7 @@ namespace SmaugCS
         {
             int retcode = (int)ReturnTypes.None;
 
-            if (ch.Level < Program.GetLevel("avatar"))
+            if (ch.Level < LevelConstants.GetLevel("avatar"))
             {
                 color.set_char_color(ATTypes.AT_BLOOD, ch);
                 color.send_to_char(ConditionMessageTableTable[ConditionTypes.Bloodthirsty][conditionValue * 2], ch);

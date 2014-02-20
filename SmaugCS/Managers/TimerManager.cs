@@ -27,6 +27,11 @@ namespace SmaugCS.Managers
             TimerTable = new ConcurrentDictionary<int, CommonTimer>();
         }
 
+        ~TimerManager()
+        {
+            TimerTable.Values.ToList().ForEach(x => x.Dispose());
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -49,11 +54,13 @@ namespace SmaugCS.Managers
         /// <returns></returns>
         public int AddTimer(double duration, ElapsedEventHandler callback)
         {
-            CommonTimer newTimer = new CommonTimer {Interval = duration};
+            int newId = GetNextId;
+
+            CommonTimer newTimer = new CommonTimer(newId) {Interval = duration};
             newTimer.Elapsed += callback;
 
-            int newId = GetNextId;
             TimerTable.GetOrAdd(newId, newTimer);
+            newTimer.Start();
             return newId;
         }
 

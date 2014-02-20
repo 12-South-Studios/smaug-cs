@@ -5,6 +5,7 @@ using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
@@ -65,7 +66,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LDataPath", "Retrieves the game's data path")]
         public static string LuaGetDataPath()
         {
-            return _dataPath.IsNullOrEmpty() ? Program.GetDataPath() : _dataPath;
+            return _dataPath.IsNullOrEmpty() ? GameConstants.GetDataPath() : _dataPath;
         }
 
         [LuaFunction("FindInstance", "Locates a character matching the given name", "Instance executing this search", "String argument")]

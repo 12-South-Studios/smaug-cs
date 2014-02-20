@@ -53,6 +53,7 @@ namespace SmaugCS.Constants.Enums
         MoonMap,
         Liquids,
         Mixtures,
-        SpecFuns
+        SpecFuns,
+        Lookups
     }
 }

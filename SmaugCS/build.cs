@@ -15,6 +15,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
@@ -72,7 +73,7 @@ namespace SmaugCS
 
         public static bool can_oedit(CharacterInstance ch, ObjectTemplate obj)
         {
-            if (ch.IsNpc() || ch.Trust < Program.GetLevel("god"))
+            if (ch.IsNpc() || ch.Trust < LevelConstants.GetLevel("god"))
                 return false;
             if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype))
             {
@@ -134,7 +135,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc())
                 return false;
-            if (ch.Trust >= Program.GetLevel("god"))
+            if (ch.Trust >= LevelConstants.GetLevel("god"))
                 return true;
             if (!mob.GetActFlags().IsSet((int)ActFlags.Prototype))
             {
@@ -578,7 +579,7 @@ namespace SmaugCS
                 if (exit)
                     return;
 
-                if (ch.Trust > Program.GetLevel("immortal") && arg1.Equals("/!"))
+                if (ch.Trust > LevelConstants.GetLevel("immortal") && arg1.Equals("/!"))
                 {
                     // do last command
                     return;
@@ -601,9 +602,9 @@ namespace SmaugCS
                 edit.Text[edit.OnLine++] = buffer;
                 if (edit.OnLine > edit.NumberOfLines)
                     edit.NumberOfLines++;
-                if (edit.NumberOfLines > Program.GetIntegerConstant("MaximumBufferLines"))
+                if (edit.NumberOfLines > GameConstants.GetIntegerConstant("MaximumBufferLines"))
                 {
-                    edit.NumberOfLines = Program.GetIntegerConstant("MaximumBufferLines");
+                    edit.NumberOfLines = GameConstants.GetIntegerConstant("MaximumBufferLines");
                     color.send_to_char("Buffer full.\r\n", ch);
                     save = true;
                 }
@@ -644,7 +645,7 @@ namespace SmaugCS
             color.send_to_char("/f <format>     format text in buffer\r\n", ch);
             color.send_to_char("/r <old> <new>  global replace\r\n", ch);
             color.send_to_char("/a              abort editing\r\n", ch);
-            if (ch.Trust > Program.GetLevel("immortal"))
+            if (ch.Trust > LevelConstants.GetLevel("immortal"))
                 color.send_to_char("/! <command>    execute command (do not use another editing command)\r\n", ch);
             color.send_to_char("/s              save buffer\r\n\r\n> ", ch);
             return true;
@@ -733,7 +734,7 @@ namespace SmaugCS
         }
         private static bool EditBufferInsert(CharacterInstance ch, string arg)
         {
-            if (ch.CurrentEditor.NumberOfLines >= Program.GetIntegerConstant("MaximumBufferLines"))
+            if (ch.CurrentEditor.NumberOfLines >= GameConstants.GetIntegerConstant("MaximumBufferLines"))
             {
                 color.send_to_char("Buffer is full.\r\n", ch);
                 return true;
@@ -837,7 +838,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc())
                 return;
-            if (ch.Trust <= Program.GetLevel("immortal") || ch.PlayerData.r_range_lo <= 0 || ch.PlayerData.r_range_hi <= 0)
+            if (ch.Trust <= LevelConstants.GetLevel("immortal") || ch.PlayerData.r_range_lo <= 0 || ch.PlayerData.r_range_hi <= 0)
                 return;
 
             AreaData area = ch.PlayerData.BuilderArea;

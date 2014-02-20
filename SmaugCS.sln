@@ -156,6 +156,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{E4EAFA
 		data\system\immortal.host = data\system\immortal.host
 		data\system\liquids.lua = data\system\liquids.lua
 		data\system\login.msg = data\system\login.msg
+		Lookups.lua = Lookups.lua
 		data\system\mixtures.lua = data\system\mixtures.lua
 		data\system\moblog.txt = data\system\moblog.txt
 		data\system\MoonMap.txt = data\system\MoonMap.txt
@@ -218,6 +219,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		doc\Mortal Rules.docx = doc\Mortal Rules.docx
 		Notes.txt = Notes.txt
 		Resets.txt = Resets.txt
+		TODO.txt = TODO.txt
 		values.txt = values.txt
 	EndProjectSection
 EndProject
@@ -321,6 +323,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallDBConnectivity", "Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj", "{7D9C9772-4747-4E29-9806-1007528BBEEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallDBConnectivity.Test", "Libraries\SmallDBConnectivity.Test\SmallDBConnectivity.Test.csproj", "{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Ban", "SmaugCS.Ban\SmaugCS.Ban.csproj", "{ADA623A7-32EF-402D-9A12-DB64077ED303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Ban.Tests", "SmaugCS.Ban.Tests\SmaugCS.Ban.Tests.csproj", "{F3A90F67-E5F7-400C-A324-28ACFA02F24F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Logging", "SmaugCS.Logging\SmaugCS.Logging.csproj", "{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -626,8 +634,8 @@ Global
 		{E278D36A-8920-4D81-A6C3-0B4730433C8F}.Work|Any CPU.ActiveCfg = Release|Any CPU
 		{E278D36A-8920-4D81-A6C3-0B4730433C8F}.Work|Any CPU.Build.0 = Release|Any CPU
 		{E278D36A-8920-4D81-A6C3-0B4730433C8F}.Work|x86.ActiveCfg = Release|Any CPU
-		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Debug|Any CPU.Build.0 = Debug|x86
 		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Home|Any CPU.ActiveCfg = Release|Any CPU
 		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Home|Any CPU.Build.0 = Release|Any CPU
@@ -650,6 +658,42 @@ Global
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Work|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Work|Any CPU.Build.0 = Release|Any CPU
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Work|x86.ActiveCfg = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Home|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Home|Any CPU.Build.0 = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Home|x86.ActiveCfg = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Release|x86.ActiveCfg = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Work|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Work|Any CPU.Build.0 = Release|Any CPU
+		{ADA623A7-32EF-402D-9A12-DB64077ED303}.Work|x86.ActiveCfg = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Home|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Home|Any CPU.Build.0 = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Home|x86.ActiveCfg = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Work|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Work|Any CPU.Build.0 = Release|Any CPU
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F}.Work|x86.ActiveCfg = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Home|Any CPU.ActiveCfg = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Home|Any CPU.Build.0 = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Home|x86.ActiveCfg = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Release|x86.ActiveCfg = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Work|Any CPU.ActiveCfg = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Work|Any CPU.Build.0 = Release|Any CPU
+		{E2EA4786-9EF9-4FEE-8067-AC05989ECC50}.Work|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -662,6 +706,7 @@ Global
 		{D822B027-D854-4081-B14D-8F7269207F61} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{E278D36A-8920-4D81-A6C3-0B4730433C8F} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
+		{F3A90F67-E5F7-400C-A324-28ACFA02F24F} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{1FDEE5BD-A724-4478-BCA3-4C49DAEA291D} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
 		{DD42338B-FE18-406E-8084-F606825771F6} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
 		{74A0765E-25AD-486E-8284-33FCECF636D1} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}

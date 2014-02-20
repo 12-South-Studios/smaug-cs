@@ -8,9 +8,18 @@ using log4net;
 
 namespace SmallDBConnectivity
 {
-    public sealed class SmallDb
+    public sealed class SmallDb : ISmallDb
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(SmallDb));
+
+        private static readonly List<string> SqlCommands = new List<string>
+            {
+                "SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "MERGE", "ALTER", "CREATE"
+            };
+        private static readonly List<string> DisallowedCommands = new List<string>
+            {
+                "DROP", "ALTER", "CREATE"
+            }; 
 
         /// <summary>
         /// Executes a scalar query and returns the result
@@ -68,7 +77,6 @@ namespace SmallDBConnectivity
                     dbCommand.ExecuteNonQuery();
 
                     dbCommand.Connection.CleanupConnection();
-
                 }
             }
             catch (DbException ex)
@@ -179,7 +187,7 @@ namespace SmallDBConnectivity
         {
             dbCommand.Connection = dbConnection;
             dbCommand.CommandText = storedProcedureName;
-            dbCommand.CommandType = CommandType.StoredProcedure;
+            dbCommand.CommandType = IsInternalSql(storedProcedureName) ? CommandType.Text : CommandType.StoredProcedure;
             if (parameters != null && parameters.Any())
                 parameters.ToList().ForEach(parameter => dbCommand.Parameters.Add(parameter));
         }
@@ -191,6 +199,17 @@ namespace SmallDBConnectivity
         {
             if (dbConnection == null) throw new ArgumentNullException("dbConnection");
             if (string.IsNullOrWhiteSpace(storedProcedureName)) throw new ArgumentNullException("storedProcedureName");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sqlString"></param>
+        /// <returns></returns>
+        internal static bool IsInternalSql(string sqlString)
+        {
+            string[] words = sqlString.ToUpper().Split(' ');
+            return (SqlCommands.Contains(words[0]) && !DisallowedCommands.Contains(words[0]));
         }
     }
 }

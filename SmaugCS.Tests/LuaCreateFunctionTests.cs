@@ -5,8 +5,10 @@ using Realm.Library.Common;
 using Realm.Library.Lua;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
+using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
@@ -22,7 +24,7 @@ namespace SmaugCS.Tests
 
 			const string dataPath = "D://Projects//SmaugCS//trunk//data";
 
-			LuaManager.Instance.InitializeManager(mockLogManager.Object, dataPath);
+			LuaManager.Instance.Initialize(mockLogManager.Object, dataPath);
 			LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, dataPath);
 			LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
 

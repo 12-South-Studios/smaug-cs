@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -24,7 +25,7 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Class);
-            IEnumerable<string> classList = Program.GetAppSetting("Classes").Split(new[] { ',' });
+            IEnumerable<string> classList = GameConstants.GetAppSetting("Classes").Split(new[] { ',' });
 
             foreach (string className in classList)
             {

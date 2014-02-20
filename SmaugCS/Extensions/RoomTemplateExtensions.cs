@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
@@ -62,8 +63,8 @@ namespace SmaugCS.Extensions
             if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {
                 LogManager.Instance.Bug("%s: %s -> NULL room! Putting char in limbo (%d)",
-                    "char_to_room", ch.Name, Program.ROOM_VNUM_LIMBO);
-                localRoom = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(Program.ROOM_VNUM_LIMBO);
+                    "char_to_room", ch.Name, VnumConstants.ROOM_VNUM_LIMBO);
+                localRoom = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
             }
 
             ch.CurrentRoom = localRoom;
@@ -159,7 +160,7 @@ namespace SmaugCS.Extensions
             obj.InObject = null;
             obj.InRoom = null;
 
-            if (obj.ObjectIndex.Vnum == Program.OBJ_VNUM_CORPSE_PC && handler.falling > 0)
+            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_CORPSE_PC && handler.falling > 0)
                 save.write_corpses(null, obj.ShortDescription, obj);
         }
 
@@ -194,7 +195,7 @@ namespace SmaugCS.Extensions
             handler.falling++;
             act_obj.obj_fall(obj, false);
             handler.falling--;
-            if (obj.ObjectIndex.Vnum == Program.OBJ_VNUM_CORPSE_PC && handler.falling < 1)
+            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_CORPSE_PC && handler.falling < 1)
                 save.write_corpses(null, obj.ShortDescription, null);
             return obj;
         }

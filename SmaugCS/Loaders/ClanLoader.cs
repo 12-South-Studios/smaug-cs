@@ -5,6 +5,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -28,7 +29,7 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Clan);
-            IEnumerable<string> clanList = Program.GetAppSetting("Clans").Split(new[] { ',' });
+            IEnumerable<string> clanList = GameConstants.GetAppSetting("Clans").Split(new[] { ',' });
 
             foreach (string clanName in clanList)
             {

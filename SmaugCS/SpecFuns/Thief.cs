@@ -18,7 +18,7 @@ namespace SmaugCS.SpecFuns
                     ch.CurrentRoom.Persons.Where(victim => !victim.Equals(ch))
                       .Where(
                           victim =>
-                          !victim.IsNpc() && victim.Level < Program.GetLevel("immortal") && SmaugRandom.Bits(2) == 0 &&
+                          !victim.IsNpc() && victim.Level < LevelConstants.GetLevel("immortal") && SmaugRandom.Bits(2) == 0 &&
                           handler.can_see(ch, victim)))
             {
                 if (victim.IsAwake() && SmaugRandom.Between(0, ch.Level) == 0)

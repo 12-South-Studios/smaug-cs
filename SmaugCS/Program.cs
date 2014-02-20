@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
+using System.Data.SqlClient;
 using System.Text;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
-using SmaugCS.Constants;
-using SmaugCS.Constants.Config;
+using SmallDBConnectivity;
+using SmaugCS.Ban;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
@@ -16,6 +16,7 @@ namespace SmaugCS
 {
     public class Program
     {
+        #region Old Constants
         public static int BERR = 255;
 
         public static bool EXA_prog_trigger = true;
@@ -88,35 +89,14 @@ namespace SmaugCS
         public static int MAX_INBUF_SIZE = 1024;
         public static int MSL = MAX_STRING_LENGTH;
         public static int MIL = MAX_INPUT_LENGTH;
-
-        /// <summary>
-        /// Max Clothing Layers
-        /// </summary>
-        public static int MAX_LAYERS
-        {
-            get { return GetIntegerConstant("MaximumLayers"); }
-        }
-
         public static int MAX_NEST = 100;   // Max Container Nesting
-
-        public static int MAX_WEAR
-        {
-            get { return GetIntegerConstant("MaximumWearLocations"); }
-        }
 
         public static int MAX_KILLTRACK = 25;          // Track Mob Vnums killed
         #endregion
 
         #region Game Parameters
 
-        public static int MAX_EXP_WORTH
-        {
-            get { return GetIntegerConstant("MaximumExperienceValue"); }
-        }
-        public static int MIN_EXP_WORTH
-        {
-            get { return GetIntegerConstant("MinimumExperienceValue"); }
-        }
+
 
         public static int MAX_FIGHT = 8;
 
@@ -136,10 +116,7 @@ namespace SmaugCS
         public int MAX_PC_CLASS { get; set; }
         public bool mud_down { get; set; }
 
-        public static int MAX_LEVEL
-        {
-            get { return GetIntegerConstant("MaximumLevel"); }
-        }
+
 
         public static int MAX_CLAN = 50;
         public static int MAX_DEITY = 50;
@@ -149,44 +126,7 @@ namespace SmaugCS
         public static int MAX_PERSONAL = 5; // Max personal skills
         public static int MAX_WHERE_NAME = 29;
 
-        private static readonly Dictionary<string, int> LevelMap = new Dictionary<string, int>()
-            {
-                 {"hero", -15},
-                 {"immortal", -14},
-                 {"supreme", 0},
-                 {"infinite", -1},
-                 {"eternal", -2},
-                 {"implementor", -3},
-                 {"sub implementor", -4},
-                 {"ascendant", -5},
-                 {"greater", -6},
-                 {"god", -7},
-                 {"lesser", -8},
-                 {"true immortal", -9},
-                 {"demi", -10},
-                 {"savior", -11},
-                 {"creator", -12},
-                 {"acolyte", -13},
-                 {"neophyte", -14},
-                 {"avatar", -15}
-
-            };
-
-        public static int GetLevel(string type)
-        {
-            return LevelMap.ContainsKey(type.ToLower()) ? MAX_LEVEL - LevelMap[type.ToLower()] : MAX_LEVEL;
-        }
-
-        public static int LEVEL_LOG
-        {
-            get { return GetLevel("lesser"); }
-        }
-
-        public static int LEVEL_HIGOD
-        {
-            get { return GetLevel("god"); }
-        }
-
+ 
         public bool DONT_UPPER { get; set; }
 
         /*public static int SECONDS_PER_TICK = SystemData.SecondsPerTick;
@@ -250,74 +190,12 @@ namespace SmaugCS
         public static int SPOW_MASK = ALL_BITS & ~(BV09 | BV10);
         public static int SSAV_MASK = ALL_BITS & ~(BV11 | BV12 | BV13);
 
-        #region Well-known object vnums
-        public static int OBJ_VNUM_MONEY_ONE { get { return GetVnum("ObjectMoneySingle"); } }
-        public static int OBJ_VNUM_MONEY_SOME { get { return GetVnum("ObjectMoneyMulti"); } }
-        public static int OBJ_VNUM_CORPSE_NPC { get { return GetVnum("ObjectCorpseNPC"); } }
-        public static int OBJ_VNUM_CORPSE_PC { get { return GetVnum("ObjectCorpsePC"); } }
-        public static int OBJ_VNUM_SEVERED_HEAD = 12;
-        public static int OBJ_VNUM_TORN_HEART = 13;
-        public static int OBJ_VNUM_SLICED_ARM = 14;
-        public static int OBJ_VNUM_SLICED_LEG = 15;
-        public static int OBJ_VNUM_SPILLED_GUTS = 16;
-        public static int OBJ_VNUM_BLOOD = 17;
-        public static int OBJ_VNUM_BLOODSTAIN = 18;
-        public static int OBJ_VNUM_SCRAPS = 19;
-        public static int OBJ_VNUM_MUSHROOM = 20;
-        public static int OBJ_VNUM_LIGHT_BALL = 21;
-        public static int OBJ_VNUM_SPRING = 22;
-        public static int OBJ_VNUM_SKIN = 23;
-        public static int OBJ_VNUM_SLICE = 24;
-        public static int OBJ_VNUM_SHOPPING_BAG = 25;
-        public static int OBJ_VNUM_BLOODLET = 26;
-
-        public static int OBJ_VNUM_FIRE { get { return GetVnum("ObjectFire"); } }
-        public static int OBJ_VNUM_TRAP { get { return GetVnum("ObjectTrap"); } }
-        public static int OBJ_VNUM_PORTAL = 32;
-        public static int OBJ_VNUM_BLACK_POWDER = 33;
-        public static int OBJ_VNUM_SCROLL_SCRIBING = 34;
-        public static int OBJ_VNUM_FLASK_BREWING = 35;
-        public static int OBJ_VNUM_NOTE = 36;
-
-        public static int OBJ_VNUM_DEITY = 64;
-
-        public static int OBJ_VNUM_SCHOOL_VEST = 10308;
-        public static int OBJ_VNUM_SCHOOL_SHIELD = 10310;
-        public static int OBJ_VNUM_SCHOOL_BANNER = 10311;
-        public static int OBJ_VNUM_SCHOOL_DAGGER = 10312;
-        public static int OBJ_VNUM_SCHOOL_SWORD = 10313;
-        public static int OBJ_VNUM_SCHOOL_MACE = 10315;
-        #endregion
+        
 
         public static int MAX_ITEM_TYPE = (int)ItemTypes.DrinkMixture;
 
         public static int REVERSE_APPLY = 1000;
 
-        #region Room virtual numbers
-
-        public static int ROOM_VNUM_LIMBO
-        {
-            get { return GetVnum("RoomLimbo"); }
-        }
-        public static int ROOM_VNUM_POLY = 3;
-        public static int ROOM_VNUM_CHAT = 1200;
-        public static int ROOM_VNUM_TEMPLE
-        {
-            get { return GetVnum("RoomTemple"); }
-        }
-        public static int ROOM_VNUM_ALTAR
-        {
-            get { return GetVnum("RoomAltar"); }
-        }
-        public static int ROOM_VNUM_SCHOOL
-        {
-            get { return GetVnum("RoomSchool"); }
-        }
-        public static int ROOM_AUTH_START = 100;
-        public static int ROOM_VNUM_HALLOFFALLEN = 21195;
-        public static int ROOM_VNUM_DEADLY = 3009;
-        public static int ROOM_VNUM_HELL = 6;
-        #endregion
 
 
         public static int MAX_DIR = (int)DirectionTypes.Southwest;
@@ -506,104 +384,50 @@ namespace SmaugCS
         }
 
         #endregion
-
-        #region Static Singleton References
-        public static LogManager _logMgr;
-        public static LuaManager _luaMgr;
-        public static DatabaseManager _dbMgr;
-        public static GameManager _gameMgr;
-        #endregion
-
-        #region Configuration Functions
-        public static string GetAppSetting(string name)
-        {
-            return ConfigurationManager.AppSettings[name];
-        }
-
-        private static ConstantElement GetConfigConstant(string elementName)
-        {
-            var section = ConfigurationManagerFunctions.GetSection<ConstantConfigurationSection>("ConstantSection");
-            return section.Constants.Cast<ConstantElement>().FirstOrDefault(element => element.Name.EqualsIgnoreCase(elementName));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Int32 GetIntegerConstant(string name)
-        {
-            var element = GetConfigConstant(name);
-            return element != null ? Convert.ToInt32(element.Value) : -1;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static String GetStringConstant(string name)
-        {
-            var element = GetConfigConstant(name);
-            return element != null ? element.Value : string.Empty;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Boolean GetBooleanConstant(string name)
-        {
-            var element = GetConfigConstant(name);
-            return element != null && Convert.ToBoolean(element.Value);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Int32 GetVnum(string name)
-        {
-            var section = ConfigurationManagerFunctions.GetSection<VnumConfigurationSection>("VnumSection");
-            var element =
-                (section.RoomVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name)) ??
-                 section.MobileVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name))) ??
-                section.ObjectVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
-            return element != null ? Convert.ToInt32(element.Value) : -1;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static string GetDataPath()
-        {
-            return GetStringConstant("DataPath");
-        }
         #endregion
 
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-            LogManager.Instance.BootLog("---------------------[ Boot Log ]--------------------");
+            try
+            {
+                LogManager.Instance.Initialize(log4net.LogManager.GetLogger("SmaugCS"), GameConstants.GetDataPath());
+                LogManager.Instance.BootLog("---------------------[ Boot Log ]--------------------");
+                
+                var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
+                LogManager.Instance.BootLog("{0} SystemDirectories loaded.", loaded);
 
-            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GetDataPath());
-            LogManager.Instance.BootLog("{0} SystemDirectories loaded.", loaded);
+                loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
+                LogManager.Instance.BootLog("{0} SystemFiles loaded.", loaded);
 
-            loaded = SystemConstants.LoadSystemFilesFromConfig(GetDataPath());
-            LogManager.Instance.BootLog("{0} SystemFiles loaded.", loaded);
+                LookupManager.Instance.Initialize();
 
-            LuaManager.Instance.InitializeManager(LogManager.Instance, GetDataPath());
-            InitializeLuaInjections();
-            InitializeLuaFunctions();
+                LuaManager.Instance.Initialize(LogManager.Instance, GameConstants.GetDataPath());
+                InitializeLuaInjections();
+                InitializeLuaFunctions();
 
-            DatabaseManager.Instance.Initialize(false);
+                LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
+                
+                // TODO: Startup Network Socket here
 
-            // TODO more here
+                DatabaseManager.Instance.Initialize(false);
 
+                BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), 
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["SmaugDB"].ConnectionString));
+                BanManager.Instance.LoadBans();
+                
+                GameManager.Instance.Initialize(false);
+                GameManager.Instance.DoLoop();
+
+                // TODO: Shutdown Network Socket
+
+                // TODO: Shutdown Managers
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.BootLog(ex);
+            }
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
@@ -615,10 +439,11 @@ namespace SmaugCS
         {
             LuaAreaFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
             LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, GetDataPath());
+            LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, GameConstants.GetDataPath());
             LuaMobFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
             LuaObjectFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
             LuaRoomFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaLookupFunctions.InitializeReferences(LookupManager.Instance, LogManager.Instance);
         }
 
         private static void InitializeLuaFunctions()

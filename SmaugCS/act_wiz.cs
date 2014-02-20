@@ -11,6 +11,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -310,7 +311,7 @@ namespace SmaugCS
             cls.UseMana = false;
             cls.BaseExperience = 1000;
 
-            for (int i = 0; i < Program.MAX_LEVEL; i++)
+            for (int i = 0; i < LevelConstants.MAX_LEVEL; i++)
             {
                 Dictionary<string, string> titleMap = db.TITLES[rcindex.ToString()];
                 titleMap[i.ToString()] = "Not set.";

@@ -67,7 +67,7 @@ namespace SmaugCS.Commands.Social
             }
 
             if (!victim.IsNpc() && victim.Switched != null
-                && (ch.Trust > Program.GetLevel("avatar"))
+                && (ch.Trust > LevelConstants.GetLevel("avatar"))
                 && !victim.Switched.IsAffected(AffectedByTypes.Possess))
             {
                 color.send_to_char("That player is switched.\r\n", ch);
@@ -114,7 +114,7 @@ namespace SmaugCS.Commands.Social
 
             if (victim.Descriptor != null
                 && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing
-                && ch.Trust < Program.GetLevel("god"))
+                && ch.Trust < LevelConstants.GetLevel("god"))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer. Please try again later.", ch, null, victim, ToTypes.Character);
                 return;
