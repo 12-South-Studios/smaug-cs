@@ -354,15 +354,6 @@ namespace SmaugCS.Extensions
                 ch.AffectedBy.SetBit((int)AffectedByTypes.Hide);
         }
 
-        public static void RemoveComment(this CharacterInstance ch, NoteData note)
-        {
-            if (ch.Comments == null || ch.Comments.Count == 0 || note == null)
-                return;
-
-            ch.Comments.Remove(note);
-            save.save_char_obj(ch);
-        }
-
         public static bool CanTakePrototype(this CharacterInstance ch)
         {
             if (ch.IsImmortal())

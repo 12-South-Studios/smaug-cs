@@ -6,6 +6,7 @@ using System.Text;
 using Realm.Library.Lua;
 using SmallDBConnectivity;
 using SmaugCS.Ban;
+using SmaugCS.Board;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Logging;
@@ -413,10 +414,16 @@ namespace SmaugCS
 
                 DatabaseManager.Instance.Initialize(false);
 
-                BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), 
-                    new SqlConnection(ConfigurationManager.ConnectionStrings["SmaugDB"].ConnectionString));
+                SqlConnection connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["SmaugDB"].ConnectionString);
+
+                BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
                 BanManager.Instance.LoadBans();
-                
+
+                BoardManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
+                BoardManager.Instance.LoadBoards();
+                // TODO: Load Projects
+
                 GameManager.Instance.Initialize(false);
                 GameManager.Instance.DoLoop();
 

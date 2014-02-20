@@ -30,7 +30,7 @@ namespace SmaugCS.Loaders
 
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
-                foreach (NoteData note in Character.NoteList)
+                /*foreach (NoteData note in Character.NoteList)
                 {
                     proxy.Write("#COMMENT\n");
                     proxy.Write("sender  {0}~\n", note.Sender);
@@ -38,7 +38,7 @@ namespace SmaugCS.Loaders
                     proxy.Write("to      {0}~\n", note.RecipientList);
                     proxy.Write("subject {0}~\n", note.Subject);
                     proxy.Write("text\n{0}~\n", note.Text);
-                }
+                }*/
             }
         }
 
@@ -49,7 +49,7 @@ namespace SmaugCS.Loaders
 
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
-                List<TextSection> sections = proxy.ReadSections(new[] { "#COMMENT" }, new[] { "*" }, null, null);
+                /*List<TextSection> sections = proxy.ReadSections(new[] { "#COMMENT" }, new[] { "*" }, null, null);
                 if (sections.Count > 0 && Character.Comments == null)
                     Character.Comments = new List<NoteData>();
 
@@ -88,7 +88,7 @@ namespace SmaugCS.Loaders
                     }
 
                     Character.Comments.Add(newNote);
-                }
+                }*/
             }
         }
 

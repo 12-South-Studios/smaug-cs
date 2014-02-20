@@ -85,7 +85,6 @@
     <Compile Include="Enums\AttackTypes.cs" />
     <Compile Include="Enums\ATTypes.cs" />
     <Compile Include="Enums\AutoSaveFlags.cs" />
-    <Compile Include="Enums\BoardTypes.cs" />
     <Compile Include="Enums\BodyPartTypes.cs" />
     <Compile Include="Enums\ChannelTypes.cs" />
     <Compile Include="Enums\CharacterSubStates.cs" />

@@ -1,4 +1,4 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Board
 {
     public enum BoardTypes
     {

@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Board
 {
     public class BoardData
     {
+        public int Id { get; private set; }
+        public BoardTypes Type { get; private set; }
+
         public List<NoteData> NoteList { get; set; }
         public string NoteFile { get; set; }
         public string ReadGroup { get; set; }
@@ -30,14 +35,15 @@ namespace SmaugCS.Data
         public int MinimumPostLevel { get; set; }
         public int MinimumRemoveLevel { get; set; }
         public int MaximumPosts { get; set; }
-        public BoardTypes Type { get; set; }
-
-        public BoardData()
+        
+        public BoardData(int id, BoardTypes type)
         {
+            Id = id;
+            Type = type;
             NoteList = new List<NoteData>();
         }
 
-        public void Load(TextSection section)
+        /*public void Load(TextSection section)
         {
             foreach (string line in section.Lines)
             {
@@ -107,7 +113,7 @@ namespace SmaugCS.Data
                         continue;
                 }
             }
-        }
+        }*/
 
         /*public void LoadNotes()
         {
@@ -124,7 +130,7 @@ namespace SmaugCS.Data
             }
         }*/
 
-        public void Save(TextWriterProxy proxy)
+       /* public void Save(TextWriterProxy proxy)
         {
             proxy.Write("#BOARD\n");
             proxy.Write("Filename          {0}~\n", NoteFile);
@@ -240,6 +246,19 @@ namespace SmaugCS.Data
                     return true;
             }
             return false;
+        }
+        */
+
+        public static BoardData Translate(DataRow dataRow)
+        {
+            BoardData board = new BoardData(Convert.ToInt32(dataRow["BoardId"]),
+                EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardType"].ToString()));
+            board.ReadGroup = dataRow["ReadGroup"].IsNullOrDBNull() ? string.Empty : dataRow["ReadGroup"].ToString();
+            board.PostGroup = dataRow["PostGroup"].IsNullOrDBNull() ? string.Empty : dataRow["PostGroup"].ToString();
+
+            // TODO: Finish this
+
+            return board;
         }
     }
 }

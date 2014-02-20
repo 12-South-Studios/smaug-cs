@@ -4,11 +4,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Timers;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmallDBConnectivity;
 using SmaugCS.Common.Database;
+using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
@@ -23,12 +25,24 @@ namespace SmaugCS.Ban
         private ILogManager _logManager;
         private ISmallDb _smallDb;
         private IDbConnection _connection;
+        private readonly CommonTimer _timer;
 
         [ExcludeFromCodeCoverage]
         private BanManager()
         {
             _repository = new SqlRepository();
             _bans = new List<BanData>();
+            _timer = new CommonTimer();
+            _timer.Interval = 60000;
+            _timer.Elapsed += TimerOnElapsed;
+        }
+
+        ~BanManager()
+        {
+            if (_timer != null)
+                _timer.Dispose();
+            if (_connection != null)
+                _connection.Dispose();
         }
 
         /// <summary>
@@ -46,6 +60,11 @@ namespace SmaugCS.Ban
             }
         }
 
+        public void ClearBans()
+        {
+            _bans.Clear();
+        }
+
         [ExcludeFromCodeCoverage]
         public void Initialize(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
         {
@@ -56,6 +75,21 @@ namespace SmaugCS.Ban
             _logManager = logManager;
             _smallDb = smallDb;
             _connection = connection;
+        }
+
+        private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+        {
+            List<BanData> toRemove = new List<BanData>();
+
+            foreach (BanData ban in _bans.Where(b => b.IsExpired()))
+            {
+                // TODO Do something
+
+                DeleteBan(ban.Id);
+                toRemove.Add(ban);
+            }
+
+            toRemove.ForEach(b => _bans.Remove(b));
         }
 
         [ExcludeFromCodeCoverage]
@@ -79,17 +113,22 @@ namespace SmaugCS.Ban
         [ExcludeFromCodeCoverage]
         private bool SaveBans()
         {
-            try 
+            IDbTransaction transaction = null;
+            try
             {
+                transaction = _connection.BeginTransaction();
                 foreach (BanData ban in _bans)
                 {
                     _smallDb.ExecuteNonQuery(_connection, _repository.GetSql(DbCommands.BanAdd.ToString()),
                                             CreateSqlParameters(ban));
                 }
+                transaction.Commit();
                 return true;
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                    transaction.Rollback();
                 _logManager.Error(ex);
                 return false;
             }
@@ -98,14 +137,19 @@ namespace SmaugCS.Ban
         [ExcludeFromCodeCoverage]
         private bool SaveBan(BanData ban)
         {
+            IDbTransaction transaction = null;
             try
             {
+                transaction = _connection.BeginTransaction();
                 _smallDb.ExecuteNonQuery(_connection, _repository.GetSql(DbCommands.BanAdd.ToString()),
                                          CreateSqlParameters(ban));
+                transaction.Commit();
                 return true;
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                    transaction.Rollback();
                 _logManager.Error(ex);
                 return false;
             }
@@ -128,14 +172,19 @@ namespace SmaugCS.Ban
         [ExcludeFromCodeCoverage]
         private bool DeleteBan(int id)
         {
-            try 
+            IDbTransaction transaction = null;
+            try
             {
+                transaction = _connection.BeginTransaction();
                 _smallDb.ExecuteNonQuery(_connection, _repository.GetSql(DbCommands.BanRemove.ToString()),
                                         new List<IDataParameter> {new SqlParameter("@BanId", id)});
+                transaction.Commit();
                 return true;
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                    transaction.Rollback();
                 _logManager.Error(ex);
                 return false;
             }
@@ -187,22 +236,91 @@ namespace SmaugCS.Ban
             using (DataTable dt = new DataTable())
             {
                 dt.Load(reader);
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    BanData ban = new BanData(Convert.ToInt32(row["BanId"]),
-                                              EnumerationExtensions.GetEnumByName<BanTypes>(row["BanType"].ToString()));
-                    ban.Name = row["Name"].ToString();
-                    ban.Note = row["Note"].IsNullOrDBNull() ? string.Empty : row["Note"].ToString();
-                    ban.BannedBy = row["BannedBy"].ToString();
-                    ban.BannedOn = Convert.ToDateTime(row["BannedOn"]);
-                    ban.Duration = Convert.ToInt32(row["Duration"]);
-
-                    bans.Add(ban);
-                }
+                bans.AddRange(from DataRow row in dt.Rows select BanData.Translate(row));
             }
 
             return bans;
+        }
+
+        public bool CheckTotalBans(string host, int supremeLevel)
+        {
+            foreach (BanData ban in _bans.Where(b => b.Level == supremeLevel))
+            {
+                if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
+                    return CheckBanExpiration(ban);
+                if (ban.Suffix && host.StartsWith(ban.Name))
+                    return CheckBanExpiration(ban);
+                if (ban.Prefix && host.EndsWith(ban.Name))
+                    return CheckBanExpiration(ban);
+                if (host.EqualsIgnoreCase(ban.Name))
+                    return CheckBanExpiration(ban);
+            }
+            return false;
+        }
+
+        internal static bool CheckBanExpiration(BanData ban)
+        {
+            return !ban.IsExpired();
+        }
+
+        internal static bool CheckBanExpireAndLevel(BanData ban, int characterLevel)
+        {
+            if (!ban.IsExpired())
+                return false;
+            if (ban.Level == characterLevel)
+            {
+                if (ban.Warn)
+                {
+                    // TODO what?
+                }
+                return false;
+            }
+            return true;
+        }
+
+        public bool CheckBans(CharacterInstance ch, int type)
+        {
+            switch (type)
+            {
+                case (int)BanTypes.Race:
+                    foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Race)
+                        .Where(ban => ban.Flag == (int)ch.CurrentRace))
+                    {
+                        return CheckBanExpireAndLevel(ban, ch.Level);
+                    }
+                    break;
+                case (int)BanTypes.Class:
+                    foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Class)
+                        .Where(ban => ban.Flag == (int)ch.CurrentClass))
+                    {
+                        return CheckBanExpireAndLevel(ban, ch.Level);
+                    }
+                    break;
+                case (int)BanTypes.Site:
+                    string host = ch.Descriptor.host.ToLower();
+                    bool match = false;
+
+                    foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Site))
+                    {
+                        if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
+                            match = true;
+                        else if (ban.Suffix && host.StartsWith(ban.Name))
+                            match = true;
+                        else if (ban.Prefix && host.EndsWith(ban.Name))
+                            match = true;
+                        else if (host.EqualsIgnoreCase(ban.Name))
+                            match = true;
+
+                        if (match)
+                            return CheckBanExpireAndLevel(ban, ch.Level);
+                    }
+                    break;
+                default:
+                    _logManager.Bug("Invalid ban type {0}", type);
+                    return false;
+            }
+
+            return false;
         }
     }
 }

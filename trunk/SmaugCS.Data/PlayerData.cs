@@ -13,7 +13,7 @@ namespace SmaugCS.Data
         public CouncilData Council { get; set; }
         public AreaData BuilderArea { get; set; }
         public DeityData CurrentDeity { get; set; }
-        public BoardData game_board { get; set; }
+        //public BoardData game_board { get; set; }
         public nuisance_data Nuisance { get; set; }
         public killed_data[] killed { get; set; }
 
