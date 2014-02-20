@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Constants.Constants;
-using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+﻿using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
 
-namespace SmaugCS
+namespace SmaugCS.Board
 {
     public static class boards
     {
-        public static void delete_project(ProjectData project)
+       /* public static void RemoveComment(this CharacterInstance ch, NoteData note)
+        {
+            if (ch.Comments == null || ch.Comments.Count == 0 || note == null)
+                return;
+
+            ch.Comments.Remove(note);
+            save.save_char_obj(ch);
+        }*/
+
+        /*public static void delete_project(ProjectData project)
         {
             project.Logs.Clear();
             db.PROJECTS.Remove(project);
@@ -95,6 +96,6 @@ namespace SmaugCS
                 color.ch_printf(ch, "You have {0} mail message{1}waiting for you.\r\n", counterTo, counterTo > 1 ? "s " : " ");
             if (counterFrom > 0)
                 color.ch_printf(ch, "You have {0} mail message{1}written by you.\r\n", counterFrom, counterFrom > 1 ? "s " : " ");
-        }
+        }*/
     }
 }

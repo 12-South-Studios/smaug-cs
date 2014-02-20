@@ -5,6 +5,7 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
+using SmaugCS.Board;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -487,7 +488,7 @@ namespace SmaugCS
             ch.StopFearing();
             fight.free_fight(ch);
 
-            ch.NoteList.Clear();
+            //ch.NoteList.Clear();
 
             foreach (VariableData vd in ch.Variables)
                 variables.delete_variable(vd);
@@ -508,7 +509,7 @@ namespace SmaugCS
                 ch.PlayerData = null;
             }
 
-            ch.Comments.Clear();
+            //ch.Comments.Clear();
             DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
         }
 

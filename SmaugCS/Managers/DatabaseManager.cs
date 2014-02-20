@@ -225,7 +225,7 @@ namespace SmaugCS.Managers
             db.load_buildlist();
 
             LogManager.Instance.BootLog("Loading boards");
-            boards.load_boards();
+            //boards.load_boards();
 
             ClanLoader clLoader = new ClanLoader();
             _loaders.Add(clLoader);

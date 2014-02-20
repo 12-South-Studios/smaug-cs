@@ -705,7 +705,6 @@
     <Compile Include="act_move.cs" />
     <Compile Include="act_obj.cs" />
     <Compile Include="act_wiz.cs" />
-    <Compile Include="boards.cs" />
     <Compile Include="build.cs" />
     <Compile Include="calendar.cs" />
     <Compile Include="color.cs" />
@@ -883,6 +882,10 @@
     <ProjectReference Include="..\SmaugCS.Ban\SmaugCS.Ban.csproj">
       <Project>{ada623a7-32ef-402d-9a12-db64077ed303}</Project>
       <Name>SmaugCS.Ban</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Board\SmaugCS.Board.csproj">
+      <Project>{308d980e-af66-4f6b-9bb9-69e3dcdc05cf}</Project>
+      <Name>SmaugCS.Board</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>

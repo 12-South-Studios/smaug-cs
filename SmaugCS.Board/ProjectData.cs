@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Board
 {
     public class ProjectData
     {

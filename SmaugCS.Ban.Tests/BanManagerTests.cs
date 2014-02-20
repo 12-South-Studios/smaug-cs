@@ -12,7 +12,9 @@ namespace SmaugCS.Ban.Tests
     [TestFixture]
     public class BanManagerTests
     {
-        private BanData GetBan()
+        private static IBanManager _banManager;
+
+        private static BanData GetBan()
         {
             return new BanData(1, BanTypes.Race)
                 {
@@ -24,7 +26,17 @@ namespace SmaugCS.Ban.Tests
                 };
         }
 
-        private IBanManager SetupBanManager()
+        private class FakeTransaction : IDbTransaction
+        {
+            public void Dispose() {}
+            public void Commit() {}
+            public void Rollback() {}
+            public IDbConnection Connection { get; set; }
+            public IsolationLevel IsolationLevel { get; set; }
+        }
+
+        [SetUp]
+        private void OnSetup()
         {
             var mockLogger = new Mock<ILogManager>();
             mockLogger.Setup(x => x.Error(It.IsAny<Exception>()));
@@ -34,11 +46,17 @@ namespace SmaugCS.Ban.Tests
                 It.IsAny<IEnumerable<IDataParameter>>(), It.IsAny<string>(), It.IsAny<bool>()));
 
             var mockConnection = new Mock<IDbConnection>();
+            mockConnection.Setup(x => x.BeginTransaction()).Returns(new FakeTransaction());
 
-            var mgr = BanManager.Instance;
-            mgr.Initialize(mockLogger.Object, mockDb.Object, mockConnection.Object);
+            _banManager = BanManager.Instance;
+            _banManager.Initialize(mockLogger.Object, mockDb.Object, mockConnection.Object);
+        }
 
-            return mgr;
+        [TearDown]
+        private void OnTeardown()
+        {
+            _banManager.ClearBans();
+            _banManager = null;
         }
 
         [Test]
@@ -52,9 +70,7 @@ namespace SmaugCS.Ban.Tests
         {
             var ban = GetBan();
 
-            IBanManager mgr = SetupBanManager();
-
-            Assert.That(mgr.AddBan(ban), Is.True);
+            Assert.That(_banManager.AddBan(ban), Is.True);
         }
 
         [Test]
@@ -62,11 +78,9 @@ namespace SmaugCS.Ban.Tests
         {
             var ban = GetBan();
 
-            IBanManager mgr = SetupBanManager();
+            _banManager.AddBan(ban);
 
-            mgr.AddBan(ban);
-
-            Assert.That(mgr.AddBan(ban), Is.False); 
+            Assert.That(_banManager.AddBan(ban), Is.False); 
         }
 
         [Test]
@@ -74,11 +88,9 @@ namespace SmaugCS.Ban.Tests
         {
             var ban = GetBan();
 
-            IBanManager mgr = SetupBanManager();
+            _banManager.AddBan(ban);
 
-            mgr.AddBan(ban);
-
-            Assert.That(mgr.RemoveBan(1), Is.True); 
+            Assert.That(_banManager.RemoveBan(1), Is.True); 
         }
 
         [Test]
@@ -86,11 +98,28 @@ namespace SmaugCS.Ban.Tests
         {
             var ban = GetBan();
 
-            IBanManager mgr = SetupBanManager();
+            _banManager.AddBan(ban);
 
-            mgr.AddBan(ban);
+            Assert.That(_banManager.RemoveBan(2), Is.False);
+        }
 
-            Assert.That(mgr.RemoveBan(2), Is.False);
+        [Test]
+        public void CheckTotalBans_NoMatch_Test()
+        {
+            BanManager mgr = (BanManager)_banManager;
+            mgr.AddBan(new BanData(1, BanTypes.Site) {Level = 5});
+            mgr.AddBan(new BanData(2, BanTypes.Site) {Level = 10});
+
+            Assert.That(mgr.CheckTotalBans("127.0.0.1", 50), Is.False);
+        }
+
+        [Test]
+        public void CheckTotalBans_PrefixAndSuffixHostMatch_Test()
+        {
+            BanManager mgr = (BanManager)_banManager;
+            mgr.AddBan(new BanData(1, BanTypes.Site) { Prefix = true, Suffix = true, Name = "test.whatever.com", Level = 50 });
+
+            Assert.That(mgr.CheckTotalBans("test.whatever.com", 50), Is.True);
         }
     }
 }
