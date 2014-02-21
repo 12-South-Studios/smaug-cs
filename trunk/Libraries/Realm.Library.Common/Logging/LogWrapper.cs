@@ -60,6 +60,8 @@ namespace Realm.Library.Common.Logging
 
         private void ThrowLogEvent(LogLevel logLevel, string eventName, string eventLog)
         {
+            if (OnLoggingEvent == null)
+                return;
             OnLoggingEvent.Invoke(this, new LogEventArgs
                                             {
                                                 Level = logLevel,

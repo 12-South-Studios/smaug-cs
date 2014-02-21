@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Net;
 using System.Text;
+using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
+using Realm.Library.Network;
 using SmallDBConnectivity;
 using SmaugCS.Ban;
 using SmaugCS.Board;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
+using log4net;
+using LogManager = SmaugCS.Logging.LogManager;
 
 namespace SmaugCS
 {
@@ -387,13 +391,18 @@ namespace SmaugCS
         #endregion
         #endregion
 
+        private static readonly ILog Logger =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            log4net.Config.XmlConfigurator.Configure();
 
             try
             {
-                LogManager.Instance.Initialize(log4net.LogManager.GetLogger("SmaugCS"), GameConstants.GetDataPath());
+                LogWrapper logWrapper = new LogWrapper(Logger, LogLevel.Debug);
+                LogManager.Instance.Initialize(logWrapper, GameConstants.GetDataPath());
                 LogManager.Instance.BootLog("---------------------[ Boot Log ]--------------------");
                 
                 var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
@@ -410,8 +419,10 @@ namespace SmaugCS
 
                 LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
                 
-                // TODO: Startup Network Socket here
-
+                TcpServer server = new TcpServer(logWrapper, new TcpUserRepository());
+                server.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
+                               IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
+                
                 DatabaseManager.Instance.Initialize(false);
 
                 SqlConnection connection =
@@ -434,6 +445,7 @@ namespace SmaugCS
             catch (Exception ex)
             {
                 LogManager.Instance.BootLog(ex);
+                Environment.Exit(0);
             }
         }
 
@@ -463,6 +475,7 @@ namespace SmaugCS
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaMobFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaObjectFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LuaRoomFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LuaLookupFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LogManager));
             proxy.RegisterFunctions(luaFuncRepo);
             LuaManager.Instance.InitializeLuaProxy(proxy);  

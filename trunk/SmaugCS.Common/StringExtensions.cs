@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Common
@@ -10,6 +11,11 @@ namespace SmaugCS.Common
     /// </summary>
     public static class StringExtensions
     {
+        public static bool IsAllUpper(this string value)
+        {
+            return Regex.IsMatch(value, @"^[A-Z]+$");
+        }
+
         public static string TrimHash(this string value)
         {
             return value.TrimEnd(new[] { '~' });

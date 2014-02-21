@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Realm.Library.Common.Objects;
 using SmallDBConnectivity;
-using SmaugCS.Common.Database;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Board
@@ -19,7 +19,6 @@ namespace SmaugCS.Board
 
         private readonly List<BoardData> _boards;
         private readonly List<ProjectData> _projects;
-        private readonly SqlRepository _repository;
         private ILogManager _logManager;
         private ISmallDb _smallDb;
         private IDbConnection _connection;
@@ -49,8 +48,6 @@ namespace SmaugCS.Board
         [ExcludeFromCodeCoverage]
         public void Initialize(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
         {
-            _repository.AddSql("BoardGetAll", SqlProcedureStatics.BoardGetAll);
-
             _logManager = logManager;
             _smallDb = smallDb;
             _connection = connection;
@@ -61,11 +58,13 @@ namespace SmaugCS.Board
         {
             try
             {
-                List<BoardData> boards = _smallDb.ExecuteQuery(_connection,
-                                                            _repository.GetSql(SqlProcedureStatics.BoardGetAll),
-                                                            TranslateBoardData);
+                List<BoardData> boards = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BoardGetAll, TranslateBoardData);
 
-                boards.ForEach(board => _boards.Add(board));
+                foreach (BoardData board in boards)
+                {
+                    _boards.Add(board);
+                    LoadNotesForBoard(board);
+                }
                 _logManager.BootLog("Loaded {0} Boards", _boards.Count);
             }
             catch (Exception ex)
@@ -74,6 +73,30 @@ namespace SmaugCS.Board
             }
         }
 
+        [ExcludeFromCodeCoverage]
+        private void LoadNotesForBoard(BoardData board)
+        {
+            List<NoteData> notes = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BoardGetNotes,
+                                                         TranslateNoteData, new List<SqlParameter>()
+                                                             {
+                                                                 new SqlParameter("@BoardId", board.Id)
+                                                             });
+            board.NoteList.AddRange(notes);
+        }
+
+        [ExcludeFromCodeCoverage]
+        private static List<NoteData> TranslateNoteData(IDataReader reader)
+        {
+            List<NoteData> notes = new List<NoteData>();
+            using (DataTable dt = new DataTable())
+            {
+                dt.Load(reader);
+                notes.AddRange(from DataRow row in dt.Rows select NoteData.Translate(row));
+            }
+
+            return notes;
+        }
+            
         [ExcludeFromCodeCoverage]
         private static List<BoardData> TranslateBoardData(IDataReader reader)
         {

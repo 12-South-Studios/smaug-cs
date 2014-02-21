@@ -18,55 +18,9 @@
             ID = id;
         }
 
-        /*public void Load(TextSection section)
+        public static NoteData Translate(System.Data.DataRow row)
         {
-            bool inTextSection = false;
-
-            foreach (string line in section.Lines)
-            {
-                if (inTextSection)
-                {
-                    Text += line;
-                    continue;
-                }
-
-                string firstWord = line.FirstWord();
-                string remainder = line.RemoveWord(1).TrimEnd('~');
-
-                switch (firstWord.ToUpper())
-                {
-                    case "SENDER":
-                        Sender = remainder;
-                        break;
-                    case "DATE":
-                        DateSent = remainder;
-                        break;
-                    case "TO":
-                        RecipientList = remainder;
-                        break;
-                    case "SUBJECT":
-                        Subject = remainder;
-                        break;
-                    case "VOTING":
-                        Voting = remainder.ToInt32();
-                        break;
-                    case "YESVOTES":
-                        YesVotes = remainder;
-                        break;
-                    case "NOVOTES":
-                        NoVotes = remainder;
-                        break;
-                    case "ABSTENTIONS":
-                        Abstentions = remainder;
-                        break;
-                    case "TEXT":
-                        inTextSection = true;
-                        break;
-                    default:
-                        LogManager.Instance.Bug("Unknown parameter {0}", firstWord);
-                        break;
-                }
-            }
-        }*/
+            throw new System.NotImplementedException();
+        }
     }
 }

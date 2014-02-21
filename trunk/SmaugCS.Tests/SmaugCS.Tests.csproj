@@ -82,11 +82,6 @@
     <Compile Include="SpecFuns\SpecFunLookupTests.cs" />
     <Compile Include="TablesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Extensions\TextReaderProxyExtensionTests.cs" />
-    <Compile Include="Extensions\StringExtensionTests.cs" />
-    <Compile Include="Extensions\NumberExtensionTests.cs" />
-    <Compile Include="ExtendedBitvectorTests.cs" />
-    <Compile Include="CheckTests.cs" />
     <Compile Include="LuaCreateFunctionTests.cs" />
     <Compile Include="LuaLookupFunctionTests.cs" />
     <Compile Include="TimerManagerTests.cs" />

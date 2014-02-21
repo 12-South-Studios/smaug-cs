@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Realm.Library.Common;
+using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
 using log4net;
@@ -16,7 +17,7 @@ namespace SmaugCS.Logging
         private static readonly object Padlock = new object();
 
         private static string _dataPath;
-        private static ILog _logger;
+        public ILogWrapper LogWrapper { get; private set; }
 
         private LogManager()
         {
@@ -36,9 +37,9 @@ namespace SmaugCS.Logging
             }
         }
 
-        public void Initialize(ILog logger, string path)
+        public void Initialize(ILogWrapper logWrapper, string path)
         {
-            _logger = logger;
+            LogWrapper = logWrapper;
             _dataPath = path;
         }
 
@@ -51,12 +52,15 @@ namespace SmaugCS.Logging
 
         public void BootLog(string str, params object[] args)
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(_dataPath + "//Boot.log", true)))
+            /*using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(_dataPath + "//Boot.log", true)))
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendFormat(str, args);
                 proxy.Write("[{0}] {1}\n", DateTime.Now.ToString(), sb.ToString());
-            }
+            }*/
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(str, args);
+            LogWrapper.InfoFormat("[BOOT] {1}", DateTime.Now.ToString(), sb.ToString());
         }
 
         public void BootLog(Exception ex)
@@ -75,19 +79,19 @@ namespace SmaugCS.Logging
                 sb.AppendFormat("{0}:{1} ", method.DeclaringType.FullName, method.Name);
 
             sb.AppendFormat(str, args);
-            _logger.Error(sb.ToString());
+            LogWrapper.Error(sb.ToString());
         }
         #endregion
 
         #region Error Log
         public void Error(Exception ex)
         {
-            _logger.Error(ex.Message, ex);
+            LogWrapper.Error(ex.Message, ex);
         }
 
         public void Error(string str, params object[] args)
         {
-            _logger.ErrorFormat(str, args);
+            LogWrapper.ErrorFormat(str, args);
         }
         #endregion
 
