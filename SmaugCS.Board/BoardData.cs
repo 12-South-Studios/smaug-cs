@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -16,8 +17,6 @@ namespace SmaugCS.Board
         public int Id { get; private set; }
         public BoardTypes Type { get; private set; }
 
-        public List<NoteData> NoteList { get; set; }
-        public string NoteFile { get; set; }
         public string ReadGroup { get; set; }
         public string PostGroup { get; set; }
         public string ExtraReaders { get; set; }
@@ -29,106 +28,21 @@ namespace SmaugCS.Board
         public string OListMessage { get; set; }
         public string PostMessage { get; set; }
         public string OReadMessage { get; set; }
-        public int BoardObjectVnum { get; set; }
-        public int NumberOfPosts { get { return NoteList.Count; } }
         public int MinimumReadLevel { get; set; }
         public int MinimumPostLevel { get; set; }
         public int MinimumRemoveLevel { get; set; }
         public int MaximumPosts { get; set; }
-        
+
+        public int BoardObjectVnum { get; set; }
+
+        public List<NoteData> NoteList { get; private set; }
+
         public BoardData(int id, BoardTypes type)
         {
             Id = id;
             Type = type;
             NoteList = new List<NoteData>();
         }
-
-        /*public void Load(TextSection section)
-        {
-            foreach (string line in section.Lines)
-            {
-                string firstWord = line.FirstWord();
-                string remainder = line.RemoveWord(1).TrimEnd('~');
-
-                switch (firstWord.ToUpper())
-                {
-                    case "END":
-                        return;
-                    case "EXTRA_READERS":
-                        ExtraReaders = remainder;
-                        break;
-                    case "EXTRA_REMOVERS":
-                        ExtraRemovers = remainder;
-                        break;
-                    case "FILENAME":
-                        NoteFile = remainder;
-                        break;
-                    case "MIN_READ_LEVEL":
-                        MinimumReadLevel = remainder.ToInt32();
-                        break;
-                    case "MIN_POST_LEVEL":
-                        MinimumPostLevel = remainder.ToInt32();
-                        break;
-                    case "MIN_REMOVE_LEVEL":
-                        MinimumRemoveLevel = remainder.ToInt32();
-                        break;
-                    case "MAX_POSTS":
-                        MaximumPosts = remainder.ToInt32();
-                        break;
-                    case "OTAKEMESSG":
-                        OTakeMessage = remainder;
-                        break;
-                    case "OCOPYMESSG":
-                        OCopyMessage = remainder;
-                        break;
-                    case "OREADMESSG":
-                        OReadMessage = remainder;
-                        break;
-                    case "OREMOVEMESSG":
-                        ORemoveMessage = remainder;
-                        break;
-                    case "OLISTMESSG":
-                        OListMessage = remainder;
-                        break;
-                    case "OPOSTMESSG":
-                        OPostMessage = remainder;
-                        break;
-                    case "POST_GROUP":
-                        PostGroup = remainder;
-                        break;
-                    case "POSTMESSG":
-                        PostMessage = remainder;
-                        break;
-                    case "READ_GROUP":
-                        ReadGroup = remainder;
-                        break;
-                    case "TYPE":
-                        Type = EnumerationExtensions.GetEnum<BoardTypes>(remainder.ToInt32());
-                        break;
-                    case "VNUM":
-                        BoardObjectVnum = remainder.ToInt32();
-                        break;
-                    default:
-                        //LogManager.Instance.Bug("Unknown Value {0}", line);
-                        continue;
-                }
-            }
-        }*/
-
-        /*public void LoadNotes()
-        {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Board) + NoteFile;
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                List<TextSection> sections = proxy.ReadSections(new[] { "#NOTE" }, new[] { "*" }, new[] { "#END" }, "END");
-                foreach (TextSection section in sections)
-                {
-                    NoteData newNote = new NoteData();
-                    newNote.Load(section);
-                    NoteList.Add(newNote);
-                }
-            }
-        }*/
 
        /* public void Save(TextWriterProxy proxy)
         {
@@ -252,12 +166,24 @@ namespace SmaugCS.Board
         public static BoardData Translate(DataRow dataRow)
         {
             BoardData board = new BoardData(Convert.ToInt32(dataRow["BoardId"]),
-                EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardType"].ToString()));
-            board.ReadGroup = dataRow["ReadGroup"].IsNullOrDBNull() ? string.Empty : dataRow["ReadGroup"].ToString();
-            board.PostGroup = dataRow["PostGroup"].IsNullOrDBNull() ? string.Empty : dataRow["PostGroup"].ToString();
-
-            // TODO: Finish this
-
+                EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardType"].ToString()))
+                {
+                    ReadGroup = dataRow.GetDataValue("ReadGroup", string.Empty),
+                    PostGroup = dataRow.GetDataValue("PostGroup", string.Empty),
+                    ExtraReaders = dataRow.GetDataValue("ExtraReaders", string.Empty),
+                    ExtraRemovers = dataRow.GetDataValue("ExtraRemovers", string.Empty),
+                    OTakeMessage = dataRow.GetDataValue("OTakeMessage", string.Empty),
+                    OPostMessage = dataRow.GetDataValue("OPostMessage", string.Empty),
+                    ORemoveMessage = dataRow.GetDataValue("ORemoveMessage", string.Empty),
+                    OCopyMessage = dataRow.GetDataValue("OCopyMessage", string.Empty),
+                    PostMessage = dataRow.GetDataValue("PostMessage", string.Empty),
+                    OReadMessage = dataRow.GetDataValue("OReadMessage", string.Empty),
+                    OListMessage = dataRow.GetDataValue("OListMessage", string.Empty),
+                    MinimumReadLevel = dataRow.GetDataValue("MinimumReadLevel", 0),
+                    MinimumPostLevel = dataRow.GetDataValue("MinimumPostLevel", 0),
+                    MinimumRemoveLevel = dataRow.GetDataValue("MinimumRemoveLevel", 0),
+                    MaximumPosts = dataRow.GetDataValue("MaximumPosts", 0)
+                };
             return board;
         }
     }

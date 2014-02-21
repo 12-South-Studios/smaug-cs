@@ -46,7 +46,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>..\..\Build\Debug\Realm.Library.NCalcExt.XML</DocumentationFile>
+    <DocumentationFile>bin\x86\Debug\Realm.Library.NCalcExt.XML</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>

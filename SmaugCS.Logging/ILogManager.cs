@@ -1,11 +1,14 @@
 ﻿using System;
+using Realm.Library.Common.Logging;
 using log4net;
 
 namespace SmaugCS.Logging
 {
     public interface ILogManager
     {
-        void Initialize(ILog logger, string path);
+        ILogWrapper LogWrapper { get; }
+
+        void Initialize(ILogWrapper logWrapper, string path);
 
         void BootLog(string str, params object[] args);
         void BootLog(Exception ex);

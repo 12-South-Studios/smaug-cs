@@ -9,7 +9,6 @@ using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmallDBConnectivity;
-using SmaugCS.Common.Database;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 
@@ -21,7 +20,6 @@ namespace SmaugCS.Ban
         private static readonly object Padlock = new object();
 
         private readonly List<BanData> _bans;
-        private readonly SqlRepository _repository;
         private ILogManager _logManager;
         private ISmallDb _smallDb;
         private IDbConnection _connection;
@@ -30,10 +28,8 @@ namespace SmaugCS.Ban
         [ExcludeFromCodeCoverage]
         private BanManager()
         {
-            _repository = new SqlRepository();
             _bans = new List<BanData>();
-            _timer = new CommonTimer();
-            _timer.Interval = 60000;
+            _timer = new CommonTimer {Interval = 60000};
             _timer.Elapsed += TimerOnElapsed;
         }
 
@@ -68,10 +64,6 @@ namespace SmaugCS.Ban
         [ExcludeFromCodeCoverage]
         public void Initialize(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
         {
-            _repository.AddSql(DbCommands.BanAdd.ToString(), SqlProcedureStatics.BanAdd);
-            _repository.AddSql(DbCommands.BanRemove.ToString(), SqlProcedureStatics.BanRemove);
-            _repository.AddSql(DbCommands.BanGetByName.ToString(), SqlProcedureStatics.BanGetByName);
-
             _logManager = logManager;
             _smallDb = smallDb;
             _connection = connection;
@@ -97,9 +89,7 @@ namespace SmaugCS.Ban
         {
             try
             {
-                List<BanData> bans = _smallDb.ExecuteQuery(_connection,
-                                                            _repository.GetSql(DbCommands.BanGetAll.ToString()),
-                                                            TranslateBanData);
+                List<BanData> bans = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BanGetAll, TranslateBanData);
 
                 bans.ForEach(ban => _bans.Add(ban));
                 _logManager.BootLog("Loaded {0} Bans", _bans.Count);
@@ -119,8 +109,7 @@ namespace SmaugCS.Ban
                 transaction = _connection.BeginTransaction();
                 foreach (BanData ban in _bans)
                 {
-                    _smallDb.ExecuteNonQuery(_connection, _repository.GetSql(DbCommands.BanAdd.ToString()),
-                                            CreateSqlParameters(ban));
+                    _smallDb.ExecuteNonQuery(_connection, SqlProcedureStatics.BanSave, CreateSqlParameters(ban));
                 }
                 transaction.Commit();
                 return true;
@@ -135,14 +124,17 @@ namespace SmaugCS.Ban
         }
 
         [ExcludeFromCodeCoverage]
-        private bool SaveBan(BanData ban)
+        private bool SaveBan(BanData ban, bool isNew = false)
         {
             IDbTransaction transaction = null;
             try
             {
+                IEnumerable<SqlParameter> parameters = CreateSqlParameters(ban);
+                parameters.ToList().Add(new SqlParameter("@BanId", ban.Id));
+
                 transaction = _connection.BeginTransaction();
-                _smallDb.ExecuteNonQuery(_connection, _repository.GetSql(DbCommands.BanAdd.ToString()),
-                                         CreateSqlParameters(ban));
+                _smallDb.ExecuteNonQuery(_connection,
+                                         isNew ? SqlProcedureStatics.BanSave : SqlProcedureStatics.BanUpdate, parameters);
                 transaction.Commit();
                 return true;
             }
@@ -157,14 +149,19 @@ namespace SmaugCS.Ban
 
         internal static IEnumerable<SqlParameter> CreateSqlParameters(BanData ban)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
-
-            parameters.Add(new SqlParameter("@BanTypeId", ban.Type.GetValue()));
-            parameters.Add(new SqlParameter("@Name", ban.Name));
-            parameters.Add(new SqlParameter("@Note", ban.Note));
-            parameters.Add(new SqlParameter("@BannedBy", ban.BannedBy));
-            parameters.Add(new SqlParameter("@BannedOn", ban.BannedOn));
-            parameters.Add(new SqlParameter("@Duration", ban.Duration));
+            List<SqlParameter> parameters = new List<SqlParameter>
+                {
+                    new SqlParameter("@BanTypeId", ban.Type.GetValue()),
+                    new SqlParameter("@Name", ban.Name),
+                    new SqlParameter("@Note", ban.Note),
+                    new SqlParameter("@BannedBy", ban.BannedBy),
+                    new SqlParameter("@BannedOn", ban.BannedOn),
+                    new SqlParameter("@Duration", ban.Duration),
+                    new SqlParameter("@Level", ban.Level),
+                    new SqlParameter("@Warn", ban.Warn),
+                    new SqlParameter("@Prefix", ban.Prefix),
+                    new SqlParameter("@Suffix", ban.Suffix)
+                };
 
             return parameters;
         }
@@ -176,8 +173,8 @@ namespace SmaugCS.Ban
             try
             {
                 transaction = _connection.BeginTransaction();
-                _smallDb.ExecuteNonQuery(_connection, _repository.GetSql(DbCommands.BanRemove.ToString()),
-                                        new List<IDataParameter> {new SqlParameter("@BanId", id)});
+                _smallDb.ExecuteNonQuery(_connection, SqlProcedureStatics.BanDelete,
+                                         new List<IDataParameter> {new SqlParameter("@BanId", id)});
                 transaction.Commit();
                 return true;
             }

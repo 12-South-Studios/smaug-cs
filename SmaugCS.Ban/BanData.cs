@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Realm.Library.Common;
+using SmaugCS.Common;
 
 namespace SmaugCS.Ban
 {
@@ -39,17 +40,18 @@ namespace SmaugCS.Ban
         public static BanData Translate(DataRow dataRow)
         {
             BanData ban = new BanData(Convert.ToInt32(dataRow["BanId"]),
-                          EnumerationExtensions.GetEnumByName<BanTypes>(dataRow["BanType"].ToString()));
-            ban.Name = dataRow["Name"].ToString();
-            ban.Note = dataRow["Note"].IsNullOrDBNull() ? string.Empty : dataRow["Note"].ToString();
-            ban.BannedBy = dataRow["BannedBy"].ToString();
-            ban.BannedOn = Convert.ToDateTime(dataRow["BannedOn"]);
-            ban.Duration = Convert.ToInt32(dataRow["Duration"]);
-            ban.Level = dataRow["Level"].IsNullOrDBNull() ? 0 : Convert.ToInt32(dataRow["Level"]);
-            ban.Warn = !dataRow["Warn"].IsNullOrDBNull() && Convert.ToBoolean(dataRow["Warn"]);
-            ban.Prefix = !dataRow["Prefix"].IsNullOrDBNull() && Convert.ToBoolean(dataRow["Prefix"]);
-            ban.Suffix = !dataRow["Suffix"].IsNullOrDBNull() && Convert.ToBoolean(dataRow["Suffix"]);
-
+                          EnumerationExtensions.GetEnumByName<BanTypes>(dataRow["BanType"].ToString()))
+                {
+                    Name = dataRow.GetDataValue("Name", string.Empty),
+                    Note = dataRow.GetDataValue("Note", string.Empty),
+                    BannedBy = dataRow.GetDataValue("BannedBy", string.Empty),
+                    BannedOn = dataRow.GetDataValue("BannedOn", DateTime.MinValue),
+                    Duration = dataRow.GetDataValue("Duration", 0),
+                    Level = dataRow.GetDataValue("Level", 0),
+                    Warn = dataRow.GetDataValue("Warn", false),
+                    Prefix = dataRow.GetDataValue("Prefix", false),
+                    Suffix = dataRow.GetDataValue("Suffix", false)
+                };
             return ban;
         }
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 
 namespace SmaugCS.Language
 {
@@ -41,33 +43,78 @@ namespace SmaugCS.Language
 
         public string Translate(int percent, string text)
         {
+            string newPhrase = string.Empty;
+            string[] words = text.Split(' ');
+
+            foreach (string word in words)
+            {
+                string newWord = DoPreConversion(percent, word);
+                if (!newWord.Equals(word))
+                {
+                    newPhrase += newWord + ' ';
+                    continue;
+                }
+
+                newWord = DoCharacterConversion(percent, newWord);
+                newWord = DoPostConversion(percent, newWord);
+
+                newPhrase += newWord + ' ';
+            }
+
+            return newPhrase.TrimStart(' ').TrimEnd(' ');
+        }
+
+        internal string DoCharacterConversion(int percent, string text)
+        {
+            string newPhrase = string.Empty;
             char[] chars = text.ToCharArray();
-            string newphrase = string.Empty;
 
             foreach (char c in chars)
             {
-                foreach (LanguageConversionData cnv in PreConversion.Where(cnv => text.StartsWith(cnv.OldValue)))
-                {
-                    if (Realm.Library.Common.Random.D100(1) >= percent)
-                        newphrase = cnv.NewValue;
-                    break;
-                }
-
-                if (!c.IsNumeric() && Realm.Library.Common.Random.D100(1) > percent)
-                {
-                    char newChar = Alphabet[Char.ToLower(c) - 'a'];
-                    if (Char.IsUpper(c))
-                        newChar = Char.ToUpper(newChar);
-                    newphrase += newChar;
-                }
+                if (!c.IsNumeric() && !Char.IsPunctuation(c) && !Char.IsSymbol(c) &&
+                    Realm.Library.Common.Random.D100(1) > percent)
+                    newPhrase += GetAlphabetEquivalent(c);
                 else
-                    newphrase += c;
+                    newPhrase += c;
             }
 
-            chars = newphrase.ToCharArray();
-            return chars.Aggregate(string.Empty, (current1, c) => Conversion
-                .Where(cnv => newphrase.StartsWith(cnv.OldValue))
-                .Aggregate(current1, (current, cnv) => current + cnv.NewValue));
+            return newPhrase;
         }
+
+        internal string DoPreConversion(int percent, string text)
+        {
+            string preConversion = text;
+            if (PreConversion != null)
+            {
+                foreach (LanguageConversionData lcd in PreConversion)
+                {
+                    if (preConversion.Contains(lcd.OldValue) && Realm.Library.Common.Random.D100(1) >= percent)
+                        preConversion = preConversion.Replace(lcd.OldValue, lcd.NewValue);
+                }
+            }
+            return preConversion;
+        }
+
+        internal string DoPostConversion(int percent, string text)
+        {
+            string postConversion = text;
+            if (Conversion != null)
+            {
+                foreach (LanguageConversionData lcd in Conversion)
+                {
+                    if (postConversion.Contains(lcd.OldValue) && Realm.Library.Common.Random.D100(1) > percent)
+                        postConversion = postConversion.Replace(lcd.OldValue, lcd.NewValue);
+                }
+            }
+            return postConversion; 
+        }
+
+        private const string EnglishAlphabet = "abcdefghijklmnopqrtsuvwxyz";
+        internal char GetAlphabetEquivalent(char englishChar)
+        {
+            char newChar = Alphabet[EnglishAlphabet.IndexOf(Char.ToLower(englishChar))];
+            return Char.IsUpper(englishChar) ? Char.ToUpper(newChar) : newChar;
+        }
+
     }
 }

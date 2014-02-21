@@ -59,7 +59,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\Build\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\Build\Debug\SmaugCS.XML</DocumentationFile>
     <DebugType>full</DebugType>
@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Ban\Ban.cs" />
     <Compile Include="ExpressionTableInitializer.cs" />
     <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />
@@ -242,7 +243,6 @@
     <Compile Include="Commands\Admin\SetHoliday.cs" />
     <Compile Include="Commands\Admin\Unnuisance.cs" />
     <Compile Include="Commands\Ban\Allow.cs" />
-    <Compile Include="Commands\Ban\Ban.cs" />
     <Compile Include="Commands\Ban\Warn.cs" />
     <Compile Include="Commands\Boards\Boards.cs" />
     <Compile Include="Commands\Boards\BSet.cs" />
@@ -724,7 +724,6 @@
     <Compile Include="misc.cs" />
     <Compile Include="mpxset.cs" />
     <Compile Include="mud_prog.cs" />
-    <Compile Include="news.cs" />
     <Compile Include="Objects\act_prog_data.cs" />
     <Compile Include="Objects\cha_app_type.cs" />
     <Compile Include="Objects\con_app_type.cs" />
@@ -746,8 +745,6 @@
     <Compile Include="Objects\map_stuff.cs" />
     <Compile Include="Objects\map_type.cs" />
     <Compile Include="Objects\mpsleep_data.cs" />
-    <Compile Include="Objects\news_data.cs" />
-    <Compile Include="Objects\news_type.cs" />
     <Compile Include="Objects\RelationData.cs" />
     <Compile Include="Objects\renumber_areas.cs" />
     <Compile Include="Objects\renumber_data.cs" />
@@ -866,6 +863,10 @@
     <ProjectReference Include="..\Libraries\Realm.Library.NCalcExt\Realm.Library.NCalcExt.csproj">
       <Project>{d2eba739-4153-48ff-93f0-aaeb43d1ab7e}</Project>
       <Name>Realm.Library.NCalcExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Network\Realm.Library.Network.csproj">
+      <Project>{551f2b16-cec5-4e16-8f30-290005c04e16}</Project>
+      <Name>Realm.Library.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>

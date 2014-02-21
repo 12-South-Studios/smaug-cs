@@ -131,7 +131,7 @@ namespace SmaugCS.Managers
             LogManager.Instance.BootLog("{0} Races loaded.", RACES.Count());
 
             LogManager.Instance.BootLog("Loading news data");
-            news.load_news();
+            //news.load_news();
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
             LogManager.Instance.BootLog("{0} Liquids loaded.", LIQUIDS.Count());
