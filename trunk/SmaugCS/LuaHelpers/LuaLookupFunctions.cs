@@ -22,12 +22,12 @@ namespace SmaugCS.LuaHelpers
         {
             if (_lookupManager.HasLookup(lookupTable, lookupEntry))
             {
-                _logManager.BootLog(new DuplicateEntryException("Lookup {0}:{1} already exists.", lookupTable, lookupEntry));
+                _logManager.Boot(new DuplicateEntryException("Lookup {0}:{1} already exists.", lookupTable, lookupEntry));
                 return;
             }
 
             _lookupManager.AddLookup(lookupTable, lookupEntry);
-            _logManager.BootLog("Lookup {0}:{1} added.", lookupTable, lookupEntry);
+            _logManager.Boot("Lookup {0}:{1} added.", lookupTable, lookupEntry);
         }
     }
 }

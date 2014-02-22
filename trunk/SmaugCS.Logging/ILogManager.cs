@@ -10,8 +10,8 @@ namespace SmaugCS.Logging
 
         void Initialize(ILogWrapper logWrapper, string path);
 
-        void BootLog(string str, params object[] args);
-        void BootLog(Exception ex);
+        void Boot(string str, params object[] args);
+        void Boot(Exception ex);
 
         void Bug(string str, params object[] args);
 

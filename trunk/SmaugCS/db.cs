@@ -962,7 +962,7 @@ namespace SmaugCS
             string buffer = string.Format("{0}:\n\tRooms: {1} - {2}\n\tObjects: {3} - {4}\n\tMobs: {5} - {6}\n",
                                           area.Filename, area.LowRoomNumber, area.HighRoomNumber, area.LowObjectNumber,
                                           area.HighObjectNumber, area.LowMobNumber, area.HighMobNumber);
-            LogManager.Instance.BootLog(buffer);
+            LogManager.Instance.Boot(buffer);
 
             area.status.SetBit((int)AreaFlags.Loaded);
         }

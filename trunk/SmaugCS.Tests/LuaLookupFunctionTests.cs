@@ -33,7 +33,7 @@ namespace SmaugCS.Tests
             var callbackValue = false;
 
             var mockLogger = new Mock<ILogManager>();
-            mockLogger.Setup(x => x.BootLog(It.IsAny<DuplicateEntryException>())).Callback(() => callbackValue = true);
+            mockLogger.Setup(x => x.Boot(It.IsAny<DuplicateEntryException>())).Callback(() => callbackValue = true);
 
             var lookupManager = LookupManager.Instance;
             lookupManager.Initialize();

@@ -19,6 +19,10 @@ namespace SmaugCS.Logging
         private static string _dataPath;
         public ILogWrapper LogWrapper { get; private set; }
 
+        private static string BootLogFormat = "[BOOT] {0}";
+        private static string BugLogFormat = "[BUG] {0}";
+        private static string LogFormat = "{0}";
+
         private LogManager()
         {
         }
@@ -47,25 +51,19 @@ namespace SmaugCS.Logging
         [LuaFunction("LBootLog", "Logs an entry to the boot log", "Text to log")]
         public void LuaBootLog(string txt)
         {
-            BootLog(txt);
+            Boot(txt);
         }
 
-        public void BootLog(string str, params object[] args)
+        public void Boot(string str, params object[] args)
         {
-            /*using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(_dataPath + "//Boot.log", true)))
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendFormat(str, args);
-                proxy.Write("[{0}] {1}\n", DateTime.Now.ToString(), sb.ToString());
-            }*/
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(str, args);
-            LogWrapper.InfoFormat("[BOOT] {1}", DateTime.Now.ToString(), sb.ToString());
+            LogWrapper.InfoFormat(BootLogFormat, sb.ToString());
         }
 
-        public void BootLog(Exception ex)
+        public void Boot(Exception ex)
         {
-            BootLog(ex.Message + "\n{0}", ex.StackTrace);
+            Boot(ex.Message + "\n{0}", ex.StackTrace);
         }
         #endregion
 
@@ -73,13 +71,8 @@ namespace SmaugCS.Logging
         public void Bug(string str, params object[] args)
         {
             StringBuilder sb = new StringBuilder();
-
-            var method = new StackTrace().GetFrame(2).GetMethod();
-            if (method != null && method.DeclaringType != null)
-                sb.AppendFormat("{0}:{1} ", method.DeclaringType.FullName, method.Name);
-
             sb.AppendFormat(str, args);
-            LogWrapper.Error(sb.ToString());
+            LogWrapper.InfoFormat(BugLogFormat, sb.ToString());
         }
         #endregion
 
@@ -108,7 +101,8 @@ namespace SmaugCS.Logging
 
         public void Log(string str, LogTypes logType, int level)
         {
-            string buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
+            LogWrapper.InfoFormat(LogFormat, str);
+            //string buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
             /*switch (logType)
             {
                 case LogTypes.Build:

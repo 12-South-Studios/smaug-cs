@@ -32,7 +32,7 @@ namespace SmaugCS.Loaders
             foreach (string areaName in areaList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + areaName + ".lua");
-                LogManager.Instance.BootLog("Loaded Area {0}", areaName);
+                LogManager.Instance.Boot("Loaded Area {0}", areaName);
             }
         }
 
