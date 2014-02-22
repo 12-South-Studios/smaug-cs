@@ -397,19 +397,20 @@ namespace SmaugCS
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
             log4net.Config.XmlConfigurator.Configure();
 
             try
             {
                 LogWrapper logWrapper = new LogWrapper(Logger, LogLevel.Debug);
                 LogManager.Instance.Initialize(logWrapper, GameConstants.GetDataPath());
-                LogManager.Instance.BootLog("---------------------[ Boot Log ]--------------------");
+                LogManager.Instance.Boot("---------------------[ Boot Log ]--------------------");
                 
                 var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
-                LogManager.Instance.BootLog("{0} SystemDirectories loaded.", loaded);
+                LogManager.Instance.Boot("{0} SystemDirectories loaded.", loaded);
 
                 loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
-                LogManager.Instance.BootLog("{0} SystemFiles loaded.", loaded);
+                LogManager.Instance.Boot("{0} SystemFiles loaded.", loaded);
 
                 LookupManager.Instance.Initialize();
 
@@ -444,14 +445,14 @@ namespace SmaugCS
             }
             catch (Exception ex)
             {
-                LogManager.Instance.BootLog(ex);
+                LogManager.Instance.Boot(ex);
                 Environment.Exit(0);
             }
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
-            LogManager.Instance.BootLog((Exception)unhandledExceptionEventArgs.ExceptionObject);
+            LogManager.Instance.Boot((Exception)unhandledExceptionEventArgs.ExceptionObject);
         }
 
         private static void InitializeLuaInjections()

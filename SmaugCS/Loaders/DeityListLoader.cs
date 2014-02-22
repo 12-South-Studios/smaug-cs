@@ -34,7 +34,7 @@ namespace SmaugCS.Loaders
             foreach (string deityName in deityList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + deityName + ".lua");
-                LogManager.Instance.BootLog("Loaded Deity {0}", deityName);
+                LogManager.Instance.Boot("Loaded Deity {0}", deityName);
             }
         }
 

@@ -65,7 +65,7 @@ namespace SmaugCS.Board
                     _boards.Add(board);
                     LoadNotesForBoard(board);
                 }
-                _logManager.BootLog("Loaded {0} Boards", _boards.Count);
+                _logManager.Boot("Loaded {0} Boards", _boards.Count);
             }
             catch (Exception ex)
             {

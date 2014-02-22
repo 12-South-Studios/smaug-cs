@@ -92,7 +92,7 @@ namespace SmaugCS.Ban
                 List<BanData> bans = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BanGetAll, TranslateBanData);
 
                 bans.ForEach(ban => _bans.Add(ban));
-                _logManager.BootLog("Loaded {0} Bans", _bans.Count);
+                _logManager.Boot("Loaded {0} Bans", _bans.Count);
             }
             catch (Exception ex)
             {
