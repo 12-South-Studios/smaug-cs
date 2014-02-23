@@ -1,16 +1,48 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Commands;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Lookup;
 using SmaugCS.Managers;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
-    class AstralWalk
+    public static class AstralWalk
     {
-        public static int spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
-            // TODO
-            return 0;
+            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            CharacterInstance victim = handler.get_char_world(ch, Cast.TargetName);
+
+            if (victim == null
+                || !handler.can_astral(ch, victim)
+                || !handler.in_hard_range(ch, victim.CurrentRoom.Area))
+            {
+                magic.failed_casting(skill, ch, victim, null);
+                return ReturnTypes.SpellFailed;
+            }
+
+            if (!string.IsNullOrEmpty(skill.HitCharacterMessage))
+                comm.act(ATTypes.AT_MAGIC, skill.HitCharacterMessage, ch, null, victim, ToTypes.Character);
+            if (!string.IsNullOrEmpty(skill.HitVictimMessage))
+                comm.act(ATTypes.AT_MAGIC, skill.HitVictimMessage, ch, null, victim, ToTypes.Victim);
+
+            if (!string.IsNullOrEmpty(skill.HitRoomMessage))
+                comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, victim, ToTypes.NotVictim);
+            else 
+                comm.act(ATTypes.AT_MAGIC, "$n disappears in a flash of light!", ch, null, victim, ToTypes.Room);
+
+            ch.CurrentRoom.FromRoom(ch);
+            victim.CurrentRoom.ToRoom(ch);
+
+            if (!string.IsNullOrEmpty(skill.HitDestinationMessage))
+                comm.act(ATTypes.AT_MAGIC, skill.HitDestinationMessage, ch, null, victim, ToTypes.NotVictim);
+            else 
+                comm.act(ATTypes.AT_MAGIC, "$n appears in a flash of light!", ch, null, victim, ToTypes.Room);
+
+            Look.do_look(ch, "auto");
+
+            return ReturnTypes.None;
         }
     }
 }

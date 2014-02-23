@@ -75,12 +75,14 @@ namespace SmaugCS
             send_to_pager("\r\n\r\n", ch);
             send_to_pager("&YAvailable colors are:\r\n", ch);
 
-            for (int count = 0; count <= GameConstants.valid_color.Count; ++count)
+            int numColors = 0;
+            foreach (string color in LookupManager.Instance.GetLookups("ValidColors"))
             {
-                if ((count % 8) == 0 && count != 0)
+                if ((numColors % 8) == 0 && numColors != 0)
                     send_to_pager("\r\n", ch);
 
-                pager_printf(ch, "%s%-10s", color_str(ATTypes.AT_PLAIN, ch), GameConstants.valid_color[count]);
+                pager_printf(ch, "%s%-10s", color_str(ATTypes.AT_PLAIN, ch), color);
+                numColors++;
             }
 
             send_to_pager("\r\n", ch);

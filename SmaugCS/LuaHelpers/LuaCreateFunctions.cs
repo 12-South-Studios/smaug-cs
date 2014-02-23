@@ -11,6 +11,7 @@ using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
 using SmaugCS.Exceptions;
 using SmaugCS.Language;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.SpecFuns;
 
@@ -20,6 +21,7 @@ namespace SmaugCS.LuaHelpers
     {
         private static ILuaManager _luaManager;
         private static IDatabaseManager _dbManager;
+        private static ILogManager _logManager;
 
         #region LastObject
         private static readonly Dictionary<Type, object> LastObjects = new Dictionary<Type, object>(); 
@@ -36,10 +38,11 @@ namespace SmaugCS.LuaHelpers
         }
         #endregion
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager)
+        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, ILogManager logManager)
         {
             _luaManager = luaManager;
             _dbManager = dbManager;
+            _logManager = logManager;
         }
 
         [LuaFunction("LCreateMudProg", "Creates a new mudprog", "Type of Prog")]
@@ -106,7 +109,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("liquid");
             AddLastObject(newLiquid);
-            _dbManager.LIQUIDS.ToList().Add(newLiquid);
+            _dbManager.AddLiquid(newLiquid);
+
             return newLiquid;
         }
 
@@ -121,12 +125,12 @@ namespace SmaugCS.LuaHelpers
 
             if (type.EqualsIgnoreCase("herb"))
             {
-                _dbManager.HERBS.ToList().Add(newSkill);
+                _dbManager.AddHerb(newSkill);
                 _luaManager.Proxy.CreateTable("herb");
             }
             else
             {
-                _dbManager.SKILLS.ToList().Add(newSkill);
+                _dbManager.AddSkill(newSkill);
                 _luaManager.Proxy.CreateTable("skill");
             }
 
@@ -165,7 +169,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("specfun");
             AddLastObject(newSpecFun);
-            _dbManager.SPEC_FUNS.ToList().Add(newSpecFun);
+            _dbManager.AddSpecFun(newSpecFun);
+
             return newSpecFun;
         }
 
@@ -187,7 +192,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("command");
             AddLastObject(newCommand);
-            _dbManager.COMMANDS.ToList().Add(newCommand);
+            _dbManager.AddCommand(newCommand);
+
             return newCommand;
         }
 
@@ -198,7 +204,9 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("social");
             AddLastObject(newSocial);
-            _dbManager.SOCIALS.ToList().Add(newSocial);
+            _dbManager.AddSocial(newSocial);
+            _logManager.Boot("Social {0} added", newSocial.Name);
+
             return newSocial;
         }
 
@@ -231,7 +239,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("class");
             AddLastObject(newClass);
-            _dbManager.CLASSES.ToList().Add(newClass);
+            _dbManager.AddClass(newClass);
+            
             return newClass;
         }
 
@@ -246,7 +255,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("race");
             AddLastObject(newRace);
-            _dbManager.RACES.ToList().Add(newRace);
+            _dbManager.AddRace(newRace);
+
             return newRace;
         }
 
@@ -257,7 +267,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("clan");
             AddLastObject(newClan);
-            _dbManager.CLANS.ToList().Add(newClan);
+            _dbManager.AddClan(newClan);
+
             return newClan;
         }
 
@@ -268,7 +279,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("deity");
             AddLastObject(newDeity);
-            _dbManager.DEITIES.ToList().Add(newDeity);
+            _dbManager.AddDeity(newDeity);
+
             return newDeity;
         }
 
@@ -279,7 +291,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("lang");
             AddLastObject(newLang);
-            _dbManager.LANGUAGES.ToList().Add(newLang);
+            _dbManager.AddLanguage(newLang);
+
             return newLang;
         }
     }

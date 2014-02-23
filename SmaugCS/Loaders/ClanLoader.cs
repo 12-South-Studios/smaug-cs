@@ -34,7 +34,6 @@ namespace SmaugCS.Loaders
             foreach (string clanName in clanList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + clanName + ".lua");
-                LogManager.Instance.Boot("Loaded Clan {0}", clanName);
             }
         }
 

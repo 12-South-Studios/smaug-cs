@@ -74,6 +74,11 @@ namespace SmaugCS.Logging
             sb.AppendFormat(str, args);
             LogWrapper.InfoFormat(BugLogFormat, sb.ToString());
         }
+
+        public void Bug(Exception ex)
+        {
+            Bug(ex.Message + "\n{0}", ex.StackTrace);
+        }
         #endregion
 
         #region Error Log

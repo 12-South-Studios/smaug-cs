@@ -394,6 +394,8 @@ namespace SmaugCS
         private static readonly ILog Logger =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private static TcpServer NetworkMgr;
+
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
@@ -402,46 +404,9 @@ namespace SmaugCS
 
             try
             {
-                LogWrapper logWrapper = new LogWrapper(Logger, LogLevel.Debug);
-                LogManager.Instance.Initialize(logWrapper, GameConstants.GetDataPath());
-                LogManager.Instance.Boot("---------------------[ Boot Log ]--------------------");
-                
-                var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
-                LogManager.Instance.Boot("{0} SystemDirectories loaded.", loaded);
-
-                loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
-                LogManager.Instance.Boot("{0} SystemFiles loaded.", loaded);
-
-                LookupManager.Instance.Initialize();
-
-                LuaManager.Instance.Initialize(LogManager.Instance, GameConstants.GetDataPath());
-                InitializeLuaInjections();
-                InitializeLuaFunctions();
-
-                LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
-                
-                TcpServer server = new TcpServer(logWrapper, new TcpUserRepository());
-                server.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
-                               IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
-                
-                DatabaseManager.Instance.Initialize(false);
-
-                SqlConnection connection =
-                    new SqlConnection(ConfigurationManager.ConnectionStrings["SmaugDB"].ConnectionString);
-
-                BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
-                BanManager.Instance.LoadBans();
-
-                BoardManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
-                BoardManager.Instance.LoadBoards();
-                // TODO: Load Projects
-
-                GameManager.Instance.Initialize(false);
+                OnServerStart();
                 GameManager.Instance.DoLoop();
-
-                // TODO: Shutdown Network Socket
-
-                // TODO: Shutdown Managers
+                OnServerStop();
             }
             catch (Exception ex)
             {
@@ -450,15 +415,62 @@ namespace SmaugCS
             }
         }
 
+        private static void OnServerStart()
+        {
+            LogWrapper logWrapper = new LogWrapper(Logger, LogLevel.Debug);
+            LogManager.Instance.Initialize(logWrapper, GameConstants.GetDataPath());
+            LogManager.Instance.Boot("---------------------[ Boot Log ]--------------------");
+
+            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
+            LogManager.Instance.Boot("{0} SystemDirectories loaded.", loaded);
+
+            loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
+            LogManager.Instance.Boot("{0} SystemFiles loaded.", loaded);
+
+            LookupManager.Instance.Initialize();
+
+            LuaManager.Instance.Initialize(LogManager.Instance, GameConstants.GetDataPath());
+            InitializeLuaInjections();
+            InitializeLuaFunctions();
+
+            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
+
+            NetworkMgr = new TcpServer(logWrapper, new TcpUserRepository());
+            NetworkMgr.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
+                           IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
+
+            DatabaseManager.Instance.Initialize(LogManager.Instance);
+            DatabaseManager.Instance.InitializeDatabase(false);
+
+            SqlConnection connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["SmaugDB"].ConnectionString);
+
+            BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
+            BanManager.Instance.LoadBans();
+
+            BoardManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
+            BoardManager.Instance.LoadBoards();
+            // TODO: Load Projects
+
+            GameManager.Instance.Initialize(false);
+        }
+
+        private static void OnServerStop()
+        {
+            NetworkMgr.Shutdown("Shutting down MUD");
+
+            // TODO: Shutdown Managers
+        }
+
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
-            LogManager.Instance.Boot((Exception)unhandledExceptionEventArgs.ExceptionObject);
+            LogManager.Instance.Bug((Exception)unhandledExceptionEventArgs.ExceptionObject);
         }
 
         private static void InitializeLuaInjections()
         {
             LuaAreaFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, LogManager.Instance);
             LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, GameConstants.GetDataPath());
             LuaMobFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
             LuaObjectFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);

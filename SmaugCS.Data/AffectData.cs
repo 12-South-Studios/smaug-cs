@@ -22,6 +22,8 @@ namespace SmaugCS.Data
         [XmlElement]
         public ExtendedBitvector BitVector { get; set; }
 
+        [XmlElement]
+        public int SkillNumber { get; set; }
         /*public void SaveFUSS(TextWriterProxy proxy)
         {
             if ((int)Type < 0 && (int)Type >= db.SKILLS.Count)

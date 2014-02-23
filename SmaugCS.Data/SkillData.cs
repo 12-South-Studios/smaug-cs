@@ -47,7 +47,7 @@ namespace SmaugCS.Data
         public string HitCharacterMessage { get; set; }
         public string HitVictimMessage { get; set; }
         public string HitRoomMessage { get; set; }
-        public string hit_dest { get; set; }
+        public string HitDestinationMessage { get; set; }
         public string MissCharacterMessage { get; set; }
         public string MissVictimMessage { get; set; }
         public string MissRoomMessage { get; set; }
@@ -57,14 +57,14 @@ namespace SmaugCS.Data
         public string ImmuneCharacterMessage { get; set; }
         public string ImmuneVictimMessage { get; set; }
         public string ImmuneRoomMessage { get; set; }
-        public string dice { get; set; }
+        public string Dice { get; set; }
         public int value { get; set; }
         public int spell_sector { get; set; }
         public SaveVsTypes SaveVs { get; set; }
         public char difficulty { get; set; }
         public List<SmaugAffect> Affects { get; set; }
         public List<SpellComponent> Components { get; set; }
-        public string teachers { get; set; }
+        public List<string> Teachers { get; set; } 
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
 
@@ -76,6 +76,7 @@ namespace SmaugCS.Data
             RaceAdept = new int[maxRaces];
             Affects = new List<SmaugAffect>();
             Components = new List<SpellComponent>();
+            Teachers = new List<string>();
         }
 
         public static int Compare(SkillData sk1, SkillData sk2)
@@ -120,6 +121,12 @@ namespace SmaugCS.Data
         public void AddAffect(SmaugAffect affect)
         {
             Affects.Add(affect);
+        }
+
+        public void AddTeacher(string value)
+        {
+            if(!Teachers.Contains(value))
+                Teachers.Add(value);
         }
 
         public int GetModifiedPosition()

@@ -437,66 +437,6 @@ namespace SmaugCS
                                                         ATTypes.AT_WHITE /* 110 */
                                                     };
 
-        public static List<string> valid_color = new List<string>()
-                                                     {
-                                                         "black",
-                                                         "dred",
-                                                         "dgreen",
-                                                         "orange",
-                                                         "dblue",
-                                                         "purple",
-                                                         "cyan",
-                                                         "grey",
-                                                         "dgrey",
-                                                         "red",
-                                                         "green",
-                                                         "yellow",
-                                                         "blue",
-                                                         "pink",
-                                                         "lblue",
-                                                         "white"
-                                                     };
-
-        public static List<string> day_name = new List<string>()
-                                                  {
-                                                      "the Moon",
-                                                      "the Bull",
-                                                      "Deception",
-                                                      "Thunder",
-                                                      "Freedom",
-                                                      "the Great Gods",
-                                                      "the Sun"
-                                                  };
-
-        public static List<string> month_name = new List<string>
-                                                    {
-                                                        "Winter",
-                                                        "the Winter Wolf",
-                                                        "the Frost Giant",
-                                                        "the Old Forces",
-                                                        "the Grand Struggle",
-                                                        "the Spring",
-                                                        "Nature",
-                                                        "Futility",
-                                                        "the Dragon",
-                                                        "the Sun",
-                                                        "the Heat",
-                                                        "the Battle",
-                                                        "the Dark Shades",
-                                                        "the Shadows",
-                                                        "the Long Shadows",
-                                                        "the Ancient Darkness",
-                                                        "the Great Evil"
-                                                    };
-
-        public static List<string> season_name = new List<string>
-                                                     {
-                                                         "&gspring",
-                                                         "&Ysummer",
-                                                         "&Oautumn",
-                                                         "&Cwinter"
-                                                     };
-
         public static List<TimezoneData> tzone_table = new List<TimezoneData>()
                                                          {
                                                              new TimezoneData("GMT-12", "Eniwetok", -12, 0),
@@ -810,33 +750,6 @@ namespace SmaugCS
                 {'C', "&C"}, {'O', "&O"}, {'B', "&B"}, {'P', "&P"}, {'W', "&W"}, {'b', "&b"}, {'p', "&p"}, 
                 {'Y', "&Y"}, {'c', "&c"}
             };
-
-        /*public static List<string> StarMap = new List<string>()
-                                                  {
-                                                      "                                               C. C.                  g*",
-                                                      "    O:       R*        G*    G.  W* W. W.          C. C.    Y* Y. Y.    ",
-                                                      "  O*.                c.          W.W.     W.            C.       Y..Y.  ",
-                                                      "O.O. O.              c.  G..G.           W:      B*                   Y.",
-                                                      "     O.    c.     c.                     W. W.                  r*    Y.",
-                                                      "     O.c.     c.      G.             P..     W.        p.      Y.   Y:  ",
-                                                      "        c.                    G*    P.  P.           p.  p:     Y.   Y. ",
-                                                      "                 b*             P.: P*                 p.p:             "
-                                                  };
-
-
-        public static List<string> SunMap = new List<string>()
-                                                 {
-                                                     "\\`|'/",
-                                                     "- O -",
-                                                     "/.|.\\"
-                                                 };
-
-        public static List<string> MoonMap = new List<string>()
-                                                  {
-                                                      " @@@ ",
-                                                      "@@@@@",
-                                                      " @@@ "
-                                                  };*/
 
         public static List<string> WhereNames = new List<string>()
                                                     {
@@ -1253,27 +1166,6 @@ namespace SmaugCS
                                                            new lck_app_type(-105),
                                                            new lck_app_type(-120)
                                                        };
-
-        public static List<liq_type> liq_table = new List<liq_type>()
-                                                     {
-                                                         new liq_type("beer", "amber", 3, 2, 5),
-                                                         new liq_type("wine", "rose", 5, 2, 5),
-                                                         new liq_type("ale", "brown", 2, 2, 5),
-                                                         new liq_type("dark ale", "dark", 1, 2, 5),
-                                                         new liq_type("whisky", "golden", 6, 1, 4),
-                                                         new liq_type("lemonade", "pink", 0, 1, 8),
-                                                         new liq_type("firebreather", "boiling", 10, 0, 0),
-                                                         new liq_type("local speciality", "everclear", 3, 3, 3),
-                                                         new liq_type("slime mold juice", "green", 0, 4, -8),
-                                                         new liq_type("milk", "white", 0, 3, 6),
-                                                         new liq_type("tea", "tan", 0, 1, 6),
-                                                         new liq_type("coffee", "black", 0, 1, 6),
-                                                         new liq_type("blood", "red", 0, 2, -1),
-                                                         new liq_type("salt water", "clear", 0, 1, -2),
-                                                         new liq_type("cola", "cherry", 0, 1, 5),
-                                                         new liq_type("mead", "honey color", 4, 2, 5),
-                                                         new liq_type("grog", "thick brown", 3, 2, 5)
-                                                     };
 
         public static List<string> attack_table = new List<string>()
                                                       {
