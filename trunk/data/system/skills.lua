@@ -163,7 +163,6 @@ function LoadSpells()
 	
 	skill = CreateSkill("black breath", "spell", 109, 403, 51);
 	skill.Info = 2440.
-	skill.Saves = 5;
 	skill.DamageMessage = "black breath";
 	skill.SpellFunctionName = "spell_smaug";
 	skill:SetFlags("area");
@@ -213,7 +212,7 @@ function LoadSpells()
 	skill:AddComponent(CreateSpellComponent("V", "482", "+"));
 	skill:AddAffect(CreateSmaugAffect("", 60, "17", -1));
 	skill:AddAffect(CreateSmaugAffect("l*10", 31, "-3", -1));
-	skill.AddAffect(CreateSmaugAffect("l*3", 26, "curse", -1));
+	skill:AddAffect(CreateSmaugAffect("l*3", 26, "curse", -1));
 	
 	skill = CreateSkill("call lightning", "spell", 109, 6, 12);
 	skill.Info = 3;
@@ -233,7 +232,7 @@ function LoadSpells()
 	skill.HitCharacterMessage = "You place a fear of flames in $N's mind...";
 	skill.HitVictimMessage = "Your flesh grows more susceptible to fire.";
 	skill.HitRoomMessage = "$N begins to mutter about a fear of flames...";
-	skill.ImmortalCharacterMessage = "Mysteriously, $N was not affected by your spell.";
+	skill.ImmuneCharacterMessage = "Mysteriously, $N was not affected by your spell.";
 	skill:AddAffect(CreateSmaugAffect("l*23", 29, "1", -1));
 
 	skill = CreateSkill("blazeward", "spell", 112, 215, 27);
@@ -248,7 +247,7 @@ function LoadSpells()
 	
 	skill = CreateSkill("burning hands", "spell", 109, 5, 5);
 	skill:SetTargetByValue(1);
-	skill.info = 1;
+	skill.Info = 1;
 	skill.MinimumMana = 15;
 	skill.Rounds = 12;
 	skill.SpellFunctionName = "spell_burning_hands";

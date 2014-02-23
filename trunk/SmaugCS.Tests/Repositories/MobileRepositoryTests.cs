@@ -9,6 +9,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
+using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
@@ -72,7 +73,7 @@ namespace SmaugCS.Tests.Repositories
         public void OnSetup()
         {
             LuaMobFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, LogManager.Instance);
 
             DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Clear();
 

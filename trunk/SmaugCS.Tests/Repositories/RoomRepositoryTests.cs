@@ -8,6 +8,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
+using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
@@ -49,7 +50,7 @@ namespace SmaugCS.Tests.Repositories
         public void OnSetup()
         {
             LuaRoomFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, LogManager.Instance);
 
             DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Clear();
 

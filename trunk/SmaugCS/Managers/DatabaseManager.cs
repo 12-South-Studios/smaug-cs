@@ -28,6 +28,7 @@ namespace SmaugCS.Managers
         private static readonly object Padlock = new object();
 
         private readonly List<ListLoader> _loaders = new List<ListLoader>();
+        private ILogManager _logManager;
 
         private DatabaseManager()
         {
@@ -37,18 +38,18 @@ namespace SmaugCS.Managers
             MOBILE_INDEXES = new MobileRepository();
             CHARACTERS = new CharacterRepository();
             //OBJECTS = new ObjInstanceRepository(Program.MaximumWearLocations, Program.MaximumWearLayers);
-            LIQUIDS = new List<LiquidData>();
-            HERBS = new List<SkillData>();
-            SKILLS = new List<SkillData>();
-            SPEC_FUNS = new List<SpecialFunction>();
-            COMMANDS = new List<CommandData>();
-            SOCIALS = new List<SocialData>();
-            RACES = new List<RaceData>();
-            CLASSES = new List<ClassData>();
-            DEITIES = new List<DeityData>();
-            LANGUAGES = new List<LanguageData>();
-            CLANS = new List<ClanData>();
-            COUNCILS = new List<CouncilData>();
+            _liquids = new List<LiquidData>();
+            _herbs = new List<SkillData>();
+            _skills = new List<SkillData>();
+            _specfuns = new List<SpecialFunction>();
+            _commands = new List<CommandData>();
+            _socials = new List<SocialData>();
+            _races = new List<RaceData>();
+            _classes = new List<ClassData>();
+            _deities = new List<DeityData>();
+            _languages = new List<LanguageData>();
+            _clans = new List<ClanData>();
+            _councils = new List<CouncilData>();
         }
 
         /// <summary>
@@ -85,13 +86,18 @@ namespace SmaugCS.Managers
         public IInstanceRepository<CharacterInstance> CHARACTERS { get; private set; }
         public IInstanceRepository<ObjectInstance> OBJECTS { get; private set; }
 
-        public void Initialize(bool fCopyOver)
+        public void Initialize(ILogManager logManager)
         {
-            LogManager.Instance.Boot("Initializing the Database");
+            _logManager = logManager;
+        }
+        
+        public void InitializeDatabase(bool fCopyOver)
+        {
+            _logManager.Boot("Initializing the Database");
             db.SystemData = new SystemData();
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
-            LogManager.Instance.Boot("{0} Commands loaded.", COMMANDS.Count());
+            _logManager.Boot("{0} Commands loaded.", COMMANDS.Count());
             CommandLookupTable.UpdateCommandFunctionReferences(COMMANDS);
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
@@ -117,6 +123,7 @@ namespace SmaugCS.Managers
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
             LogManager.Instance.Boot("{0} Skills loaded.", SKILLS.Count());
+
             SkillLookupTable.UpdateSkillFunctionReferences(SKILLS);
             SpellLookupTable.UpdateSpellFunctionReferences(SKILLS);
 
@@ -271,13 +278,9 @@ namespace SmaugCS.Managers
 
         }
 
-        
-        public IEnumerable<LiquidData> LIQUIDS { get; private set; }
-        public IEnumerable<SkillData> HERBS { get; private set; }
-        public IEnumerable<SkillData> SKILLS { get; private set; }
-        public IEnumerable<SpecialFunction> SPEC_FUNS { get; private set; }
-
         #region Liquids
+        private readonly List<LiquidData> _liquids; 
+        public IEnumerable<LiquidData> LIQUIDS { get { return _liquids; } }
         public LiquidData GetLiquid(string str)
         {
             return str.IsNumber()
@@ -288,9 +291,20 @@ namespace SmaugCS.Managers
         {
             return LIQUIDS.FirstOrDefault(x => x.Vnum == vnum);
         }
+
+        public void AddLiquid(LiquidData liquid)
+        {
+            if (!LIQUIDS.Contains(liquid))
+            {
+                _liquids.Add(liquid);
+                _logManager.Boot("Liquid {0} added", liquid.Name);
+            }
+        }
         #endregion
 
         #region Herbs
+        private readonly List<SkillData> _herbs;
+        public IEnumerable<SkillData> HERBS { get { return _herbs; } }
         public SkillData GetHerb(string name)
         {
             return HERBS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
@@ -299,10 +313,20 @@ namespace SmaugCS.Managers
         {
             return sn >= 0 && sn < HERBS.Count() && HERBS.ToList()[sn] != null && !HERBS.ToList()[sn].Name.IsNullOrEmpty();
         }
+        public void AddHerb(SkillData herb)
+        {
+            if (!HERBS.Contains(herb))
+            {
+                _herbs.Add(herb);
+                _logManager.Boot("Herb {0} added", herb.Name);
+            }
+        }
         #endregion
 
         #region Skills
 
+        private readonly List<SkillData> _skills;
+        public IEnumerable<SkillData> SKILLS { get { return _skills; } }
         public SkillData GetSkill(string name)
         {
             return SKILLS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -349,34 +373,74 @@ namespace SmaugCS.Managers
                 return -1;
 
             int newId = SKILLS.Max(x => x.ID) + 1;
-            SKILLS.ToList().Add(new SkillData(Program.MAX_CLASS, Program.MAX_RACE) { Name = name, ID = newId });
+            AddSkill(new SkillData(Program.MAX_CLASS, Program.MAX_RACE) { Name = name, ID = newId });
             return newId;
         }
 
+        public void AddSkill(SkillData skill)
+        {
+            if (!SKILLS.Contains(skill))
+            {
+                _skills.Add(skill);
+                _logManager.Boot("Skill {0} added", skill.Name);
+            }
+        }
         #endregion
 
         #region SpecFuns
+        private readonly List<SpecialFunction> _specfuns;
+        public IEnumerable<SpecialFunction> SPEC_FUNS { get { return _specfuns; } }
         public SpecialFunction GetSpecFun(string name)
         {
             return SPEC_FUNS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         }
+        public void AddSpecFun(SpecialFunction specfun)
+        {
+            if (!SPEC_FUNS.Contains(specfun))
+            {
+                _specfuns.Add(specfun);
+                _logManager.Boot("SpecFun {0} added", specfun.Name);
+            }
+        }
         #endregion
 
-        public IEnumerable<CommandData> COMMANDS { get; private set; }
+        #region Commands
+        private readonly List<CommandData> _commands;
+        public IEnumerable<CommandData> COMMANDS { get { return _commands; } }
         public CommandData GetCommand(string command)
         {
             return COMMANDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(command));
         }
+        public void AddCommand(CommandData command)
+        {
+            if (!COMMANDS.Contains(command))
+            {
+                _commands.Add(command);
+                _logManager.Boot("Command {0} added", command.Name);
+            }
+        }
+        #endregion
 
-        public IEnumerable<SocialData> SOCIALS { get; private set; } 
+        #region Socials
+        private readonly List<SocialData> _socials;
+        public IEnumerable<SocialData> SOCIALS { get { return _socials; } } 
         public SocialData GetSocial(string command)
         {
             return SOCIALS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(command));
         }
-
+        public void AddSocial(SocialData social)
+        {
+            if (!SOCIALS.Contains(social))
+            {
+                _socials.Add(social);
+                _logManager.Boot("Social {0} added", social.Name);
+            }
+        }
+        #endregion
 
         #region Languages
-        public IEnumerable<LanguageData> LANGUAGES { get; private set; }
+        private readonly List<LanguageData> _languages;
+        public IEnumerable<LanguageData> LANGUAGES { get { return _languages; } }
         public LanguageData GetLanguage(string name)
         {
             return LANGUAGES.FirstOrDefault(x => x.Name.Equals(name));
@@ -388,10 +452,19 @@ namespace SmaugCS.Managers
                          && x != (int)LanguageTypes.Unknown)
                      .Select(x => (languages & x) > 0).Count();
         }
+        public void AddLanguage(LanguageData lang)
+        {
+            if (!LANGUAGES.Contains(lang))
+            {
+                _languages.Add(lang);
+                _logManager.Boot("Language {0} added", lang.Name);
+            }
+        }
         #endregion
 
         #region Races
-        public IEnumerable<RaceData> RACES { get; private set; }
+        private readonly List<RaceData> _races;
+        public IEnumerable<RaceData> RACES { get { return _races; } }
         public RaceData GetRace(RaceTypes type)
         {
             return RACES.FirstOrDefault(x => x.Type == type);
@@ -404,11 +477,19 @@ namespace SmaugCS.Managers
         {
             return RACES.FirstOrDefault(x => (int)x.Type == id);
         }
+        public void AddRace(RaceData race)
+        {
+            if (!RACES.Contains(race))
+            {
+                _races.Add(race);
+                _logManager.Boot("Race {0} added", race.Name);
+            }
+        }
         #endregion
 
         #region Classes
-
-        public IEnumerable<ClassData> CLASSES { get; private set; }
+        private readonly List<ClassData> _classes;
+        public IEnumerable<ClassData> CLASSES { get { return _classes; } } 
         public ClassData GetClass(ClassTypes type)
         {
             return CLASSES.FirstOrDefault(x => x.Type == type);
@@ -421,25 +502,63 @@ namespace SmaugCS.Managers
         {
             return CLASSES.FirstOrDefault(x => (int)x.Type == id);
         }
+        public void AddClass(ClassData cls)
+        {
+            if (!_classes.Contains(cls))
+            {
+                _classes.Add(cls);
+                _logManager.Boot("Class {0} added", cls.Name);
+            }
+        }
         #endregion
 
-        public IEnumerable<DeityData> DEITIES { get; private set; }
+        #region Deities
+        private readonly List<DeityData> _deities; 
+        public IEnumerable<DeityData> DEITIES { get { return _deities; } }
         public DeityData GetDeity(string name)
         {
             return DEITIES.Single(x => x.Name.EqualsIgnoreCase(name));
         }
 
-                #region Organizations
-        public IEnumerable<ClanData> CLANS { get; private set; }
+        public void AddDeity(DeityData deity)
+        {
+            if (!DEITIES.Contains(deity))
+            {
+                _deities.Add(deity);
+                _logManager.Boot("Deity {0} added", deity.Name);
+            }
+        }
+        #endregion
+        
+        #region Organizations
+        private readonly List<ClanData> _clans;
+        public IEnumerable<ClanData> CLANS { get { return _clans; } }
         public ClanData GetClan(string name)
         {
             return CLANS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
+        public void AddClan(ClanData clan)
+        {
+            if (!CLANS.Contains(clan))
+            {
+                _clans.Add(clan);
+                _logManager.Boot("Clan {0} added", clan.Name);
+            }
+        }
 
-        public IEnumerable<CouncilData> COUNCILS { get; private set; }
+        private readonly List<CouncilData> _councils;
+        public IEnumerable<CouncilData> COUNCILS { get { return _councils; } }
         public CouncilData GetCouncil(string name)
         {
             return COUNCILS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+        public void AddCouncil(CouncilData council)
+        {
+            if (!COUNCILS.Contains(council))
+            {
+                _councils.Add(council);
+                _logManager.Boot("Council {0} added", council.Name);
+            }
         }
         #endregion
     }

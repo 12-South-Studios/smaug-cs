@@ -20,6 +20,15 @@ namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {
+        public static bool CanCharm(this CharacterInstance ch)
+        {
+            if (ch.IsNpc() || ch.IsImmortal())
+                return true;
+            if (((ch.GetCurrentCharisma()/3) + 1) > ch.PlayerData.NumberOfCharmies)
+                return true;
+            return false;
+        }
+
         public static bool IsInCombatPosition(this CharacterInstance ch)
         {
             return (ch.CurrentPosition == PositionTypes.Fighting
@@ -27,6 +36,11 @@ namespace SmaugCS.Extensions
                     || ch.CurrentPosition == PositionTypes.Defensive
                     || ch.CurrentPosition == PositionTypes.Aggressive
                     || ch.CurrentPosition == PositionTypes.Berserk);
+        }
+
+        public static bool IsImmune(this CharacterInstance ch, ResistanceTypes type)
+        {
+            return type != ResistanceTypes.Unknown && ch.Immunity.IsSet((int)type);
         }
 
         public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type)
@@ -128,7 +142,7 @@ namespace SmaugCS.Extensions
 
         public static bool IsAffectedBy(this CharacterInstance ch, int sn)
         {
-            return ch.Affects.Exists(x => (int)x.Type == sn);
+            return ch.Affects.Exists(x => x.SkillNumber == sn);
         }
 
         public static bool IsNotAuthorized(this CharacterInstance ch)
@@ -924,7 +938,7 @@ namespace SmaugCS.Extensions
                 ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                 //ch.RemoveAffect(gsn_charm_person);    TODO Fix this!
                 if (!ch.Master.IsNpc())
-                    ch.Master.PlayerData.charmies--;
+                    ch.Master.PlayerData.NumberOfCharmies--;
             }
 
             if (handler.can_see(ch.Master, ch))

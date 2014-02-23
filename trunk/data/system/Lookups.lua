@@ -185,6 +185,62 @@ function LoadModTypes()
 	LAddLookup("ModTypes", "Bloodthirst");
 end
 
+function LoadValidColors()
+	LAddLookup("ValidColors", "black");
+	LAddLookup("ValidColors", "dred");
+	LAddLookup("ValidColors", "dgreen");
+	LAddLookup("ValidColors", "orange");
+	LAddLookup("ValidColors", "dblue");
+	LAddLookup("ValidColors", "purple");
+	LAddLookup("ValidColors", "cyan");
+	LAddLookup("ValidColors", "grey");
+	LAddLookup("ValidColors", "dgrey");
+	LAddLookup("ValidColors", "red");
+	LAddLookup("ValidColors", "green");
+	LAddLookup("ValidColors", "yellow");
+	LAddLookup("ValidColors", "blue");
+	LAddLookup("ValidColors", "pink");
+	LAddLookup("ValidColors", "lblue");
+	LAddLookup("ValidColors", "white");
+end
+
+function LoadDayNames()
+	LAddLookup("DayNames", "the Moon");
+	LAddLookup("DayNames", "the Bull");
+	LAddLookup("DayNames", "Deception");
+	LAddLookup("DayNames", "Thunder");
+	LAddLookup("DayNames", "Freedom");
+	LAddLookup("DayNames", "the Great Gods");
+	LAddLookup("DayNames", "the Sun");
+end
+
+function LoadMonthNames()
+	LAddLookup("MonthNames", "Winter");
+	LAddLookup("MonthNames", "the Winter Wolf");
+	LAddLookup("MonthNames", "the Frost Giant");
+	LAddLookup("MonthNames", "the Old Forces");
+	LAddLookup("MonthNames", "the Grand Struggle");
+	LAddLookup("MonthNames", "the Spring");
+	LAddLookup("MonthNames", "Nature");
+	LAddLookup("MonthNames", "Futility");
+	LAddLookup("MonthNames", "the Dragon");
+	LAddLookup("MonthNames", "the Sun");
+	LAddLookup("MonthNames", "the Heat");
+	LAddLookup("MonthNames", "the Battle");
+	LAddLookup("MonthNames", "the Dark Shades");
+	LAddLookup("MonthNames", "the Shadows");
+	LAddLookup("MonthNames", "the Long Shadows");
+	LAddLookup("MonthNames", "the Ancient Darkness");
+	LAddLookup("MonthNames", "the Great Evil");
+end
+
+function LoadSeasonNames()
+	LAddLookup("SeasonNames", "&gspring");
+	LAddLookup("SeasonNames", "&ysummer");
+	LAddLookup("SeasonNames", "&Oautumn");
+	LAddLookup("SeasonNames", "&Cwinter");
+end
+
 LoadPartMessages();
 LoadObjectAffectStrings();
 LoadCorpseDescs();
@@ -198,5 +254,9 @@ LoadSpellClassTypes();
 LoadTargetTypes();
 LoadLiquidTypes();
 LoadModTypes();
+LoadValidColors();
+LoadDayNames();
+LoadMonthNames();
+LoadSeasonNames();
 
 -- EOF

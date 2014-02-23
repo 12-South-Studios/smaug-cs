@@ -30,7 +30,7 @@ namespace SmaugCS.Loaders
             foreach (string className in classList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + className + ".lua");
-                LogManager.Instance.Boot("Loaded Class {0}", className);
+
             }
         }
     }

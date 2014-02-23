@@ -21,12 +21,17 @@ namespace SmaugCS.Tests
 		public void OnSetup()
 		{
 			Mock<ILogManager> mockLogManager = new Mock<ILogManager>();
-
+			mockLogManager.Setup(x => x.Boot(It.IsAny<string>(), It.IsAny<object[]>()));
+			
 			const string dataPath = "D://Projects//SmaugCS//trunk//data";
 
 			LuaManager.Instance.Initialize(mockLogManager.Object, dataPath);
+
+			DatabaseManager dbMgr = DatabaseManager.Instance;
+			dbMgr.Initialize(mockLogManager.Object);
+
 			LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, dataPath);
-			LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+			LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, mockLogManager.Object);
 
 			var luaProxy = new LuaInterfaceProxy();
 

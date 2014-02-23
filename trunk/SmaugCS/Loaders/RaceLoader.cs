@@ -30,7 +30,6 @@ namespace SmaugCS.Loaders
             foreach (string raceName in raceList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + raceName + ".lua");
-                LogManager.Instance.Boot("Loaded Race {0}", raceName);
             }
         }
     }

@@ -1,18 +1,24 @@
-﻿using SmaugCS.Data.Instances;
+﻿using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
 {
-    class CharmPerson
+    public static class CharmPerson
     {
-        public static bool can_charm(CharacterInstance ch)
+        public static ReturnTypes spell_charm_person(int sn, int level, CharacterInstance ch, object vo)
         {
-            // TODO
-            return false;
-        }
+            CharacterInstance victim = (CharacterInstance)vo;
+            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
 
-        public static int spell_charm_person(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
+            if (victim.Equals(ch))
+            {
+                color.send_to_char("You like yourself even better!\r\n", ch);
+                return ReturnTypes.SpellFailed;
+            }
+
+
             return 0;
         }
     }

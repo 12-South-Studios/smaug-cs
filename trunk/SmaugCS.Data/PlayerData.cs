@@ -50,7 +50,7 @@ namespace SmaugCS.Data
         public int quest_curr { get; set; }
         public int quest_accum { get; set; }
         public int Favor { get; set; }
-        public int charmies { get; set; }
+        public int NumberOfCharmies { get; set; }
         public int AuthState { get; set; }
         public DateTime release_date { get; set; }
         public string helled_by { get; set; }
