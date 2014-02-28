@@ -6,6 +6,22 @@ namespace Realm.Library.Common.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="e"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> e, T value)
+        {
+            foreach (var cur in e)
+            {
+                yield return cur;
+            }
+            yield return value;
+        }
+
+        /// <summary>
         /// Gets the index of the given object
         /// </summary>
         /// <typeparam name="T"></typeparam>

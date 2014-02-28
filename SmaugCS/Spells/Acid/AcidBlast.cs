@@ -1,12 +1,13 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
-    public class AcidBlast
+    public static class AcidBlast
     {
-        public static int spell_acid_blast(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes spell_acid_blast(int sn, int level, CharacterInstance ch, object vo)
         {
             CharacterInstance victim = vo.CastAs<CharacterInstance>();
 

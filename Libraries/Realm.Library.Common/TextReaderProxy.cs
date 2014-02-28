@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -14,8 +15,7 @@ namespace Realm.Library.Common
             _reader = tr;
         }
 
-        public TextReaderProxy() { }
-
+        [ExcludeFromCodeCoverage]
         ~TextReaderProxy()
         {
             Dispose(false);
@@ -110,8 +110,9 @@ namespace Realm.Library.Common
                         .ToList());
         }
 
-        public List<TextSection> ReadSections(string[] headerChars = null, IEnumerable<string> commentChars = null,
-            string[] footerChars = null, string endOfFile = "")
+        public List<TextSection> ReadSections(IEnumerable<string> headerChars = null,
+                                              IEnumerable<string> commentChars = null,
+                                              IEnumerable<string> footerChars = null, string endOfFile = "")
         {
             List<string> lines = ReadIntoList();
             List<TextSection> sections = new List<TextSection>();
@@ -121,12 +122,12 @@ namespace Realm.Library.Common
 
             TextSection section = null;
             foreach (string line in lines
-                    .Where(line => commentChars == null || !commentChars.Any(line.StartsWith))
-                    .Where(line => String.IsNullOrWhiteSpace(endOfFile) || !line.StartsWith(endOfFile)))
+                .Where(line => commentChars == null || !commentChars.Any(line.StartsWith))
+                .Where(line => String.IsNullOrWhiteSpace(endOfFile) || !line.StartsWith(endOfFile)))
             {
                 if (headerChars.Any(c => line.StartsWith(c)))
                 {
-                    section = new TextSection { Header = line.Substring(1) };
+                    section = new TextSection {Header = line.Substring(1)};
                     sections.Add(section);
                     continue;
                 }
@@ -142,7 +143,7 @@ namespace Realm.Library.Common
             return sections;
         }
 
-        private static bool HasInvalidSectionParameters(string[] headerChars = null,
+        private static bool HasInvalidSectionParameters(IEnumerable<string> headerChars = null,
                                                         IEnumerable<string> commentChars = null,
                                                         IEnumerable<string> footerChars = null, string endOfFile = "")
         {
@@ -157,12 +158,14 @@ namespace Realm.Library.Common
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        [ExcludeFromCodeCoverage]
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

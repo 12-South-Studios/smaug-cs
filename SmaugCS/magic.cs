@@ -124,7 +124,7 @@ namespace SmaugCS
             color.set_char_color(ATTypes.AT_MAGIC, ch);
             color.set_char_color(ATTypes.AT_HITME, victim);
 
-            string buffer = !handler.can_see(ch, victim)
+            string buffer = !ch.CanSee(victim)
                          ? "Someone"
                          : (victim.IsNpc()
                                 ? victim.ShortDescription
@@ -609,14 +609,14 @@ namespace SmaugCS
             return obj;
         }
 
-        public static int obj_cast_spell(int sn, int level, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
+        public static ReturnTypes obj_cast_spell(int sn, int level, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
         {
             if (sn == -1)
                 return (int)ReturnTypes.None;
 
             SkillData skill = DatabaseManager.Instance.GetSkill(sn);
             if (skill == null || skill.SpellFunction == null)
-                return (int)ReturnTypes.Error;
+                return ReturnTypes.Error;
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.NoMagic)
                 || (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe)
@@ -624,7 +624,7 @@ namespace SmaugCS
             {
                 color.set_char_color(ATTypes.AT_MAGIC, ch);
                 color.send_to_char("Nothing seems to happen...\r\n", ch);
-                return (int)ReturnTypes.None;
+                return ReturnTypes.None;
             }
 
             // Reduces the number of level 5 players using level 40 scrolls in battle
@@ -648,7 +648,7 @@ namespace SmaugCS
                         return fight.damage(ch, ch, SmaugRandom.Between(1, level), Program.TYPE_UNDEFINED);
                 }
 
-                return (int)ReturnTypes.None;
+                return ReturnTypes.None;
             }
 
             object vo = null;
@@ -658,7 +658,7 @@ namespace SmaugCS
             {
                 default:
                     LogManager.Instance.Bug("Bad target for sn {0}", sn);
-                    return (int)ReturnTypes.Error;
+                    return ReturnTypes.Error;
 
                 case TargetTypes.Ignore:
                     vo = null;
@@ -672,14 +672,14 @@ namespace SmaugCS
                     {
                         if (victim == null)
                             victim = fight.who_fighting(ch);
-                        if (victim == null || (!victim.IsNpc() && !fight.in_arena(victim)))
+                        if (victim == null || (!victim.IsNpc() && !victim.IsInArena()))
                         {
                             color.send_to_char("You can't do that.\r\n", ch);
-                            return (int)ReturnTypes.None;
+                            return ReturnTypes.None;
                         }
                     }
                     if (ch != victim && fight.is_safe(ch, victim, true))
-                        return (int)ReturnTypes.None;
+                        return ReturnTypes.None;
                     vo = victim;
                     break;
                 case TargetTypes.DefensiveCharacter:
@@ -689,7 +689,7 @@ namespace SmaugCS
                     if (skill.Type != SkillTypes.Herb && victim.Immunity.IsSet((int)ResistanceTypes.Magic))
                     {
                         immune_casting(skill, ch, victim, null);
-                        return (int)ReturnTypes.None;
+                        return ReturnTypes.None;
                     }
                     break;
                 case TargetTypes.Self:
@@ -697,14 +697,14 @@ namespace SmaugCS
                     if (skill.Type != SkillTypes.Herb && ch.Immunity.IsSet((int)ResistanceTypes.Magic))
                     {
                         immune_casting(skill, ch, victim, null);
-                        return (int)ReturnTypes.None;
+                        return ReturnTypes.None;
                     }
                     break;
                 case TargetTypes.InventoryObject:
                     if (obj == null)
                     {
                         color.send_to_char("You can't do that!\r\n", ch);
-                        return (int)ReturnTypes.None;
+                        return ReturnTypes.None;
                     }
                     vo = obj;
                     break;
@@ -718,10 +718,10 @@ namespace SmaugCS
                 retcode = ReturnTypes.None;
 
             if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.Error)
-                return (int)retcode;
+                return retcode;
 
             if (ch.CharDied())
-                return (int)ReturnTypes.CharacterDied;
+                return ReturnTypes.CharacterDied;
 
             if (skill.Target == TargetTypes.OffensiveCharacter
                 && victim != ch
@@ -737,7 +737,7 @@ namespace SmaugCS
                 }
             }
 
-            return (int)retcode;
+            return retcode;
         }
     }
 }

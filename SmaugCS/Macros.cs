@@ -24,7 +24,7 @@ namespace SmaugCS
 
         public static string PERS(CharacterInstance ch, CharacterInstance looker)
         {
-            return handler.can_see(ch, looker)
+            return ch.CanSee(looker)
                        ? ch.IsNpc() ? ch.ShortDescription : ch.Name
                        : "someone";
         }
@@ -177,7 +177,7 @@ namespace SmaugCS
 
         public static string MORPHERS(CharacterInstance ch, CharacterInstance looker)
         {
-            return handler.can_see(looker, ch) ? ch.CurrentMorph.Morph.ShortDescription : "someone";
+            return looker.CanSee(ch) ? ch.CurrentMorph.Morph.ShortDescription : "someone";
         }
 
         public static void DamageMessage(CharacterInstance ch, CharacterInstance victim, int dam, int dt)

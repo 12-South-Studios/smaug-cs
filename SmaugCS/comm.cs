@@ -196,13 +196,13 @@ namespace SmaugCS
                             break;
                         case "$p":
                             obj = arg1.CastAs<ObjectInstance>();
-                            buffer = to == null || handler.can_see_obj(to, obj)
+                            buffer = to == null || to.CanSee(obj)
                                          ? obj_short(obj)
                                          : "something";
                             break;
                         case "$P":
                             obj = arg2.CastAs<ObjectInstance>();
-                            buffer = to == null || handler.can_see_obj(to, obj)
+                            buffer = to == null || to.CanSee(obj)
                                          ? obj_short(obj)
                                          : "something";
                             break;

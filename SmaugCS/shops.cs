@@ -89,7 +89,7 @@ namespace SmaugCS
                 return null;
             }
 
-            if (!handler.can_see(keeper, ch))
+            if (!keeper.CanSee(ch))
             {
                 Say.do_say(keeper, "I don't trade with folks I can't see.");
                 return null;
@@ -284,7 +284,7 @@ namespace SmaugCS
             string buffer;
 
             foreach (ObjectInstance obj in ch.Carrying.Where(obj => obj.WearLocation == WearLocations.None
-                                                                    && handler.can_see_obj(ch, obj)
+                                                                    && ch.CanSee(obj)
                                                                     && (obj.ItemType == ItemTypes.Armor
                                                                         || obj.ItemType == ItemTypes.Weapon
                                                                         || obj.ItemType == ItemTypes.Wand

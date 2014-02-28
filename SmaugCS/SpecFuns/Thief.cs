@@ -19,7 +19,7 @@ namespace SmaugCS.SpecFuns
                       .Where(
                           victim =>
                           !victim.IsNpc() && victim.Level < LevelConstants.GetLevel("immortal") && SmaugRandom.Bits(2) == 0 &&
-                          handler.can_see(ch, victim)))
+                          ch.CanSee(victim)))
             {
                 if (victim.IsAwake() && SmaugRandom.Between(0, ch.Level) == 0)
                 {

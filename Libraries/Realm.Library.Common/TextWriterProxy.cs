@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Realm.Library.Common
@@ -12,8 +13,7 @@ namespace Realm.Library.Common
             _writer = tw;
         }
 
-        public TextWriterProxy() { }
-
+        [ExcludeFromCodeCoverage]
         ~TextWriterProxy()
         {
             Dispose(false);
@@ -50,12 +50,14 @@ namespace Realm.Library.Common
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        [ExcludeFromCodeCoverage]
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

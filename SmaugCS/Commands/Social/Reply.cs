@@ -43,7 +43,7 @@ namespace SmaugCS.Commands.Social
 
             if (!victim.IsNpc()
                 && victim.Switched != null
-                && handler.can_see(ch, victim)
+                && ch.CanSee(victim)
                 && ch.Trust > LevelConstants.GetLevel("avatar"))
             {
                 color.send_to_char("That player is switched.\r\n", ch);

@@ -510,7 +510,7 @@ namespace SmaugCS
             int count = 0;
 
             foreach (CharacterInstance rch in ch.CurrentRoom.Persons
-                                            .Where(rch => can_see(ch, rch) && (arg.IsAnyEqual(rch.Name)
+                                            .Where(rch => ch.CanSee(rch) && (arg.IsAnyEqual(rch.Name)
                                                                                ||
                                                                                (rch.IsNpc() && vnum == rch.MobIndex.Vnum)))
                 )
@@ -526,7 +526,7 @@ namespace SmaugCS
 
             count = 0;
             foreach (CharacterInstance rch in ch.CurrentRoom.Persons
-                                            .Where(rch => can_see(ch, rch) && arg.IsAnyEqualPrefix(rch.Name)))
+                                            .Where(rch => ch.CanSee(rch) && arg.IsAnyEqualPrefix(rch.Name)))
             {
                 if (result == 0 && !rch.IsNpc())
                     return rch;
@@ -559,7 +559,7 @@ namespace SmaugCS
 
             // Check the room for an exact match
             foreach (CharacterInstance wch in ch.CurrentRoom.Persons
-                                            .Where(wch => can_see(ch, wch) && arg.IsAnyEqual(wch.Name)
+                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqual(wch.Name)
                                                           || (wch.IsNpc() && vnum == wch.MobIndex.Vnum)))
             {
                 if (number == 0 && !wch.IsNpc())
@@ -571,7 +571,7 @@ namespace SmaugCS
             // Check the world for an exact match
             count = 0;
             foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
-                                            .Where(wch => can_see(ch, wch) && arg.IsAnyEqual(wch.Name)
+                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqual(wch.Name)
                                                           || (wch.IsNpc() && vnum == wch.MobIndex.Vnum)))
             {
                 if (number == 0 && !wch.IsNpc())
@@ -588,7 +588,7 @@ namespace SmaugCS
             // i.e. gu == guard
             count = 0;
             foreach (CharacterInstance wch in ch.CurrentRoom.Persons
-                                            .Where(wch => can_see(ch, wch) && arg.IsAnyEqualPrefix(wch.Name)))
+                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqualPrefix(wch.Name)))
             {
                 if (number == 0 && !wch.IsNpc())
                     return wch;
@@ -599,7 +599,7 @@ namespace SmaugCS
             // If no prefix match was found in room, check the world
             count = 0;
             foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
-                                            .Where(wch => can_see(ch, wch) && arg.IsAnyEqualPrefix(wch.Name)))
+                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqualPrefix(wch.Name)))
             {
                 if (number == 0 && !wch.IsNpc())
                     return wch;
@@ -625,7 +625,7 @@ namespace SmaugCS
 
             int count = 0;
             foreach (ObjectInstance obj in list
-                .Where(obj => can_see_obj(ch, obj)
+                .Where(obj => ch.CanSee(obj)
                               && arg.IsAnyEqual(obj.Name)))
             {
                 count += obj.Count;
@@ -637,7 +637,7 @@ namespace SmaugCS
             // i.e. swo == sword
             count = 0;
             foreach (ObjectInstance obj in list
-                .Where(obj => can_see_obj(ch, obj)
+                .Where(obj => ch.CanSee(obj)
                               && arg.IsAnyEqualPrefix(obj.Name)))
             {
                 count += obj.Count;
@@ -672,7 +672,7 @@ namespace SmaugCS
         /// <returns></returns>
         public static ObjectInstance get_obj_vnum(CharacterInstance ch, int vnum)
         {
-            return ch.Carrying.FirstOrDefault(obj => can_see_obj(ch, obj)
+            return ch.Carrying.FirstOrDefault(obj => ch.CanSee(obj)
                                                      && obj.ObjectIndex.Vnum == vnum);
         }
 
@@ -687,7 +687,7 @@ namespace SmaugCS
             int count = 0;
             foreach (ObjectInstance obj in ch.Carrying
                                          .Where(obj => obj.WearLocation == WearLocations.None
-                                                       && can_see_obj(ch, obj) && (arg.IsAnyEqual(obj.Name)
+                                                       && ch.CanSee(obj) && (arg.IsAnyEqual(obj.Name)
                                                                                    || obj.ObjectIndex.Vnum == vnum)))
             {
                 count += obj.Count;
@@ -703,7 +703,7 @@ namespace SmaugCS
             count = 0;
             foreach (ObjectInstance obj in ch.Carrying
                                          .Where(obj => obj.WearLocation == WearLocations.None
-                                                       && can_see_obj(ch, obj) && arg.IsAnyEqualPrefix(obj.Name)))
+                                                       && ch.CanSee(obj) && arg.IsAnyEqualPrefix(obj.Name)))
             {
                 count += obj.Count;
                 if (count >= number)
@@ -730,7 +730,7 @@ namespace SmaugCS
             int count = 0;
             foreach (ObjectInstance obj in ch.Carrying
                                          .Where(obj => obj.WearLocation != WearLocations.None
-                                                       && can_see_obj(ch, obj) && (arg.IsAnyEqual(obj.Name)
+                                                       && ch.CanSee(obj) && (arg.IsAnyEqual(obj.Name)
                                                                                    || obj.ObjectIndex.Vnum == vnum)))
             {
                 count += obj.Count;
@@ -746,7 +746,7 @@ namespace SmaugCS
             count = 0;
             foreach (ObjectInstance obj in ch.Carrying
                                          .Where(obj => obj.WearLocation != WearLocations.None
-                                                       && can_see_obj(ch, obj) && arg.IsAnyEqualPrefix(obj.Name)))
+                                                       && ch.CanSee(obj) && arg.IsAnyEqualPrefix(obj.Name)))
             {
                 count += obj.Count;
                 if (count >= number)
@@ -795,7 +795,7 @@ namespace SmaugCS
 
             int count = 0;
             foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values
-                                         .Where(obj => can_see_obj(ch, obj) && (arg.IsAnyEqual(obj.Name)
+                                         .Where(obj => ch.CanSee(obj) && (arg.IsAnyEqual(obj.Name)
                                                                                 || obj.ObjectIndex.Vnum == vnum)))
             {
                 count += obj.Count;
@@ -810,7 +810,7 @@ namespace SmaugCS
             // i.e. swo == sword
             count = 0;
             foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values
-                                         .Where(obj => can_see_obj(ch, obj) && arg.IsAnyEqualPrefix(obj.Name)))
+                                         .Where(obj => ch.CanSee(obj) && arg.IsAnyEqualPrefix(obj.Name)))
             {
                 count += obj.Count;
                 if (count >= number)
@@ -908,17 +908,9 @@ namespace SmaugCS
             return null;
         }
 
-        public static bool can_see(CharacterInstance ch, CharacterInstance victim)
-        {
-            // TODO
-            return false;
-        }
 
-        public static bool can_see_obj(CharacterInstance ch, ObjectInstance obj)
-        {
-            // TODO
-            return false;
-        }
+
+
 
         public static bool can_drop_obj(CharacterInstance ch, ObjectInstance obj)
         {

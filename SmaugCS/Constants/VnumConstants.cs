@@ -57,6 +57,8 @@ namespace SmaugCS
         public static int ROOM_VNUM_HELL = 6;
         #endregion
 
-
+        #region Mobile Vnums
+        public static int MOB_VNUM_SUPERMOB { get { return 3; } }
+        #endregion
     }
 }

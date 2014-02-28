@@ -243,7 +243,7 @@ namespace SmaugCS.Managers
 
                     string lbuf = string.Empty;
                     if (ch.Act.IsSet((int)PlayerFlags.WizardInvisibility)
-                        && handler.can_see(vch, ch) && vch.IsImmortal())
+                        && vch.CanSee(ch) && vch.IsImmortal())
                     {
                         lbuf = string.Format("({0})", !ch.IsNpc()
                                                              ? ch.PlayerData.WizardInvisible

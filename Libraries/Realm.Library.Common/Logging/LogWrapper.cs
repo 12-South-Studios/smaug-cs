@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using log4net;
 using log4net.Core;
 
@@ -41,6 +42,7 @@ namespace Realm.Library.Common.Logging
         /// <summary>
         ///
         /// </summary>
+        [ExcludeFromCodeCoverage]
         public virtual ILogger Logger { get { return Log.Logger; } }
 
         /// <summary>

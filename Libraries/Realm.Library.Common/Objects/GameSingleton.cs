@@ -10,7 +10,7 @@ namespace Realm.Library.Common.Objects
     /// </summary>
     public abstract class GameSingleton : Singleton
     {
-        protected virtual void Instance_OnGameInitialize(RealmEventArgs args)
+        internal virtual void Instance_OnGameInitialize(RealmEventArgs args)
         {
             var booleanSet = args.GetValue("BooleanSet") as BooleanSet;
             if (booleanSet.IsNull()) return;

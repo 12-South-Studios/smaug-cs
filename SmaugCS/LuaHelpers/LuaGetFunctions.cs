@@ -77,9 +77,9 @@ namespace SmaugCS.LuaHelpers
 
             return
                 instance.CurrentRoom.Persons.FirstOrDefault(
-                    vch => handler.can_see(instance, vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg)) ??
+                    vch => instance.CanSee(vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg)) ??
                 _dbManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.FirstOrDefault(
-                    vch => handler.can_see(instance, vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg));
+                    vch => instance.CanSee(vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg));
         }
     }
 }

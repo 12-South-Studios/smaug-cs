@@ -295,7 +295,7 @@ namespace SmaugCS
                 }
 
                 if (obj.WearLocation == WearLocations.None
-                    && handler.can_see_obj(ch, obj)
+                    && ch.CanSee(obj)
                     && (obj.ItemType != ItemTypes.Trap
                         || ch.IsAffected(AffectedByTypes.DetectInvisibility)))
                 {
@@ -699,7 +699,7 @@ namespace SmaugCS
 
         public static void show_char_to_char_1(CharacterInstance victim, CharacterInstance ch)
         {
-            if (handler.can_see(victim, ch) && !ch.IsNpc()
+            if (victim.CanSee(ch) && !ch.IsNpc()
                 && !ch.Act.IsSet((int)PlayerFlags.WizardInvisibility))
             {
                 comm.act(ATTypes.AT_ACTION, "$n looks at you.", ch, null, victim, ToTypes.Victim);
@@ -733,7 +733,7 @@ namespace SmaugCS
             for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
             {
                 ObjectInstance obj = victim.GetEquippedItem(i);
-                if (obj != null && handler.can_see_obj(ch, obj))
+                if (obj != null && ch.CanSee(obj))
                 {
                     if (!found)
                     {
@@ -786,7 +786,7 @@ namespace SmaugCS
         {
             foreach (CharacterInstance rch in list.Where(x => x != ch))
             {
-                if (handler.can_see(ch, rch))
+                if (ch.CanSee(rch))
                     show_char_to_char_0(rch, ch);
                 else if (ch.CurrentRoom.IsDark() && ch.IsAffected(AffectedByTypes.Infrared))
                 {

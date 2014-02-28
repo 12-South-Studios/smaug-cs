@@ -131,7 +131,7 @@ namespace SmaugCS.Extensions
                 && rch.IsImmortal()
                 && rch.PlayerData.Flags.IsSet((int)PCFlags.DoNotDisturb)
                 && ch.Trust < rch.Trust
-                && handler.can_see(ch, rch));
+                && ch.CanSee(rch));
         }
 
         public static void FromRoom(this RoomTemplate room, ObjectInstance obj)

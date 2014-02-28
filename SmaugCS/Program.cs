@@ -438,6 +438,7 @@ namespace SmaugCS
             NetworkMgr = new TcpServer(logWrapper, new TcpUserRepository());
             NetworkMgr.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
+            NetworkMgr.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
 
             DatabaseManager.Instance.Initialize(LogManager.Instance);
             DatabaseManager.Instance.InitializeDatabase(false);
@@ -453,6 +454,14 @@ namespace SmaugCS
             // TODO: Load Projects
 
             GameManager.Instance.Initialize(false);
+        }
+
+        private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
+        {
+            ITcpUser user = (ITcpUser) sender;
+            
+            // TODO: if disconnected, Remove from CharacterRepository
+            // TODO: if connected, create new instance and add to CharacterRepository
         }
 
         private static void OnServerStop()
