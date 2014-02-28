@@ -16,7 +16,7 @@ namespace SmaugCS.Spells
 
             int tmp = skill.Flags.IsSet((int) SkillFlags.PKSensitive) ? level/2 : level;
 
-            if (victim.Immunity.IsSet((int) ResistanceTypes.Magic))
+            if (victim.IsImmune(ResistanceTypes.Magic))
             {
                 magic.immune_casting(skill, ch, victim, null);
                 return ReturnTypes.SpellFailed;

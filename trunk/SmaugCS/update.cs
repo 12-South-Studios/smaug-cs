@@ -43,9 +43,9 @@ namespace SmaugCS
             }
         }
 
-        private static int ConditionFull(CharacterInstance ch, int conditionValue)
+        private static ReturnTypes ConditionFull(CharacterInstance ch, int conditionValue)
         {
-            int retcode = (int)ReturnTypes.None;
+            ReturnTypes retcode = ReturnTypes.None;
 
             if (ch.Level < LevelConstants.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
             {
@@ -70,9 +70,9 @@ namespace SmaugCS
 
             return retcode;
         }
-        private static int ConditionThirsty(CharacterInstance ch, int conditionValue)
+        private static ReturnTypes ConditionThirsty(CharacterInstance ch, int conditionValue)
         {
-            int retcode = (int)ReturnTypes.None;
+            ReturnTypes retcode = ReturnTypes.None;
 
             if (ch.Level < LevelConstants.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
             {
@@ -93,9 +93,9 @@ namespace SmaugCS
 
             return retcode;
         }
-        private static int ConditionBloodthirsty(CharacterInstance ch, int conditionValue)
+        private static ReturnTypes ConditionBloodthirsty(CharacterInstance ch, int conditionValue)
         {
-            int retcode = (int)ReturnTypes.None;
+            ReturnTypes retcode = ReturnTypes.None;
 
             if (ch.Level < LevelConstants.GetLevel("avatar"))
             {

@@ -24,6 +24,20 @@ namespace SmaugCS
 {
     public static class db
     {
+        public static List<MorphData> MORPHS = new List<MorphData>();
+        public static MorphData GetMorph(string arg)
+        {
+            return string.IsNullOrWhiteSpace(arg) ? null : MORPHS.FirstOrDefault(morph => morph.name.EqualsIgnoreCase(arg));
+        }
+        public static MorphData GetMorph(int vnum)
+        {
+            return vnum < 1 ? null : MORPHS.FirstOrDefault(morph => morph.vnum == vnum);
+        }
+        public static MorphData FindMorph(CharacterInstance ch, string target, bool isCast)
+        {
+            return string.IsNullOrWhiteSpace(target) ? null : MORPHS.Where(morph => !morph.name.EqualsIgnoreCase(target)).FirstOrDefault(morph => ch.CanMorph(morph, isCast));
+        }
+
         public static List<string> ReservedNames = new List<string>();
         public static bool IsReservedName(string name)
         {

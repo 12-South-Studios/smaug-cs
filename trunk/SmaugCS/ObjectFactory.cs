@@ -131,7 +131,7 @@ namespace SmaugCS
                 corpse =
                     DatabaseManager.Instance.OBJECTS.Create(
                         DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
-                corpse.Timer = fight.in_arena(ch) ? 0 : 40;
+                corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value[2] = corpse.Timer / 8;
                 corpse.Value[4] = ch.Level;
                 if (ch.CanPKill() && db.SystemData.PlayerKillLoot > 0)

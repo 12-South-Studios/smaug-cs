@@ -279,23 +279,6 @@ namespace SmaugCS
             return exit;
         }
 
-        public static ObjectInstance has_key(CharacterInstance ch, int key)
-        {
-            foreach (ObjectInstance obj in ch.Carrying)
-            {
-                if (obj.ObjectIndex.Vnum == key ||
-                    (obj.ItemType == ItemTypes.Key && obj.Value[0] == key))
-                    return obj;
-                if (obj.ItemType == ItemTypes.KeyRing)
-                {
-                    if (obj.Contents.Any(obj2 => obj.ObjectIndex.Vnum == key || obj2.Value[0] == key))
-                        return obj;
-                }
-            }
-
-            return null;
-        }
-
         public static void teleportch(CharacterInstance ch, RoomTemplate room, bool show)
         {
             if (room.IsPrivate())

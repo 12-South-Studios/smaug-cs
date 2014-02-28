@@ -20,11 +20,277 @@ namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {
+        public static bool CanSee(this CharacterInstance ch, ObjectInstance obj)
+        {
+            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.HolyLight))
+                return true;
+            if (ch.IsNpc() && ch.MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
+                return true;
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Buried))
+                return false;
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Hidden))
+                return false;
+            if (ch.IsAffected(AffectedByTypes.TrueSight))
+                return true;
+            if (ch.IsAffected(AffectedByTypes.Blind))
+                return false;
+
+            //// Can see lights in the dark
+            if (obj.ItemType == ItemTypes.Light && obj.Value[2] != 0)
+                return true;
+
+            if (ch.CurrentRoom.IsDark())
+            {
+                //// Can see glowing items in teh dark, invisible or not
+                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Glow))
+                    return true;
+                if (!ch.IsAffected(AffectedByTypes.Infrared))
+                    return false;
+            }
+
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Invisible)
+                && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
+                return false;
+
+            return true;
+        }
+
+        public static bool CanSee(this CharacterInstance ch, CharacterInstance victim)
+        {
+            if (victim == null)
+                return false;
+
+            if (ch == null)
+                return !victim.IsAffected(AffectedByTypes.Invisible) && !victim.IsAffected(AffectedByTypes.Hide) && !victim.Act.IsSet((int)PlayerFlags.WizardInvisibility);
+
+            if (ch == victim)
+                return true;
+
+            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.WizardInvisibility)
+                && ch.Trust < victim.PlayerData.WizardInvisible)
+                return false;
+
+            if (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)
+                && victim.IsPKill() && victim.Timer > 1 && victim.Descriptor == null)
+                return false;
+
+            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.HolyLight))
+                return true;
+
+            if (!ch.IsAffected(AffectedByTypes.TrueSight))
+            {
+                if (ch.IsAffected(AffectedByTypes.Blind))
+                    return false;
+                if (ch.CurrentRoom.IsDark() && !ch.IsAffected(AffectedByTypes.Infrared))
+                    return false;
+                if (victim.IsAffected(AffectedByTypes.Invisible) && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
+                    return false;
+                if (victim.IsAffected(AffectedByTypes.Hide) && !ch.IsAffected(AffectedByTypes.DetectHidden)
+                    && victim.CurrentFighting == null
+                    && (ch.IsNpc() ? !victim.IsNpc() : victim.IsNpc()))
+                    return false;
+            }
+
+            if (victim.IsNotAuthorized())
+            {
+                if (ch.IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
+                    return true;
+                if (ch.PlayerData.Council != null && ch.PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council"))
+                    return true;
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool IsAllowedToUseObject(this CharacterInstance ch, ObjectInstance obj)
+        {
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiWarrior))
+            {
+                if (ch.CurrentClass == ClassTypes.Warrior
+                    || ch.CurrentClass == ClassTypes.Paladin
+                    || ch.CurrentClass == ClassTypes.Ranger)
+                    return false;
+            }
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiMage))
+            {
+                if (ch.CurrentClass == ClassTypes.Mage
+                    || ch.CurrentClass == ClassTypes.Augurer)
+                    return false;
+            }
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiThief))
+            {
+                if (ch.CurrentClass == ClassTypes.Thief)
+                    return false;
+            }
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiDruid))
+            {
+                if (ch.CurrentClass == ClassTypes.Druid)
+                    return false;
+            }
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiCleric))
+            {
+                if (ch.CurrentClass == ClassTypes.Cleric)
+                    return false;
+            }
+            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiVampire))
+            {
+                if (ch.CurrentClass == ClassTypes.Vampire)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Check to see if there is room to wear another object on this location (Layered clothing support)
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="obj"></param>
+        /// <param name="wear_loc"></param>
+        /// <returns></returns>
+        public static bool CanWearLayer(this CharacterInstance ch, ObjectInstance obj, int wear_loc)
+        {
+            int bitlayers = 0;
+            int objlayers = obj.ObjectIndex.Layers;
+
+            foreach (ObjectInstance otmp in ch.Carrying
+                .Where(otmp => (int)otmp.WearLocation == wear_loc))
+            {
+                if (otmp.ObjectIndex.Layers == 0)
+                    return false;
+                bitlayers |= otmp.ObjectIndex.Layers;
+            }
+
+            if ((bitlayers > 0 && objlayers == 0) || bitlayers > objlayers)
+                return false;
+
+            return bitlayers == 0 || ((bitlayers & ~objlayers) == bitlayers);
+        }
+
+        public static bool CouldDualWield(this CharacterInstance ch)
+        {
+            return ch.IsNpc() || ch.PlayerData.Learned[DatabaseManager.Instance.GetSkill("dual wield").ID] > 0;
+        }
+
+        public static bool CanDualWield(this CharacterInstance ch)
+        {
+            bool wield = false;
+            bool nwield = false;
+
+            if (!CouldDualWield(ch))
+                return false;
+            if (ch.GetEquippedItem(WearLocations.Wield) != null)
+                wield = true;
+
+            if (ch.GetEquippedItem(WearLocations.WieldMissile) != null
+                || ch.GetEquippedItem(WearLocations.DualWield) != null)
+                nwield = true;
+
+            if (wield && nwield)
+            {
+                color.send_to_char("You are already wielding two weapons... grow some more arms!\r\n", ch);
+                return false;
+            }
+
+            if ((wield || nwield) && ch.GetEquippedItem(WearLocations.Shield) != null)
+            {
+                color.send_to_char("You cannot dual wield, you're already holding a shield!\r\n", ch);
+                return false;
+            }
+
+            if ((wield || nwield) && ch.GetEquippedItem(WearLocations.Hold) != null)
+            {
+                color.send_to_char("You cannot hold another weapon, you're already holding something in that hand!\r\n", ch);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static ObjectInstance HasKey(this CharacterInstance ch, int key)
+        {
+            foreach (ObjectInstance obj in ch.Carrying)
+            {
+                if (obj.ObjectIndex.Vnum == key ||
+                    (obj.ItemType == ItemTypes.Key && obj.Value[0] == key))
+                    return obj;
+                if (obj.ItemType != ItemTypes.KeyRing) continue;
+                if (obj.Contents.Any(obj2 => obj.ObjectIndex.Vnum == key || obj2.Value[0] == key))
+                    return obj;
+            }
+            return null;
+        }
+
+        public static bool CanMorph(this CharacterInstance ch, MorphData morph, bool isCast)
+        {
+            if (morph == null)
+                return false;
+            if (!ch.IsImmortal() && !ch.IsNpc())
+                return false;
+            if (morph.no_cast && isCast)
+                return false;
+            if (ch.Level < morph.level)
+                return false;
+            if (morph.pkill == Program.ONLY_PKILL && !ch.IsPKill())
+                return false;
+            if (morph.pkill == Program.ONLY_PEACEFULL && ch.IsPKill())
+                return false;
+            if (morph.sex != -1 && morph.sex != (int) ch.Gender)
+                return false;
+            if (morph.Class != 0 && !morph.Class.IsSet(1 << (int) ch.CurrentClass))
+                return false;
+            if (morph.race != 0 && morph.race.IsSet(1 << (int) ch.CurrentRace))
+                return false;
+            if (!string.IsNullOrWhiteSpace(morph.deity) &&
+                (ch.PlayerData.CurrentDeity != null || DatabaseManager.Instance.GetDeity(morph.deity) == null))
+                return false;
+            if (morph.timeto != -1 && morph.timefrom != -1)
+            {
+                bool found = false;
+                int tmp, i;
+
+                for (i = 0, tmp = morph.timefrom; i < 25 && tmp != morph.timeto; i++)
+                {
+                    if (tmp == db.GameTime.Hour)
+                    {
+                        found = true;
+                        break;
+                    }
+                    if (tmp == 23)
+                        tmp = 0;
+                    else
+                        tmp++;
+                }
+
+                if (!found)
+                    return false;
+            }
+
+            if (morph.dayfrom != -1 && morph.dayto != -1
+                && (morph.dayto < (db.GameTime.Day + 1) || morph.dayfrom > (db.GameTime.Day + 1)))
+                return false;
+            return true;
+        }
+
         public static bool CanCharm(this CharacterInstance ch)
         {
             if (ch.IsNpc() || ch.IsImmortal())
                 return true;
             if (((ch.GetCurrentCharisma()/3) + 1) > ch.PlayerData.NumberOfCharmies)
+                return true;
+            return false;
+        }
+
+        public static bool IsInArena(this CharacterInstance ch)
+        {
+            if (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Arena))
+                return true;
+            if (ch.CurrentRoom.Area.Flags.IsSet((int) AreaFlags.FreeKill))
+                return true;
+            if (ch.CurrentRoom.Vnum >= 29 && ch.CurrentRoom.Vnum <= 43)
+                return true;
+            if (ch.CurrentRoom.Area.Name.EqualsIgnoreCase("arena"))
                 return true;
             return false;
         }
@@ -915,7 +1181,7 @@ namespace SmaugCS.Extensions
                 && !master.IsNpc())
                 master.PlayerData.Pet = ch;
 
-            if (handler.can_see(master, ch))
+            if (master.CanSee(ch))
                 comm.act(ATTypes.AT_ACTION, "$n now follows you.", ch, null, master, ToTypes.Victim);
 
             comm.act(ATTypes.AT_ACTION, "You now follow $N.", ch, null, master, ToTypes.Character);
@@ -941,7 +1207,7 @@ namespace SmaugCS.Extensions
                     ch.Master.PlayerData.NumberOfCharmies--;
             }
 
-            if (handler.can_see(ch.Master, ch))
+            if (ch.Master.CanSee(ch))
             {
                 if (!(!ch.Master.IsNpc() && ch.IsImmortal()
                       && !ch.Master.IsImmortal()))

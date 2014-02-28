@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable CheckNamespace
 namespace Realm.Library.Common
@@ -54,6 +55,7 @@ namespace Realm.Library.Common
         /// <summary>
         /// Overrides the base Dispose to make this object disposable
         /// </summary>
+        [ExcludeFromCodeCoverage]
         public void Dispose()
         {
             Dispose(true);
@@ -67,6 +69,7 @@ namespace Realm.Library.Common
         /// Dispose of any internal resources
         /// </summary>
         /// <param name="disposing"></param>
+        [ExcludeFromCodeCoverage]
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

@@ -103,6 +103,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Ban\Ban.cs" />
+    <Compile Include="Commands\Polymorph\ImmMorph.cs" />
+    <Compile Include="Commands\Polymorph\ImmUnmorph.cs" />
+    <Compile Include="Commands\Polymorph\MorphCreate.cs" />
+    <Compile Include="Commands\Polymorph\MorphDestroy.cs" />
+    <Compile Include="Commands\Polymorph\MorphList.cs" />
+    <Compile Include="Commands\Polymorph\MorphSet.cs" />
+    <Compile Include="Commands\Polymorph\MorphStat.cs" />
+    <Compile Include="Commands\Polymorph\Revert.cs" />
     <Compile Include="ExpressionTableInitializer.cs" />
     <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />

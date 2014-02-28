@@ -124,7 +124,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (!handler.can_see(ch, victim))
+            if (!ch.CanSee(victim))
                 return;
 
             if (ch.IsNpc() && victim.IsNotAuthorized()

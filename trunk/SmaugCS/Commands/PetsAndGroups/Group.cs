@@ -196,7 +196,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             foreach (CharacterInstance rch in ch.CurrentRoom.Persons.Where(x =>
                 x != ch
                 && !x.IsNpc()
-                && handler.can_see(ch, x)
+                && ch.CanSee(x)
                 && x.Master == ch
                 && ch.Master == null
                 && ch.Leader == null

@@ -1,17 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
 {
-    class CureBlindness
+    public static class CureBlindness
     {
-        public static int spell_cure_blindness(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes spell_cure_blindness(int sn, int level, CharacterInstance ch, object vo)
         {
-            // TODO 
-            return 0;
+            CharacterInstance victim = (CharacterInstance)vo;
+            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+
+            color.set_char_color(ATTypes.AT_MAGIC, ch);
+
+            if (victim.IsImmune(ResistanceTypes.Magic))
+            {
+                magic.immune_casting(skill, ch, victim, null);
+                return ReturnTypes.SpellFailed;
+            }
+
+            if (ch.IsAffected(AffectedByTypes.Blind))
+            {
+                color.send_to_char(
+                    !ch.Equals(victim)
+                        ? "You work your cure, but it has no apparent effect."
+                        : "You don't seem to be blind.",
+                    ch);
+                return ReturnTypes.SpellFailed;
+            }
+
+            // TODO: affect_strip(victim, AffectedByTypes.Blind);
+            
+            color.set_char_color(ATTypes.AT_MAGIC, victim);
+            color.send_to_char("Your vision returns!", victim);
+            if (!ch.Equals(victim))
+                color.send_to_char("You work your cure, restoring vision.", ch);
+            return ReturnTypes.None;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
+using SmaugCS.Commands;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
@@ -30,7 +31,7 @@ namespace SmaugCS
 
             foreach (ObjectInstance content in corpse.Contents
                 .Where(x => x.ItemType == ItemTypes.Money)
-                .Where(x => handler.can_see_obj(ch, x))
+                .Where(x => ch.CanSee(x))
                 .Where(x => Macros.CAN_WEAR(x, (int)ItemWearFlags.Take) && ch.Level < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
                 .Where(x => Macros.IS_OBJ_STAT(x, (int)ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
             {
@@ -509,9 +510,9 @@ namespace SmaugCS
             int victimArmorClass = -19.GetHighestOfTwoNumbers(victim.GetArmorClass() / 10);
 
             // if you can't see what;s coming
-            if (wield != null && !handler.can_see_obj(victim, wield))
+            if (wield != null && !victim.CanSee(wield))
                 victimArmorClass += 1;
-            if (!handler.can_see(ch, victim))
+            if (!ch.CanSee(victim))
                 victimArmorClass -= 4;
 
             // Learning between combatants. Takes the intelligence difference, 
@@ -545,21 +546,16 @@ namespace SmaugCS
             }
 
             // HIt!
-            int damage = 0;
-            if (wield == null)
-                damage = SmaugRandom.RollDice(ch.BareDice.NumberOf, ch.BareDice.SizeOf) + ch.DamageRoll.Bonus;
-            else
-                damage = SmaugRandom.Between(wield.Value[1], wield.Value[2]);
+            int damage = wield == null
+                             ? SmaugRandom.RollDice(ch.BareDice.NumberOf, ch.BareDice.SizeOf) + ch.DamageRoll.Bonus
+                             : SmaugRandom.Between(wield.Value[1], wield.Value[2]);
 
             // Bonuses
             damage += ch.GetDamroll();
             if (proficiencyBonus > 0)
                 damage += proficiencyBonus / 4;
 
-            // CAlculate damage modifiers from victim's fighting style
             damage = ModifyDamageByFightingStyle(victim, damage);
-
-            // Calculate damage modifiers from attacker's fighting style
             damage = ModifyDamageByFightingStyle(ch, damage);
 
             if (!ch.IsNpc() && ch.PlayerData.Learned[DatabaseManager.Instance.LookupSkill("enhanced damage")] > 0)
@@ -650,8 +646,7 @@ namespace SmaugCS
                 damage = 0;
             }
 
-            int returnCode = fight.damage(ch, victim, damage, dt);
-            retcode = EnumerationExtensions.GetEnum<ReturnTypes>(returnCode);
+            retcode = fight.damage(ch, victim, damage, dt);
 
             if (retcode != ReturnTypes.None)
                 return retcode;
@@ -732,27 +727,168 @@ namespace SmaugCS
             return 0;
         }
 
-        private static int ModifyDamageByFightingStyle(CharacterInstance ch, int damage)
+        public static ReturnTypes projectile_hit(CharacterInstance ch, CharacterInstance victim, ObjectInstance wield, ObjectInstance projectile, short dist)
         {
-            switch (ch.CurrentPosition)
+            if (projectile == null)
+                return (int) ReturnTypes.None;
+
+            Tuple<int, int> CalculatedBonus = CalculateProjectileBonus(projectile);
+            int bonus = CalculatedBonus.Item1;
+            int dt = CalculatedBonus.Item2;
+            
+            //// Can't beat a dead character
+            if (victim.CurrentPosition == PositionTypes.Dead
+                || victim.CharDied())
             {
-                case PositionTypes.Berserk:
-                    return (int)(damage * 1.2);
-                case PositionTypes.Aggressive:
-                    return (int)(damage * 1.1);
-                case PositionTypes.Defensive:
-                    return (int)(damage * 0.85);
-                case PositionTypes.Evasive:
-                    return (int)(damage * 0.8);
-                default:
-                    return damage;
+                handler.extract_obj(projectile);
+                return ReturnTypes.CharacterDied;
             }
+
+            Tuple<int, int> profBonus = wield != null
+                                            ? weapon_prof_bonus_check(ch, wield)
+                                            : new Tuple<int, int>(0, 0);
+
+            if (dt == (int) SkillNumberTypes.Undefined)
+            {
+                dt = (int) SkillNumberTypes.Hit;
+                if (wield != null && wield.ItemType == ItemTypes.MissileWeapon)
+                    dt += wield.Value[3];
+            }
+
+            //// Calculate to-hit-AC0 versus armor
+            Tuple<int, int> thac0 = CalculateThac0(ch, dist);
+            int thac0_0 = thac0.Item1;
+            int thac0_32 = thac0.Item2;
+            int victimArmorClass = CalculateArmorClass(ch, victim, projectile, bonus);
+            
+            int diceroll = SmaugRandom.RollDice(1, 20);
+            if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_0 - victimArmorClass))
+                return ProjectileMissed(ch, profBonus.Item2, projectile, victim, dt);
+            return ProjectileHit(ch, victim, projectile, wield, bonus, dt);
         }
 
-        public static int projectile_hit(CharacterInstance ch, CharacterInstance victim, ObjectInstance wield, ObjectInstance projectile, short dist)
+        private static Tuple<int, int> CalculateProjectileBonus(ObjectInstance projectile)
         {
-            // TODO
-            return 0;
+            int dt, bonus;
+            if (projectile.ItemType == ItemTypes.Projectile 
+                || projectile.ItemType == ItemTypes.Weapon)
+            {
+                dt = (int)SkillNumberTypes.Hit + projectile.Value[3];
+                bonus = SmaugRandom.Between(projectile.Value[1], projectile.Value[2]);
+            }
+            else
+            {
+                dt = (int)SkillNumberTypes.Undefined;
+                bonus = SmaugRandom.Between(1, 2.GetNumberThatIsBetween(projectile.GetObjectWeight(), 100));
+            }
+
+            return new Tuple<int, int>(bonus, dt);
+        }
+
+        private static Tuple<int, int> CalculateThac0(CharacterInstance ch, int distance)
+        {
+            int thac0_0 = ch.ToHitArmorClass0;
+            int thac0_32 = thac0_0;
+
+            if (!ch.IsNpc())
+            {
+                thac0_0 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass0;
+                thac0_32 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
+            }
+
+            thac0_0 = ch.Level.Interpolate(thac0_0, thac0_32) - ch.GetHitroll() + (distance * 2);
+
+            return new Tuple<int, int>(thac0_0, thac0_32);
+        }
+
+        private static int CalculateArmorClass(CharacterInstance ch, CharacterInstance victim, ObjectInstance projectile, int bonus)
+        {
+            int victimArmorClass = -19.GetHighestOfTwoNumbers(victim.GetArmorClass() / 10);
+
+            //// If you can't see what's coming
+            if (!victim.CanSee(projectile))
+                victimArmorClass += 1;
+            if (!ch.CanSee(victim))
+                victimArmorClass -= 4;
+
+            //// Weapon proficiency bonus
+            victimArmorClass += bonus;
+
+            return victimArmorClass;
+        }
+        
+        private static ReturnTypes ProjectileMissed(CharacterInstance ch, int proficiencySkillNumber,
+                                                   ObjectInstance projectile, CharacterInstance victim, int dt)
+        {
+            if (proficiencySkillNumber != -1)
+                skills.learn_from_failure(ch, proficiencySkillNumber);
+
+            if (SmaugRandom.Percent() < 50)
+                handler.extract_obj(projectile);
+            else
+            {
+                if (projectile.InObject != null)
+                    projectile.FromObject(projectile.InObject);
+                if (projectile.CarriedBy != null)
+                    projectile.FromCharacter();
+                victim.CurrentRoom.ToRoom(projectile);
+            }
+
+            damage(ch, victim, 0, dt);
+            // TODO: tail_chain()
+            return ReturnTypes.None;
+        }
+
+        private static ReturnTypes ProjectileHit(CharacterInstance ch, CharacterInstance victim,
+                                                 ObjectInstance projectile, ObjectInstance wield, int bonus, int dt)
+        {
+            int damage = wield == null ? bonus : SmaugRandom.Between(wield.Value[1], wield.Value[2]) + (bonus/10);
+            damage += ch.GetDamroll();
+            if (bonus > 0)
+                damage += bonus/4;
+            damage = ModifyDamageByFightingStyle(victim, damage);
+
+            if (!ch.IsNpc())
+            {
+                SkillData skill = DatabaseManager.Instance.GetSkill("Enhanced Damage");
+                if (ch.PlayerData.Learned[skill.ID] > 0)
+                {
+                    damage += damage*Macros.LEARNED(ch, skill.ID);
+                    skills.learn_from_success(ch, skill.ID);
+                }
+            }
+
+            if (!victim.IsAwake())
+                damage *= 2;
+            if (damage <= 0)
+                damage = 1;
+
+            damage = Macros.IS_OBJ_STAT(projectile, (int) ItemExtraFlags.Magical)
+                         ? ris_damage(victim, damage, (int) ResistanceTypes.Magic)
+                         : ris_damage(victim, damage, (int) ResistanceTypes.NonMagic);
+
+            int plusris = 0;
+            
+            //// Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
+            if (wield != null)
+                plusris = wield.GetHitRoll();
+
+            // TODO Finish this
+
+            return ReturnTypes.None;
+        }
+
+        private static int ModifyDamageByFightingStyle(CharacterInstance victim, int damage)
+        {
+            if (victim.CurrentPosition == PositionTypes.Berserk)
+                return (int)(damage*1.2f);
+            if (victim.CurrentPosition == PositionTypes.Aggressive)
+                return (int) (damage*1.1f);
+            if (victim.CurrentPosition == PositionTypes.Defensive)
+                return (int) (damage*0.85f);
+            if (victim.CurrentPosition == PositionTypes.Evasive)
+                return (int) (damage*0.8f);
+            return damage;
         }
 
         public static int ris_damage(CharacterInstance ch, int dam, int ris)
@@ -776,10 +912,10 @@ namespace SmaugCS
             return (dam * modifier) / 10;
         }
 
-        public static int damage(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
+        public static ReturnTypes damage(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
         {
             // TODO
-            return 0;
+            return ReturnTypes.None;
         }
 
         public static bool is_safe(CharacterInstance ch, CharacterInstance victim, bool show_messg)
@@ -946,7 +1082,7 @@ namespace SmaugCS
                 return;
 
             // Any character in the arena is okay to kill
-            if (in_arena(ch))
+            if (ch.IsInArena())
             {
                 if (!ch.IsNpc() && !victim.IsNpc())
                 {
@@ -1416,7 +1552,7 @@ namespace SmaugCS
 
             if (victim.CurrentMorph != null)
             {
-                // do_unmorph_char(victim);
+                polymorph.do_unmorph_char(victim);
                 return raw_kill(ch, victim);
             }
 
@@ -1448,39 +1584,152 @@ namespace SmaugCS
             }
 
             color.set_char_color(ATTypes.AT_DIEMSG, victim);
-            if (victim.PlayerData.PvEDeaths + victim.PlayerData.PvPDeaths < 3)
-            {
-                // do_help(victim, "new_death");
-            }
-            else
-            {
-                //do_help(victim, "_DIEMSG_");
-            }
+            Help.do_help(victim,
+                         victim.PlayerData.PvEDeaths + victim.PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
 
             handler.extract_char(victim, false);
 
             while (victim.Affects.Count > 0)
                 victim.RemoveAffect(victim.Affects.First());
 
+            // TODO: Finish reset of victim
 
             return null;
         }
 
         public static void group_gain(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            //// Monsters don't get kill XPs or alignment changes
+            //// Dying of mortal wounds or poison doesn't give xp to anyone!
+            if (ch.IsNpc() || victim == ch)
+                return;
+
+            int members = ch.CurrentRoom.Persons.Count(vch => vch.IsSameGroup(ch));
+            if (members == 0)
+                members = 1;
+
+            CharacterInstance leader = ch.Leader ?? ch;
+
+            foreach (CharacterInstance gch in ch.CurrentRoom.Persons.Where(gch => gch.IsSameGroup(ch)))
+            {
+                if (gch.Level - leader.Level > 8)
+                {
+                    color.send_to_char("You are too high for this group!", gch);
+                    continue;
+                }
+                if (gch.Level - leader.Level < -8)
+                {
+                    color.send_to_char("You are too low for this group!", gch);
+                    continue;
+                }
+
+                int xp = (int)(xp_compute(gch, victim) * 0.1765) / members;
+                if (gch.CurrentFighting == null)
+                    xp /= 2;
+
+                gch.CurrentAlignment = align_compute(gch, victim);
+                if (xp > 0)
+                {
+                    color.ch_printf(gch, "You receive {0} experience points.", xp);
+                    gch.GainXP(xp);
+                }
+
+                EvaluateEquipmentAfterXPGain(gch);
+            }
         }
 
-        public static int align_compute(CharacterInstance gch, CharacterInstance victim)
+        private static void EvaluateEquipmentAfterXPGain(CharacterInstance gch)
         {
-            // TODO
-            return 0;
+            foreach (
+                ObjectInstance obj in
+                    gch.Carrying.Where(obj => obj.WearLocation != WearLocations.None)
+                       .Where(obj => (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.AntiEvil) && gch.IsEvil())
+                                     || (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.AntiGood) && gch.IsGood())
+                                     || (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.AntiNeutral) && gch.IsNeutral())))
+            {
+                comm.act(ATTypes.AT_MAGIC, "You are zapped by $p.", gch, obj, null, ToTypes.Character);
+                comm.act(ATTypes.AT_MAGIC, "$n is zapped by $p.", gch, obj, null, ToTypes.Room);
+
+                obj.FromCharacter();
+                ObjectInstance newObj = gch.CurrentRoom.ToRoom(obj);
+                mud_prog.oprog_zap_trigger(gch, newObj);
+                if (gch.CharDied())
+                    return;
+            }
         }
 
-        public static int xp_compute(CharacterInstance gch, CharacterInstance victim)
+        public static int align_compute(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
-            return 0;
+            int align = ch.CurrentAlignment - victim.CurrentAlignment;
+            int divalign = (ch.CurrentAlignment > -350 && ch.CurrentAlignment < 350) ? 4 : 20;
+            int newAlign = 0;
+            
+            if (align > 500)
+                newAlign = (ch.CurrentAlignment + (align - 500) / divalign).GetLowestOfTwoNumbers(1000);
+            else if (align < -500)
+                newAlign = (ch.CurrentAlignment + (align + 500)/divalign).GetHighestOfTwoNumbers(-1000);
+            else
+                newAlign = ch.CurrentAlignment - ch.CurrentAlignment/divalign;
+
+            return newAlign;
+        }
+
+        public static int xp_compute(CharacterInstance ch, CharacterInstance victim)
+        {
+            int xp = (victim.GetExperienceWorth()*0.GetNumberThatIsBetween((victim.Level - ch.Level) + 10, 13))/10;
+            int align = ch.CurrentAlignment - victim.CurrentAlignment;
+
+            if (align > 990 || align < -990)
+                xp = (xp * 5) >> 2; //// bonus for attacking opposite alignment
+            else if (ch.CurrentAlignment > 300 && align < 250)
+                xp = (xp*3) >> 2;   //// penalty for good player attacking same alignment
+            
+            xp = SmaugRandom.Between((xp*3) >> 2, (xp*5) >> 2);
+
+            //// get 1/4 exp for players
+            if (!victim.IsNpc())
+                xp /= 4;
+            else
+            {
+                //// reduce xp for killing the same mob repeatedly
+                if (!ch.IsNpc())
+                {
+                    int times = handler.times_killed(ch, victim);
+                    if (times >= 20)
+                        xp = 0;
+                    else if (times > 0)
+                    {
+                        xp = (xp*(20 - times))/20;
+                        if (times > 15)
+                            xp /= 3;
+                        else if (times > 10)
+                            xp >>= 1;
+                    }
+                }
+            }
+
+            //// semi-intelligent experienced player vs. novice player xp gain
+            //// "bell curve"ish xp mod based on time played vs. level
+            if (!ch.IsNpc() && ch.Level > 5)
+            {
+                int xpRatio = (int)ch.played / ch.Level;
+                if (xpRatio > 20000)
+                    xp = (xp * 5) >> 2;     //// 5/4
+                else if (xpRatio > 16000)
+                    xp = (xp * 3) >> 2;     //// 3/4
+                else if (xpRatio > 10000)  
+                    xp >>= 1;               //// 1/2
+                else if (xpRatio > 5000)
+                    xp >>= 2;               //// 1/4th
+                else if (xpRatio > 3500)
+                    xp >>= 3;               //// 1/8th
+                else if (xpRatio > 2000)
+                    xp >>= 4;               //// 1/16th
+            }
+
+            //// Level based experience gain cap.  Cannot get more experience for
+            //// a kill than the amount for your current experience level
+            return 0.GetNumberThatIsBetween(xp, ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level));
         }
 
         public static void new_dam_message(CharacterInstance ch, CharacterInstance victim, int dam, int dt, ObjectInstance obj)
@@ -1490,18 +1739,28 @@ namespace SmaugCS
 
         public static void dam_message(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
         {
-            // TODO
-        }
-
-        public static bool in_arena(CharacterInstance ch)
-        {
-            // TODO
-            return false;
+            new_dam_message(ch, victim, dam, dt, null);
         }
 
         public static bool check_illegal_pk(CharacterInstance ch, CharacterInstance victim)
         {
-            // TODO
+            if (!victim.IsNpc() && !ch.IsNpc())
+            {
+                if ((victim.PlayerData.Flags.IsSet((int) PCFlags.Deadly)
+                     || (ch.Level - victim.Level) > 10
+                     || ch.PlayerData.Flags.IsSet((int) PCFlags.Deadly))
+                    && !ch.IsInArena()
+                    && ch != victim
+                    && !(ch.IsImmortal() && victim.IsImmortal()))
+                {
+                    string buffer = string.Format("&p{0} on {1} in &W***&rILLEGAL PKILL&W*** &pattempt at {2}",
+                                                  ch.LastCommand, victim.Name, victim.CurrentRoom.Vnum);
+                    // TODO: last_pkroom = victim.CurrentRoom.vnum;
+                    // TODO: log_string(buffer);
+                    // TODO: to_channel(buffer, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL);
+                    return true;
+                }
+            }
             return false;
         }
     }

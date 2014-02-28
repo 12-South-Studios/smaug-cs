@@ -65,8 +65,13 @@ namespace Realm.Library.Common
             Validation.IsNotNull(value, "value");
 
             var field = value.GetType().GetField(value.ToString());
-            var attribute = Attribute.GetCustomAttribute(field, typeof(EnumAttribute)) as EnumAttribute;
-            return attribute == null ? 0 : attribute.Value;
+            var enumAttrib = Attribute.GetCustomAttribute(field, typeof(EnumAttribute)) as EnumAttribute;
+            if (enumAttrib == null)
+            {
+                var valueAttrib = Attribute.GetCustomAttribute(field, typeof (ValueAttribute)) as ValueAttribute;
+                return valueAttrib == null ? 0 : valueAttrib.Value;
+            }
+            return enumAttrib.Value;
         }
 
         /// <summary>

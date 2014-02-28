@@ -182,7 +182,7 @@ namespace SmaugCS
 
             if (obj.ItemType != ItemTypes.Light)
                 mud_prog.oprog_damage_trigger(ch, obj);
-            else if (!fight.in_arena(ch))
+            else if (!ch.IsInArena())
                 mud_prog.oprog_damage_trigger(ch, obj);
 
             if (handler.obj_extracted(obj))
@@ -201,7 +201,7 @@ namespace SmaugCS
                 case ItemTypes.Quiver:
                     if (--obj.Value[3] <= 0)
                     {
-                        if (!fight.in_arena(ch))
+                        if (!ch.IsInArena())
                         {
                             ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
@@ -213,7 +213,7 @@ namespace SmaugCS
                 case ItemTypes.Light:
                     if (--obj.Value[0] <= 0)
                     {
-                        if (!fight.in_arena(ch))
+                        if (!ch.IsInArena())
                         {
                             ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
@@ -227,7 +227,7 @@ namespace SmaugCS
                         ch.ArmorClass += obj.ApplyArmorClass;
                     if (--obj.Value[0] <= 0)
                     {
-                        if (!ch.IsPKill() && !fight.in_arena(ch))
+                        if (!ch.IsPKill() && !ch.IsInArena())
                         {
                             ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
@@ -244,7 +244,7 @@ namespace SmaugCS
                 case ItemTypes.Weapon:
                     if (--obj.Value[0] <= 0)
                     {
-                        if (!ch.IsPKill() && !fight.in_arena(ch))
+                        if (!ch.IsPKill() && !ch.IsInArena())
                         {
                             ObjectFactory.CreateScraps(obj);
                             returnVal = ReturnTypes.ObjectScrapped;
@@ -297,72 +297,6 @@ namespace SmaugCS
             return ch.GetEquippedItem(iWear) == null;
         }
 
-        public static bool could_dual(CharacterInstance ch)
-        {
-            return ch.IsNpc() || ch.PlayerData.Learned[DatabaseManager.Instance.GetSkill("dual wield").ID] > 0;
-        }
-
-        public static bool can_dual(CharacterInstance ch)
-        {
-            bool wield = false;
-            bool nwield = false;
-
-            if (!could_dual(ch))
-                return false;
-            if (ch.GetEquippedItem(WearLocations.Wield) != null)
-                wield = true;
-
-            if (ch.GetEquippedItem(WearLocations.WieldMissile) != null
-                || ch.GetEquippedItem(WearLocations.DualWield) != null)
-                nwield = true;
-
-            if (wield && nwield)
-            {
-                color.send_to_char("You are already wielding two weapons... grow some more arms!\r\n", ch);
-                return false;
-            }
-
-            if ((wield || nwield) && ch.GetEquippedItem(WearLocations.Shield) != null)
-            {
-                color.send_to_char("You cannot dual wield, you're already holding a shield!\r\n", ch);
-                return false;
-            }
-
-            if ((wield || nwield) && ch.GetEquippedItem(WearLocations.Hold) != null)
-            {
-                color.send_to_char("You cannot hold another weapon, you're already holding something in that hand!\r\n", ch);
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Check to see if there is room to wear another object on this location (Layered clothing support)
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="obj"></param>
-        /// <param name="wear_loc"></param>
-        /// <returns></returns>
-        public static bool can_layer(CharacterInstance ch, ObjectInstance obj, int wear_loc)
-        {
-            int bitlayers = 0;
-            int objlayers = obj.ObjectIndex.Layers;
-
-            foreach (ObjectInstance otmp in ch.Carrying
-                .Where(otmp => (int)otmp.WearLocation == wear_loc))
-            {
-                if (otmp.ObjectIndex.Layers == 0)
-                    return false;
-                bitlayers |= otmp.ObjectIndex.Layers;
-            }
-
-            if ((bitlayers > 0 && objlayers == 0) || bitlayers > objlayers)
-                return false;
-
-            return bitlayers == 0 || ((bitlayers & ~objlayers) == bitlayers);
-        }
-
         /// <summary>
         /// Wear one object. Optional replacement of existing objects.
         /// Restructured a bit to allow for specifying body location and 
@@ -382,7 +316,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (!ch.IsImmortal() && !IsAllowedToUse(obj, ch))
+            if (!ch.IsImmortal() && !ch.IsAllowedToUseObject(obj))
             {
                 comm.act(ATTypes.AT_MAGIC, "You are forbidden to use that item.", ch, null, null, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n tries to use $p, but is forbidden to do so.", ch, obj, null, ToTypes.Room);
@@ -571,7 +505,7 @@ namespace SmaugCS
         }
         private static void ItemWearBody(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.Body))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.Body))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -644,7 +578,7 @@ namespace SmaugCS
         }
         private static void ItemWearLegs(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.Legs))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.Legs))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -661,7 +595,7 @@ namespace SmaugCS
         }
         private static void ItemWearFeet(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.Feet))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.Feet))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -678,7 +612,7 @@ namespace SmaugCS
         }
         private static void ItemWearHands(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.Hands))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.Hands))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -695,7 +629,7 @@ namespace SmaugCS
         }
         private static void ItemWearArms(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.Arms))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.Arms))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -712,7 +646,7 @@ namespace SmaugCS
         }
         private static void ItemWearAbout(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.About))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.About))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -743,7 +677,7 @@ namespace SmaugCS
         }
         private static void ItemWearWaist(ObjectInstance obj, CharacterInstance ch, bool fReplace)
         {
-            if (!can_layer(ch, obj, (int)WearLocations.Waist))
+            if (!ch.CanWearLayer(obj, (int)WearLocations.Waist))
             {
                 color.send_to_char("It won't fit overtop of what you're already wearing.\r\n", ch);
                 return;
@@ -857,7 +791,7 @@ namespace SmaugCS
         }
         private static void ItemWearWield(ObjectInstance obj, CharacterInstance ch, bool fReplace, int bit)
         {
-            if (!could_dual(ch))
+            if (!ch.CouldDualWield())
             {
                 if (!remove_obj(ch, (int)WearLocations.WieldMissile, fReplace)
                     || !remove_obj(ch, (int)WearLocations.Wield, fReplace))
@@ -879,7 +813,7 @@ namespace SmaugCS
 
                 if (tobj != null)
                 {
-                    if (!can_dual(ch))
+                    if (!ch.CanDualWield())
                         return;
 
                     if ((obj.GetObjectWeight() + tobj.GetObjectWeight()) >
@@ -911,7 +845,7 @@ namespace SmaugCS
 
                 if (mw != null)
                 {
-                    if (!can_dual(ch))
+                    if (!ch.CanDualWield())
                         return;
 
                     if (obj.ItemType == ItemTypes.MissileWeapon)
@@ -1006,44 +940,6 @@ namespace SmaugCS
 
             ch.Equip(obj, (int)WearLocations.Hold);
             mud_prog.oprog_wear_trigger(ch, obj);
-        }
-        private static bool IsAllowedToUse(ObjectInstance obj, CharacterInstance ch)
-        {
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiWarrior))
-            {
-                if (ch.CurrentClass == ClassTypes.Warrior
-                    || ch.CurrentClass == ClassTypes.Paladin
-                    || ch.CurrentClass == ClassTypes.Ranger)
-                    return false;
-            }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiMage))
-            {
-                if (ch.CurrentClass == ClassTypes.Mage
-                    || ch.CurrentClass == ClassTypes.Augurer)
-                    return false;
-            }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiThief))
-            {
-                if (ch.CurrentClass == ClassTypes.Thief)
-                    return false;
-            }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiDruid))
-            {
-                if (ch.CurrentClass == ClassTypes.Druid)
-                    return false;
-            }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiCleric))
-            {
-                if (ch.CurrentClass == ClassTypes.Cleric)
-                    return false;
-            }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiVampire))
-            {
-                if (ch.CurrentClass == ClassTypes.Vampire)
-                    return false;
-            }
-
-            return true;
         }
 
         private static int fall_count;

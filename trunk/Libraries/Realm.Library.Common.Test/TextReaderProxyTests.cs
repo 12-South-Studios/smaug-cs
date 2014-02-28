@@ -33,6 +33,14 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        public void ReadNumber_ReturnsValidValue()
+        {
+            TextReaderProxy proxy = new TextReaderProxy(new StringReader("100 words"));
+    
+            Assert.That(proxy.ReadNumber(), Is.EqualTo(100));
+        }
+
+        [Test]
         public void ReadIntoList_ReturnsValidList()
         {
             TextReaderProxy proxy =
@@ -47,12 +55,37 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        public void ReadSections_HasInvalidSectionParameters()
+        {
+            TextReaderProxy proxy =
+                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
+
+            List<TextSection> results = proxy.ReadSections(new List<string> {"#"}, new List<string> {"*"},
+                                                           new List<string> {"#"}, "#end");
+
+            Assert.That(results.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ReadSections_HasFooter()
+        {
+            TextReaderProxy proxy =
+                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\r\n^end_common\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r^end_uncommon\r\n#end\n\r"));
+
+            List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
+                                                           new List<string> { "^" }, "#end");
+
+            Assert.That(results, Is.Not.Null);
+            Assert.That(results[0].Footer, Is.EqualTo("end_common"));
+        }
+
+        [Test]
         public void ReadSections_ReturnsValidList()
         {
             TextReaderProxy proxy =
                 new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
 
-            List<TextSection> results = proxy.ReadSections(new[] { "#" }, new List<string>() { "*" }, null, "#end");
+            List<TextSection> results = proxy.ReadSections(new List<string> {"#"}, new List<string> {"*"}, null, "#end");
 
             Assert.That(results, Is.Not.Null);
             Assert.That(results.Count, Is.EqualTo(2));
