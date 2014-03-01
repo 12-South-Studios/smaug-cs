@@ -7,6 +7,7 @@ namespace SmaugCS.Constants.Enums
 {
     public enum TrapTypes
     {
+        None = -1,
         PoisonGas = 1, 
         PoisonDart,
         PoisonNeedle,

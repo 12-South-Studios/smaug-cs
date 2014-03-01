@@ -216,7 +216,7 @@ namespace SmaugCS
             int cost;
             string buffer;
 
-            if (!handler.can_drop_obj(ch, obj))
+            if (!ch.CanDrop(obj))
                 color.ch_printf(ch, "You can't let go of %s.\r\n", obj.Name);
             else if ((cost = get_repaircost(keeper, obj)) < 0)
             {
@@ -290,7 +290,7 @@ namespace SmaugCS
                                                                         || obj.ItemType == ItemTypes.Wand
                                                                         || obj.ItemType == ItemTypes.Staff)))
             {
-                if (!handler.can_drop_obj(ch, obj))
+                if (!ch.CanDrop(obj))
                     color.ch_printf(ch, "You can't let go of %s.\r\n", obj.Name);
                 else if ((cost = get_repaircost(keeper, obj)) > 0)
                 {

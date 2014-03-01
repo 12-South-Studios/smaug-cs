@@ -30,7 +30,7 @@ namespace SmaugCS.Tests.Repositories
             sb.Append("object.this.Flags = \"magic antigood antievil\";");
             sb.Append("object.this.WearFlags = \"take wield\";");
             sb.Append("object.this:SetValues(12, 4, 8, 6, 0, 0);");
-            sb.Append("object.this:AddAffect(-1, -1, 60, 12, 0)");
+            sb.Append("object.this:AddAffect(-1, -1, 60, 14, 0)");
             sb.Append("object.this:AddSpell(\"armor\");");
             sb.Append("object.this:SetStats(1, 2500, 250, 0, 0);");
             sb.Append(

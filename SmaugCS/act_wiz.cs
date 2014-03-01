@@ -136,7 +136,7 @@ namespace SmaugCS
             }
 
             // if victim not in area's level range, do not transfer
-            if (ch.IsNpc() && !handler.in_hard_range(victim, location.Area)
+            if (ch.IsNpc() && !location.Area.InHardRange(victim)
                 && !location.Flags.IsSet((int)RoomFlags.Prototype))
                 return;
 
@@ -160,7 +160,7 @@ namespace SmaugCS
                 Look.do_look(victim, "auto");
                 if (!victim.IsImmortal()
                     && !victim.IsNpc()
-                    && !handler.in_hard_range(victim, location.Area))
+                    && !location.Area.InHardRange(victim))
                     comm.act(ATTypes.AT_DANGER, "Warning: this player's level is not within the area's level range.", ch, null, null, ToTypes.Character);
             }
         }
