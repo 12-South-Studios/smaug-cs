@@ -1,11 +1,13 @@
 #summary Tools used in the Development of SmaugCS
 #sidebar SideBarTableOfContents
 
- * Language: C# (.NET 4.0)
+ * Language: C# (.NET 4.5)
  * Microsoft Visual Studio 2012
- * JetBrains Resharper 7.1
+ * JetBrains Resharper 7.1.2
   * http://www.jetbrains.com/resharper/
- * Remco Software NCrunch 1.46
+ * Remco Software NCrunch 2.4.0.2
   * http://www.ncrunch.net/
  * Notepad++ (for Lua development)
   * http://notepad-plus-plus.org/
+ * Microsoft Sql Server CE 4.0.8
+  * http://www.microsoft.com/en-us/download/details.aspx?id=17876
