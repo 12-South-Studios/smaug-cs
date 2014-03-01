@@ -6,11 +6,11 @@ The following third-party libraries have been used (thus far) in the project.
 For the Project:
  * NCalc (v1.3.8)
   * http://ncalc.codeplex.com/
- * Log4net (v2.0.0)
+ * Log4net (v2.0.3)
   * http://logging.apache.org/log4net/
  * VikingErik.LuaInterface (v1.0.42)
   * http://www.nuget.org/packages/VikingErik.LuaInterface
- * NUnit (v2.6.2)
+ * NUnit (v2.6.3)
   * http://nunit.org/
- * Moq (v4.1.13)
+ * Moq (v4.2.13)
   * https://code.google.com/p/moq/
