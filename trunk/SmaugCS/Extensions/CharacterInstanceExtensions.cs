@@ -20,6 +20,66 @@ namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {
+        public static void ImproveMentalState(this CharacterInstance ch, int mod)
+        {
+            int c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
+            int con = ch.GetCurrentConstitution();
+
+            c += SmaugRandom.Percent() < con ? 1 : 0;
+
+            if (ch.MentalState < 0)
+                ch.MentalState = -100.GetNumberThatIsBetween(ch.MentalState + c, 0);
+            else if (ch.MentalState > 0)
+                ch.MentalState = 0.GetNumberThatIsBetween(ch.MentalState - c, 100);
+        }
+
+        public static void WorsenMentalState(this CharacterInstance ch, int mod)
+        {
+            int c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
+            int con = ch.GetCurrentConstitution();
+
+            c -= SmaugRandom.Percent() < con ? 1 : 0;
+            if (c < 1)
+                return;
+
+            if (!ch.IsNpc()
+                && ch.PlayerData.Nuisance != null
+                && ch.PlayerData.Nuisance.Flags > 2)
+                c += (int) (0.4f*((ch.PlayerData.Nuisance.Flags - 2)*ch.PlayerData.Nuisance.Power));
+
+            if (ch.MentalState < 0)
+                ch.MentalState = -100.GetNumberThatIsBetween(ch.MentalState - c, 100);
+            else if (ch.MentalState > 0)
+                ch.MentalState = -100.GetNumberThatIsBetween(ch.MentalState + c, 100);
+            else
+                ch.MentalState -= c;
+        }
+
+        public static bool CanAstral(this CharacterInstance ch, CharacterInstance victim)
+        {
+            return victim != ch && victim.CurrentRoom != null &&
+                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Private) &&
+                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Solitary) &&
+                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.NoAstral) &&
+                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Death) &&
+                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Prototype) && victim.Level < (ch.Level + 15) &&
+                   (!victim.CanPKill() || ch.IsNpc() || ch.CanPKill()) &&
+                   (!victim.IsNpc() || !victim.Act.IsSet((int) ActFlags.Prototype)) &&
+                   (!victim.IsNpc() || !victim.SavingThrows.CheckSaveVsSpellStaff(ch.Level, victim)) &&
+                   (!victim.CurrentRoom.Area.Flags.IsSet((int) AreaFlags.NoPKill) || !ch.IsPKill());
+        }
+
+        public static bool CanDrop(this CharacterInstance ch, ObjectInstance obj)
+        {
+            if (!Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.NoDrop))
+                return true;
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
+                return true;
+            if (ch.IsNpc() && ch.MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
+                return true;
+            return false;
+        }
+
         public static bool CanSee(this CharacterInstance ch, ObjectInstance obj)
         {
             if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.HolyLight))
@@ -1129,7 +1189,7 @@ namespace SmaugCS.Extensions
                     color.set_char_color(ATTypes.AT_BLOOD, ch);
                     color.send_to_char("You are wracked with guilt and remorse for your craven actions!\r\n", ch);
                     comm.act(ATTypes.AT_BLOOD, "$n prostrates $mself, seeking forgiveness from $s Lord.", ch, null, null, ToTypes.Room);
-                    handler.worsen_mental_state(ch, 15);
+                    ch.WorsenMentalState(15);
                     return;
                 }
                 if (ch.CurrentAlignment < 500)
@@ -1137,7 +1197,7 @@ namespace SmaugCS.Extensions
                     color.set_char_color(ATTypes.AT_BLOOD, ch);
                     color.send_to_char("As you betray your faith, your mind begins to betray you.\r\n", ch);
                     comm.act(ATTypes.AT_BLOOD, "$n shudders, judging $s actions unworthy of a Paladin.", ch, null, null, ToTypes.Room);
-                    handler.worsen_mental_state(ch, 6);
+                    ch.WorsenMentalState(6);
                 }
             }
         }

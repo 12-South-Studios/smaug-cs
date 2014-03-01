@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
@@ -912,83 +913,179 @@ namespace SmaugCS
 
 
 
-        public static bool can_drop_obj(CharacterInstance ch, ObjectInstance obj)
-        {
-            // TODO
-            return false;
-        }
 
-        public static string item_type_name(ObjectInstance obj)
-        {
-            // TODO
-            return string.Empty;
-        }
 
         public static string affect_loc_name(int location)
         {
-            // TODO
-            return string.Empty;
+            ApplyTypes type = EnumerationExtensions.GetEnum<ApplyTypes>(location);
+            return type.GetName();
         }
 
         public static string affect_bit_name(ExtendedBitvector vector)
         {
-            // TODO
-            return string.Empty;
+            StringBuilder sb = new StringBuilder();
+            foreach (AffectedByTypes type in Enum.GetValues(typeof (AffectedByTypes))
+                        .Cast<AffectedByTypes>()
+                        .Where(type => vector.IsSet((int) type)))
+            {
+                sb.AppendFormat(" {0}", type.GetName());
+            }
+            return sb.ToString();
         }
 
         public static string extra_bit_name(ExtendedBitvector extra_flags)
         {
-            // TODO
-            return string.Empty;
+            StringBuilder sb = new StringBuilder();
+            foreach (ItemExtraFlags type in Enum.GetValues(typeof (ItemExtraFlags))
+                        .Cast<ItemExtraFlags>()
+                        .Where(type => extra_flags.IsSet((int) type)))
+            {
+                sb.AppendFormat(" {0}", type.GetName());
+            }
+            return sb.ToString();
         }
 
         public static string magic_bit_name(int magic_flags)
         {
-            // TODO
-            return string.Empty;
+            return (magic_flags & (int) ItemMagicFlags.Returning) > 0 ? " returning" : "none";
         }
 
         public static string pull_type_name(int pulltype)
         {
-            // TODO
-            return string.Empty;
+            foreach (DirectionPullTypes type in Enum.GetValues(typeof (DirectionPullTypes)))
+            {
+                if ((int) type == pulltype || pulltype == type.GetValue())
+                    return type.GetName();
+            }
+            return "ERROR";
         }
 
-        public static int spring_trap(CharacterInstance ch, ObjectInstance obj)
+        private static readonly Dictionary<TrapTypes, string> TrapTypeLookupTable = new Dictionary<TrapTypes, string>()
+            {
+                {TrapTypes.PoisonGas, "surrounded by a green cloud of gas"},
+                {TrapTypes.PoisonDart, "hit by a dart"},
+                {TrapTypes.PoisonDagger, "stabbed by a dagger"},
+                {TrapTypes.PoisonNeedle, "pricked by a needle"},
+                {TrapTypes.PoisonArrow, "struck with an arrow"},
+                {TrapTypes.BlindnessGas, "surrounded by a red cloud of gas"},
+                {TrapTypes.SleepingGas, "surrounded by a yellow cloud of gas"},
+                {TrapTypes.Flame, "struck by a burst of flame"},
+                {TrapTypes.Explosion, "hit by an explosion"},
+                {TrapTypes.AcidSpray, "covered by a spray of acid"},
+                {TrapTypes.ElectricShock, "suddenly shocked"},
+                {TrapTypes.Blade, "sliced by a razor sharp blade"},
+                {TrapTypes.SexChange, "surrounded by a mysterious aura"}
+            };
+
+        private const string TrapTypeLookupDefault = "hit by a trap";
+
+        private static readonly Dictionary<TrapTypes, string> TrapTypeSkillLookupTable = new Dictionary<TrapTypes, string>()
+            {
+                {TrapTypes.AcidSpray, "acid blast"},
+                {TrapTypes.BlindnessGas, "blindness"},
+                {TrapTypes.Explosion, "fireball"},
+                {TrapTypes.Flame, "fireball"},
+                {TrapTypes.PoisonArrow, "poison"},
+                {TrapTypes.PoisonDagger, "poison"},
+                {TrapTypes.PoisonDart, "poison"},
+                {TrapTypes.PoisonGas, "poison"},
+                {TrapTypes.PoisonNeedle, "poison"},
+                {TrapTypes.SexChange, "change sex"},
+                {TrapTypes.SleepingGas, "sleep"}
+            };
+
+        public static ReturnTypes spring_trap(CharacterInstance ch, ObjectInstance obj)
         {
-            // TODO
-            return 0;
+            int level = obj.Value[2];
+            string txt = string.Empty;
+            TrapTypes trapType = TrapTypes.None;
+            try
+            {
+                trapType = EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
+                txt = TrapTypeLookupTable.ContainsKey(trapType) ? TrapTypeLookupTable[trapType] : TrapTypeLookupDefault;
+            }
+            catch (ArgumentException)
+            {
+                txt = TrapTypeLookupDefault;
+            }
+
+            int dam = SmaugRandom.Between(obj.Value[2], obj.Value[2]*2);
+            
+            comm.act(ATTypes.AT_HITME, string.Format("You are {0}!", txt), ch, null, null, ToTypes.Character);
+            comm.act(ATTypes.AT_ACTION, string.Format("$n is {0}.", txt), ch, null, null, ToTypes.Room);
+
+            --obj.Value[0];
+            if (obj.Value[0] <= 0)
+                extract_obj(obj);
+
+            ReturnTypes returnCode = ReturnTypes.None;
+            if (TrapTypeSkillLookupTable.ContainsKey(trapType))
+            {
+                SkillData skill = DatabaseManager.Instance.GetSkill(TrapTypeSkillLookupTable[trapType]);
+                returnCode = magic.obj_cast_spell(skill.ID, level, ch, ch, null);
+            }
+
+            if (trapType == TrapTypes.Blade || trapType == TrapTypes.ElectricShock)
+                returnCode = fight.damage(ch, ch, dam, Program.TYPE_UNDEFINED);
+            if ((trapType == TrapTypes.PoisonArrow
+                           || trapType == TrapTypes.PoisonDagger
+                           || trapType == TrapTypes.PoisonDart
+                           || trapType == TrapTypes.PoisonNeedle)
+                && returnCode == ReturnTypes.None)
+                returnCode = fight.damage(ch, ch, dam, Program.TYPE_UNDEFINED);
+
+            return returnCode;
         }
 
-        public static int check_for_trap(CharacterInstance ch, ObjectInstance obj, int flag)
+        public static ReturnTypes check_for_trap(CharacterInstance ch, ObjectInstance obj, int flag)
         {
-            // TODO
-            return 0;
+            if (!obj.Contents.Any())
+                return ReturnTypes.None;
+
+            ReturnTypes returnCode = ReturnTypes.None;
+
+            foreach (ObjectInstance check in obj.Contents.Where(check => check.ItemType == ItemTypes.Trap
+                                                                         && check.Value[3].IsSet(flag)))
+            {
+                returnCode = spring_trap(ch, check);
+                if (returnCode != ReturnTypes.None)
+                    return returnCode;
+            }
+
+            return returnCode;
         }
 
-        public static int check_room_for_traps(CharacterInstance ch, int flag)
+        public static ReturnTypes check_room_for_traps(CharacterInstance ch, int flag)
         {
-            // TODO
-            return 0;
-        }
+            if (!ch.CurrentRoom.Contents.Any())
+                return ReturnTypes.None;
 
-        public static bool is_trapped(ObjectInstance obj)
-        {
-            // TODO
-            return false;
+            ReturnTypes returnCode = ReturnTypes.None;
+
+            foreach (ObjectInstance check in ch.CurrentRoom.Contents.Where(check => check.ItemType == ItemTypes.Trap
+                                                                         && check.Value[3].IsSet(flag)))
+            {
+                returnCode = spring_trap(ch, check);
+                if (returnCode != ReturnTypes.None)
+                    return returnCode;
+            }
+
+            return returnCode;
         }
 
         public static ObjectInstance get_trap(ObjectInstance obj)
         {
-            // TODO
-            return null;
+            if (!obj.IsTrapped())
+                return null;
+            return obj.Contents.FirstOrDefault(check => check.ItemType == ItemTypes.Trap);
         }
 
-        public static ObjectInstance get_objtype(CharacterInstance ch, short type)
+        public static ObjectInstance get_objtype(CharacterInstance ch, int type)
         {
-            // TODO
-            return null;
+            return ch.Carrying.FirstOrDefault(obj => (int) obj.ItemType == type);
         }
+
+
 
         public static void extract_exit(RoomTemplate room, ExitData pexit)
         {
@@ -1014,6 +1111,8 @@ namespace SmaugCS
         {
             // TODO
         }
+
+
 
         public static void name_stamp_stats(CharacterInstance ch)
         {
@@ -1093,34 +1192,18 @@ namespace SmaugCS
             // TODO
         }
 
-        public static bool in_soft_rangE(CharacterInstance ch, AreaData tarea)
-        {
-            // TODO
-            return false;
-        }
 
-        public static bool can_astral(CharacterInstance ch, CharacterInstance victim)
-        {
-            // TODO
-            return false;
-        }
-
-        public static bool in_hard_range(CharacterInstance ch, AreaData tarea)
-        {
-            // TODO
-            return false;
-        }
 
         public static bool chance(CharacterInstance ch, int percent)
         {
-            // TODO
-            return false;
+            return (SmaugRandom.Percent() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
+                   (ch.IsDevoted() ? ch.PlayerData.Favor/-500 : 0) <= percent;
         }
 
         public static bool chance_attrib(CharacterInstance ch, short percent, short attrib)
         {
-            // TODO
-            return false;
+            return (SmaugRandom.Percent() - ch.GetCurrentLuck() + 13 - attrib + 13 +
+                    (ch.IsDevoted() ? ch.PlayerData.Favor/-500 : 0) <= percent);
         }
 
         public static ObjectInstance clone_object(ObjectInstance obj)
@@ -1131,13 +1214,76 @@ namespace SmaugCS
 
         public static ObjectInstance group_object(ObjectInstance obj1, ObjectInstance obj2)
         {
-            // TODO
-            return null;
+            if (obj1 == null || obj2 == null)
+                return null;
+            if (obj1 == obj2)
+                return obj1;
+
+            if (obj1.ObjectIndex == obj2.ObjectIndex
+                && obj1.Name.EqualsIgnoreCase(obj2.Name)
+                && obj1.ShortDescription.EqualsIgnoreCase(obj2.ShortDescription)
+                && obj1.Description.EqualsIgnoreCase(obj2.Description)
+                && obj1.Owner.EqualsIgnoreCase(obj2.Owner)
+                && obj1.ItemType == obj2.ItemType
+                && obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
+                && obj1.magic_flags == obj2.magic_flags
+                && obj1.WearFlags == obj2.WearFlags
+                && obj1.WearLocation == obj2.WearLocation
+                && obj1.Weight == obj2.Weight
+                && obj1.Cost == obj2.Cost
+                && obj1.Level == obj2.Level
+                && obj1.Timer == obj2.Timer
+                && obj1.Value[0] == obj2.Value[0]
+                && obj1.Value[1] == obj2.Value[1]
+                && obj1.Value[2] == obj2.Value[2]
+                && obj1.Value[3] == obj2.Value[3]
+                && obj1.Value[4] == obj2.Value[4]
+                && obj1.Value[5] == obj2.Value[5]
+                && obj1.ExtraDescriptions.SequenceEqual(obj2.ExtraDescriptions)
+                && obj1.Affects.SequenceEqual(obj2.Affects)
+                && obj1.Contents.SequenceEqual(obj2.Contents)
+                && obj1.Count + obj2.Count > 0)
+            {
+                obj1.Count += obj2.Count;
+                obj1.ObjectIndex.count += obj2.Count;
+                extract_obj(obj2);
+                return obj1;
+            }
+            return obj2;
         }
 
         public static void split_obj(ObjectInstance obj, int num)
         {
-            // TODO
+            int count = obj.Count;
+            if (count <= num || num == 0)
+                return;
+
+            ObjectInstance rest = clone_object(obj);
+            --obj.ObjectIndex.count;
+            rest.Count = obj.Count - num;
+            obj.Count = num;
+
+            if (obj.CarriedBy != null)
+            {
+                obj.CarriedBy.Carrying.Add(rest);
+                rest.CarriedBy = obj.CarriedBy;
+                rest.InRoom = null;
+                rest.InObject = null;
+            }
+            else if (obj.InRoom != null)
+            {
+                obj.InRoom.Contents.Add(rest);
+                rest.CarriedBy = null;
+                rest.InRoom = obj.InRoom;
+                rest.InObject = null;
+            }
+            else if (obj.InObject != null)
+            {
+                obj.InObject.Contents.Add(rest);
+                rest.InObject = obj.InObject;
+                rest.InRoom = null;
+                rest.CarriedBy = null;
+            }
         }
 
         public static void separate_obj(ObjectInstance obj)
@@ -1151,15 +1297,7 @@ namespace SmaugCS
             return false;
         }
 
-        public static void better_mental_state(CharacterInstance ch, int mod)
-        {
-            // TODO
-        }
 
-        public static void worsen_mental_state(CharacterInstance ch, int mod)
-        {
-            // TODO
-        }
 
         public static void economize_mobgold(CharacterInstance mob)
         {

@@ -1,4 +1,6 @@
 ﻿
+using Realm.Library.Common;
+
 namespace SmaugCS.Constants.Enums
 {
     public enum ApplyTypes
@@ -9,6 +11,10 @@ namespace SmaugCS.Constants.Enums
         Intelligence,
         Wisdom,
         Constitution,
+        Charisma,
+        Luck,
+
+        [Name("sex")]
         Gender,
         Class,
         Level,
@@ -16,25 +22,53 @@ namespace SmaugCS.Constants.Enums
         Height,
         Weight,
         Mana,
+
+        [Name("hp")]
         Hit,
+
+        [Name("moves")]
         Movement,
         Gold,
         Experience,
+
+        [Name("armor class")]
         ArmorClass,
+
+        [Name("hit roll")]
         HitRoll,
+
+        [Name("damage roll")]
         DamageRoll,
+
+        [Name("save vs poison")]
         SaveVsPoison,
+
+        [Name("save vs rod")]
         SaveVsRod,
+
+        [Name("save vs paralysis")]
         SaveVsParalysis,
+
+        [Name("save vs breath")]
         SaveVsBreath,
+
+        [Name("save vs spell")]
         SaveVsSpell,
-        Charisma,
+
+        [Name("affected_by")]
         Affect,
+
+        [Name("resistant")]
         Resistance,
+
+        [Name("immune")]
         Immunity,
+
+        [Name("susceptible")]
         Susceptibility,
+
+        [Name("weapon spell")]
         WeaponSpell,
-        Luck,
         Backstab,
         Pick,
         Track,
@@ -59,18 +93,32 @@ namespace SmaugCS.Constants.Enums
         Grip,
         Scribe,
         Brew,
+
+        [Name("wear spell")]
         WearSpell,
+
+        [Name("remove spell")]
         RemoveSpell,
+
+        [Name("emotional state")]
         Emotion,
+
+        [Name("mental state")]
         MentalState,
+
+        [Name("dispel")]
         StripSN,
         Remove,
         Dig,
+
+        [Name("hunger")]
         Full,
         Thirst,
         Drunk,
         Blood,
         Cook,
+
+        [Name("recurring spell")]
         RecurringSpell,
         Contagious,
         ExtendedAffect,
@@ -78,7 +126,11 @@ namespace SmaugCS.Constants.Enums
         RoomFlag,
         SectorType,
         RoomLight,
+
+        [Name("teleport vnum")]
         TeleportVnum,
+
+        [Name("teleport delay")]
         TeleportDelay
     }
 }

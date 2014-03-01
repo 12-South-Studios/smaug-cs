@@ -112,6 +112,7 @@
     <Compile Include="Commands\Polymorph\MorphStat.cs" />
     <Compile Include="Commands\Polymorph\Revert.cs" />
     <Compile Include="ExpressionTableInitializer.cs" />
+    <Compile Include="Extensions\AreaExtensions.cs" />
     <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />
     <Compile Include="Extensions\MobTemplateExtensions.cs" />

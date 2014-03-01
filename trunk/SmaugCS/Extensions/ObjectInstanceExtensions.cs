@@ -4,11 +4,22 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using Realm.Library.Common;
 
 namespace SmaugCS.Extensions
 {
     public static class ObjectInstanceExtensions
     {
+        public static bool IsTrapped(this ObjectInstance obj)
+        {
+            return obj.Contents.Any(check => check.ItemType == ItemTypes.Trap);
+        }
+
+        public static string GetItemTypeName(this ObjectInstance obj)
+        {
+            return obj.ItemType.GetName().ToLower();
+        }
+
         public static int GetResistance(this ObjectInstance obj)
         {
             int resist = SmaugRandom.Fuzzy(Program.MAX_ITEM_IMPACT);

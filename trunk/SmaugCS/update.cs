@@ -57,13 +57,13 @@ namespace SmaugCS
                     if (conditionValue == 0)
                     {
                         if (!ch.IsPKill() || SmaugCS.Common.SmaugRandom.Bits(1) == 0)
-                            handler.worsen_mental_state(ch, 1);
+                            ch.WorsenMentalState(1);
                         retcode = fight.damage(ch, ch, 2, (int)SkillNumberTypes.Undefined);
                     }
                     else
                     {
                         if (SmaugCS.Common.SmaugRandom.Bits(1) == 0)
-                            handler.worsen_mental_state(ch, 1);
+                            ch.WorsenMentalState(1);
                     }
                 }
             }
@@ -83,11 +83,11 @@ namespace SmaugCS
                     comm.act(ATTypes.AT_THIRSTY, ConditionMessageTableTable[ConditionTypes.Thirsty][(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
                     if (conditionValue == 0)
                     {
-                        handler.worsen_mental_state(ch, ch.IsPKill() ? 1 : 2);
+                        ch.WorsenMentalState(ch.IsPKill() ? 1 : 2);
                         retcode = fight.damage(ch, ch, 2, (int)SkillNumberTypes.Undefined);
                     }
                     else
-                        handler.worsen_mental_state(ch, 1);
+                        ch.WorsenMentalState(1);
                 }
             }
 
@@ -108,11 +108,11 @@ namespace SmaugCS
                              null, ToTypes.Room);
                     if (conditionValue == 0)
                     {
-                        handler.worsen_mental_state(ch, 2);
+                        ch.WorsenMentalState(2);
                         retcode = fight.damage(ch, ch, ch.MaximumHealth / 20, (int)SkillNumberTypes.Undefined);
                     }
                     else
-                        handler.worsen_mental_state(ch, 1);
+                        ch.WorsenMentalState(1);
                 }
             }
 

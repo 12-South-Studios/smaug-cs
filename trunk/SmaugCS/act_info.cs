@@ -167,7 +167,7 @@ namespace SmaugCS
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 13));
             if ((ch.IsAffected(AffectedByTypes.DetectTraps)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
-                && handler.is_trapped(obj))
+                && obj.IsTrapped())
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 14));
 
             if (fShort)

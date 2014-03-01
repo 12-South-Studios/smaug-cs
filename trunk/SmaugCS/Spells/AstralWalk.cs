@@ -15,8 +15,8 @@ namespace SmaugCS.Spells
             CharacterInstance victim = handler.get_char_world(ch, Cast.TargetName);
 
             if (victim == null
-                || !handler.can_astral(ch, victim)
-                || !handler.in_hard_range(ch, victim.CurrentRoom.Area))
+                || !ch.CanAstral(victim)
+                || !victim.CurrentRoom.Area.InHardRange(ch))
             {
                 magic.failed_casting(skill, ch, victim, null);
                 return ReturnTypes.SpellFailed;
