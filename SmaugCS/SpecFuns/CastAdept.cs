@@ -49,7 +49,7 @@ namespace SmaugCS.SpecFuns
 
         private static bool CastSpell(CharacterInstance ch, CharacterInstance victim, int bitFlag, string spellName)
         {
-            SkillData skill = DatabaseManager.Instance.GetSkill(spellName);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
             
             switch (bitFlag)
             {
@@ -58,16 +58,16 @@ namespace SmaugCS.SpecFuns
                 case 3:
                 case 5:
                 case 6:
-                    Spells.Smaug.Smaug.spell_smaug(skill.ID, ch.Level, ch, victim);
+                    Spells.Smaug.Smaug.spell_smaug((int)skill.ID, ch.Level, ch, victim);
                     return true;
                 case 2:
-                    Spells.CureBlindness.spell_cure_blindness(skill.ID, ch.Level, ch, victim);
+                    Spells.CureBlindness.spell_cure_blindness((int)skill.ID, ch.Level, ch, victim);
                     return true;
                 case 4:
-                    Spells.CurePoison.spell_cure_poison(skill.ID, ch.Level, ch, victim);
+                    Spells.CurePoison.spell_cure_poison((int)skill.ID, ch.Level, ch, victim);
                     return true;
                 case 7:
-                    Spells.RemoveCurse.spell_remove_curse(skill.ID, ch.Level, ch, victim);
+                    Spells.RemoveCurse.spell_remove_curse((int)skill.ID, ch.Level, ch, victim);
                     return true;
             }
 

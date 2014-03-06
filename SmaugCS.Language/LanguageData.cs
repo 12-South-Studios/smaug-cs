@@ -9,25 +9,22 @@ using SmaugCS.Common;
 namespace SmaugCS.Language
 {
     [XmlRoot("Language")]
-    public class LanguageData
+    public class LanguageData : Entity
     {
-        [XmlElement]
-        public int ID { get; set; }
-
-        [XmlElement]
-        public string Name { get; set; }
-
         [XmlArray]
         public List<LanguageConversionData> PreConversion { get; set; }
 
         [XmlElement]
         public string Alphabet { get; set; }
 
+        public LanguageTypes Type { get; private set; }
+
         [XmlArray]
         public List<LanguageConversionData> Conversion { get; set; }
 
-        public LanguageData()
+        public LanguageData(long id, string name, LanguageTypes type) : base(id, name)
         {
+            Type = type;
             PreConversion = new List<LanguageConversionData>();
             Conversion = new List<LanguageConversionData>();
         }

@@ -41,7 +41,7 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.ToList()[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                         ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
@@ -56,7 +56,7 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.ToList()[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         LogManager.Instance.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
@@ -225,7 +225,7 @@ namespace SmaugCS
                         return;
 
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.ToList()[mod];
+                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
@@ -242,7 +242,7 @@ namespace SmaugCS
                     break;
 
                 case (int)ApplyTypes.Track:
-                    ch.ModifySkill((int)DatabaseManager.Instance.GetSkill("track").Type, mod, add);
+                    ch.ModifySkill((int)DatabaseManager.Instance.GetEntity<SkillData>("track").Type, mod, add);
                     break;
 
                 // TODO Add the rest
@@ -1021,8 +1021,8 @@ namespace SmaugCS
             ReturnTypes returnCode = ReturnTypes.None;
             if (TrapTypeSkillLookupTable.ContainsKey(trapType))
             {
-                SkillData skill = DatabaseManager.Instance.GetSkill(TrapTypeSkillLookupTable[trapType]);
-                returnCode = magic.obj_cast_spell(skill.ID, level, ch, ch, null);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(TrapTypeSkillLookupTable[trapType]);
+                returnCode = magic.obj_cast_spell((int)skill.ID, level, ch, ch, null);
             }
 
             if (trapType == TrapTypes.Blade || trapType == TrapTypes.ElectricShock)
@@ -1301,35 +1301,20 @@ namespace SmaugCS
 
         public static void economize_mobgold(CharacterInstance mob)
         {
-            // TODO
-        }
+            mob.CurrentCoin = mob.CurrentCoin.GetLowestOfTwoNumbers(mob.Level*mob.Level*400);
+            if (mob.CurrentRoom == null)
+                return;
 
-        public static void add_kill(CharacterInstance ch, CharacterInstance mob)
-        {
-            // TODO
-        }
-
-        public static int times_killed(CharacterInstance ch, CharacterInstance mob)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static AreaData get_area(string name)
-        {
-            // TODO
-            return null;
-        }
-
-        public static AreaData get_area_obj(ObjectTemplate pObjIndex)
-        {
-            // TODO
-            return null;
+            int gold = (mob.CurrentRoom.Area.HighEconomy > 0 ? 1 : 0)*1000000000*mob.CurrentRoom.Area.LowEconomy;
+            mob.CurrentCoin = 0.GetNumberThatIsBetween(mob.CurrentCoin, gold/10);
+            if (mob.CurrentCoin > 0)
+                mob.CurrentRoom.Area.LowerEconomy(mob.CurrentCoin);
         }
 
         public static void check_switches(bool possess)
         {
-            // TODO
+            foreach(CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+                check_switch(ch, possess);
         }
 
         public static void check_switch(CharacterInstance ch, bool possess)

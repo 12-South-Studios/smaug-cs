@@ -66,7 +66,7 @@ namespace SmaugCS.Commands
             // TODO quitting_char = ch;
             save.save_char_obj(ch);
 
-            if (db.SystemData.SavePets && ch.PlayerData.Pet != null)
+            if (GameManager.Instance.SystemData.SavePets && ch.PlayerData.Pet != null)
             {
                 comm.act(ATTypes.AT_BYE, "$N follows $S master into the Void.", ch, null, ch.PlayerData.Pet, ToTypes.Room);
                 handler.extract_char(ch.PlayerData.Pet, true);

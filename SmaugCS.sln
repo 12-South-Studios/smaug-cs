@@ -41,6 +41,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realm.Library.Lua.Test", "Libraries\Realm.Library.Lua.Test\Realm.Library.Lua.Test.csproj", "{D822B027-D854-4081-B14D-8F7269207F61}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}"
+	ProjectSection(SolutionItems) = preProject
+		data\SmaugCS.sdf = data\SmaugCS.sdf
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "area", "area", "{E74C8BB0-D610-4403-9D6B-64C1C65473B2}"
 	ProjectSection(SolutionItems) = preProject
@@ -72,19 +75,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clans", "clans", "{893C56A7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "classes", "classes", "{22E3EFB4-8CB5-4494-98D9-C6D91E094895}"
 	ProjectSection(SolutionItems) = preProject
-		data\classes\Augurer.class = data\classes\Augurer.class
-		data\classes\class.lst = data\classes\class.lst
-		data\classes\Cleric.class = data\classes\Cleric.class
-		data\classes\Druid.class = data\classes\Druid.class
-		data\classes\Mage.class = data\classes\Mage.class
-		data\classes\Monger.class = data\classes\Monger.class
-		data\classes\Nephandi.class = data\classes\Nephandi.class
-		data\classes\Paladin.class = data\classes\Paladin.class
-		data\classes\Pirate.class = data\classes\Pirate.class
-		data\classes\Ranger.class = data\classes\Ranger.class
-		data\classes\Savage.class = data\classes\Savage.class
+		data\classes\Augurer.lua = data\classes\Augurer.lua
+		data\classes\Cleric.lua = data\classes\Cleric.lua
+		data\classes\Druid.lua = data\classes\Druid.lua
+		data\classes\Mage.lua = data\classes\Mage.lua
+		data\classes\Monger.lua = data\classes\Monger.lua
+		data\classes\Nephandi.lua = data\classes\Nephandi.lua
+		data\classes\Paladin.lua = data\classes\Paladin.lua
+		data\classes\Pirate.lua = data\classes\Pirate.lua
+		data\classes\Ranger.lua = data\classes\Ranger.lua
+		data\classes\Savage.lua = data\classes\Savage.lua
 		data\classes\Thief.lua = data\classes\Thief.lua
-		data\classes\Vampire.class = data\classes\Vampire.class
+		data\classes\Vampire.lua = data\classes\Vampire.lua
 		data\classes\Warrior.lua = data\classes\Warrior.lua
 	EndProjectSection
 EndProject
@@ -103,7 +105,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deity", "deity", "{4154C014-3FB4-42C6-8874-6C56DA9E822C}"
 	ProjectSection(SolutionItems) = preProject
 		data\deity\deity.lst = data\deity\deity.lst
-		data\deity\maron.lua = data\deity\maron.lua
+		data\deity\Maron.lua = data\deity\Maron.lua
 		data\deity\test.dty = data\deity\test.dty
 	EndProjectSection
 EndProject
@@ -640,8 +642,8 @@ Global
 		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Work|Any CPU.ActiveCfg = Release|Any CPU
 		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Work|Any CPU.Build.0 = Release|Any CPU
 		{7D9C9772-4747-4E29-9806-1007528BBEEE}.Work|x86.ActiveCfg = Release|Any CPU
-		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Debug|Any CPU.Build.0 = Debug|x86
+		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Home|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA51A5A-1F1B-4881-A790-98EC6E8F3DF8}.Home|Any CPU.Build.0 = Release|Any CPU
@@ -700,8 +702,8 @@ Global
 		{6F43C8D6-B168-4E77-B12A-EBB49DCE8019}.Work|Any CPU.ActiveCfg = Release|Any CPU
 		{6F43C8D6-B168-4E77-B12A-EBB49DCE8019}.Work|Any CPU.Build.0 = Release|Any CPU
 		{6F43C8D6-B168-4E77-B12A-EBB49DCE8019}.Work|x86.ActiveCfg = Release|Any CPU
-		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Debug|Any CPU.Build.0 = Debug|x86
 		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Debug|x86.ActiveCfg = Debug|x86
 		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Debug|x86.Build.0 = Debug|x86
 		{551F2B16-CEC5-4E16-8F30-290005C04E16}.Home|Any CPU.ActiveCfg = Home|Any CPU
@@ -865,6 +867,16 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1FDEE5BD-A724-4478-BCA3-4C49DAEA291D} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{DD42338B-FE18-406E-8084-F606825771F6} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{74A0765E-25AD-486E-8284-33FCECF636D1} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{222CCE38-B286-44F0-B7F1-6AF8BA525FB6} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{B459E90B-793A-48B1-B672-50D162EDC662} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{D2EBA739-4153-48FF-93F0-AAEB43D1AB7E} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{2BB2460C-A3C5-410B-B139-0E16E5077AAC} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{02B1394B-866D-42AD-B187-EF9D9D459EB0} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{7D9C9772-4747-4E29-9806-1007528BBEEE} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
+		{551F2B16-CEC5-4E16-8F30-290005C04E16} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
 		{B6A78452-CA4D-442F-AAD4-A31647B18CB7} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{7F8A32C0-B452-4E30-9C23-6406DDC353DB} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{B78267E9-B883-4BDE-8883-99D8F5A09013} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
@@ -879,16 +891,6 @@ Global
 		{79CE078A-1BE1-4809-8F14-09A885309EC2} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{03416378-07C6-40AC-906B-E27F31E959F8} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{E278D36A-8920-4D81-A6C3-0B4730433C8F} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
-		{1FDEE5BD-A724-4478-BCA3-4C49DAEA291D} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{DD42338B-FE18-406E-8084-F606825771F6} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{74A0765E-25AD-486E-8284-33FCECF636D1} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{222CCE38-B286-44F0-B7F1-6AF8BA525FB6} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{B459E90B-793A-48B1-B672-50D162EDC662} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{D2EBA739-4153-48FF-93F0-AAEB43D1AB7E} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{2BB2460C-A3C5-410B-B139-0E16E5077AAC} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{02B1394B-866D-42AD-B187-EF9D9D459EB0} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{7D9C9772-4747-4E29-9806-1007528BBEEE} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
-		{551F2B16-CEC5-4E16-8F30-290005C04E16} = {B9A26022-E8BF-4AB8-B5CE-198BABFABD70}
 		{E74C8BB0-D610-4403-9D6B-64C1C65473B2} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{7C54FF06-9C6B-43F9-BCCF-CD5685725E0F} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}
 		{893C56A7-CDB7-4556-9CE2-1F85865587D1} = {ED47B86C-FC5E-4F0D-9DCB-F5697F28DBC9}

@@ -11,7 +11,7 @@ namespace SmaugCS.Commands
     {
         public static void do_languages(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            /*string firstArg = argument.FirstWord();
             if (!string.IsNullOrWhiteSpace(firstArg)
                 && !firstArg.StartsWith("learn")
                 && !ch.IsImmortal()
@@ -43,7 +43,7 @@ namespace SmaugCS.Commands
                 color.send_to_char("\r\n", ch);
             }
 
-            color.send_to_char("\r\n", ch);
+            color.send_to_char("\r\n", ch);*/
         }
     }
 }

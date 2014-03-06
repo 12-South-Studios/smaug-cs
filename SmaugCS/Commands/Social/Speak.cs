@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            foreach (int lang in GameConstants.LanguageTable.Keys)
+            /*foreach (int lang in GameConstants.LanguageTable.Keys)
             {
                 if (GameConstants.LanguageTable[lang].StartsWith(firstArg))
                 {
@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Social
                         return;
                     }
                 }
-            }
+            }*/
 
             color.set_char_color(ATTypes.AT_SAY, ch);
             color.send_to_char("You do not know that language.\r\n", ch);

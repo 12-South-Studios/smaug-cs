@@ -13,12 +13,12 @@ namespace SmaugCS.Commands.Social
         {
 #if !SCRAMBLE
             int speaking = -1;
-            foreach (int key in GameConstants.LanguageTable.Keys
+            /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
                 speaking = key;
                 break;
-            }
+            }*/
 #endif
 
             if (string.IsNullOrEmpty(argument))
@@ -50,12 +50,12 @@ namespace SmaugCS.Commands.Social
                 }
 
 #if !SCRAMBLE
-                if (speaking != -1 && (!ch.IsNpc() || ch.Speaking != 0))
+                /*if (speaking != -1 && (!ch.IsNpc() || ch.Speaking != 0))
                 {
                     int speakswell = vch.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, vch));
                     if (speakswell < 75)
                         sbuf = act_comm.TranslateLanguage(speakswell, argument, GameConstants.LanguageTable[speaking]);
-                }
+                }*/
 #else
                 if (KnowsLanguage(vch, ch.Speaking, ch) == 0 &&
                     (!ch.IsNpc() || ch.Speaking != 0))

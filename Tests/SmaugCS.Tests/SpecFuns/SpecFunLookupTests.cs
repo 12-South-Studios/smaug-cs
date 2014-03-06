@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using SmaugCS.Data;
 using SmaugCS.Managers;
+using SmaugCS.Repositories;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS.Tests.SpecFuns
@@ -23,9 +22,13 @@ namespace SmaugCS.Tests.SpecFuns
         [TestCase("invalid", false)]
         public void IsValidSpecFunTest(string specFun, bool expectedValue)
         {
+            var expectedSpecFun = new SpecialFunction(1, "spec_cast_adept");
+
+            var repo = new GenericRepository<SpecialFunction>();
+            repo.Add(expectedSpecFun.ID, expectedSpecFun);
+
             var mockDbManager = new Mock<IDatabaseManager>();
-            mockDbManager.SetupGet(x => x.SPEC_FUNS)
-                         .Returns(new List<SpecialFunction> {new SpecialFunction {Name = "spec_cast_adept"}});
+            mockDbManager.Setup(x => x.GetEntity<SpecialFunction>(It.IsAny<string>())).Returns(expectedSpecFun);
 
             var handler = new SpecFunHandler(mockDbManager.Object);
 
@@ -35,10 +38,13 @@ namespace SmaugCS.Tests.SpecFuns
         [Test]
         public void GetSpecFun_Valid_Test()
         {
-            var expectedSpecFun = new SpecialFunction { Name = "spec_cast_adept" };
+            var expectedSpecFun = new SpecialFunction(1, "spec_cast_adept");
+
+            var repo = new GenericRepository<SpecialFunction>();
+            repo.Add(expectedSpecFun.ID, expectedSpecFun);
 
             var mockDbManager = new Mock<IDatabaseManager>();
-            mockDbManager.SetupGet(x => x.SPEC_FUNS).Returns(new List<SpecialFunction> {expectedSpecFun});
+            mockDbManager.Setup(x => x.GetEntity<SpecialFunction>(It.IsAny<string>())).Returns(expectedSpecFun);
 
             var handler = new SpecFunHandler(mockDbManager.Object);
 
@@ -48,10 +54,13 @@ namespace SmaugCS.Tests.SpecFuns
         [Test]
         public void GetSpecFun_Invalid_Test()
         {
-            var expectedSpecFun = new SpecialFunction { Name = "spec_cast_adept" };
+            var expectedSpecFun = new SpecialFunction(1, "spec_cast_adept");
+
+            var repo = new GenericRepository<SpecialFunction>();
+            repo.Add(expectedSpecFun.ID, expectedSpecFun);
 
             var mockDbManager = new Mock<IDatabaseManager>();
-            mockDbManager.SetupGet(x => x.SPEC_FUNS).Returns(new List<SpecialFunction> { expectedSpecFun });
+            mockDbManager.Setup(x => x.GetEntity<SpecialFunction>(It.IsAny<string>())).Returns((SpecialFunction) null);
 
             var handler = new SpecFunHandler(mockDbManager.Object);
 

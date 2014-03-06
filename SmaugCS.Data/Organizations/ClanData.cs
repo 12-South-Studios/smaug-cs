@@ -48,16 +48,8 @@ namespace SmaugCS.Data.Organizations
         public int GuardTwo { get; set; }
         public int Class { get; set; }
 
-        public ClanData()
+        public ClanData(long id, string name) : base(id, name)
         {
-            PvPKillTable = new int[7];
-            PvPDeathTable = new int[7];
-            ClanObjects = new int[5];
-        }
-
-        public ClanData(string filename)
-        {
-            Filename = filename;
             PvPKillTable = new int[7];
             PvPDeathTable = new int[7];
             ClanObjects = new int[5];

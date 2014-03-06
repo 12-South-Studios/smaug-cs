@@ -153,7 +153,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<LiquidData>();
 
 			Assert.That(result, Is.Not.Null);
-			Assert.That(result.Vnum, Is.EqualTo(4));
+			Assert.That(result.ID, Is.EqualTo(4));
 			Assert.That(result.Name, Is.EqualTo("dark ale"));
 			Assert.That(result.ShortDescription, Is.EqualTo("dark ale"));
 			Assert.That(result.Color, Is.EqualTo("dark brown"));
@@ -169,7 +169,7 @@ namespace SmaugCS.Tests
 		private static string GetHerbLuaScript()
 		{
 			var sb = new StringBuilder();
-			sb.Append("newHerb = LCreateSkill(\"black gwyvel\", \"herb\");");
+			sb.Append("newHerb = LCreateSkill(1, \"black gwyvel\", \"herb\");");
 			sb.Append("herb.this = newHerb;");
 			sb.Append("herb.this.Rounds = 12;");
 			sb.Append("herb.this.DamageMessage = \"smoke\";");
@@ -205,7 +205,7 @@ namespace SmaugCS.Tests
 		private static string GetSkillLuaScript()
 		{
 			var sb = new StringBuilder();
-			sb.Append("newSkill = LCreateSkill(\"Wrath of Dominus\", \"spell\");");
+			sb.Append("newSkill = LCreateSkill(1, \"Wrath of Dominus\", \"spell\");");
 			sb.Append("skill.this = newSkill;");
 			sb.Append("skill.this:SetFlags(\"secretskill noscribe\");");
 			sb.Append("skill.this:SetTargetByValue(2);");
@@ -485,7 +485,7 @@ namespace SmaugCS.Tests
 		private static string GetLanguageLuaScript()
 		{
 			var sb = new StringBuilder();
-			sb.Append("newLang = LCreateLanguage(\"elvish\");");
+			sb.Append("newLang = LCreateLanguage(\"elvish\", \"elven\");");
 			sb.Append("lang.this = newLang;");
 			sb.Append("lang.this:AddPreConversion(\"the hour\", \"lumenn\");");
 			sb.Append("lang.this:AddPreConversion(\"our meeting\", \"omentielvo\");");

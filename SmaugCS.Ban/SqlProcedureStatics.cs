@@ -12,7 +12,7 @@
 
         public const string BanGetAll = 
             @"SELECT b.BanId, bt.Name as BanType, b.Name, b.Note, b.BannedBy, b.BannedOn, 
-                b.Duration, b.Level, b.Warn, b.Prefix, b.Suffice FROM Bans b JOIN BanTypes bt 
+                b.Duration, b.Level, b.Warn, b.Prefix, b.Suffix FROM Bans b JOIN BanTypes bt 
                 ON b.BanTypeId = bt.BanTypeId;";
 
         public const string BanUpdate =

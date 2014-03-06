@@ -8,7 +8,7 @@ namespace SmaugCS.Language.Tests
     {
         private static LanguageData GetLanguageData()
         {
-            var lang = new LanguageData { Name = "elvish", Alphabet = "iqqdakvtujfwghepcrslybszoz" };
+            var lang = new LanguageData(1, "elvish", LanguageTypes.Elven) { Alphabet = "iqqdakvtujfwghepcrslybszoz" };
             lang.AddPreConversion("star", "elen");
             lang.AddPreConversion("moon", "isin");
             lang.AddPostConversion("rr", "r");

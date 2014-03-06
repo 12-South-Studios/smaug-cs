@@ -19,17 +19,12 @@ namespace SmaugCS.Logging
         private static string _dataPath;
         public ILogWrapper LogWrapper { get; private set; }
 
-        private static string BootLogFormat = "[BOOT] {0}";
-        private static string BugLogFormat = "[BUG] {0}";
+        private const string BootLogFormat = "[BOOT] {0}";
+        private const string BugLogFormat = "[BUG] {0}";
         private static string LogFormat = "{0}";
 
-        private LogManager()
-        {
-        }
+        private LogManager() {}
 
-        /// <summary>
-        ///
-        /// </summary>
         public static LogManager Instance
         {
             get
@@ -102,29 +97,6 @@ namespace SmaugCS.Logging
         public void Log(string fmt, params object[] args)
         {
             //Log(string.Format(fmt, args), LogTypes.Normal, LevelConstants.LEVEL_LOG);
-        }
-
-        public void Log(string str, LogTypes logType, int level)
-        {
-            LogWrapper.InfoFormat(LogFormat, str);
-            //string buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
-            /*switch (logType)
-            {
-                case LogTypes.Build:
-                    ChatManager.to_channel(buffer, ChannelTypes.Build, "Build", level);
-                    break;
-                case LogTypes.Comm:
-                    ChatManager.to_channel(buffer, ChannelTypes.Comm, "Comm", level);
-                    break;
-                case LogTypes.Warn:
-                    ChatManager.to_channel(buffer, ChannelTypes.Warn, "Warn", level);
-                    break;
-                case LogTypes.All:
-                    break;
-                default:
-                    ChatManager.to_channel(buffer, ChannelTypes.Log, "Log", level);
-                    break;
-            }*/
         }
 
         [LuaFunction("LLog", "Logs a string", "Text to log")]

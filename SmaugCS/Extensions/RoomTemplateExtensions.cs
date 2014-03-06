@@ -212,8 +212,8 @@ namespace SmaugCS.Extensions
                 || room.SectorType == SectorTypes.City)
                 return false;
 
-            return db.GameTime.Sunlight == SunPositionTypes.Sunset
-                   || db.GameTime.Sunlight == SunPositionTypes.Dark;
+            return GameManager.Instance.GameTime.Sunlight == SunPositionTypes.Sunset
+                   || GameManager.Instance.GameTime.Sunlight == SunPositionTypes.Dark;
         }
     }
 }

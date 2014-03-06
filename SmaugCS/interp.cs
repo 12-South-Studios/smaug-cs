@@ -78,7 +78,7 @@ namespace SmaugCS
 
         public static bool check_social(CharacterInstance ch, string command, string argument)
         {
-            SocialData social = DatabaseManager.Instance.GetSocial(command);
+            SocialData social = DatabaseManager.Instance.GetEntity<SocialData>(command);
             if (social == null)
                 return false;
             if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.NoEmote))

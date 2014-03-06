@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -56,8 +57,8 @@ namespace SmaugCS
             ShopData shop = keeper.MobIndex.Shop;
             if (shop.OpenHour > shop.CloseHour)
             {
-                if (db.GameTime.Hour < shop.OpenHour
-                    && db.GameTime.Hour > shop.CloseHour)
+                if (GameManager.Instance.GameTime.Hour < shop.OpenHour
+                    && GameManager.Instance.GameTime.Hour > shop.CloseHour)
                 {
                     Say.do_say(keeper, "Sorry, come back later.");
                     return null;
@@ -65,12 +66,12 @@ namespace SmaugCS
             }
             else
             {
-                if (db.GameTime.Hour < shop.OpenHour)
+                if (GameManager.Instance.GameTime.Hour < shop.OpenHour)
                 {
                     Say.do_say(keeper, "Sorry, come back later.");
                     return null;
                 }
-                if (db.GameTime.Hour > shop.CloseHour)
+                if (GameManager.Instance.GameTime.Hour > shop.CloseHour)
                 {
                     Say.do_say(keeper, "Sorry, come back tomorrow.");
                     return null;

@@ -100,59 +100,6 @@ namespace SmaugCS
 
 
 
-        #region Skills
-
-        /*public static List<string> skill_tname = new List<string>
-                                                     {
-                                                         "unknown",
-                                                         "Spell",
-                                                         "Skill",
-                                                         "Weapon",
-                                                         "Tongue",
-                                                         "Herb",
-                                                         "Racial",
-                                                         "Disease"
-                                                     };
-        private static readonly Dictionary<string, SkillTypes> skilltypes = new Dictionary<string, SkillTypes>()
-            {
-                {"racial", SkillTypes.Racial},
-                {"spell", SkillTypes.Spell},
-                {"skill", SkillTypes.Skill},
-                {"weapon", SkillTypes.Weapon},
-                {"tongue", SkillTypes.Tongue},
-                {"herb", SkillTypes.Herb},
-                {"disease", SkillTypes.Disease}
-            };
-
-        private static readonly List<SkillData> skill_table = new List<SkillData>();
-
-        private static readonly List<SkillData> skill_table_bytype = new List<SkillData>();
-
-        public static int get_skill(string skilltype)
-        {
-            return skilltypes.ContainsKey(skilltype.ToLower())
-                       ? (int)skilltypes[skilltype.ToLower()]
-                       : (int)SkillTypes.Unknown;
-        }
-
-        /// <summary>
-        /// Sorts the skill tables
-        /// </summary>
-        public static void sort_skill_table()
-        {
-            List<SkillData> orderedList = skill_table;
-            orderedList.Sort(skill_comp);
-
-            // Refresh the bytype table with the newly sorted list
-            skill_table_bytype.Clear();
-            skill_table_bytype.AddRange(skill_table);
-
-            List<SkillData> orderedListByType = skill_table_bytype;
-            orderedListByType.Sort(skill_comp_bytype);
-        }*/
-
-
-        #endregion
 
         #region Languages
         //new StreamReader(Program.TONGUE_FILE)
@@ -163,7 +110,7 @@ namespace SmaugCS
         public static List<LanguageData> load_tongues()
         {
             List<LanguageData> languages = new List<LanguageData>();
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.Tongues);
+            /*string path = SystemConstants.GetSystemFile(SystemFileTypes.Tongues);
 
             using (TextReaderProxy sr = new TextReaderProxy(new StreamReader(path)))
             {
@@ -171,7 +118,7 @@ namespace SmaugCS
 
                 foreach (TextSection section in sections)
                 {
-                    LanguageData ld = new LanguageData { Name = section.Header };
+                    LanguageData ld = new LanguageData() { Name = section.Header };
                     languages.Add(ld);
                     LanguageSection lngSection = LanguageSection.PreCNV;
 
@@ -196,7 +143,7 @@ namespace SmaugCS
                         }
                     }
                 }
-            }
+            }*/
             return languages;
         }
 
@@ -348,14 +295,14 @@ namespace SmaugCS
 
         public static void save_classes()
         {
-            foreach (ClassData data in DatabaseManager.Instance.CLASSES)
-                write_class_file((int)data.Type);
+           // foreach (ClassData data in DatabaseManager.Instance.CLASSES)
+           //     write_class_file((int)data.Type);
         }
 
         public static void save_races()
         {
-            foreach (RaceData data in DatabaseManager.Instance.RACES)
-                write_race_file((int)data.Type);
+            //foreach (RaceData data in DatabaseManager.Instance.RACES)
+            //    write_race_file((int)data.Type);
         }
 
         public static void free_tongues()

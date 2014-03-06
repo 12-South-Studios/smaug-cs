@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data
 {
     [XmlRoot("Race")]
-    public class RaceData
+    public class RaceData : Entity
     {
         [XmlElement("RaceType")]
         public RaceTypes Type { get; set; }
-
-        [XmlElement]
-        public string Name { get; set; }
 
         public ExtendedBitvector AffectedBy { get; set; }
 
@@ -68,7 +66,7 @@ namespace SmaugCS.Data
 
         public int RaceRecallRoom { get; set; }
 
-        public RaceData()
+        public RaceData(long id, string name) : base(id, name)
         {
             WhereNames = new List<string>();
             SavingThrows = new SavingThrowData();

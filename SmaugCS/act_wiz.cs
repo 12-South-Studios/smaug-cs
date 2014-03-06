@@ -251,35 +251,35 @@ namespace SmaugCS
             }
             else
             {
-                db.AREAS.Remove(pArea);
+                DatabaseManager.Instance.AREAS.Delete(pArea.ID);
                 // TODO Remove from asort - do we need that?
             }
         }
 
         public static void close_all_areas()
         {
-            db.AREAS.ForEach(close_area);
+            DatabaseManager.Instance.AREAS.Values.ToList().ForEach(close_area);
             db.BUILD_AREAS.ForEach(close_area);
         }
 
         public static void update_calendar()
         {
-            db.SystemData.DaysPerYear = db.SystemData.DaysPerMonth * db.SystemData.MonthsPerYear;
-            db.SystemData.HourOfSunrise = db.SystemData.HoursPerDay / 4;
-            db.SystemData.HourOfDayBegin = db.SystemData.HourOfSunrise + 1;
-            db.SystemData.HourOfNoon = db.SystemData.HoursPerDay / 2;
-            db.SystemData.HourOfSunset = ((db.SystemData.HoursPerDay / 4) * 3);
-            db.SystemData.HourOfNightBegin = db.SystemData.HourOfSunset + 1;
-            db.SystemData.HourOfMidnight = db.SystemData.HoursPerDay;
-            calendar.calc_season();
+            GameManager.Instance.SystemData.DaysPerYear = GameManager.Instance.SystemData.DaysPerMonth * GameManager.Instance.SystemData.MonthsPerYear;
+            GameManager.Instance.SystemData.HourOfSunrise = GameManager.Instance.SystemData.HoursPerDay / 4;
+            GameManager.Instance.SystemData.HourOfDayBegin = GameManager.Instance.SystemData.HourOfSunrise + 1;
+            GameManager.Instance.SystemData.HourOfNoon = GameManager.Instance.SystemData.HoursPerDay / 2;
+            GameManager.Instance.SystemData.HourOfSunset = ((GameManager.Instance.SystemData.HoursPerDay / 4) * 3);
+            GameManager.Instance.SystemData.HourOfNightBegin = GameManager.Instance.SystemData.HourOfSunset + 1;
+            GameManager.Instance.SystemData.HourOfMidnight = GameManager.Instance.SystemData.HoursPerDay;
+            CalendarManager.Instance.CalculateSeason(GameManager.Instance.GameTime);
         }
 
         public static void update_timers()
         {
-            db.SystemData.PulseTick = db.SystemData.SecondsPerTick * db.SystemData.PulsesPerSecond;
-            db.SystemData.PulseViolence = 3 * db.SystemData.PulsesPerSecond;
-            db.SystemData.PulseMobile = 4 * db.SystemData.PulsesPerSecond;
-            db.SystemData.PulseCalendar = 4 * db.SystemData.PulseTick;
+            GameManager.Instance.SystemData.PulseTick = GameManager.Instance.SystemData.SecondsPerTick * GameManager.Instance.SystemData.PulsesPerSecond;
+            GameManager.Instance.SystemData.PulseViolence = 3 * GameManager.Instance.SystemData.PulsesPerSecond;
+            GameManager.Instance.SystemData.PulseMobile = 4 * GameManager.Instance.SystemData.PulsesPerSecond;
+            GameManager.Instance.SystemData.PulseCalendar = 4 * GameManager.Instance.SystemData.PulseTick;
         }
 
         public static void get_reboot_string()
@@ -290,10 +290,10 @@ namespace SmaugCS
 
         public static bool create_new_class(int rcindex, string argument)
         {
-            if (rcindex >= DatabaseManager.Instance.CLASSES.Count() || DatabaseManager.Instance.CLASSES.ToList()[rcindex] == null)
+            if (rcindex >= DatabaseManager.Instance.CLASSES.Count || DatabaseManager.Instance.CLASSES.Values.ToList()[rcindex] == null)
                 return false;
 
-            ClassData cls = DatabaseManager.Instance.CLASSES.ToList()[rcindex];
+            ClassData cls = DatabaseManager.Instance.CLASSES.Values.ToList()[rcindex];
 
             cls.AffectedBy.ClearBits();
             cls.PrimaryAttribute = 0;
@@ -322,12 +322,12 @@ namespace SmaugCS
 
         public static bool create_new_race(int rcindex, string argument)
         {
-            if (rcindex >= DatabaseManager.Instance.RACES.Count() || DatabaseManager.Instance.RACES.ToList()[rcindex] == null)
+            if (rcindex >= DatabaseManager.Instance.RACES.Count || DatabaseManager.Instance.RACES.Values.ToList()[rcindex] == null)
                 return false;
 
             // snprintf?
 
-            RaceData race = DatabaseManager.Instance.RACES.ToList()[rcindex];
+            RaceData race = DatabaseManager.Instance.RACES.Values.ToList()[rcindex];
             race.ClassRestriction = 0;
             race.StrengthBonus = 0;
             race.DexterityBonus = 0;
@@ -386,8 +386,8 @@ namespace SmaugCS
 
         public static bool check_area_conflicts(int lo, int hi)
         {
-            return (db.AREAS.Any(area => check_area_conflict(area, lo, hi))
-                    || db.AREAS.Any(area => check_area_conflict(area, lo, hi)));
+            return (DatabaseManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
+                    || DatabaseManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi)));
         }
     }
 }

@@ -55,7 +55,7 @@ namespace SmaugCS.SpecFuns
                 return true;
 
             int vnum = GameConstants.GetVnum("MobileCityGuard");
-            MobTemplate cityguard = DatabaseManager.Instance.GetMobTemplate(vnum);
+            MobTemplate cityguard = DatabaseManager.Instance.GetEntity<MobTemplate>(vnum);
 
             CharacterInstance newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
             ch.CurrentRoom.ToRoom(newGuard);

@@ -19,6 +19,7 @@ function LoadClass()
 	class.this.BaseExperience = 750;
 
 	LoadClassSkills(class.this);
+	LoadLanguageSkills(class.this);
 end
 
 function LoadClassSkills(class)
@@ -30,7 +31,6 @@ function LoadClassSkills(class)
 	class:AddSkill("bludgeons", 1, 40);
 	class:AddSkill("circle", 25, 95);
 	class:AddSkill("climb", 1, 85);
-	class:AddSkill("common", 1, 99);
 	class:AddSkill("cook", 1, 95);
 	class:AddSkill("defensive style", 1, 95);
 	class:AddSkill("detrap", 16, 85);
@@ -38,27 +38,19 @@ function LoadClassSkills(class)
 	class:AddSkill("disarm", 10, 90);
 	class:AddSkill("dodge", 1, 95);
 	class:AddSkill("dual wield", 40, 85);
-	class:AddSkill("dwarven", 1, 99);
-	class:AddSkill("elvish", 1, 99);
 	class:AddSkill("enhanced damage", 44, 55);
 	class:AddSkill("evasive style", 2, 95);
 	class:AddSkill("flexible arms", 1, 95);
 	class:AddSkill("fourth attack", 47, 30);
-	class:AddSkill("gith", 1, 99);
-	class:AddSkill("goblin", 1, 99);
 	class:AddSkill("gouge", 20, 90);
-	class:AddSkill("halfling", 1, 99);
 	class:AddSkill("headbutt", 20, 60);
 	class:AddSkill("hide", 1, 85);
 	class:AddSkill("knee", 15, 70);
 	class:AddSkill("leap", 20, 95);
 	class:AddSkill("long blades", 1, 80);
 	class:AddSkill("mount", 5, 85);
-	class:AddSkill("ogre", 1, 99);
-	class:AddSkill("orcish", 1, 99);
 	class:AddSkill("peek", 1, 95);
 	class:AddSkill("pick lock", 1, 95);
-	class:AddSkill("pixie", 1, 99);
 	class:AddSkill("poison weapon", 27, 85);
 	class:AddSkill("pugilism", 1, 85);
 	class:AddSkill("punch", 30, 50);
@@ -74,9 +66,21 @@ function LoadClassSkills(class)
 	class:AddSkill("talonous arms", 1, 80);
 	class:AddSkill("third attack", 33, 70);
 	class:AddSkill("track", 15, 85);
-	class:AddSkill("trollese", 1, 99);
 	class:AddSkill("tumble", 46, 95);
 	class:AddSkill("vault", 25, 90);
+end
+
+function LoadLanguageSkills(class)
+	class:AddSkill("common", 1, 99);
+	class:AddSkill("dwarven", 1, 99);
+	class:AddSkill("elvish", 1, 99);
+	class:AddSkill("gith", 1, 99);
+	class:AddSkill("goblin", 1, 99);
+	class:AddSkill("halfling", 1, 99);
+	class:AddSkill("ogre", 1, 99);
+	class:AddSkill("orcish", 1, 99);
+	class:AddSkill("pixie", 1, 99);
+	class:AddSkill("trollese", 1, 99);
 end
 
 LoadClass();

@@ -14,12 +14,12 @@ namespace SmaugCS.Commands.Social
         {
 #if !SCRAMBLE
             int speaking = -1;
-            foreach (int key in GameConstants.LanguageTable.Keys
+            /*foreach (int key in GameConstants.LanguageTable.Keys
                                          .Where(key => (key & ch.Speaking) > 0))
             {
                 speaking = key;
                 break;
-            }
+            }*/
 #endif
 
             ch.Deaf.RemoveBit((int)ChannelTypes.Whisper);
@@ -101,7 +101,7 @@ namespace SmaugCS.Commands.Social
             victim.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
-            if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
+           /* if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
             {
                 int speakswell = victim.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, victim));
                 if (speakswell < 85)
@@ -113,7 +113,7 @@ namespace SmaugCS.Commands.Social
                              ch, argumentString, victim, ToTypes.Victim);
             }
             else
-                comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, ToTypes.Victim);
+                comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, ToTypes.Victim);*/
 #else
             int speakswell = SmaugCS.Common.Check.Minimum(KnowsLanguage(victim, ch.Speaking, ch),
                                               KnowsLanguage(ch, ch.Speaking, victim));

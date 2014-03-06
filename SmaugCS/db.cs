@@ -72,7 +72,6 @@ namespace SmaugCS
 
 
         #region Areas
-        public static List<AreaData> AREAS = new List<AreaData>();
         public static List<AreaData> BUILD_AREAS = new List<AreaData>();
         public static int TopArea { get; set; }
         #endregion
@@ -181,13 +180,11 @@ namespace SmaugCS
         public static Dictionary<string, Dictionary<string, string>> TITLES = new Dictionary<string, Dictionary<string, string>>();
 
         public static List<SkillData> DISEASES = new List<SkillData>();
+
         public static SkillData GetDisease(string name)
         {
             return DISEASES.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         }
-
-        public static SystemData SystemData;
-        public static TimeInfoData GameTime; // current game time
 
         public static int LastPKRoom { get; set; }
 
@@ -212,12 +209,14 @@ namespace SmaugCS
                     exit.Destination = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                     if (exit.vnum <= 0 || exit.Destination <= 0)
                     {
-                        if (DatabaseManager.BootDb)
+                        /*if (DatabaseManager.BootDb)
                         {
                             // TODO boot_log error
-                        }
+                        }*/
 
-                        LogManager.Instance.Bug("Deleting %s exit in room %d", GameConstants.dir_name[(int)exit.Direction], room.Vnum);
+                        LogManager.Instance.Bug("Deleting %s exit in room %d",
+                                                LookupManager.Instance.GetLookup("DirectionNames", (int) exit.Direction),
+                                                room.Vnum);
                         handler.extract_exit(room, exit);
                     }
                     else
@@ -348,7 +347,7 @@ namespace SmaugCS
 
         public static void initialize_economy()
         {
-            foreach (AreaData area in AREAS)
+            foreach (AreaData area in DatabaseManager.Instance.AREAS.Values)
             {
                 if (area.HighEconomy > 0 || area.LowMobNumber > 10000)
                     continue;
@@ -386,7 +385,7 @@ namespace SmaugCS
 
         public static void area_update()
         {
-            foreach (AreaData area in AREAS)
+            foreach (AreaData area in DatabaseManager.Instance.AREAS.Values)
             {
                 int resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
                 if ((resetAge == -1 && area.Age == -1)
@@ -644,7 +643,7 @@ namespace SmaugCS
                 }
             }
 
-            string buffer = string.Format(" Masters of the {0}!", SystemData.MudTitle);
+            string buffer = string.Format(" Masters of the {0}!", GameManager.Instance.SystemData.MudTitle);
 
             int iLevel = 65535;
             foreach (WizardData wiz in wizList)
@@ -967,11 +966,11 @@ namespace SmaugCS
 
         public static void process_sorting(AreaData area)
         {
-            if (DatabaseManager.BootDb)
+            /*if (DatabaseManager.BootDb)
             {
                 sort_area_by_name(area);
                 sort_area(area, false);
-            }
+            }*/
 
             string buffer = string.Format("{0}:\n\tRooms: {1} - {2}\n\tObjects: {3} - {4}\n\tMobs: {5} - {6}\n",
                                           area.Filename, area.LowRoomNumber, area.HighRoomNumber, area.LowObjectNumber,

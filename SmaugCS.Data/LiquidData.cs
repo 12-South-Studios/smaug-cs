@@ -6,10 +6,12 @@ using SmaugCS.Constants.Enums;
 namespace SmaugCS.Data
 {
     [XmlRoot("Liquid")]
-    public class LiquidData
+    public class LiquidData : Entity
     {
-        [XmlElement]
-        public string Name { get; set; }
+        public LiquidData(long id, string name) : base(id, name)
+        {
+            Mods = new Dictionary<ConditionTypes, int>();
+        }
 
         [XmlElement]
         public string ShortDescription { get; set; }
@@ -18,17 +20,13 @@ namespace SmaugCS.Data
         public string Color { get; set; }
 
         [XmlElement("ID")]
-        public int Vnum { get; set; }
+        public int Vnum { get { return (int)ID; } }
 
         [XmlElement("LiquidType")]
         public LiquidTypes Type { get; set; }
 
         public Dictionary<ConditionTypes, int> Mods { get; set; }
 
-        public LiquidData()
-        {
-            Mods = new Dictionary<ConditionTypes, int>();
-        }
 
         public void SetType(string type)
         {

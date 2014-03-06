@@ -31,8 +31,8 @@ namespace SmaugCS
 
             foreach (ObjectInstance content in corpse.Contents
                 .Where(x => x.ItemType == ItemTypes.Money)
-                .Where(x => ch.CanSee(x))
-                .Where(x => Macros.CAN_WEAR(x, (int)ItemWearFlags.Take) && ch.Level < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
+                .Where(ch.CanSee)
+                .Where(x => Macros.CAN_WEAR(x, (int)ItemWearFlags.Take) && ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
                 .Where(x => Macros.IS_OBJ_STAT(x, (int)ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
             {
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
@@ -56,38 +56,7 @@ namespace SmaugCS
             return true;
         }
 
-        public static bool is_attack_supressed(CharacterInstance ch)
-        {
-            if (ch.IsNpc())
-                return false;
-
-            TimerData timer = handler.get_timerptr(ch, TimerTypes.ASupressed);
-            if (timer == null)
-                return false;
-            if (timer.Value == -1)
-                return true;
-            return timer.Count >= 1;
-        }
-
-        public static bool is_wielding_poisoned(CharacterInstance ch)
-        {
-            if (UsedWeapon == null)
-                return false;
-
-            ObjectInstance obj = ch.GetEquippedItem(WearLocations.Wield);
-            if (obj != null && UsedWeapon == obj &&
-                Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Poisoned))
-                return true;
-
-            obj = ch.GetEquippedItem(WearLocations.DualWield);
-            if (obj != null && UsedWeapon == obj &&
-                Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Poisoned))
-                return true;
-
-            return false;
-        }
-
-        private static readonly Dictionary<SunPositionTypes, int> VampireArmorClassTable = new Dictionary<SunPositionTypes, int>()
+        private static readonly Dictionary<SunPositionTypes, int> VampireArmorClassTable = new Dictionary<SunPositionTypes, int>
             {
                 {SunPositionTypes.Dark, -10},
                 {SunPositionTypes.Sunrise, 5},
@@ -98,8 +67,8 @@ namespace SmaugCS
         {
             if (ch.IsVampire() && ch.IsOutside())
             {
-                return VampireArmorClassTable.ContainsKey(db.GameTime.Sunlight)
-                           ? VampireArmorClassTable[db.GameTime.Sunlight]
+                return VampireArmorClassTable.ContainsKey(GameManager.Instance.GameTime.Sunlight)
+                           ? VampireArmorClassTable[GameManager.Instance.GameTime.Sunlight]
                            : 0;
             }
             return 0;
@@ -147,7 +116,7 @@ namespace SmaugCS
                         if (pafNext == null || pafNext.Type != paf.Type
                             || pafNext.Duration > 0)
                         {
-                            SkillData skill = DatabaseManager.Instance.GetSkill((int)paf.Type);
+                            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>((int)paf.Type);
                             if (paf.Type > 0 && skill != null && !string.IsNullOrEmpty(skill.WearOffMessage))
                             {
                                 color.set_char_color(ATTypes.AT_WEAROFF, ch);
@@ -308,7 +277,7 @@ namespace SmaugCS
                 handler.add_timer(victim, (int)TimerTypes.RecentFight, 11, null, 0);
             }
 
-            if (is_attack_supressed(ch))
+            if (ch.IsAttackSuppressed())
                 return (int)ReturnTypes.None;
 
             if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.NoAttack))
@@ -631,7 +600,7 @@ namespace SmaugCS
             // immune to damage
             if (damage == -1)
             {
-                SkillData skill = DatabaseManager.Instance.GetSkill(dt);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
                 if (skill != null)
                 {
                     if (!skill.ImmuneCharacterMessage.IsNullOrEmpty())
@@ -667,8 +636,8 @@ namespace SmaugCS
                 {
                     if (aff.Location == ApplyTypes.WeaponSpell
                         && Macros.IS_VALID_SN(aff.Modifier)
-                        && DatabaseManager.Instance.GetSkill(aff.Modifier).SpellFunction != null)
-                        retcode = DatabaseManager.Instance.GetSkill(aff.Modifier)
+                        && DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier).SpellFunction != null)
+                        retcode = DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier)
                                     .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3) / 3, ch, victim);
                 }
 
@@ -681,8 +650,8 @@ namespace SmaugCS
                 {
                     if (aff.Location == ApplyTypes.WeaponSpell
                         && Macros.IS_VALID_SN(aff.Modifier)
-                        && DatabaseManager.Instance.GetSkill(aff.Modifier).SpellFunction != null)
-                        retcode = DatabaseManager.Instance.GetSkill(aff.Modifier)
+                        && DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier).SpellFunction != null)
+                        retcode = DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier)
                                     .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3) / 3, ch, victim);
                 }
 
@@ -850,11 +819,11 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                SkillData skill = DatabaseManager.Instance.GetSkill("Enhanced Damage");
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("Enhanced Damage");
                 if (ch.PlayerData.Learned[skill.ID] > 0)
                 {
-                    damage += damage*Macros.LEARNED(ch, skill.ID);
-                    skills.learn_from_success(ch, skill.ID);
+                    damage += damage * Macros.LEARNED(ch, (int)skill.ID);
+                    skills.learn_from_success(ch, (int)skill.ID);
                 }
             }
 
@@ -1186,7 +1155,7 @@ namespace SmaugCS
                     deity.adjust_favor(victim, 11, 1);
                     deity.adjust_favor(ch, 2, 1);
                     handler.add_timer(victim, (short)TimerTypes.PKilled, 115, null, 0);
-                    Macros.WAIT_STATE(victim, 3 * db.SystemData.PulseViolence);
+                    Macros.WAIT_STATE(victim, 3 * GameManager.Instance.SystemData.PulseViolence);
                     return;
                 }
             }
@@ -1381,7 +1350,7 @@ namespace SmaugCS
                                          Alignment = align_compute(ch, victim)
                                      };
             if (!ch.IsNpc() && victim.IsNpc())
-                fight.TimesKilled = handler.times_killed(ch, victim);
+                fight.TimesKilled = ch.TimesKilled( victim);
 
             ch.NumberFighting = 1;
             ch.CurrentFighting = fight;
@@ -1441,7 +1410,7 @@ namespace SmaugCS
             {
                 // TODO affect_strip
                 color.set_char_color(ATTypes.AT_WEAROFF, ch);
-                color.send_to_char(DatabaseManager.Instance.GetSkill("berserk").WearOffMessage, ch);
+                color.send_to_char(DatabaseManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage, ch);
                 color.send_to_char("\r\n", ch);
             }
         }
@@ -1694,7 +1663,7 @@ namespace SmaugCS
                 //// reduce xp for killing the same mob repeatedly
                 if (!ch.IsNpc())
                 {
-                    int times = handler.times_killed(ch, victim);
+                    int times = ch.TimesKilled(victim);
                     if (times >= 20)
                         xp = 0;
                     else if (times > 0)

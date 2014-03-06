@@ -74,9 +74,7 @@ namespace SmaugCS
         }
         public static bool IS_VALID_SN(int sn)
         {
-            return sn >= 0 && sn < Program.MAX_SKILL
-                   && DatabaseManager.Instance.SKILLS.ToList()[sn] != null &&
-                   !DatabaseManager.Instance.SKILLS.ToList()[sn].Name.IsNullOrEmpty();
+            return DatabaseManager.Instance.LookupSkill(sn.ToString()) != null;
         }
         public static bool IS_VALID_DISEASE(int sn)
         {
@@ -134,31 +132,31 @@ namespace SmaugCS
 
         public static bool IS_FIRE(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Fire;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Fire;
         }
         public static bool IS_COLD(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Cold;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Cold;
         }
         public static bool IS_ACID(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Acid;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Acid;
         }
         public static bool IS_ELECTRICITY(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Electricty;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Electricty;
         }
         public static bool IS_ENERGY(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Energy;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Energy;
         }
         public static bool IS_DRAIN(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Drain;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Drain;
         }
         public static bool IS_POISON(int dt)
         {
-            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.ToList()[dt]) == (int)SpellDamageTypes.Poison;
+            return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Poison;
         }
 
         public static bool CAN_WEAR(ObjectInstance obj, int part)
@@ -187,7 +185,7 @@ namespace SmaugCS
 
         public static int GET_ADEPT(CharacterInstance ch, int sn)
         {
-            return DatabaseManager.Instance.SKILLS.ToList()[sn].skill_adept[(int)ch.CurrentClass];
+            return DatabaseManager.Instance.SKILLS.Values.ToList()[sn].skill_adept[(int)ch.CurrentClass];
         }
 
         public static int LEARNED(CharacterInstance ch, int sn)

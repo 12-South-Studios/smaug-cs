@@ -1,6 +1,6 @@
 -- Lookups.LUA
 -- Lookup data for the MUD
--- Revised: 2014.02.18
+-- Revised: 2014.03.03
 -- Author: Jason Murdick
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
@@ -39,6 +39,7 @@ function LoadPartMessages()
 	LAddLookup("PartMessages", "r1 message.");
 	LAddLookup("PartMessages", "r2 message.");
 end
+LoadPartMessages();
 
 function LoadObjectAffectStrings()
 	LAddLookup("ObjectAffectStrings", "(Invis)");
@@ -59,6 +60,7 @@ function LoadObjectAffectStrings()
 	LAddLookup("ObjectAffectStrings", "the faint glow of something");
 	LAddLookup("ObjectAffectStrings", "You see the faint glow of something nearby.");
 end
+LoadObjectAffectStrings();
 
 function LoadCorpseDescs()
 	LAddLookup("CorpseDescs", "The corpse of %s is in the last stages of decay.");
@@ -67,6 +69,7 @@ function LoadCorpseDescs()
 	LAddLookup("CorpseDescs", "The corpse of %s is buzzing with flies.");
 	LAddLookup("CorpseDescs", "The corpse of %s lies here.");
 end
+LoadCorpseDescs();
 
 function LoadSpellFlags()
 	LAddLookup("SpellFlags", "water");
@@ -102,6 +105,7 @@ function LoadSpellFlags()
 	LAddLookup("SpellFlags", "r10");
 	LAddLookup("SpellFlags", "r11");
 end
+LoadSpellFlags();
 
 function LoadSpellSaves()
 	LAddLookup("SpellSaves", "none");
@@ -111,6 +115,7 @@ function LoadSpellSaves()
 	LAddLookup("SpellSaves", "breath");
 	LAddLookup("SpellSaves", "spell_staff");
 end
+LoadSpellSaves();
 
 function LoadSpellSaveEffects()
 	LAddLookup("SpellSaveEffects", "none");
@@ -122,6 +127,7 @@ function LoadSpellSaveEffects()
 	LAddLookup("SpellSaveEffects", "reflect");
 	LAddLookup("SpellSaveEffects", "absorb");
 end
+LoadSpellSaveEffects();
 
 function LoadSpellDamageTypes()
 	LAddLookup("SpellDamageTypes", "none");
@@ -133,6 +139,7 @@ function LoadSpellDamageTypes()
 	LAddLookup("SpellDamageTypes", "poison");
 	LAddLookup("SpellDamageTypes", "drain");
 end
+LoadSpellDamageTypes();
 
 function LoadSpellActionTypes()
 	LAddLookup("SpellActionTypes", "none");
@@ -144,6 +151,7 @@ function LoadSpellActionTypes()
 	LAddLookup("SpellActionTypes", "obscure");
 	LAddLookup("SpellActionTypes", "change");
 end
+LoadSpellActionTypes();
 
 function LoadSpellPowerTypes()
 	LAddLookup("SpellPowerTypes", "none");
@@ -151,6 +159,7 @@ function LoadSpellPowerTypes()
 	LAddLookup("SpellPowerTypes", "greater");
 	LAddLookup("SpellPowerTypes", "major");
 end
+LoadSpellPowerTypes();
 
 function LoadSpellClassTypes()
 	LAddLookup("SpellClassTypes", "none");
@@ -162,6 +171,7 @@ function LoadSpellClassTypes()
 	LAddLookup("SpellClassTypes", "death");
 	LAddLookup("SpellClassTypes", "illusion");
 end
+LoadSpellClassTypes();
 
 function LoadTargetTypes()
 	LAddLookup("TargetTypes", "ignore");
@@ -170,6 +180,7 @@ function LoadTargetTypes()
 	LAddLookup("TargetTypes", "self");
 	LAddLookup("TargetTypes", "objinv");
 end
+LoadTargetTypes();
 
 function LoadLiquidTypes()
 	LAddLookup("LiquidTypes", "Beverage");
@@ -177,6 +188,7 @@ function LoadLiquidTypes()
 	LAddLookup("LiquidTypes", "Poison");
 	LAddLookup("LiquidTypes", "Blood");
 end
+LoadLiquidTypes();
 
 function LoadModTypes()
 	LAddLookup("ModTypes", "Drunk");
@@ -184,6 +196,7 @@ function LoadModTypes()
 	LAddLookup("ModTypes", "Thirst");
 	LAddLookup("ModTypes", "Bloodthirst");
 end
+LoadModTypes();
 
 function LoadValidColors()
 	LAddLookup("ValidColors", "black");
@@ -203,6 +216,7 @@ function LoadValidColors()
 	LAddLookup("ValidColors", "lblue");
 	LAddLookup("ValidColors", "white");
 end
+LoadValidColors();
 
 function LoadDayNames()
 	LAddLookup("DayNames", "the Moon");
@@ -213,6 +227,7 @@ function LoadDayNames()
 	LAddLookup("DayNames", "the Great Gods");
 	LAddLookup("DayNames", "the Sun");
 end
+LoadDayNames();
 
 function LoadMonthNames()
 	LAddLookup("MonthNames", "Winter");
@@ -233,6 +248,7 @@ function LoadMonthNames()
 	LAddLookup("MonthNames", "the Ancient Darkness");
 	LAddLookup("MonthNames", "the Great Evil");
 end
+LoadMonthNames();
 
 function LoadSeasonNames()
 	LAddLookup("SeasonNames", "&gspring");
@@ -240,23 +256,376 @@ function LoadSeasonNames()
 	LAddLookup("SeasonNames", "&Oautumn");
 	LAddLookup("SeasonNames", "&Cwinter");
 end
-
-LoadPartMessages();
-LoadObjectAffectStrings();
-LoadCorpseDescs();
-LoadSpellFlags();
-LoadSpellSaves();
-LoadSpellSaveEffects();
-LoadSpellDamageTypes();
-LoadSpellActionTypes();
-LoadSpellPowerTypes();
-LoadSpellClassTypes();
-LoadTargetTypes();
-LoadLiquidTypes();
-LoadModTypes();
-LoadValidColors();
-LoadDayNames();
-LoadMonthNames();
 LoadSeasonNames();
+
+function LoadWhereNames()
+	LAddLookup("WhereNames", "<used as light>     ");
+	LAddLookup("WhereNames", "<worn on finger>    ");
+	LAddLookup("WhereNames", "<worn on finger>    ");
+	LAddLookup("WhereNames", "<worn around neck>  ");
+	LAddLookup("WhereNames", "<worn around neck>  ");
+	LAddLookup("WhereNames", "<worn on body>      ");
+	LAddLookup("WhereNames", "<worn on head>      ");
+	LAddLookup("WhereNames", "<worn on legs>      ");
+	LAddLookup("WhereNames", "<worn on feet>      ");
+	LAddLookup("WhereNames", "<worn on hands>     ");
+	LAddLookup("WhereNames", "<worn on arms>      ");
+	LAddLookup("WhereNames", "<worn as shield>    ");
+	LAddLookup("WhereNames", "<worn about body>   ");
+	LAddLookup("WhereNames", "<worn about waist>  ");
+	LAddLookup("WhereNames", "<worn around wrist> ");
+	LAddLookup("WhereNames", "<worn around wrist> ");
+	LAddLookup("WhereNames", "<wielded>           ");
+	LAddLookup("WhereNames", "<held>              ");
+	LAddLookup("WhereNames", "<dual wielded>      ");
+	LAddLookup("WhereNames", "<worn on ears>      ");
+	LAddLookup("WhereNames", "<worn on eyes>      ");
+	LAddLookup("WhereNames", "<missile wielded>   ");
+	LAddLookup("WhereNames", "<worn on back>  ");
+	LAddLookup("WhereNames", "<worn over face>  ");
+	LAddLookup("WhereNames", "<worn around ankle>  ");
+	LAddLookup("WhereNames", "<worn around ankle>  ");
+end
+LoadWhereNames();
+		
+function LoadAttackTypes()
+	LAddLookup("AttackTypes", "hit");
+	LAddLookup("AttackTypes", "slice");
+	LAddLookup("AttackTypes", "stab");
+	LAddLookup("AttackTypes", "slash");
+	LAddLookup("AttackTypes", "whip");
+	LAddLookup("AttackTypes", "claw");
+	LAddLookup("AttackTypes", "blast");
+	LAddLookup("AttackTypes", "pound");
+	LAddLookup("AttackTypes", "crush");
+	LAddLookup("AttackTypes", "grep");
+	LAddLookup("AttackTypes", "bite");
+	LAddLookup("AttackTypes", "pierce");
+	LAddLookup("AttackTypes", "suction");
+	LAddLookup("AttackTypes", "bolt");
+	LAddLookup("AttackTypes", "arrow");
+	LAddLookup("AttackTypes", "dart");
+	LAddLookup("AttackTypes", "stone");
+	LAddLookup("AttackTypes", "pea");
+end
+LoadAttackTypes();
+
+function LoadDirectionNames()
+	LAddLookup("DirectionNames", "north");
+	LAddLookup("DirectionNames", "east");
+	LAddLookup("DirectionNames", "south");
+	LAddLookup("DirectionNames", "west");
+	LAddLookup("DirectionNames", "up");
+	LAddLookup("DirectionNames", "down");
+	LAddLookup("DirectionNames", "northeast");
+	LAddLookup("DirectionNames", "northwest");
+	LAddLookup("DirectionNames", "southeast");
+	LAddLookup("DirectionNames", "southwest");
+	LAddLookup("DirectionNames", "somewhere");
+end
+LoadDirectionNames();
+
+function LoadReverseDirectionNames()
+	LAddLookup("ReverseDirectionNames", "the south");
+	LAddLookup("ReverseDirectionNames", "the west");
+	LAddLookup("ReverseDirectionNames", "the north");
+	LAddLookup("ReverseDirectionNames", "the east");
+	LAddLookup("ReverseDirectionNames", "below");
+	LAddLookup("ReverseDirectionNames", "above");
+	LAddLookup("ReverseDirectionNames", "the southwest");
+	LAddLookup("ReverseDirectionNames", "the southeast");
+	LAddLookup("ReverseDirectionNames", "the northwest");
+	LAddLookup("ReverseDirectionNames", "the northeast");
+	LAddLookup("ReverseDirectionNames", "somewhere");
+end
+LoadReverseDirectionNames();
+
+function LoadHallucinatedObjectShortNames()
+	LAddLookup("HallucinatedShortNames", "a sword");
+	LAddLookup("HallucinatedShortNames", "a stick");
+	LAddLookup("HallucinatedShortNames", "something shiny");
+	LAddLookup("HallucinatedShortNames", "something");
+	LAddLookup("HallucinatedShortNames", "something interesting");
+	LAddLookup("HallucinatedShortNames", "something colorful");
+	LAddLookup("HallucinatedShortNames", "something that looks cool");
+	LAddLookup("HallucinatedShortNames", "a nifty thing");
+	LAddLookup("HallucinatedShortNames", "a cloak of flowing colors");
+	LAddLookup("HallucinatedShortNames", "a mystical flaming sword");
+	LAddLookup("HallucinatedShortNames", "a swarm of insects");
+	LAddLookup("HallucinatedShortNames", "a deathbane");
+	LAddLookup("HallucinatedShortNames", "a figment of your imagination");
+	LAddLookup("HallucinatedShortNames", "your gravestone");
+	LAddLookup("HallucinatedShortNames", "the long lost boots of Ranger Thoric");
+	LAddLookup("HallucinatedShortNames", "a glowing tome of arcane knowledge");
+	LAddLookup("HallucinatedShortNames", "a long sough secret");
+	LAddLookup("HallucinatedShortNames", "the meaning of it all");
+	LAddLookup("HallucinatedShortNames", "the answer");
+	LAddLookup("HallucinatedShortNames", "the key to life, the universe and everything");
+end
+LoadHallucinatedObjectShortNames();
+
+function LoadHallucinatedObjectLongNames()
+	LAddLookup("HallucinatedLongNames", "A nice looking sword catches your eye.");
+	LAddLookup("HallucinatedLongNames", "The ground is covered in small sticks.");
+	LAddLookup("HallucinatedLongNames", "Something shiny catches your eye.");
+	LAddLookup("HallucinatedLongNames", "Something catches your attention.");
+	LAddLookup("HallucinatedLongNames", "Something interesting catches your eye.");
+	LAddLookup("HallucinatedLongNames", "Something colorful flows by.");
+	LAddLookup("HallucinatedLongNames", "Something that looks cool calls out to you.");
+	LAddLookup("HallucinatedLongNames", "A nifty thing of great importance stands here.");
+	LAddLookup("HallucinatedLongNames", "A cloak of flowing colors asks you to wear it.");
+	LAddLookup("HallucinatedLongNames", "A mystical flaming sowrd awaits your grasp.");
+	LAddLookup("HallucinatedLongNames", "A swarm of insects buzzes in your face!");
+	LAddLookup("HallucinatedLongNames", "The extremely rare Deathbane lies at your feet.");
+	LAddLookup("HallucinatedLongNames", "A figment of your imagination is at your command.");
+	LAddLookup("HallucinatedLongNames", "You notice a gravestone here... upon closer examination, it reads your name.");
+	LAddLookup("HallucinatedLongNames", "The long lost boots of Ranger Thoric lie off to the side.");
+	LAddLookup("HallucinatedLongNames", "A glowing tome of arcane knowledge hovers in the air before you.");
+	LAddLookup("HallucinatedLongNames", "A long sough secret of all mankind is now clear to you.");
+	LAddLookup("HallucinatedLongNames", "The meaning of it all, so simple, so clear... of course!");
+	LAddLookup("HallucinatedLongNames", "The answer.  One.  It's always been One.");
+	LAddLookup("HallucinatedLongNames", "The key to life, the universe and everything awaits your hand.");
+end
+LoadHallucinatedObjectLongNames();
+
+function LoadNPCRaces()
+	LAddLookup("NPCRaces", "human");
+	LAddLookup("NPCRaces", "elf");
+	LAddLookup("NPCRaces", "dwarf");
+	LAddLookup("NPCRaces", "halfling");
+	LAddLookup("NPCRaces", "pixie");
+	LAddLookup("NPCRaces", "vampire");
+	LAddLookup("NPCRaces", "half-ogre");
+	LAddLookup("NPCRaces", "half-orc");
+	LAddLookup("NPCRaces", "half-troll");
+	LAddLookup("NPCRaces", "half-elf");
+	LAddLookup("NPCRaces", "gith");
+	LAddLookup("NPCRaces", "drow");
+	LAddLookup("NPCRaces", "sea-elf");
+	LAddLookup("NPCRaces", "lizardman");
+	LAddLookup("NPCRaces", "gnome");
+	LAddLookup("NPCRaces", "r5");		-- unused
+	LAddLookup("NPCRaces", "r6");		-- unused
+	LAddLookup("NPCRaces", "r7");		-- unused
+	LAddLookup("NPCRaces", "r8");		-- unused
+	LAddLookup("NPCRaces", "troll");
+	LAddLookup("NPCRaces", "ant");
+	LAddLookup("NPCRaces", "ape");
+	LAddLookup("NPCRaces", "baboon");
+	LAddLookup("NPCRaces", "bat");
+	LAddLookup("NPCRaces", "bear");
+	LAddLookup("NPCRaces", "bee");
+	LAddLookup("NPCRaces", "beetle");
+	LAddLookup("NPCRaces", "boar");
+	LAddLookup("NPCRaces", "bugbear");
+	LAddLookup("NPCRaces", "cat");
+	LAddLookup("NPCRaces", "dog");
+	LAddLookup("NPCRaces", "dragon");
+	LAddLookup("NPCRaces", "ferret");
+	LAddLookup("NPCRaces", "fly");
+	LAddLookup("NPCRaces", "gargoyle");
+	LAddLookup("NPCRaces", "gelatin");
+	LAddLookup("NPCRaces", "ghoul");
+	LAddLookup("NPCRaces", "gnoll");
+	LAddLookup("NPCRaces", "gnome");	-- duplicate
+	LAddLookup("NPCRaces", "goblin");
+	LAddLookup("NPCRaces", "golem");
+	LAddLookup("NPCRaces", "gorgon");
+	LAddLookup("NPCRaces", "harpy");
+	LAddLookup("NPCRaces", "hobgoblin");
+	LAddLookup("NPCRaces", "kobold");
+	LAddLookup("NPCRaces", "lizardman");	-- duplicate
+	LAddLookup("NPCRaces", "locust");
+	LAddLookup("NPCRaces", "lycanthrope");
+	LAddLookup("NPCRaces", "minotaur");
+	LAddLookup("NPCRaces", "mold");
+	LAddLookup("NPCRaces", "mule");
+	LAddLookup("NPCRaces", "neanderthal");
+	LAddLookup("NPCRaces", "ooze");
+	LAddLookup("NPCRaces", "orc");
+	LAddLookup("NPCRaces", "rat");
+	LAddLookup("NPCRaces", "rustmonster");
+	LAddLookup("NPCRaces", "shadow");
+	LAddLookup("NPCRaces", "shapeshifter");
+	LAddLookup("NPCRaces", "shrew");
+	LAddLookup("NPCRaces", "shrieker");
+	LAddLookup("NPCRaces", "skeleton");
+	LAddLookup("NPCRaces", "slime");
+	LAddLookup("NPCRaces", "snake");
+	LAddLookup("NPCRaces", "spider");
+	LAddLookup("NPCRaces", "stirge");
+	LAddLookup("NPCRaces", "thoul");
+	LAddLookup("NPCRaces", "troglodyte");
+	LAddLookup("NPCRaces", "undead");
+	LAddLookup("NPCRaces", "wight");
+	LAddLookup("NPCRaces", "wolf");
+	LAddLookup("NPCRaces", "worm");
+	LAddLookup("NPCRaces", "zombie");
+	LAddLookup("NPCRaces", "bovine");	-- uh cow?
+	LAddLookup("NPCRaces", "canine");	-- uh dog?
+	LAddLookup("NPCRaces", "feline");		-- uh cat?
+	LAddLookup("NPCRaces", "porcine");
+	LAddLookup("NPCRaces", "mammal");
+	LAddLookup("NPCRaces", "rodent");
+	LAddLookup("NPCRaces", "avis");
+	LAddLookup("NPCRaces", "reptile");
+	LAddLookup("NPCRaces", "amphibian");
+	LAddLookup("NPCRaces", "fish");
+	LAddLookup("NPCRaces", "crustacean");
+	LAddLookup("NPCRaces", "insect");
+	LAddLookup("NPCRaces", "spirit");
+	LAddLookup("NPCRaces", "magical");
+	LAddLookup("NPCRaces", "horse");
+	LAddLookup("NPCRaces", "animal");
+	LAddLookup("NPCRaces", "humanoid");
+	LAddLookup("NPCRaces", "monster");
+	LAddLookup("NPCRaces", "god");
+end
+LoadNPCRaces();
+
+function LoadNPCClasses()
+	LAddLookup("NPCClasses", "mage");
+	LAddLookup("NPCClasses", "cleric");
+	LAddLookup("NPCClasses", "thief");
+	LAddLookup("NPCClasses", "warrior");
+	LAddLookup("NPCClasses", "vampire");
+	LAddLookup("NPCClasses", "druid");
+	LAddLookup("NPCClasses", "ranger");
+	LAddLookup("NPCClasses", "augurer");
+	LAddLookup("NPCClasses", "paladin");
+	LAddLookup("NPCClasses", "nephandi");
+	LAddLookup("NPCClasses", "savage");
+	LAddLookup("NPCClasses", "pirate");
+	LAddLookup("NPCClasses", "pc12");		-- unused
+	LAddLookup("NPCClasses", "pc13");		-- unused
+	LAddLookup("NPCClasses", "pc14");		-- unused
+	LAddLookup("NPCClasses", "pc15");		-- unused
+	LAddLookup("NPCClasses", "pc16");		-- unused
+	LAddLookup("NPCClasses", "pc17");		-- unused
+	LAddLookup("NPCClasses", "pc18");		-- unused
+	LAddLookup("NPCClasses", "pc19");		-- unused
+	LAddLookup("NPCClasses", "baker");
+	LAddLookup("NPCClasses", "butcher");
+	LAddLookup("NPCClasses", "blacksmith");
+	LAddLookup("NPCClasses", "mayor");
+	LAddLookup("NPCClasses", "king");
+	LAddLookup("NPCClasses", "queen");
+end
+LoadNPCClasses();
+
+function LoadSlashBladeMessages()
+	LAddLookup("SlashBladeMessages", "miss");
+	LAddLookup("SlashBladeMessages", "barely scratch");
+	LAddLookup("SlashBladeMessages", "scratch");
+	LAddLookup("SlashBladeMessages", "nick");
+	LAddLookup("SlashBladeMessages", "cut");
+	LAddLookup("SlashBladeMessages", "hit");
+	LAddLookup("SlashBladeMessages", "tear");
+	LAddLookup("SlashBladeMessages", "rip");
+	LAddLookup("SlashBladeMessages", "gash");
+	LAddLookup("SlashBladeMessages", "lacerate");
+	LAddLookup("SlashBladeMessages", "hack");
+	LAddLookup("SlashBladeMessages", "maul");
+	LAddLookup("SlashBladeMessages", "rend");
+	LAddLookup("SlashBladeMessages", "decimate");
+	LAddLookup("SlashBladeMessages", "_mangle_");
+	LAddLookup("SlashBladeMessages", "_devastate_");
+	LAddLookup("SlashBladeMessages", "_cleave_");
+	LAddLookup("SlashBladeMessages", "_butcher_");
+	LAddLookup("SlashBladeMessages", "DISEMBOWEL");
+	LAddLookup("SlashBladeMessages", "DISFIGURE");
+	LAddLookup("SlashBladeMessages", "GUT");
+	LAddLookup("SlashBladeMessages", "EVISCERATE");
+	LAddLookup("SlashBladeMessages", "* SLAUGHTER *");
+	LAddLookup("SlashBladeMessages", "*** ANNIHILATE ***");
+end
+LoadSlashBladeMessages();		
+
+function LoadPierceBladeMessages()
+	LAddLookup("PierceBladeMessages", "misses");
+	LAddLookup("PierceBladeMessages", "barely scratches");
+	LAddLookup("PierceBladeMessages", "scratches");
+	LAddLookup("PierceBladeMessages", "nicks");
+	LAddLookup("PierceBladeMessages", "cuts");
+	LAddLookup("PierceBladeMessages", "hits");
+	LAddLookup("PierceBladeMessages", "tears");
+	LAddLookup("PierceBladeMessages", "rips");
+	LAddLookup("PierceBladeMessages", "gashes");
+	LAddLookup("PierceBladeMessages", "lacerates");
+	LAddLookup("PierceBladeMessages", "hacks");
+	LAddLookup("PierceBladeMessages", "mauls");
+	LAddLookup("PierceBladeMessages", "rends");
+	LAddLookup("PierceBladeMessages", "decimates");
+	LAddLookup("PierceBladeMessages", "_mangles_");
+	LAddLookup("PierceBladeMessages", "_devastates_");
+	LAddLookup("PierceBladeMessages", "_cleaves_");
+	LAddLookup("PierceBladeMessages", "_butchers_");
+	LAddLookup("PierceBladeMessages", "DISEMBOWELS");
+	LAddLookup("PierceBladeMessages", "DISFIGURES");
+	LAddLookup("PierceBladeMessages", "GUTS");
+	LAddLookup("PierceBladeMessages", "EVISCERATES");
+	LAddLookup("PierceBladeMessages", "* SLAUGHTERS *");
+	LAddLookup("PierceBladeMessages", "*** ANNIHILATES ***");
+end
+LoadPierceBladeMessages();
+
+function LoadSlashBluntMessages()
+	LAddLookup("SlashBluntMessages", "miss");
+	LAddLookup("SlashBluntMessages", "barely scuff");
+	LAddLookup("SlashBluntMessages", "scuff");
+	LAddLookup("SlashBluntMessages", "pelt");
+	LAddLookup("SlashBluntMessages", "bruise");
+	LAddLookup("SlashBluntMessages", "strike");
+	LAddLookup("SlashBluntMessages", "thrash");
+	LAddLookup("SlashBluntMessages", "batter");
+	LAddLookup("SlashBluntMessages", "flog");
+	LAddLookup("SlashBluntMessages", "pummel");
+	LAddLookup("SlashBluntMessages", "smash");
+	LAddLookup("SlashBluntMessages", "maul");
+	LAddLookup("SlashBluntMessages", "bludgeon");
+	LAddLookup("SlashBluntMessages", "decimate");
+	LAddLookup("SlashBluntMessages", "_shatter_");
+	LAddLookup("SlashBluntMessages", "_devastate_");
+	LAddLookup("SlashBluntMessages", "_maim_");
+	LAddLookup("SlashBluntMessages", "_cripple_");
+	LAddLookup("SlashBluntMessages", "MUTILATE");
+	LAddLookup("SlashBluntMessages", "DISFIGURE");
+	LAddLookup("SlashBluntMessages", "MASSACRE");
+	LAddLookup("SlashBluntMessages", "PULVERIZE");
+	LAddLookup("SlashBluntMessages", "* OBLITERATE *");
+	LAddLookup("SlashBluntMessages", "*** ANNIHILATE ***");
+end
+LoadSlashBluntMessages();
+
+-- PierceBluntMessages
+-- SlashGenericMessages
+-- PierceGenericMessages
+
+function LoadTemperatureSettings()
+	LAddLookup("TemperatureSettings", "cold");
+	LAddLookup("TemperatureSettings", "cool");
+	LAddLookup("TemperatureSettings", "normal");
+	LAddLookup("TemperatureSettings", "warm");
+	LAddLookup("TemperatureSettings", "hot");
+end
+LoadTemperatureSettings();
+
+function LoadPrecipitationSettings()
+	LAddLookup("PrecipitationSettings", "arid");
+	LAddLookup("PrecipitationSettings", "dry");
+	LAddLookup("PrecipitationSettings", "normal");
+	LAddLookup("PrecipitationSettings", "damp");
+	LAddLookup("PrecipitationSettings", "wet");
+end
+LoadPrecipitationSettings();
+
+function LoadWindSettings()
+	LAddLookup("WindSettings", "still");
+	LAddLookup("WindSettings", "calm");
+	LAddLookup("WindSettings", "normal");
+	LAddLookup("WindSettings", "breezy");
+	LAddLookup("WindSettings", "windy");
+end
+LoadWindSettings();
 
 -- EOF

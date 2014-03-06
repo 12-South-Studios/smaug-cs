@@ -31,7 +31,7 @@ namespace SmaugCS.Loaders
                 Filename = AreaName
             };
 
-            db.AREAS.Add(newArea);
+            DatabaseManager.Instance.AREAS.Add(newArea.ID, newArea);
             ++db.TopArea;
             return newArea;
         }

@@ -15,11 +15,89 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {
+        public static void AddKill(this CharacterInstance ch, CharacterInstance mob)
+        {
+            if (ch.IsNpc() || !mob.IsNpc())
+                return;
+
+            long id = mob.MobIndex.ID;
+            int maxTrack = GameConstants.GetIntegerConstant("MaxKillTrack");
+
+            KilledData killed = ch.PlayerData.Killed.FirstOrDefault(x => x.ID == id);
+            if (killed == null)
+            {
+                if (ch.PlayerData.Killed.Count >= maxTrack)
+                {
+                    KilledData oldest = null;
+                    foreach (KilledData check in ch.PlayerData.Killed)
+                    {
+                        if (oldest == null)
+                            oldest = check;
+                        else if (oldest != check)
+                        {
+                            if (check.Updated < oldest.Updated)
+                                oldest = check;
+                        }
+                    }
+
+                    ch.PlayerData.Killed.Remove(oldest);
+
+                    KilledData newKilled = new KilledData(id);
+                    newKilled.Increment(1);
+                    ch.PlayerData.Killed.Add(newKilled);
+                }
+            }
+            else
+                killed.Increment(1);
+        }
+
+        public static int TimesKilled(this CharacterInstance ch, CharacterInstance mob)
+        {
+            if (ch.IsNpc() || !mob.IsNpc())
+                return 0;
+
+            return ch.PlayerData.Killed.Any(x => x.ID == mob.MobIndex.ID)
+                       ? ch.PlayerData.Killed.First(x => x.ID == mob.MobIndex.ID).Count
+                       : 0;
+        }
+
+        public static bool IsAttackSuppressed(this CharacterInstance ch)
+        {
+            if (ch.IsNpc())
+                return false;
+
+            TimerData timer = handler.get_timerptr(ch, TimerTypes.ASupressed);
+            if (timer == null)
+                return false;
+            if (timer.Value == -1)
+                return true;
+            return timer.Count >= 1;
+        }
+
+        public static bool IsWieldedWeaponPoisoned(this CharacterInstance ch)
+        {
+            if (fight.UsedWeapon == null)
+                return false;
+
+            ObjectInstance obj = ch.GetEquippedItem(WearLocations.Wield);
+            if (obj != null && fight.UsedWeapon == obj &&
+                Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Poisoned))
+                return true;
+
+            obj = ch.GetEquippedItem(WearLocations.DualWield);
+            if (obj != null && fight.UsedWeapon == obj &&
+                Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Poisoned))
+                return true;
+
+            return false;
+        }
+
         public static void ImproveMentalState(this CharacterInstance ch, int mod)
         {
             int c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
@@ -230,7 +308,7 @@ namespace SmaugCS.Extensions
 
         public static bool CouldDualWield(this CharacterInstance ch)
         {
-            return ch.IsNpc() || ch.PlayerData.Learned[DatabaseManager.Instance.GetSkill("dual wield").ID] > 0;
+            return ch.IsNpc() || ch.PlayerData.Learned[DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID] > 0;
         }
 
         public static bool CanDualWield(this CharacterInstance ch)
@@ -303,7 +381,7 @@ namespace SmaugCS.Extensions
             if (morph.race != 0 && morph.race.IsSet(1 << (int) ch.CurrentRace))
                 return false;
             if (!string.IsNullOrWhiteSpace(morph.deity) &&
-                (ch.PlayerData.CurrentDeity != null || DatabaseManager.Instance.GetDeity(morph.deity) == null))
+                (ch.PlayerData.CurrentDeity != null || DatabaseManager.Instance.GetEntity<DeityData>(morph.deity) == null))
                 return false;
             if (morph.timeto != -1 && morph.timefrom != -1)
             {
@@ -312,7 +390,7 @@ namespace SmaugCS.Extensions
 
                 for (i = 0, tmp = morph.timefrom; i < 25 && tmp != morph.timeto; i++)
                 {
-                    if (tmp == db.GameTime.Hour)
+                    if (tmp == GameManager.Instance.GameTime.Hour)
                     {
                         found = true;
                         break;
@@ -328,7 +406,7 @@ namespace SmaugCS.Extensions
             }
 
             if (morph.dayfrom != -1 && morph.dayto != -1
-                && (morph.dayto < (db.GameTime.Day + 1) || morph.dayfrom > (db.GameTime.Day + 1)))
+                && (morph.dayto < (GameManager.Instance.GameTime.Day + 1) || morph.dayfrom > (GameManager.Instance.GameTime.Day + 1)))
                 return false;
             return true;
         }
@@ -733,7 +811,7 @@ namespace SmaugCS.Extensions
         {
             return ch.IsNpc()
                 ? 1000
-                : DatabaseManager.Instance.CLASSES.First(x => x.Type == ch.CurrentClass).BaseExperience;
+                : DatabaseManager.Instance.CLASSES.Values.First(x => x.Type == ch.CurrentClass).BaseExperience;
         }
 
         public static int GetExperienceLevel(this CharacterInstance ch, int level)
@@ -769,9 +847,9 @@ namespace SmaugCS.Extensions
         {
             if (ch.IsNpc()) return -1;
 
-            int num_days = ((db.GameTime.Month + 1) * db.SystemData.DaysPerMonth) + db.GameTime.Day;
-            int ch_days = ((ch.PlayerData.Month + 1) * db.SystemData.DaysPerMonth) + ch.PlayerData.Day;
-            int age = db.GameTime.Year - ch.PlayerData.Year;
+            int num_days = ((GameManager.Instance.GameTime.Month + 1) * GameManager.Instance.SystemData.DaysPerMonth) + GameManager.Instance.GameTime.Day;
+            int ch_days = ((ch.PlayerData.Month + 1) * GameManager.Instance.SystemData.DaysPerMonth) + ch.PlayerData.Day;
+            int age = GameManager.Instance.GameTime.Year - ch.PlayerData.Year;
 
             if (ch_days - num_days > 0)
                 age -= 1;
@@ -780,7 +858,7 @@ namespace SmaugCS.Extensions
 
         public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
-            ClassData currentClass = DatabaseManager.Instance.CLASSES.First(x => x.Type == ch.CurrentClass);
+            ClassData currentClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
             int max = 20;
 
             if (ch.IsNpc() || currentClass.PrimaryAttribute == statistic)
@@ -1159,7 +1237,7 @@ namespace SmaugCS.Extensions
 
             if (ch.IsOutside())
             {
-                switch (db.GameTime.Sunlight)
+                switch (GameManager.Instance.GameTime.Sunlight)
                 {
                     case SunPositionTypes.Sunset:
                     case SunPositionTypes.Sunrise:
@@ -1327,7 +1405,7 @@ namespace SmaugCS.Extensions
                 if (DatabaseManager.Instance.GetRace(ch.CurrentRace).Language.IsSet(language))
                     return 100;
 
-                for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
+                /*for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
                 {
                     if (i == (int)LanguageTypes.Unknown)
                         break;
@@ -1338,7 +1416,7 @@ namespace SmaugCS.Extensions
                         if (skill.Slot != -1)
                             return ch.PlayerData.Learned[skill.Slot];
                     }
-                }
+                }*/
             }
 
             return 0;
@@ -1355,7 +1433,7 @@ namespace SmaugCS.Extensions
 
             if ((ch.Speaks & language) > 0)
             {
-                for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
+                /*for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
                 {
                     if (i == (int)LanguageTypes.Unknown)
                         break;
@@ -1375,7 +1453,7 @@ namespace SmaugCS.Extensions
 
                     if (ch.PlayerData.Learned[i] >= 99)
                         return false;
-                }
+                }*/
             }
 
             return ((int)LanguageTypes.ValidLanguages & language) > 0;
@@ -1500,7 +1578,7 @@ namespace SmaugCS.Extensions
                 ch.CurrentRoom.ToRoom(obj);
                 mud_prog.oprog_zap_trigger(ch, obj);
 
-                if (db.SystemData.SaveFlags.IsSet((int)AutoSaveFlags.ZapDrop)
+                if (GameManager.Instance.SystemData.SaveFlags.IsSet((int)AutoSaveFlags.ZapDrop)
                     && !ch.CharDied())
                     save.save_char_obj(ch);
                 return;

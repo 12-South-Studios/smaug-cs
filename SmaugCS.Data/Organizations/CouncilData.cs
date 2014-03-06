@@ -10,9 +10,8 @@ namespace SmaugCS.Data.Organizations
         public int Members { get; set; }
         public int Meeting { get; set; }
 
-        public CouncilData(string filename)
+        public CouncilData(long id, string name) : base(id, name)
         {
-            Filename = filename;
         }
 
         /*public override void Save()

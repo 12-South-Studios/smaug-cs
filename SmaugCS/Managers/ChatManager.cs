@@ -48,9 +48,9 @@ namespace SmaugCS.Managers
                 if (och == null || vch == null)
                     continue;
                 if (!vch.IsImmortal()
-                    || (vch.Trust < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel)
+                    || (vch.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel)
                         && channel == ChannelTypes.Build)
-                    || (vch.Trust < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel)
+                    || (vch.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel)
                         && (channel == ChannelTypes.Log || channel == ChannelTypes.High
                             || channel == ChannelTypes.Warn || channel == ChannelTypes.Comm)))
                     continue;
@@ -80,12 +80,12 @@ namespace SmaugCS.Managers
         {
 #if !SCRAMBLE
             int speaking = -1;
-            foreach (int key in GameConstants.LanguageTable.Keys
+            /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
                 speaking = key;
                 break;
-            }
+            }*/
 #endif
 
             if (ch.IsNpc())
@@ -213,9 +213,9 @@ namespace SmaugCS.Managers
                         continue;
                     if (channel == ChannelTypes.AvTalk && !och.IsHero())
                         continue;
-                    if (channel == ChannelTypes.Highgod && och.Trust < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.MuseLevel))
+                    if (channel == ChannelTypes.Highgod && och.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.MuseLevel))
                         continue;
-                    if (channel == ChannelTypes.High && och.Trust < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.ThinkLevel))
+                    if (channel == ChannelTypes.High && och.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.ThinkLevel))
                         continue;
                     if (channel == ChannelTypes.Traffic && !och.IsImmortal() && !ch.IsImmortal())
                     {
@@ -255,12 +255,12 @@ namespace SmaugCS.Managers
                         vch.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
-                    if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
+                    /*if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
                     {
                         int speakswell = vch.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, vch));
                         if (speakswell < 85)
                             sbuf = act_comm.TranslateLanguage(speakswell, argument, GameConstants.LanguageTable[speaking]);
-                    }
+                    }*/
 #else
                     if (KnowsLanguage(vch, ch.Speaking, ch) == 0 &&
                         (!ch.IsNpc() || ch.Speaking != 0))

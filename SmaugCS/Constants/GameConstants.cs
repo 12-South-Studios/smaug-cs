@@ -7,6 +7,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Language;
+using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -79,7 +80,12 @@ namespace SmaugCS
         /// <returns></returns>
         public static string GetDataPath()
         {
-            return GetStringConstant("DataPath");
+            return string.Format("{0}\\{1}\\", GetStringConstant("AppPath"), "data");
+        }
+
+        public static string GetLogPath()
+        {
+            return string.Format("{0}\\{1}\\", GetStringConstant("AppPath"), "logs");
         }
         #endregion
 
@@ -504,37 +510,7 @@ namespace SmaugCS
                                                        "r31"
                                                    };
 
-        public static List<string> ReversedDirectionNames = new List<string>()
-                                                                {
-                                                                    "the south",
-                                                                    "the west",
-                                                                    "the north",
-                                                                    "the east",
-                                                                    "below",
-                                                                    "above",
-                                                                    "the southwest",
-                                                                    "the southeast",
-                                                                    "the northwest",
-                                                                    "the northeast",
-                                                                    "somewhere"
-                                                                };
-
         public static List<short> movement_loss = new List<short>() { 1, 2, 2, 3, 4, 6, 4, 1, 6, 10, 6, 5, 7, 4 };
-
-        public static List<string> dir_name = new List<string>()
-                                                  {
-                                                      "north",
-                                                      "east",
-                                                      "south",
-                                                      "west",
-                                                      "up",
-                                                      "down",
-                                                      "northeast",
-                                                      "northwest",
-                                                      "southeast",
-                                                      "southwest",
-                                                      "somewhere"
-                                                  };
 
         public static List<TrapTriggerTypes> trap_door = new List<TrapTriggerTypes>()
                                                              {
@@ -690,54 +666,6 @@ namespace SmaugCS
                                                                   }
                                                           };
 
-        public static List<string> HallucinatedObjectShort = new List<string>()
-                                                                 {
-                                                                     "a sword",
-                                                                     "a stick",
-                                                                     "something shiny",
-                                                                     "something",
-                                                                     "something interesting",
-                                                                     "something colorful",
-                                                                     "something that looks cool",
-                                                                     "a nifty thing",
-                                                                     "a cloak of flowing colors",
-                                                                     "a mystical flaming sword",
-                                                                     "a swarm of insects",
-                                                                     "a deathbane",
-                                                                     "a figment of your imagination",
-                                                                     "your gravestone",
-                                                                     "the long lost boots of Ranger Thoric",
-                                                                     "a glowing tome of arcane knowledge",
-                                                                     "a long sought secret",
-                                                                     "the meaning of it all",
-                                                                     "the answer",
-                                                                     "the key to life, the universe and everything"
-                                                                 };
-
-        public static List<string> HallucinatedObjectLong = new List<string>()
-                                                                {
-                                                                    "A nice looking sword catches your eye.",
-                                                                    "The ground is covered in small sticks.",
-                                                                    "Something shiny catches your eye.",
-                                                                    "Something catches your attention.",
-                                                                    "Something interesting catches your eye.",
-                                                                    "Something colorful flows by.",
-                                                                    "Something that looks cool calls out to you.",
-                                                                    "A nifty thing of great importance stands here.",
-                                                                    "A cloak of flowing colors asks you to wear it.",
-                                                                    "A mystical flaming sword awaits your grasp.",
-                                                                    "A swarm of insects buzzes in your face!",
-                                                                    "The extremely rare Deathbane lies at your feet.",
-                                                                    "A figment of your imagination is at your command.",
-                                                                    "You notice a gravestone here... upon closer examination, it reads your name.",
-                                                                    "The long lost boots of Ranger Thoric lie off to the side.",
-                                                                    "A glowing tome of arcane knowledge hovers in the air before you.",
-                                                                    "A long sought secret of all mankind is now clear to you.",
-                                                                    "The meaning of it all, so simple, so clear... of course!",
-                                                                    "The answer.  One.  It's always been One.",
-                                                                    "The key to life, the universe and everything awaits your hand."
-                                                                };
-
         /****************** CONSTELLATIONS and STARS *****************************
                 Cygnus     Mars        Orion      Dragon       Cassiopeia          Venus
                         Ursa Ninor                           Mercurius     Pluto    
@@ -750,39 +678,6 @@ namespace SmaugCS
                 {'C', "&C"}, {'O', "&O"}, {'B', "&B"}, {'P', "&P"}, {'W', "&W"}, {'b', "&b"}, {'p', "&p"}, 
                 {'Y', "&Y"}, {'c', "&c"}
             };
-
-        public static List<string> WhereNames = new List<string>()
-                                                    {
-                                                        "<used as light>     ",
-                                                        "<worn on finger>    ",
-                                                        "<worn on finger>    ",
-                                                        "<worn around neck>  ",
-                                                        "<worn around neck>  ",
-                                                        "<worn on body>      ",
-                                                        "<worn on head>      ",
-                                                        "<worn on legs>      ",
-                                                        "<worn on feet>      ",
-                                                        "<worn on hands>     ",
-                                                        "<worn on arms>      ",
-                                                        "<worn as shield>    ",
-                                                        "<worn about body>   ",
-                                                        "<worn about waist>  ",
-                                                        "<worn around wrist> ",
-                                                        "<worn around wrist> ",
-                                                        "<wielded>           ",
-                                                        "<held>              ",
-                                                        "<dual wielded>      ",
-                                                        "<worn on ears>      ",
-                                                        "<worn on eyes>      ",
-                                                        "<missile wielded>   ",
-                                                        "<worn on back>  ",
-                                                        "<worn over face>  ",
-                                                        "<worn around ankle>  ",
-                                                        "<worn around ankle>  ",
-                                                        "<BUG Inform Nivek>  ",
-                                                        "<BUG Inform Nivek>  ",
-                                                        "<BUG Inform Nivek>  "
-                                                    };
 
         public static List<string> LoginMessages = new List<string>()
             {
@@ -806,157 +701,6 @@ namespace SmaugCS
                 "RESERVED FOR LINKDEAD DEATH MESSAGES",
                 "RESERVED FOR CODE-SENT MESSAGES"
             };
-
-        public static readonly Dictionary<int, string> LanguageTable = new Dictionary<int, string>()
-            {
-                {(int)LanguageTypes.Common, "common"},
-                {(int)LanguageTypes.Elven, "elvish"},
-                {(int)LanguageTypes.Dwarven, "dwarven"},
-                {(int)LanguageTypes.Pixie, "pixie"},
-                {(int)LanguageTypes.Ogre, "ogre"},
-                {(int)LanguageTypes.Orcish, "orcish"},
-                {(int)LanguageTypes.Trollish, "trollese"},
-                {(int)LanguageTypes.Rodent, "rodent"},
-                {(int)LanguageTypes.Insectoid, "insectoid"},
-                {(int)LanguageTypes.Mammal, "mammal"},
-                {(int)LanguageTypes.Reptile, "reptile"},
-                {(int)LanguageTypes.Dragon, "dragon"},
-                {(int)LanguageTypes.Spiritual, "spiritual"},
-                {(int)LanguageTypes.Magical, "magical"},
-                {(int)LanguageTypes.Goblin, "goblin"},
-                {(int)LanguageTypes.God, "god"},
-                {(int)LanguageTypes.Ancient, "ancient"},
-                {(int)LanguageTypes.Halfling, "halfling"},
-                {(int)LanguageTypes.Clan, "clan"},
-                {(int)LanguageTypes.Gith, "gith"},
-                {(int)LanguageTypes.Gnome, "gnome"},
-                {(int)LanguageTypes.Unknown, ""}
-            };
-
-        public static List<string> npc_race = new List<string>()
-                                                  {
-                                                      "human",
-                                                      "elf",
-                                                      "dwarf",
-                                                      "halfling",
-                                                      "pixie",
-                                                      "vampire",
-                                                      "half-ogre",
-                                                      "half-orc",
-                                                      "half-troll",
-                                                      "half-elf",
-                                                      "gith",
-                                                      "drow",
-                                                      "sea-elf",
-                                                      "lizardman",
-                                                      "gnome",
-                                                      "r5",
-                                                      "r6",
-                                                      "r7",
-                                                      "r8",
-                                                      "troll",
-                                                      "ant",
-                                                      "ape",
-                                                      "baboon",
-                                                      "bat",
-                                                      "bear",
-                                                      "bee",
-                                                      "beetle",
-                                                      "boar",
-                                                      "bugbear",
-                                                      "cat",
-                                                      "dog",
-                                                      "dragon",
-                                                      "ferret",
-                                                      "fly",
-                                                      "gargoyle",
-                                                      "gelatin",
-                                                      "ghoul",
-                                                      "gnoll",
-                                                      "gnome",
-                                                      "goblin",
-                                                      "golem",
-                                                      "gorgon",
-                                                      "harpy",
-                                                      "hobgoblin",
-                                                      "kobold",
-                                                      "lizardman",
-                                                      "locust",
-                                                      "lycanthrope",
-                                                      "minotaur",
-                                                      "mold",
-                                                      "mule",
-                                                      "neanderthal",
-                                                      "ooze",
-                                                      "orc",
-                                                      "rat",
-                                                      "rustmonster",
-                                                      "shadow",
-                                                      "shapeshifter",
-                                                      "shrew",
-                                                      "shrieker",
-                                                      "skeleton",
-                                                      "slime",
-                                                      "snake",
-                                                      "spider",
-                                                      "stirge",
-                                                      "thoul",
-                                                      "troglodyte",
-                                                      "undead",
-                                                      "wight",
-                                                      "wolf",
-                                                      "worm",
-                                                      "zombie",
-                                                      "bovine",
-                                                      "canine",
-                                                      "feline",
-                                                      "porcine",
-                                                      "mammal",
-                                                      "rodent",
-                                                      "avis",
-                                                      "reptile",
-                                                      "amphibian",
-                                                      "fish",
-                                                      "crustacean",
-                                                      "insect",
-                                                      "spirit",
-                                                      "magical",
-                                                      "horse",
-                                                      "animal",
-                                                      "humanoid",
-                                                      "monster",
-                                                      "god"
-                                                  };
-
-        public static List<string> npc_class = new List<string>()
-                                                   {
-                                                       "mage",
-                                                       "cleric",
-                                                       "thief",
-                                                       "warrior",
-                                                       "vampire",
-                                                       "druid",
-                                                       "ranger",
-                                                       "augurer",
-                                                       "paladin",
-                                                       "nephandi",
-                                                       "savage",
-                                                       "pirate",
-                                                       "pc12",
-                                                       "pc13",
-                                                       "pc14",
-                                                       "pc15",
-                                                       "pc16",
-                                                       "pc17",
-                                                       "pc18",
-                                                       "pc19",
-                                                       "baker",
-                                                       "butcher",
-                                                       "blacksmith",
-                                                       "mayor",
-                                                       "king",
-                                                       "queen"
-                                                   };
 
         public static List<str_app_type> str_app = new List<str_app_type>()
                                                        {
@@ -1167,112 +911,6 @@ namespace SmaugCS
                                                            new lck_app_type(-120)
                                                        };
 
-        public static List<string> attack_table = new List<string>()
-                                                      {
-                                                          "hit",
-                                                          "slice",
-                                                          "stab",
-                                                          "slash",
-                                                          "whip",
-                                                          "claw",
-                                                          "blast",
-                                                          "pound",
-                                                          "crush",
-                                                          "grep",
-                                                          "bite",
-                                                          "pierce",
-                                                          "suction",
-                                                          "bolt",
-                                                          "arrow",
-                                                          "dart",
-                                                          "stone",
-                                                          "pea"
-                                                      };
-
-        public static List<string> s_blade_messages = new List<string>()
-                                                          {
-                                                              "miss",
-                                                              "barely scratch",
-                                                              "scratch",
-                                                              "nick",
-                                                              "cut",
-                                                              "hit",
-                                                              "tear",
-                                                              "rip",
-                                                              "gash",
-                                                              "lacerate",
-                                                              "hack",
-                                                              "maul",
-                                                              "rend",
-                                                              "decimate",
-                                                              "_mangle_",
-                                                              "_devastate_",
-                                                              "_cleave_",
-                                                              "_butcher_",
-                                                              "DISEMBOWEL",
-                                                              "DISFIGURE",
-                                                              "GUT",
-                                                              "EVISCERATE",
-                                                              "* SLAUGHTER *",
-                                                              "*** ANNIHILATE ***"
-                                                          };
-
-        public static List<string> p_blade_messages = new List<string>()
-                                                          {
-                                                              "misses",
-                                                              "barely scratches",
-                                                              "scratches",
-                                                              "nicks",
-                                                              "cuts",
-                                                              "hits",
-                                                              "tears",
-                                                              "rips",
-                                                              "gashes",
-                                                              "lacerates",
-                                                              "hacks",
-                                                              "mauls",
-                                                              "rends",
-                                                              "decimates",
-                                                              "_mangles_",
-                                                              "_devastates_",
-                                                              "_cleaves_",
-                                                              "_butchers_",
-                                                              "DISEMBOWELS",
-                                                              "DISFIGURES",
-                                                              "GUTS",
-                                                              "EVISCERATES",
-                                                              "* SLAUGHTERS *",
-                                                              "*** ANNIHILATES ***"
-                                                          };
-
-        public static List<string> s_blunt_messages = new List<string>()
-                                                          {
-                                                              "miss",
-                                                              "barely scuff",
-                                                              "scuff",
-                                                              "pelt",
-                                                              "bruise",
-                                                              "strike",
-                                                              "thrash",
-                                                              "batter",
-                                                              "flog",
-                                                              "pummel",
-                                                              "smash",
-                                                              "maul",
-                                                              "bludgeon",
-                                                              "decimate",
-                                                              "_shatter_",
-                                                              "_devastate_",
-                                                              "_maim_",
-                                                              "_cripple_",
-                                                              "MUTILATE",
-                                                              "DISFIGURE",
-                                                              "MASSACRE",
-                                                              "PULVERIZE",
-                                                              "* OBLITERATE *",
-                                                              "*** ANNIHILATE ***"
-                                                          };
-
         public static List<string> p_blunt_messages = new List<string>()
                                                           {
                                                               "misses",
@@ -1357,7 +995,7 @@ namespace SmaugCS
                                                                 "**** SMITES ****"
                                                             };
 
-        public static List<string> s_message_table(string type)
+        public static IEnumerable<string> s_message_table(string type)
         {
             switch (type.ToLower())
             {
@@ -1367,18 +1005,18 @@ namespace SmaugCS
                 case "claw":
                 case "bite":
                 case "pierce":
-                    return s_blade_messages;
+                    return LookupManager.Instance.GetLookups("SlashBladeMessages");
                 case "whip":
                 case "pound":
                 case "crush":
                 case "suction":
-                    return s_blunt_messages;
+                    return LookupManager.Instance.GetLookups("SlashBluntMessages");
                 default:
                     return s_generic_messages;
             }
         }
 
-        public static List<string> p_message_Table(string type)
+        public static IEnumerable<string> p_message_Table(string type)
         {
             switch (type.ToLower())
             {
@@ -1388,7 +1026,7 @@ namespace SmaugCS
                 case "claw":
                 case "bite":
                 case "pierce":
-                    return p_blade_messages;
+                    return LookupManager.Instance.GetLookups("PierceBladeMessages");
                 case "whip":
                 case "pound":
                 case "crush":
@@ -1398,12 +1036,6 @@ namespace SmaugCS
                     return p_generic_messages;
             }
         }
-
-        public static List<string> temp_settings = new List<string>() { "cold", "cool", "normal", "warm", "hot" };
-
-        public static List<string> precip_settings = new List<string>() { "arid", "dry", "normal", "damp", "wet" };
-
-        public static List<string> wind_settings = new List<string>() { "still", "calm", "normal", "breezy", "windy" };
 
         public static List<List<string>> preciptemp_msg = new List<List<string>>()
                                                               {

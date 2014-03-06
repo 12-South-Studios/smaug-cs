@@ -79,7 +79,7 @@ namespace SmaugCS
             if (sn == -1)
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             if (skill.SkillFunction == null || skill.SpellFunction == null
                 || can_use_skill(ch, 0, sn))
                 return false;
@@ -232,10 +232,10 @@ namespace SmaugCS
                 Macros.WAIT_STATE(ch, skill.Rounds);
 
                 //// Check for failure
-                if ((SmaugRandom.Percent() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, skill.ID)))
+                if ((SmaugRandom.Percent() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, (int)skill.ID)))
                 {
                     magic.failed_casting(skill, ch, victim, obj);
-                    learn_from_failure(ch, skill.ID);
+                    learn_from_failure(ch, (int)skill.ID);
                     if (mana > 0)
                     {
                         if (ch.IsVampire())
@@ -254,7 +254,7 @@ namespace SmaugCS
                 }
 
                 start = DateTime.Now;
-                ReturnTypes retcode = skill.SpellFunction.Value.Invoke(skill.ID, ch.Level, ch, vo);
+                ReturnTypes retcode = skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, vo);
                 end = DateTime.Now;
                 skill.UseHistory.Use(ch, end.Subtract(start));
 
@@ -263,11 +263,11 @@ namespace SmaugCS
 
                 if (retcode == ReturnTypes.SpellFailed)
                 {
-                    learn_from_failure(ch, skill.ID);
+                    learn_from_failure(ch, (int)skill.ID);
                     retcode = ReturnTypes.None;
                 }
                 else
-                    ability_learn_from_success(ch, skill.ID);
+                    ability_learn_from_success(ch, (int)skill.ID);
 
                 if (skill.Target == TargetTypes.OffensiveCharacter
                     && victim != ch
@@ -315,7 +315,7 @@ namespace SmaugCS
             if (ch.IsNpc() || ch.PlayerData.Learned[sn] <= 0)
                 return;
 
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             int adept = skill.RaceAdept[(int)ch.CurrentRace];
             int skillLevel = skill.RaceLevel[(int)ch.CurrentRace];
 

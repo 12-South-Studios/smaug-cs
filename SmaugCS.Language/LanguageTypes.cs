@@ -1,4 +1,5 @@
 ﻿using System;
+using Realm.Library.Common;
 
 namespace SmaugCS.Language
 {
@@ -7,11 +8,15 @@ namespace SmaugCS.Language
     {
         Unknown = 0,
         Common = 1 << 0,
+
+        [Name("elvish")]
         Elven = 1 << 1,
         Dwarven = 1 << 2,
         Pixie = 1 << 3,
         Ogre = 1 << 4,
         Orcish = 1 << 5,
+
+        [Name("trollese")]
         Trollish = 1 << 6,
         Rodent = 1 << 7,
         Insectoid = 1 << 8,

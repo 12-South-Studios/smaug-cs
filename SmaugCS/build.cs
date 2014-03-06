@@ -25,7 +25,7 @@ namespace SmaugCS
     {
         public static bool can_rmodify(CharacterInstance ch, RoomTemplate room)
         {
-            if (ch.IsNpc() || ch.Trust < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype))
+            if (ch.IsNpc() || ch.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype))
                 return false;
             if (!room.Flags.IsSet((int)RoomFlags.Prototype))
             {
@@ -49,7 +49,7 @@ namespace SmaugCS
 
         public static bool can_omodify(CharacterInstance ch, ObjectInstance obj)
         {
-            if (ch.IsNpc() || ch.Trust < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype))
+            if (ch.IsNpc() || ch.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype))
                 return false;
             if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype))
             {
@@ -101,7 +101,7 @@ namespace SmaugCS
                 return true;
             if (!mob.IsNpc())
             {
-                if (ch.Trust >= db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype)
+                if (ch.Trust >= GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype)
                     && ch.Trust > mob.Trust)
                     return true;
 
@@ -111,7 +111,7 @@ namespace SmaugCS
 
             if (ch.IsNpc())
                 return false;
-            if (ch.Trust >= db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype))
+            if (ch.Trust >= GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelModifyPrototype))
                 return true;
             if (!mob.Act.IsSet((int)ActFlags.Prototype))
             {
@@ -157,24 +157,24 @@ namespace SmaugCS
 
         public static int get_npc_class(string value)
         {
-            return FlagLookup.GetIndexOf(value, GameConstants.npc_class);
+            return FlagLookup.GetIndexOf(value, LookupManager.Instance.GetLookups("NPCClasses").ToList());
         }
 
         public static int get_npc_race(string value)
         {
-            return FlagLookup.GetIndexOf(value, GameConstants.npc_race);
+            return FlagLookup.GetIndexOf(value, LookupManager.Instance.GetLookups("NPCRaces").ToList());
         }
 
         public static int get_pc_class(string value)
         {
             return
-                DatabaseManager.Instance.CLASSES.ToList()
-                               .FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
+                DatabaseManager.Instance.CLASSES.Values.ToList()
+                               .FindIndex(x => x.Name.EqualsIgnoreCase(value));
         }
 
         public static int get_pc_race(string value)
         {
-            return DatabaseManager.Instance.RACES.ToList().FindIndex(x => x.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
+            return DatabaseManager.Instance.RACES.Values.ToList().FindIndex(x => x.Name.EqualsIgnoreCase(value));
         }
 
         public static int get_langflag(string value)
@@ -192,9 +192,9 @@ namespace SmaugCS
         public static int get_langnum(string value)
         {
             int count = 0;
-            foreach (LanguageData lang in DatabaseManager.Instance.LANGUAGES)
+            foreach (LanguageData lang in DatabaseManager.Instance.LANGUAGES.Values)
             {
-                if (lang.Name.Equals(value, StringComparison.OrdinalIgnoreCase))
+                if (lang.Name.EqualsIgnoreCase(value))
                     return count;
                 count++;
             }
@@ -856,7 +856,7 @@ namespace SmaugCS
             if (area == null)
             {
                 LogManager.Instance.Log(LogTypes.Normal, ch.Level, "Creating area entry for {0}", ch.Name);
-                area = new AreaData(db.AREAS.Count + db.BUILD_AREAS.Count + 1,
+                area = new AreaData(DatabaseManager.Instance.AREAS.Count + db.BUILD_AREAS.Count + 1,
                                     string.Format("{{PROTO}} {0}'s area in progress", ch.Name))
                            {
 
@@ -945,7 +945,7 @@ namespace SmaugCS
             using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
             {
                 proxy.Write("help.are\n");
-                foreach (AreaData area in db.AREAS)
+                foreach (AreaData area in DatabaseManager.Instance.AREAS.Values)
                     proxy.Write("{0}\n", area.Filename);
                 proxy.Write("$\n");
             }
@@ -960,7 +960,7 @@ namespace SmaugCS
         /// <returns></returns>
         public static bool check_for_area_conflicts(AreaData currentArea, int lo, int hi)
         {
-            return db.AREAS.Any(area => area != currentArea && act_wiz.check_area_conflict(area, lo, hi))
+            return DatabaseManager.Instance.AREAS.Values.Any(area => area != currentArea && act_wiz.check_area_conflict(area, lo, hi))
                    || db.BUILD_AREAS.Any(area => area != currentArea && act_wiz.check_area_conflict(area, lo, hi));
         }
 
