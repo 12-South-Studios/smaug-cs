@@ -128,7 +128,7 @@ namespace SmaugCS
 
         public static string rev_exit(int vdir)
         {
-            return GameConstants.ReversedDirectionNames[vdir];
+            return LookupManager.Instance.GetLookup("ReverseDirectionNames", vdir);
         }
 
         public static RoomTemplate generate_exit(RoomTemplate room, ExitData exit)
@@ -465,11 +465,13 @@ namespace SmaugCS
             {
                 if (!string.IsNullOrEmpty(msg.ToChar))
                 {
-                    comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null, GameConstants.dir_name[(int)xit.Direction], ToTypes.Character);
+                    comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null,
+                             LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Character);
                     color.send_to_char("\r\n", ch);
                 }
                 if (!string.IsNullOrEmpty(msg.ToRoom))
-                    comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null, GameConstants.dir_name[(int)xit.Direction], ToTypes.Room);
+                    comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null,
+                             LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Room);
 
                 if (!string.IsNullOrEmpty(msg.DestRoom)
                                           && xit.GetDestination().Persons.Any())
@@ -533,8 +535,11 @@ namespace SmaugCS
                     if (!string.IsNullOrEmpty(msg.ObjMsg)
                         && ch.CurrentRoom.Persons.Any())
                     {
-                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj, GameConstants.dir_name[(int)xit.Direction], ToTypes.Character);
-                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj, GameConstants.dir_name[(int)xit.Direction], ToTypes.Room);
+                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj,
+                                 LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction),
+                                 ToTypes.Character);
+                        comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj,
+                                 LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Room);
                     }
 
                     if (!string.IsNullOrEmpty(msg.DestObj) && ch.CurrentRoom.Persons.Any())

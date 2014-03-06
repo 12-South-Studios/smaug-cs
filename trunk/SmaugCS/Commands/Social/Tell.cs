@@ -15,12 +15,12 @@ namespace SmaugCS.Commands.Social
         {
 #if !SCRAMBLE
             int speaking = -1;
-            foreach (int key in GameConstants.LanguageTable.Keys
+            /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
                 speaking = key;
                 break;
-            }
+            }*/
 #endif
 
             ch.Deaf.RemoveBit((int)ChannelTypes.Tells);
@@ -156,7 +156,7 @@ namespace SmaugCS.Commands.Social
             PositionTypes position = victim.CurrentPosition;
             victim.CurrentPosition = PositionTypes.Standing;
 
-            if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
+            /*if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
             {
                 int speakswell = victim.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, victim));
                 if (speakswell < 85)
@@ -166,7 +166,7 @@ namespace SmaugCS.Commands.Social
                     comm.act(ATTypes.AT_TELL, "$n tells you '$t'", ch, argumentString, victim, ToTypes.Victim);
             }
             else
-                comm.act(ATTypes.AT_TELL, "$n tells you '$t'", ch, argumentString, victim, ToTypes.Victim);
+                comm.act(ATTypes.AT_TELL, "$n tells you '$t'", ch, argumentString, victim, ToTypes.Victim);*/
 
             //MOBtrigger = true;
 

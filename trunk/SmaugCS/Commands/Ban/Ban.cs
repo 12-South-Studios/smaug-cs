@@ -10,6 +10,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Admin
 {
@@ -104,9 +105,9 @@ namespace SmaugCS.Commands.Admin
                 return;
             }
 
-            if (ch.Trust < db.SystemData.ban_site_level)
+            if (ch.Trust < GameManager.Instance.SystemData.ban_site_level)
             {
-                color.ch_printf(ch, "You must be {0} level to add bans.", db.SystemData.ban_site_level);
+                color.ch_printf(ch, "You must be {0} level to add bans.", GameManager.Instance.SystemData.ban_site_level);
                 return;
             }
 

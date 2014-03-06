@@ -21,7 +21,7 @@ namespace SmaugCS.SpecFuns
             if (victim == null)
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetSkill(spellName);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
             if (skill == null || skill.SpellFunction == null)
                 return false;
 

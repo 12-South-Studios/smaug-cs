@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Weather
@@ -97,45 +94,5 @@ namespace SmaugCS.Weather
         }
 
         #endregion
-
-        /*public void Load(TextReaderProxy proxy)
-        {
-            string word = string.Empty;
-
-            do
-            {
-                word = proxy.EndOfStream ? "End" : proxy.ReadNextWord();
-
-                switch (Char.ToUpper(word.ToCharArray()[0]))
-                {
-                    case '*':
-                        proxy.ReadToEndOfLine();
-                        break;
-                    case 'C':
-                        Climate = EnumerationExtensions.GetEnum<ClimateTypes>(proxy.ReadNumber());
-                        break;
-                    case 'E':
-                        if (word.EqualsIgnoreCase("end"))
-                            return;
-                        break;
-                    case 'H':
-                        Hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(proxy.ReadNumber());
-                        break;
-                    case 'S':
-                        if (word.Equals("State", StringComparison.OrdinalIgnoreCase))
-                        {
-                            CloudCover = proxy.ReadNumber();
-                            Energy = proxy.ReadNumber();
-                            Humidity = proxy.ReadNumber();
-                            Precipitation = proxy.ReadNumber();
-                            Pressure = proxy.ReadNumber();
-                            Temperature = proxy.ReadNumber();
-                            WindSpeedX = proxy.ReadNumber();
-                            WindSpeedY = proxy.ReadNumber();
-                        }
-                        break;
-                }
-            } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("end"));
-        }*/
     }
 }

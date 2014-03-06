@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Managers;
 using SmaugCS.Weather;
 
 namespace SmaugCS.Extensions
@@ -12,7 +13,7 @@ namespace SmaugCS.Extensions
     {
         public static void InitializeWeatherMap(this WeatherManager manager, int weatherSizeX, int weatherSizeY)
         {
-            WeatherMap newMap = new WeatherMap(db.GameTime, weatherSizeX, weatherSizeY);
+            WeatherMap newMap = new WeatherMap(GameManager.Instance.GameTime, weatherSizeX, weatherSizeY);
             newMap.LoadMap(SystemFileTypes.StarMap, newMap.StarMap);
             newMap.LoadMap(SystemFileTypes.SunMap, newMap.SunMap);
             newMap.LoadMap(SystemFileTypes.MoonMap, newMap.MoonMap);

@@ -5,10 +5,8 @@ using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data
 {
-    public class SkillData
+    public class SkillData : Entity
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
         public SkillTypes Type { get; set; }
         public int Info { get; set; }
         public int Flags { get; set; }
@@ -68,12 +66,8 @@ namespace SmaugCS.Data
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
 
-        public SkillData(int maxClasses, int maxRaces)
+        public SkillData(long id, string name) : base(id, name)
         {
-            skill_level = new int[maxClasses];
-            skill_adept = new int[maxClasses];
-            RaceLevel = new int[maxRaces];
-            RaceAdept = new int[maxRaces];
             Affects = new List<SmaugAffect>();
             Components = new List<SpellComponent>();
             Teachers = new List<string>();

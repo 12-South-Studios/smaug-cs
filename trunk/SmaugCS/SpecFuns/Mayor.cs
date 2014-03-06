@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Commands.Movement;
+using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
@@ -19,13 +20,13 @@ namespace SmaugCS.SpecFuns
         {
             if (!_move)
             {
-                if (db.GameTime.Hour == 6 || db.GameTime.Hour == 20)
+                if (GameManager.Instance.GameTime.Hour == 6 || GameManager.Instance.GameTime.Hour == 20)
                 {
                     _move = true;
                     _index = 0;
                 }
 
-                _path = (db.GameTime.Hour == 6 ? openPath : (db.GameTime.Hour == 20 ? closePath : string.Empty));
+                _path = (GameManager.Instance.GameTime.Hour == 6 ? openPath : (GameManager.Instance.GameTime.Hour == 20 ? closePath : string.Empty));
             }
 
             if (ch.CurrentFighting != null)

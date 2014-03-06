@@ -70,7 +70,7 @@ namespace SmaugCS.SpecFuns
         /// <returns></returns>
         public bool IsValidSpecFun(string name)
         {
-            return _dbManager.SPEC_FUNS.Any(x => x.Name.EqualsIgnoreCase(name)) &&
+            return _dbManager.GetEntity<SpecialFunction>(name) != null &&
                    SpecialFuncLookupTable.ContainsKey(name.ToLower());
         }
 
@@ -81,7 +81,9 @@ namespace SmaugCS.SpecFuns
         /// <returns></returns>
         public SpecialFunction GetSpecFun(string name)
         {
-            return IsValidSpecFun(name) ? _dbManager.SPEC_FUNS.FirstOrDefault(s => s.Name.EqualsIgnoreCase(name)) : null;
+            return IsValidSpecFun(name)
+                       ? _dbManager.GetEntity<SpecialFunction>(name)
+                       : null;
         }
 
         public void summon_if_hating(CharacterInstance ch)
@@ -94,10 +96,7 @@ namespace SmaugCS.SpecFuns
                 || ch.CurrentHunting != null)
                 return;
 
-            CharacterRepository repo = (CharacterRepository) _dbManager.CHARACTERS;
-            CharacterInstance victim =
-                repo.Values.ToList().FirstOrDefault(x => x.Name.EqualsIgnoreCase(ch.CurrentHating.Name));
-
+            CharacterInstance victim = _dbManager.GetEntity<CharacterInstance>(ch.CurrentHating.Name);
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;
 
@@ -126,7 +125,7 @@ namespace SmaugCS.SpecFuns
                 }
             }
 
-            return _dbManager.GetSkill(spellName);
+            return _dbManager.GetEntity<SkillData>(spellName);
         }
     }
 }

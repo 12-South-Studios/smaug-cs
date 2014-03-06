@@ -1,9 +1,14 @@
 ﻿
+using Realm.Library.Common;
+
 namespace SmaugCS.Data
 {
-    public class CommandData
+    public class CommandData : Entity
     {
-        public string Name { get; set; }
+        public CommandData(long id, string name) : base(id, name)
+        {
+        }
+
         public DoFunction DoFunction { get; set; }
         public string FunctionName { get; set; }
         public int Flags { get; set; }

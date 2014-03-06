@@ -34,19 +34,19 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LGetRoom", "Retrieves a room with a given ID", "ID of the room")]
         public static RoomTemplate LuaGetRoom(long id)
         {
-            return _dbManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(id);
+            return _dbManager.GetEntity<RoomTemplate>(id);
         }
 
         [LuaFunction("LGetMobile", "Retrieves a mob with a given ID", "ID of the mobile")]
         public static MobTemplate LuaGetMobile(long id)
         {
-            return _dbManager.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Get(id);
+            return _dbManager.GetEntity<MobTemplate>(id);
         }
 
         [LuaFunction("LGetObject", "Retrieves an object with a given ID", "ID of the object")]
         public static ObjectTemplate LuaGetObject(long id)
         {
-            return _dbManager.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(id);
+            return _dbManager.GetEntity<ObjectTemplate>(id);
         }
 
         [ExcludeFromCodeCoverage]

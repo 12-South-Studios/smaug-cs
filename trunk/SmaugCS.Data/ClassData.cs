@@ -10,13 +10,10 @@ using SmaugCS.Constants.Enums;
 namespace SmaugCS.Data
 {
     [XmlRoot("Class")]
-    public class ClassData
+    public class ClassData : Entity
     {
         [XmlElement("ClassType")]
         public ClassTypes Type { get; set; }
-
-        [XmlElement]
-        public string Name { get; set; }
 
         public ExtendedBitvector AffectedBy { get; set; }
 
@@ -48,7 +45,7 @@ namespace SmaugCS.Data
         public List<ClassSkillAdeptData> Skills { get; set; }
         public Dictionary<int, Tuple<string, string>> Titles { get; set; }
  
-        public ClassData()
+        public ClassData(long id, string name) : base(id, name)
         {
             Skills = new List<ClassSkillAdeptData>();
             Titles = new Dictionary<int, Tuple<string, string>>();

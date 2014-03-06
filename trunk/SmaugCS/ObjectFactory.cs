@@ -114,7 +114,7 @@ namespace SmaugCS
                     if (ch.CurrentRoom != null)
                     {
                         ch.CurrentRoom.Area.gold_looted += ch.CurrentCoin;
-                        db.SystemData.global_looted += ch.CurrentCoin / 100;
+                        GameManager.Instance.SystemData.global_looted += ch.CurrentCoin / 100;
                     }
 
                     ObjectInstance money = CreateMoney(ch.CurrentCoin);
@@ -134,7 +134,7 @@ namespace SmaugCS
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value[2] = corpse.Timer / 8;
                 corpse.Value[4] = ch.Level;
-                if (ch.CanPKill() && db.SystemData.PlayerKillLoot > 0)
+                if (ch.CanPKill() && GameManager.Instance.SystemData.PlayerKillLoot > 0)
                     corpse.ExtraFlags.SetBit((int)ItemExtraFlags.ClanCorpse);
 
                 // Pkill corpses get save timers in tickets (approx 70 seconds)

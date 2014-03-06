@@ -12,7 +12,7 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_charm_person(int sn, int level, CharacterInstance ch, object vo)
         {
             CharacterInstance victim = (CharacterInstance)vo;
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
             if (victim.Equals(ch))
             {

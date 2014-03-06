@@ -16,10 +16,10 @@ namespace SmaugCS
             if (percent > 99 || !languageName.EqualsIgnoreCase("common"))
                 return text;
 
-            LanguageData lng = DatabaseManager.Instance.GetLanguage(languageName);
+            LanguageData lng = DatabaseManager.Instance.GetEntity<LanguageData>(languageName);
             if (lng == null)
             {
-                lng = DatabaseManager.Instance.GetLanguage("default");
+                lng = DatabaseManager.Instance.GetEntity<LanguageData>("default");
                 if (lng == null)
                     return text;
             }

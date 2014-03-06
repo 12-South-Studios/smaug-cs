@@ -1,14 +1,16 @@
 ﻿using System.Xml.Serialization;
+using Realm.Library.Common;
 
 namespace SmaugCS.Data.Organizations
 {
-    public abstract class OrganizationData /*: IPersistable*/
+    public abstract class OrganizationData : Entity
     {
+        protected OrganizationData(long id, string name) : base(id, name)
+        {
+        }
+
         [XmlIgnore]
         public string Filename { get; set; }
-
-        [XmlElement]
-        public string Name { get; set; }
 
         [XmlElement]
         public string Description { get; set; }

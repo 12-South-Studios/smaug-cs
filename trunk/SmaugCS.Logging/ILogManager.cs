@@ -21,6 +21,5 @@ namespace SmaugCS.Logging
 
         void Log(string str, params object[] args);
         void Log(LogTypes logType, int level, string fmt, params object[] args);
-        void Log(string str, LogTypes logType, int level);
     }
 }

@@ -15,16 +15,16 @@ namespace SmaugCS
     {
         public static int ch_slookup(CharacterInstance ch, string name)
         {
-            SkillData skill = DatabaseManager.Instance.GetSkill(name);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(name);
             if (skill == null)
                 return -1;
 
             if (ch.IsNpc())
-                return skill.ID;
+                return (int)skill.ID;
             if (ch.PlayerData.Learned[skill.ID] > 0
                 && (ch.Level >= skill.skill_level[(int)ch.CurrentClass]
                     || ch.Level >= skill.RaceLevel[(int)ch.CurrentRace]))
-                return skill.ID;
+                return (int)skill.ID;
             return -1;
         }
 
@@ -35,7 +35,7 @@ namespace SmaugCS
             foreach (SkillData skill in ch.PlayerData.special_skills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
                                                                                     && name.StartsWithIgnoreCase(skill.Name)))
             {
-                return skill.ID;
+                return (int)skill.ID;
             }
             return -1;
         }
@@ -45,13 +45,13 @@ namespace SmaugCS
             SkillData skill = null;
 
             if (ch == null || ch.IsNpc() || !know)
-                skill = DatabaseManager.Instance.GetSkill(name);
+                skill = DatabaseManager.Instance.GetEntity<SkillData>(name);
             else
-                skill = DatabaseManager.Instance.GetSkill(ch_slookup(ch, name));
+                skill = DatabaseManager.Instance.GetEntity<SkillData>(ch_slookup(ch, name));
 
             if (skill == null)
                 return -1;
-            return (int)skill.Type == expectedType ? skill.ID : -1;
+            return (int)skill.Type == expectedType ? (int)skill.ID : -1;
         }
 
         public static int find_spell(CharacterInstance ch, string name, bool know)
@@ -83,9 +83,9 @@ namespace SmaugCS
         {
             if (slot <= 0)
                 return -1;
-            foreach (SkillData skill in DatabaseManager.Instance.SKILLS.Where(skill => skill.Slot == slot))
+            foreach (SkillData skill in DatabaseManager.Instance.SKILLS.Values.Where(skill => skill.Slot == slot))
             {
-                return skill.ID;
+                return (int)skill.ID;
             }
             return -1;
         }
@@ -113,7 +113,7 @@ namespace SmaugCS
             string spell;
             if (paf != null)
             {
-                SkillData skill = DatabaseManager.Instance.GetSkill((int)paf.Type);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>((int)paf.Type);
                 if (skill == null)
                     return 0;
                 spell = skill.Name;
@@ -311,7 +311,7 @@ namespace SmaugCS
 
         public static void say_spell(CharacterInstance ch, int sn)
         {
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             string newString = tables.ConvertStringSyllables(skill.Name);
 
             foreach (CharacterInstance rch in ch.CurrentRoom.Persons.Where(x => x != ch))
@@ -413,7 +413,7 @@ namespace SmaugCS
         /// </remarks>
         public static bool process_spell_components(CharacterInstance ch, int sn)
         {
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
             if (skill == null || skill.Components.Count == 0)
                 return true;
@@ -425,7 +425,7 @@ namespace SmaugCS
 
         public static object locate_targets(CharacterInstance ch, string arg, int sn, CharacterInstance victim, ObjectInstance obj)
         {
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             if (skill == null)
                 return null;
 
@@ -614,7 +614,7 @@ namespace SmaugCS
             if (sn == -1)
                 return (int)ReturnTypes.None;
 
-            SkillData skill = DatabaseManager.Instance.GetSkill(sn);
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             if (skill == null || skill.SpellFunction == null)
                 return ReturnTypes.Error;
 

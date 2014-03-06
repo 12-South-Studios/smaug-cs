@@ -22,7 +22,7 @@ namespace SmaugCS
         public static void get_obj(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
         {
             if (!Macros.CAN_WEAR(obj, (int)ItemWearFlags.Take)
-                && (ch.Level < db.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)))
+                && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)))
             {
                 color.send_to_char("You can't take that.\r\n", ch);
                 return;
@@ -132,7 +132,7 @@ namespace SmaugCS
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.ClanStoreroom)
                 && (container == null || container.CarriedBy == null))
             {
-                foreach (ClanData clan in DatabaseManager.Instance.CLANS)
+                foreach (ClanData clan in DatabaseManager.Instance.CLANS.Values)
                 {
                     //if (clan.StoreRoom == ch.CurrentRoom.Vnum)
                     //     clan.SaveStoreroom(ch);

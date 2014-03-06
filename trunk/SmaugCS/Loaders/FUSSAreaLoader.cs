@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Common.Exceptions;
 using Realm.Library.Common.Extensions;
@@ -12,6 +13,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Loaders
 {
@@ -403,7 +405,7 @@ namespace SmaugCS.Loaders
                         break;
                     case "class":
                         int npcClass = build.get_npc_class(proxy.ReadString().TrimHash());
-                        if (npcClass < 0 || npcClass >= GameConstants.npc_class.Count)
+                        if (npcClass < 0 || npcClass >= LookupManager.Instance.GetLookups("NPCClasses").Count())
                         {
                             LogManager.Instance.Bug("Vnum {0} has invalid class {1}", mob.Vnum, npcClass);
                             npcClass = build.get_npc_class("warrior");
@@ -545,23 +547,23 @@ namespace SmaugCS.Loaders
                         room.Tunnel = words[2].ToInt32();
                         break;
                     case "vnum":
-                        bool tmpBootDb = DatabaseManager.BootDb;
+                        //bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
                         if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum) != null)
                         {
-                            if (tmpBootDb)
-                            {
-                                LogManager.Instance.Bug("Vnum {0} duplicated", vnum);
-                                DatabaseManager.BootDb = false;
-                            }
-                            else
-                            {
+                            //if (tmpBootDb)
+                            //{
+                            //    LogManager.Instance.Bug("Vnum {0} duplicated", vnum);
+                            //    DatabaseManager.BootDb = false;
+                            //}
+                            //else
+                            //{
                                 room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum);
                                 LogManager.Instance.Log(LogTypes.Build,
-                                               db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
+                                               GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning room {0}", vnum);
                                 handler.clean_room(room);
-                            }
+                            //}
                         }
                         else
                         {
@@ -570,15 +572,15 @@ namespace SmaugCS.Loaders
 
                         //room.Vnum = vnum;
                         room.Area = area;
-                        DatabaseManager.BootDb = tmpBootDb;
+                       // DatabaseManager.BootDb = tmpBootDb;
 
-                        if (DatabaseManager.BootDb)
-                        {
-                            if (area.LowRoomNumber == 0)
-                                area.LowRoomNumber = vnum;
-                            if (area.HighRoomNumber > 0)
-                                area.HighRoomNumber = vnum;
-                        }
+                        //if (DatabaseManager.BootDb)
+                        //{
+                        //    if (area.LowRoomNumber == 0)
+                       //         area.LowRoomNumber = vnum;
+                       //     if (area.HighRoomNumber > 0)
+                       //         area.HighRoomNumber = vnum;
+                       // }
                         break;
                 }
             } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endroom"));
@@ -688,23 +690,23 @@ namespace SmaugCS.Loaders
                         obj.Value[5] = words[5].ToInt32();
                         break;
                     case "vnum":
-                        bool tmpBootDb = DatabaseManager.BootDb;
+                       // bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
                         if (DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum) != null)
                         {
-                            if (tmpBootDb)
-                            {
-                                LogManager.Instance.Bug("Vnum {0} duplicated", vnum);
-                                DatabaseManager.BootDb = false;
-                            }
-                            else
-                            {
+                            //if (tmpBootDb)
+                            //{
+                           //     LogManager.Instance.Bug("Vnum {0} duplicated", vnum);
+                                //DatabaseManager.BootDb = false;
+                            //}
+                            //else
+                            //{
                                 obj = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum);
                                 LogManager.Instance.Log(LogTypes.Build,
-                                               db.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
+                                               GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning object {0}", vnum);
                                 handler.clean_obj(obj);
-                            }
+                            //}
                         }
                         else
                         {
@@ -712,15 +714,15 @@ namespace SmaugCS.Loaders
                         }
 
                         //obj.Vnum = vnum;
-                        DatabaseManager.BootDb = tmpBootDb;
+                        //DatabaseManager.BootDb = tmpBootDb;
 
-                        if (DatabaseManager.BootDb)
-                        {
-                            if (area.LowObjectNumber == 0)
-                                area.LowObjectNumber = vnum;
-                            if (area.HighObjectNumber > 0)
-                                area.HighObjectNumber = vnum;
-                        }
+                        //if (DatabaseManager.BootDb)
+                        //{
+                         //   if (area.LowObjectNumber == 0)
+                           //     area.LowObjectNumber = vnum;
+                           // if (area.HighObjectNumber > 0)
+                            //    area.HighObjectNumber = vnum;
+                        //}
                         break;
                     case "wflags":
                         flags = proxy.ReadFlagString();

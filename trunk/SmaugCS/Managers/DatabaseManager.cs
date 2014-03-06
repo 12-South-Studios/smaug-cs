@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
-using Realm.Library.Patterns.Repository;
-using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
-using SmaugCS.Extensions;
 using SmaugCS.Language;
-using SmaugCS.Loaders;
 using SmaugCS.Logging;
-using SmaugCS.Lookup;
 using SmaugCS.Repositories;
-using SmaugCS.Weather;
 
 namespace SmaugCS.Managers
 {
@@ -27,34 +20,35 @@ namespace SmaugCS.Managers
         private static DatabaseManager _instance;
         private static readonly object Padlock = new object();
 
-        private readonly List<ListLoader> _loaders = new List<ListLoader>();
-        private ILogManager _logManager;
+        private readonly Dictionary<RepositoryTypes, object> _repositories;
+        public ILogManager LogManager { get; private set; }
 
         private DatabaseManager()
         {
-            ROOMS = new RoomRepository();
-            AREAS = new AreaRepository();
-            OBJECT_INDEXES = new ObjectRepository();
-            MOBILE_INDEXES = new MobileRepository();
-            CHARACTERS = new CharacterRepository();
-            //OBJECTS = new ObjInstanceRepository(Program.MaximumWearLocations, Program.MaximumWearLayers);
-            _liquids = new List<LiquidData>();
-            _herbs = new List<SkillData>();
-            _skills = new List<SkillData>();
-            _specfuns = new List<SpecialFunction>();
-            _commands = new List<CommandData>();
-            _socials = new List<SocialData>();
-            _races = new List<RaceData>();
-            _classes = new List<ClassData>();
-            _deities = new List<DeityData>();
-            _languages = new List<LanguageData>();
-            _clans = new List<ClanData>();
-            _councils = new List<CouncilData>();
+            _repositories = new Dictionary<RepositoryTypes, object>
+                {
+                    {RepositoryTypes.Rooms, new RoomRepository()},
+                    {RepositoryTypes.Areas, new AreaRepository()},
+                    {RepositoryTypes.ObjectTemplates, new ObjectRepository()},
+                    {RepositoryTypes.MobileTemplates, new MobileRepository()},
+                    {RepositoryTypes.Characters, new CharacterRepository()},
+                    {RepositoryTypes.ObjectInstances, new ObjInstanceRepository()},
+                    {RepositoryTypes.Liquids, new GenericRepository<LiquidData>()},
+                    {RepositoryTypes.Skills, new GenericRepository<SkillData>()},
+                    {RepositoryTypes.Herbs, new GenericRepository<SkillData>()},
+                    {RepositoryTypes.SpecFuns, new GenericRepository<SpecialFunction>()},
+                    {RepositoryTypes.Commands, new GenericRepository<CommandData>()},
+                    {RepositoryTypes.Socials, new GenericRepository<SocialData>()},
+                    {RepositoryTypes.Races, new GenericRepository<RaceData>()},
+                    {RepositoryTypes.Classes, new GenericRepository<ClassData>()},
+                    {RepositoryTypes.Deities, new GenericRepository<DeityData>()},
+                    {RepositoryTypes.Languages, new GenericRepository<LanguageData>()},
+                    {RepositoryTypes.Clans, new GenericRepository<ClanData>()},
+                    {RepositoryTypes.Councils, new GenericRepository<CouncilData>()},
+                    {RepositoryTypes.Mixtures, new GenericRepository<MixtureData>()}
+                };
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         public static DatabaseManager Instance
         {
             get
@@ -66,56 +60,224 @@ namespace SmaugCS.Managers
             }
         }
 
-        public static bool BootDb { get; set; }
-        public ITemplateRepository<RoomTemplate> ROOMS { get; private set; }
-        public IRepository<long, AreaData> AREAS { get; private set; }
-        public ITemplateRepository<ObjectTemplate> OBJECT_INDEXES { get; private set; }
-        
-        public ITemplateRepository<MobTemplate> MOBILE_INDEXES { get; private set; }
-        public MobTemplate GetMobTemplate(int vnum)
-        {
-            MobileRepository repo = (MobileRepository)MOBILE_INDEXES;
-
-            MobTemplate found = repo.Get(vnum);
-            if (found == null)
-                throw new EntryNotFoundException("Missing MobTemplate {0}", vnum);
-
-            return found;
-        }
-        
-        public IInstanceRepository<CharacterInstance> CHARACTERS { get; private set; }
-        public IInstanceRepository<ObjectInstance> OBJECTS { get; private set; }
-
+        /// <summary>
+        /// Initializes the singleton with injected values
+        /// </summary>
+        /// <param name="logManager"></param>
         public void Initialize(ILogManager logManager)
         {
-            _logManager = logManager;
+            LogManager = logManager;
+        }
+
+        /// <summary>
+        /// Adds the given object to the repository of the matching entity type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        public void AddToRepository<T>(T obj) where T : Entity
+        {
+            GenericRepository<T> repo = GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)));
+            if (repo.Contains(obj.ID)) return;
+
+            repo.Add(obj.ID, obj);
+            LogManager.Boot("{0} {1} added to repository", typeof(T), obj.ID);
+        }
+
+        /// <summary>
+        /// Generates a new ID using the highest value currently in the repository 
+        /// for the given entity type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public long GenerateNewId<T>() where T : Entity
+        {
+            GenericRepository<T> repo = GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)));
+            return repo.Count == 0 ? 1 : repo.Values.Max(x => x.ID) + 1;
+        }
+
+        private static readonly Dictionary<Type, RepositoryTypes> ObjectTypeToRepoTypeTable = new Dictionary<Type, RepositoryTypes>
+            {
+                {typeof(RoomTemplate), RepositoryTypes.Rooms},
+                {typeof(ObjectTemplate), RepositoryTypes.ObjectTemplates},
+                {typeof(ObjectInstance), RepositoryTypes.ObjectInstances},
+                {typeof(MobTemplate), RepositoryTypes.MobileTemplates},
+                {typeof(AreaData), RepositoryTypes.Areas},
+                {typeof(CharacterInstance), RepositoryTypes.Characters},
+                {typeof(LiquidData), RepositoryTypes.Liquids},
+                {typeof(SkillData), RepositoryTypes.Skills},
+                {typeof(SpecialFunction), RepositoryTypes.SpecFuns},
+                {typeof(CommandData), RepositoryTypes.Commands},
+                {typeof(SocialData), RepositoryTypes.Socials},
+                {typeof(RaceData), RepositoryTypes.Races},
+                {typeof(ClassData), RepositoryTypes.Classes},
+                {typeof(DeityData), RepositoryTypes.Deities},
+                {typeof(LanguageData), RepositoryTypes.Languages},
+                {typeof(ClanData), RepositoryTypes.Clans},
+                {typeof(CouncilData), RepositoryTypes.Councils},
+                {typeof(MixtureData), RepositoryTypes.Mixtures}
+                // TODO: Hints
+            };
+
+        /// <summary>
+        /// Matches the given type to an equivalent enumerated repository type
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
+        private static RepositoryTypes ObjectTypeToRepositoryType(Type objectType)
+        {
+            if (ObjectTypeToRepoTypeTable.ContainsKey(objectType))
+                return ObjectTypeToRepoTypeTable[objectType];
+
+            throw new ArgumentException(string.Format("{0} is not a valid Repository Type", objectType), "objectType");
+        }
+
+        #region Properties
+        public RoomRepository ROOMS
+        {
+            get { return _repositories[RepositoryTypes.Rooms].CastAs<RoomRepository>(); }
+        }
+
+        public AreaRepository AREAS
+        {
+            get { return _repositories[RepositoryTypes.Areas].CastAs<AreaRepository>(); }
+        }
+
+        public ObjectRepository OBJECT_INDEXES
+        {
+            get { return _repositories[RepositoryTypes.ObjectTemplates].CastAs<ObjectRepository>(); }
         }
         
-        public void InitializeDatabase(bool fCopyOver)
+        public MobileRepository MOBILE_INDEXES
         {
-            _logManager.Boot("Initializing the Database");
-            db.SystemData = new SystemData();
+            get { return _repositories[RepositoryTypes.MobileTemplates].CastAs<MobileRepository>(); }
+        }
 
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
-            _logManager.Boot("{0} Commands loaded.", COMMANDS.Count());
-            CommandLookupTable.UpdateCommandFunctionReferences(COMMANDS);
+        public CharacterRepository CHARACTERS
+        {
+            get { return _repositories[RepositoryTypes.Characters].CastAs<CharacterRepository>(); }
+        }
 
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
-            LogManager.Instance.Boot("{0} SpecFuns loaded.", SPEC_FUNS.Count());
-            // TODO: Update function references
+        public ObjInstanceRepository OBJECTS
+        {
+            get { return _repositories[RepositoryTypes.ObjectInstances].CastAs<ObjInstanceRepository>(); }
+        }
 
-            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, LevelConstants.GetLevel("demi"));
-            db.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, LevelConstants.GetLevel("immortal"));
+        public GenericRepository<T> GetRepository<T>(RepositoryTypes type) where T : class
+        {
+            return _repositories.ContainsKey(type) ? _repositories[type].CastAs<GenericRepository<T>>() : null;
+        }
+
+        public GenericRepository<LiquidData> LIQUIDS
+        {
+            get { return GetRepository<LiquidData>(RepositoryTypes.Liquids); }
+        }
+
+        public GenericRepository<SkillData> SKILLS
+        {
+            get { return GetRepository<SkillData>(RepositoryTypes.Skills); }
+        }
+
+        public GenericRepository<SpecialFunction> SPEC_FUNS
+        {
+            get { return GetRepository<SpecialFunction>(RepositoryTypes.SpecFuns); }
+        }
+
+        public GenericRepository<CommandData> COMMANDS
+        {
+            get { return GetRepository<CommandData>(RepositoryTypes.Commands); }
+        }
+
+        public GenericRepository<SocialData> SOCIALS
+        {
+            get { return GetRepository<SocialData>(RepositoryTypes.Socials); }
+        }
+
+        public GenericRepository<LanguageData> LANGUAGES
+        {
+            get { return GetRepository<LanguageData>(RepositoryTypes.Languages); }
+        }
+
+        public GenericRepository<RaceData> RACES
+        {
+            get { return GetRepository<RaceData>(RepositoryTypes.Races); }
+        }
+
+        public GenericRepository<ClassData> CLASSES
+        {
+            get { return GetRepository<ClassData>(RepositoryTypes.Classes); }
+        }
+
+        public GenericRepository<DeityData> DEITIES
+        {
+            get { return GetRepository<DeityData>(RepositoryTypes.Deities); }
+        }
+
+        public GenericRepository<ClanData> CLANS
+        {
+            get { return GetRepository<ClanData>(RepositoryTypes.Clans); }
+        }
+
+        public GenericRepository<CouncilData> COUNCILS
+        {
+            get { return GetRepository<CouncilData>(RepositoryTypes.Councils); }
+        }
+
+        #endregion
+
+        #region Get Methods
+        /// <summary>
+        /// Gets an entity by name from the repository of the given type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T GetEntity<T>(string name) where T : class
+        {
+            return
+                GetRepository<T>(ObjectTypeToRepositoryType(typeof (T)))
+                    .Values.FirstOrDefault(x => x.CastAs<Entity>().Name.EqualsIgnoreCase(name));
+        }
+
+        /// <summary>
+        /// Gets an entity by ID from the repository of the given type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public T GetEntity<T>(long id) where T : class
+        {
+            return
+                GetRepository<T>(ObjectTypeToRepositoryType(typeof (T)))
+                    .Values.FirstOrDefault(x => x.CastAs<Entity>().ID == id);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public T GetEntity<T>(int id) where T : class
+        {
+            return GetEntity<T>(id);
+        }
+        #endregion
+
+        /*public void InitializeDatabase(bool fCopyOver)
+        {
+
+            GameManager.Instance.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, LevelConstants.GetLevel("demi"));
+            GameManager.Instance.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, LevelConstants.GetLevel("immortal"));
             // TODO Do the rest of the system data
 
-            if (!db.load_systemdata(db.SystemData))
+            if (!db.load_systemdata(GameManager.Instance.SystemData))
             {
                 LogManager.Instance.Boot("SystemData not found. Creating new configuration.");
-                db.SystemData.alltimemax = 0;
-                db.SystemData.MudTitle = "(Name not set)";
+                GameManager.Instance.SystemData.alltimemax = 0;
+                GameManager.Instance.SystemData.MudTitle = "(Name not set)";
                 act_wiz.update_timers();
                 //act_wiz.update_calendar();
-                db.save_sysdata(db.SystemData);
+                db.save_sysdata(GameManager.Instance.SystemData);
             }
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
@@ -166,29 +328,29 @@ namespace SmaugCS.Managers
             TimeInfoData timeInfo = timeLoader.LoadTimeInfo();
             if (timeInfo != null)
             {
-                db.GameTime = timeInfo;
+                GameManager.Instance.SetGameTime(timeInfo);
 
                 LogManager.Instance.Boot("Resetting mud time based on current system time.");
-                long lhour = (DateTime.Now.ToFileTimeUtc() - 650336715) / (db.SystemData.PulseTick / db.SystemData.PulsesPerSecond);
-                db.GameTime.Hour = (int)(lhour % db.SystemData.HoursPerDay);
+                long lhour = (DateTime.Now.ToFileTimeUtc() - 650336715) / (GameManager.Instance.SystemData.PulseTick / GameManager.Instance.SystemData.PulsesPerSecond);
+                GameManager.Instance.GameTime.Hour = (int)(lhour % GameManager.Instance.SystemData.HoursPerDay);
 
-                long lday = lhour / db.SystemData.HoursPerDay;
-                db.GameTime.Day = (int)(lday % db.SystemData.DaysPerMonth);
+                long lday = lhour / GameManager.Instance.SystemData.HoursPerDay;
+                GameManager.Instance.GameTime.Day = (int)(lday % GameManager.Instance.SystemData.DaysPerMonth);
 
-                long lmonth = lday / db.SystemData.DaysPerMonth;
-                db.GameTime.Month = (int)(lmonth % db.SystemData.MonthsPerYear);
+                long lmonth = lday / GameManager.Instance.SystemData.DaysPerMonth;
+                GameManager.Instance.GameTime.Month = (int)(lmonth % GameManager.Instance.SystemData.MonthsPerYear);
 
-                db.GameTime.Year = (int)(lmonth % db.SystemData.MonthsPerYear);
+                GameManager.Instance.GameTime.Year = (int)(lmonth % GameManager.Instance.SystemData.MonthsPerYear);
             }
 
-            db.GameTime.SetTimeOfDay(db.SystemData);
+            GameManager.Instance.GameTime.SetTimeOfDay(GameManager.Instance.SystemData);
 
             WeatherManager.Instance.InitializeWeatherMap(Program.WEATHER_SIZE_X, Program.WEATHER_SIZE_Y);
-            /*if (!WeatherManager.Instance.Weather.Load())
-            {
-                LogManager.Instance.Boot("Failed to load WeatherMap");
-                // TODO Fatal
-            }*/
+            //if (!WeatherManager.Instance.Weather.Load())
+            //{
+            //    LogManager.Instance.Boot("Failed to load WeatherMap");
+            //    // TODO Fatal
+            //}
 
             //HolidayLoader hLoader = new HolidayLoader();
             //hLoader.Load();
@@ -276,290 +438,7 @@ namespace SmaugCS.Managers
 
             // TODO init_chess();
 
-        }
+        }*/
 
-        #region Liquids
-        private readonly List<LiquidData> _liquids; 
-        public IEnumerable<LiquidData> LIQUIDS { get { return _liquids; } }
-        public LiquidData GetLiquid(string str)
-        {
-            return str.IsNumber()
-                ? LIQUIDS.FirstOrDefault(x => x.Vnum == str.ToInt32())
-                : LIQUIDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
-        }
-        public LiquidData GetLiquid(int vnum)
-        {
-            return LIQUIDS.FirstOrDefault(x => x.Vnum == vnum);
-        }
-
-        public void AddLiquid(LiquidData liquid)
-        {
-            if (!LIQUIDS.Contains(liquid))
-            {
-                _liquids.Add(liquid);
-                _logManager.Boot("Liquid {0} added", liquid.Name);
-            }
-        }
-        #endregion
-
-        #region Herbs
-        private readonly List<SkillData> _herbs;
-        public IEnumerable<SkillData> HERBS { get { return _herbs; } }
-        public SkillData GetHerb(string name)
-        {
-            return HERBS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-        }
-        public bool IsValidHerb(int sn)
-        {
-            return sn >= 0 && sn < HERBS.Count() && HERBS.ToList()[sn] != null && !HERBS.ToList()[sn].Name.IsNullOrEmpty();
-        }
-        public void AddHerb(SkillData herb)
-        {
-            if (!HERBS.Contains(herb))
-            {
-                _herbs.Add(herb);
-                _logManager.Boot("Herb {0} added", herb.Name);
-            }
-        }
-        #endregion
-
-        #region Skills
-
-        private readonly List<SkillData> _skills;
-        public IEnumerable<SkillData> SKILLS { get { return _skills; } }
-        public SkillData GetSkill(string name)
-        {
-            return SKILLS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public SkillData GetSkill(int skillNumber)
-        {
-            return SKILLS.FirstOrDefault(x => x.ID == skillNumber);
-        }
-
-        public IEnumerable<SkillData> GetSkills(SkillTypes type)
-        {
-            return SKILLS.Where(x => x.Type == type);
-        }
-
-        /// <summary>
-        /// Lookup a skill by name (or partial)
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public int LookupSkill(string name)
-        {
-            // Try to find an exact match for this skill
-            SkillData skill = SKILLS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-            if (skill == null)
-            {
-                // Try to find a prefix match
-                IEnumerable<SkillData> skills = SKILLS.Where(x => x.Name.StartsWithIgnoreCase(name));
-                if (!skills.Any())
-                {
-                    LogManager.Instance.Bug("Skill entry {0} not found", name);
-                    return -1;
-                }
-
-                skill = skills.First();
-            }
-
-            return skill.ID;
-        }
-
-        public int AddSkill(string name)
-        {
-            if (LookupSkill(name) > -1)
-                return -1;
-
-            int newId = SKILLS.Max(x => x.ID) + 1;
-            AddSkill(new SkillData(Program.MAX_CLASS, Program.MAX_RACE) { Name = name, ID = newId });
-            return newId;
-        }
-
-        public void AddSkill(SkillData skill)
-        {
-            if (!SKILLS.Contains(skill))
-            {
-                _skills.Add(skill);
-                _logManager.Boot("Skill {0} added", skill.Name);
-            }
-        }
-        #endregion
-
-        #region SpecFuns
-        private readonly List<SpecialFunction> _specfuns;
-        public IEnumerable<SpecialFunction> SPEC_FUNS { get { return _specfuns; } }
-        public SpecialFunction GetSpecFun(string name)
-        {
-            return SPEC_FUNS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-        }
-        public void AddSpecFun(SpecialFunction specfun)
-        {
-            if (!SPEC_FUNS.Contains(specfun))
-            {
-                _specfuns.Add(specfun);
-                _logManager.Boot("SpecFun {0} added", specfun.Name);
-            }
-        }
-        #endregion
-
-        #region Commands
-        private readonly List<CommandData> _commands;
-        public IEnumerable<CommandData> COMMANDS { get { return _commands; } }
-        public CommandData GetCommand(string command)
-        {
-            return COMMANDS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(command));
-        }
-        public void AddCommand(CommandData command)
-        {
-            if (!COMMANDS.Contains(command))
-            {
-                _commands.Add(command);
-                _logManager.Boot("Command {0} added", command.Name);
-            }
-        }
-        #endregion
-
-        #region Socials
-        private readonly List<SocialData> _socials;
-        public IEnumerable<SocialData> SOCIALS { get { return _socials; } } 
-        public SocialData GetSocial(string command)
-        {
-            return SOCIALS.FirstOrDefault(x => x.Name.EqualsIgnoreCase(command));
-        }
-        public void AddSocial(SocialData social)
-        {
-            if (!SOCIALS.Contains(social))
-            {
-                _socials.Add(social);
-                _logManager.Boot("Social {0} added", social.Name);
-            }
-        }
-        #endregion
-
-        #region Languages
-        private readonly List<LanguageData> _languages;
-        public IEnumerable<LanguageData> LANGUAGES { get { return _languages; } }
-        public LanguageData GetLanguage(string name)
-        {
-            return LANGUAGES.FirstOrDefault(x => x.Name.Equals(name));
-        }
-        public int GetLanguageCount(int languages)
-        {
-            return GameConstants.LanguageTable.Keys.ToList()
-                     .Where(x => x != (int)LanguageTypes.Clan
-                         && x != (int)LanguageTypes.Unknown)
-                     .Select(x => (languages & x) > 0).Count();
-        }
-        public void AddLanguage(LanguageData lang)
-        {
-            if (!LANGUAGES.Contains(lang))
-            {
-                _languages.Add(lang);
-                _logManager.Boot("Language {0} added", lang.Name);
-            }
-        }
-        #endregion
-
-        #region Races
-        private readonly List<RaceData> _races;
-        public IEnumerable<RaceData> RACES { get { return _races; } }
-        public RaceData GetRace(RaceTypes type)
-        {
-            return RACES.FirstOrDefault(x => x.Type == type);
-        }
-        public RaceData GetRace(string name)
-        {
-            return RACES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public RaceData GetRace(int id)
-        {
-            return RACES.FirstOrDefault(x => (int)x.Type == id);
-        }
-        public void AddRace(RaceData race)
-        {
-            if (!RACES.Contains(race))
-            {
-                _races.Add(race);
-                _logManager.Boot("Race {0} added", race.Name);
-            }
-        }
-        #endregion
-
-        #region Classes
-        private readonly List<ClassData> _classes;
-        public IEnumerable<ClassData> CLASSES { get { return _classes; } } 
-        public ClassData GetClass(ClassTypes type)
-        {
-            return CLASSES.FirstOrDefault(x => x.Type == type);
-        }
-        public ClassData GetClass(string name)
-        {
-            return CLASSES.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public ClassData GetClass(int id)
-        {
-            return CLASSES.FirstOrDefault(x => (int)x.Type == id);
-        }
-        public void AddClass(ClassData cls)
-        {
-            if (!_classes.Contains(cls))
-            {
-                _classes.Add(cls);
-                _logManager.Boot("Class {0} added", cls.Name);
-            }
-        }
-        #endregion
-
-        #region Deities
-        private readonly List<DeityData> _deities; 
-        public IEnumerable<DeityData> DEITIES { get { return _deities; } }
-        public DeityData GetDeity(string name)
-        {
-            return DEITIES.Single(x => x.Name.EqualsIgnoreCase(name));
-        }
-
-        public void AddDeity(DeityData deity)
-        {
-            if (!DEITIES.Contains(deity))
-            {
-                _deities.Add(deity);
-                _logManager.Boot("Deity {0} added", deity.Name);
-            }
-        }
-        #endregion
-        
-        #region Organizations
-        private readonly List<ClanData> _clans;
-        public IEnumerable<ClanData> CLANS { get { return _clans; } }
-        public ClanData GetClan(string name)
-        {
-            return CLANS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public void AddClan(ClanData clan)
-        {
-            if (!CLANS.Contains(clan))
-            {
-                _clans.Add(clan);
-                _logManager.Boot("Clan {0} added", clan.Name);
-            }
-        }
-
-        private readonly List<CouncilData> _councils;
-        public IEnumerable<CouncilData> COUNCILS { get { return _councils; } }
-        public CouncilData GetCouncil(string name)
-        {
-            return COUNCILS.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-        public void AddCouncil(CouncilData council)
-        {
-            if (!COUNCILS.Contains(council))
-            {
-                _councils.Add(council);
-                _logManager.Boot("Council {0} added", council.Name);
-            }
-        }
-        #endregion
     }
 }

@@ -1,11 +1,15 @@
 ﻿using System;
+using Realm.Library.Common;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data
 {
-    public class SpecialFunction
+    public class SpecialFunction : Entity
     {
-        public string Name { get; set; }
+        public SpecialFunction(long id, string name) : base(id, name)
+        {
+        }
+
         public Func<CharacterInstance, bool> Value { get; set; }
     }
 }

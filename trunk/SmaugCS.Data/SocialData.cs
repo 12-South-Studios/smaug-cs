@@ -1,8 +1,13 @@
-﻿namespace SmaugCS.Data
+﻿using Realm.Library.Common;
+
+namespace SmaugCS.Data
 {
-    public class SocialData
+    public class SocialData : Entity
     {
-        public string Name { get; set; }
+        public SocialData(long id, string name) : base(id, name)
+        {
+        }
+
         public string CharNoArg { get; set; }
         public string OthersNoArg { get; set; }
         public string CharFound { get; set; }

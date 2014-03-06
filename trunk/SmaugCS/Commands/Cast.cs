@@ -35,18 +35,18 @@ namespace SmaugCS.Commands
             }
 
             if (_skill != null && _skill.Name.EqualsIgnoreCase("ventriloquate"))
-                magic.say_spell(ch, _skill.ID);
+                magic.say_spell(ch, (int)_skill.ID);
 
             if (!_dontWait)
                 Macros.WAIT_STATE(ch, _skill.Rounds);
 
-            if (!magic.process_spell_components(ch, _skill.ID))
+            if (!magic.process_spell_components(ch, (int)_skill.ID))
             {
                 if (ch.IsVampire())
                     update.gain_condition(ch, ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
                 else if (ch.Level < LevelConstants.GetLevel("immortal"))
                     ch.CurrentMana -= _mana/2;
-                skills.learn_from_failure(ch, _skill.ID);
+                skills.learn_from_failure(ch, (int)_skill.ID);
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace SmaugCS.Commands
             int sn = ch.tempnum;
             if (Macros.IS_VALID_SN(sn))
             {
-                _skill = DatabaseManager.Instance.GetSkill(sn);
+                _skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
                 if (_skill == null)
                 {
                     

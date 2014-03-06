@@ -15,7 +15,7 @@ namespace SmaugCS.Data
         public DeityData CurrentDeity { get; set; }
         //public BoardData game_board { get; set; }
         public nuisance_data Nuisance { get; set; }
-        public killed_data[] killed { get; set; }
+        public List<KilledData> Killed { get; private set; }
 
         public string homepage { get; set; }
         public string clan_name { get; set; }
@@ -73,9 +73,9 @@ namespace SmaugCS.Data
         public int Year { get; set; }
         public int timezone { get; set; }
 
-        public PlayerData(int maxKills, int maxSkills, int maxPersonal)
+        public PlayerData(int maxSkills, int maxPersonal)
         {
-            killed = new killed_data[maxKills];
+            Killed = new List<KilledData>();
             ConditionTable = new Dictionary<ConditionTypes, int>();
             Learned = new int[maxSkills];
             special_skills = new SkillData[maxPersonal];

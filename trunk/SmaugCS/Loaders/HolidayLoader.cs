@@ -43,7 +43,7 @@ namespace SmaugCS.Loaders
                 List<TextSection> sections = proxy.ReadSections(new[] { "#HOLIDAY" }, new[] { "*" }, null, "END");
                 foreach (TextSection section in sections)
                 {
-                    if (dayCount >= db.SystemData.MaxHolidays)
+                    if (dayCount >= GameManager.Instance.SystemData.MaxHolidays)
                     {
                         LogManager.Instance.Bug("Exceeded maximum holidays {0}", dayCount);
                         return;

@@ -111,17 +111,17 @@ namespace SmaugCS.Weather
                 {
                     WeatherCell cell = new WeatherCell
                                            {
-                                               Hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugCS.Common.SmaugRandom.Between(0, 1))
+                                               Hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
                                            };
 
-                    cell.ChangeTemperature(SmaugCS.Common.SmaugRandom.Between(-30, 100));
-                    cell.ChangePressure(SmaugCS.Common.SmaugRandom.Between(0, 100));
-                    cell.ChangeCloudCover(SmaugCS.Common.SmaugRandom.Between(0, 100));
-                    cell.ChangeHumidity(SmaugCS.Common.SmaugRandom.Between(0, 100));
-                    cell.ChangePrecip(SmaugCS.Common.SmaugRandom.Between(0, 100));
-                    cell.ChangeWindSpeedX(SmaugCS.Common.SmaugRandom.Between(-100, 100));
-                    cell.ChangeWindSpeedY(SmaugCS.Common.SmaugRandom.Between(-100, 100));
-                    cell.ChangeEnergy(SmaugCS.Common.SmaugRandom.Between(0, 100));
+                    cell.ChangeTemperature(SmaugRandom.Between(-30, 100));
+                    cell.ChangePressure(SmaugRandom.Between(0, 100));
+                    cell.ChangeCloudCover(SmaugRandom.Between(0, 100));
+                    cell.ChangeHumidity(SmaugRandom.Between(0, 100));
+                    cell.ChangePrecip(SmaugRandom.Between(0, 100));
+                    cell.ChangeWindSpeedX(SmaugRandom.Between(-100, 100));
+                    cell.ChangeWindSpeedY(SmaugRandom.Between(-100, 100));
+                    cell.ChangeEnergy(SmaugRandom.Between(0, 100));
 
                     Map[x, y] = cell;
                 }
@@ -336,14 +336,14 @@ namespace SmaugCS.Weather
 
         private void PickAndUpdateRandomCell()
         {
-            int x = SmaugCS.Common.SmaugRandom.Between(0, Width);
-            int y = SmaugCS.Common.SmaugRandom.Between(0, Height);
+            int x = SmaugRandom.Between(0, Width);
+            int y = SmaugRandom.Between(0, Height);
 
             WeatherCell cell = GetCellFromMap(x, y);
 
-            int rand = SmaugCS.Common.SmaugRandom.Between(-10, 10);
+            int rand = SmaugRandom.Between(-10, 10);
 
-            switch (SmaugCS.Common.SmaugRandom.RollDice(1, 8))
+            switch (SmaugRandom.RollDice(1, 8))
             {
                 case 1:
                     cell.ChangeCloudCover(rand);
@@ -386,22 +386,22 @@ namespace SmaugCS.Weather
                     // Take day/night into account for temperatue changes
                     if (GameTime.Sunlight == SunPositionTypes.Sunrise
                         || GameTime.Sunlight == SunPositionTypes.Light)
-                        delta.ChangeTemperature((SmaugCS.Common.SmaugRandom.Between(-1, 2) + (((cell.CloudCover / 10) > 5) ? -1 : 1)));
+                        delta.ChangeTemperature((SmaugRandom.Between(-1, 2) + (((cell.CloudCover / 10) > 5) ? -1 : 1)));
                     else
-                        delta.ChangeTemperature((SmaugCS.Common.SmaugRandom.Between(-2, 0) + (((cell.CloudCover / 10) > 5) ? 2 : -3)));
+                        delta.ChangeTemperature((SmaugRandom.Between(-2, 0) + (((cell.CloudCover / 10) > 5) ? 2 : -3)));
 
                     // Precipitation drops humidity by 5% of precip level
                     if (cell.Precipitation > 40)
                         delta.ChangeHumidity(0 - (cell.Precipitation / 20));
                     else
-                        delta.ChangeHumidity(SmaugCS.Common.SmaugRandom.Between(0, 3));
+                        delta.ChangeHumidity(SmaugRandom.Between(0, 3));
 
                     // Humidity and pressure can affect precip level
                     int humidityAndPressure = cell.Humidity + cell.Pressure;
                     if ((humidityAndPressure / 2) >= 60)
                         cell.ChangePrecip(cell.Humidity / 10);
                     else if (((humidityAndPressure / 2) < 60) && ((humidityAndPressure / 2) > 40))
-                        cell.ChangePrecip(SmaugCS.Common.SmaugRandom.Between(-2, 2));
+                        cell.ChangePrecip(SmaugRandom.Between(-2, 2));
                     else
                         cell.ChangePrecip(0 - (cell.Humidity / 5));
 
@@ -410,7 +410,7 @@ namespace SmaugCS.Weather
                     if ((humidityAndPrecip / 2) >= 60)
                         delta.ChangeCloudCover(0 - (cell.Humidity / 10));
                     else if (((humidityAndPrecip / 2) < 60) && ((humidityAndPrecip / 2) > 40))
-                        delta.ChangeCloudCover(SmaugCS.Common.SmaugRandom.Between(-2, 2));
+                        delta.ChangeCloudCover(SmaugRandom.Between(-2, 2));
                     else
                         delta.ChangeCloudCover(cell.Humidity / 5);
 
@@ -476,7 +476,7 @@ namespace SmaugCS.Weather
                                 delta.ChangeHumidity(0 - humidityDelta);
                             }
 
-                            delta.ChangeEnergy(SmaugCS.Common.SmaugRandom.Between(-10, 10));
+                            delta.ChangeEnergy(SmaugRandom.Between(-10, 10));
                         }
                     }
 
@@ -485,7 +485,7 @@ namespace SmaugCS.Weather
                     if (cell.Precipitation >= 70)
                         delta.ChangePressure(0 - (cell.Pressure / 2));
                     else if (cell.Pressure < 70 && cell.Precipitation > 30)
-                        delta.ChangePressure(SmaugCS.Common.SmaugRandom.Between(-5, 5));
+                        delta.ChangePressure(SmaugRandom.Between(-5, 5));
                     else
                         delta.ChangePressure(cell.Pressure / 2);
                 }
@@ -514,52 +514,17 @@ namespace SmaugCS.Weather
                         continue;
                     }
 
-                    cell.ChangeTemperature(SmaugCS.Common.SmaugRandom.Between(rangeData.Temperature[0], rangeData.Temperature[1]));
-                    cell.ChangePressure(SmaugCS.Common.SmaugRandom.Between(rangeData.Pressure[0], rangeData.Pressure[1]));
-                    cell.ChangeCloudCover(SmaugCS.Common.SmaugRandom.Between(rangeData.CloudCover[0], rangeData.CloudCover[1]));
-                    cell.ChangeHumidity(SmaugCS.Common.SmaugRandom.Between(rangeData.Humidity[0], rangeData.Humidity[1]));
-                    cell.ChangePrecip(SmaugCS.Common.SmaugRandom.Between(rangeData.Precipitation[0], rangeData.Precipitation[1]));
-                    cell.ChangeEnergy(SmaugCS.Common.SmaugRandom.Between(rangeData.Energy[0], rangeData.Energy[1]));
-                    cell.ChangeWindSpeedX(SmaugCS.Common.SmaugRandom.Between(rangeData.WindSpeedX[0], rangeData.WindSpeedX[1]));
-                    cell.ChangeWindSpeedY(SmaugCS.Common.SmaugRandom.Between(rangeData.WindSpeedY[0], rangeData.WindSpeedY[1]));
+                    cell.ChangeTemperature(SmaugRandom.Between(rangeData.Temperature[0], rangeData.Temperature[1]));
+                    cell.ChangePressure(SmaugRandom.Between(rangeData.Pressure[0], rangeData.Pressure[1]));
+                    cell.ChangeCloudCover(SmaugRandom.Between(rangeData.CloudCover[0], rangeData.CloudCover[1]));
+                    cell.ChangeHumidity(SmaugRandom.Between(rangeData.Humidity[0], rangeData.Humidity[1]));
+                    cell.ChangePrecip(SmaugRandom.Between(rangeData.Precipitation[0], rangeData.Precipitation[1]));
+                    cell.ChangeEnergy(SmaugRandom.Between(rangeData.Energy[0], rangeData.Energy[1]));
+                    cell.ChangeWindSpeedX(SmaugRandom.Between(rangeData.WindSpeedX[0], rangeData.WindSpeedX[1]));
+                    cell.ChangeWindSpeedY(SmaugRandom.Between(rangeData.WindSpeedY[0], rangeData.WindSpeedY[1]));
                 }
             }
         }
-
-        /*public bool Load()
-        {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(WeatherFile)))
-            {
-                do
-                {
-                    char letter = Convert.ToChar(proxy.Read());
-                    if (letter == '*')
-                    {
-                        proxy.ReadToEndOfLine();
-                        continue;
-                    }
-
-                    if (letter != '#')
-                    {
-                        LogManager.Instance.Bug("%s: # not found (%c)", "load_weathermap", letter);
-                        return false;
-                    }
-
-                    string word = proxy.ReadNextWord();
-                    if (word.EqualsIgnoreCase("cell"))
-                    {
-                        WeatherCell cell = GetCellFromMap(proxy.ReadNumber(), proxy.ReadNumber());
-                        cell.Load(proxy);
-                    }
-                    else if (word.EqualsIgnoreCase("end"))
-                        break;
-                    else
-                        LogManager.Instance.Bug("No match for %s", word);
-
-                } while (!proxy.EndOfStream);
-            }
-            return true;
-        }*/
 
         public void Update(TimeInfoData GameTime, bool save = false)
         {

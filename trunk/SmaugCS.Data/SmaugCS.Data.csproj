@@ -97,7 +97,7 @@
     <Compile Include="Interfaces\ILuaManager.cs" />
     <Compile Include="Interfaces\IPersistable.cs" />
     <Compile Include="Interfaces\ITemplateRepository.cs" />
-    <Compile Include="killed_data.cs" />
+    <Compile Include="KilledData.cs" />
     <Compile Include="LiquidData.cs" />
     <Compile Include="mccp_data.cs" />
     <Compile Include="MixtureData.cs" />

@@ -31,19 +31,19 @@ namespace SmaugCS
                 return;
             }
 
-            int sunpos = (Program.MAP_WIDTH * (24 - db.GameTime.Hour) / 24);
-            int moonpos = (sunpos + db.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
+            int sunpos = (Program.MAP_WIDTH * (24 - GameManager.Instance.GameTime.Hour) / 24);
+            int moonpos = (sunpos + GameManager.Instance.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
             int moonphase = ((((Program.MAP_WIDTH + moonpos - sunpos) % Program.MAP_WIDTH) + (Program.MAP_WIDTH / 16)) * 8) /
                             Program.MAP_WIDTH;
             if (moonphase > 4)
                 moonphase -= 8;
-            int starpos = (sunpos + Program.MAP_WIDTH * db.GameTime.Month / Program.NUM_MONTHS) % Program.MAP_WIDTH;
+            int starpos = (sunpos + Program.MAP_WIDTH * GameManager.Instance.GameTime.Month / Program.NUM_MONTHS) % Program.MAP_WIDTH;
 
             StringBuilder sb = new StringBuilder();
 
             for (int line = 0; line < Program.MAP_HEIGHT; line++)
             {
-                if ((db.GameTime.Hour >= 6 && db.GameTime.Hour <= 18)
+                if ((GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
                     && (line < 3 || line >= 6))
                     continue;
 
@@ -51,11 +51,11 @@ namespace SmaugCS
 
                 for (int i = 0; i <= Program.MAP_WIDTH; i++)
                 {
-                    if ((db.GameTime.Hour >= 6 && db.GameTime.Hour <= 18)
+                    if ((GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
                         && (moonpos >= Program.MAP_WIDTH / 4 - 2)
                         && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                         && (i >= moonpos - 2) && (i <= moonpos + 2)
-                        && ((sunpos == moonpos && db.GameTime.Hour == 12) || moonphase != 0)
+                        && ((sunpos == moonpos && GameManager.Instance.GameTime.Hour == 12) || moonphase != 0)
                         && (WeatherManager.Instance.Weather.MoonMap[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
@@ -77,7 +77,7 @@ namespace SmaugCS
                     }
                     else
                     {
-                        if (db.GameTime.Hour >= 6 && db.GameTime.Hour <= 18)
+                        if (GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
                         {
                             if (i >= sunpos - 2 && i <= sunpos + 2)
                                 sb.AppendFormat("&Y{0}",
@@ -193,8 +193,12 @@ namespace SmaugCS
             int sms = ((ms + 10) / 5).GetNumberThatIsBetween(1, 20);
 
             return fShort
-                ? GameConstants.HallucinatedObjectShort[SmaugRandom.Between(6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1]
-                : GameConstants.HallucinatedObjectLong[SmaugRandom.Between(6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1];
+                       ? LookupManager.Instance.GetLookup("HallucinatedShortNames",
+                                                          (SmaugRandom.Between(
+                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1))
+                       : LookupManager.Instance.GetLookup("HallucinatedLongNames",
+                                                          (SmaugRandom.Between(
+                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1));
         }
 
         public static string num_punct(int foo)
@@ -751,7 +755,7 @@ namespace SmaugCS
                         color.send_to_char(race.WhereNames[i], ch);
                     }
                     else
-                        color.send_to_char(GameConstants.WhereNames[i], ch);
+                        color.send_to_char(LookupManager.Instance.GetLookup("WhereNames", i), ch);
                     color.send_to_char(format_obj_to_char(obj, ch, true), ch);
                     color.send_to_char("\r\n", ch);
                 }

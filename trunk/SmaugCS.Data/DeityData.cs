@@ -14,10 +14,9 @@ namespace SmaugCS.Data
     /// <summary>
     /// 
     /// </summary>
-    public class DeityData : IPersistable
+    public class DeityData : Entity, IPersistable
     {
         public string Filename { get; set; }
-        public string Name { get; set; }
         public string Description { get; set; }
         public int Alignment { get; set; }
         public int Worshippers { get; set; }
@@ -61,9 +60,8 @@ namespace SmaugCS.Data
         /// 
         /// </summary>
         /// <param name="filename"></param>
-        public DeityData(string filename)
+        public DeityData(long id, string name) : base(id, name)
         {
-            Filename = filename;
         }
 
         /// <summary>

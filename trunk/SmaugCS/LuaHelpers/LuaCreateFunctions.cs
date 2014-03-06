@@ -105,32 +105,29 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateLiquid", "Creates a new Liquid", "Liquid ID", "Liquid Name")]
         public static LiquidData LuaCreateLiquid(int id, string name)
         {
-            LiquidData newLiquid = new LiquidData {Vnum = id, Name = name};
+            LiquidData newLiquid = new LiquidData(id, name);
 
             _luaManager.Proxy.CreateTable("liquid");
             AddLastObject(newLiquid);
-            _dbManager.AddLiquid(newLiquid);
+            _dbManager.AddToRepository(newLiquid);
 
             return newLiquid;
         }
 
-        [LuaFunction("LCreateSkill", "Creates a new skill", "Skill Name", "Skill Type")]
-        public static SkillData LuaCreateSkill(string name, string type)
+        [LuaFunction("LCreateSkill", "Creates a new skill", "ID of the skill", "Skill Name", "Skill Type")]
+        public static SkillData LuaCreateSkill(int id, string name, string type)
         {
-            SkillData newSkill = new SkillData(99, 99)
-                {
-                    Name = name,
-                    Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type)
-                };
+            SkillData newSkill = new SkillData(id, name)
+                { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
 
             if (type.EqualsIgnoreCase("herb"))
             {
-                _dbManager.AddHerb(newSkill);
+                _dbManager.AddToRepository(newSkill);
                 _luaManager.Proxy.CreateTable("herb");
             }
             else
             {
-                _dbManager.AddSkill(newSkill);
+                _dbManager.AddToRepository(newSkill);
                 _luaManager.Proxy.CreateTable("skill");
             }
 
@@ -158,18 +155,15 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSpecFun", "Creates a new special function", "Name of the function")]
         public static SpecialFunction LuaCreateSpecialFunction(string name)
         {
-            SpecialFunction newSpecFun = new SpecialFunction
-                {
-                    Name = name,
-                    Value = SpecFunHandler.GetSpecFunReference(name)
-                };
+            SpecialFunction newSpecFun = new SpecialFunction(DatabaseManager.Instance.GenerateNewId<SpecialFunction>(),
+                                                             name) {Value = SpecFunHandler.GetSpecFunReference(name)};
 
             if (newSpecFun.Value == null)
                 throw new EntryNotFoundException("SpecFun {0} not found", name);
 
             _luaManager.Proxy.CreateTable("specfun");
             AddLastObject(newSpecFun);
-            _dbManager.AddSpecFun(newSpecFun);
+            _dbManager.AddToRepository(newSpecFun);
 
             return newSpecFun;
         }
@@ -179,9 +173,8 @@ namespace SmaugCS.LuaHelpers
         public static CommandData LuaCreateCommand(string name, string function, int position, int level, int log,
                                                    int flags)
         {
-            CommandData newCommand = new CommandData
+            CommandData newCommand = new CommandData(_dbManager.GenerateNewId<CommandData>(), name)
                 {
-                    Name = name,
                     Flags = flags,
                     Position = position,
                     Level = level,
@@ -192,7 +185,7 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("command");
             AddLastObject(newCommand);
-            _dbManager.AddCommand(newCommand);
+            _dbManager.AddToRepository(newCommand);
 
             return newCommand;
         }
@@ -200,11 +193,11 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSocial", "Creates a new Social", "Name of the social")]
         public static SocialData LuaCreateSocial(string name)
         {
-            SocialData newSocial = new SocialData() {Name = name};
+            SocialData newSocial = new SocialData(_dbManager.GenerateNewId<SocialData>(), name);
 
             _luaManager.Proxy.CreateTable("social");
             AddLastObject(newSocial);
-            _dbManager.AddSocial(newSocial);
+            _dbManager.AddToRepository(newSocial);
             _logManager.Boot("Social {0} added", newSocial.Name);
 
             return newSocial;
@@ -231,15 +224,14 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateClass", "Creates a new class", "Name of the class", "Numeric type of the class")]
         public static ClassData LuaCreateClass(string name, int type)
         {
-            ClassData newClass = new ClassData
+            ClassData newClass = new ClassData(_dbManager.GenerateNewId<ClassData>(), name)
                 {
-                    Name = name, 
                     Type = EnumerationExtensions.GetEnum<ClassTypes>(type)
                 };
 
             _luaManager.Proxy.CreateTable("class");
             AddLastObject(newClass);
-            _dbManager.AddClass(newClass);
+            _dbManager.AddToRepository(newClass);
             
             return newClass;
         }
@@ -247,15 +239,14 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateRace", "Creates a new Race", "Name of the Race", "Numeric type of the race")]
         public static RaceData LuaCreateRace(string name, int type)
         {
-            RaceData newRace = new RaceData()
+            RaceData newRace = new RaceData(_dbManager.GenerateNewId<RaceData>(), name)
                 {
-                    Name = name, 
                     Type = EnumerationExtensions.GetEnum<RaceTypes>(type)
                 };
 
             _luaManager.Proxy.CreateTable("race");
             AddLastObject(newRace);
-            _dbManager.AddRace(newRace);
+            _dbManager.AddToRepository(newRace);
 
             return newRace;
         }
@@ -263,11 +254,11 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateClan", "Creates a new Clan", "Name of the clan")]
         public static ClanData LuaCreateClan(string name)
         {
-            ClanData newClan = new ClanData {Name = name};
+            ClanData newClan = new ClanData(_dbManager.GenerateNewId<ClanData>(), name);
 
             _luaManager.Proxy.CreateTable("clan");
             AddLastObject(newClan);
-            _dbManager.AddClan(newClan);
+            _dbManager.AddToRepository(newClan);
 
             return newClan;
         }
@@ -275,23 +266,24 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateDeity", "Creates a new Deity", "Name of the Deity")]
         public static DeityData LuaCreateDeity(string name)
         {
-            DeityData newDeity = new DeityData(string.Empty) {Name = name};
+            DeityData newDeity = new DeityData(_dbManager.GenerateNewId<DeityData>(), name);
 
             _luaManager.Proxy.CreateTable("deity");
             AddLastObject(newDeity);
-            _dbManager.AddDeity(newDeity);
+            _dbManager.AddToRepository(newDeity);
 
             return newDeity;
         }
 
-        [LuaFunction("LCreateLanguage", "Creates a new Language", "Name of the language")]
-        public static LanguageData LuaCreateLanguage(string name)
+        [LuaFunction("LCreateLanguage", "Creates a new Language", "Name of the language", "Language Type")]
+        public static LanguageData LuaCreateLanguage(string name, string type)
         {
-            LanguageData newLang = new LanguageData {Name = name};
+            LanguageData newLang = new LanguageData(_dbManager.GenerateNewId<LanguageData>(), name,
+                                                    EnumerationExtensions.GetEnumIgnoreCase<LanguageTypes>(type));
 
             _luaManager.Proxy.CreateTable("lang");
             AddLastObject(newLang);
-            _dbManager.AddLanguage(newLang);
+            _dbManager.AddToRepository(newLang);
 
             return newLang;
         }

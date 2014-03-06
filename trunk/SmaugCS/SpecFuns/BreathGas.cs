@@ -18,7 +18,7 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsInCombatPosition())
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetSkill("gas breath");
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("gas breath");
             if (skill == null || skill.SpellFunction == null)
                 return false;
 
