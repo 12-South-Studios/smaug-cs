@@ -127,6 +127,8 @@ namespace SmaugCS.Data.Instances
             Colors = new Dictionary<ATTypes, char>();
             SavingThrows = new SavingThrowData();
             LuaVM = new LuaInterfaceProxy();
+            Act = new ExtendedBitvector();
+            AffectedBy = new ExtendedBitvector();
         }
 
         ~CharacterInstance()

@@ -176,6 +176,7 @@
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogWrapper.cs" />
     <Compile Include="Objects\GameSingleton.cs" />
+    <Compile Include="Objects\TinyTypeBase.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="CommonTimer.cs" />
     <Compile Include="Security\Password.cs" />

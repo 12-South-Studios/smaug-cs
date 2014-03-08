@@ -49,8 +49,8 @@ namespace SmaugCS
 
         private static void UpdateCharacterBits(CharacterInstance ch)
         {
-            if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.AffectedNum)
-                ch.AffectedBy.SetBits(ch.PlayerData.CurrentDeity.AffectedBy);
+            //if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.AffectedNum)
+            //    ch.AffectedBy.SetBits(ch.PlayerData.CurrentDeity.AffectedBy);
             if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.ElementNum)
                 ch.Resistance.SetBit(ch.PlayerData.CurrentDeity.Element);
             if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)

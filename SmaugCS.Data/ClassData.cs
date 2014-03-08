@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
@@ -69,7 +70,7 @@ namespace SmaugCS.Data
         public void AddSkill(string name, int level, int adept)
         {
             if (Skills.Any(x => x.Skill.EqualsIgnoreCase(name)))
-                return;
+                throw new InvalidDataException(string.Format("Skill {0} is already found on Class {1}", name, Name));
 
             ClassSkillAdeptData data = new ClassSkillAdeptData
                 {

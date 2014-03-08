@@ -107,6 +107,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Ban\Ban.cs" />
+    <Compile Include="Commands\Player\Affected.cs" />
+    <Compile Include="Commands\Player\Equipment.cs" />
+    <Compile Include="Commands\Player\Gold.cs" />
+    <Compile Include="Commands\Player\Inventory.cs" />
+    <Compile Include="Commands\Player\Level.cs" />
+    <Compile Include="Commands\Player\Remains.cs" />
+    <Compile Include="Commands\Player\Score.cs" />
+    <Compile Include="Commands\Player\Worth.cs" />
     <Compile Include="Commands\Polymorph\ImmMorph.cs" />
     <Compile Include="Commands\Polymorph\ImmUnmorph.cs" />
     <Compile Include="Commands\Polymorph\MorphCreate.cs" />
@@ -199,6 +207,7 @@
     <Compile Include="Loaders\ClassLoader.cs" />
     <Compile Include="Loaders\RaceLoader.cs" />
     <Compile Include="Lookup\CommandLookupTable.cs" />
+    <Compile Include="Lookup\LookupBase.cs" />
     <Compile Include="Lookup\SkillLookupTable.cs" />
     <Compile Include="Lookup\SpellLookupTable.cs" />
     <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />

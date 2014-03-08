@@ -155,7 +155,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSpecFun", "Creates a new special function", "Name of the function")]
         public static SpecialFunction LuaCreateSpecialFunction(string name)
         {
-            SpecialFunction newSpecFun = new SpecialFunction(DatabaseManager.Instance.GenerateNewId<SpecialFunction>(),
+            SpecialFunction newSpecFun = new SpecialFunction(_dbManager.GenerateNewId<SpecialFunction>(),
                                                              name) {Value = SpecFunHandler.GetSpecFunReference(name)};
 
             if (newSpecFun.Value == null)

@@ -57,6 +57,7 @@ namespace SmaugCS.Data
         public int ThirstMod { get; set; }
         public SavingThrowData SavingThrows { get; set; }
         public List<string> WhereNames { get; set; }
+        public int HitrollBonus { get; set; }
 
         [XmlElement]
         public int ManaRegenRate { get; set; }
@@ -70,11 +71,18 @@ namespace SmaugCS.Data
         {
             WhereNames = new List<string>();
             SavingThrows = new SavingThrowData();
+            AffectedBy = new ExtendedBitvector();
         }
 
         public void AddWhereName(string name)
         {
             WhereNames.Add(name);
+        }
+
+        public void AddAffectedBy(string name)
+        {
+            AffectedByTypes type = EnumerationExtensions.GetEnumByName<AffectedByTypes>(name);
+            AffectedBy.SetBit((int)type);
         }
     }
 }

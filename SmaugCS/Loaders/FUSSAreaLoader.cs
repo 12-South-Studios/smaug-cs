@@ -350,8 +350,8 @@ namespace SmaugCS.Loaders
                         foreach (char c in flags)
                         {
                             int value = FlagLookup.get_actflag(c.ToString(CultureInfo.InvariantCulture));
-                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Instance.Bug("Unknown flag {0}", c);
+                            //if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                            //    LogManager.Instance.Bug("Unknown flag {0}", c);
                             //else
                             //    mob.Act.SetBit(value);
                         }
@@ -362,8 +362,8 @@ namespace SmaugCS.Loaders
                         foreach (char c in flags)
                         {
                             int value = FlagLookup.get_aflag(c.ToString(CultureInfo.InvariantCulture));
-                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Instance.Bug("Unknown flag {0}", c);
+                            //if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                            //    LogManager.Instance.Bug("Unknown flag {0}", c);
                             // else
                             //     mob.AffectedBy.SetBit(value);
                         }
@@ -374,8 +374,8 @@ namespace SmaugCS.Loaders
                         foreach (char c in flags)
                         {
                             int value = FlagLookup.get_attackflag(c.ToString(CultureInfo.InvariantCulture));
-                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Instance.Bug("Unknown flag {0}", c);
+                            //if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                            //    LogManager.Instance.Bug("Unknown flag {0}", c);
                             //else
                             //    mob.Attacks.SetBit(value);
                         }
@@ -418,8 +418,8 @@ namespace SmaugCS.Loaders
                         foreach (char c in flags)
                         {
                             int value = FlagLookup.get_defenseflag(c.ToString(CultureInfo.InvariantCulture));
-                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Instance.Bug("Unknown flag {0}", c);
+                            //if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                            //    LogManager.Instance.Bug("Unknown flag {0}", c);
                             // else
                             //    mob.Defenses.SetBit(value);
                         }
@@ -518,9 +518,9 @@ namespace SmaugCS.Loaders
                         foreach (char c in flags)
                         {
                             int value = FlagLookup.get_rflag(c.ToString(CultureInfo.InvariantCulture));
-                            if (value < 0 || value > ExtendedBitvector.MAX_BITS)
-                                LogManager.Instance.Bug("Unknown flag {0}", c);
-                            else
+                           // if (value < 0 || value > ExtendedBitvector.MAX_BITS)
+                            //    LogManager.Instance.Bug("Unknown flag {0}", c);
+                           // else
                                 room.Flags.SetBit(value);
                         }
                         break;
@@ -626,9 +626,9 @@ namespace SmaugCS.Loaders
                         foreach (char c in flags)
                         {
                             int value = FlagLookup.get_oflag(c.ToString(CultureInfo.InvariantCulture));
-                            if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
-                                LogManager.Instance.Bug("Unknown flag {0}", c);
-                            else
+                            //if (value < 0 || value >= ExtendedBitvector.MAX_BITS)
+                            //    LogManager.Instance.Bug("Unknown flag {0}", c);
+                           // else
                                 obj.ExtraFlags.SetBit(value);
                         }
                         break;

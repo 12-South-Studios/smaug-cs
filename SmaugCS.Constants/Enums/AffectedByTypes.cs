@@ -5,7 +5,7 @@ namespace SmaugCS.Constants.Enums
 {
     [Flags]
     public enum AffectedByTypes
-    {
+    { //1, 2, 4, 8, 16, 32, 64, 128, 256, 512
         None = -1,
         Blind = 1 << 0,
         Invisible = 1 << 1,

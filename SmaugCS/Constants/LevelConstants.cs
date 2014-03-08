@@ -8,9 +8,16 @@ namespace SmaugCS
 {
     public static class LevelConstants
     {
+        private static int? _maxLevel;
         public static int MAX_LEVEL
         {
-            get { return GameConstants.GetIntegerConstant("MaximumLevel"); }
+            get
+            {
+                return _maxLevel == null
+                           ? _maxLevel.GetValueOrDefault(GameConstants.GetIntegerConstant("MaximumLevel"))
+                           : _maxLevel.Value;
+            }
+            set { _maxLevel = value; }
         }
 
         private static readonly Dictionary<string, int> LevelMap = new Dictionary<string, int>()
@@ -38,7 +45,7 @@ namespace SmaugCS
 
         public static int GetLevel(string type)
         {
-            return LevelMap.ContainsKey(type.ToLower()) ? MAX_LEVEL - LevelMap[type.ToLower()] : MAX_LEVEL;
+            return LevelMap.ContainsKey(type.ToLower()) ? MAX_LEVEL + LevelMap[type.ToLower()] : MAX_LEVEL;
         }
 
         public static int LEVEL_LOG

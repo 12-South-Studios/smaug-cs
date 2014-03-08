@@ -16,7 +16,7 @@ namespace SmaugCS.Extensions
                 return true;
             if (ch.IsNpc())
                 return true;
-            if (ch.Level >= area.LowSoftRange || ch.Level <= area.HighSoftRange)
+            if (ch.Level >= area.LowSoftRange && ch.Level <= area.HighSoftRange)
                 return true;
             return false;
         }
@@ -27,7 +27,7 @@ namespace SmaugCS.Extensions
                 return true;
             if (ch.IsNpc())
                 return true;
-            if (ch.Level >= area.LowHardRange || ch.Level <= area.HighHardRange)
+            if (ch.Level >= area.LowHardRange && ch.Level <= area.HighHardRange)
                 return true;
             return false;
         }

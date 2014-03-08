@@ -3,6 +3,7 @@ using System.Linq;
 using Realm.Library.Common.Objects;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
+using SmaugCS.Lookup;
 
 namespace SmaugCS.Managers
 {
@@ -12,7 +13,7 @@ namespace SmaugCS.Managers
         private static readonly object Padlock = new object();
 
         private static Dictionary<string, List<string>> LookupTable;
- 
+         
         private LookupManager()
         {
         }
@@ -30,6 +31,10 @@ namespace SmaugCS.Managers
                 }
             }
         }
+
+        public CommandLookupTable CommandLookup { get; private set; }
+        public SkillLookupTable SkillLookup { get; private set; }
+        public SpellLookupTable SpellLookup { get; private set; }
 
         public static Dictionary<SpellDamageTypes, ResistanceTypes> SpellDamageToResistanceTypeMap = new Dictionary
             <SpellDamageTypes, ResistanceTypes>()
@@ -53,8 +58,10 @@ namespace SmaugCS.Managers
         public void Initialize()
         {
             LookupTable = new Dictionary<string, List<string>>();
+            CommandLookup = new CommandLookupTable();
+            SkillLookup = new SkillLookupTable();
+            SpellLookup = new SpellLookupTable();
         }
-
 
         public void AddLookup(string table, string entry)
         {

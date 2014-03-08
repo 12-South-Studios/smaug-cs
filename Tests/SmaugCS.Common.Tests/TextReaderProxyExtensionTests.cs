@@ -7,30 +7,32 @@ namespace SmaugCS.Common.Tests
     [TestFixture]
     public class TextReaderProxyExtensionTests
     {
-        [Test]
-        public void ReadBitvectorReturnsValidObject()
+        [TestCase("2&4&8~", 2, true)]
+        [TestCase("2&4&8~", 4, true)]
+        [TestCase("2&4&8~", 8, true)]
+        [TestCase("2&4&8~", 16, false)]
+        public void ReadBitvectorReturnsValidObject(string stringToRead, int valueToCheck, bool expectedValue)
         {
-            TextReaderProxy proxy = new TextReaderProxy(new StringReader("2&4&8~"));
+            TextReaderProxy proxy = new TextReaderProxy(new StringReader(stringToRead));
 
             ExtendedBitvector result = proxy.ReadBitvector();
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Bits[0], Is.EqualTo(2));
-            Assert.That(result.Bits[1], Is.EqualTo(4));
-            Assert.That(result.Bits[2], Is.EqualTo(8));
+            Assert.That(result.IsSet((ulong)valueToCheck), Is.EqualTo(expectedValue));
         }
 
-        [Test]
-        public void ReadBitvectorWithSpacesReturnsValidObject()
+        [TestCase("2 & 4 & 8~", 2, true)]
+        [TestCase("2 & 4 & 8~", 4, true)]
+        [TestCase("2 & 4 & 8~", 8, true)]
+        [TestCase("2 & 4 & 8~", 16, false)]
+        public void ReadBitvectorWithSpacesReturnsValidObject(string stringToRead, int valueToCheck, bool expectedValue)
         {
             TextReaderProxy proxy = new TextReaderProxy(new StringReader("2 & 4 & 8~"));
 
             ExtendedBitvector result = proxy.ReadBitvector();
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Bits[0], Is.EqualTo(2));
-            Assert.That(result.Bits[1], Is.EqualTo(4));
-            Assert.That(result.Bits[2], Is.EqualTo(8));
+            Assert.That(result.IsSet((ulong)valueToCheck), Is.EqualTo(expectedValue));
         }
     }
 }

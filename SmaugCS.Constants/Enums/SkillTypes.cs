@@ -1,31 +1,33 @@
 ﻿
+using System;
 using Realm.Library.Common;
 
 namespace SmaugCS.Constants.Enums
 {
+    [Flags]
     public enum SkillTypes
     {
-        Unknown,
+        Unknown = 0,
 
         [Name("spell")]
-        Spell,
+        Spell = 1,
 
         [Name("skill")]
-        Skill,
+        Skill = 2,
 
         [Name("weapon")]
-        Weapon,
+        Weapon = 4,
 
         [Name("tongue")]
-        Tongue,
+        Tongue = 8,
 
         [Name("herb")]
-        Herb,
+        Herb = 16,
 
         [Name("racial")]
-        Racial,
+        Racial = 32,
 
         [Name("disease")]
-        Disease
+        Disease = 64
     }
 }

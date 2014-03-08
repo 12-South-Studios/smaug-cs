@@ -36,7 +36,7 @@ namespace SmaugCS.Spells
                 af.Modifier = SmaugRandom.Between(0, 2) - (int) victim.Gender;
             } while (af.Modifier == 0);
 
-            af.BitVector.ClearBits();
+            //af.BitVector.ClearBits();
 
             victim.AddAffect(af);
             magic.successful_casting(skill, ch, victim, null);

@@ -85,20 +85,6 @@ namespace SmaugCS
                 { (int)ApplyTypes.TeleportDelay, " TELEDY"},
             };
 
-        public static void do_gold(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_worth(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_score(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
 
         public static string tiny_affect_loc_name(int location)
         {

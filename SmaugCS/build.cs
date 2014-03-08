@@ -450,7 +450,7 @@ namespace SmaugCS
                     Location = EnumerationExtensions.GetEnum<ApplyTypes>(loc),
                     Modifier = value
                 };
-            paf.BitVector.ClearBits();
+            //paf.BitVector.ClearBits();
 
             if (!indexaffect)
                 location.Affects.Add(paf);
