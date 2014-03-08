@@ -7,7 +7,77 @@ namespace SmaugCS.Common
 {
     public class ExtendedBitvector
     {
-        #region Extended Bitvectors
+        private ulong _bits; 
+
+        public ExtendedBitvector() {}
+
+        public ExtendedBitvector(ExtendedBitvector clone)
+        {
+            _bits = clone._bits;
+        }
+
+        public bool IsEmpty()
+        {
+            return _bits == 0;
+        }
+
+        #region IsSet
+
+        public bool IsSet(ulong bit)
+        {
+            return (_bits & bit) > 0;
+        }
+
+        public bool IsSet(int bit)
+        {
+            return IsSet((ulong) bit);
+        }
+
+        #endregion
+
+        #region SetBit
+
+        public ulong SetBit(ulong bit)
+        {
+            _bits |= bit;
+            return _bits;
+        }
+
+        public ulong SetBit(int bit)
+        {
+            return SetBit((ulong) bit);
+        }
+        #endregion
+
+        #region RemoveBit
+
+        public ulong RemoveBit(ulong bit)
+        {
+            _bits &= ~bit;
+            return _bits;
+        }
+
+        public ulong RemoveBit(int bit)
+        {
+            return RemoveBit((ulong) bit);
+        }
+        #endregion
+
+        #region ToggleBit
+
+        public ulong ToggleBit(ulong bit)
+        {
+            _bits ^= bit;
+            return _bits;
+        }
+
+        public ulong ToggleBit(int bit)
+        {
+            return ToggleBit((ulong) bit);
+        }
+        #endregion
+
+        /*#region Extended Bitvectors
 #if !INTBITS
         private const int INTBITS = 32;
 #endif
@@ -15,7 +85,7 @@ namespace SmaugCS.Common
         public const int XBM = 31; // extended bitmask (INTBITS - 1)
         public const int RSV = 5; // Right-shift value (sqrt(XBM+1))
         public const int XBI = 4; // Integers in an extended bitvector
-        public const int MAX_BITS = XBI*INTBITS;
+        public const int MAX_BITS = XBI * INTBITS;
 
         #endregion
 
@@ -112,22 +182,22 @@ namespace SmaugCS.Common
             return flagString;
         }
 
-        public bool IsSet(int bit)
+        public bool IsSet(uint bit)
         {
             return (Bits[bit >> RSV] & 1 << (bit & XBM)) > 0;
         }
 
-        public uint SetBit(int bit)
+        public uint SetBit(uint bit)
         {
             return (Bits[bit >> RSV] |= (uint)1 << (bit & XBM));
         }
 
-        public uint RemoveBit(int bit)
+        public uint RemoveBit(uint bit)
         {
             return (Bits[bit >> RSV] &= ~((uint)1 << (bit & XBM)));
         }
 
-        public uint ToggleBit(int bit)
+        public uint ToggleBit(uint bit)
         {
             return (Bits[bit >> RSV] ^= (uint)1 << (bit & XBM));
         }
@@ -138,7 +208,7 @@ namespace SmaugCS.Common
                 Bits[x] = 0;
         }
 
-        public static ExtendedBitvector Meb(int bit)
+        public static ExtendedBitvector Meb(uint bit)
         {
             ExtendedBitvector bits = new ExtendedBitvector();
             bits.ClearBits();
@@ -147,7 +217,7 @@ namespace SmaugCS.Common
             return bits;
         }
 
-        public static ExtendedBitvector MultiMeb(int bit, params object[] args)
+        public static ExtendedBitvector MultiMeb(uint bit, params object[] args)
         {
             if (bit < 0)
                 return new ExtendedBitvector();
@@ -155,12 +225,12 @@ namespace SmaugCS.Common
             ExtendedBitvector bits = new ExtendedBitvector();
             bits.SetBit(bit);
 
-            foreach (int val in args.Cast<int>().Where(val => val != -1))
+            foreach (uint val in args.Cast<uint>().Where(val => val != -1))
             {
                 bits.SetBit(val);
             }
 
             return bits;
-        }
+        }*/
     }
 }

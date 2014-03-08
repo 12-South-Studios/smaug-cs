@@ -443,7 +443,7 @@ namespace SmaugCS
             ch.DestinationBuffer = null;
             ch.CurrentMount = null;
             ch.CurrentMorph = null;
-            ch.AffectedBy.ClearBits();
+            //ch.AffectedBy.ClearBits();
             ch.logon = DateTime.Now;
             ch.ArmorClass = 100;
             ch.CurrentPosition = PositionTypes.Standing;

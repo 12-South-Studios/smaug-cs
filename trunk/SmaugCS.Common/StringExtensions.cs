@@ -98,11 +98,10 @@ namespace SmaugCS.Common
 
             foreach (string number in numbers)
             {
-                uint num;
-                UInt32.TryParse(number, out num);
+                UInt64 num;
+                UInt64.TryParse(number, out num);
 
-                if (x < ExtendedBitvector.XBI)
-                    bit.Bits[x] = num;
+                bit.SetBit(num);
                 ++x;
             }
 

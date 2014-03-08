@@ -11,22 +11,6 @@ namespace SmaugCS
 {
     public static class act_comm
     {
-        public static string TranslateLanguage(int percent, string text, string languageName)
-        {
-            if (percent > 99 || !languageName.EqualsIgnoreCase("common"))
-                return text;
-
-            LanguageData lng = DatabaseManager.Instance.GetEntity<LanguageData>(languageName);
-            if (lng == null)
-            {
-                lng = DatabaseManager.Instance.GetEntity<LanguageData>("default");
-                if (lng == null)
-                    return text;
-            }
-
-            return lng.Translate(percent, text);
-        }
-
         public static void send_rip_screen(CharacterInstance ch)
         {
             string path = SystemConstants.GetSystemFile(SystemFileTypes.RIPScreen);

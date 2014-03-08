@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlServerCe;
 using System.Linq;
@@ -401,7 +402,7 @@ namespace SmaugCS
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private static TcpServer NetworkMgr;
-
+        
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
@@ -464,11 +465,7 @@ namespace SmaugCS
             string connectionString = ConfigurationManager.ConnectionStrings["SmaugDB"]
                 .ConnectionString.Replace("|DataPath|", GameConstants.GetDataPath());
 
-#if SQL_CE
-            SqlCeConnection connection = new SqlCeConnection(connectionString);
-#elif SQL
-            SqlConnection connection = new SqlConnection(connectionString);
-#endif
+            IDbConnection connection = new SqlCeConnection(connectionString);
 
             BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
             BanManager.Instance.LoadBans();
@@ -549,7 +546,8 @@ namespace SmaugCS
         {
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
             LogManager.Instance.Boot("{0} Commands loaded.", DatabaseManager.Instance.COMMANDS.Count);
-            CommandLookupTable.UpdateCommandFunctionReferences(DatabaseManager.Instance.COMMANDS.Values);
+
+            LookupManager.Instance.CommandLookup.UpdateFunctionReferences(DatabaseManager.Instance.COMMANDS.Values);
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
             LogManager.Instance.Boot("{0} SpecFuns loaded.", DatabaseManager.Instance.SPEC_FUNS.Count);
@@ -561,8 +559,8 @@ namespace SmaugCS
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
             LogManager.Instance.Boot("{0} Skills loaded.", DatabaseManager.Instance.SKILLS.Count);
 
-            SkillLookupTable.UpdateSkillFunctionReferences(DatabaseManager.Instance.SKILLS.Values);
-            SpellLookupTable.UpdateSpellFunctionReferences(DatabaseManager.Instance.SKILLS.Values);
+            LookupManager.Instance.SkillLookup.UpdateFunctionReferences(DatabaseManager.Instance.SKILLS.Values);
+            LookupManager.Instance.SpellLookup.UpdateFunctionReferences(DatabaseManager.Instance.SKILLS.Values);
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
             LogManager.Instance.Boot("{0} Liquids loaded.", DatabaseManager.Instance.LIQUIDS.Count);
@@ -574,7 +572,7 @@ namespace SmaugCS
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
             LogManager.Instance.Boot("{0} Herbs loaded.", DatabaseManager.Instance.GetSkills(SkillTypes.Herb).Count());
-            SkillLookupTable.UpdateSkillFunctionReferences(DatabaseManager.Instance.GetSkills(SkillTypes.Herb));
+            LookupManager.Instance.SkillLookup.UpdateFunctionReferences(DatabaseManager.Instance.GetSkills(SkillTypes.Herb));
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
             LogManager.Instance.Boot("{0} Tongues loaded.", DatabaseManager.Instance.LANGUAGES.Count);

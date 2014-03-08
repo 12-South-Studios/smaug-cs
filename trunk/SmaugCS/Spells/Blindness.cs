@@ -35,7 +35,7 @@ namespace SmaugCS.Spells
                     Location = ApplyTypes.HitRoll,
                     Modifier = -4,
                     Duration = (1 + (level/3))*GameConstants.GetIntegerConstant("AffectDurationConversionValue"),
-                    BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Blind)
+                    //BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Blind)
                 };
 
             victim.AddAffect(af);

@@ -295,7 +295,7 @@ namespace SmaugCS
 
             ClassData cls = DatabaseManager.Instance.CLASSES.Values.ToList()[rcindex];
 
-            cls.AffectedBy.ClearBits();
+            //cls.AffectedBy.ClearBits();
             cls.PrimaryAttribute = 0;
             cls.SecondaryAttribute = 0;
             cls.DeficientAttribute = 0;
@@ -338,7 +338,7 @@ namespace SmaugCS
             race.LuckBonus = 0;
             race.Health = 0;
             race.Mana = 0;
-            race.AffectedBy.ClearBits();
+            //race.AffectedBy.ClearBits();
             race.Resistance = 0;
             race.Susceptibility = 0;
             race.Language = 0;
@@ -347,8 +347,8 @@ namespace SmaugCS
             race.MaximumAlignment = 0;
             race.ArmorClassBonus = 0;
             race.ExperienceMultiplier = 100;
-            race.Attacks.ClearBits();
-            race.Defenses.ClearBits();
+            //race.Attacks.ClearBits();
+            //race.Defenses.ClearBits();
             race.Height = 0;
             race.Weight = 0;
             race.HungerMod = 0;

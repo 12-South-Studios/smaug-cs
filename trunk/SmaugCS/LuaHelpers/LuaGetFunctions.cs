@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
-using Realm.Library.Patterns.Repository;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
@@ -78,7 +76,7 @@ namespace SmaugCS.LuaHelpers
             return
                 instance.CurrentRoom.Persons.FirstOrDefault(
                     vch => instance.CanSee(vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg)) ??
-                _dbManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.FirstOrDefault(
+                _dbManager.CHARACTERS.Values.FirstOrDefault(
                     vch => instance.CanSee(vch) && !vch.IsNpc() && vch.Name.EqualsIgnoreCase(arg));
         }
     }

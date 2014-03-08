@@ -37,7 +37,7 @@ namespace SmaugCS
             int mod = affect.Modifier;
             if (add)
             {
-                ch.AffectedBy.SetBits(affect.BitVector);
+                //ch.AffectedBy.SetBits(affect.BitVector);
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
@@ -51,7 +51,7 @@ namespace SmaugCS
             }
             else
             {
-                ch.AffectedBy.RemoveBits(affect.BitVector);
+                //ch.AffectedBy.RemoveBits(affect.BitVector);
 
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
@@ -67,7 +67,7 @@ namespace SmaugCS
                 switch ((int)affect.Location % Program.REVERSE_APPLY)
                 {
                     case (int)ApplyTypes.Affect:
-                        ch.AffectedBy.Bits[0].RemoveBit(mod);
+                        //ch.AffectedBy.Bits[0].RemoveBit(mod);
                         return;
                     case (int)ApplyTypes.ExtendedAffect:
                         ch.AffectedBy.RemoveBit(mod);
@@ -82,7 +82,7 @@ namespace SmaugCS
                         ch.Susceptibility.RemoveBit(mod);
                         return;
                     case (int)ApplyTypes.Remove:
-                        ch.AffectedBy.Bits[0].RemoveBit(mod);
+                       // ch.AffectedBy.Bits[0].RemoveBit(mod);
                         return;
                 }
                 mod = 0 - mod;
@@ -161,7 +161,7 @@ namespace SmaugCS
                     break;
 
                 case (int)ApplyTypes.Affect:
-                    ch.AffectedBy.Bits[0].SetBit(mod);
+                    //ch.AffectedBy.Bits[0].SetBit(mod);
                     break;
                 case (int)ApplyTypes.ExtendedAffect:
                     ch.AffectedBy.SetBit(mod);
@@ -176,7 +176,7 @@ namespace SmaugCS
                     ch.Susceptibility.SetBit(mod);
                     break;
                 case (int)ApplyTypes.Remove:
-                    ch.AffectedBy.Bits[0].RemoveBit(mod);
+                    //ch.AffectedBy.Bits[0].RemoveBit(mod);
                     break;
 
                 case (int)ApplyTypes.Full:
@@ -1225,7 +1225,7 @@ namespace SmaugCS
                 && obj1.Description.EqualsIgnoreCase(obj2.Description)
                 && obj1.Owner.EqualsIgnoreCase(obj2.Owner)
                 && obj1.ItemType == obj2.ItemType
-                && obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
+                //&& obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
                 && obj1.magic_flags == obj2.magic_flags
                 && obj1.WearFlags == obj2.WearFlags
                 && obj1.WearLocation == obj2.WearLocation

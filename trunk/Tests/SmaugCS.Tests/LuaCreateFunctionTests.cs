@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Linq;
+using System.Text;
 using Moq;
 using NUnit.Framework;
 using Realm.Library.Common;
@@ -361,6 +363,11 @@ namespace SmaugCS.Tests
 			sb.Append("class.this.MinimumHealthGain = 11;");
 			sb.Append("class.this.MaximumHealthGain = 15;");
 			sb.Append("class.this.BaseExperience = 1150;");
+			sb.Append("class.this:SetPrimaryAttribute(\"strength\");");
+			sb.Append("class.this:SetSecondaryAttribute(\"constitution\");");
+			sb.Append("class.this:SetDeficientAttribute(\"charisma\");");
+			sb.Append("class.this:SetType(\"warrior\");");
+			sb.Append("class.this:AddSkill(\"aggressive style\", 20, 50);");
 			return sb.ToString();
 		}
 
@@ -377,6 +384,70 @@ namespace SmaugCS.Tests
 			Assert.That(result.MinimumHealthGain, Is.EqualTo(11));
 			Assert.That(result.MaximumHealthGain, Is.EqualTo(15));
 			Assert.That(result.BaseExperience, Is.EqualTo(1150));
+		}
+
+		[Test]
+		public void LuaCreateClass_SetPrimaryAttribute_Test()
+		{
+			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
+
+			Assert.That(result, Is.Not.Null);
+			Assert.That(result.PrimaryAttribute, Is.EqualTo(StatisticTypes.Strength));
+		}
+
+		[Test]
+		public void LuaCreateClass_SetSecondaryAttribute_Test()
+		{
+			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
+
+			Assert.That(result, Is.Not.Null);
+			Assert.That(result.SecondaryAttribute, Is.EqualTo(StatisticTypes.Constitution));
+		}
+
+		[Test]
+		public void LuaCreateClass_SetDeficientAttribute_Test()
+		{
+			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
+
+			Assert.That(result, Is.Not.Null);
+			Assert.That(result.DeficientAttribute, Is.EqualTo(StatisticTypes.Charisma));
+		}
+
+		[Test]
+		public void LuaCreateClass_SetType_Test()
+		{
+			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
+
+			Assert.That(result, Is.Not.Null);
+			Assert.That(result.Type, Is.EqualTo(ClassTypes.Warrior));
+		}
+
+		[Test]
+		public void LuaCreateClass_AddSkill_Test()
+		{
+			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
+
+			Assert.That(result, Is.Not.Null);
+
+			var skillAdept = result.Skills.FirstOrDefault(x => x.Skill.Equals("aggressive style"));
+
+			Assert.That(skillAdept, Is.Not.Null);
+			Assert.That(skillAdept.Level, Is.EqualTo(20));
+			Assert.That(skillAdept.Adept, Is.EqualTo(50));
+		}
+
+		[Test]
+		public void LuaCreateClass_AddSkill_Duplicate_Test()
+		{
+			var script = GetClassLuaScript();
+			script += "class.this:AddSkill(\"aggressive style\", 20, 50);";
+
+			Assert.Throws<InvalidDataException>(() => LuaManager.Instance.Proxy.DoString(script));
 		}
 		#endregion
 
@@ -395,6 +466,7 @@ namespace SmaugCS.Tests
 			sb.Append("race.this.Weight = 150;");
 			sb.Append("race.this:AddWhereName(\"<used as light>     \");");
 			sb.Append("race.this:AddWhereName(\"<worn on finger>    \");");
+			sb.Append("race.this:AddAffectedBy(\"infrared\");");
 			return sb.ToString();
 		}
 
@@ -423,6 +495,16 @@ namespace SmaugCS.Tests
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.WhereNames[0], Is.EqualTo("<used as light>     "));
 			Assert.That(result.WhereNames[1], Is.EqualTo("<worn on finger>    "));
+		}
+
+		[Test]
+		public void LuaCreateRace_AddAffectedBy_Test()
+		{
+			LuaManager.Instance.Proxy.DoString(GetRaceLuaScript());
+			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
+
+			Assert.That(result, Is.Not.Null);
+			Assert.That(result.AffectedBy.IsSet((int)AffectedByTypes.Infrared), Is.True);
 		}
 		#endregion
 

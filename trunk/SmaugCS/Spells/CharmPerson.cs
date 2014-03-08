@@ -55,7 +55,7 @@ namespace SmaugCS.Spells
             af.SkillNumber = sn;
             af.Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
                           GameConstants.GetIntegerConstant("AffectDurationConversionValue");
-            af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
+           // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);
             
             magic.successful_casting(skill, ch, victim, null);

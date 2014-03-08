@@ -8,6 +8,13 @@ namespace SmaugCS.Tests
     public class TimerManagerTests
     {
         private bool _callback;
+        private static TimerManager _mgr;
+
+        [SetUp]
+        public void OnSetup()
+        {
+            _mgr = TimerManager.Instance;
+        }
 
         private void Callback(object sender, ElapsedEventArgs elapsedEventArgs)
         {
@@ -17,9 +24,7 @@ namespace SmaugCS.Tests
         [Test]
         public void AddTimerTest()
         {
-            var mgr = TimerManager.Instance;
-
-            mgr.AddTimer(200, Callback);
+            _mgr.AddTimer(200, Callback);
 
             Assert.That(() => _callback, Is.True.After(250));
         }
@@ -27,11 +32,9 @@ namespace SmaugCS.Tests
         [Test]
         public void GetTimerTest()
         {
-            var mgr = TimerManager.Instance;
+            var id = _mgr.AddTimer(200, Callback);
 
-            var id = mgr.AddTimer(200, Callback);
-
-            var timer = mgr.GetTimer(id);
+            var timer = _mgr.GetTimer(id);
 
             Assert.That(timer.Id, Is.EqualTo(id));
         }
@@ -39,13 +42,11 @@ namespace SmaugCS.Tests
         [Test]
         public void DeleteTimerTest()
         {
-            var mgr = TimerManager.Instance;
+            var id = _mgr.AddTimer(200, Callback);
 
-            var id = mgr.AddTimer(200, Callback);
+            _mgr.DeleteTimer(id);
 
-            mgr.DeleteTimer(id);
-
-            var timer = mgr.GetTimer(id);
+            var timer = _mgr.GetTimer(id);
 
             Assert.That(timer, Is.Null);
         }

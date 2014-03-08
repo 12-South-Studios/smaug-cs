@@ -1,44 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
 using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Lookup
 {
-    public static class SpellLookupTable
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SpellLookupTable : LookupBase<SkillData, SpellFunction>
     {
-        private static readonly Dictionary<string, Func<int, int, CharacterInstance, object, ReturnTypes>>
-            SpellFunctions = new Dictionary<string, Func<int, int, CharacterInstance, object, ReturnTypes>>()
+        /// <summary>
+        /// 
+        /// </summary>
+        public SpellLookupTable()
+            : base(new SpellFunction {Value = (id, level, ch, vo) =>
                 {
-                    {"spell_smaug", Spells.Smaug.Smaug.spell_smaug}
-                };
-
-        public static Func<int, int, CharacterInstance, object, ReturnTypes> GetSpellFunction(string name)
+                    color.send_to_char("That's not a spell!\r\n", ch);
+                    return ReturnTypes.None;
+                }})
         {
-            return SpellFunctions.ContainsKey(name.ToLower())
-                       ? SpellFunctions[name.ToLower()]
-                       : SpellNotfound;
+            _lookupTable.Add("spell_smaug", new SpellFunction {Value = Spells.Smaug.Smaug.spell_smaug});
         }
 
-        public static ReturnTypes SpellNotfound(int sn, int level, CharacterInstance ch, object vo)
+        public override void UpdateFunctionReferences(IEnumerable<SkillData> values)
         {
-            // TODO send_to_char("That's not a spell!\r\n", ch);
-            return ReturnTypes.None;
-        }
-
-        public static void UpdateSpellFunctionReferences(IEnumerable<SkillData> skills)
-        {
-            foreach (SkillData skill in skills.Where(x => !x.SpellFunctionName.IsNullOrEmpty()))
+            foreach (SkillData skill in values.Where(x => !x.SpellFunctionName.IsNullOrEmpty()))
             {
                 if (skill.SpellFunction == null)
                     skill.SpellFunction = new SpellFunction();
 
-                skill.SpellFunction.Value = GetSpellFunction(skill.SpellFunctionName);
+                skill.SpellFunction = GetFunction(skill.SpellFunctionName);
             }
         }
     }

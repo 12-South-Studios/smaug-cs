@@ -695,11 +695,11 @@ namespace SmaugCS.Extensions
 
         public static void aris_affect(this CharacterInstance ch, AffectData paf)
         {
-            ch.AffectedBy.SetBits(paf.BitVector);
+            //ch.AffectedBy.SetBits(paf.BitVector);
             switch ((int)paf.Location % Program.REVERSE_APPLY)
             {
                 case (int)ApplyTypes.Affect:
-                    ch.AffectedBy.Bits[0].SetBit(paf.Modifier);
+                    //ch.AffectedBy.Bits[0].SetBit(paf.Modifier);
                     break;
                 case (int)ApplyTypes.Resistance:
                     ch.Resistance.SetBit(paf.Modifier);
@@ -720,29 +720,29 @@ namespace SmaugCS.Extensions
 
             bool hiding = ch.IsAffected(AffectedByTypes.Hide);
 
-            ch.AffectedBy.ClearBits();
+            //ch.AffectedBy.ClearBits();
             ch.Resistance = 0;
             ch.Immunity = 0;
             ch.Susceptibility = 0;
-            ch.NoAffectedBy.ClearBits();
+            //ch.NoAffectedBy.ClearBits();
             ch.NoResistance = 0;
             ch.NoImmunity = 0;
             ch.NoSusceptibility = 0;
 
             RaceData myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
-            ch.AffectedBy.SetBits(myRace.AffectedBy);
+            //ch.AffectedBy.SetBits(myRace.AffectedBy);
             ch.Resistance.SetBit(myRace.Resistance);
             ch.Susceptibility.SetBit(myRace.Susceptibility);
 
             ClassData myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
-            ch.AffectedBy.SetBits(myClass.AffectedBy);
+            //ch.AffectedBy.SetBits(myClass.AffectedBy);
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);
 
             if (ch.PlayerData.CurrentDeity != null)
             {
-                if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.AffectedNum)
-                    ch.AffectedBy.SetBits(ch.PlayerData.CurrentDeity.AffectedBy);
+               // if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.AffectedNum)
+                //    ch.AffectedBy.SetBits(ch.PlayerData.CurrentDeity.AffectedBy);
                 if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.ElementNum)
                     ch.Resistance.SetBit(ch.PlayerData.CurrentDeity.Element);
                 if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)

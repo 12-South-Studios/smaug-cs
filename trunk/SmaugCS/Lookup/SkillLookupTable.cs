@@ -1,39 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
 using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Lookup
 {
-    public static class SkillLookupTable
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SkillLookupTable : LookupBase<SkillData, DoFunction>
     {
-        private static readonly Dictionary<string, Action<CharacterInstance, string>> SkillFunctions =
-            new Dictionary<string, Action<CharacterInstance, string>>();
-
-        public static Action<CharacterInstance, string> GetSkillFunction(string name)
+        /// <summary>
+        /// 
+        /// </summary>
+        public SkillLookupTable()
+            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?\r\n", ch)})
         {
-            return SkillFunctions.ContainsKey(name.ToLower())
-                       ? SkillFunctions[name.ToLower()]
-                       : SkillNotfound;
         }
 
-        public static void SkillNotfound(CharacterInstance ch, string argument)
+        public override void UpdateFunctionReferences(IEnumerable<SkillData> values)
         {
-            // TODO: send_to_char("Huh?\r\n", ch);
-        }
-
-        public static void UpdateSkillFunctionReferences(IEnumerable<SkillData> skills)
-        {
-            foreach (SkillData skill in skills.Where(x => !x.SkillFunctionName.IsNullOrEmpty()))
+            foreach (SkillData skill in values.Where(x => !x.SkillFunctionName.IsNullOrEmpty()))
             {
                 if (skill.SkillFunction == null)
                     skill.SkillFunction = new DoFunction();
 
-                skill.SkillFunction.Value = GetSkillFunction(skill.SkillFunctionName);
+                skill.SkillFunction = GetFunction(skill.SkillFunctionName);
             }
         }
     }

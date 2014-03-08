@@ -101,7 +101,7 @@ namespace SmaugCS
         /// <returns></returns>
         public static int dispel_casting(AffectData paf, CharacterInstance ch, CharacterInstance victim, int affect, bool dispel)
         {
-            ExtendedBitvector ext_bv = ExtendedBitvector.Meb(affect);
+            //ExtendedBitvector ext_bv = ExtendedBitvector.Meb(affect);
             bool isMage = false;
             bool hasDetect = false;
 
@@ -118,8 +118,8 @@ namespace SmaugCS
                     return 0;
                 spell = skill.Name;
             }
-            else
-                spell = handler.affect_bit_name(ext_bv);
+           // else
+               // spell = handler.affect_bit_name(ext_bv);
 
             color.set_char_color(ATTypes.AT_MAGIC, ch);
             color.set_char_color(ATTypes.AT_HITME, victim);
@@ -132,17 +132,17 @@ namespace SmaugCS
 
             if (dispel)
             {
-                color.ch_printf(victim, "Your %s vanishes.\r\n", spell);
-                if (isMage && hasDetect)
-                    color.ch_printf(ch, "%s's %s vanishes.\r\n", buffer, spell);
-                else
+                //color.ch_printf(victim, "Your %s vanishes.\r\n", spell);
+                //if (isMage && hasDetect)
+                //    color.ch_printf(ch, "%s's %s vanishes.\r\n", buffer, spell);
+                //else
                     return 0;
             }
             else
             {
-                if (isMage && hasDetect)
-                    color.ch_printf(ch, "%s's %s wavers but holds.\r\n", buffer, spell);
-                else
+                //if (isMage && hasDetect)
+               //     color.ch_printf(ch, "%s's %s wavers but holds.\r\n", buffer, spell);
+               // else
                     return 0;
             }
 
