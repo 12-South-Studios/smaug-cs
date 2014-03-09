@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace SmaugCS.Constants.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SystemDataConfigurationSection : ConfigurationSection
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("SystemDirectories")]
         public SystemDirectoryElementCollection SystemDirectories
         {
             get { return (SystemDirectoryElementCollection)this["SystemDirectories"]; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("SystemFiles")]
         public SystemFileElementCollectionn SystemFiles
         {

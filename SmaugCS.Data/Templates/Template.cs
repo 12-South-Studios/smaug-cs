@@ -2,9 +2,11 @@
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Interfaces;
 
-namespace SmaugCS.Data.Templates
+
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// 

@@ -25,8 +25,8 @@ namespace SmaugCS.Loaders
             AreaData newArea = new AreaData(DatabaseManager.Instance.AREAS.Count + db.BUILD_AREAS.Count + 1, AreaName)
             {
                 Age = 15,
-                HighSoftRange = LevelConstants.MAX_LEVEL,
-                HighHardRange = LevelConstants.MAX_LEVEL,
+                HighSoftRange = LevelConstants.MaxLevel,
+                HighHardRange = LevelConstants.MaxLevel,
                 Version = 1,
                 Filename = AreaName
             };

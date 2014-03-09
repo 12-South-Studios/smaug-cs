@@ -2,7 +2,7 @@
 using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
 {
@@ -21,7 +21,7 @@ namespace SmaugCS.Lookup
                     return ReturnTypes.None;
                 }})
         {
-            _lookupTable.Add("spell_smaug", new SpellFunction {Value = Spells.Smaug.Smaug.spell_smaug});
+            LookupTable.Add("spell_smaug", new SpellFunction {Value = Spells.Smaug.Smaug.spell_smaug});
         }
 
         public override void UpdateFunctionReferences(IEnumerable<SkillData> values)

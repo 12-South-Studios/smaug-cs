@@ -2,7 +2,7 @@
 using System.Linq;
 using SmaugCS.Commands.Social;
 using SmaugCS.Data;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
 {
@@ -17,7 +17,7 @@ namespace SmaugCS.Lookup
         public CommandLookupTable()
             : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?\r\n", ch)})
         {
-            _lookupTable.Add("do_say", new DoFunction {Value = Say.do_say});
+            LookupTable.Add("do_say", new DoFunction {Value = Say.do_say});
 
         }
 

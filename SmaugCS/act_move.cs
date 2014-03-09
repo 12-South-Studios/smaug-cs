@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+using SmaugCS.Data;
+using SmaugCS;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 

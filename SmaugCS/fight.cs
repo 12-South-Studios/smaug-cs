@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Admin;
@@ -11,10 +10,7 @@ using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Spells.Smaug;
@@ -1025,8 +1021,8 @@ namespace SmaugCS
                     int levelRatio = 0;
 
                     levelRatio = victim.Level < 1
-                        ? ch.Level.GetNumberThatIsBetween(1, LevelConstants.MAX_LEVEL)
-                        : (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.MAX_LEVEL);
+                        ? ch.Level.GetNumberThatIsBetween(1, LevelConstants.MaxLevel)
+                        : (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.MaxLevel);
 
                     if (ch.PlayerData.Clan != null)
                         ch.PlayerData.Clan.PvEKills++;

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Text;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
-using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
-using log4net;
 
 namespace SmaugCS.Logging
 {

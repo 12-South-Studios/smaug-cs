@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
 
 namespace SmaugCS.Repositories
 {
@@ -20,6 +16,12 @@ namespace SmaugCS.Repositories
     {
         private ObjectTemplate LastObject { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public ObjectTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
@@ -45,6 +47,13 @@ namespace SmaugCS.Repositories
             return newObject;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="cvnum"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public ObjectTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());

@@ -2,6 +2,9 @@
 
 namespace SmaugCS.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class TextReaderProxyExtensions
     {
         /// <summary>

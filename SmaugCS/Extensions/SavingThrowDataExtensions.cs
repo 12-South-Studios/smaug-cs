@@ -1,9 +1,11 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class SavingThrowDataExtensions
     {

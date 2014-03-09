@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
@@ -11,18 +7,18 @@ namespace SmaugCS.Lookup
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="K"></typeparam>
-    public abstract class LookupBase<T, K> 
+    /// <typeparam name="TK"></typeparam>
+    public abstract class LookupBase<T, TK> 
         where T : Entity
-        where K : class, new()
+        where TK : class, new()
     {
-        protected readonly Dictionary<string, K> _lookupTable;
-        private readonly K _defaultFunc;
+        protected readonly Dictionary<string, TK> LookupTable;
+        private readonly TK _defaultFunc;
 
-        protected LookupBase(K defaultFunc)
+        protected LookupBase(TK defaultFunc)
         {
             _defaultFunc = defaultFunc;
-            _lookupTable = new Dictionary<string, K>();
+            LookupTable = new Dictionary<string, TK>();
         }
 
         /// <summary>
@@ -30,10 +26,10 @@ namespace SmaugCS.Lookup
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected K GetFunction(string name)
+        protected TK GetFunction(string name)
         {
-            return _lookupTable.ContainsKey(name.ToLower())
-                       ? _lookupTable[name.ToLower()]
+            return LookupTable.ContainsKey(name.ToLower())
+                       ? LookupTable[name.ToLower()]
                        : _defaultFunc;
         }
 

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using SmallDBConnectivity.Extensions;
 using log4net;
 
 namespace SmallDBConnectivity
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class SmallDb : ISmallDb
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(SmallDb));

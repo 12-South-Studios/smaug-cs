@@ -2,7 +2,9 @@
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace Realm.Library.Common.Exceptions
+// ReSharper disable CheckNamespace
+namespace Realm.Library.Common
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// 

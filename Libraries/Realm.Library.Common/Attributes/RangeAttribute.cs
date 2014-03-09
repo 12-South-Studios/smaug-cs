@@ -1,6 +1,8 @@
 ﻿using System;
 
-namespace Realm.Library.Common.Attributes
+// ReSharper disable CheckNamespace
+namespace Realm.Library.Common
+// ReSharper restore CheckNamespace
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class RangeAttribute : Attribute

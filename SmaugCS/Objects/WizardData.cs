@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
@@ -28,9 +28,9 @@ namespace SmaugCS.Objects
                     case "pcflags":
                         int flags = tuple.Item2.ToInt32();
                         if (flags.IsSet((int)PCFlags.Retired))
-                            level = LevelConstants.MAX_LEVEL - 15;
+                            level = LevelConstants.MaxLevel - 15;
                         if (flags.IsSet((int)PCFlags.Guest))
-                            level = LevelConstants.MAX_LEVEL - 16;
+                            level = LevelConstants.MaxLevel - 16;
                         break;
                 }
             }

@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
 
 namespace SmaugCS.SpecFuns
 {

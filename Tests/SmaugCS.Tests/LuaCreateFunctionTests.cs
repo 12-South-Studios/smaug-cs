@@ -7,7 +7,7 @@ using Realm.Library.Common;
 using Realm.Library.Lua;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Interfaces;
+
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
 using SmaugCS.Logging;

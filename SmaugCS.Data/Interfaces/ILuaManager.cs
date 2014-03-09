@@ -1,7 +1,9 @@
 ﻿using Realm.Library.Lua;
 using SmaugCS.Logging;
 
-namespace SmaugCS.Data.Interfaces
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     public interface ILuaManager
     {

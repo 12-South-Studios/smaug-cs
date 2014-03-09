@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Managers;
 

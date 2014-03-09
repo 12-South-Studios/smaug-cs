@@ -4,11 +4,17 @@ using System.IO;
 
 namespace SmaugCS.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class DirectoryProxy
     {
-        public DirectoryProxy() { }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public virtual IEnumerable<string> GetFiles(string path)
         {
             return Directory.GetFiles(path);

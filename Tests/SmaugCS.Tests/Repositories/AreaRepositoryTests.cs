@@ -3,8 +3,8 @@ using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
-using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
+using SmaugCS.Data;
+
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 

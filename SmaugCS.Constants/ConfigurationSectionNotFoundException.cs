@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Realm.Library.Common.Exceptions;
+using Realm.Library.Common;
 
 namespace SmaugCS.Constants
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ConfigurationSectionNotFoundException : BaseException
     {
         /// <summary>

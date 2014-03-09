@@ -2,9 +2,9 @@
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+using SmaugCS.Data;
+
 using SmaugCS.Managers;
 
 namespace SmaugCS

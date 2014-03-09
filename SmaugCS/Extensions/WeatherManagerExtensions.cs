@@ -7,7 +7,9 @@ using SmaugCS.Data;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class WeatherManagerExtensions
     {

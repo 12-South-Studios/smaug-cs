@@ -4,9 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Realm.Library.Common.Objects;
+using Realm.Library.Common;
 using SmallDBConnectivity;
 using SmaugCS.Logging;
 

@@ -4,14 +4,16 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
+using SmaugCS.Data;
+using SmaugCS.Data;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Objects;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class RoomTemplateExtensions
     {

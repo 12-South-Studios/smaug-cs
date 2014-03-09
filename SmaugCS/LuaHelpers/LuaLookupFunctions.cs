@@ -1,8 +1,7 @@
 ﻿using Realm.Library.Lua;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Exceptions;
+using SmaugCS.Data;
+
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers
 {

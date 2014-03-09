@@ -1,5 +1,5 @@
-﻿using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
+﻿using SmaugCS.Data;
+using SmaugCS.Data;
 
 namespace SmaugCS.Data
 {

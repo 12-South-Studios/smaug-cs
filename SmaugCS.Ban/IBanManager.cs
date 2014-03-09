@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using SmallDBConnectivity;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban

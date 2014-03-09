@@ -3,10 +3,12 @@ using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Data;
-using SmaugCS.Data.Templates;
+using SmaugCS.Data;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class ExitDataExtensions
     {
@@ -15,9 +17,11 @@ namespace SmaugCS.Extensions
             return exit.GetDestination().GetExit((int)exit.Reverse);
         }
 
-        public static RoomTemplate GetDestination(this ExitData exit)
+        public static RoomTemplate GetDestination(this ExitData exit, IDatabaseManager dbManager = null)
         {
-            return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.ToList().Find(x => x.Vnum == exit.Destination);
+            return (dbManager ?? DatabaseManager.Instance).ROOMS.CastAs<Repository<long, RoomTemplate>>()
+                                                          .Values.ToList()
+                                                          .Find(x => x.Vnum == exit.Destination);
         }
 
         public static void SetBExitFlag(this ExitData exit, int flag)

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Realm.Library.Common;
-using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Templates;
-using Realm.Library.Common.Extensions;
+using SmaugCS.Data;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class ObjectTemplateExtensions
     {

@@ -1,11 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using Realm.Library.Lua;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
 using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers

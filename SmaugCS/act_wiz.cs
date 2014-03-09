@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+using SmaugCS.Data;
+using SmaugCS;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -311,7 +310,7 @@ namespace SmaugCS
             cls.UseMana = false;
             cls.BaseExperience = 1000;
 
-            for (int i = 0; i < LevelConstants.MAX_LEVEL; i++)
+            for (int i = 0; i < LevelConstants.MaxLevel; i++)
             {
                 Dictionary<string, string> titleMap = db.TITLES[rcindex.ToString()];
                 titleMap[i.ToString()] = "Not set.";

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Common;
 
 namespace SmaugCS.Data

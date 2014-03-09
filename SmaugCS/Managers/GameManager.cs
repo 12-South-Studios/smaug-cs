@@ -1,10 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using NCalc;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common;
 using Realm.Library.NCalcExt;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
 
 namespace SmaugCS.Managers
 {

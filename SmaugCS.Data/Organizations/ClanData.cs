@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 
 namespace SmaugCS.Data.Organizations
 {

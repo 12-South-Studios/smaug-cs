@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Data.SqlServerCe;
 using System.Linq;
 using System.Net;
@@ -16,13 +14,11 @@ using SmaugCS.Board;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Lookup;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 using log4net;
 using LogManager = SmaugCS.Logging.LogManager;
-using SmaugCS.Extensions;
 
 namespace SmaugCS
 {

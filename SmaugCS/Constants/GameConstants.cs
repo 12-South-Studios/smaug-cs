@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Language;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
+// ReSharper disable CheckNamespace
 namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class GameConstants
     {

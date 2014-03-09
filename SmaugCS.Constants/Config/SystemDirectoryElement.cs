@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace SmaugCS.Constants.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SystemDirectoryElement : ConfigurationElement
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("Name", IsKey = true, IsRequired = true)]
         public string Name
         {
             get { return this["Name"] as string; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("Path", IsRequired = true)]
         public string Path
         {

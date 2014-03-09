@@ -2,8 +2,14 @@
 
 namespace SmaugCS.Constants.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ConstantConfigurationSection : ConfigurationSection
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("Constants")]
         public ConstantElementCollection Constants
         {

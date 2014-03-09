@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 
 namespace SmaugCS
 {

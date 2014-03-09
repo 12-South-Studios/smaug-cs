@@ -1,12 +1,8 @@
 ﻿using System.IO;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
 
 namespace SmaugCS.Repositories
 {
@@ -17,6 +13,13 @@ namespace SmaugCS.Repositories
     {
         private MobTemplate LastMob { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="cvnum"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public MobTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
@@ -73,6 +76,12 @@ namespace SmaugCS.Repositories
             newMob.Defenses = cloneMob.Defenses;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public MobTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());

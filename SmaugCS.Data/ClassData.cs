@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
@@ -33,6 +32,8 @@ namespace SmaugCS.Data
 
         public int ToHitArmorClass0 { get; set; }
         public int ToHitArmorClass32 { get; set; }
+
+        public bool IsSpellcaster { get; set; }
 
         public int MinimumHealthGain { get; set; }
         public int MaximumHealthGain { get; set; }

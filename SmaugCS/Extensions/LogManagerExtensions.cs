@@ -3,7 +3,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class LogManagerExtensions
     {

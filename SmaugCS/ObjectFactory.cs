@@ -1,55 +1,73 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
 using SmaugCS.Managers;
 
 namespace SmaugCS
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ObjectFactory
     {
-        public static void CreateFire(RoomTemplate in_room, short timer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inRoom"></param>
+        /// <param name="duration"></param>
+        /// <param name="dbManager"></param>
+        public static void CreateFire(RoomTemplate inRoom, int duration, IDatabaseManager dbManager = null)
         {
-            ObjectInstance fire = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_FIRE), 0);
-            fire.Timer = (short)SmaugRandom.Fuzzy(timer);
-            in_room.ToRoom(fire);
+            ObjectInstance fire =
+                (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                    (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                   .Get(VnumConstants.OBJ_VNUM_FIRE), 0);
+            fire.Timer = (short)SmaugRandom.Fuzzy(duration);
+            inRoom.ToRoom(fire);
         }
 
-        public static ObjectInstance CreateTrap(int v0, int v1, int v2, int v3)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="dbManager"></param>
+        /// <returns></returns>
+        public static ObjectInstance CreateTrap(IEnumerable<int> values, IDatabaseManager dbManager = null)
         {
-            ObjectInstance trap = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_TRAP), 0);
+            ObjectInstance trap = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                       .Get(VnumConstants.OBJ_VNUM_TRAP), 0);
             trap.Timer = 0;
-            trap.Value[0] = v0;
-            trap.Value[1] = v1;
-            trap.Value[2] = v2;
-            trap.Value[3] = v3;
-
+            trap.Value = values.ToArray();
             return trap;
         }
 
-        public static void CreateScraps(ObjectInstance obj)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="dbManager"></param>
+        public static void CreateScraps(ObjectInstance obj, IDatabaseManager dbManager = null)
         {
             handler.separate_obj(obj);
             ObjectInstance scraps =
-                DatabaseManager.Instance.OBJECTS.Create(
-                    DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_SCRAPS), 0);
+                (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                    (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                           .Get(VnumConstants.OBJ_VNUM_SCRAPS), 0);
+
             scraps.Timer = SmaugRandom.Between(5, 15);
 
             // Don't make scraps of scraps of...
-            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_SCRAPS)
-            {
-                scraps.ShortDescription = "some debris";
-                scraps.Description = "Bits of debris lie on the ground here.";
-            }
-            else
-            {
-                scraps.ShortDescription = obj.ShortDescription;
-                scraps.Description = obj.Description;
-            }
+            scraps.ShortDescription = (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_SCRAPS)
+                                          ? "some debris"
+                                          : obj.ShortDescription;
+            scraps.Description = (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_SCRAPS)
+                                     ? "Bits of debris lie on the ground here."
+                                     : obj.Description;
 
             CharacterInstance ch = null;
             if (obj.CarriedBy != null)
@@ -97,7 +115,14 @@ namespace SmaugCS
             handler.extract_obj(obj);
         }
 
-        public static ObjectInstance CreateCorpse(CharacterInstance ch, CharacterInstance killer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="killer"></param>
+        /// <param name="dbManager"></param>
+        /// <returns></returns>
+        public static ObjectInstance CreateCorpse(CharacterInstance ch, CharacterInstance killer, IDatabaseManager dbManager = null)
         {
             string name;
             ObjectInstance corpse;
@@ -106,8 +131,10 @@ namespace SmaugCS
             {
                 name = ch.ShortDescription;
                 corpse =
-                    DatabaseManager.Instance.OBJECTS.Create(
-                        DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_CORPSE_NPC), 0);
+                    (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                        (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                               .Get(VnumConstants.OBJ_VNUM_CORPSE_NPC), 0);
+
                 corpse.Timer = 6;
                 if (ch.CurrentCoin > 0)
                 {
@@ -129,8 +156,10 @@ namespace SmaugCS
             {
                 name = ch.Name;
                 corpse =
-                    DatabaseManager.Instance.OBJECTS.Create(
-                        DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
+                    (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                        (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                               .Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
+
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value[2] = corpse.Timer / 8;
                 corpse.Value[4] = ch.Level;
@@ -162,31 +191,55 @@ namespace SmaugCS
             return ch.CurrentRoom.ToRoom(corpse);
         }
 
-        public static void CreateBlood(CharacterInstance ch)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="dbManager"></param>
+        public static void CreateBlood(CharacterInstance ch, IDatabaseManager dbManager = null)
         {
-            ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
+            ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                       .Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
+
             obj.Timer = (short)SmaugRandom.Between(2, 4);
             obj.Value[1] = SmaugRandom.Between(3, 5.GetLowestOfTwoNumbers(ch.Level));
             ch.CurrentRoom.ToRoom(obj);
         }
 
-        public static void CreateBloodstain(CharacterInstance ch)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="dbManager"></param>
+        public static void CreateBloodstain(CharacterInstance ch, IDatabaseManager dbManager = null)
         {
-            ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
+            ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                       .Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
+
             obj.Timer = (short)SmaugRandom.Between(1, 2);
             ch.CurrentRoom.ToRoom(obj);
         }
 
-        public static ObjectInstance CreateMoney(int amount)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="dbManager"></param>
+        /// <returns></returns>
+        public static ObjectInstance CreateMoney(int amount, IDatabaseManager dbManager = null)
         {
             int coinAmt = amount <= 0 ? 1 : amount;
 
-            ObjectInstance obj;
-            if (coinAmt == 1)
-                obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_MONEY_ONE), 0);
-            else
+            ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
+                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                                                       .Get(coinAmt == 1
+                                                                ? VnumConstants.OBJ_VNUM_MONEY_ONE
+                                                                : VnumConstants.OBJ_VNUM_MONEY_SOME), 0);
+           
+            if (coinAmt > 1)
             {
-                obj = DatabaseManager.Instance.OBJECTS.Create(DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_MONEY_SOME), 0);
                 obj.ShortDescription = string.Format(obj.ShortDescription, coinAmt);
                 obj.Value[0] = coinAmt;
             }

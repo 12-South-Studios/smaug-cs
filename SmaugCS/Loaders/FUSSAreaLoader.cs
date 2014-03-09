@@ -3,17 +3,15 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Exceptions;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Templates;
+using SmaugCS.Data;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Extensions;
+
 
 namespace SmaugCS.Loaders
 {

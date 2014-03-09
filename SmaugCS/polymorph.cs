@@ -1,10 +1,5 @@
 ﻿using System.IO;
-using System.Linq;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Managers;
-using SmaugCS.Extensions;
-using Realm.Library.Common.Extensions;
 
 namespace SmaugCS
 {

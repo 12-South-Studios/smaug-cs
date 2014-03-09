@@ -1,0 +1,1 @@
+﻿CREATE ROLE [Server] AUTHORIZATION [dbo];
