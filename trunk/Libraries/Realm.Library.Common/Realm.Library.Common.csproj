@@ -195,8 +195,8 @@
     <Compile Include="Events\EventBase.cs" />
     <Compile Include="Events\EventListener.cs" />
     <Compile Include="Events\EventTable.cs" />
-    <Compile Include="Extensions\CellExtensions.cs" />
-    <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Objects\CellExtensions.cs" />
+    <Compile Include="Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Events\IEventBase.cs" />
     <Compile Include="ICell.cs" />
     <Compile Include="Entities\IEntity.cs" />
@@ -216,7 +216,7 @@
     <Compile Include="Attributes\EnumAttribute.cs" />
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Extensions\EnumerationExtensions.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Objects\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />

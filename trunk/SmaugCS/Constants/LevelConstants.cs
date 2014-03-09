@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
+// ReSharper disable CheckNamespace
 namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class LevelConstants
     {
         private static int? _maxLevel;
-        public static int MAX_LEVEL
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int MaxLevel
         {
             get
             {
@@ -43,9 +44,14 @@ namespace SmaugCS
 
             };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static int GetLevel(string type)
         {
-            return LevelMap.ContainsKey(type.ToLower()) ? MAX_LEVEL + LevelMap[type.ToLower()] : MAX_LEVEL;
+            return LevelMap.ContainsKey(type.ToLower()) ? MaxLevel + LevelMap[type.ToLower()] : MaxLevel;
         }
 
         public static int LEVEL_LOG

@@ -1,6 +1,8 @@
 ﻿using System;
 
-namespace SmaugCS.Exceptions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     public class DuplicateEntryException : Exception

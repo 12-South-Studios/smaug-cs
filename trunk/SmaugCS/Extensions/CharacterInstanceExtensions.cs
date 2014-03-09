@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Data.Templates;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Extensions;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class CharacterInstanceExtensions
     {
@@ -447,9 +445,12 @@ namespace SmaugCS.Extensions
             return type != ResistanceTypes.Unknown && ch.Immunity.IsSet((int)type);
         }
 
-        public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type)
+        public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type, ILookupManager lookupManager = null)
         {
-            ResistanceTypes resType = LookupManager.Instance.GetResistanceType(type);
+            ResistanceTypes resType = lookupManager == null
+                                          ? LookupManager.Instance.GetResistanceType(type)
+                                          : lookupManager.GetResistanceType(type);
+
             return resType != ResistanceTypes.Unknown && ch.Immunity.IsSet((int)resType);
         }
 
@@ -484,26 +485,35 @@ namespace SmaugCS.Extensions
             return ch.PlayerData != null && ch.PlayerData.Flags.IsSet((int)PCFlags.Guest);
         }
 
-        public static bool CanCast(this CharacterInstance ch)
+        public static bool CanCast(this CharacterInstance ch, IDatabaseManager dbManager = null)
         {
-            return (ch.CurrentClass != ClassTypes.Mage && ch.CurrentClass != ClassTypes.Cleric);
+            ClassData cls = dbManager == null
+                                ? DatabaseManager.Instance.GetClass(ch.CurrentClass)
+                                : dbManager.GetClass(ch.CurrentClass);
+
+            return cls.IsSpellcaster;
         }
+
         public static bool IsVampire(this CharacterInstance ch)
         {
             return (!ch.IsNpc() && (ch.CurrentRace == RaceTypes.Vampire) || ch.CurrentClass == ClassTypes.Vampire);
         }
+        
         public static bool IsGood(this CharacterInstance ch)
         {
             return ch.CurrentAlignment >= 350;
         }
+        
         public static bool IsEvil(this CharacterInstance ch)
         {
             return ch.CurrentAlignment <= -350;
         }
+        
         public static bool IsNeutral(this CharacterInstance ch)
         {
             return !ch.IsGood() && !ch.IsEvil();
         }
+        
         public static bool IsAwake(this CharacterInstance ch)
         {
             return ch.CurrentPosition > PositionTypes.Sleeping;
@@ -524,16 +534,19 @@ namespace SmaugCS.Extensions
         {
             return !ch.IsNpc() && ch.PlayerData.CurrentDeity != null;
         }
+        
         public static bool IsIdle(this CharacterInstance ch)
         {
             return ch.PlayerData != null &&
                    ch.PlayerData.Flags.IsSet((int)PCFlags.Idle);
         }
+        
         public static bool IsPKill(this CharacterInstance ch)
         {
             return ch.PlayerData != null &&
                    ch.PlayerData.Flags.IsSet((int)PCFlags.Deadly);
         }
+        
         public static bool CanPKill(this CharacterInstance ch)
         {
             return ch.IsPKill() && ch.Level >= 5 && ch.CalculateAge() >= 18;

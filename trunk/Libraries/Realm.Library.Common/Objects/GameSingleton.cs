@@ -3,7 +3,9 @@ using Realm.Library.Common.Logging;
 using Realm.Library.Common.Properties;
 using Realm.Library.Patterns.Singleton;
 
-namespace Realm.Library.Common.Objects
+// ReSharper disable CheckNamespace
+namespace Realm.Library.Common
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// 

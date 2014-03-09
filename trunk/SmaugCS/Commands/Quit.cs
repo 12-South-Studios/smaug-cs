@@ -1,8 +1,8 @@
 ﻿using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 

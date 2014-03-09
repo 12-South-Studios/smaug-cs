@@ -2,13 +2,14 @@
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Data.Instances
+using SmaugCS.Data;
+
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     [XmlRoot("Object")]
     public class ObjectInstance : Instance, IHasExtraFlags, IHasExtraDescriptions

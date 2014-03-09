@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using SmaugCS.Constants.Enums;
 
-namespace SmaugCS.Data.Interfaces
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     public interface ILookupManager
     {
@@ -9,5 +12,6 @@ namespace SmaugCS.Data.Interfaces
         bool HasLookup(string table, string entry);
         IEnumerable<string> GetLookups(string table);
         string GetLookup(string table, int index);
+        ResistanceTypes GetResistanceType(SpellDamageTypes type);
     }
 }

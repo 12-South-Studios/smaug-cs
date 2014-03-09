@@ -2,7 +2,9 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
 
-namespace SmaugCS.Data.Templates
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     public class MobTemplate : Template
     {

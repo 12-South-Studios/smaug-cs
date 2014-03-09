@@ -3,10 +3,6 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
 
 namespace SmaugCS.Repositories
 {
@@ -22,6 +18,7 @@ namespace SmaugCS.Repositories
         /// 
         /// </summary>
         /// <param name="parent"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
         public CharacterInstance Create(Template parent, params object[] args)
         {

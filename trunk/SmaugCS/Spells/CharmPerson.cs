@@ -1,8 +1,8 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells

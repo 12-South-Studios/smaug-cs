@@ -1,7 +1,6 @@
-﻿using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
-
-namespace SmaugCS.Data.Interfaces
+﻿// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     public interface IInstanceRepository<out T> where T : Instance
     {

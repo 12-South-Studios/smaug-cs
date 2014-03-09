@@ -1,8 +1,10 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace SmaugCS.Constants.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ConstantElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Board;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
+using SmaugCS.Data;
 using SmaugCS.Data.Shops;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -657,39 +655,39 @@ namespace SmaugCS
                     }
                     towizfile(string.Empty);
                     iLevel = wiz.Level;
-                    if (iLevel == LevelConstants.MAX_LEVEL)
+                    if (iLevel == LevelConstants.MaxLevel)
                         towizfile(" Supreme Entity");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 1)
+                    else if (iLevel == LevelConstants.MaxLevel - 1)
                         towizfile(" Infinite");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 2)
+                    else if (iLevel == LevelConstants.MaxLevel - 2)
                         towizfile(" Eternal");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 3)
+                    else if (iLevel == LevelConstants.MaxLevel - 3)
                         towizfile(" Ancient");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 4)
+                    else if (iLevel == LevelConstants.MaxLevel - 4)
                         towizfile(" Exalted Gods");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 5)
+                    else if (iLevel == LevelConstants.MaxLevel - 5)
                         towizfile(" Ascendant Gods");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 6)
+                    else if (iLevel == LevelConstants.MaxLevel - 6)
                         towizfile(" Greater Gods");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 7)
+                    else if (iLevel == LevelConstants.MaxLevel - 7)
                         towizfile(" Gods");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 8)
+                    else if (iLevel == LevelConstants.MaxLevel - 8)
                         towizfile(" Lesser Gods");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 9)
+                    else if (iLevel == LevelConstants.MaxLevel - 9)
                         towizfile(" Immortals");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 10)
+                    else if (iLevel == LevelConstants.MaxLevel - 10)
                         towizfile(" Demi Gods");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 11)
+                    else if (iLevel == LevelConstants.MaxLevel - 11)
                         towizfile(" Saviors");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 12)
+                    else if (iLevel == LevelConstants.MaxLevel - 12)
                         towizfile(" Creators");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 13)
+                    else if (iLevel == LevelConstants.MaxLevel - 13)
                         towizfile(" Acolytes");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 14)
+                    else if (iLevel == LevelConstants.MaxLevel - 14)
                         towizfile(" Neophytes");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 15)
+                    else if (iLevel == LevelConstants.MaxLevel - 15)
                         towizfile(" Retired");
-                    else if (iLevel == LevelConstants.MAX_LEVEL - 16)
+                    else if (iLevel == LevelConstants.MaxLevel - 16)
                         towizfile(" Guests");
                     else
                         towizfile(" Servants");

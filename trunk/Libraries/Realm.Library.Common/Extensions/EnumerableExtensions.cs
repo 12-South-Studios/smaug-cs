@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Realm.Library.Common.Extensions
+// ReSharper disable CheckNamespace
+namespace Realm.Library.Common
+// ReSharper restore CheckNamespace
 {
     public static class EnumerableExtensions
     {

@@ -1,10 +1,10 @@
 ﻿using System;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 

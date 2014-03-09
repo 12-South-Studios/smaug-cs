@@ -1,7 +1,7 @@
 ﻿using System;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 
 namespace SmaugCS.Commands
 {

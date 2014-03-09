@@ -6,8 +6,8 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
+using SmaugCS.Data;
+
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;

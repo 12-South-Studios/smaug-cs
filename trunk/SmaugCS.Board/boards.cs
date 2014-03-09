@@ -1,7 +1,4 @@
-﻿using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-
-namespace SmaugCS.Board
+﻿namespace SmaugCS.Board
 {
     public static class boards
     {

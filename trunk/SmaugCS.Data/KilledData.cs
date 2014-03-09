@@ -18,6 +18,7 @@ namespace SmaugCS.Data
             ID = id;
             Added = DateTime.Now;
             Updated = Added;
+            Count = 1;
         }
 
         public void Increment(int number)

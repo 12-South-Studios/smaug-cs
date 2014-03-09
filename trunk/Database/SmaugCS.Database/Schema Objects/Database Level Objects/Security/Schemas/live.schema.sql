@@ -1,0 +1,2 @@
+﻿CREATE SCHEMA [live]
+	AUTHORIZATION [dbo];

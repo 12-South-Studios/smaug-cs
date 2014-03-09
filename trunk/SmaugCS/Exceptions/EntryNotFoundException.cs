@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SmaugCS.Exceptions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     public class EntryNotFoundException : Exception

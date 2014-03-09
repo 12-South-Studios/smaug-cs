@@ -1,8 +1,15 @@
 ﻿using System;
+using Moq;
 using NUnit.Framework;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
+using SmaugCS.Data;
+
+using SmaugCS.Data;
+
+using SmaugCS.Managers;
+using SmaugCS.Repositories;
 
 namespace SmaugCS.Tests.Extensions
 {
@@ -14,7 +21,7 @@ namespace SmaugCS.Tests.Extensions
         [SetUp]
         public void OnSetup()
         {
-            LevelConstants.MAX_LEVEL = 65;
+            LevelConstants.MaxLevel = 65;
             _ch = new CharacterInstance(1, "Tester");
         }
 
@@ -44,6 +51,220 @@ namespace SmaugCS.Tests.Extensions
         {
             _ch.AffectedBy.SetBit(flags);
             Assert.That(_ch.IsAffected(affectedBy), Is.EqualTo(expectedValue));
+        }
+
+        [Test]
+        public void TimesKilled_CharacterIsNpc_Test()
+        {
+            _ch.Act.SetBit((int)ActFlags.IsNpc);
+            Assert.That(_ch.TimesKilled(null), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TimesKilled_MobIsPlayer_Test()
+        {
+            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            Assert.That(_ch.TimesKilled(mob), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TimesKilled_NoMatch_Test()
+        {
+            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            mob.Act.SetBit((int) ActFlags.IsNpc);
+            mob.Parent = new MobTemplate(2, "Template");
+
+            _ch.PlayerData = new PlayerData(1, 1);
+
+            Assert.That(_ch.TimesKilled(mob), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TimesKilled_Match_Test()
+        {
+            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            mob.Act.SetBit((int)ActFlags.IsNpc);
+            mob.Parent = new MobTemplate(2, "Template");
+
+            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData.Killed.Add(new KilledData(2));
+
+            Assert.That(_ch.TimesKilled(mob), Is.EqualTo(1));
+        }
+
+        [TestCase(ResistanceTypes.Unknown, false)]
+        [TestCase(ResistanceTypes.Magic, true)]
+        public void IsImmune_Test(ResistanceTypes type, bool expectedValue)
+        {
+            _ch.Immunity = _ch.Immunity.SetBit((int)type);
+
+            Assert.That(_ch.IsImmune(type), Is.EqualTo(expectedValue));
+        }
+
+        [Test]
+        public void IsImmune_LookupUnknown_Test()
+        {
+            var mockLookup = new Mock<ILookupManager>();
+            mockLookup.Setup(x => x.GetResistanceType(It.IsAny<SpellDamageTypes>())).Returns(ResistanceTypes.Unknown);
+
+            _ch.Immunity = _ch.Immunity.SetBit((int) ResistanceTypes.Magic);
+
+            Assert.That(_ch.IsImmune(SpellDamageTypes.Poison, mockLookup.Object), Is.False);
+        }
+
+        [Test]
+        public void IsImmune_Lookup_Test()
+        {
+            var mockLookup = new Mock<ILookupManager>();
+            mockLookup.Setup(x => x.GetResistanceType(It.IsAny<SpellDamageTypes>())).Returns(ResistanceTypes.Magic);
+
+            _ch.Immunity = _ch.Immunity.SetBit((int)ResistanceTypes.Magic);
+
+            Assert.That(_ch.IsImmune(SpellDamageTypes.Poison, mockLookup.Object), Is.True);
+        }
+
+        [TestCase(AffectedByTypes.Flying, true)]
+        [TestCase(AffectedByTypes.Floating, true)]
+        [TestCase(AffectedByTypes.Blind, false)]
+        public void IsFloating_Test(AffectedByTypes type, bool expectedValue)
+        {
+            _ch.AffectedBy.SetBit((int) type);
+
+            Assert.That(_ch.IsFloating(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase(500, true)]
+        [TestCase(-500, false)]
+        public void IsGood_Test(int alignment, bool expectedValue)
+        {
+            _ch.CurrentAlignment = alignment;
+            Assert.That(_ch.IsGood(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase(-500, true)]
+        [TestCase(500, false)]
+        public void IsEvil_Test(int alignment, bool expectedValue)
+        {
+            _ch.CurrentAlignment = alignment;
+            Assert.That(_ch.IsEvil(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase(0, true)]
+        [TestCase(-500, false)]
+        [TestCase(500, false)]
+        public void IsNeutral_Test(int alignment, bool expectedValue)
+        {
+            _ch.CurrentAlignment = alignment;
+            Assert.That(_ch.IsNeutral(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase(PositionTypes.Incapacitated, false)]
+        [TestCase(PositionTypes.Sleeping, false)]
+        [TestCase(PositionTypes.Fighting, true)]
+        [TestCase(PositionTypes.Mounted, true)]
+        public void IsAwake_Test(PositionTypes position, bool expectedValue)
+        {
+            _ch.CurrentPosition = position;
+            Assert.That(_ch.IsAwake(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase(ActFlags.IsNpc, RaceTypes.Elf, ClassTypes.Cleric, false)]
+        [TestCase(ActFlags.Immortal, RaceTypes.Vampire, ClassTypes.Cleric, true)]
+        [TestCase(ActFlags.Immortal, RaceTypes.Elf, ClassTypes.Vampire, true)]
+        public void IsVampire_Test(ActFlags actFlag, RaceTypes race, ClassTypes cls, bool expectedValue)
+        {
+            _ch.Act.SetBit((int) actFlag);
+            _ch.CurrentRace = race;
+            _ch.CurrentClass = cls;
+            Assert.That(_ch.IsVampire(), Is.EqualTo(expectedValue));
+        }
+
+        [Test]
+        public void IsDevoted_IsNpc_Test()
+        {
+            _ch.Act.SetBit((int) ActFlags.IsNpc);
+            Assert.That(_ch.IsDevoted(), Is.False);
+        }
+
+        [Test]
+        public void IsDevoted_NoDeity_Test()
+        {
+            _ch.PlayerData = new PlayerData(1, 1);
+            Assert.That(_ch.IsDevoted(), Is.False);
+        }
+
+        [Test]
+        public void IsDevoted_Test()
+        {
+            _ch.PlayerData = new PlayerData(1, 1) {CurrentDeity = new DeityData(1, "Test")};
+            Assert.That(_ch.IsDevoted(), Is.True);
+        }
+
+        [TestCase(RoomFlags.Dark, true)]
+        [TestCase(RoomFlags.Indoors, false)]
+        [TestCase(RoomFlags.Tunnel, false)]
+        public void IsOutside_Test(RoomFlags flag, bool expectedValue)
+        {
+            _ch.CurrentRoom = new RoomTemplate(1, "Test");
+            _ch.CurrentRoom.Flags.SetBit((int)flag);
+            Assert.That(_ch.IsOutside(), Is.EqualTo(expectedValue));
+        }
+
+        [TestCase(false, ClassTypes.Warrior, false)]
+        [TestCase(true, ClassTypes.Mage, true)]
+        public void CanCast_Test(bool isSpellcaster, ClassTypes clsType, bool expectedValue)
+        {
+            var classRepo = new GenericRepository<ClassData>();
+            classRepo.Add(1, new ClassData(1, "Test") {IsSpellcaster = isSpellcaster, Type = clsType});
+
+            var mockDb = new Mock<IDatabaseManager>();
+            mockDb.SetupGet(x => x.CLASSES).Returns(classRepo);
+
+            _ch.CurrentClass = clsType;
+
+            Assert.That(_ch.CanCast(mockDb.Object), Is.EqualTo(expectedValue));
+        }
+
+        [Test]
+        public void IsRetired_NoData_Test()
+        {
+            Assert.That(_ch.IsRetired(), Is.False);
+        }
+
+        [Test]
+        public void IsRetired_NoFlag_Test()
+        {
+            _ch.PlayerData = new PlayerData(1, 1);
+            Assert.That(_ch.IsRetired(), Is.False);
+        }
+
+        [Test]
+        public void IsRetired_Test()
+        {
+            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData.Flags = _ch.PlayerData.Flags.SetBit((int) PCFlags.Retired);
+            Assert.That(_ch.IsRetired(), Is.True);
+        }
+
+        [Test]
+        public void IsGuest_NoData_Test()
+        {
+            Assert.That(_ch.IsGuest(), Is.False);
+        }
+
+        [Test]
+        public void IsGuest_NoFlag_Test()
+        {
+            _ch.PlayerData = new PlayerData(1, 1);
+            Assert.That(_ch.IsGuest(), Is.False);
+        }
+
+        [Test]
+        public void IsGuest_Test()
+        {
+            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData.Flags = _ch.PlayerData.Flags.SetBit((int)PCFlags.Guest);
+            Assert.That(_ch.IsGuest(), Is.True);
         }
     }
 }

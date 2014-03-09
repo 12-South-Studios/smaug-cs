@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Commands.Skills.Thief;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Extensions;
+
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 

@@ -2,6 +2,9 @@
 
 namespace SmaugCS.Constants.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class VnumElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

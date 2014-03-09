@@ -1,7 +1,6 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS.Tests.SpecFuns

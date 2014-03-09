@@ -4,10 +4,7 @@ using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Data;
 
 namespace SmaugCS.Repositories
 {
@@ -58,7 +55,7 @@ namespace SmaugCS.Repositories
             return obj;
         }
 
-        private static readonly Dictionary<ItemTypes, Action<ObjectInstance>> ObjectActionTable = new Dictionary<ItemTypes, Action<ObjectInstance>>()
+        private static readonly Dictionary<ItemTypes, Action<ObjectInstance>> ObjectActionTable = new Dictionary<ItemTypes, Action<ObjectInstance>>
             {
                 {ItemTypes.Food, UpdateFood},
                 {ItemTypes.Cook, UpdateFood},

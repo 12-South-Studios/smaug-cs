@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace Realm.Library.Common.Extensions
+// ReSharper disable CheckNamespace
+namespace Realm.Library.Common
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     ///

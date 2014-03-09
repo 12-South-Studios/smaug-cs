@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SmaugCS.Data;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
 {

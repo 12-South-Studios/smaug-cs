@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using NCalc;
 using Realm.Library.NCalcExt;
-using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExpressionTableInitializer
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static ExpressionTable GetExpressionTable()
         {
             ExpressionTable table = new ExpressionTable();

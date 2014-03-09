@@ -1,11 +1,8 @@
 ﻿using System;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
+using SmaugCS.Data;
 
 namespace SmaugCS.Repositories
 {
@@ -16,11 +13,24 @@ namespace SmaugCS.Repositories
     {
         private RoomTemplate LastRoom { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="cvnum"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public RoomTemplate Create(long vnum, long cvnum, string name)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vnum"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public RoomTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1);

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Configuration;
-using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+
 
 namespace SmaugCS.Tests.Extensions
 {
@@ -18,7 +14,7 @@ namespace SmaugCS.Tests.Extensions
         [SetUp]
         public void OnSetup()
         {
-            LevelConstants.MAX_LEVEL = 65;
+            LevelConstants.MaxLevel = 65;
             _area = new AreaData(1, "Test")
                 {
                     LowSoftRange = 5,

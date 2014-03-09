@@ -3,9 +3,8 @@ using Realm.Library.Common;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Data.Shops;
-using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS

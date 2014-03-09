@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Realm.Library.Common.Extensions
+// ReSharper disable CheckNamespace
+namespace Realm.Library.Common
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Extension class for String objects

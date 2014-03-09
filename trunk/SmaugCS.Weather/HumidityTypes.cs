@@ -1,4 +1,4 @@
-﻿using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common;
 
 namespace SmaugCS.Weather
 {

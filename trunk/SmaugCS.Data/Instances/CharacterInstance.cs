@@ -4,10 +4,12 @@ using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Templates;
+using SmaugCS.Data;
 using Realm.Library.Lua;
 
-namespace SmaugCS.Data.Instances
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     [XmlRoot("Character")]
     public class CharacterInstance : Instance

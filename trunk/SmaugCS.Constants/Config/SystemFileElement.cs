@@ -1,25 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace SmaugCS.Constants.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SystemFileElement : ConfigurationElement
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("Name", IsKey = true, IsRequired = true)]
         public string Name
         {
             get { return (string)this["Name"]; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("Filename", IsRequired = true)]
         public string Filename
         {
             get { return (string)this["Filename"]; }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         [ConfigurationProperty("UseSystemFolder", IsRequired = false)]
         public bool UseSystemFolder
         {

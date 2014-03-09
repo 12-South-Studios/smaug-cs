@@ -1,6 +1,6 @@
-﻿using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common;
 using Realm.Library.Lua;
-using SmaugCS.Data.Interfaces;
+using SmaugCS.Data;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Managers

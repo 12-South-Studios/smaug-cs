@@ -1,5 +1,7 @@
 ﻿
-namespace SmaugCS.Data.Interfaces
+// ReSharper disable CheckNamespace
+namespace SmaugCS.Data
+// ReSharper restore CheckNamespace
 {
     public interface IPersistable
     {

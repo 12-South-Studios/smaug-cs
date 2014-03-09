@@ -1,11 +1,8 @@
 ﻿using System.IO;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Language;
-using SmaugCS.Managers;
+using SmaugCS.Data;
 
 namespace SmaugCS
 {

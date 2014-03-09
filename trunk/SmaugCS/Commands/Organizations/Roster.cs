@@ -1,9 +1,9 @@
 ﻿using System;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Extensions;
+
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Organizations

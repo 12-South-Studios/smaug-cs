@@ -1,5 +1,5 @@
 ﻿using SmaugCS.Data;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 
 namespace SmaugCS.Commands.Building
 {

@@ -1,9 +1,7 @@
 ﻿using System.IO;
 using Realm.Library.Common;
-using Realm.Library.Common.Exceptions;
 using SmaugCS.Data;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
 {
@@ -56,8 +54,8 @@ namespace SmaugCS.Loaders
                             area.Age = area.ResetFrequency;
                             break;
                         case "RANGES":
-                            area.HighSoftRange = LevelConstants.MAX_LEVEL;
-                            area.HighHardRange = LevelConstants.MAX_LEVEL;
+                            area.HighSoftRange = LevelConstants.MaxLevel;
+                            area.HighHardRange = LevelConstants.MaxLevel;
                             break;
                         case "ECONOMY":
                             area.HighEconomy = proxy.ReadNumber();

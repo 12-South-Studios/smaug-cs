@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class DatabaseManagerExtensions
     {
@@ -68,12 +70,12 @@ namespace SmaugCS.Extensions
                     ((int) lang.Type & languages) > 0);
         }
 
-        public static RaceData GetRace(this DatabaseManager dbManager, RaceTypes type)
+        public static RaceData GetRace(this IDatabaseManager dbManager, RaceTypes type)
         {
             return dbManager.RACES.Values.FirstOrDefault(x => x.Type == type);
         }
 
-        public static ClassData GetClass(this DatabaseManager dbManager, ClassTypes type)
+        public static ClassData GetClass(this IDatabaseManager dbManager, ClassTypes type)
         {
             return dbManager.CLASSES.Values.FirstOrDefault(x => x.Type == type);
         }

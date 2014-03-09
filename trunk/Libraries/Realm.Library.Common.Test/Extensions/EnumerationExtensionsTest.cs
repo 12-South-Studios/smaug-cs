@@ -31,13 +31,13 @@ namespace Realm.Library.Common.Test.Extensions
 
         private enum RangeTest
         {
-            [Attributes.Range(Minimum = 5, Maximum = 10)]
+            [Range(Minimum = 5, Maximum = 10)]
             Test1,
 
-            [Attributes.Range(Maximum = 5)]
+            [Range(Maximum = 5)]
             Test2,
 
-            [Attributes.Range(Minimum = 11, Maximum = 20)]
+            [Range(Minimum = 11, Maximum = 20)]
             Test3
         }
 

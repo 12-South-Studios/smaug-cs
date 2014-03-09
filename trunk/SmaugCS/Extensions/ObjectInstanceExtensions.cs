@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using Realm.Library.Common;
 
-namespace SmaugCS.Extensions
+// ReSharper disable CheckNamespace
+namespace SmaugCS
+// ReSharper restore CheckNamespace
 {
     public static class ObjectInstanceExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Realm.Library.Common;
-using SmaugCS.Data.Instances;
+using SmaugCS.Data;
 
 namespace SmaugCS.Data
 {

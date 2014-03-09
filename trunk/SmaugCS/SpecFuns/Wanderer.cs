@@ -3,8 +3,6 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {

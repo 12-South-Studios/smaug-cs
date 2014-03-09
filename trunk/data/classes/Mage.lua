@@ -18,7 +18,8 @@ function LoadClass()
 	class.this.MaximumHealthGain = 8;
 	class.this.UseMana = true;
 	class.this.BaseExperience = 1250;
-
+	class.this.IsSpellcaster = true;
+	
 	LoadClassSkills(class.this);
 	LoadLanguageSkills(class.this);
 end

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace SmaugCS.Constants
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ConfigurationManagerFunctions
     {
         /// <summary>
