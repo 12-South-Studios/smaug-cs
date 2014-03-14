@@ -7,7 +7,7 @@ namespace Realm.Library.Common
     /// <summary>
     /// Class definining an attribute
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class EnumAttribute : Attribute
     {
         /// <summary>
@@ -18,31 +18,28 @@ namespace Realm.Library.Common
         /// <summary>
         /// Read-Only value of the attribute
         /// </summary>
-        public int Value { get; private set; }
+        public int Value { get; set; }
 
         /// <summary>
         /// Read-Only short name of the attribute
         /// </summary>
-        public string ShortName { get; private set; }
+        public string ShortName { get; set; }
 
         /// <summary>
         /// Read-Only extra string data of the attribute
         /// </summary>
-        public string ExtraData { get; private set; }
+        public string ExtraData { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumAttribute"/> class
         /// </summary>
         /// <param name="name">Name of the attribute</param>
-        /// <param name="value">Value of the attribute</param>
-        /// <param name="shortName">Short Name of the attribute</param>
-        /// <param name="extraData">Extra string data of the attribute</param>
-        public EnumAttribute(string name = "", int value = 0, string shortName = "", string extraData = "")
+        public EnumAttribute(string name = "")
         {
             Name = name;
-            Value = value;
-            ShortName = shortName;
-            ExtraData = extraData;
+            Value = 0;
+            ShortName = string.Empty;
+            ExtraData = string.Empty;
         }
     }
 }

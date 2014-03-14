@@ -11,7 +11,7 @@ Post-Deployment Script Template
 */
 
 -- Populate all reference tables
---:r .\POPULATE_dbo.ExampleScript.sql
+--:r .\POPULATE_dbo.BanTypes.sql
 
 
 

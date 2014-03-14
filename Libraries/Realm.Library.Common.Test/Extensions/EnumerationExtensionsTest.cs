@@ -11,15 +11,15 @@ namespace Realm.Library.Common.Test.Extensions
     {
         public enum EnumTest
         {
-            [Enum("Test", 1, "Testing", "Extra,Data")]
+            [Enum("Test", Value = 1, ShortName = "Testing", ExtraData = "Extra,Data")]
             Test,
 
             Test1 = 1024,
 
-            [Enum("Test Two", 5)]
+            [Enum("Test Two", Value = 5)]
             Test2 = 256,
 
-            [Enum("All", 1280)]
+            [Enum("All", Value = 1280)]
             All
         }
 

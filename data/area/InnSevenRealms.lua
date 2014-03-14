@@ -37,10 +37,12 @@ function FirstFloorMobs()
 	stands behind the bar of this establishment.  His dark features mark him to be of 
 	southern descent.  He has dark hair and a bushy, dark beard which have been 
 	recently trimmed and his laugh echoes throughout the room.]];
-	mobile.Attacks = "kick";
-	--mobile:SetStats1(0, 50, 
+	mobile.ActFlags = "Immortal NoAttack";
+	
 	-- Create a shop for Bron
 	shop = CreateShop(10030, 90, 7, 21);
+	
+	mobile:AddShop(shop);
 	
 	-- MUDPROG
 	-- Wipe down the bar

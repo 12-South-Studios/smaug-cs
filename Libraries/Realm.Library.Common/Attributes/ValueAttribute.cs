@@ -7,7 +7,7 @@ namespace Realm.Library.Common
     /// <summary>
     /// Class definining an attribute
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class ValueAttribute : Attribute
     {
         /// <summary>

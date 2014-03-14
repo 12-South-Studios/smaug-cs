@@ -7,7 +7,7 @@ namespace Realm.Library.Common
     /// <summary>
     /// Class definining an attribute
     /// </summary>
-    [AttributeUsage(AttributeTargets.All)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
     public sealed class NameAttribute : Attribute
     {
         /// <summary>
