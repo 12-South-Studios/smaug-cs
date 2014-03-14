@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Bans]
+(
+	[BanId] INT IDENTITY NOT NULL,
+	[BanTypeId] TINYINT NOT NULL,
+	[Name] VARCHAR(100) NULL,
+	[Note] VARCHAR(1024) NOT NULL,
+	[BannedBy] VARCHAR(25) NOT NULL,
+	[BannedOn] DATETIME NOT NULL DEFAULT GETDATE(),
+	[Duration] SMALLINT NOT NULL,
+	[Level] TINYINT NULL,
+	[Warn] BIT NULL,
+	[Prefix] BIT NULL,
+	[Suffix] BIT NULL,
+	[Active] BIT NOT NULL DEFAULT 1, 
+
+    CONSTRAINT [PK_Bans]
+		PRIMARY KEY CLUSTERED ([BanId] ASC),
+
+	CONSTRAINT [FK_Bans_BanTypeId]
+		FOREIGN KEY ([BanTypeId]) REFERENCES [BanTypes]([BanTypeId])
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Bans_BanTypeId] 
+	ON [dbo].[Bans] ([BanTypeId])
+GO

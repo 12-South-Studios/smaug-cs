@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[BanTypes]
+(
+	[BanTypeId] TINYINT NOT NULL,
+	[Name] VARCHAR(50) NOT NULL,
+	[Value] TINYINT NOT NULL,
+
+	CONSTRAINT [PK_BanTypes]
+		PRIMARY KEY CLUSTERED ([BanTypeId] ASC)
+)

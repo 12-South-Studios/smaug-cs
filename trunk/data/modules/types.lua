@@ -3,20 +3,34 @@
 -- Revised: 2013.11.25
 -- Author: Jason Murdick
 
+-- Namespaces
 luanet.load_assembly("SmaugCS");
+luanet.load_assembly("SmaugCS.Ban");
+luanet.load_assembly("SmaugCS.Board");
 luanet.load_assembly("SmaugCS.Common");
 luanet.load_assembly("SmaugCS.Constants");
 luanet.load_assembly("SmaugCS.Data");
 luanet.load_assembly("SmaugCS.Language");
+luanet.load_assembly("SmaugCS.Logging");
+luanet.load_assembly("SmaugCS.News");
 luanet.load_assembly("SmaugCS.Weather");
 luanet.load_assembly("Realm.Library.Common");
 luanet.load_assembly("Realm.Library.Lua");
 luanet.load_assembly("Realm.Library.NCalcExt");
+luanet.load_assembly("Realm.Library.Network");
+luanet.load_assembly("Realm.Library.Patterns.Command");
+luanet.load_assembly("Realm.Library.Patterns.Decorator");
+luanet.load_assembly("Realm.Library.Patterns.Factory");
+luanet.load_assembly("Realm.Library.Patterns.Repository");
+luanet.load_assembly("Realm.Library.Patterns.Singleton");
+luanet.load_assembly("SmallDBConnectivity");
 
+-- Objects
 luanet.import_type("Realm.Library.Common.Cell");
 luanet.import_type("Realm.Library.Common.Entity");
 luanet.import_type("Realm.Library.Common.IEntity");
 luanet.import_type("Realm.Library.Common.Property");
+luanet.import_type("Realm.Library.Common.TinyTypeBase");
 
 luanet.import_type("SmaugCS.Data.AffectData");
 luanet.import_type("SmaugCS.Data.AreaData");
@@ -50,12 +64,12 @@ luanet.import_type("SmaugCS.Data.VariableData");
 luanet.import_type("SmaugCS.Data.WeatherData");
 
 luanet.import_type("SmaugCS.Data.Template");
-luanet.import_type("SmaugCS.Data.Templates.RoomTemplate");
-luanet.import_type("SmaugCS.Data.Templates.MobTemplate");
-luanet.import_type("SmaugCS.Data.Templates.ObjectTemplate");
+luanet.import_type("SmaugCS.Data.RoomTemplate");
+luanet.import_type("SmaugCS.Data.MobTemplate");
+luanet.import_type("SmaugCS.Data.ObjectTemplate");
 
-luanet.import_type("SmaugCS.Data.Instances.Instance");
-luanet.import_type("SmaugCS.Data.Instances.CharacterInstance");
-luanet.import_type("SmaugCS.Data.Instances.ObjectInstance");
+luanet.import_type("SmaugCS.Data.Instance");
+luanet.import_type("SmaugCS.Data.CharacterInstance");
+luanet.import_type("SmaugCS.Data.ObjectInstance");
 
 -- EOF

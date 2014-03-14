@@ -79,6 +79,9 @@
     <Folder Include="Schema Objects\Schemas\live\Tables" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Post-Deployment" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Types" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Settings\Gateway.publish.xml" />
@@ -90,9 +93,18 @@
     <Build Include="Schema Objects\Schemas\live\Tables\Hash.sql" />
     <Build Include="Schema Objects\Schemas\live\Tables\User.sql" />
     <Build Include="Schema Objects\Schemas\live\Tables\UserLoginHistory.sql" />
-    <Build Include="Scripts\Post-Deployment\POPULATE_dbo.ExampleScript.sql" />
+    <Build Include="Scripts\Post-Deployment\POPULATE_dbo.BanTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Bans.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\BanTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_GetBans.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_AddOrUpdateBan.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_DeleteBan.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types\BanTableType.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="SmaugCS.Database.refactorlog" />
   </ItemGroup>
 </Project>

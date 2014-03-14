@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace Realm.Library.Common
 {
@@ -6,39 +7,40 @@ namespace Realm.Library.Common
     /// WhitespaceDelimiter enumeration which is used to identify types of
     /// delimiters that are used to separate words in strings.
     /// </summary>
+    [Flags]
     public enum DelimiterType
     {
 #pragma warning disable 1591
 
-        [Enum("Whitespace", 1)]
+        [Enum("Whitespace", Value = 1)]
         [Description("\t\n\r ")]
         Whitespace,
 
-        [Enum("Comma", 2)]
+        [Enum("Comma", Value = 2)]
         [Description(",")]
         Comma,
 
-        [Enum("Period", 4)]
+        [Enum("Period", Value = 4)]
         [Description(".")]
         Period,
 
-        [Enum("Colon", 8)]
+        [Enum("Colon", Value = 8)]
         [Description(":")]
         Colon,
 
-        [Enum("Equals", 16)]
+        [Enum("Equals", Value = 16)]
         [Description("=")]
         Equals,
 
-        [Enum("Punctuation", 32)]
+        [Enum("Punctuation", Value = 32)]
         [Description(",:.=")]
         Punctuation,
 
-        [Enum("Backslash", 64)]
+        [Enum("Backslash", Value = 64)]
         [Description("/")]
         Backslash,
 
-        [Enum("None", 128)]
+        [Enum("None", Value = 128)]
         None
 
 #pragma warning restore 1591

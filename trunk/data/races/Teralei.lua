@@ -1,60 +1,63 @@
-Name        Sea-Elf~
-Race        12
-Classes     848
-Str_Plus    -1
-Dex_Plus    2
-Wis_Plus    0
-Int_Plus    1
-Con_Plus    -1
-Cha_Plus    1
-Lck_Plus    1
-Hit         -2
-Mana        10
-Affected    -2147483632
-Resist      2
-Suscept     0
-Language    2
-Align       600
-Min_Align  -1000
-Max_Align	1000
-AC_Plus    0
-Exp_Mult   112
-Attacks    0
-Defenses   0
-Height     63
-Weight     110
-Hunger_Mod  0
-Thirst_mod  -3
-Mana_Regen  0
-HP_Regen    0
-Race_Recall 0
-WhereName  <used as light>     ~
-WhereName  <worn on finger>    ~
-WhereName  <worn on finger>    ~
-WhereName  <worn around neck>  ~
-WhereName  <worn around neck>  ~
-WhereName  <worn on body>      ~
-WhereName  <worn on head>      ~
-WhereName  <worn on legs>      ~
-WhereName  <worn on feet>      ~
-WhereName  <worn on hands>     ~
-WhereName  <worn on arms>      ~
-WhereName  <worn as shield>    ~
-WhereName  <worn about body>   ~
-WhereName  <worn about waist>  ~
-WhereName  <worn around wrist> ~
-WhereName  <worn around wrist> ~
-WhereName  <wielded>           ~
-WhereName  <held>              ~
-WhereName  <dual wielded>      ~
-WhereName  <worn on ears>      ~
-WhereName  <worn on eyes>      ~
-WhereName  <missile wielded>   ~
-WhereName  <worn on back>  ~
-WhereName  <worn over face>  ~
-WhereName  <worn around ankle>  ~
-WhereName  <worn around ankle>  ~
-WhereName  <BUG Inform Nivek>  ~
-WhereName  <BUG Inform Nivek>  ~
-WhereName  <BUG Inform Nivek>  ~
-End
+-- TERALEI.LUA
+-- This is the Teralei Race file for the MUD
+-- Revised: 2014.03.11
+-- Author: Jason Murdick
+-- Version: 1.0
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
+
+function LoadRace()
+	newRace = LCreateRace("Teralei", 5);
+	race.this = newRace;
+	race.this.ClassRestriction = 848;
+	race.this.StrengthBonus = -1;
+	race.this.DexterityBonus = 2;
+	race.this.IntelligenceBonus = 1;
+	race.this.ConstitutionBonus = -1;
+	race.this.CharismaBonus = 1;
+	race.this.LuckBonus = 1;
+	race.this.Health = -2;
+	race.this.Mana = 10;
+	race.this.Resistance = 2;
+	race.this.Language = 2;
+	race.this.MinimumAlignment = -1000;
+	race.this.MaximumAlignment = 1000;
+	race.this.ExperienceMultiplier = 112;
+	race.this.Height = 63;
+	race.this.Weight = 110;
+	race.this.ThirstMod = -3;
+	
+	LoadWhereNames(race.this);
+end
+
+function LoadWhereNames(race)
+	race:AddWhereName("<used as light>     ");
+	race:AddWhereName("<worn on finger>    ");
+	race:AddWhereName("<worn on finger>    ");
+	race:AddWhereName("<worn around neck>  ");
+	race:AddwhereName("<worn around neck>  ");
+	race:AddWhereName("<worn on body>      ");
+	race:AddwhereName("<worn on head>      ");
+	race:AddWhereName("<worn on legs>      ");
+	race:AddWhereName("<worn on feet>      ");
+	race:AddWhereName("<worn on hands>     ");
+	race:AddWhereName("<worn on arms>      ");
+	race:AddWhereName("<worn as shield>    ");
+	race:AddWhereName("<worn about body>   ");
+	race:AddWhereName("<worn about waist>  ");
+	race:AddWhereName("<worn around wrist> ");
+	race:AddWhereName("<worn around wrist> ");
+	race:AddWhereName("<wielded>           ");
+	race:AddWhereName("<held>              ");
+	race:AddWhereName("<dual wielded>      ");
+	race:AddWhereName("<worn on ears>      ");
+	race:AddWhereName("<worn on eyes>      ");
+	race:AddWhereName("<missile wielded>   ");
+	race:AddWhereName("<worn on back>      ");
+	race:AddWhereName("<worn over face>    ");
+	race:AddWhereName("<worn around ankle> ");
+	race:AddWhereName("<worn around ankle> ");
+end
+
+LoadRace();
+
+-- EOF

@@ -7,32 +7,32 @@ namespace SmaugCS.Constants.Enums
     public enum AffectedByTypes
     { //1, 2, 4, 8, 16, 32, 64, 128, 256, 512
         None = -1,
-        Blind = 1 << 0,
-        Invisible = 1 << 1,
+        Blind = 1 << 0,     // 1
+        Invisible = 1 << 1, // 2
 
         [Name("detect_evil")]
-        DetectEvil = 1 << 2,
+        DetectEvil = 1 << 2,    // 4
 
         [Name("detect_invis")]
-        DetectInvisibility = 1 << 3,
+        DetectInvisibility = 1 << 3,    // 8
 
-        [Name("detect_magic")]
-        DetectMagic = 1 << 4,
+        [Name("detect_magic")] 
+        DetectMagic = 1 << 4,   // 16
 
         [Name("detect_hidden")]
-        DetectHidden = 1 << 5,
-        Hold = 1 << 6,
-        Sanctuary = 1 << 7,
+        DetectHidden = 1 << 5,  // 32
+        Hold = 1 << 6,      // 64
+        Sanctuary = 1 << 7, // 128
 
         [Name("faerie_fire")]
-        FaerieFire = 1 << 8,
-        Infrared = 1 << 9,
-        Curse = 1 << 10,
-        Flaming = 1 << 11,
-        Poison = 1 << 12,
-        Protect = 1 << 13,
-        Paralysis = 1 << 14,
-        Sneak = 1 << 15,
+        FaerieFire = 1 << 8,    // 256
+        Infrared = 1 << 9,  // 512
+        Curse = 1 << 10, //1024
+        Flaming = 1 << 11, //2048
+        Poison = 1 << 12,//4096
+        Protect = 1 << 13,//8192
+        Paralysis = 1 << 14,//16384
+        Sneak = 1 << 15,//32768
         Hide = 1 << 16,
         Sleep = 1 << 17,
         Charm = 1 << 18,

@@ -6,7 +6,7 @@
 f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadRace()
-	newRace = LCreateRace("Vampire", 3);
+	newRace = LCreateRace("Vampire", 8);
 	race.this = newRace;
 	race.this.ClassRestriction = 512;
 	race.this.StrengthBonus = 1;
