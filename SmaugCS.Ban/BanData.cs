@@ -40,7 +40,7 @@ namespace SmaugCS.Ban
         public static BanData Translate(DataRow dataRow)
         {
             BanData ban = new BanData(Convert.ToInt32(dataRow["BanId"]),
-                          EnumerationExtensions.GetEnumByName<BanTypes>(dataRow["BanType"].ToString()))
+                          Realm.Library.Common.EnumerationExtensions.GetEnumByName<BanTypes>(dataRow["BanType"].ToString()))
                 {
                     Name = dataRow.GetDataValue("Name", string.Empty),
                     Note = dataRow.GetDataValue("Note", string.Empty),

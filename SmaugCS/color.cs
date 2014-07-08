@@ -55,7 +55,7 @@ namespace SmaugCS
                 if ((count % 8) == 0 && count != 0)
                     send_to_pager("\r\n", ch);
 
-                ATTypes atType = EnumerationExtensions.GetEnum<ATTypes>(count);
+                ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
                 pager_printf(ch, "%s%-10s", color_str(atType, ch), GameConstants.pc_displays[count]);
             }
 
@@ -67,7 +67,7 @@ namespace SmaugCS
                 if ((count % 8) == 0 && count != 32)
                     send_to_pager("\r\n", ch);
 
-                ATTypes atType = EnumerationExtensions.GetEnum<ATTypes>(count);
+                ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
                 pager_printf(ch, "%s%-10s%s", color_str(atType, ch), GameConstants.pc_displays[count], AnsiCodes.Reset);
             }
 
@@ -111,7 +111,7 @@ namespace SmaugCS
                             string[] colors = tuple.Item2.Split(new[] { ' ' });
                             for (int i = 0; i < colors.Length; i++)
                             {
-                                ch.Colors[EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
+                                ch.Colors[Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
                             }
                             break;
                         case "end":
@@ -126,7 +126,7 @@ namespace SmaugCS
             if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Ansi))
                 return string.Empty;
 
-            AnsiCodes code = EnumerationExtensions.GetEnum<AnsiCodes>((int)attype);
+            AnsiCodes code = Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>((int)attype);
             return code.GetName();
         }
 
@@ -135,12 +135,12 @@ namespace SmaugCS
             switch (type)
             {
                 default:
-                    return EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15)).GetName();
+                    return Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15)).GetName();
                 case 2:
-                    AnsiCodes code = EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15));
+                    AnsiCodes code = Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15));
                     return code.MakeBlink();
                 case 3:
-                    return EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(16, 31)).GetName();
+                    return Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(16, 31)).GetName();
             }
         }
 

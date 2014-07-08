@@ -18,7 +18,8 @@ CREATE TYPE [dbo].[BanTableType] AS TABLE(
 	[Level] TINYINT NULL,
 	[Warn] BIT NULL,
 	[Prefix] BIT NULL,
-	[Suffix] BIT NULL
+	[Suffix] BIT NULL,
+	[Active] BIT NOT NULL DEFAULT 1
 )
 GO
 

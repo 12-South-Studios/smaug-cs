@@ -970,66 +970,49 @@ function Objects()
 	object:SetValues(15, 15, 0, 0, 0, 0);
 	object:SetStats(2, 2000, 200, 0, 0);
 	
+    object = CreateObject(38, "boots travel traveling", "armor");
+    object.ShortDescription = "weathered boots";
+    object.LongDescription = "A pair of weathered traveling boots lie here.";
+    object.Flags = "glow hum magic antievil antineutral antivampire";
+    object.WearFlags = "take feet";
+    object:SetValues(11, 11, 0, 0, 0, 0);
+    object:SetStats(2, 325400, 32540, 0, 0);
+    object:AddAffect(-1, -1, 5, 19, 0);
+    object:AddAffect(-1, -1, 1, 18, 0);
+    object:AddAffect(-1, -1, 100, 14, 0);
+    object:AddAffect(-1, -1, 1, 2, 0);
+
+    object = CreateObject(39, "key gate", "key");
+    object.ShortDescription = "a gate key";
+    object.LongDescription = "A largish key lies here.";
+    object.Flags = "metal";
+    object.WearFlags = "take";
+    object:SetStats(1, 0, 0, 0, 0);
+
+    object = Createobject(41, "orb", "lever");
+    object.ShortDescription = "the orb";
+    object.LongDescription = "A small orb tops a slender pedestal of glowing crystal.";
+    object:SetStats(1, 0, 0, 0, 0);
+    object:AddExtraDescription("orb", [[Pulsing atop the crystal column, it seems as though 
+    it could be pushed to turn it ever so slightly.]]);
+	object:AddMudProg(CreateMudProg("push_prog", "100", 
+	[[
+		local ch = LGetCurrentCharacter();
+		MPEchoAt(ch, "The instant your hand touches the orb, your surroundings change.");
+		MPEchoAt(ch, "The sights and busy sounds of Darkhaven surround you...");
+
+        if (LIsPKill(ch)) then
+            MPTransfer(ch, 3009);
+        else
+            MPTransfer(ch, 21001);
+            MPEchoAround(ch, "$n materializes in the center of the great rune.");
+        end
+
+        MPAt(99, "pull orb");
+	]]));
+    
 --[[
-#OBJECT
-Vnum     38
-Keywords boots travel traveling~
-Type     armor~
-Short    weathered boots~
-Long     A pair of weathered traveling boots lie here.~
-Flags    glow hum magic antievil antineutral antivampire~
-WFlags   take feet~
-Values   11 11 0 0 0 0
-Stats    2 325400 32540 0 0
-Affect       -1 -1 5 19 0
-Affect       -1 -1 1 18 0
-Affect       -1 -1 100 14 0
-Affect       -1 -1 1 2 0
-#ENDOBJECT
 
-#OBJECT
-Vnum     39
-Keywords key gate~
-Type     key~
-Short    a gate key~
-Long     A largish key lies here.~
-Flags    metal~
-WFlags   take~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#ENDOBJECT
-
-#OBJECT
-Vnum     41
-Keywords orb~
-Type     lever~
-Short    the orb~
-Long     A small orb tops a slender pedestal of glowing crystal.~
-Values   0 0 0 0 0 0
-Stats    1 0 0 0 0
-#EXDESC
-ExDescKey    orb~
-ExDesc       Pulsing atop the crystal column, it seems as though it could be pushed to
-turn it ever so slightly.
-~
-#ENDEXDESC
-
-#MUDPROG
-Progtype  push_prog~
-Arglist   100~
-Comlist   mpechoat $n The instant your hand touches the orb, your surroundings change.
-mpechoat $n The sights and busy sounds of Darkhaven surround you...
-if ispkill($n)
-  mptrans 0.$n 3009
-else
-  mptrans $n 21001
-  mpat 21001 mer 0.$n $n materializes in the center of the great rune.
-endif
-mpat 99 pull orb
-~
-#ENDPROG
-
-#ENDOBJECT
 
 #OBJECT
 Vnum     42

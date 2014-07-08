@@ -1,4 +1,4 @@
-﻿PRINT 'Starting dbo.BanTypes Syncronization';
+﻿PRINT 'Starting dbo.BanTypes Syncronization'
 GO
 
 DECLARE @Source TABLE (
@@ -26,5 +26,5 @@ WHEN MATCHED AND (t.Name <> s.Name OR t.Value <> s.Value)
 WHEN NOT MATCHED BY SOURCE THEN
     DELETE;
 
-PRINT 'Done Synchronizing dbo.BanTypes';
+PRINT 'Done Synchronizing dbo.BanTypes'
 GO

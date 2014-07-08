@@ -121,7 +121,7 @@ namespace SmaugCS.Loaders
 
             if (word.EqualsIgnoreCase("affect"))
             {
-                af.Type = EnumerationExtensions.GetEnum<AffectedByTypes>(proxy.ReadNumber());
+                af.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(proxy.ReadNumber());
             }
             else
             {
@@ -130,12 +130,12 @@ namespace SmaugCS.Loaders
                 if (sn < 0)
                     LogManager.Instance.Bug("Unknown skill {0}", skillName);
                 else
-                    af.Type = EnumerationExtensions.GetEnum<AffectedByTypes>(sn);
+                    af.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(sn);
             }
 
             af.Duration = proxy.ReadNumber();
             int afMod = proxy.ReadNumber();
-            af.Location = EnumerationExtensions.GetEnum<ApplyTypes>(proxy.ReadNumber());
+            af.Location = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(proxy.ReadNumber());
             af.BitVector = proxy.ReadBitvector();
 
             if (af.Location == ApplyTypes.WeaponSpell
@@ -197,7 +197,7 @@ namespace SmaugCS.Loaders
                         exit.Keywords = proxy.ReadString();
                         break;
                     case "pull":
-                        exit.PullType = EnumerationExtensions.GetEnum<DirectionPullTypes>(proxy.ReadNumber());
+                        exit.PullType = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionPullTypes>(proxy.ReadNumber());
                         exit.Pull = proxy.ReadNumber();
                         break;
                     case "toroom":
@@ -312,7 +312,7 @@ namespace SmaugCS.Loaders
                         break;
                     case "progtype":
                         prog.Type =
-                            EnumerationExtensions.GetEnum<MudProgTypes>(db.mprog_name_to_type(proxy.ReadFlagString()));
+                            Realm.Library.Common.EnumerationExtensions.GetEnum<MudProgTypes>(db.mprog_name_to_type(proxy.ReadFlagString()));
                         //index.ProgTypes.SetBit((int)prog.Type);
                         break;
                 }
@@ -536,7 +536,7 @@ namespace SmaugCS.Loaders
                             sector = 1;
                         }
 
-                        room.SectorType = EnumerationExtensions.GetEnum<SectorTypes>(sector);
+                        room.SectorType = Realm.Library.Common.EnumerationExtensions.GetEnum<SectorTypes>(sector);
                         break;
                     case "stats":
                         string[] words = proxy.ReadString().Split(new[] { ' ' });
@@ -676,7 +676,7 @@ namespace SmaugCS.Loaders
                             LogManager.Instance.Bug("Vnum {0} object has invalid type {1}", obj.Vnum, otype);
                             otype = FlagLookup.get_otype("trash");
                         }
-                        obj.Type = EnumerationExtensions.GetEnum<ItemTypes>(otype);
+                        obj.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemTypes>(otype);
                         break;
                     case "values":
                         words = proxy.ReadString().Split(new[] { ' ' });

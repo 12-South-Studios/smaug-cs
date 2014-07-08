@@ -40,7 +40,7 @@ namespace SmaugCS.Repositories
                     ResetNum = -1,
                     AffectedBy = new ExtendedBitvector(mobParent.GetAffected()),
                     CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment),
-                    Gender = EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
+                    Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
                 };
 
             if (!string.IsNullOrEmpty(mobParent.SpecFun))
@@ -73,8 +73,8 @@ namespace SmaugCS.Repositories
             mob.PermanentConstitution = mobParent.GetStatistic(StatisticTypes.Constitution);
             mob.PermanentCharisma = mobParent.GetStatistic(StatisticTypes.Charisma);
             mob.PermanentLuck = mobParent.GetStatistic(StatisticTypes.Luck);
-            mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
-            mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
+            mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
+            mob.CurrentClass = Realm.Library.Common.EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;
             mob.SavingThrows = new SavingThrowData(mobParent.SavingThrows);
             mob.Height = mobParent.Height;

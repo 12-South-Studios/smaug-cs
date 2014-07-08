@@ -22,6 +22,7 @@ namespace Realm.Library.Common.Collections
         /// </summary>
         /// <param name="forward"></param>
         /// <param name="backward"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public BidirectionalDictionary(IDictionary<TFirst, IEnumerable<TSecond>> forward, IDictionary<TSecond, IEnumerable<TFirst>> backward)
         {
             Forward = forward;

@@ -680,29 +680,6 @@ namespace SmaugCS
                 {'Y', "&Y"}, {'c', "&c"}
             };
 
-        public static List<string> LoginMessages = new List<string>()
-            {
-                "",
-                "\r\n&GYou did not have enough money for the residence you bid on.\r\nIt has been readded to the auction and you've been penalized.\r\n",
-                "\r\n&GThere was an error in looking up the seller for the residence\r\nyou had bid on. Residence removed and no interaction has taken place.\r\n",
-                "\r\n&GThere was no bidder on your residence. Your residence has been\r\nremoved from auction and you have been penalized.\r\n",
-                "\r\n&GYou have successfully received your new residence.\r\n",
-                "\r\n&GYou have successfully sold your residence.\r\n",
-                "\r\n&RYou have been outcast from your clan/order/guild.  Contact a leader\r\nof that organization if you have any questions.\r\n",
-                "\r\n&RYou have been silenced.  Contact an immortal if you wish to discuss\r\nyour sentence.\r\n",
-                "\r\n&RYou have lost your ability to set your title.  Contact an immortal if you\r\nwish to discuss your sentence.\r\n",
-                "\r\n&RYou have lost your ability to set your biography.  Contact an immortal if\r\nyou wish to discuss your sentence.\r\n",
-                "\r\n&RYou have been sent to hell.  You will be automatically released when your\r\nsentence is up.  Contact an immortal if you wish to discuss your sentence.\r\n",
-                "\r\n&RYou have lost your ability to set your own description.  Contact an\r\nimmortal if you wish to discuss your sentence.\r\n",
-                "\r\n&RYou have lost your ability to set your homepage address.  Contact an\r\nimmortal if you wish to discuss your sentence.\r\n",
-                "\r\n&RYou have lost your ability to \"beckon\" other players.  Contact an\r\nimmortal if you wish to discuss your sentence.\r\n",
-                "\r\n&RYou have lost your ability to send tells.  Contact an immortal if\r\nyou wish to discuss your sentence.\r\n",
-                "\r\n&CYour character has been frozen.  Contact an immortal if you wish\r\nto discuss your sentence.\r\n",
-                "\r\n&RYou have lost your ability to emote.  Contact an immortal if\r\nyou wish to discuss your sentence.\r\n",
-                "RESERVED FOR LINKDEAD DEATH MESSAGES",
-                "RESERVED FOR CODE-SENT MESSAGES"
-            };
-
         public static List<str_app_type> str_app = new List<str_app_type>()
                                                        {
                                                            new str_app_type(-5, -4, 0, 0),

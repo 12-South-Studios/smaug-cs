@@ -16,33 +16,16 @@ namespace SmaugCS.Weather
             return WeatherMessages.ContainsKey(precip) ? WeatherMessages[precip] : new List<string>();
         }
 
-        private static readonly List<string> HemisphereNames = new List<string> { "northern", "southern" };
         public static int GetHemisphere(string type)
         {
-            return HemisphereNames.Contains(type)
-                       ? HemisphereNames.IndexOf(type)
-                       : -1;
+            HemisphereTypes hemisphere = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
+            return (int)hemisphere;
         }
 
-        private static readonly List<string> ClimateNames = new List<string>
-                                                       {
-                                                           "rainforest",
-                                                           "savanna",
-                                                           "desert",
-                                                           "steppe",
-                                                           "chapparal",
-                                                           "grasslands",
-                                                           "deciduous_forest",
-                                                           "taiga",
-                                                           "tundra",
-                                                           "alpine",
-                                                           "arctic"
-                                                       };
         public static int GetClimate(string type)
         {
-            return ClimateNames.Contains(type)
-                       ? ClimateNames.IndexOf(type)
-                       : -1;
+            ClimateTypes climate = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
+            return (int)climate;
         }
 
         public static void InitializeWeatherMessages(string filename)

@@ -199,7 +199,7 @@ namespace SmaugCS
                                     break;
                             }
 
-                            AttackTypes atkType = EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
+                            AttackTypes atkType = Realm.Library.Common.EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
                             switch (atkType)
                             {
                                 case AttackTypes.Bash:
@@ -244,7 +244,7 @@ namespace SmaugCS
                     break;
                 case TimerTypes.DoFunction:
                     CharacterSubStates tempsub = ch.SubState;
-                    ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(timer.Value);
+                    ch.SubState = Realm.Library.Common.EnumerationExtensions.GetEnum<CharacterSubStates>(timer.Value);
                     timer.Action.Value.Invoke(ch, string.Empty);
                     if (ch.CharDied())
                         break;
@@ -292,7 +292,7 @@ namespace SmaugCS
             int bonus = 0;
             int sn = -1;
 
-            switch (EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]))
+            switch (Realm.Library.Common.EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]))
             {
                 case DamageTypes.Hit:
                 case DamageTypes.Suction:

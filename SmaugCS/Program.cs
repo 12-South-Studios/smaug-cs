@@ -5,6 +5,7 @@ using System.Data.SqlServerCe;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Network;
@@ -397,15 +398,18 @@ namespace SmaugCS
         private static readonly ILog Logger =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static TcpServer NetworkMgr;
-        
-        static void Main(string[] args)
+        private static TcpServer _networkMgr;
+        public static IKernel Kernel { get; private set; }
+
+        static void Main()
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-            ConfigureLogging();
-
+            
             try
             {
+                ConfigureLogging();
+                InitializeNinjectKernel();
+
                 OnServerStart();
                 GameManager.Instance.DoLoop();
                 OnServerStop();
@@ -415,6 +419,13 @@ namespace SmaugCS
                 LogManager.Instance.Boot(ex);
                 Environment.Exit(0);
             }
+        }
+
+        private static void InitializeNinjectKernel()
+        {
+            Kernel = new StandardKernel();
+
+            Kernel.Load("SmaugCS.*.dll");
         }
 
         private static void ConfigureLogging()
@@ -450,10 +461,10 @@ namespace SmaugCS
 
             LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
 
-            NetworkMgr = new TcpServer(logWrapper, new TcpUserRepository());
-            NetworkMgr.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
+            _networkMgr = new TcpServer(logWrapper, new TcpUserRepository());
+            _networkMgr.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
-            NetworkMgr.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
+            _networkMgr.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
 
             DatabaseManager.Instance.Initialize(LogManager.Instance);
             //DatabaseManager.Instance.InitializeDatabase(false);
@@ -488,7 +499,7 @@ namespace SmaugCS
 
         private static void OnServerStop()
         {
-            NetworkMgr.Shutdown("Shutting down MUD");
+            _networkMgr.Shutdown("Shutting down MUD");
 
             // TODO: Shutdown Managers
         }

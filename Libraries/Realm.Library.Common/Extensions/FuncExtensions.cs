@@ -86,5 +86,94 @@ namespace Realm.Library.Common
         {
             return parameter => () => func(parameter);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TParam1"></typeparam>
+        /// <param name="executeFunc"></param>
+        /// <param name="errorAction"></param>
+        /// <param name="args"></param>
+        public static void TryCatch<TParam1>(this Action<TParam1[]> executeFunc,
+                                                 Action<Exception> errorAction = null,
+                                                 params TParam1[] args)
+        {
+            if (executeFunc == null)
+                throw new ArgumentNullException("executeFunc");
+
+            try
+            {
+                executeFunc.Invoke(args);
+            }
+            catch (Exception ex)
+            {
+                if (errorAction != null)
+                    errorAction.Invoke(ex);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TParam1"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="executeFunc"></param>
+        /// <param name="errorAction"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static TResult TryCatch<TParam1, TResult>(this Func<TParam1[], TResult> executeFunc,
+                                                         Func<Exception, TResult> errorAction = null,
+                                                         params TParam1[] args)
+        {
+            if (executeFunc == null)
+                throw new ArgumentNullException("executeFunc");
+
+            try
+            {
+                return executeFunc.Invoke(args);
+            }
+            catch (Exception ex)
+            {
+                if (errorAction != null)
+                    return errorAction.Invoke(ex);
+            }
+            throw new ArgumentException("No return value");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TParam1"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <typeparam name="TException"></typeparam>
+        /// <param name="executeFunc"></param>
+        /// <param name="errorAction"></param>
+        /// <param name="finalAction"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static TResult TryCatch<TParam1, TResult, TException>(this Func<TParam1[], TResult> executeFunc,
+                                                                     Func<TException, TResult> errorAction = null,
+                                                                     Action<TParam1[]> finalAction = null,
+                                                                     params TParam1[] args) where TException : Exception
+        {
+            if (executeFunc == null)
+                throw new ArgumentNullException("executeFunc");
+
+            try
+            {
+                return executeFunc.Invoke(args);
+            }
+            catch (TException ex)
+            {
+                if (errorAction != null)
+                    return errorAction.Invoke(ex);
+            }
+            finally
+            {
+                if (finalAction != null)
+                    finalAction.Invoke(args);
+            }
+            throw new ArgumentException("No return value specified");
+        }
     }
 }

@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="ClimateTypes.cs" />
     <Compile Include="CloudCoverTypes.cs" />
+    <Compile Include="HemisphereTypes.cs" />
     <Compile Include="HumidityTypes.cs" />
     <Compile Include="PrecipitationTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,7 +72,9 @@
     <Compile Include="WeatherConstants.cs" />
     <Compile Include="WeatherManager.cs" />
     <Compile Include="WeatherMap.cs" />
+    <Compile Include="WeatherMessageAttribute.cs" />
     <Compile Include="WeatherRangeData.cs" />
+    <Compile Include="WeatherThresholdTypes.cs" />
     <Compile Include="WindSpeedTypes.cs" />
   </ItemGroup>
   <ItemGroup>

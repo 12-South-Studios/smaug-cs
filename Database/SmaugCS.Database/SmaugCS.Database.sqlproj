@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{0a619f26-23d0-41ad-9a1f-9e579aa1146d}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -84,8 +84,9 @@
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Publish Settings\Gateway.publish.xml" />
+    <None Include="Publish Settings\Work.publish.xml" />
     <None Include="Publish Settings\Home.publish.xml" />
+    <None Include="Scripts\Post-Deployment\POPULATE_dbo.BanTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\Server.sql" />
@@ -93,7 +94,6 @@
     <Build Include="Schema Objects\Schemas\live\Tables\Hash.sql" />
     <Build Include="Schema Objects\Schemas\live\Tables\User.sql" />
     <Build Include="Schema Objects\Schemas\live\Tables\UserLoginHistory.sql" />
-    <Build Include="Scripts\Post-Deployment\POPULATE_dbo.BanTypes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\Bans.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\BanTypes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_GetBans.sql" />

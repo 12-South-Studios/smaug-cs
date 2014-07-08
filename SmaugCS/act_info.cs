@@ -14,6 +14,7 @@ using SmaugCS.Data.Organizations;
 
 using SmaugCS.Managers;
 using SmaugCS.Weather;
+using SmaugCS.Constants;
 
 namespace SmaugCS
 {
@@ -366,92 +367,59 @@ namespace SmaugCS
 
         private static void SetCharacterColorByItemType(CharacterInstance ch, IList<int> pitShow, int i)
         {
-            switch (pitShow[i])
-            {
-                default:
-                    color.set_char_color(ATTypes.AT_OBJECT, ch);
-                    break;
-                case (int)ItemTypes.Blood:
-                    color.set_char_color(ATTypes.AT_BLOOD, ch);
-                    break;
-                case (int)ItemTypes.Money:
-                case (int)ItemTypes.Treasure:
-                    color.set_char_color(ATTypes.AT_YELLOW, ch);
-                    break;
-                case (int)ItemTypes.Cook:
-                case (int)ItemTypes.Food:
-                    color.set_char_color(ATTypes.AT_HUNGRY, ch);
-                    break;
-                case (int)ItemTypes.DrinkContainer:
-                case (int)ItemTypes.Fountain:
-                    color.set_char_color(ATTypes.AT_THIRSTY, ch);
-                    break;
-                case (int)ItemTypes.Fire:
-                    color.set_char_color(ATTypes.AT_FIRE, ch);
-                    break;
-                case (int)ItemTypes.Scroll:
-                case (int)ItemTypes.Wand:
-                case (int)ItemTypes.Staff:
-                    color.set_char_color(ATTypes.AT_MAGIC, ch);
-                    break;
-            }
+            ItemTypes itemType = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
+            CharacterColorAttribute attrib = itemType.GetAttribute<CharacterColorAttribute>();
+            if (attrib == null)
+                color.set_char_color(ATTypes.AT_OBJECT, ch);
+            else
+                color.set_char_color(attrib.ATType, ch);
         }
 
-        private static readonly Dictionary<AffectedByTypes, KeyValuePair<string, ATTypes>> VisibleAffectMap = new Dictionary<AffectedByTypes, KeyValuePair<string, ATTypes>>
-            {
-                { AffectedByTypes.FireShield, new KeyValuePair<string, ATTypes>("{0} is engulfed within a blaze of mystical flame.\r\n", ATTypes.AT_FIRE) },
-                { AffectedByTypes.ShockShield, new KeyValuePair<string, ATTypes>("%s is surrounded by cascading torrents of energy.", ATTypes.AT_BLUE) },
-                { AffectedByTypes.AcidMist, new KeyValuePair<string, ATTypes>("%s is visible through a cloud of churning mist.\r\n", ATTypes.AT_GREEN)},
-                { AffectedByTypes.IceShield, new KeyValuePair<string, ATTypes>("%s is ensphered by shards of glistening ice.\r\n", ATTypes.AT_LBLUE)},
-                { AffectedByTypes.VenomShield, new KeyValuePair<string, ATTypes>("%s is enshrouded in a choking cloud of gas.\r\n", ATTypes.AT_GREEN)},
-                { AffectedByTypes.Charm, new KeyValuePair<string, ATTypes>("%s wanders in a dazed, zombie-like state.\r\n", ATTypes.AT_MAGIC)},
-                { AffectedByTypes.Possess, new KeyValuePair<string, ATTypes>("%s appears to be in a deep trance...\r\n", ATTypes.AT_MAGIC)}
-            };
-        private static readonly KeyValuePair<string, ATTypes> DefaultVisibleAffectMap = new KeyValuePair<string, ATTypes>("", ATTypes.AT_PLAIN);
-        private static KeyValuePair<string, ATTypes> GetVisibleAffects(AffectedByTypes type, string replaceString)
-        {
-            KeyValuePair<string, ATTypes> kvp = VisibleAffectMap.ContainsKey(type)
-                          ? VisibleAffectMap[type]
-                          : DefaultVisibleAffectMap;
-            return new KeyValuePair<string, ATTypes>(string.Format(kvp.Key, replaceString), kvp.Value);
-        }
+        private static List<AffectedByTypes> AffectedByList = new List<AffectedByTypes> 
+        { 
+            AffectedByTypes.FireShield, AffectedByTypes.ShockShield, AffectedByTypes.AcidMist,
+            AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
+        };
 
         public static void show_visible_affects_to_char(CharacterInstance victim, CharacterInstance ch)
         {
-            string name = (victim.IsNpc() ? victim.ShortDescription : victim.Name).CapitalizeFirst();
+            ATTypes atType = ATTypes.AT_WHITE;
+            string description = string.Empty;
+            VisibleAffectAttribute attrib = null;
 
-            KeyValuePair<string, ATTypes> kvp = DefaultVisibleAffectMap;
             if (victim.IsAffected(AffectedByTypes.Sanctuary))
             {
-                color.set_char_color(ATTypes.AT_WHITE, ch);
-                if (victim.IsGood())
-                    kvp = new KeyValuePair<string, ATTypes>(string.Format("{0} glows with an aura of divine radiance.\r\n", name), ATTypes.AT_WHITE);
-                else if (victim.IsEvil())
-                    kvp = new KeyValuePair<string, ATTypes>(string.Format("{0} shimmers beneath an aura of dark energy.\r\n", name), ATTypes.AT_WHITE);
-                else
-                    kvp = new KeyValuePair<string, ATTypes>(string.Format("{0} is shrouded in flowing shadow and light.\r\n", name), ATTypes.AT_WHITE);
-            }
-            if (victim.IsAffected(AffectedByTypes.FireShield))
-                kvp = GetVisibleAffects(AffectedByTypes.FireShield, name);
-            if (victim.IsAffected(AffectedByTypes.ShockShield))
-                kvp = GetVisibleAffects(AffectedByTypes.ShockShield, name);
-            if (victim.IsAffected(AffectedByTypes.AcidMist))
-                kvp = GetVisibleAffects(AffectedByTypes.AcidMist, name);
-            if (victim.IsAffected(AffectedByTypes.IceShield))
-                kvp = GetVisibleAffects(AffectedByTypes.IceShield, name);
-            if (victim.IsAffected(AffectedByTypes.VenomShield))
-                kvp = GetVisibleAffects(AffectedByTypes.VenomShield, name);
-            if (victim.IsAffected(AffectedByTypes.Charm))
-                kvp = GetVisibleAffects(AffectedByTypes.Charm, name);
-            if (!victim.IsNpc() && victim.Descriptor == null
-                && victim.Switched.IsAffected(AffectedByTypes.Possess))
-                kvp = GetVisibleAffects(AffectedByTypes.Possess, Macros.PERS(victim, ch));
+                string name = (victim.IsNpc() ? victim.ShortDescription : victim.Name).CapitalizeFirst();
 
-            color.set_char_color(kvp.Value, ch);
-            color.ch_printf(ch, kvp.Key);
+                atType = ATTypes.AT_WHITE;
+                if (victim.IsGood())
+                    description = string.Format("{0} glows with an aura of divine radiance.\r\n", name);
+                else if (victim.IsEvil())
+                    description = string.Format("{0} shimmers beneath an aura of dark energy.\r\n", name);
+                else
+                    description = string.Format("{0} is shrouded in flowing shadow and light.\r\n", name);
+            }
+            if (!victim.IsNpc() && victim.Descriptor == null 
+                && victim.Switched.IsAffected(AffectedByTypes.Possess))
+                attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
+            else
+            {
+                AffectedByTypes affectedBy = AffectedByList.FirstOrDefault(x => victim.IsAffected(x));
+                if (affectedBy != null && affectedBy != AffectedByTypes.None)
+                    attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
+            }
+
+            if (attrib != null)
+            {
+                atType = attrib.ATType;
+                description = attrib.Description;
+            }
+
+            color.set_char_color(atType, ch);
+            color.ch_printf(ch, description);
         }
 
-
+        
         public static void show_char_to_char_0(CharacterInstance victim, CharacterInstance ch)
         {
             string buffer = string.Empty;

@@ -89,7 +89,7 @@ namespace SmaugCS.Data
 
         public void AddExit(string direction, int destination, string description)
         {
-            DirectionTypes dir = EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
+            DirectionTypes dir = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
             if (Exits.Any(x => x.Direction == dir))
                 return;
 
@@ -173,7 +173,7 @@ namespace SmaugCS.Data
 
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
         {
-            ResetTypes resetType = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type);
+            ResetTypes resetType = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type);
             ResetData newReset = new ResetData { Type = resetType, Extra = extra, Command = type[0].ToString() };
             newReset.Args[0] = arg1;
             newReset.Args[1] = arg2;
@@ -183,7 +183,7 @@ namespace SmaugCS.Data
 
         public void SetSector(string sector)
         {
-            SectorType = EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
+            SectorType = Realm.Library.Common.EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
         }
 
         /*public void SaveFUSS(TextWriterProxy proxy, bool install)

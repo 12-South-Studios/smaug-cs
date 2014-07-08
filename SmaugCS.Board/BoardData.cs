@@ -160,7 +160,7 @@ namespace SmaugCS.Board
         public static BoardData Translate(DataRow dataRow)
         {
             BoardData board = new BoardData(Convert.ToInt32(dataRow["BoardId"]),
-                EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardType"].ToString()))
+                Realm.Library.Common.EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardType"].ToString()))
                 {
                     ReadGroup = dataRow.GetDataValue("ReadGroup", string.Empty),
                     PostGroup = dataRow.GetDataValue("PostGroup", string.Empty),

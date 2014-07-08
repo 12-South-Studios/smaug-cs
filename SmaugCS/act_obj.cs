@@ -391,7 +391,7 @@ namespace SmaugCS
                 return;
             }
 
-            ItemWearFlags wearLoc = EnumerationExtensions.GetEnum<ItemWearFlags>(1 << bit);
+            ItemWearFlags wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemWearFlags>(1 << bit);
             if (ItemWearMap.ContainsKey(wearLoc))
                 ItemWearMap[wearLoc].Invoke(obj, ch, fReplace);
             else

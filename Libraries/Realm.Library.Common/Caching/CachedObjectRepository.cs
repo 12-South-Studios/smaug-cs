@@ -10,7 +10,7 @@ namespace Realm.Library.Common.Caching
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="T"></typeparam>
-    public class CachedObjectRepository<TKey, T> : IRepository<TKey, T> where T : class
+    public sealed class CachedObjectRepository<TKey, T> : IRepository<TKey, T> where T : class
     {
         private ObjectCache Cache { get; set; }
         private CacheItemPolicy Policy { get; set; }
@@ -25,7 +25,7 @@ namespace Realm.Library.Common.Caching
             Policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(cacheDurationSeconds) };
         }
 
-        private string GetCacheKey(TKey key)
+        private static string GetCacheKey(TKey key)
         {
             return string.Format("CacheItem_{0}", key.ToString());
         }

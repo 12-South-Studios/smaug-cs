@@ -7,8 +7,14 @@ namespace SmaugCS.Constants.Enums
     {
         None,
         Light,
+
+        [CharacterColor(ATTypes.AT_MAGIC)]
         Scroll,
+
+        [CharacterColor(ATTypes.AT_MAGIC)]
         Wand,
+
+        [CharacterColor(ATTypes.AT_MAGIC)]
         Staff,
         Weapon,
 
@@ -17,6 +23,8 @@ namespace SmaugCS.Constants.Enums
 
         [Name("_missile")]
         Missile,
+
+        [CharacterColor(ATTypes.AT_YELLOW)]
         Treasure,
         Armor,
         Potion,
@@ -34,9 +42,14 @@ namespace SmaugCS.Constants.Enums
         Note,
 
         [Name("drinkcon")]
+        [CharacterColor(ATTypes.AT_THIRSTY)]
         DrinkContainer,
         Key,
+
+        [CharacterColor(ATTypes.AT_HUNGRY)]
         Food,
+
+        [CharacterColor(ATTypes.AT_YELLOW)]
         Money,
         Pen,
         Boat,
@@ -46,8 +59,12 @@ namespace SmaugCS.Constants.Enums
 
         [Name("corpse_pc")]
         PlayerCorpse,
+
+        [CharacterColor(ATTypes.AT_THIRSTY)]
         Fountain,
         Pill,
+
+        [CharacterColor(ATTypes.AT_BLOOD)]
         Blood,
         BloodStain,
         Scraps,
@@ -57,6 +74,8 @@ namespace SmaugCS.Constants.Enums
         HerbContainer,
         Herb,
         Incense,
+
+        [CharacterColor(ATTypes.AT_FIRE)]
         Fire,
         Book,
         Switch,
@@ -88,6 +107,8 @@ namespace SmaugCS.Constants.Enums
         Quiver,
         Shovel,
         Salve,
+
+        [CharacterColor(ATTypes.AT_HUNGRY)]
         Cook,
         KeyRing,
         Odor,
