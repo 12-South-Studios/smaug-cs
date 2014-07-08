@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="DataRowExtensions.cs" />
     <Compile Include="DirectoryProxy.cs" />
+    <Compile Include="EnumerationExtensions.cs" />
     <Compile Include="ExtendedBitvector.cs" />
     <Compile Include="NumberExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

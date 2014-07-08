@@ -8,6 +8,9 @@ using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants.Constants
 {
+    /// <summary>
+    /// Static class that contains system constants for the MUD
+    /// </summary>
     public static class SystemConstants
     {
         private static readonly Dictionary<SystemDirectoryTypes, string> SystemDirectories =

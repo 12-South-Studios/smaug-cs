@@ -913,7 +913,7 @@ namespace SmaugCS
 
         public static string affect_loc_name(int location)
         {
-            ApplyTypes type = EnumerationExtensions.GetEnum<ApplyTypes>(location);
+            ApplyTypes type = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location);
             return type.GetName();
         }
 
@@ -997,7 +997,7 @@ namespace SmaugCS
             TrapTypes trapType = TrapTypes.None;
             try
             {
-                trapType = EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
+                trapType = Realm.Library.Common.EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
                 txt = TrapTypeLookupTable.ContainsKey(trapType) ? TrapTypeLookupTable[trapType] : TrapTypeLookupDefault;
             }
             catch (ArgumentException)

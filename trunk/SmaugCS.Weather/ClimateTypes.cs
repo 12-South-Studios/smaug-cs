@@ -1,4 +1,5 @@
-﻿namespace SmaugCS.Weather
+﻿using Realm.Library.Common;
+namespace SmaugCS.Weather
 {
     public enum ClimateTypes
     {
@@ -8,6 +9,8 @@
         Steppe = 3,
         Chapparal = 4,
         Grasslands = 5,
+
+        [Name("Deciduous_Forest")]
         Deciduous = 6,
         Taiga = 7,
         Tundra = 8,

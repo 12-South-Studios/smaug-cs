@@ -893,7 +893,7 @@ namespace SmaugCS
         {
             ExitData newExit = new ExitData(door, "An exit")
                 {
-                    Direction = EnumerationExtensions.GetEnum<DirectionTypes>(door),
+                    Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door),
                     Room_vnum = room.Vnum,
                     Destination = to_room.ID,
                     Distance = 1,
@@ -1187,7 +1187,7 @@ namespace SmaugCS
                         WorldChangeMessage(ch, loginMessage);
                         break;
                     default:
-                        color.send_to_char_color(GameConstants.LoginMessages[loginMessage.Type], ch);
+                        color.send_to_char_color(LookupManager.Instance.GetLookup("LoginMessage", loginMessage.Type), ch);
                         break;
                 }
 

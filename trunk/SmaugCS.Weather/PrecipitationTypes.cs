@@ -5,6 +5,7 @@ namespace SmaugCS.Weather
     public enum PrecipitationTypes
     {
         [Range(Minimum = 91)]
+        [WeatherMessage(WeatherThresholdTypes.DropsBelowTempThreshold, "&WThe rain turns to snow as it continues to come down blizzard-like.&D\r\n")]
         Torrential,
 
         [Range(Minimum = 81, Maximum = 90)]

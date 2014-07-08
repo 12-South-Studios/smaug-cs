@@ -5,6 +5,9 @@ using System.Linq;
 namespace Realm.Library.Common
 // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// Static class for extension functions of IEnumerable<>
+    /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>

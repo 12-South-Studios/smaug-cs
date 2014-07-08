@@ -55,7 +55,7 @@ namespace SmaugCS.Data
             string[] words = flags.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                ExitFlags flag = EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>(word);
+                ExitFlags flag = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>(word);
                 int flagValue = (int)flag;
                 Flags = Flags.SetBit(flagValue);
             }

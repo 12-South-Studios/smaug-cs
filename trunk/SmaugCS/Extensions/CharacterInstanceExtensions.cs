@@ -958,7 +958,7 @@ namespace SmaugCS
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, int location)
         {
             ObjectInstance maxObj = null;
-            WearLocations wearLoc = EnumerationExtensions.GetEnum<WearLocations>(location);
+            WearLocations wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(location);
             foreach (ObjectInstance obj in ch.Carrying.Where(x => x.WearLocation == wearLoc))
             {
                 if (obj.ObjectIndex.Layers == 0)
@@ -1598,7 +1598,7 @@ namespace SmaugCS
             }
 
             ch.ArmorClass -= obj.ApplyArmorClass;
-            obj.WearLocation = EnumerationExtensions.GetEnum<WearLocations>(iWear);
+            obj.WearLocation = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(iWear);
             ch.CarryNumber -= obj.GetObjectNumber();
             if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
                 ch.CarryWeight -= obj.GetObjectWeight();

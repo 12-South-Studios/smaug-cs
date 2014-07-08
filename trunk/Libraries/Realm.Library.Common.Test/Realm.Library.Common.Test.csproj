@@ -138,6 +138,7 @@
     <Compile Include="Extensions\CharExtensionsTests.cs" />
     <Compile Include="Extensions\EnumerableExtensionTests.cs" />
     <Compile Include="Extensions\TaskExtensionTests.cs" />
+    <Compile Include="Extensions\FuncExtensionsTests.cs" />
     <Compile Include="GenericEqualityComparerTests.cs" />
     <Compile Include="SingleLinkedListTests.cs" />
     <Compile Include="PasswordTest.cs" />

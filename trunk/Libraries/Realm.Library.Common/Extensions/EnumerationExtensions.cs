@@ -213,6 +213,13 @@ namespace Realm.Library.Common
             return GetEnumIgnoreCase<T>(name);
         }
 
+        public static IEnumerable<T> GetAttributes<T>(this Enum value) where T : Attribute
+        {
+            Type type = value.GetType();
+            object[] attributes = type.GetCustomAttributes(typeof(T), false);
+            return attributes.OfType<T>();
+        }
+
         /// <summary>
         /// Gets if the bit field contains the given enumeration
         /// </summary>

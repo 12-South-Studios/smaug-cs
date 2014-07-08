@@ -35,6 +35,8 @@ namespace SmaugCS.Constants.Enums
         Sneak = 1 << 15,//32768
         Hide = 1 << 16,
         Sleep = 1 << 17,
+
+        [VisibleAffect(ATTypes.AT_MAGIC, "%s wanders in a dazed, zombie-like state.\r\n")]
         Charm = 1 << 18,
         Flying = 1 << 19,
 
@@ -48,10 +50,18 @@ namespace SmaugCS.Constants.Enums
         [Name("detect_traps")]
         DetectTraps = 1 << 23,
         Scrying = 1 << 24,
+
+        [VisibleAffect(ATTypes.AT_FIRE, "{0} is engulfed within a blaze of mystical flame.\r\n")]
         FireShield = 1 << 25,
+
+        [VisibleAffect(ATTypes.AT_BLUE, "%s is surrounded by cascading torrents of energy.")]
         ShockShield = 1 << 26,
         Haus1 = 1 << 27,
+
+        [VisibleAffect(ATTypes.AT_LBLUE, "%s is ensphered by shards of glistening ice.\r\n")]
         IceShield = 1 << 28,
+
+        [VisibleAffect(ATTypes.AT_MAGIC, "%s appears to be in a deep trance...\r\n")]
         Possess = 1 << 29,
         Berserk = 1 << 30,
 
@@ -61,7 +71,11 @@ namespace SmaugCS.Constants.Enums
         [Name("recurring_spell")]
         RecurringSpell = 1 << 32,
         Contagious = 1 << 33,
+
+        [VisibleAffect(ATTypes.AT_GREEN, "%s is visible through a cloud of churning mist.\r\n")]
         AcidMist = 1 << 34,
+
+        [VisibleAffect(ATTypes.AT_GREEN, "%s is enshrouded in a choking cloud of gas.\r\n")]
         VenomShield = 1 << 35
     }
 }

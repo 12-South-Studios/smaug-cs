@@ -213,10 +213,10 @@ namespace SmaugCS.Data
                             Name = restOfLine;
                             break;
                         case "NPCFOE":
-                            NPCFoe = EnumerationExtensions.GetEnum<RaceTypes>(restOfLine.ToInt32());
+                            NPCFoe = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(restOfLine.ToInt32());
                             break;
                         case "NPCRACE":
-                            NPCRace = EnumerationExtensions.GetEnum<RaceTypes>(restOfLine.ToInt32());
+                            NPCRace = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(restOfLine.ToInt32());
                             break;
                         case "OBJSTAT":
                             ObjStat = restOfLine.ToInt32();

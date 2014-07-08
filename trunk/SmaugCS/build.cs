@@ -180,7 +180,7 @@ namespace SmaugCS
         {
             try
             {
-                return (int)EnumerationExtensions.GetEnum<LanguageTypes>(value);
+                return (int)Realm.Library.Common.EnumerationExtensions.GetEnum<LanguageTypes>(value);
             }
             catch (ArgumentException)
             {
@@ -446,7 +446,7 @@ namespace SmaugCS
                 {
                     Type = AffectedByTypes.None,
                     Duration = -1,
-                    Location = EnumerationExtensions.GetEnum<ApplyTypes>(loc),
+                    Location = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(loc),
                     Modifier = value
                 };
             //paf.BitVector.ClearBits();

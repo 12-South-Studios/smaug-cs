@@ -55,17 +55,17 @@ namespace SmaugCS.Data
 
         public void SetPrimaryAttribute(string name)
         {
-            PrimaryAttribute = EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
+            PrimaryAttribute = Realm.Library.Common.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
         }
 
         public void SetSecondaryAttribute(string name)
         {
-            SecondaryAttribute = EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
+            SecondaryAttribute = Realm.Library.Common.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
         }
 
         public void SetDeficientAttribute(string name)
         {
-            DeficientAttribute = EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
+            DeficientAttribute = Realm.Library.Common.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
         }
 
         public void AddSkill(string name, int level, int adept)
@@ -90,7 +90,7 @@ namespace SmaugCS.Data
 
         public void SetType(string type)
         {
-            Type = EnumerationExtensions.GetEnumByName<ClassTypes>(type);
+            Type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ClassTypes>(type);
         }
     }
 }

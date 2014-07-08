@@ -12,29 +12,29 @@ namespace SmaugCS
     {
         public static int GetRace(this MobTemplate template)
         {
-            return (int)EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
+            return (int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
         }
 
         public static PositionTypes GetPosition(this MobTemplate template)
         {
-            return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.Position);
+            return Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.Position);
         }
 
         public static PositionTypes GetDefensivePosition(this MobTemplate template)
         {
-            return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefensivePosition);
+            return Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefensivePosition);
         }
 
         public static GenderTypes GetGender(this MobTemplate template)
         {
-            return EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.Gender);
+            return Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.Gender);
         }
 
         public static int GetResistance(this MobTemplate template)
         {
             int value = 0;
             string[] words = template.Resistance.Split(new[] { ' ' });
-            foreach (ResistanceTypes resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
+            foreach (ResistanceTypes resType in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
                 value = value.SetBit((int)resType);
             }
@@ -45,7 +45,7 @@ namespace SmaugCS
         {
             int value = 0;
             string[] words = template.Susceptibility.Split(new[] { ' ' });
-            foreach (ResistanceTypes resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
+            foreach (ResistanceTypes resType in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
                 value = value.SetBit((int)resType);
             }
@@ -56,7 +56,7 @@ namespace SmaugCS
         {
             int value = 0;
             string[] words = template.Immunity.Split(new[] { ' ' });
-            foreach (ResistanceTypes resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
+            foreach (ResistanceTypes resType in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
                 value = value.SetBit((int)resType);
             }
@@ -69,7 +69,7 @@ namespace SmaugCS
             string[] words = template.ActFlags.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
+                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
             }
             return bv;
         }
@@ -80,7 +80,7 @@ namespace SmaugCS
             string[] words = template.AffectedBy.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
+                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
             }
             return bv;
         }
@@ -91,7 +91,7 @@ namespace SmaugCS
             string[] words = template.Attacks.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<AttackTypes>(word));
+                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<AttackTypes>(word));
             }
             return bv;
         }
@@ -102,7 +102,7 @@ namespace SmaugCS
             string[] words = template.Defenses.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<DefenseTypes>(word));
+                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<DefenseTypes>(word));
             }
             return bv;
         }

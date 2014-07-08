@@ -90,10 +90,10 @@ namespace SmaugCS.Data
         {
             AffectData newAffect = new AffectData
                 {
-                    Type = EnumerationExtensions.GetEnum<AffectedByTypes>(type),
+                    Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type),
                     Duration = duration,
                     Modifier = modifier,
-                    Location = EnumerationExtensions.GetEnum<ApplyTypes>(location),
+                    Location = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location),
                     BitVector = bitvector.ToBitvector()
                 };
             Affects.Add(newAffect);

@@ -42,6 +42,11 @@ namespace SmaugCS.Constants
             return GetIndexOf(value, BuilderConstants.a_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_trapflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.trap_flags);
@@ -67,16 +72,31 @@ namespace SmaugCS.Constants
             return GetIndexOf(value, BuilderConstants.wear_locs);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_secflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.sec_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_exflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.ex_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_pulltype(string value)
         {
             if (value.Equals("none", StringComparison.OrdinalIgnoreCase)
@@ -102,82 +122,164 @@ namespace SmaugCS.Constants
             return -1;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_attackflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.attack_flags);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_rflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.r_flags);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_mpflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.mprog_flags);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_oflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.o_flags);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_areaflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.area_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_wflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.w_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_actflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.act_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_pcflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.pc_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_plrflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.plr_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_risflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.ris_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_cmdflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.cmd_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_trigflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.trig_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_partflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.part_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_defenseflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.defense_flags);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_npc_position(string value)
         {
             return GetIndexOf(value, BuilderConstants.npc_position);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int get_npc_sex(string value)
         {
             return GetIndexOf(value, BuilderConstants.npc_sex);
         }
-
-
     }
 }

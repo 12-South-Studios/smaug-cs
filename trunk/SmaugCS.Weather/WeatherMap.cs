@@ -111,7 +111,7 @@ namespace SmaugCS.Weather
                 {
                     WeatherCell cell = new WeatherCell
                                            {
-                                               Hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
+                                               Hemisphere = Realm.Library.Common.EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
                                            };
 
                     cell.ChangeTemperature(SmaugRandom.Between(-30, 100));
@@ -262,7 +262,7 @@ namespace SmaugCS.Weather
                         continue;
 
                     PrecipFuncs[precipType].Invoke(cell, delta);
-
+                    
                     cell.Temperature = (cell.Temperature + delta.Temperature).GetNumberThatIsBetween(-30, 100);
                     cell.Pressure = (cell.Pressure + delta.Pressure).GetNumberThatIsBetween(0, 100);
                     cell.CloudCover = (cell.CloudCover + delta.CloudCover).GetNumberThatIsBetween(0, 100);
