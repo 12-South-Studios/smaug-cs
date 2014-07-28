@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Commands;
+using SmaugCS.Commands.Shop;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
@@ -66,6 +71,7 @@ namespace SmaugCS
             return ch.PlayerData.Clan == null || ch.PlayerData.Clan != vch.PlayerData.Clan;
         }
 
+
         /// <summary>
         /// Racial skill handling
         /// </summary>
@@ -87,9 +93,10 @@ namespace SmaugCS
             if (!interp.check_pos(ch, skill.MinimumPosition))
                 return true;
 
-            if (ch.IsNpc() && (ch.IsAffected(AffectedByTypes.Charm) || ch.IsAffected(AffectedByTypes.Possess)))
+            if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.IsCharmedOrPossessed,
+                "For some reason, you seem unable to perform that...",
+                new List<object> {ch}))
             {
-                color.send_to_char("For some reason, you seem unable to perform that...\r\n", ch);
                 comm.act(ATTypes.AT_GREY, "$n wanders around aimlessly.", ch, null, null, ToTypes.Room);
                 return true;
             }
@@ -99,22 +106,17 @@ namespace SmaugCS
 
             if (skill.MinimumMana > 0)
             {
-                mana = ch.IsNpc()
-                           ? 0
-                           : skill.MinimumMana.GetHighestOfTwoNumbers(100 / (2 + ch.Level - skill.RaceLevel[(int)ch.CurrentRace]));
-                if (ch.IsVampire())
-                {
-                    if (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] < blood)
-                    {
-                        color.send_to_char("You don't have enough blood power.\r\n", ch);
-                        return true;
-                    }
-                }
-                else if (!ch.IsNpc() && ch.CurrentMana < mana)
-                {
-                    color.send_to_char("You don't have enough mana.\r\n", ch);
+                mana = ch.IsNpc() ? 0 : skill.MinimumMana
+                        .GetHighestOfTwoNumbers(100/(2 + ch.Level - skill.RaceLevel[(int) ch.CurrentRace]));
+
+                if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.HasSufficientBloodPower,
+                    "You don't have enough blood power.",
+                    new List<object> {ch, blood}))
                     return true;
-                }
+
+                if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.HasSufficientMana, "You don't have enough mana.",
+                    new List<object> {ch, mana}))
+                    return true;
             }
 
             DateTime start, end;
@@ -158,7 +160,7 @@ namespace SmaugCS
                         if (fight.is_safe(ch, victim, true))
                             return true;
 
-                        if (ch == victim && Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
+                        if (ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf))
                         {
                             color.send_to_char("You can't target yourself!\r\n", ch);
                             return true;
@@ -205,7 +207,7 @@ namespace SmaugCS
                             return true;
                         }
 
-                        if (ch == victim && Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
+                        if (ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf))
                         {
                             color.send_to_char("You can't target yourself!\r\n", ch);
                             return true;
@@ -427,8 +429,8 @@ namespace SmaugCS
             return 0;
         }
 
-        public static int ranged_attack(CharacterInstance ch, string argument, ObjectInstance weapon,
-                                        ObjectInstance projectile, short dt, short range)
+        public static ReturnTypes ranged_attack(CharacterInstance ch, string argument, ObjectInstance weapon,
+                                        ObjectInstance projectile, int sn, int range)
         {
             // TODO
             return 0;

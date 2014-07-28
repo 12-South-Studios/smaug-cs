@@ -1,5 +1,7 @@
-﻿using Realm.Library.Common;
+﻿using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
@@ -18,6 +20,7 @@ namespace SmaugCS.Commands
         private static int _blood = 0;
         private static int _mana = 0;
 
+        [Descriptor(new[] { " is here chanting." })]
         public static void do_cast(CharacterInstance ch, string argument)
         {
             switch (ch.SubState)
@@ -79,7 +82,7 @@ namespace SmaugCS.Commands
                             ? 0
                             : _skill.MinimumMana.GetHighestOfTwoNumbers(100/
                                                                         (2 + ch.Level -
-                                                                         _skill.skill_level[(int) ch.CurrentClass]));
+                                                                         _skill.SkillLevels.ToList()[(int) ch.CurrentClass]));
 
             }
 

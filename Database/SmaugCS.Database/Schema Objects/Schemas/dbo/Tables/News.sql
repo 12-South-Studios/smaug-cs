@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[News]
+(
+	[NewsId] INT IDENTITY NOT NULL,
+	[Name] VARCHAR(100) NULL,
+	[Header] VARCHAR(1024) NOT NULL,
+	[Level] TINYINT NULL,
+	[CreatedOn] DATETIME NULL,
+	[CreatedBy] VARCHAR(50) NULL,
+	[Active] BIT NOT NULL DEFAULT 1, 
+
+    CONSTRAINT [PK_News]
+		PRIMARY KEY CLUSTERED ([NewsId] ASC),
+)
+GO

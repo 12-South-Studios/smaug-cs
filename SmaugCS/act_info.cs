@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Commands;
@@ -110,61 +111,61 @@ namespace SmaugCS
 
             StringBuilder sb = new StringBuilder();
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Invisible)
-                && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Glow)
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow)
                 && !ch.IsAffected(AffectedByTypes.TrueSight)
                 && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
                 glowsee = true;
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Invisible))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 0));
             if ((ch.IsAffected(AffectedByTypes.DetectEvil)
                  || ch.CurrentClass == ClassTypes.Paladin)
-                && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Evil))
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.Evil))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 1));
 
             if (ch.CurrentClass == ClassTypes.Paladin)
             {
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
-                    && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
-                    && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
                     sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 2));
-                if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
-                    && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
-                    && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
+                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
                     sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 3));
-                if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
-                    && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
-                    && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
+                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
                     sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 4));
 
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
-                    && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
-                    && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
                     sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 5));
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
-                    && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
-                    && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
                     sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 6));
-                if (!Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
-                    && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
-                    && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood))
+                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
                     sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 7));
             }
 
             if ((ch.IsAffected(AffectedByTypes.DetectMagic)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
-                && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 8));
-            if (!glowsee && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Glow))
+            if (!glowsee && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 9));
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Hum))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hum))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 10));
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Hidden))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hidden))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 11));
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Buried))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 12));
-            if (ch.IsImmortal() && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype))
+            if (ch.IsImmortal() && obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype))
                 sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 13));
             if ((ch.IsAffected(AffectedByTypes.DetectTraps)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
@@ -404,8 +405,8 @@ namespace SmaugCS
                 attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
             else
             {
-                AffectedByTypes affectedBy = AffectedByList.FirstOrDefault(x => victim.IsAffected(x));
-                if (affectedBy != null && affectedBy != AffectedByTypes.None)
+                AffectedByTypes affectedBy = AffectedByList.FirstOrDefault(victim.IsAffected);
+                if (affectedBy != AffectedByTypes.None)
                     attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
             }
 
@@ -442,7 +443,7 @@ namespace SmaugCS
             }
 
             if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
-                buffer += "[AFK]";
+                buffer += PlayerFlags.AwayFromKeyboard.GetAttribute<DescriptorAttribute>().Messages[0];
 
             if ((!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.WizardInvisibility))
                 || (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)))
@@ -469,41 +470,7 @@ namespace SmaugCS
 
             color.set_char_color(ATTypes.AT_PERSON, ch);
 
-            if (victim.IsAffected(AffectedByTypes.Invisible))
-                buffer += "(Invis) ";
-            if (victim.IsAffected(AffectedByTypes.Hide))
-                buffer += "(Hide) ";
-            if (victim.IsAffected(AffectedByTypes.PassDoor))
-                buffer += "(Translucent) ";
-            if (victim.IsAffected(AffectedByTypes.FaerieFire))
-                buffer += "(Pink Aura) ";
-            if ((ch.IsAffected(AffectedByTypes.DetectEvil) && victim.IsEvil())
-                || ch.CurrentClass == ClassTypes.Paladin)
-                buffer += "(Red Aura) ";
-            if (victim.IsNeutral() && ch.CurrentClass == ClassTypes.Paladin)
-                buffer += "(Grey Aura) ";
-            if (victim.IsGood() && ch.CurrentClass == ClassTypes.Paladin)
-                buffer += "(White Aura) ";
-
-            if (victim.IsAffected(AffectedByTypes.Berserk))
-                buffer += "(Wild-eyed) ";
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Attacker))
-                buffer += "(ATTACKER) ";
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Killer))
-                buffer += "(KILLER) ";
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Thief))
-                buffer += "(THIEF) ";
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Litterbug))
-                buffer += "(LITTERBUG) ";
-            if (victim.IsNpc() && ch.IsImmortal() && victim.Act.IsSet((int)ActFlags.Prototype))
-                buffer += "(PROTO) ";
-            if (victim.IsNpc() && ch.CurrentMount != null
-                && ch.CurrentMount == victim && ch.CurrentRoom == ch.CurrentMount.CurrentRoom)
-                buffer += "(Mount) ";
-            if (victim.Descriptor != null && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing)
-                buffer += "(Writing) ";
-            if (victim.CurrentMorph != null)
-                buffer += "(Morphed) ";
+            buffer += GenerateBufferForAffectedBy(victim, ch);
 
             color.set_char_color(ATTypes.AT_PERSON, ch);
             if ((victim.CurrentPosition == victim.CurrentDefensivePosition && !string.IsNullOrEmpty(victim.LongDescription))
@@ -546,127 +513,157 @@ namespace SmaugCS
             TimerData timer = handler.get_timerptr(ch, TimerTypes.DoFunction);
             if (timer != null)
             {
-                if (timer.Action.Value == Cast.do_cast)
-                    buffer += " is here chanting.";
-                else if (timer.Action.Value == Dig.do_dig)
-                    buffer += " is here digging.";
-                else if (timer.Action.Value == Search.do_search)
-                    buffer += " is searching the area for something.";
-                else if (timer.Action.Value == DeTrap.do_detrap)
-                    buffer += " is working with the trap here.";
-                else
-                    buffer += " is looking rather lost.";
+                object[] attributes = timer.Action.Value.Method.GetCustomAttributes(typeof (DescriptorAttribute), false);
+                DescriptorAttribute attrib =
+                    (DescriptorAttribute) attributes.FirstOrDefault(x => x.GetType() == typeof (DescriptorAttribute));
+                buffer += attrib == null ? " is looking rather lost." : attrib.Messages.First();
             }
             else
             {
-                switch (victim.CurrentPosition)
-                {
-                    case PositionTypes.Dead:
-                        buffer += " is DEAD!!";
-                        break;
-                    case PositionTypes.Mortal:
-                        buffer += " is mortally wounded.";
-                        break;
-                    case PositionTypes.Incapacitated:
-                        buffer += " is incapacitated.";
-                        break;
-                    case PositionTypes.Stunned:
-                        buffer += " is laying here stunned.";
-                        break;
-                    case PositionTypes.Sleeping:
-                        if (ch.CurrentPosition == PositionTypes.Sitting || ch.CurrentPosition == PositionTypes.Resting)
-                            buffer += " is sleeping nearby.";
-                        else
-                            buffer += " is deep in slumber here.";
-                        break;
-                    case PositionTypes.Sitting:
-                        if (ch.CurrentPosition == PositionTypes.Sitting)
-                            buffer += " sits here with you.";
-                        else if (ch.CurrentPosition == PositionTypes.Resting)
-                            buffer += " sits nearby as you lay around.";
-                        else
-                            buffer += " sits upright here.";
-                        break;
-                    case PositionTypes.Standing:
-                        if (victim.IsImmortal())
-                        {
-                            buffer += " is here before you.";
-                            break;
-                        }
-                        if (((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
-                             || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
-                            && !victim.IsAffected(AffectedByTypes.AquaBreath)
-                            && !victim.IsNpc())
-                        {
-                            buffer += " is drowning here.";
-                            break;
-                        }
-                        if ((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
-                            || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
-                        {
-                            buffer += " is here in the water.";
-                            break;
-                        }
-                        if (victim.IsAffected(AffectedByTypes.Floating)
-                            || victim.IsAffected(AffectedByTypes.Flying))
-                        {
-                            buffer += " is hovering here.";
-                            break;
-                        }
-
-                        buffer += " is standing here.";
-                        break;
-                    case PositionTypes.Shove:
-                        buffer += " is being shoved around.";
-                        break;
-                    case PositionTypes.Drag:
-                        buffer += " is being dragged around.";
-                        break;
-                    case PositionTypes.Mounted:
-                        buffer += " is here, upon ";
-                        if (victim.CurrentMount == null)
-                            buffer += "thin air???";
-                        else if (victim.CurrentMount == ch)
-                            buffer += "your back.";
-                        else if (victim.CurrentRoom == victim.CurrentMount.CurrentRoom)
-                        {
-                            buffer += Macros.PERS(victim.CurrentMount, ch);
-                            buffer += ".";
-                        }
-                        else
-                            buffer += "someone who left??";
-                        break;
-                    case PositionTypes.Fighting:
-                    case PositionTypes.Evasive:
-                    case PositionTypes.Defensive:
-                    case PositionTypes.Aggressive:
-                    case PositionTypes.Berserk:
-                        buffer += " is here, fighting ";
-                        if (victim.CurrentFighting != null)
-                        {
-                            buffer += "thin air???";
-
-                            victim.CurrentPosition = victim.CurrentMount == null
-                                                  ? PositionTypes.Standing
-                                                  : PositionTypes.Mounted;
-                        }
-                        else if (fight.who_fighting(victim) == ch)
-                            buffer += "YOU!";
-                        else if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)
-                        {
-                            buffer += Macros.PERS(victim.CurrentFighting.Who, ch);
-                            buffer += ".";
-                        }
-                        else
-                            buffer += "someone who left??";
-                        break;
-                }
+                buffer += GenerateBufferDescriptorFromVictimPosition(victim, ch);
             }
 
             buffer += "\r\n";
             buffer = buffer.CapitalizeFirst();
             color.send_to_char(buffer, ch);
             show_visible_affects_to_char(victim, ch);
+        }
+
+        private static string GenerateBufferForAffectedBy(CharacterInstance victim, CharacterInstance ch)
+        {
+            if (victim.IsAffected(AffectedByTypes.Invisible))
+                return AffectedByTypes.Invisible.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.IsAffected(AffectedByTypes.Hide))
+                return AffectedByTypes.Hide.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.IsAffected(AffectedByTypes.PassDoor))
+                return AffectedByTypes.PassDoor.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.IsAffected(AffectedByTypes.FaerieFire))
+                return AffectedByTypes.FaerieFire.GetAttribute<DescriptorAttribute>().Messages[0];
+            if ((ch.IsAffected(AffectedByTypes.DetectEvil) && victim.IsEvil())
+                || ch.CurrentClass == ClassTypes.Paladin)
+                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.IsNeutral() && ch.CurrentClass == ClassTypes.Paladin)
+                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages[1];
+            if (victim.IsGood() && ch.CurrentClass == ClassTypes.Paladin)
+                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages[2];
+
+            if (victim.IsAffected(AffectedByTypes.Berserk))
+                return AffectedByTypes.Berserk.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Attacker))
+                return PlayerFlags.Attacker.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Killer))
+                return PlayerFlags.Killer.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Thief))
+                return PlayerFlags.Thief.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Litterbug))
+                return PlayerFlags.Litterbug.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.IsNpc() && ch.IsImmortal() && victim.Act.IsSet((int) ActFlags.Prototype))
+                return ActFlags.Prototype.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.IsNpc() && ch.CurrentMount != null
+                && ch.CurrentMount == victim && ch.CurrentRoom == ch.CurrentMount.CurrentRoom)
+                return "(Mount) ";
+            if (victim.Descriptor != null && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing)
+                return ConnectionTypes.Editing.GetAttribute<DescriptorAttribute>().Messages[0];
+            if (victim.CurrentMorph != null)
+                return "(Morphed) ";
+            return string.Empty;
+        }
+
+        private static string GenerateBufferDescriptorFromVictimPosition(CharacterInstance victim, CharacterInstance ch)
+        {
+            PositionTypes pos = victim.CurrentPosition;
+            DescriptorAttribute attrib = pos.GetAttribute<DescriptorAttribute>();
+
+            switch (pos)
+            {
+                case PositionTypes.Sleeping:
+                    return GetSleepingDescriptor(ch, victim, attrib);
+                case PositionTypes.Sitting:
+                    return GetSittingDescriptor(ch, victim, attrib);
+                case PositionTypes.Standing:
+                    return GetStandingDescriptor(ch, victim, attrib);
+                case PositionTypes.Mounted:
+                    return GetMountedDescriptor(ch, victim, attrib);
+                case PositionTypes.Fighting:
+                case PositionTypes.Evasive:
+                case PositionTypes.Defensive:
+                case PositionTypes.Berserk:
+                case PositionTypes.Aggressive:
+                    return GetFightingDescriptor(ch, victim, attrib);
+                default:
+                    return attrib.Messages.First();
+            }
+        }
+
+        private static string GetFightingDescriptor(CharacterInstance ch, CharacterInstance victim,
+            DescriptorAttribute attrib)
+        {
+            if (victim.CurrentFighting != null)
+                return attrib.Messages.First();
+
+            if (fight.who_fighting(victim) == ch)
+                return attrib.Messages[1];
+
+            if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)
+                return string.Format(attrib.Messages[2], Macros.PERS(victim.CurrentFighting.Who, ch));
+
+            return attrib.Messages[3];
+        }
+
+        private static string GetMountedDescriptor(CharacterInstance ch, CharacterInstance victim,
+            DescriptorAttribute attrib)
+        {
+            if (victim.CurrentMount == null)
+                return attrib.Messages.First();
+
+            if (victim.CurrentMount == ch)
+                return attrib.Messages[1];
+
+            if (victim.CurrentRoom == victim.CurrentMount.CurrentRoom)
+                return string.Format(attrib.Messages[2], Macros.PERS(victim.CurrentMount, ch));
+
+            return attrib.Messages[3];
+        }
+
+        private static string GetStandingDescriptor(CharacterInstance ch, CharacterInstance victim,
+            DescriptorAttribute attrib)
+        {
+            if (victim.IsImmortal())
+                return attrib.Messages.First();
+
+            if (((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
+                 || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
+                && !victim.IsAffected(AffectedByTypes.AquaBreath)
+                && !victim.IsNpc())
+                return attrib.Messages[1];
+
+            if ((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
+                || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
+                return attrib.Messages[2];
+
+            if (victim.IsAffected(AffectedByTypes.Floating)
+                || victim.IsAffected(AffectedByTypes.Flying))
+                return attrib.Messages[3];
+
+            return attrib.Messages[4];
+        }
+
+        private static string GetSittingDescriptor(CharacterInstance ch, CharacterInstance victim,
+            DescriptorAttribute attrib)
+        {
+            if (ch.CurrentPosition == PositionTypes.Sitting)
+                return attrib.Messages.First();
+            if (ch.CurrentPosition == PositionTypes.Resting)
+                return attrib.Messages[1];
+            return attrib.Messages[2];
+        }
+
+        private static string GetSleepingDescriptor(CharacterInstance ch, CharacterInstance victim,
+            DescriptorAttribute attrib)
+        {
+            if (ch.CurrentPosition == PositionTypes.Sitting || ch.CurrentPosition == PositionTypes.Resting)
+                return attrib.Messages.First();
+            return attrib.Messages[1];
         }
 
         public static void show_char_to_char_1(CharacterInstance victim, CharacterInstance ch)
@@ -766,15 +763,6 @@ namespace SmaugCS
                     color.send_to_char("The red form of a living creature is here.\r\n", ch);
                 }
             }
-        }
-
-        public static bool check_blind(CharacterInstance ch)
-        {
-            return !ch.IsBlind() || ((Func<bool>)(() =>
-                {
-                    color.send_to_char("You can't see a thing!\r\n", ch);
-                    return false;
-                }))();
         }
 
         private static readonly Dictionary<string, int> StringToDoorDirection = new Dictionary<string, int>()
@@ -888,43 +876,17 @@ namespace SmaugCS
                                 victim.Weight);
         }
 
-        private static readonly Dictionary<int, string> SelfConditionTable = new Dictionary<int, string>()
-            {
-                {100, "{0} is in perfect health."},
-                {90, "{0} is slightly scratched."},
-                {80, "{0} has a few bruises."},
-                {70, "{0} has some cuts."},
-                {60, "{0} has several wounds."},
-                {50, "{0} has many nasty wounds."},
-                {40, "{0} is bleeding freely."},
-                {30, "{0} is covered in blood."},
-                {20, "{0} is leaking guts."},
-                {10, "{0} is almost dead."},
-                {0, "{0} is DYING."}
-            };
-        private static readonly Dictionary<int, string> OtherConditionTable = new Dictionary<int, string>()
-            {
-                {100, "{0} are in perfect health."},
-                {90, "{0} are slightly scratched."},
-                {80, "{0} have a few bruises."},
-                {70, "{0} have some cuts."},
-                {60, "{0} have several wounds."},
-                {50, "{0} have many nasty wounds."},
-                {40, "{0} are bleeding freely."},
-                {30, "{0} are covered in blood."},
-                {20, "{0} are leaking guts."},
-                {10, "{0} are almost dead."},
-                {0, "{0} are DYING."}
-            };
         private static string GetConditionPhrase(int percent, bool isSelf)
         {
-            Dictionary<int, string> localTable = isSelf ? SelfConditionTable : OtherConditionTable;
-
-            foreach (int minCondition in localTable.Keys.Where(minCondition => percent >= minCondition))
+            HealthConditionTypes healthCond = HealthConditionTypes.PerfectHealth;
+            foreach (HealthConditionTypes cond in EnumerationFunctions.GetAllEnumValues<HealthConditionTypes>())
             {
-                return localTable[minCondition];
+                if (percent >= cond.GetValue())
+                    healthCond = cond;
             }
-            return string.Empty;
+
+            DescriptorAttribute attrib = healthCond.GetAttribute<DescriptorAttribute>();
+            return isSelf ? attrib.Messages[0] : attrib.Messages[1];
         }
 
         public static void show_condition(CharacterInstance ch, CharacterInstance victim)

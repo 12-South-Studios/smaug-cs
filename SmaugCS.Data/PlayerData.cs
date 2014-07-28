@@ -60,7 +60,7 @@ namespace SmaugCS.Data
         public string Prompt { get; set; }
         public string FPrompt { get; set; }
         public string SubPrompt { get; set; }
-        public int pagerlen { get; set; }
+        public int PagerLineCount { get; set; }
         public List<IgnoreData> Ignored { get; set; }
         public List<string> TellHistory { get; set; }
         public int LastTellIndex { get; set; }

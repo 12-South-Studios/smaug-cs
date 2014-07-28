@@ -3,7 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Ban;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -13,11 +13,7 @@ namespace SmaugCS.Commands.Admin
     {
         public static void do_ban(CharacterInstance ch, string argument)
         {
-            if (ch.IsNpc())
-            {
-                color.send_to_char("Monsters are too dumb to do that!\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc(), "Monsters are too dumb to do that!")) return;
 
             if (ch.Descriptor == null)
             {
@@ -33,20 +29,15 @@ namespace SmaugCS.Commands.Admin
             args[3] = argument.ParseWord(4, " ");
 
             int tempTime = args[3].IsNullOrWhitespace() && !args[3].IsNumber() ? -1 : Convert.ToInt32(args[3]);
-            if (tempTime != -1 && (tempTime < 1 || tempTime > 1000))
-            {
-                color.send_to_char("Time value is -1 (forever) or from 1 to 1000.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, tempTime != -1 && (tempTime < 1 || tempTime > 1000),
+                "Time value is -1 (forever) or from 1 to 1000.")) return;
 
             // Convert the value from DAYS to SECONDS
             int duration = tempTime > 0 ? (tempTime * 86400) : tempTime;
 
-            if (ch.SubState == CharacterSubStates.Restricted)
-            {
-                color.send_to_char("You cannot use this command from within another command.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, ch.SubState == CharacterSubStates.Restricted,
+                "You cannot use this command from within another command.")) return;
+
             if (ch.SubState == CharacterSubStates.None)
                 ch.tempnum = (int) CharacterSubStates.None;
             else if (ch.SubState == CharacterSubStates.BanDescription)
@@ -163,8 +154,8 @@ namespace SmaugCS.Commands.Admin
             if (!ban.Note.IsNullOrWhitespace())
                 ban.Note = string.Empty;
 
-            ban.Note = build.copy_buffer(ch);
-            build.stop_editing(ch);
+            //ban.Note = build.copy_buffer(ch);
+            //build.stop_editing(ch);
 
             ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(ch.tempnum);
             BanManager.Instance.AddBan(ban);

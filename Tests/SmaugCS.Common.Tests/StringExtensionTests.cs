@@ -68,5 +68,12 @@ namespace SmaugCS.Common.Tests
         {
             Assert.That(hiddenChar == null ? value.UnhideTilde() : value.UnhideTilde(hiddenChar), Is.EqualTo(expected));
         }
+
+        [TestCase("THIS IS A TEST", true)]
+        [TestCase("This is a test", false)]
+        public void IsAllUpper(string value, bool expected)
+        {
+            Assert.That(value.IsAllUpper(), Is.EqualTo(expected));
+        }
     }
 }

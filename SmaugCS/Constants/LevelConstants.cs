@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using SmaugCS.Constants.Enums;
+using System;
+using System.Collections.Generic;
 
-// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+namespace SmaugCS.Constants
 {
     public static class LevelConstants
     {
@@ -21,29 +21,6 @@ namespace SmaugCS
             set { _maxLevel = value; }
         }
 
-        private static readonly Dictionary<string, int> LevelMap = new Dictionary<string, int>()
-            {
-                 {"hero", -15},
-                 {"immortal", -14},
-                 {"supreme", 0},
-                 {"infinite", -1},
-                 {"eternal", -2},
-                 {"implementor", -3},
-                 {"sub implementor", -4},
-                 {"ascendant", -5},
-                 {"greater", -6},
-                 {"god", -7},
-                 {"lesser", -8},
-                 {"true immortal", -9},
-                 {"demi", -10},
-                 {"savior", -11},
-                 {"creator", -12},
-                 {"acolyte", -13},
-                 {"neophyte", -14},
-                 {"avatar", -15}
-
-            };
-
         /// <summary>
         /// 
         /// </summary>
@@ -51,7 +28,9 @@ namespace SmaugCS
         /// <returns></returns>
         public static int GetLevel(string type)
         {
-            return LevelMap.ContainsKey(type.ToLower()) ? MaxLevel + LevelMap[type.ToLower()] : MaxLevel;
+            Enum enumType = Realm.Library.Common.EnumerationFunctions.GetEnumByName<ImmortalTypes>(type);
+            int value = Realm.Library.Common.EnumerationExtensions.GetValue(enumType);
+            return MaxLevel - value;
         }
 
         public static int LEVEL_LOG

@@ -1,8 +1,10 @@
-﻿using SmaugCS.Commands.Combat;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -10,36 +12,18 @@ namespace SmaugCS.Commands
 {
     public static class Quit
     {
-        public static void do_qui(CharacterInstance ch, string argument)
-        {
-            do_quit(ch, argument);
-        }
-
         public static void do_quit(CharacterInstance ch, string argument)
         {
-            if (ch.IsNpc())
-                return;
+            if (Helpers.CheckFunctions.CheckIfNpc(ch, ch)) return;
 
-            if (ch.CurrentPosition == PositionTypes.Fighting
-                || ch.CurrentPosition == PositionTypes.Evasive
-                || ch.CurrentPosition == PositionTypes.Defensive
-                || ch.CurrentPosition == PositionTypes.Aggressive
-                || ch.CurrentPosition == PositionTypes.Berserk)
-            {
-                color.set_char_color(ATTypes.AT_RED, ch);
-                color.send_to_char("No way! You are fighting.\r\n", ch);
-                return;
-            }
+            if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.IsInFightingPosition,
+                "No way! You are fighting.", new List<object> {ch}, ATTypes.AT_RED)) return;
 
-            if (ch.CurrentPosition == PositionTypes.Stunned)
-            {
-                color.set_char_color(ATTypes.AT_BLOOD, ch);
-                color.send_to_char("You're not DEAD yet.\r\n", ch);
-                return;
-            }
+            if (Helpers.CheckFunctions.CheckIf(ch, args => ((CharacterInstance)args[0]).CurrentPosition == PositionTypes.Stunned,
+                "You're not DEAD yet.", new List<object> {ch}, ATTypes.AT_BLOOD)) return;
 
-            if (handler.get_timer(ch, (short)TimerTypes.RecentFight) > 0
-                && !ch.IsImmortal())
+            TimerData timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
+            if (timer != null && !ch.IsImmortal())
             {
                 color.set_char_color(ATTypes.AT_RED, ch);
                 color.send_to_char("Your adrenaline is pumping too hard to quit now!\r\n", ch);
@@ -47,15 +31,15 @@ namespace SmaugCS.Commands
             }
 
             // TODO: auction
-
-            if (ch.IsPKill() && ch.wimpy > ((int)ch.MaximumHealth / 2.25f))
+            if (Helpers.CheckFunctions.CheckIf(ch, args =>
             {
-                color.send_to_char("Your wimpy has been adjusted to the maximum level for daedlies.\r\n", ch);
+                CharacterInstance actor = (CharacterInstance) args[0];
+                return actor.IsPKill() && actor.wimpy > (actor.MaximumHealth/2.25f);
+            }, "Your wimpy has been adjusted to the maximum level for deadlies.", new List<object> {ch}))
                 Wimpy.do_wimpy(ch, "max");
-            }
 
             if (ch.CurrentPosition == PositionTypes.Mounted)
-                Dismount.do_dismount(ch, "");
+                Dismount.do_dismount(ch, string.Empty);
 
             color.set_char_color(ATTypes.AT_WHITE, ch);
             color.send_to_char("Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n", ch);

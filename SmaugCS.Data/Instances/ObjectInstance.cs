@@ -23,7 +23,7 @@ namespace SmaugCS.Data
         public string Owner { get; set; }
         public ItemTypes ItemType { get; set; }
         public int mpscriptpos { get; set; }
-        public ExtendedBitvector ExtraFlags { get; set; }
+        public int ExtraFlags { get; set; }
         public int magic_flags { get; set; }
         public int WearFlags { get; set; }
         public MudProgActData mpact { get; set; }
@@ -50,7 +50,6 @@ namespace SmaugCS.Data
         {
             Value = new int[6];
             ExtraDescriptions = new List<ExtraDescriptionData>();
-            ExtraFlags = new ExtendedBitvector();
             Contents = new List<ObjectInstance>();
 
             PlayerEq = new ObjectInstance[maxWear, maxLayers];

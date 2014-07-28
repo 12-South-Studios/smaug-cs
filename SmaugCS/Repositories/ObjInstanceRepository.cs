@@ -38,7 +38,7 @@ namespace SmaugCS.Repositories
                     Description = parent.Description,
                     Action = objParent.Action,
                     ItemType = objParent.Type,
-                    ExtraFlags = new ExtendedBitvector(objParent.ExtraFlags),
+                    ExtraFlags = objParent.ExtraFlags,
                     Weight = objParent.Weight,
                     Cost = objParent.Cost
                 };

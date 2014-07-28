@@ -1,6 +1,5 @@
 ﻿using System;
 using Realm.Library.Common.Logging;
-using log4net;
 
 namespace SmaugCS.Logging
 {

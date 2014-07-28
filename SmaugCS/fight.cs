@@ -8,6 +8,7 @@ using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
@@ -29,12 +30,12 @@ namespace SmaugCS
                 .Where(x => x.ItemType == ItemTypes.Money)
                 .Where(ch.CanSee)
                 .Where(x => Macros.CAN_WEAR(x, (int)ItemWearFlags.Take) && ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
-                .Where(x => Macros.IS_OBJ_STAT(x, (int)ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
+                .Where(x => x.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
             {
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n gets $p from $P", ch, content, corpse, ToTypes.Room);
                 content.InObject.FromObject(content);
-                handler.check_for_trap(ch, content, (int)TrapTriggerTypes.Get);
+                handler.check_for_trap(ch, content, TrapTriggerTypes.Get);
                 if (ch.CharDied())
                     return false;
 
@@ -52,22 +53,13 @@ namespace SmaugCS
             return true;
         }
 
-        private static readonly Dictionary<SunPositionTypes, int> VampireArmorClassTable = new Dictionary<SunPositionTypes, int>
-            {
-                {SunPositionTypes.Dark, -10},
-                {SunPositionTypes.Sunrise, 5},
-                {SunPositionTypes.Light, 10},
-                {SunPositionTypes.Sunset, 2}
-            };
         public static int VAMP_AC(CharacterInstance ch)
         {
-            if (ch.IsVampire() && ch.IsOutside())
-            {
-                return VampireArmorClassTable.ContainsKey(GameManager.Instance.GameTime.Sunlight)
-                           ? VampireArmorClassTable[GameManager.Instance.GameTime.Sunlight]
-                           : 0;
-            }
-            return 0;
+            if (!ch.IsVampire() || !ch.IsOutside()) return 0;
+
+            ArmorClassAttribute attrib =
+                GameManager.Instance.GameTime.Sunlight.GetAttribute<ArmorClassAttribute>();
+            return attrib.ModValue;
         }
 
         private static int Pulse { get; set; }
@@ -292,40 +284,9 @@ namespace SmaugCS
             int bonus = 0;
             int sn = -1;
 
-            switch (Realm.Library.Common.EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]))
-            {
-                case DamageTypes.Hit:
-                case DamageTypes.Suction:
-                case DamageTypes.Bite:
-                case DamageTypes.Blast:
-                    sn = DatabaseManager.Instance.LookupSkill("pugilism");
-                    break;
-                case DamageTypes.Slash:
-                case DamageTypes.Slice:
-                    sn = DatabaseManager.Instance.LookupSkill("long blades");
-                    break;
-                case DamageTypes.Pierce:
-                case DamageTypes.Stab:
-                    sn = DatabaseManager.Instance.LookupSkill("short blades");
-                    break;
-                case DamageTypes.Whip:
-                    sn = DatabaseManager.Instance.LookupSkill("flexible arms");
-                    break;
-                case DamageTypes.Claw:
-                    sn = DatabaseManager.Instance.LookupSkill("talonous arms");
-                    break;
-                case DamageTypes.Pound:
-                case DamageTypes.Crush:
-                    sn = DatabaseManager.Instance.LookupSkill("bludgeons");
-                    break;
-                case DamageTypes.Bolt:
-                case DamageTypes.Arrow:
-                case DamageTypes.Dart:
-                case DamageTypes.Stone:
-                case DamageTypes.Pea:
-                    sn = DatabaseManager.Instance.LookupSkill("missile weapons");
-                    break;
-            }
+            DamageTypes damageType = Realm.Library.Common.EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]);
+            LookupSkillAttribute attrib = damageType.GetAttribute<LookupSkillAttribute>();
+            sn = DatabaseManager.Instance.LookupSkill(attrib.Skill);
 
             if (sn != -1)
                 bonus = (Macros.LEARNED(ch, sn) - 50) / 10;
@@ -541,7 +502,7 @@ namespace SmaugCS
             int plusRIS = 0;
             if (wield != null)
             {
-                damage = Macros.IS_OBJ_STAT(wield, (int)ItemExtraFlags.Magical)
+                damage = wield.ExtraFlags.IsSet(ItemExtraFlags.Magical)
                     ? ris_damage(victim, damage, (int)ResistanceTypes.Magic)
                     : ris_damage(victim, damage, (int)ResistanceTypes.NonMagic);
 
@@ -828,7 +789,7 @@ namespace SmaugCS
             if (damage <= 0)
                 damage = 1;
 
-            damage = Macros.IS_OBJ_STAT(projectile, (int) ItemExtraFlags.Magical)
+            damage = projectile.ExtraFlags.IsSet(ItemExtraFlags.Magical)
                          ? ris_damage(victim, damage, (int) ResistanceTypes.Magic)
                          : ris_damage(victim, damage, (int) ResistanceTypes.NonMagic);
 
@@ -1032,11 +993,11 @@ namespace SmaugCS
                     if (ch.PlayerData.CurrentDeity != null)
                     {
                         if (victim.CurrentRace == ch.PlayerData.CurrentDeity.NPCRace)
-                            deity.adjust_favor(ch, 3, levelRatio);
+                            ch.AdjustFavor(3, levelRatio);
                         else if (victim.CurrentRace == ch.PlayerData.CurrentDeity.NPCFoe)
-                            deity.adjust_favor(ch, 17, levelRatio);
+                            ch.AdjustFavor(17, levelRatio);
                         else
-                            deity.adjust_favor(ch, 2, levelRatio);
+                            ch.AdjustFavor(2, levelRatio);
                     }
                 }
                 return;
@@ -1148,8 +1109,8 @@ namespace SmaugCS
                     }
 
                     victim.PlayerData.PvPDeaths++;
-                    deity.adjust_favor(victim, 11, 1);
-                    deity.adjust_favor(ch, 2, 1);
+                    victim.AdjustFavor(11, 1);
+                    ch.AdjustFavor(2, 1);
                     handler.add_timer(victim, (short)TimerTypes.PKilled, 115, null, 0);
                     Macros.WAIT_STATE(victim, 3 * GameManager.Instance.SystemData.PulseViolence);
                     return;
@@ -1183,11 +1144,11 @@ namespace SmaugCS
                     if (victim.PlayerData.CurrentDeity != null)
                     {
                         if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCRace)
-                            deity.adjust_favor(victim, 12, levelRatio);
+                            victim.AdjustFavor(12, levelRatio);
                         else if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCFoe)
-                            deity.adjust_favor(victim, 15, levelRatio);
+                            victim.AdjustFavor(15, levelRatio);
                         else
-                            deity.adjust_favor(victim, 11, levelRatio);
+                            victim.AdjustFavor(11, levelRatio);
                     }
                 }
                 return;
@@ -1608,9 +1569,9 @@ namespace SmaugCS
             foreach (
                 ObjectInstance obj in
                     gch.Carrying.Where(obj => obj.WearLocation != WearLocations.None)
-                       .Where(obj => (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.AntiEvil) && gch.IsEvil())
-                                     || (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.AntiGood) && gch.IsGood())
-                                     || (Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.AntiNeutral) && gch.IsNeutral())))
+                       .Where(obj => (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil) && gch.IsEvil())
+                                     || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood) && gch.IsGood())
+                                     || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral) && gch.IsNeutral())))
             {
                 comm.act(ATTypes.AT_MAGIC, "You are zapped by $p.", gch, obj, null, ToTypes.Character);
                 comm.act(ATTypes.AT_MAGIC, "$n is zapped by $p.", gch, obj, null, ToTypes.Room);

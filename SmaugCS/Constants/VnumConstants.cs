@@ -1,6 +1,4 @@
-﻿// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+﻿namespace SmaugCS.Constants
 {
     public static class VnumConstants
     {

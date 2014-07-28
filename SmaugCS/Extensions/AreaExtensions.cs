@@ -1,36 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SmaugCS.Data;
-using SmaugCS.Data;
+﻿using SmaugCS.Data;
 
-// ReSharper disable CheckNamespace
 namespace SmaugCS
-// ReSharper restore CheckNamespace
 {
     public static class AreaExtensions
     {
         public static bool InSoftRange(this AreaData area, CharacterInstance ch)
         {
-            if (ch.IsImmortal())
-                return true;
-            if (ch.IsNpc())
-                return true;
-            if (ch.Level >= area.LowSoftRange && ch.Level <= area.HighSoftRange)
-                return true;
+            if (ch.IsImmortal()) return true;
+            if (ch.IsNpc()) return true;
+            if (ch.Level >= area.LowSoftRange && ch.Level <= area.HighSoftRange) return true;
             return false;
         }
 
         public static bool InHardRange(this AreaData area, CharacterInstance ch)
         {
-            if (ch.IsImmortal())
-                return true;
-            if (ch.IsNpc())
-                return true;
-            if (ch.Level >= area.LowHardRange && ch.Level <= area.HighHardRange)
-                return true;
+            if (ch.IsImmortal()) return true;
+            if (ch.IsNpc()) return true;
+            if (ch.Level >= area.LowHardRange && ch.Level <= area.HighHardRange) return true;
             return false;
         }
     }

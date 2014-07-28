@@ -67,6 +67,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="DataRowExtensions.cs" />
     <Compile Include="DirectoryProxy.cs" />
     <Compile Include="EnumerationExtensions.cs" />

@@ -28,6 +28,8 @@ namespace SmaugCS.Constants.Enums
         GetPKill                    = 17,
         ReadIMotd                   = 18,
         CopyoverRecover             = 19,
+
+        [Descriptor(new[] { "(Writing) " })]
         Editing                     = 20
     }
 }

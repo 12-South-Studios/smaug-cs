@@ -1,8 +1,8 @@
 ﻿using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
@@ -14,11 +14,8 @@ namespace SmaugCS.Spells
             CharacterInstance victim = (CharacterInstance)vo;
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            if (victim.Equals(ch))
-            {
-                color.send_to_char("You like yourself even better!\r\n", ch);
+            if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You like yourself even better!"))
                 return ReturnTypes.SpellFailed;
-            }
 
             if (victim.IsImmune(ResistanceTypes.Magic) || victim.IsImmune(ResistanceTypes.Charm))
             {
@@ -28,12 +25,12 @@ namespace SmaugCS.Spells
 
             if (!victim.IsNpc() && !ch.IsNpc())
             {
-                color.send_to_char("I don't think so...\r\n", ch);
-                color.send_to_char("You feel charmed...\r\n", victim);
+                color.send_to_char("I don't think so...", ch);
+                color.send_to_char("You feel charmed...", victim);
                 return ReturnTypes.SpellFailed;
             }
 
-            int schance = magic.ris_save(victim, level, (int) ResistanceTypes.Charm);
+            int schance = magic.ris_save(victim, level, (int)ResistanceTypes.Charm);
 
             if (victim.IsAffected(AffectedByTypes.Charm)
                 || schance == 1000
@@ -51,11 +48,13 @@ namespace SmaugCS.Spells
                 victim.StopFollower();
             victim.AddFollower(ch);
 
-            AffectData af = new AffectData();
-            af.SkillNumber = sn;
-            af.Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
-                          GameConstants.GetIntegerConstant("AffectDurationConversionValue");
-           // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
+            AffectData af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
+                           GameConstants.GetIntegerConstant("AffectDurationConversionValue")
+            };
+            // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);
             
             magic.successful_casting(skill, ch, victim, null);

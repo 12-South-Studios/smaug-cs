@@ -1,14 +1,12 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using Realm.Library.Common;
 
-// ReSharper disable CheckNamespace
 namespace SmaugCS
-// ReSharper restore CheckNamespace
 {
     public static class ObjectInstanceExtensions
     {
@@ -26,25 +24,24 @@ namespace SmaugCS
         {
             int resist = SmaugRandom.Fuzzy(Program.MAX_ITEM_IMPACT);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 resist += SmaugRandom.Fuzzy(12);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Metallic))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
                 resist += SmaugRandom.Fuzzy(5);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Organic))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Organic))
                 resist -= SmaugRandom.Fuzzy(5);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Blessed))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Blessed))
                 resist += SmaugRandom.Fuzzy(5);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Inventory))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory))
                 resist += 20;
 
             resist += (obj.Level / 10) - 2;
 
-            if (obj.ItemType == ItemTypes.Armor
-                || obj.ItemType == ItemTypes.Weapon)
+            if (obj.ItemType == ItemTypes.Armor || obj.ItemType == ItemTypes.Weapon)
                 resist += (obj.Value[0] / 2) - 2;
 
             return resist.GetNumberThatIsBetween(10, 99);
@@ -52,8 +49,7 @@ namespace SmaugCS
 
         public static bool InMagicContainer(this ObjectInstance obj)
         {
-            if (obj.ItemType == ItemTypes.Container
-                && Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
+            if (obj.ItemType == ItemTypes.Container && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 return true;
             return obj.InObject != null && obj.InObject.InMagicContainer();
         }
@@ -61,12 +57,9 @@ namespace SmaugCS
         public static int GetObjectWeight(this ObjectInstance obj)
         {
             int weight = obj.Count * obj.Weight;
-            if (obj.ItemType != ItemTypes.Container
-                || !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
-            {
+            if (obj.ItemType != ItemTypes.Container || !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 weight += obj.Contents.Sum(o => o.GetObjectWeight());
-            }
-
+            
             return weight;
         }
 
@@ -84,12 +77,10 @@ namespace SmaugCS
             int oweight = obj.GetObjectWeight();
             int onum = obj.GetObjectNumber();
             int wearLoc = (int)obj.WearLocation;
-            ExtendedBitvector extraFlags = obj.ExtraFlags;
+            int extraFlags = obj.ExtraFlags;
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype)
-                && !ch.IsImmortal()
-                && (!ch.IsNpc()
-                    || !ch.Act.IsSet((int)ActFlags.Prototype)))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.IsImmortal() 
+                && (!ch.IsNpc() || !ch.Act.IsSet(ActFlags.Prototype)))
                 return ch.CurrentRoom.ToRoom(obj);
 
             bool skipGroup = false;
@@ -181,7 +172,7 @@ namespace SmaugCS
                 ch.CarryNumber += onum;
                 ch.CarryWeight += oweight;
             }
-            else if (!extraFlags.IsSet((int)ItemExtraFlags.Magical))
+            else if (!extraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight += oweight;
 
             return groupObj ?? obj;
@@ -204,8 +195,7 @@ namespace SmaugCS
 
             ch.Carrying.Remove(obj);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Covering)
-                && obj.Contents != null && obj.Contents.Count > 0)
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null && obj.Contents.Count > 0)
                 handler.empty_obj(obj, null, null);
 
             obj.InRoom = null;
@@ -254,7 +244,7 @@ namespace SmaugCS
 
             o.Contents.Remove(obj);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Covering)
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                 && obj.Contents != null)
                 handler.empty_obj(obj, o, null);
 

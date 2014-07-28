@@ -1,7 +1,6 @@
-﻿
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Social
@@ -10,17 +9,8 @@ namespace SmaugCS.Commands.Social
     {
         public static void do_counciltalk(CharacterInstance ch, string argument)
         {
-            if (ch.IsNotAuthorized())
-            {
-                color.send_to_char("Huh?\r\n", ch);
-                return;
-            }
-
-            if (ch.IsNpc() || ch.PlayerData.Council == null)
-            {
-                color.send_to_char("Huh\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfNotAuthorized(ch, ch, "Huh?")) return;
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || ch.PlayerData.Council == null, "Huh?")) return;
 
             ChatManager.talk_channel(ch, argument, ChannelTypes.Council, "counciltalk");
         }

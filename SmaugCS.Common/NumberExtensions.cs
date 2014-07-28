@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using Realm.Library.Common;
 
 namespace SmaugCS.Common
 {
@@ -55,93 +58,63 @@ namespace SmaugCS.Common
             return flagString;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
+        #region IsSet
         public static bool IsSet(this int value, int bit)
         {
             return (value & bit) > 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
-        public static bool IsSet(this uint value, int bit)
+        public static bool IsSet(this int value, Enum bit)
         {
-            return (value & bit) > 0;
+            if (!bit.GetType().GetCustomAttributes(typeof (FlagsAttribute), true).Any()) return false;
+            int bitValue = bit.GetValue();
+            return (value & (bitValue == 0 ? Convert.ToInt32(bit) : bitValue)) > 0;
         }
+        #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
+        #region SetBit
         public static int SetBit(this int value, int bit)
         {
-            return value |= bit;
+            value = value | bit;
+            return value;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
-        public static uint SetBit(this uint value, int bit)
+        public static int SetBit(this int value, Enum bit)
         {
-            return value |= (uint)bit;
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
+            int bitValue = bit.GetValue();
+            value = value | (bitValue == 0 ? Convert.ToInt32(bit) : bitValue);
+            return value;
         }
+        #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
+        #region RemoveBit
         public static int RemoveBit(this int value, int bit)
         {
             return value &= ~bit;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
-        public static uint RemoveBit(this uint value, int bit)
+        public static int RemoveBit(this int value, Enum bit)
         {
-            return value &= ~(uint)bit;
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
+            int bitValue = bit.GetValue();
+            return value &= ~(bitValue == 0 ? Convert.ToInt32(bit) : bitValue); 
         }
+        #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
+        #region ToggleBit
         public static int ToggleBit(this int value, int bit)
         {
             return value ^= bit;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="bit"></param>
-        /// <returns></returns>
-        public static uint ToggleBit(this uint value, int bit)
+        public static int ToggleBit(this int value, Enum bit)
         {
-            return value ^= (uint)bit;
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
+            int bitValue = bit.GetValue();
+            return value ^= (bitValue == 0 ? Convert.ToInt32(bit) : bitValue);  
         }
+        #endregion
 
         /// <summary>
         /// 

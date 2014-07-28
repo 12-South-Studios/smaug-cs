@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Social
 {
@@ -9,32 +10,26 @@ namespace SmaugCS.Commands.Social
     {
         public static void do_repeat(CharacterInstance ch, string argument)
         {
-            if (ch.IsNpc() || !ch.IsImmortal()
-                || ch.PlayerData.TellHistory == null
-                || ch.PlayerData.TellHistory.Count == 0)
-            {
-                color.ch_printf(ch, "Huh?\r\n");
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch,
+                ch.IsNpc() || !ch.IsImmortal() || ch.PlayerData.TellHistory == null || !ch.PlayerData.TellHistory.Any(),
+                "Huh?")) return;
 
-            int tindex = 0;
+            int tellIndex;
             if (string.IsNullOrWhiteSpace(argument))
-                tindex = ch.PlayerData.TellHistory.Count - 1;
+                tellIndex = ch.PlayerData.TellHistory.Count - 1;
             else if (Char.IsLetter(argument.ToCharArray()[0]) && argument.Length == 1)
-                tindex = Char.ToLower(argument.ToCharArray()[0]) - 'a';
+                tellIndex = Char.ToLower(argument.ToCharArray()[0]) - 'a';
             else
             {
-                color.ch_printf(ch, "You may only index your tell history using a single letter.\r\n");
+                color.ch_printf(ch, "You may only index your tell history using a single letter.");
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(ch.PlayerData.TellHistory[tindex]))
-            {
-                color.set_char_color(ATTypes.AT_TELL, ch);
-                color.send_to_char(ch.PlayerData.TellHistory[tindex], ch);
-            }
-            else
-                color.send_to_char("No one like that has sent you a tell.\r\n", ch);
+            if (CheckFunctions.CheckIfEmptyString(ch, ch.PlayerData.TellHistory[tellIndex],
+                "No one like that has sent you a tell.")) return;
+
+            color.set_char_color(ATTypes.AT_TELL, ch);
+            color.send_to_char(ch.PlayerData.TellHistory[tellIndex], ch);
         }
     }
 }

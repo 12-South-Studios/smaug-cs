@@ -2,6 +2,7 @@
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
@@ -28,7 +29,7 @@ namespace SmaugCS
             if (!ch.IsNpc())
                 --room.Area.NumberOfPlayers;
 
-            ObjectInstance obj = ch.GetEquippedItem((int)WearLocations.Light);
+            ObjectInstance obj = ch.GetEquippedItem(WearLocations.Light);
             if (obj != null
                 && obj.ItemType == ItemTypes.Light
                 && obj.Value[2] != 0
@@ -101,13 +102,11 @@ namespace SmaugCS
             foreach (AffectData affect in ch.Affects)
                 localRoom.AddAffect(affect);
 
-            if (!ch.IsNpc()
-                && localRoom.Flags.IsSet((int)RoomFlags.Safe)
+            if (!ch.IsNpc() && localRoom.Flags.IsSet(RoomFlags.Safe)
                 && handler.get_timer(ch, (int)TimerTypes.ShoveDrag) <= 0)
                 handler.add_timer(ch, (int)TimerTypes.ShoveDrag, 10, null, 0);
 
-            if (localRoom.Flags.IsSet((int)RoomFlags.Teleport)
-                && localRoom.TeleportDelay > 0)
+            if (localRoom.Flags.IsSet(RoomFlags.Teleport) && localRoom.TeleportDelay > 0)
             {
                 if (db.TELEPORT.Exists(x => x.Room == localRoom))
                     return;
@@ -125,15 +124,11 @@ namespace SmaugCS
 
         public static CharacterInstance IsDoNotDisturb(this RoomTemplate room, CharacterInstance ch)
         {
-            if (room.Flags.IsSet((int)RoomFlags.DoNotDisturb))
+            if (room.Flags.IsSet(RoomFlags.DoNotDisturb))
                 return null;
 
-            return room.Persons.FirstOrDefault(rch => !rch.IsNpc()
-                && rch.PlayerData != null
-                && rch.IsImmortal()
-                && rch.PlayerData.Flags.IsSet((int)PCFlags.DoNotDisturb)
-                && ch.Trust < rch.Trust
-                && ch.CanSee(rch));
+            return room.Persons.FirstOrDefault(rch => !rch.IsNpc() && rch.PlayerData != null && rch.IsImmortal() 
+                && rch.PlayerData.Flags.IsSet(PCFlags.DoNotDisturb) && ch.Trust < rch.Trust && ch.CanSee(rch));
         }
 
         public static void FromRoom(this RoomTemplate room, ObjectInstance obj)
@@ -151,8 +146,7 @@ namespace SmaugCS
 
             room.Contents.Remove(obj);
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Covering)
-                && obj.Contents != null)
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null)
                 handler.empty_obj(obj, null, room);
 
             if (obj.ItemType == ItemTypes.Fire)
@@ -207,7 +201,7 @@ namespace SmaugCS
             if (room.Light > 0)
                 return false;
 
-            if (room.Flags.IsSet((int)RoomFlags.Dark))
+            if (room.Flags.IsSet(RoomFlags.Dark))
                 return true;
 
             if (room.SectorType == SectorTypes.Inside

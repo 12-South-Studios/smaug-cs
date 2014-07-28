@@ -51,9 +51,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -84,14 +82,6 @@
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
-      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
-      <Name>SmaugCS.Constants</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
-      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
-      <Name>SmaugCS.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>

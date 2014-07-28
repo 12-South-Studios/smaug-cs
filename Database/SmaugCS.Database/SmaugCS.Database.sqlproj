@@ -100,6 +100,8 @@
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_AddOrUpdateBan.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_DeleteBan.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types\BanTableType.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\News.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\NewsEntries.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

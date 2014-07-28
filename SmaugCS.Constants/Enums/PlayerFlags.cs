@@ -22,13 +22,21 @@ namespace SmaugCS.Constants.Enums
         RoomVNum = 1 << 14,
         Silence = 1 << 15,
         NoEmote = 1 << 16,
+
+        [Descriptor(new[] { "(ATTACKER) " })]
         Attacker = 1 << 17,
         NoTell = 1 << 18,
         Log = 1 << 19,
         Deny = 1 << 20,
         Freeze = 1 << 21,
+
+        [Descriptor(new[] { "(THIEF) " })]
         Thief = 1 << 22,
+
+        [Descriptor(new[] { "(KILLER) " })]
         Killer = 1 << 23,
+
+        [Descriptor(new[] { "(LITTERBUG) " })]
         Litterbug = 1 << 24,
         Ansi = 1 << 25,
         Rip = 1 << 26,
@@ -36,6 +44,8 @@ namespace SmaugCS.Constants.Enums
         Flee = 1 << 28,
         AutoGold = 1 << 29,
         AutoMap = 1 << 30,
+
+        [Descriptor(new []{"[AFK]"})]
         AwayFromKeyboard = 1 << 31,
         InvisibilePrompt = 1 << 32,
         Compass = 1 << 33

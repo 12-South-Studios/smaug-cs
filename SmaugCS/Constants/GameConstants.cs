@@ -9,9 +9,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
-// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+namespace SmaugCS.Constants
 {
     public static class GameConstants
     {

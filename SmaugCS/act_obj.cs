@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -47,7 +48,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Prototype) && !ch.CanTakePrototype())
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.CanTakePrototype())
             {
                 color.send_to_char("A godly force prevents you from getting close to it.\r\n", ch);
                 return;
@@ -59,7 +60,7 @@ namespace SmaugCS
                 return;
             }
 
-            int weight = Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Covering)
+            int weight = obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                              ? obj.Weight
                              : obj.GetObjectWeight();
 
@@ -70,7 +71,7 @@ namespace SmaugCS
                     ObjectInstance tObject = obj.InObject;
                     int inobj = 1;
                     bool checkweight = tObject.ItemType == ItemTypes.Container
-                                       && Macros.IS_OBJ_STAT(tObject, (int)ItemExtraFlags.Magical);
+                                       && tObject.ExtraFlags.IsSet(ItemExtraFlags.Magical);
 
                     while (tObject.InObject != null)
                     {
@@ -78,7 +79,7 @@ namespace SmaugCS
                         inobj++;
 
                         checkweight = tObject.ItemType == ItemTypes.Container
-                                      && Macros.IS_OBJ_STAT(tObject, (int)ItemExtraFlags.Magical);
+                                      && tObject.ExtraFlags.IsSet(ItemExtraFlags.Magical);
                     }
 
                     if (tObject.CarriedBy == null || tObject.CarriedBy != ch || checkweight)
@@ -100,22 +101,22 @@ namespace SmaugCS
             if (container != null)
             {
                 if (container.ItemType == ItemTypes.KeyRing
-                    && !Macros.IS_OBJ_STAT(container, (int)ItemExtraFlags.Covering))
+                    && !container.ExtraFlags.IsSet(ItemExtraFlags.Covering))
                 {
                     comm.act(ATTypes.AT_ACTION, "You remove $p from $P", ch, obj, container, ToTypes.Character);
                     comm.act(ATTypes.AT_ACTION, "$n removes $p from $P", ch, obj, container, ToTypes.Room);
                 }
                 else
                 {
-                    comm.act(ATTypes.AT_ACTION, Macros.IS_OBJ_STAT(container, (int)ItemExtraFlags.Covering)
+                    comm.act(ATTypes.AT_ACTION, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                                                     ? "You get $p from beneath $P."
                                                     : "You get $p from $P", ch, obj, container, ToTypes.Character);
-                    comm.act(ATTypes.AT_ACTION, Macros.IS_OBJ_STAT(container, (int)ItemExtraFlags.Covering)
+                    comm.act(ATTypes.AT_ACTION, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                                                     ? "$n gets $p from beneath $P."
                                                     : "$n gets $p from $P", ch, obj, container, ToTypes.Room);
                 }
 
-                if (Macros.IS_OBJ_STAT(container, (int)ItemExtraFlags.ClanCorpse)
+                if (container.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse)
                     && !ch.IsNpc() && container.Name.Contains(ch.Name))
                     container.Value[5]++;
                 obj.InObject.FromObject(obj);
@@ -138,7 +139,7 @@ namespace SmaugCS
             }
 
             if (obj.ItemType != ItemTypes.Container)
-                handler.check_for_trap(ch, obj, (int)TrapTriggerTypes.Get);
+                handler.check_for_trap(ch, obj, TrapTriggerTypes.Get);
             if (ch.CharDied())
                 return;
 
@@ -274,7 +275,7 @@ namespace SmaugCS
             if (!fReplace)
                 return false;
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.NoRemove))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.NoRemove))
             {
                 comm.act(ATTypes.AT_PLAIN, "You can't remove $p.", ch, obj, null, ToTypes.Character);
                 return false;
@@ -321,7 +322,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Personal)
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Personal)
                 && ch.Name.EqualsIgnoreCase(obj.Owner))
             {
                 color.send_to_char("That item is personalized and belongs to someone else.\r\n", ch);
@@ -407,7 +408,7 @@ namespace SmaugCS
             }
         }
 
-        private static Dictionary<ItemWearFlags, Action<ObjectInstance, CharacterInstance, bool>> ItemWearMap = new Dictionary<ItemWearFlags, Action<ObjectInstance, CharacterInstance, bool>>()
+        private static readonly Dictionary<ItemWearFlags, Action<ObjectInstance, CharacterInstance, bool>> ItemWearMap = new Dictionary<ItemWearFlags, Action<ObjectInstance, CharacterInstance, bool>>()
             { 
                 {ItemWearFlags.Finger, ItemWearFinger},
                 {ItemWearFlags.Neck, ItemWearNeck},
@@ -959,7 +960,7 @@ namespace SmaugCS
 
             if (obj.InRoom.Flags.IsSet((int)RoomFlags.NoFloor)
                 //&& Macros.CAN_GO(obj, (int) DirectionTypes.Down)
-                && !Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
             {
                 ExitData exit = obj.InRoom.GetExit(DirectionTypes.Down);
                 RoomTemplate to_room = exit.GetDestination();

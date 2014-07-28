@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -14,12 +15,12 @@ namespace SmaugCS.SpecFuns
 
             foreach (ObjectInstance trash in ch.CurrentRoom.Contents)
             {
-                if (!trash.WearFlags.IsSet((int) ItemWearFlags.Take)
-                    || Macros.IS_OBJ_STAT(trash, (int) ItemExtraFlags.Buried))
+                if (!trash.WearFlags.IsSet(ItemWearFlags.Take)
+                    || trash.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                     continue;
 
-                if (Macros.IS_OBJ_STAT(trash, (int) ItemExtraFlags.Prototype)
-                    && !ch.Act.IsSet((int) ActFlags.Prototype))
+                if (trash.ExtraFlags.IsSet(ItemExtraFlags.Prototype)
+                    && !ch.Act.IsSet(ActFlags.Prototype))
                     continue;
 
                 if (trash.ItemType == ItemTypes.DrinkContainer 

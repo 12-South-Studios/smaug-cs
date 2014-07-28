@@ -36,7 +36,7 @@ namespace SmaugCS
             string[] words = template.Resistance.Split(new[] { ' ' });
             foreach (ResistanceTypes resType in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
-                value = value.SetBit((int)resType);
+                value = value.SetBit(resType);
             }
             return value;
         }
@@ -47,7 +47,7 @@ namespace SmaugCS
             string[] words = template.Susceptibility.Split(new[] { ' ' });
             foreach (ResistanceTypes resType in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
-                value = value.SetBit((int)resType);
+                value = value.SetBit(resType);
             }
             return value;
         }
@@ -58,29 +58,29 @@ namespace SmaugCS
             string[] words = template.Immunity.Split(new[] { ' ' });
             foreach (ResistanceTypes resType in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
-                value = value.SetBit((int)resType);
+                value = value.SetBit(resType);
             }
             return value;
         }
 
-        public static ExtendedBitvector GetActFlags(this MobTemplate template)
+        public static int GetActFlags(this MobTemplate template)
         {
-            ExtendedBitvector bv = new ExtendedBitvector();
+            int bv = 0;
             string[] words = template.ActFlags.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
+                bv.SetBit(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
             }
             return bv;
         }
 
-        public static ExtendedBitvector GetAffected(this MobTemplate template)
+        public static int GetAffected(this MobTemplate template)
         {
-            ExtendedBitvector bv = new ExtendedBitvector();
+            int bv = 0;
             string[] words = template.AffectedBy.Split(new[] { ' ' });
             foreach (string word in words)
             {
-                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
+                bv.SetBit(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
             }
             return bv;
         }

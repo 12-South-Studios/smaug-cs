@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common;
+
 namespace SmaugCS.Weather
 {
     public enum ClimateTypes

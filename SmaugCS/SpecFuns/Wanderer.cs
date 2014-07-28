@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
@@ -14,7 +16,6 @@ namespace SmaugCS.SpecFuns
                 return false;
 
             bool thrown = false;
-            bool found = false;
             bool noExit = true;
 
             ExitData exit = ch.CurrentRoom.Exits.First();
@@ -26,8 +27,8 @@ namespace SmaugCS.SpecFuns
 
             foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
             {
-                if (!obj.WearFlags.IsSet((int)ItemWearFlags.Take)
-                    || Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Buried))
+                if (!obj.WearFlags.IsSet(ItemWearFlags.Take)
+                    || obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                     continue;
 
                 if (obj.ItemType != ItemTypes.Weapon
@@ -49,7 +50,7 @@ namespace SmaugCS.SpecFuns
                 if (!thrown)
                     act_obj.wear_obj(ch, trash, false, -1);
 
-                found = false;
+                bool found = false;
                 if (!thrown)
                 {
                     foreach (ObjectInstance obj2 in ch.Carrying.Where(obj2 => obj2.WearLocation == WearLocations.None))
@@ -60,7 +61,56 @@ namespace SmaugCS.SpecFuns
                     }
                 }
 
-                // TODO: Finish this
+                if (thrown && !noExit)
+                {
+                    while (!found && !noExit)
+                    {
+                        int door = db.number_door();
+                        exit = ch.CurrentRoom.GetExitNumber(door);
+                        
+                        if (exit != null)
+                        {
+                            RoomTemplate destRoom = exit.GetDestination(DatabaseManager.Instance);
+                            if (destRoom != null && !exit.Flags.IsSet(ExitFlags.Closed)
+                                && !destRoom.Flags.IsSet(RoomFlags.NoDrop))
+                            {
+                                if (destRoom.Persons.Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))
+                                    return false;
+                                found = true;
+                            }
+                        }    
+                    }
+                }
+
+                if (!noExit && thrown)
+                {
+                    handler.set_cur_obj(trash);
+                    if (act_obj.damage_obj(trash) != ReturnTypes.ObjectScrapped)
+                    {
+                        handler.separate_obj(trash);
+                        comm.act(ATTypes.AT_ACTION, "$n growls and throws $p $T.", ch, trash, exit.Direction.GetName(),
+                            ToTypes.Room);
+                        trash.FromCharacter();
+
+                        RoomTemplate oldRoom = ch.CurrentRoom;
+                        RoomTemplate room = exit.GetDestination(DatabaseManager.Instance);
+                        room.ToRoom(trash);
+                        ch.CurrentRoom.FromRoom(ch);
+                        room.ToRoom(ch);
+                        comm.act(ATTypes.AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, ToTypes.Room);
+                        ch.CurrentRoom.FromRoom(ch);
+                        oldRoom.ToRoom(ch);
+                        ;
+                    }
+                    else
+                    {
+                        Say.do_say(ch, "This thing is junk!");
+                        comm.act(ATTypes.AT_ACTION, "$n growls and breaks $p.", ch, trash, null, ToTypes.Room);
+                    }
+                    return true;
+                }
+
+                return true;
             }
 
             return false;

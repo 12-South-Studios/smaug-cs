@@ -7,6 +7,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Logging;
@@ -956,49 +957,19 @@ namespace SmaugCS
             return "ERROR";
         }
 
-        private static readonly Dictionary<TrapTypes, string> TrapTypeLookupTable = new Dictionary<TrapTypes, string>()
-            {
-                {TrapTypes.PoisonGas, "surrounded by a green cloud of gas"},
-                {TrapTypes.PoisonDart, "hit by a dart"},
-                {TrapTypes.PoisonDagger, "stabbed by a dagger"},
-                {TrapTypes.PoisonNeedle, "pricked by a needle"},
-                {TrapTypes.PoisonArrow, "struck with an arrow"},
-                {TrapTypes.BlindnessGas, "surrounded by a red cloud of gas"},
-                {TrapTypes.SleepingGas, "surrounded by a yellow cloud of gas"},
-                {TrapTypes.Flame, "struck by a burst of flame"},
-                {TrapTypes.Explosion, "hit by an explosion"},
-                {TrapTypes.AcidSpray, "covered by a spray of acid"},
-                {TrapTypes.ElectricShock, "suddenly shocked"},
-                {TrapTypes.Blade, "sliced by a razor sharp blade"},
-                {TrapTypes.SexChange, "surrounded by a mysterious aura"}
-            };
-
         private const string TrapTypeLookupDefault = "hit by a trap";
-
-        private static readonly Dictionary<TrapTypes, string> TrapTypeSkillLookupTable = new Dictionary<TrapTypes, string>()
-            {
-                {TrapTypes.AcidSpray, "acid blast"},
-                {TrapTypes.BlindnessGas, "blindness"},
-                {TrapTypes.Explosion, "fireball"},
-                {TrapTypes.Flame, "fireball"},
-                {TrapTypes.PoisonArrow, "poison"},
-                {TrapTypes.PoisonDagger, "poison"},
-                {TrapTypes.PoisonDart, "poison"},
-                {TrapTypes.PoisonGas, "poison"},
-                {TrapTypes.PoisonNeedle, "poison"},
-                {TrapTypes.SexChange, "change sex"},
-                {TrapTypes.SleepingGas, "sleep"}
-            };
 
         public static ReturnTypes spring_trap(CharacterInstance ch, ObjectInstance obj)
         {
             int level = obj.Value[2];
             string txt = string.Empty;
             TrapTypes trapType = TrapTypes.None;
+            DescriptorAttribute attrib = null;
             try
             {
                 trapType = Realm.Library.Common.EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
-                txt = TrapTypeLookupTable.ContainsKey(trapType) ? TrapTypeLookupTable[trapType] : TrapTypeLookupDefault;
+                attrib = trapType.GetAttribute<DescriptorAttribute>();
+                txt = attrib.Messages[0];
             }
             catch (ArgumentException)
             {
@@ -1015,9 +986,9 @@ namespace SmaugCS
                 extract_obj(obj);
 
             ReturnTypes returnCode = ReturnTypes.None;
-            if (TrapTypeSkillLookupTable.ContainsKey(trapType))
+            if (attrib != null && !string.IsNullOrEmpty(attrib.Messages[1]))
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(TrapTypeSkillLookupTable[trapType]);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(attrib.Messages[1]);
                 returnCode = magic.obj_cast_spell((int)skill.ID, level, ch, ch, null);
             }
 
@@ -1033,7 +1004,7 @@ namespace SmaugCS
             return returnCode;
         }
 
-        public static ReturnTypes check_for_trap(CharacterInstance ch, ObjectInstance obj, int flag)
+        public static ReturnTypes check_for_trap(CharacterInstance ch, ObjectInstance obj, TrapTriggerTypes flag)
         {
             if (!obj.Contents.Any())
                 return ReturnTypes.None;
@@ -1041,7 +1012,7 @@ namespace SmaugCS
             ReturnTypes returnCode = ReturnTypes.None;
 
             foreach (ObjectInstance check in obj.Contents.Where(check => check.ItemType == ItemTypes.Trap
-                                                                         && check.Value[3].IsSet(flag)))
+                                                                         && check.Value[3].IsSet((int)flag)))
             {
                 returnCode = spring_trap(ch, check);
                 if (returnCode != ReturnTypes.None)

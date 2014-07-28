@@ -82,9 +82,6 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="lua51">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\lua51.dll</HintPath>
-    </Reference>
     <Reference Include="LuaInterface">
       <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\LuaInterface.dll</HintPath>
     </Reference>
@@ -98,18 +95,16 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="VikingErik.LuaInterface">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\TypeMapAttribute.cs" />
     <Compile Include="Commands\Ban\Ban.cs" />
+    <Compile Include="Commands\Movement\PullOrPush.cs" />
+    <Compile Include="Exceptions\ObjectNotFoundException.cs" />
+    <Compile Include="Extensions\SkillDataExtensions.cs" />
+    <Compile Include="Helpers\CheckFunctions.cs" />
+    <Compile Include="Constants\StringConstants.cs" />
+    <Compile Include="Exceptions\CharacterDiedException.cs" />
     <Compile Include="Commands\Player\Affected.cs" />
     <Compile Include="Commands\Player\Equipment.cs" />
     <Compile Include="Commands\Player\Gold.cs" />
@@ -206,6 +201,7 @@
     <Compile Include="Extensions\WeatherManagerExtensions.cs" />
     <Compile Include="Constants\GameConstants.cs" />
     <Compile Include="Constants\LevelConstants.cs" />
+    <Compile Include="Helpers\HelperFunctions.cs" />
     <Compile Include="LoaderInitializer.cs" />
     <Compile Include="Loaders\ClassLoader.cs" />
     <Compile Include="Loaders\RaceLoader.cs" />
@@ -221,6 +217,7 @@
     <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
     <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
     <Compile Include="Managers\CalendarManager.cs" />
+    <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Managers\IDatabaseManager.cs" />
     <Compile Include="Managers\IGameManager.cs" />
     <Compile Include="Managers\LuaManager.cs" />
@@ -246,7 +243,7 @@
     <Compile Include="SpecFuns\Thief.cs" />
     <Compile Include="SpecFuns\Wanderer.cs" />
     <Compile Include="Spells\Smaug\Affect.cs" />
-    <Compile Include="Spells\Smaug\AffectChar.cs" />
+    <Compile Include="Spells\Smaug\AffectCharacter.cs" />
     <Compile Include="Spells\Smaug\AreaAttack.cs" />
     <Compile Include="Spells\Smaug\Attack.cs" />
     <Compile Include="Commands\Admin\Advance.cs" />
@@ -613,17 +610,17 @@
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
-    <Compile Include="Loaders\CommentLoader.cs" />
-    <Compile Include="Loaders\CouncilLoader.cs" />
+    <Compile Include="Loaders\Incomplete\CommentLoader.cs" />
+    <Compile Include="Loaders\Incomplete\CouncilLoader.cs" />
     <Compile Include="Loaders\DeityListLoader.cs" />
-    <Compile Include="Loaders\HintLoader.cs" />
-    <Compile Include="Loaders\HolidayLoader.cs" />
+    <Compile Include="Loaders\Incomplete\HintLoader.cs" />
+    <Compile Include="Loaders\Incomplete\HolidayLoader.cs" />
     <Compile Include="Loaders\ListLoader.cs" />
-    <Compile Include="Loaders\MixtureLoader.cs" />
-    <Compile Include="Loaders\PrototypeAreaLoader.cs" />
-    <Compile Include="Loaders\ReservedLoader.cs" />
-    <Compile Include="Loaders\TimeLoader.cs" />
-    <Compile Include="Loaders\WatchListLoader.cs" />
+    <Compile Include="Loaders\Incomplete\MixtureLoader.cs" />
+    <Compile Include="Loaders\Obsolete\PrototypeAreaLoader.cs" />
+    <Compile Include="Loaders\Incomplete\ReservedLoader.cs" />
+    <Compile Include="Loaders\Incomplete\TimeLoader.cs" />
+    <Compile Include="Loaders\Incomplete\WatchListLoader.cs" />
     <Compile Include="Managers\ChatManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\TimerManager.cs" />
@@ -689,8 +686,8 @@
     <Compile Include="Spells\Mind\MindWrack.cs" />
     <Compile Include="Spells\Mind\MindWrench.cs" />
     <Compile Include="Spells\Smaug\CreateMob.cs" />
-    <Compile Include="Spells\Smaug\CreateObj.cs" />
-    <Compile Include="Spells\Smaug\ObjInv.cs" />
+    <Compile Include="Spells\Smaug\CreateObject.cs" />
+    <Compile Include="Spells\Smaug\InventoryObject.cs" />
     <Compile Include="Spells\Smaug\Smaug.cs" />
     <Compile Include="Spells\Vampire\Mistwalk.cs" />
     <Compile Include="Spells\NotFound.cs" />
@@ -724,10 +721,10 @@
     <Compile Include="Spells\WordOfRecall.cs" />
     <Compile Include="SqlQueries.cs" />
     <Compile Include="StringExt.cs" />
-    <Compile Include="Loaders\AreaLoader.cs" />
-    <Compile Include="Loaders\FUSSAreaLoader.cs" />
-    <Compile Include="Loaders\HelpAreaLoader.cs" />
-    <Compile Include="Loaders\SmaugAreaLoader.cs" />
+    <Compile Include="Loaders\Obsolete\AreaLoader.cs" />
+    <Compile Include="Loaders\Obsolete\FUSSAreaLoader.cs" />
+    <Compile Include="Loaders\Incomplete\HelpAreaLoader.cs" />
+    <Compile Include="Loaders\Obsolete\SmaugAreaLoader.cs" />
     <Compile Include="Managers\LookupManager.cs" />
     <Compile Include="Managers\DatabaseManager.cs" />
     <Compile Include="Objects\BFSQueueData.cs" />
@@ -737,11 +734,9 @@
     <Compile Include="act_move.cs" />
     <Compile Include="act_obj.cs" />
     <Compile Include="act_wiz.cs" />
-    <Compile Include="build.cs" />
     <Compile Include="color.cs" />
     <Compile Include="comm.cs" />
     <Compile Include="db.cs" />
-    <Compile Include="deity.cs" />
     <Compile Include="fight.cs" />
     <Compile Include="handler.cs" />
     <Compile Include="hotboot.cs" />
@@ -924,6 +919,10 @@
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Communication\SmaugCS.Communication.csproj">
+      <Project>{f9affbf0-166c-4672-80ba-faba59ef9e07}</Project>
+      <Name>SmaugCS.Communication</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>

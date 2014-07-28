@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -10,18 +10,11 @@ namespace SmaugCS.Commands.PetsAndGroups
         public static void do_follow(CharacterInstance ch, string argument)
         {
             string firstArg = argument.FirstWord();
-            if (string.IsNullOrWhiteSpace(firstArg))
-            {
-                color.send_to_char("Follow whom?\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Follow whom?")) return;
+
 
             CharacterInstance victim = handler.get_char_room(ch, firstArg);
-            if (victim == null)
-            {
-                color.send_to_char("They aren't here.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (ch.IsAffected(AffectedByTypes.Charm) && ch.Master != null)
             {
@@ -31,11 +24,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 
             if (victim == ch)
             {
-                if (ch.Master == null)
-                {
-                    color.send_to_char("You already follow yourself.\r\n", ch);
-                    return;
-                }
+                if (CheckFunctions.CheckIfNullObject(ch, ch.Master, "You already follow yourself.")) return;
 
                 ch.StopFollower();
                 return;
@@ -51,11 +40,8 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            if (ch.IsCircleFollowing(victim))
-            {
-                color.send_to_char("Following in loops is not allowed... sorry.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsCircleFollowing(victim),
+                "Following in loops is not allowed... sorry.")) return;
 
             if (ch.Master != null)
                 ch.StopFollower();

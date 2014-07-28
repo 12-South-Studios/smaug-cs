@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
 
@@ -26,10 +27,12 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            AffectData af = new AffectData();
-            af.SkillNumber = sn;
-            af.Duration = (10*level*GameConstants.GetIntegerConstant("AffectDurationConversionValue"));
-            af.Location = ApplyTypes.Gender;
+            AffectData af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = (10*level*GameConstants.GetIntegerConstant("AffectDurationConversionValue")),
+                Location = ApplyTypes.Gender
+            };
 
             do
             {

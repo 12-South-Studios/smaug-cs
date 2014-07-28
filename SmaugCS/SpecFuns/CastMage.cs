@@ -32,7 +32,7 @@ namespace SmaugCS.SpecFuns
             return true;
         }
 
-        private static readonly Dictionary<int, Tuple<int, string>> SpellLevelLookupTable = new Dictionary<int, Tuple<int, string>>()
+        private static readonly Dictionary<int, Tuple<int, string>> SpellLevelLookupTable = new Dictionary<int, Tuple<int, string>>
             {
                 {0, new Tuple<int, string>(0, "magic missile")},
                 {1, new Tuple<int, string>(3, "chill touch")},

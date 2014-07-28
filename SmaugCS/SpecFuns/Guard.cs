@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SmaugCS.Commands.Social;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -21,17 +22,9 @@ namespace SmaugCS.SpecFuns
             {
                 victim = vch;
 
-                if (!vch.IsNpc() && vch.Act.IsSet((int) PlayerFlags.Killer))
-                {
-                    crime = "KILLER";
+                crime = GetCrime(victim);
+                if (!string.IsNullOrEmpty(crime))
                     break;
-                }
-
-                if (!vch.IsNpc() && vch.Act.IsSet((int) PlayerFlags.Thief))
-                {
-                    crime = "THIEF";
-                    break;
-                }
 
                 if (vch.CurrentFighting != null 
                     && !fight.who_fighting(vch).Equals(ch) 
@@ -42,7 +35,7 @@ namespace SmaugCS.SpecFuns
                 }
             }
 
-            if (victim != null && ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Safe))
+            if (victim != null && ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
             {
                 Yell.do_yell(ch, string.Format("{0} is a {1}! As well as a COWARD!", victim.Name, crime));
                 return true;
@@ -63,6 +56,17 @@ namespace SmaugCS.SpecFuns
             }
 
             return false;
+        }
+
+        private static string GetCrime(CharacterInstance victim)
+        {
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Killer))
+                return "KILLER";
+
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Thief))
+                return "THIEF";
+
+            return string.Empty;
         }
     }
 }

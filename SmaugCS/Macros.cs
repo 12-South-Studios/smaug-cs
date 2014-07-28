@@ -84,10 +84,6 @@ namespace SmaugCS
             return ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Pacifist);
         }
 
-        public static bool SPELL_FLAG(SkillData skill, int flag)
-        {
-            return skill.Flags.IsSet(flag);
-        }
         public static int SPELL_DAMAGE(SkillData skill)
         {
             return (skill.Info & 7);
@@ -161,10 +157,6 @@ namespace SmaugCS
         public static bool CAN_WEAR(ObjectInstance obj, int part)
         {
             return obj.WearFlags.IsSet(part);
-        }
-        public static bool IS_OBJ_STAT(IHasExtraFlags obj, int stat)
-        {
-            return obj.ExtraFlags.IsSet(stat);
         }
 
         public static string NAME(CharacterInstance ch)

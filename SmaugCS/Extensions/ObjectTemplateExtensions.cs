@@ -4,9 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
-// ReSharper disable CheckNamespace
 namespace SmaugCS
-// ReSharper restore CheckNamespace
 {
     public static class ObjectTemplateExtensions
     {
@@ -24,7 +22,7 @@ namespace SmaugCS
             string[] words = template.Flags.Split(new[] {' '});
             foreach (string word in words)
             {
-                template.ExtraFlags.SetBit((int) EnumerationExtensions.GetEnum<ItemExtraFlags>(word));
+                Common.NumberExtensions.SetBit(template.ExtraFlags, EnumerationExtensions.GetEnum<ItemExtraFlags>(word));
             }
         }
     }

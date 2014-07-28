@@ -42,7 +42,7 @@ namespace SmaugCS.SpecFuns
             return true;
         }
 
-        private static Dictionary<char, Action<CharacterInstance>> ActionLookupTable = new Dictionary
+        private static readonly Dictionary<char, Action<CharacterInstance>> ActionLookupTable = new Dictionary
             <char, Action<CharacterInstance>>
             {
                 {'0', Move},
