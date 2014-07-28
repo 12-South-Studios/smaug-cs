@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlServerCe;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -12,6 +12,7 @@ using Realm.Library.Network;
 using SmallDBConnectivity;
 using SmaugCS.Ban;
 using SmaugCS.Board;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -472,7 +473,7 @@ namespace SmaugCS
             string connectionString = ConfigurationManager.ConnectionStrings["SmaugDB"]
                 .ConnectionString.Replace("|DataPath|", GameConstants.GetDataPath());
 
-            IDbConnection connection = new SqlCeConnection(connectionString);
+            IDbConnection connection = new SqlConnection(connectionString);
 
             BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
             BanManager.Instance.LoadBans();

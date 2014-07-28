@@ -5,34 +5,40 @@ namespace SmaugCS.Constants.Enums
 {
     [Flags]
     public enum AffectedByTypes
-    { //1, 2, 4, 8, 16, 32, 64, 128, 256, 512
+    {
         None = -1,
-        Blind = 1 << 0,     // 1
-        Invisible = 1 << 1, // 2
+        Blind = 1 << 0, 
+
+        [Descriptor(new []{"(Invis) "})]
+        Invisible = 1 << 1,
 
         [Name("detect_evil")]
-        DetectEvil = 1 << 2,    // 4
+        [Descriptor(new[] { "(Red Aura) " })]
+        DetectEvil = 1 << 2, 
 
         [Name("detect_invis")]
-        DetectInvisibility = 1 << 3,    // 8
+        DetectInvisibility = 1 << 3,
 
         [Name("detect_magic")] 
-        DetectMagic = 1 << 4,   // 16
+        DetectMagic = 1 << 4,
 
         [Name("detect_hidden")]
-        DetectHidden = 1 << 5,  // 32
-        Hold = 1 << 6,      // 64
-        Sanctuary = 1 << 7, // 128
+        DetectHidden = 1 << 5,
+        Hold = 1 << 6,     
+        Sanctuary = 1 << 7,
 
         [Name("faerie_fire")]
-        FaerieFire = 1 << 8,    // 256
-        Infrared = 1 << 9,  // 512
-        Curse = 1 << 10, //1024
-        Flaming = 1 << 11, //2048
-        Poison = 1 << 12,//4096
-        Protect = 1 << 13,//8192
-        Paralysis = 1 << 14,//16384
-        Sneak = 1 << 15,//32768
+        [Descriptor(new[] { "(Pink Aura) " })]
+        FaerieFire = 1 << 8,    
+        Infrared = 1 << 9,  
+        Curse = 1 << 10, 
+        Flaming = 1 << 11, 
+        Poison = 1 << 12,
+        Protect = 1 << 13,
+        Paralysis = 1 << 14,
+        Sneak = 1 << 15,
+
+        [Descriptor(new []{"(Hide) "})]
         Hide = 1 << 16,
         Sleep = 1 << 17,
 
@@ -41,6 +47,7 @@ namespace SmaugCS.Constants.Enums
         Flying = 1 << 19,
 
         [Name("pass_door")]
+        [Descriptor(new[] { "(Translucent) " })]
         PassDoor = 1 << 20,
         Floating = 1 << 21,
 
@@ -63,6 +70,8 @@ namespace SmaugCS.Constants.Enums
 
         [VisibleAffect(ATTypes.AT_MAGIC, "%s appears to be in a deep trance...\r\n")]
         Possess = 1 << 29,
+
+        [Descriptor(new[] { "(Wild-eyed) " })]
         Berserk = 1 << 30,
 
         [Name("aqua_breath")]

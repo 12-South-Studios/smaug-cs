@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Lookup;
@@ -36,23 +38,10 @@ namespace SmaugCS.Managers
         public SkillLookupTable SkillLookup { get; private set; }
         public SpellLookupTable SpellLookup { get; private set; }
 
-        public static Dictionary<SpellDamageTypes, ResistanceTypes> SpellDamageToResistanceTypeMap = new Dictionary
-            <SpellDamageTypes, ResistanceTypes>()
-            {
-                {SpellDamageTypes.Fire, ResistanceTypes.Fire},
-                {SpellDamageTypes.Cold, ResistanceTypes.Cold},
-                {SpellDamageTypes.Electricty, ResistanceTypes.Electricity},
-                {SpellDamageTypes.Energy, ResistanceTypes.Energy},
-                {SpellDamageTypes.Acid, ResistanceTypes.Acid},
-                {SpellDamageTypes.Poison, ResistanceTypes.Poison},
-                {SpellDamageTypes.Drain, ResistanceTypes.Drain}
-            };
-
         public ResistanceTypes GetResistanceType(SpellDamageTypes type)
         {
-            return SpellDamageToResistanceTypeMap.ContainsKey(type)
-                       ? SpellDamageToResistanceTypeMap[type]
-                       : ResistanceTypes.Unknown;
+            DamageResistanceAttribute attrib = type.GetAttribute<DamageResistanceAttribute>();
+            return attrib == null ? ResistanceTypes.Unknown : attrib.ResistanceType;
         }
 
         public void Initialize()

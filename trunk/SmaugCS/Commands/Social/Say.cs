@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Helpers;
 
 
 namespace SmaugCS.Commands.Social
@@ -21,21 +23,14 @@ namespace SmaugCS.Commands.Social
             }*/
 #endif
 
-            if (string.IsNullOrEmpty(argument))
-            {
-                color.send_to_char("Say what?\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfEmptyString(ch, argument, "Say what?")) return;
+            if (CheckFunctions.CheckIf(ch,
+                args => ((CharacterInstance) args[0]).CurrentRoom.Flags.IsSet((int) RoomFlags.Silence),
+                "You can't do that here.", new List<object> {ch})) return;
 
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Silence))
-            {
-                color.send_to_char("You can't do that here.\r\n", ch);
-                return;
-            }
-
-            ExtendedBitvector actflags = ch.Act;
+            int actflags = ch.Act;
             if (ch.IsNpc())
-                ch.Act.RemoveBit((int)ActFlags.Secretive);
+                ch.Act.RemoveBit(ActFlags.Secretive);
 
             foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {

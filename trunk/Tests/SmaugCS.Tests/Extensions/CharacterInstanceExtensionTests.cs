@@ -1,13 +1,9 @@
-﻿using System;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-
-using SmaugCS.Data;
-
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
 
@@ -41,7 +37,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(ActFlags.IsNpc, true)]
         public void IsNpc_Test(int flags, bool expectedValue)
         {
-            _ch.Act.SetBit((ulong)flags);
+            _ch.Act = _ch.Act.SetBit(flags);
             Assert.That(_ch.IsNpc(), Is.EqualTo(expectedValue));
         }
 
@@ -49,14 +45,14 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(AffectedByTypes.Blind | AffectedByTypes.Invisible, AffectedByTypes.Blind, true)]
         public void IsAffected_Test(int flags, AffectedByTypes affectedBy, bool expectedValue)
         {
-            _ch.AffectedBy.SetBit(flags);
+            _ch.AffectedBy = _ch.AffectedBy.SetBit(flags);
             Assert.That(_ch.IsAffected(affectedBy), Is.EqualTo(expectedValue));
         }
 
         [Test]
         public void TimesKilled_CharacterIsNpc_Test()
         {
-            _ch.Act.SetBit((int)ActFlags.IsNpc);
+            _ch.Act = _ch.Act.SetBit(ActFlags.IsNpc);
             Assert.That(_ch.TimesKilled(null), Is.EqualTo(0));
         }
 
@@ -71,7 +67,7 @@ namespace SmaugCS.Tests.Extensions
         public void TimesKilled_NoMatch_Test()
         {
             CharacterInstance mob = new CharacterInstance(2, "TesterMob");
-            mob.Act.SetBit((int) ActFlags.IsNpc);
+            mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
             mob.Parent = new MobTemplate(2, "Template");
 
             _ch.PlayerData = new PlayerData(1, 1);
@@ -83,7 +79,7 @@ namespace SmaugCS.Tests.Extensions
         public void TimesKilled_Match_Test()
         {
             CharacterInstance mob = new CharacterInstance(2, "TesterMob");
-            mob.Act.SetBit((int)ActFlags.IsNpc);
+            mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
             mob.Parent = new MobTemplate(2, "Template");
 
             _ch.PlayerData = new PlayerData(1, 1);
@@ -96,7 +92,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(ResistanceTypes.Magic, true)]
         public void IsImmune_Test(ResistanceTypes type, bool expectedValue)
         {
-            _ch.Immunity = _ch.Immunity.SetBit((int)type);
+            _ch.Immunity = _ch.Immunity.SetBit(type);
 
             Assert.That(_ch.IsImmune(type), Is.EqualTo(expectedValue));
         }
@@ -107,7 +103,7 @@ namespace SmaugCS.Tests.Extensions
             var mockLookup = new Mock<ILookupManager>();
             mockLookup.Setup(x => x.GetResistanceType(It.IsAny<SpellDamageTypes>())).Returns(ResistanceTypes.Unknown);
 
-            _ch.Immunity = _ch.Immunity.SetBit((int) ResistanceTypes.Magic);
+            _ch.Immunity = _ch.Immunity.SetBit(ResistanceTypes.Magic);
 
             Assert.That(_ch.IsImmune(SpellDamageTypes.Poison, mockLookup.Object), Is.False);
         }
@@ -118,7 +114,7 @@ namespace SmaugCS.Tests.Extensions
             var mockLookup = new Mock<ILookupManager>();
             mockLookup.Setup(x => x.GetResistanceType(It.IsAny<SpellDamageTypes>())).Returns(ResistanceTypes.Magic);
 
-            _ch.Immunity = _ch.Immunity.SetBit((int)ResistanceTypes.Magic);
+            _ch.Immunity = _ch.Immunity.SetBit(ResistanceTypes.Magic);
 
             Assert.That(_ch.IsImmune(SpellDamageTypes.Poison, mockLookup.Object), Is.True);
         }
@@ -128,7 +124,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(AffectedByTypes.Blind, false)]
         public void IsFloating_Test(AffectedByTypes type, bool expectedValue)
         {
-            _ch.AffectedBy.SetBit((int) type);
+            _ch.AffectedBy = _ch.AffectedBy.SetBit(type);
 
             Assert.That(_ch.IsFloating(), Is.EqualTo(expectedValue));
         }
@@ -173,7 +169,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(ActFlags.Immortal, RaceTypes.Elf, ClassTypes.Vampire, true)]
         public void IsVampire_Test(ActFlags actFlag, RaceTypes race, ClassTypes cls, bool expectedValue)
         {
-            _ch.Act.SetBit((int) actFlag);
+            _ch.Act = _ch.Act.SetBit(actFlag);
             _ch.CurrentRace = race;
             _ch.CurrentClass = cls;
             Assert.That(_ch.IsVampire(), Is.EqualTo(expectedValue));
@@ -182,7 +178,7 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void IsDevoted_IsNpc_Test()
         {
-            _ch.Act.SetBit((int) ActFlags.IsNpc);
+            _ch.Act = _ch.Act.SetBit(ActFlags.IsNpc);
             Assert.That(_ch.IsDevoted(), Is.False);
         }
 
@@ -206,7 +202,7 @@ namespace SmaugCS.Tests.Extensions
         public void IsOutside_Test(RoomFlags flag, bool expectedValue)
         {
             _ch.CurrentRoom = new RoomTemplate(1, "Test");
-            _ch.CurrentRoom.Flags.SetBit((int)flag);
+            _ch.CurrentRoom.Flags = _ch.CurrentRoom.Flags.SetBit(flag);
             Assert.That(_ch.IsOutside(), Is.EqualTo(expectedValue));
         }
 

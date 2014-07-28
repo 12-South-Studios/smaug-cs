@@ -62,6 +62,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandAttribute.cs" />
+    <Compile Include="Config\StaticStringConfigurationSection.cs" />
+    <Compile Include="Config\MayorTextStringsElementCollection.cs" />
+    <Compile Include="Config\MayorTextStringElement.cs" />
+    <Compile Include="DamageResistanceAttribute.cs" />
+    <Compile Include="DescriptorAttribute.cs" />
+    <Compile Include="Enums\HealthConditionTypes.cs" />
+    <Compile Include="LookupSkillAttribute.cs" />
+    <Compile Include="ArmorClassAttribute.cs" />
     <Compile Include="CharacterColorAttribute.cs" />
     <Compile Include="ConfigurationManagerFunctions.cs" />
     <Compile Include="ConfigurationSectionNotFoundException.cs" />
@@ -88,7 +97,6 @@
     <Compile Include="Enums\ATTypes.cs" />
     <Compile Include="Enums\AutoSaveFlags.cs" />
     <Compile Include="Enums\BodyPartTypes.cs" />
-    <Compile Include="Enums\ChannelTypes.cs" />
     <Compile Include="Enums\CharacterSubStates.cs" />
     <Compile Include="Enums\ClassTypes.cs" />
     <Compile Include="Enums\CommandFlags.cs" />
@@ -107,6 +115,7 @@
     <Compile Include="Enums\GenderTypes.cs" />
     <Compile Include="Enums\GravityTypes.cs" />
     <Compile Include="Enums\HemisphereTypes.cs" />
+    <Compile Include="Enums\ImmortalTypes.cs" />
     <Compile Include="Enums\ItemExtraFlags.cs" />
     <Compile Include="Enums\ItemMagicFlags.cs" />
     <Compile Include="Enums\ItemTypes.cs" />
@@ -154,12 +163,13 @@
     <Compile Include="Enums\ToTypes.cs" />
     <Compile Include="Enums\TrapTriggerTypes.cs" />
     <Compile Include="Enums\TrapTypes.cs" />
-    <Compile Include="Enums\Triggerflags.cs" />
+    <Compile Include="Enums\TriggerFlags.cs" />
     <Compile Include="Enums\VariableTypes.cs" />
     <Compile Include="Enums\WearLocations.cs" />
     <Compile Include="Enums\WhoTypes.cs" />
     <Compile Include="FlagLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PullcheckAttribute.cs" />
     <Compile Include="VisibleAffectAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -10,25 +11,27 @@ namespace SmaugCS.Commands
         public static void do_rip(CharacterInstance ch, string argument)
         {
             string firstArg = argument.FirstWord();
-            if (string.IsNullOrWhiteSpace(firstArg))
-            {
-                color.send_to_char("Rip ON or OFF?\r\n", ch);
-                return;
-            }
+            if (Helpers.CheckFunctions.CheckIfEmptyString(ch, firstArg, "Rip ON or OFF?")) return;
 
-            if (firstArg.Equals("on", StringComparison.OrdinalIgnoreCase))
-            {
-                act_comm.send_rip_screen(ch);
-                ch.Act.IsSet((int)PlayerFlags.Rip);
-                ch.Act.IsSet((int)PlayerFlags.Ansi);
-                return;
-            }
+            if (firstArg.EqualsIgnoreCase("on"))
+                EnableRip(ch);
+            else if (firstArg.EqualsIgnoreCase("off"))
+                DisableRip(ch);
+            else 
+                color.send_to_char("Huh?!?", ch);
+        }
 
-            if (firstArg.Equals("off", StringComparison.OrdinalIgnoreCase))
-            {
-                ch.Act.RemoveBit((int)PlayerFlags.Rip);
-                color.send_to_char("!|*\r\nRIP now off...\r\n", ch);
-            }
+        private static void EnableRip(CharacterInstance ch)
+        {
+            act_comm.send_rip_screen(ch);
+            ch.Act.IsSet(PlayerFlags.Rip);
+            ch.Act.IsSet(PlayerFlags.Ansi); 
+        }
+
+        private static void DisableRip(CharacterInstance ch)
+        {
+            ch.Act.RemoveBit(PlayerFlags.Rip);
+            color.send_to_char("!|*\r\nRIP now off...", ch);
         }
     }
 }

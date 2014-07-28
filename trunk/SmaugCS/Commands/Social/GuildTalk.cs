@@ -1,8 +1,8 @@
-﻿
+﻿using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Social
@@ -11,19 +11,13 @@ namespace SmaugCS.Commands.Social
     {
         public static void do_guildtalk(CharacterInstance ch, string argument)
         {
-            if (ch.IsNotAuthorized())
+            if (CheckFunctions.CheckIfNotAuthorized(ch, ch, "Huh?")) return;
+            if (CheckFunctions.CheckIf(ch, args =>
             {
-                color.send_to_char("Huh?\r\n", ch);
-                return;
-            }
-
-            if (ch.IsNpc() ||
-                ch.PlayerData.Clan == null ||
-                ch.PlayerData.Clan.ClanType != ClanTypes.Guild)
-            {
-                color.send_to_char("Huh?\r\n", ch);
-                return;
-            }
+                var actor = (CharacterInstance) args[0];
+                return (actor.IsNpc() || actor.PlayerData.Clan == null
+                        || actor.PlayerData.Clan.ClanType != ClanTypes.Guild);
+            }, "Huh?", new List<object> {ch})) return;
 
             ChatManager.talk_channel(ch, argument, ChannelTypes.Guild, "guildtalk");
         }

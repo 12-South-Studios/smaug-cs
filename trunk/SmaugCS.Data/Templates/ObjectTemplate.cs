@@ -9,14 +9,11 @@ using SmaugCS.Constants.Enums;
 namespace SmaugCS.Data
 // ReSharper restore CheckNamespace
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
         public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
         public List<AffectData> Affects { get; set; }
-        public ExtendedBitvector ExtraFlags { get; set; }
+        public int ExtraFlags { get; set; }
         public string Flags { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
@@ -45,7 +42,6 @@ namespace SmaugCS.Data
             Value = new int[6];
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Affects = new List<AffectData>();
-            ExtraFlags = new ExtendedBitvector();
             Spells = new List<string>();
         }
 

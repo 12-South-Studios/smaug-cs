@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
 using SmaugCS.Managers;
@@ -14,7 +15,7 @@ namespace SmaugCS.Spells
             CharacterInstance victim = (CharacterInstance) vo;
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            int tmp = skill.Flags.IsSet((int) SkillFlags.PKSensitive) ? level/2 : level;
+            int tmp = skill.Flags.IsSet(SkillFlags.PKSensitive) ? level/2 : level;
 
             if (victim.IsImmune(ResistanceTypes.Magic))
             {
@@ -22,8 +23,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            if (ch.IsAffected(AffectedByTypes.Blind)
-                || ch.SavingThrows.CheckSaveVsSpellStaff(tmp, victim))
+            if (ch.IsAffected(AffectedByTypes.Blind) || ch.SavingThrows.CheckSaveVsSpellStaff(tmp, victim))
             {
                 magic.failed_casting(skill, ch, victim, null);
                 return ReturnTypes.SpellFailed;
@@ -40,7 +40,7 @@ namespace SmaugCS.Spells
 
             victim.AddAffect(af);
             color.set_char_color(ATTypes.AT_MAGIC, victim);
-            color.send_to_char("You are blinded!\r\n", victim);
+            color.send_to_char("You are blinded!", victim);
 
             if (ch != victim)
             {

@@ -1,9 +1,11 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Constants;
+using SmaugCS.Data;
 
 namespace SmaugCS.Commands.Skills.Thief
 {
-    class DeTrap
+    public static class DeTrap
     {
+        [Descriptor(new[] { " is working with the trap here." })]
         public static void do_detrap(CharacterInstance ch, string argument)
         {
             // TODO

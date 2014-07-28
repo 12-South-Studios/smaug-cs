@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 

@@ -121,9 +121,6 @@
     <Compile Include="RepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Realm.Library.Patterns.Command\Realm.Library.Patterns.Command.csproj">
       <Project>{dd42338b-fe18-406e-8084-f606825771f6}</Project>
       <Name>Realm.Library.Patterns.Command</Name>
@@ -136,6 +133,9 @@
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
       <Name>Realm.Library.Patterns.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

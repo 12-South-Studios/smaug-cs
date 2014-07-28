@@ -1,9 +1,5 @@
 ﻿using Realm.Library.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Common
 {
@@ -16,6 +12,19 @@ namespace SmaugCS.Common
             var field = value.GetType().GetField(value.ToString());
             var enumAttrib = Attribute.GetCustomAttribute(field, typeof(T)) as T;
             return enumAttrib;
+        }
+
+        public static bool HasAttribute<T>(this Enum value) where T : Attribute
+        {
+            Validation.IsNotNull(value, "value");
+
+            var field = value.GetType().GetField(value.ToString());
+            return Attribute.IsDefined(field, typeof(T));
+        }
+
+        public static bool IsSet(this Enum value, Enum bit)
+        {
+            return value.HasFlag(bit);
         }
     }
 }

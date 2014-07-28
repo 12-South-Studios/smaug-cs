@@ -18,7 +18,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static bool IsAllUpper(this string value)
         {
-            return Regex.IsMatch(value, @"^[A-Z]+$");
+            return Regex.IsMatch(value, @"^[A-Z ]+$");
         }
 
         /// <summary>

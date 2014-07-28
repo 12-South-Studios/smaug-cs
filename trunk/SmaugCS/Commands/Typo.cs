@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Realm.Library.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -13,11 +14,11 @@ namespace SmaugCS.Commands
         {
             color.set_char_color(ATTypes.AT_PLAIN, ch);
 
-            if (string.IsNullOrWhiteSpace(argument))
+            if (Helpers.CheckFunctions.CheckIfEmptyString(ch, argument,
+                "Usage:  'typo <message>'  (your location is automatically recorded)"))
             {
-                color.send_to_char("\r\nUsage:  'typo <message>'  (your location is automatically recorded)\r\n", ch);
                 if (ch.Trust >= LevelConstants.GetLevel("ascendant"))
-                    color.send_to_char("Usage:  'typo list' or 'typo clear now'\r\n", ch);
+                    color.send_to_char("Usage:  'typo list' or 'typo clear now'", ch);
                 return;
             }
 

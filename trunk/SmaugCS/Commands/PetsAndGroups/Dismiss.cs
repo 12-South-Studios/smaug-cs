@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -10,19 +10,10 @@ namespace SmaugCS.Commands.PetsAndGroups
         public static void do_dismiss(CharacterInstance ch, string argument)
         {
             string firstArg = argument.FirstWord();
-
-            if (string.IsNullOrWhiteSpace(firstArg))
-            {
-                color.send_to_char("Dismiss whom?\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Dismiss whom?")) return;
 
             CharacterInstance victim = handler.get_char_room(ch, firstArg);
-            if (victim == null)
-            {
-                color.send_to_char("They aren't here.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (victim.IsAffected(AffectedByTypes.Charm)
                 && victim.IsNpc() && victim.Master == ch)
@@ -36,7 +27,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            color.send_to_char("You cannot dismiss them.\r\n", ch);
+            color.send_to_char("You cannot dismiss them.", ch);
         }
     }
 }

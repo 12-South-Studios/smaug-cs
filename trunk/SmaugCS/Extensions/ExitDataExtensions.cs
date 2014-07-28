@@ -2,13 +2,12 @@
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
-using SmaugCS.Data;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS
-// ReSharper restore CheckNamespace
 {
     public static class ExitDataExtensions
     {
@@ -24,31 +23,46 @@ namespace SmaugCS
                                                           .Find(x => x.Vnum == exit.Destination);
         }
 
-        public static void SetBExitFlag(this ExitData exit, int flag)
+        /// <summary>
+        /// Was formerly set_bexit_flag
+        /// </summary>
+        /// <param name="exit"></param>
+        /// <param name="flag"></param>
+        public static void SetFlagOnSelfAndReverseExit(this ExitData exit, ExitFlags flag)
         {
-            exit.Flags.SetBit(flag);
+            exit.Flags = exit.Flags.SetBit(flag);
 
             ExitData reverseExit = exit.GetReverseExit();
             if (reverseExit != null && reverseExit != exit)
-                reverseExit.Flags.SetBit(flag);
+                reverseExit.Flags = reverseExit.Flags.SetBit(flag);
         }
 
-        public static void RemoveBExitFlag(this ExitData exit, int flag)
+        /// <summary>
+        /// Was formerly remove_bexit_flag
+        /// </summary>
+        /// <param name="exit"></param>
+        /// <param name="flag"></param>
+        public static void RemoveFlagFromSelfAndReverseExit(this ExitData exit, ExitFlags flag)
         {
-            exit.Flags.RemoveBit(flag);
+            exit.Flags = exit.Flags.RemoveBit(flag);
 
             ExitData reverseExit = exit.GetReverseExit();
             if (reverseExit != null && reverseExit != exit)
-                reverseExit.Flags.RemoveBit(flag);
+                reverseExit.Flags = reverseExit.Flags.RemoveBit(flag);
         }
 
-        public static void ToggleBExitFlag(this ExitData exit, int flag)
+        /// <summary>
+        /// Was formerly toggle_bexit_flag
+        /// </summary>
+        /// <param name="exit"></param>
+        /// <param name="flag"></param>
+        public static void ToggleFlagOnSelfAndReverseExit(this ExitData exit, ExitFlags flag)
         {
-            exit.Flags.ToggleBit(flag);
+            exit.Flags = exit.Flags.ToggleBit(flag);
 
             ExitData reverseExit = exit.GetReverseExit();
             if (reverseExit != null && reverseExit != exit)
-                reverseExit.Flags.ToggleBit(flag);
+                reverseExit.Flags = reverseExit.Flags.ToggleBit(flag);
         }
     }
 }

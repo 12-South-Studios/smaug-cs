@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Organizations;
@@ -36,30 +37,5 @@ namespace SmaugCS.Loaders
                 LuaManager.Instance.DoLuaScript(path + "\\" + clanName + ".lua");
             }
         }
-
-        /* public override void Save()
-        {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
-            {
-                foreach (ClanData clan in db.CLANS)
-                    proxy.Write("{0}\n", clan.Filename);
-                proxy.Write("$\n");
-            }
-        }
-
-        public override void Load()
-        {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
-            {
-                List<string> lines = proxy.ReadIntoList().Where(x => !x.Equals("$")).ToList();
-                foreach (ClanData clan in lines.Select(filename => new ClanData(filename)))
-                {
-                    //clan.Load();
-                    db.CLANS.Add(clan);
-                }
-            }
-        }*/
-
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Realm.Library.Common;
+using SmaugCS.Constants;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 

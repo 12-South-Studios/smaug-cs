@@ -1,16 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
 namespace SmaugCS.Commands.Movement
 {
-    class Climb
+    public static class Climb
     {
         public static void do_climb(CharacterInstance ch, string argument)
         {
-            // TODO
+            if (string.IsNullOrEmpty(argument))
+            {
+                foreach (ExitData ext in ch.CurrentRoom.Exits.Where(ext => ext.Flags.IsSet(ExitFlags.xClimb)))
+                {
+                    Move.move_char(ch, ext, 0);
+                    return;
+                }
+
+                color.send_to_char("You cannot climb here.", ch);
+                return;
+            }
+
+            ExitData exit = act_move.find_door(ch, argument, true);
+            if (exit != null && exit.Flags.IsSet(ExitFlags.xClimb))
+            {
+                Move.move_char(ch, exit, 0);
+                return;
+            }
+
+            color.send_to_char("You cannot climb there.", ch);
         }
     }
 }

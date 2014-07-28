@@ -6,13 +6,14 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using Realm.Library.Lua;
+using SmaugCS.Data.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS.Data
 // ReSharper restore CheckNamespace
 {
     [XmlRoot("Character")]
-    public class CharacterInstance : Instance
+    public class CharacterInstance : Instance, IVerifiable
     {
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
@@ -68,8 +69,8 @@ namespace SmaugCS.Data
         public int NumberOfAttacks { get; set; }
         public int CurrentCoin { get; set; }
         public int Experience { get; set; }
-        public ExtendedBitvector Act { get; set; }
-        public ExtendedBitvector AffectedBy { get; set; }
+        public int Act { get; set; }
+        public int AffectedBy { get; set; }
         public ExtendedBitvector NoAffectedBy { get; set; }
         public int CarryWeight { get; set; }
         public int CarryNumber { get; set; }
@@ -129,8 +130,7 @@ namespace SmaugCS.Data
             Colors = new Dictionary<ATTypes, char>();
             SavingThrows = new SavingThrowData();
             LuaVM = new LuaInterfaceProxy();
-            Act = new ExtendedBitvector();
-            AffectedBy = new ExtendedBitvector();
+            Timers = new List<TimerData>();
         }
 
         ~CharacterInstance()
@@ -159,6 +159,35 @@ namespace SmaugCS.Data
         {
             get { return Parent.CastAs<MobTemplate>(); }
         }
+
+        #region IVerifiable
+        public bool IsNpc()
+        {
+            return Act.IsSet((int)ActFlags.IsNpc);
+        }
+
+        public bool IsAffected(AffectedByTypes affectedBy)
+        {
+            return AffectedBy.IsSet((int)affectedBy);
+        }
+
+        public bool IsFloating()
+        {
+            return IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
+        }
+
+        //LevelConstants.GetLevel("immortal")
+        public bool IsImmortal(int level = 51)
+        {
+            return Trust >= level;
+        }
+
+        //LevelConstants.GetLevel("hero")
+        public bool IsHero(int hero = 50)
+        {
+            return Trust >= hero;
+        }
+        #endregion
 
     }
 }

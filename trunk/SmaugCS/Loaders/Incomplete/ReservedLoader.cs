@@ -29,7 +29,7 @@ namespace SmaugCS.Loaders
                 db.ReservedNames.Add(reservedName);
             }
 
-            db.sort_reserved(db.ReservedNames);
+            //db.sort_reserved(db.ReservedNames);
         }
     }
 }

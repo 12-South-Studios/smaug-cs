@@ -34,11 +34,11 @@ namespace SmaugCS.Repositories
                     Description = parent.Description,
                     SpecialFunction = mobParent.SpecialFunction,
                     Level = SmaugRandom.Fuzzy(mobParent.Level),
-                    Act = new ExtendedBitvector(mobParent.GetActFlags()),
+                    Act = mobParent.GetActFlags(),
                     HomeVNum = -1,
                     ResetVnum = -1,
                     ResetNum = -1,
-                    AffectedBy = new ExtendedBitvector(mobParent.GetAffected()),
+                    AffectedBy = mobParent.GetAffected(),
                     CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment),
                     Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
                 };
@@ -85,8 +85,8 @@ namespace SmaugCS.Repositories
             mob.Attacks = new ExtendedBitvector(mobParent.GetAttacks());
             mob.Defenses = new ExtendedBitvector(mobParent.GetDefenses());
             mob.NumberOfAttacks = mobParent.NumberOfAttacks;
-            mob.Speaks = build.get_langflag(mobParent.Speaks);
-            mob.Speaking = build.get_langflag(mobParent.Speaking);
+            //mob.Speaks = build.get_langflag(mobParent.Speaks);
+            //mob.Speaking = build.get_langflag(mobParent.Speaking);
 
             Add(mob.ID, mob);
 

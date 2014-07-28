@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Weather
 {
-    [AttributeUsage(AttributeTargets.Enum, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class WeatherMessageAttribute : Attribute
     {
         public WeatherThresholdTypes Threshold { get; private set; }

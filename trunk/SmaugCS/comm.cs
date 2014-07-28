@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;

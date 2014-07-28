@@ -72,10 +72,6 @@
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
-      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
-      <Name>SmaugCS.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

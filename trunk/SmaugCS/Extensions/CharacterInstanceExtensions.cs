@@ -6,19 +6,61 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Helpers;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
-// ReSharper disable CheckNamespace
 namespace SmaugCS
-// ReSharper restore CheckNamespace
 {
     public static class CharacterInstanceExtensions
     {
+        public static int GetCondition(this CharacterInstance ch, ConditionTypes condition)
+        {
+            return ch.PlayerData != null ? ch.PlayerData.ConditionTable[condition] : 0;
+        }
+
+        /// <summary>
+        /// If favor crosses over the line then strip the affect
+        /// </summary>
+        public static void CheckForExtremeFavor(this CharacterInstance ch, int oldfavor)
+        {
+            DeityData deity = ch.PlayerData.CurrentDeity;
+            if ((oldfavor > deity.AffectedNum && ch.PlayerData.Favor <= deity.AffectedNum)
+                || (oldfavor > deity.ElementNum && ch.PlayerData.Favor <= deity.Element)
+                || (oldfavor < deity.SusceptNum && ch.PlayerData.Favor >= deity.SusceptNum))
+                ch.update_aris();
+        }
+
+        public static void AdjustFavor(this CharacterInstance ch, int field, int mod)
+        {
+            if (ch.IsNpc() || ch.PlayerData.CurrentDeity == null)
+                return;
+
+            int oldfavor = ch.PlayerData.Favor;
+            DeityData deity = ch.PlayerData.CurrentDeity;
+
+            if (((ch.CurrentAlignment - deity.Alignment) > 650)
+                 || ((ch.CurrentAlignment - deity.Alignment) < -650)
+                && (deity.Alignment != 0))
+            {
+                ch.PlayerData.Favor -= 2;
+                ch.PlayerData.Favor = ch.PlayerData.Favor.GetNumberThatIsBetween(-2500, 2500);
+
+                deity.UpdateCharacterBits(ch);
+                ch.CheckForExtremeFavor(oldfavor);
+            }
+            else
+            {
+                ch.PlayerData.Favor += deity.FuzzifyFavor(field, mod < 1 ? 1 : mod);
+                ch.PlayerData.Favor = ch.PlayerData.Favor.GetNumberThatIsBetween(-2500, 2500);
+            }
+        }
+
         public static void AddKill(this CharacterInstance ch, CharacterInstance mob)
         {
             if (ch.IsNpc() || !mob.IsNpc())
@@ -67,30 +109,24 @@ namespace SmaugCS
 
         public static bool IsAttackSuppressed(this CharacterInstance ch)
         {
-            if (ch.IsNpc())
-                return false;
+            if (ch.IsNpc()) return false;
 
             TimerData timer = handler.get_timerptr(ch, TimerTypes.ASupressed);
-            if (timer == null)
-                return false;
-            if (timer.Value == -1)
-                return true;
+            if (timer == null) return false;
+            if (timer.Value == -1) return true;
             return timer.Count >= 1;
         }
 
         public static bool IsWieldedWeaponPoisoned(this CharacterInstance ch)
         {
-            if (fight.UsedWeapon == null)
-                return false;
+            if (fight.UsedWeapon == null) return false;
 
             ObjectInstance obj = ch.GetEquippedItem(WearLocations.Wield);
-            if (obj != null && fight.UsedWeapon == obj &&
-                Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Poisoned))
+            if (obj != null && fight.UsedWeapon == obj && obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned))
                 return true;
 
             obj = ch.GetEquippedItem(WearLocations.DualWield);
-            if (obj != null && fight.UsedWeapon == obj &&
-                Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Poisoned))
+            if (obj != null && fight.UsedWeapon == obj && obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned))
                 return true;
 
             return false;
@@ -115,8 +151,7 @@ namespace SmaugCS
             int con = ch.GetCurrentConstitution();
 
             c -= SmaugRandom.Percent() < con ? 1 : 0;
-            if (c < 1)
-                return;
+            if (c < 1) return;
 
             if (!ch.IsNpc()
                 && ch.PlayerData.Nuisance != null
@@ -134,20 +169,20 @@ namespace SmaugCS
         public static bool CanAstral(this CharacterInstance ch, CharacterInstance victim)
         {
             return victim != ch && victim.CurrentRoom != null &&
-                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Private) &&
-                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Solitary) &&
-                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.NoAstral) &&
-                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Death) &&
-                   !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.Prototype) && victim.Level < (ch.Level + 15) &&
+                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.Private) &&
+                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.Solitary) &&
+                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral) &&
+                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.Death) &&
+                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.Prototype) && victim.Level < (ch.Level + 15) &&
                    (!victim.CanPKill() || ch.IsNpc() || ch.CanPKill()) &&
-                   (!victim.IsNpc() || !victim.Act.IsSet((int) ActFlags.Prototype)) &&
+                   (!victim.IsNpc() || !victim.Act.IsSet(ActFlags.Prototype)) &&
                    (!victim.IsNpc() || !victim.SavingThrows.CheckSaveVsSpellStaff(ch.Level, victim)) &&
-                   (!victim.CurrentRoom.Area.Flags.IsSet((int) AreaFlags.NoPKill) || !ch.IsPKill());
+                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) || !ch.IsPKill());
         }
 
         public static bool CanDrop(this CharacterInstance ch, ObjectInstance obj)
         {
-            if (!Macros.IS_OBJ_STAT(obj, (int) ItemExtraFlags.NoDrop))
+            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.NoDrop))
                 return true;
             if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
                 return true;
@@ -158,13 +193,13 @@ namespace SmaugCS
 
         public static bool CanSee(this CharacterInstance ch, ObjectInstance obj)
         {
-            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.HolyLight))
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
                 return true;
             if (ch.IsNpc() && ch.MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
                 return true;
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Buried))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                 return false;
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Hidden))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hidden))
                 return false;
             if (ch.IsAffected(AffectedByTypes.TrueSight))
                 return true;
@@ -178,14 +213,13 @@ namespace SmaugCS
             if (ch.CurrentRoom.IsDark())
             {
                 //// Can see glowing items in teh dark, invisible or not
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Glow))
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Glow))
                     return true;
                 if (!ch.IsAffected(AffectedByTypes.Infrared))
                     return false;
             }
 
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Invisible)
-                && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
                 return false;
 
             return true;
@@ -197,20 +231,21 @@ namespace SmaugCS
                 return false;
 
             if (ch == null)
-                return !victim.IsAffected(AffectedByTypes.Invisible) && !victim.IsAffected(AffectedByTypes.Hide) && !victim.Act.IsSet((int)PlayerFlags.WizardInvisibility);
+                return !victim.IsAffected(AffectedByTypes.Invisible) && !victim.IsAffected(AffectedByTypes.Hide) &&
+                       !victim.Act.IsSet(PlayerFlags.WizardInvisibility);
 
             if (ch == victim)
                 return true;
 
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.WizardInvisibility)
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.WizardInvisibility)
                 && ch.Trust < victim.PlayerData.WizardInvisible)
                 return false;
 
-            if (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)
+            if (victim.IsNpc() && victim.Act.IsSet(ActFlags.MobInvisibility)
                 && victim.IsPKill() && victim.Timer > 1 && victim.Descriptor == null)
                 return false;
 
-            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.HolyLight))
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
                 return true;
 
             if (!ch.IsAffected(AffectedByTypes.TrueSight))
@@ -241,35 +276,35 @@ namespace SmaugCS
 
         public static bool IsAllowedToUseObject(this CharacterInstance ch, ObjectInstance obj)
         {
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiWarrior))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiWarrior))
             {
                 if (ch.CurrentClass == ClassTypes.Warrior
                     || ch.CurrentClass == ClassTypes.Paladin
                     || ch.CurrentClass == ClassTypes.Ranger)
                     return false;
             }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiMage))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiMage))
             {
                 if (ch.CurrentClass == ClassTypes.Mage
                     || ch.CurrentClass == ClassTypes.Augurer)
                     return false;
             }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiThief))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiThief))
             {
                 if (ch.CurrentClass == ClassTypes.Thief)
                     return false;
             }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiDruid))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiDruid))
             {
                 if (ch.CurrentClass == ClassTypes.Druid)
                     return false;
             }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiCleric))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiCleric))
             {
                 if (ch.CurrentClass == ClassTypes.Cleric)
                     return false;
             }
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiVampire))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiVampire))
             {
                 if (ch.CurrentClass == ClassTypes.Vampire)
                     return false;
@@ -323,23 +358,12 @@ namespace SmaugCS
                 || ch.GetEquippedItem(WearLocations.DualWield) != null)
                 nwield = true;
 
-            if (wield && nwield)
-            {
-                color.send_to_char("You are already wielding two weapons... grow some more arms!\r\n", ch);
-                return false;
-            }
-
-            if ((wield || nwield) && ch.GetEquippedItem(WearLocations.Shield) != null)
-            {
-                color.send_to_char("You cannot dual wield, you're already holding a shield!\r\n", ch);
-                return false;
-            }
-
-            if ((wield || nwield) && ch.GetEquippedItem(WearLocations.Hold) != null)
-            {
-                color.send_to_char("You cannot hold another weapon, you're already holding something in that hand!\r\n", ch);
-                return false;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, wield && nwield,
+                "You are already wielding two weapons... grow some more arms!")) return false;
+            if (CheckFunctions.CheckIfTrue(ch, (wield || nwield) && ch.GetEquippedItem(WearLocations.Shield) != null,
+                "You cannot dual wield, you're already holding a shield!")) return false;
+            if (CheckFunctions.CheckIfTrue(ch, (wield || nwield) && ch.GetEquippedItem(WearLocations.Hold) != null,
+                "You cannot hold another weapon, you're already holding something in that hand!")) return false;
 
             return true;
         }
@@ -420,14 +444,10 @@ namespace SmaugCS
 
         public static bool IsInArena(this CharacterInstance ch)
         {
-            if (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Arena))
-                return true;
-            if (ch.CurrentRoom.Area.Flags.IsSet((int) AreaFlags.FreeKill))
-                return true;
-            if (ch.CurrentRoom.Vnum >= 29 && ch.CurrentRoom.Vnum <= 43)
-                return true;
-            if (ch.CurrentRoom.Area.Name.EqualsIgnoreCase("arena"))
-                return true;
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Arena)) return true;
+            if (ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.FreeKill)) return true;
+            if (ch.CurrentRoom.Vnum >= 29 && ch.CurrentRoom.Vnum <= 43) return true;
+            if (ch.CurrentRoom.Area.Name.EqualsIgnoreCase("arena")) return true;
             return false;
         }
 
@@ -442,7 +462,7 @@ namespace SmaugCS
 
         public static bool IsImmune(this CharacterInstance ch, ResistanceTypes type)
         {
-            return type != ResistanceTypes.Unknown && ch.Immunity.IsSet((int)type);
+            return type != ResistanceTypes.Unknown && ch.Immunity.IsSet(type);
         }
 
         public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type, ILookupManager lookupManager = null)
@@ -451,7 +471,7 @@ namespace SmaugCS
                                           ? LookupManager.Instance.GetResistanceType(type)
                                           : lookupManager.GetResistanceType(type);
 
-            return resType != ResistanceTypes.Unknown && ch.Immunity.IsSet((int)resType);
+            return resType != ResistanceTypes.Unknown && ch.Immunity.IsSet(resType);
         }
 
         public static bool IsIgnoring(this CharacterInstance ch, CharacterInstance victim)
@@ -460,29 +480,14 @@ namespace SmaugCS
             return false;
         }
 
-        public static bool IsNpc(this CharacterInstance ch)
-        {
-            return ch.Act.IsSet((int)ActFlags.IsNpc);
-        }
-
-        public static bool IsAffected(this CharacterInstance ch, AffectedByTypes affectedBy)
-        {
-            return ch.AffectedBy.IsSet((int)affectedBy);
-        }
-
-        public static bool IsFloating(this CharacterInstance ch)
-        {
-            return ch.IsAffected(AffectedByTypes.Flying) || ch.IsAffected(AffectedByTypes.Floating);
-        }
-
         public static bool IsRetired(this CharacterInstance ch)
         {
-            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet((int)PCFlags.Retired);
+            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Retired);
         }
 
         public static bool IsGuest(this CharacterInstance ch)
         {
-            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet((int)PCFlags.Guest);
+            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Guest);
         }
 
         public static bool CanCast(this CharacterInstance ch, IDatabaseManager dbManager = null)
@@ -521,13 +526,13 @@ namespace SmaugCS
 
         public static bool IsOutside(this CharacterInstance ch)
         {
-            return !ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Indoors) &&
-                   !ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Tunnel);
+            return !ch.CurrentRoom.Flags.IsSet(RoomFlags.Indoors) &&
+                   !ch.CurrentRoom.Flags.IsSet(RoomFlags.Tunnel);
         }
 
         public static bool IsDrunk(this CharacterInstance ch, int drunk)
         {
-            return SmaugRandom.Percent() < (ch.PlayerData.ConditionTable[ConditionTypes.Drunk] & 2 / drunk);
+            return SmaugRandom.Percent() < (ch.GetCondition(ConditionTypes.Drunk) & 2 / drunk);
         }
 
         public static bool IsDevoted(this CharacterInstance ch)
@@ -537,14 +542,12 @@ namespace SmaugCS
         
         public static bool IsIdle(this CharacterInstance ch)
         {
-            return ch.PlayerData != null &&
-                   ch.PlayerData.Flags.IsSet((int)PCFlags.Idle);
+            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Idle);
         }
         
         public static bool IsPKill(this CharacterInstance ch)
         {
-            return ch.PlayerData != null &&
-                   ch.PlayerData.Flags.IsSet((int)PCFlags.Deadly);
+            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Deadly);
         }
         
         public static bool CanPKill(this CharacterInstance ch)
@@ -564,14 +567,16 @@ namespace SmaugCS
 
         public static bool IsNotAuthorized(this CharacterInstance ch)
         {
-            return !ch.IsNpc() && ch.PlayerData.AuthState <= 3 &&
-                   ch.PlayerData.Flags.IsSet((int)PCFlags.Unauthorized);
+            bool isNotNpc = !ch.IsNpc();
+            bool hasAuthState = ch.PlayerData == null || ch.PlayerData.AuthState <= 3;
+            bool isUnauthed = ch.PlayerData == null  || ch.PlayerData.Flags.IsSet(PCFlags.Unauthorized);
+            return isNotNpc && hasAuthState && isUnauthed;
         }
 
         public static bool IsWaitingForAuthorization(this CharacterInstance ch)
         {
             return !ch.IsNpc() && ch.Descriptor != null && ch.PlayerData.AuthState == 1
-                   && ch.PlayerData.Flags.IsSet((int)PCFlags.Unauthorized);
+                   && ch.PlayerData.Flags.IsSet(PCFlags.Unauthorized);
         }
 
         public static bool IsCircleFollowing(this CharacterInstance ch, CharacterInstance victim)
@@ -586,16 +591,6 @@ namespace SmaugCS
             } while (tmp != null);
 
             return false;
-        }
-
-        public static bool IsImmortal(this CharacterInstance ch)
-        {
-            return ch.Trust >= LevelConstants.GetLevel("immortal");
-        }
-
-        public static bool IsHero(this CharacterInstance ch)
-        {
-            return ch.Trust >= LevelConstants.GetLevel("hero");
         }
 
         public static int GetArmorClass(this CharacterInstance ch)
@@ -925,7 +920,7 @@ namespace SmaugCS
 
             if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
                 return ch.Trust * 200;
-            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
+            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return ch.Level * 200;
             if (ch.GetEquippedItem(WearLocations.Wield) != null)
                 ++penalty;
@@ -944,7 +939,7 @@ namespace SmaugCS
         {
             if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
                 return 1000000;
-            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
+            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return 1000000;
             return GameConstants.str_app[ch.GetCurrentStrength()].Carry;
         }
@@ -996,11 +991,11 @@ namespace SmaugCS
             ClassData myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
 
             int add_hp = GameConstants.con_app[ch.GetCurrentConstitution()].hitp +
-                         SmaugCS.Common.SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
+                         SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
             int add_mana = myClass.UseMana
-                               ? SmaugCS.Common.SmaugRandom.Between(2, (2 * ch.GetCurrentIntelligence() + ch.GetCurrentWisdom()) / 8)
+                               ? SmaugRandom.Between(2, (2 * ch.GetCurrentIntelligence() + ch.GetCurrentWisdom()) / 8)
                                : 0;
-            int add_move = SmaugCS.Common.SmaugRandom.Between(5, (ch.GetCurrentConstitution() + ch.GetCurrentDexterity()) / 4);
+            int add_move = SmaugRandom.Between(5, (ch.GetCurrentConstitution() + ch.GetCurrentDexterity()) / 4);
             int add_prac = GameConstants.wis_app[ch.GetCurrentWisdom()].practice;
 
             add_hp = 1.GetHighestOfTwoNumbers(add_hp);
@@ -1494,7 +1489,7 @@ namespace SmaugCS
 
         public static bool IsBlind(this CharacterInstance ch)
         {
-            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.HolyLight))
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
                 return true;
             if (ch.IsAffected(AffectedByTypes.TrueSight))
                 return true;
@@ -1572,11 +1567,11 @@ namespace SmaugCS
             }
 
             handler.separate_obj(obj);
-            if ((Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiEvil)
+            if ((obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
                  && ch.IsEvil())
-                || (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiGood)
+                || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood)
                     && ch.IsGood())
-                || (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.AntiNeutral)
+                || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
                     && ch.IsNeutral()))
             {
                 if (handler.LoadingCharacter != ch)
@@ -1600,7 +1595,7 @@ namespace SmaugCS
             ch.ArmorClass -= obj.ApplyArmorClass;
             obj.WearLocation = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(iWear);
             ch.CarryNumber -= obj.GetObjectNumber();
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight -= obj.GetObjectWeight();
 
             foreach (AffectData affect in obj.ObjectIndex.Affects)
@@ -1623,7 +1618,7 @@ namespace SmaugCS
             }
 
             ch.CarryNumber += obj.GetObjectNumber();
-            if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Magical))
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight += obj.GetObjectWeight();
 
             ch.ArmorClass += obj.ApplyArmorClass;

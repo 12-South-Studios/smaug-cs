@@ -18,7 +18,7 @@ namespace SmaugCS
 
         public static bool CheckSaveVsWandRod(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
-            if (victim.Immunity.IsSet((int)ResistanceTypes.Magic))
+            if (victim.Immunity.IsSet(ResistanceTypes.Magic))
                 return true;
 
             int save = 50 + (victim.Level - level - victim.SavingThrows.SaveVsWandRod) * 5;
@@ -42,7 +42,7 @@ namespace SmaugCS
 
         public static bool CheckSaveVsSpellStaff(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
-            if (victim.Immunity.IsSet((int)ResistanceTypes.Magic))
+            if (victim.Immunity.IsSet(ResistanceTypes.Magic))
                 return true;
             if (victim.IsNpc() && level > 10)
                 level -= 5;

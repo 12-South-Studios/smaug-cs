@@ -1,6 +1,7 @@
 ﻿using System;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -44,7 +45,7 @@ namespace SmaugCS.Repositories
                                        {
                                            SectorType = SectorTypes.Inside,
                                        };
-            newRoom.Flags.SetBit((int)RoomFlags.Prototype);
+            newRoom.Flags.SetBit(RoomFlags.Prototype);
 
             Add(vnum, newRoom);
             return newRoom;

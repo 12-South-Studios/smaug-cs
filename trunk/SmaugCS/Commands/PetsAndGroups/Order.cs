@@ -3,9 +3,8 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -14,23 +13,12 @@ namespace SmaugCS.Commands.PetsAndGroups
         public static void do_order(CharacterInstance ch, string argument)
         {
             string firstArg = argument.FirstWord();
-            if (string.IsNullOrWhiteSpace(firstArg))
-            {
-                color.send_to_char("Order whom to do what?\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Order whom to do what?")) return;
 
-            if (ch.IsAffected(AffectedByTypes.Charm))
-            {
-                color.send_to_char("You feel like taking, not giving, orders.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm),
+                "You feel like taking, not giving, orders.")) return;
 
-            if (firstArg.Equals("mp", StringComparison.OrdinalIgnoreCase))
-            {
-                color.send_to_char("No... I don't think so.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, firstArg.EqualsIgnoreCase("mp"), "No... I don't think so.")) return;
 
             bool all = false;
             CharacterInstance victim = null;
@@ -41,24 +29,10 @@ namespace SmaugCS.Commands.PetsAndGroups
             else
             {
                 victim = handler.get_char_room(ch, secondArg);
-                if (victim == null)
-                {
-                    color.send_to_char("They aren't here.\r\n", ch);
-                    return;
-                }
-
-                if (victim == ch)
-                {
-                    color.send_to_char("Aye aye, right away!\r\n", ch);
-                    return;
-                }
-
-                if (!victim.IsAffected(AffectedByTypes.Charm)
-                    || victim.Master != ch)
-                {
-                    color.send_to_char("Do it yourself!\r\n", ch);
-                    return;
-                }
+                if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
+                if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Aye aye, right away!")) return;
+                if (CheckFunctions.CheckIfTrue(ch, !victim.IsAffected(AffectedByTypes.Charm) || victim.Master != ch,
+                    "Do it yourself!")) return;
             }
 
             bool found = false;
@@ -71,14 +45,11 @@ namespace SmaugCS.Commands.PetsAndGroups
                 interp.interpret(och, firstArg);
             }
 
-            if (found)
-            {
-                LogManager.Instance.Log("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Normal, ch.Level));
-                color.send_to_char("Ok.\r\n", ch);
-                Macros.WAIT_STATE(ch, 12);
-            }
-            else
-                color.send_to_char("You have no followers here.\r\n", ch);
+            if (CheckFunctions.CheckIfTrue(ch, !found, "You have no followers here.")) return;
+
+            LogManager.Instance.Log("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Normal, ch.Level));
+            color.send_to_char("Ok.\r\n", ch);
+            Macros.WAIT_STATE(ch, 12);
         }
     }
 }

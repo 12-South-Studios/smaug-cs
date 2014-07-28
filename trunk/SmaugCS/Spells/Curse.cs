@@ -1,4 +1,5 @@
 ﻿using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
@@ -12,7 +13,7 @@ namespace SmaugCS.Spells
             CharacterInstance victim = (CharacterInstance) vo;
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            if (victim.Immunity.IsSet((int)ResistanceTypes.Magic))
+            if (victim.Immunity.IsSet(ResistanceTypes.Magic))
             {
                 magic.immune_casting(skill, ch, victim, null);
                 return ReturnTypes.SpellFailed;
@@ -44,7 +45,7 @@ namespace SmaugCS.Spells
             victim.AddAffect(af);
 
             color.set_char_color(ATTypes.AT_MAGIC, victim);
-            color.send_to_char("You feel unclean.\r\n", victim);
+            color.send_to_char("You feel unclean.", victim);
 
             if (ch != victim)
             {

@@ -6,6 +6,7 @@ using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Board;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -376,7 +377,7 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void randomize_exits(RoomTemplate room, short maxdir)
+        public static void randomize_exits(RoomTemplate room, int maxdir)
         {
             // TODO
         }
@@ -491,8 +492,8 @@ namespace SmaugCS
             while ((timer = ch.Timers.First()) != null)
                 handler.extract_timer(ch, timer);
 
-            if (ch.CurrentEditor != null)
-                build.stop_editing(ch);
+            //if (ch.CurrentEditor != null)
+            //    build.stop_editing(ch);
 
             ch.StopHunting();
             ch.StopHating();
@@ -795,7 +796,7 @@ namespace SmaugCS
             }
         }
 
-        public static void delete_room(RoomTemplate room)
+        /*public static void delete_room(RoomTemplate room)
         {
             RoomTemplate limbo = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
 
@@ -887,7 +888,7 @@ namespace SmaugCS
             DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Delete(mob.Vnum);
 
             // TODO Mob hash stuff here, but can be removed?
-        }
+        }*/
 
         public static ExitData make_exit(RoomTemplate room, RoomTemplate to_room, int door)
         {
@@ -922,7 +923,7 @@ namespace SmaugCS
             return newExit;
         }
 
-        public static void fix_area_exits(AreaData area)
+       /* public static void fix_area_exits(AreaData area)
         {
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
@@ -960,7 +961,7 @@ namespace SmaugCS
                     }
                 }
             }
-        }
+        }*/
 
         public static void process_sorting(AreaData area)
         {
@@ -978,67 +979,8 @@ namespace SmaugCS
             area.status.SetBit((int)AreaFlags.Loaded);
         }
 
-        public static ExtraDescriptionData fread_fuss_exdesc(FileStream fs)
-        {
-            // TODO
-            return null;
-        }
 
-        public static AffectData fread_fuss_affect(FileStream fs, string word)
-        {
-            // TODO
-            return null;
-        }
 
-        public static void rprog_file_read(RoomTemplate prog_target, string f)
-        {
-            // TODO
-        }
-
-        public static void oprog_file_read(ObjectTemplate prog_target, string f)
-        {
-            // TODO
-        }
-
-        public static void fread_fuss_objprog(FileStream fs, MudProgData mprg, ObjectTemplate prog_target)
-        {
-            // TODO
-        }
-
-        public static void fread_fuss_object(FileStream fs, AreaData tarea)
-        {
-            // TODO
-        }
-
-        public static void mprog_file_read(MobTemplate prog_target, string f)
-        {
-            // TODO
-        }
-
-        public static void fread_fuss_mobprog(FileStream fs, MudProgData mprg, MobTemplate prog_target)
-        {
-            // TODO
-        }
-
-        public static void fread_fuss_mobile(FileStream fs, AreaData tarea)
-        {
-            // TODO
-        }
-
-        public static void load_reserved()
-        {
-            // TODO
-        }
-
-        public static void load_buildlist()
-        {
-            // TODO
-        }
-
-        public static void sort_reserved(List<string> reservedList)
-        {
-            // TODO   
-        }
 
         public static void sort_area_by_name(AreaData pArea)
         {
@@ -1071,94 +1013,16 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void save_sysdata(SystemData sys)
-        {
-            // TODO
-        }
-
-        public static void fread_sysdata(SystemData sys, FileStream fs)
-        {
-            // TODO
-        }
-
-        public static bool load_systemdata(SystemData sys)
-        {
-            // TODO
-            return false;
-        }
 
         public static void tail_chain()
         {
             // do nothing
         }
 
-        public static void load_projects()
-        {
-            // TODO
-        }
 
-        public static ProjectData read_project(FileStream fs)
-        {
-            // TODO
-            return null;
-        }
 
-        public static NoteData read_log(FileStream fs)
-        {
-            // TODO
-            return null;
-        }
+ 
 
-        public static void write_projects()
-        {
-            // TODO
-        }
-
-        public static void fread_loginmsg(FileStream fs)
-        {
-            // TODO
-        }
-
-        public static void load_loginmsg()
-        {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.LoginMsg);
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                // TODO
-            }
-        }
-
-        public static void save_loginmsg()
-        {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.LoginMsg);
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
-            {
-                foreach (LoginMessageData lmsg in LOGIN_MESSAGES)
-                    lmsg.Save(proxy);
-
-                proxy.Write("#END\n");
-            }
-        }
-
-        public static void add_loginmsg(string name, int type, string argument)
-        {
-            if (type < 0 || name.IsNullOrEmpty())
-            {
-                LogManager.Instance.Bug("Bad name {0} or type {1} for Login Message", name, type);
-                return;
-            }
-
-            LoginMessageData lmsg = new LoginMessageData
-                {
-                    Type = type,
-                    Name = name
-                };
-            if (!argument.IsNullOrEmpty())
-                lmsg.Text = argument;
-
-            LOGIN_MESSAGES.Add(lmsg);
-            save_loginmsg();
-        }
 
         public static void check_loginmsg(CharacterInstance ch)
         {
@@ -1191,7 +1055,7 @@ namespace SmaugCS
                         break;
                 }
 
-                save_loginmsg();
+                //save_loginmsg();
             }
 
             while (loginMessages.Count > 0)

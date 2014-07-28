@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -33,7 +35,7 @@ namespace SmaugCS.Tests.Extensions
         {
             _ch.Trust = trust;
             _ch.Level = level;
-            _ch.Act.SetBit((int) flags);
+            _ch.Act = _ch.Act.SetBit(flags);
 
             Assert.That(_area.InSoftRange(_ch), Is.EqualTo(expectedValue));
         }
@@ -46,7 +48,7 @@ namespace SmaugCS.Tests.Extensions
         {
             _ch.Trust = trust;
             _ch.Level = level;
-            _ch.Act.SetBit((int)flags);
+            _ch.Act = _ch.Act.SetBit(flags);
 
             Assert.That(_area.InHardRange(_ch), Is.EqualTo(expectedValue));
         }

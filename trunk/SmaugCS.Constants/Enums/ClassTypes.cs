@@ -16,6 +16,8 @@ namespace SmaugCS.Constants.Enums
         Druid       = 6,
         Ranger      = 7,
         Augurer     = 8,
+
+        [Descriptor(new[] { "(Red Aura) ", "(Grey Aura) ", "(White Aura) " })]
         Paladin     = 9,
         Nephandi    = 10,
         Savage      = 11

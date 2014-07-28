@@ -87,7 +87,7 @@ namespace SmaugCS.SpecFuns
                 || ch.CurrentFighting != null
                 || ch.CurrentFearing != null
                 || ch.CurrentHating == null
-                || ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Safe)
+                || ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
                 || ch.CurrentHunting != null)
                 return;
 

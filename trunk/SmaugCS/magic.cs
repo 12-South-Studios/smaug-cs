@@ -4,6 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -20,7 +21,7 @@ namespace SmaugCS
             if (ch.IsNpc())
                 return (int)skill.ID;
             if (ch.PlayerData.Learned[skill.ID] > 0
-                && (ch.Level >= skill.skill_level[(int)ch.CurrentClass]
+                && (ch.Level >= skill.SkillLevels.ToList()[(int)ch.CurrentClass]
                     || ch.Level >= skill.RaceLevel[(int)ch.CurrentRace]))
                 return (int)skill.ID;
             return -1;
@@ -437,45 +438,35 @@ namespace SmaugCS
                 case TargetTypes.Ignore:
                     break;
                 case TargetTypes.OffensiveCharacter:
-                    vo = TarCharOffensive(arg, ch, false, skill);
+                    vo = TargetCharacterWithOffensiveSpell(arg, ch, false, skill);
                     break;
                 case TargetTypes.DefensiveCharacter:
-                    vo = TarCharDefensive(arg, ch, false, skill);
+                    vo = TargetCharacterWithDefensiveSpell(arg, ch, false, skill);
                     break;
                 case TargetTypes.Self:
-                    vo = TarCharSelf(arg, ch, false);
+                    vo = TargetSelf(arg, ch, false);
                     break;
                 case TargetTypes.InventoryObject:
-                    vo = TarObjInv(arg, ch, false);
+                    vo = TargetObjectInInventory(arg, ch, false);
                     break;
             }
 
             return vo;
         }
 
-        private static object TarCharOffensive(string arg, CharacterInstance ch, bool silence, SkillData skill)
+        private static object TargetCharacterWithOffensiveSpell(string arg, CharacterInstance ch, bool silence, SkillData skill)
         {
-            CharacterInstance victim = null;
+            CharacterInstance victim;
 
             if (arg.IsNullOrEmpty())
             {
                 victim = fight.who_fighting(ch);
-                if (victim == null)
-                {
-                    if (!silence)
-                        color.send_to_char("Cast the spell on whom?\r\n", ch);
-                    return null;
-                }
+                if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "Cast the spell on whom?" : "")) return null;
             }
             else
             {
                 victim = handler.get_char_room(ch, arg);
-                if (victim == null)
-                {
-                    if (!silence)
-                        color.send_to_char("They aren't here.\r\n", ch);
-                    return null;
-                }
+                if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "They aren't here." : "")) return null;
             }
 
             // Nuisance flag will pick who you are fighting for offensive spells up to 92% of the time
@@ -489,63 +480,44 @@ namespace SmaugCS
 
             if (ch == victim)
             {
-                if (Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
-                {
-                    if (!silence)
-                        color.send_to_char("You can't cast this on yourself!\r\n", ch);
-                    return null;
-                }
+                if (CheckFunctions.CheckIfSet(ch, skill.Flags, SkillFlags.NoSelf,
+                    !silence ? "You can't cast this on yourself!" : "")) return null;
 
                 if (!silence)
-                    color.send_to_char("Cast this on yourself?  Okay...\r\n", ch);
+                    color.send_to_char("Cast this on yourself?  Okay...", ch);
             }
 
             if (!ch.IsNpc())
             {
                 if (!victim.IsNpc())
                 {
-                    if (handler.get_timer(ch, (int)TimerTypes.PKilled) > 0)
-                    {
-                        if (!silence)
-                            color.send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
-                        return null;
-                    }
+                    if (CheckFunctions.CheckIfTrue(ch, handler.get_timer(ch, (int) TimerTypes.PKilled) > 0,
+                        !silence ? "You have been killed in the last 5 minutes." : "")) return null;
 
-                    if (handler.get_timer(victim, (int)TimerTypes.PKilled) > 0)
-                    {
-                        if (!silence)
-                            color.send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
-                        return null;
-                    }
+                    if (CheckFunctions.CheckIfTrue(ch, handler.get_timer(victim, (int) TimerTypes.PKilled) > 0,
+                        !silence ? "This player has been killed in the last 5 minutes." : "")) return null;
 
-                    if (ch.Act.IsSet((int)PlayerFlags.Nice) && ch != victim)
-                    {
-                        if (!silence)
-                            color.send_to_char("You are too nice to attack another player.\r\n", ch);
-                        return null;
-                    }
+                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet(PlayerFlags.Nice) && ch != victim,
+                        !silence ? "You are too nice to attack another player." : "")) return null;
 
                     if (victim != ch)
                     {
                         if (!silence)
-                            color.send_to_char("You really shouldn't do this to another player...\r\n", ch);
+                            color.send_to_char("You really shouldn't do this to another player...", ch);
                         else if (fight.who_fighting(victim) != ch)
                             return null;
                     }
                 }
 
-                if (ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim)
-                {
-                    if (!silence)
-                        color.send_to_char("You can't do that to your own follower.\r\n", ch);
-                    return null;
-                }
+                if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim,
+                    !silence ? "You can't do that to your own follower." : "")) return null;
             }
 
             fight.check_illegal_pk(ch, victim);
             return victim;
         }
-        private static object TarCharDefensive(string arg, CharacterInstance ch, bool silence, SkillData skill)
+
+        private static object TargetCharacterWithDefensiveSpell(string arg, CharacterInstance ch, bool silence, SkillData skill)
         {
             CharacterInstance victim;
 
@@ -554,12 +526,7 @@ namespace SmaugCS
             else
             {
                 victim = handler.get_char_room(ch, arg);
-                if (victim == null)
-                {
-                    if (!silence)
-                        color.send_to_char("They aren't here.\r\n", ch);
-                    return null;
-                }
+                if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "They aren't here." : "")) return null;
             }
 
             // Nuisance flag will pick who you are fighting for defensive spells up to 36% of the time
@@ -568,41 +535,27 @@ namespace SmaugCS
                 SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
                 victim = fight.who_fighting(ch);
 
-            if (ch == victim && Macros.SPELL_FLAG(skill, (int)SkillFlags.NoSelf))
-            {
-                if (!silence)
-                    color.send_to_char("You can't cast this on yourself!\r\n", ch);
-                return null;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
+                !silence ? "You can't cast this on yourself!" : "")) return null;
 
             return victim;
         }
-        private static object TarCharSelf(string arg, CharacterInstance ch, bool silence)
+
+        private static object TargetSelf(string arg, CharacterInstance ch, bool silence)
         {
-            if (!arg.IsNullOrEmpty() && !arg.EqualsIgnoreCase(ch.Name))
-            {
-                if (!silence)
-                    color.send_to_char("You cannot cast this spell on another.\r\n", ch);
-                return null;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, !arg.IsNullOrEmpty() && !arg.EqualsIgnoreCase(ch.Name),
+                !silence ? "You cannot cast this spell on another." : "")) return null;
+
             return ch;
         }
-        private static object TarObjInv(string arg, CharacterInstance ch, bool silence)
+
+        private static object TargetObjectInInventory(string arg, CharacterInstance ch, bool silence)
         {
-            if (arg.IsNullOrEmpty())
-            {
-                if (!silence)
-                    color.send_to_char("What should the spell be cast upon?\r\n", ch);
+            if (CheckFunctions.CheckIfEmptyString(ch, arg, !silence ? "What should the spell be cast upon?" : ""))
                 return null;
-            }
 
             ObjectInstance obj = handler.get_obj_carry(ch, arg);
-            if (obj == null)
-            {
-                if (!silence)
-                    color.send_to_char("You are not carrying that.\r\n", ch);
-                return null;
-            }
+            if (CheckFunctions.CheckIfNullObject(ch, obj, !silence ? "You are not carrying that." : "")) return null;
 
             return obj;
         }

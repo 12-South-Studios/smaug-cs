@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Data;
+using SmaugCS.Attributes;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Data;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Repositories;
@@ -22,28 +21,15 @@ namespace SmaugCS.Managers
 
         private DatabaseManager()
         {
-            _repositories = new Dictionary<RepositoryTypes, object>
-                {
-                    {RepositoryTypes.Rooms, new RoomRepository()},
-                    {RepositoryTypes.Areas, new AreaRepository()},
-                    {RepositoryTypes.ObjectTemplates, new ObjectRepository()},
-                    {RepositoryTypes.MobileTemplates, new MobileRepository()},
-                    {RepositoryTypes.Characters, new CharacterRepository()},
-                    {RepositoryTypes.ObjectInstances, new ObjInstanceRepository()},
-                    {RepositoryTypes.Liquids, new GenericRepository<LiquidData>()},
-                    {RepositoryTypes.Skills, new GenericRepository<SkillData>()},
-                    {RepositoryTypes.Herbs, new GenericRepository<SkillData>()},
-                    {RepositoryTypes.SpecFuns, new GenericRepository<SpecialFunction>()},
-                    {RepositoryTypes.Commands, new GenericRepository<CommandData>()},
-                    {RepositoryTypes.Socials, new GenericRepository<SocialData>()},
-                    {RepositoryTypes.Races, new GenericRepository<RaceData>()},
-                    {RepositoryTypes.Classes, new GenericRepository<ClassData>()},
-                    {RepositoryTypes.Deities, new GenericRepository<DeityData>()},
-                    {RepositoryTypes.Languages, new GenericRepository<LanguageData>()},
-                    {RepositoryTypes.Clans, new GenericRepository<ClanData>()},
-                    {RepositoryTypes.Councils, new GenericRepository<CouncilData>()},
-                    {RepositoryTypes.Mixtures, new GenericRepository<MixtureData>()}
-                };
+            _repositories = new Dictionary<RepositoryTypes, object>();
+            foreach (RepositoryTypes repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
+            {
+                TypeMapAttribute attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
+                if (attrib == null || attrib.Repository == null)
+                    continue;
+
+                _repositories.Add(repoType, Activator.CreateInstance(attrib.Repository));
+            }
         }
 
         public static DatabaseManager Instance
@@ -92,29 +78,6 @@ namespace SmaugCS.Managers
             return repo.Count == 0 ? 1 : repo.Values.Max(x => x.ID) + 1;
         }
 
-        private static readonly Dictionary<Type, RepositoryTypes> ObjectTypeToRepoTypeTable = new Dictionary<Type, RepositoryTypes>
-            {
-                {typeof(RoomTemplate), RepositoryTypes.Rooms},
-                {typeof(ObjectTemplate), RepositoryTypes.ObjectTemplates},
-                {typeof(ObjectInstance), RepositoryTypes.ObjectInstances},
-                {typeof(MobTemplate), RepositoryTypes.MobileTemplates},
-                {typeof(AreaData), RepositoryTypes.Areas},
-                {typeof(CharacterInstance), RepositoryTypes.Characters},
-                {typeof(LiquidData), RepositoryTypes.Liquids},
-                {typeof(SkillData), RepositoryTypes.Skills},
-                {typeof(SpecialFunction), RepositoryTypes.SpecFuns},
-                {typeof(CommandData), RepositoryTypes.Commands},
-                {typeof(SocialData), RepositoryTypes.Socials},
-                {typeof(RaceData), RepositoryTypes.Races},
-                {typeof(ClassData), RepositoryTypes.Classes},
-                {typeof(DeityData), RepositoryTypes.Deities},
-                {typeof(LanguageData), RepositoryTypes.Languages},
-                {typeof(ClanData), RepositoryTypes.Clans},
-                {typeof(CouncilData), RepositoryTypes.Councils},
-                {typeof(MixtureData), RepositoryTypes.Mixtures}
-                // TODO: Hints
-            };
-
         /// <summary>
         /// Matches the given type to an equivalent enumerated repository type
         /// </summary>
@@ -122,8 +85,14 @@ namespace SmaugCS.Managers
         /// <returns></returns>
         private static RepositoryTypes ObjectTypeToRepositoryType(Type objectType)
         {
-            if (ObjectTypeToRepoTypeTable.ContainsKey(objectType))
-                return ObjectTypeToRepoTypeTable[objectType];
+            foreach (RepositoryTypes repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
+            {
+                TypeMapAttribute attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
+                if (attrib == null || attrib.Object == null)
+                    continue;
+                if (attrib.Object == objectType)
+                    return repoType;
+            }
 
             throw new ArgumentException(string.Format("{0} is not a valid Repository Type", objectType), "objectType");
         }

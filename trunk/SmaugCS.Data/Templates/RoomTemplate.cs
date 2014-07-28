@@ -23,7 +23,7 @@ namespace SmaugCS.Data
         public List<AffectData> Affects { get; set; }
         public PlaneData plane { get; set; }
         public List<MudProgActData> MudProgActs { get; set; }
-        public ExtendedBitvector Flags { get; set; }
+        public int Flags { get; set; }
 
         public int mpactnum { get; set; }
         public long TeleportToVnum { get; set; }
@@ -37,7 +37,6 @@ namespace SmaugCS.Data
         public RoomTemplate(long id, string name)
             : base(id, name)
         {
-            Flags = new ExtendedBitvector();
             Resets = new List<ResetData>();
             Persons = new List<CharacterInstance>();
             Contents = new List<ObjectInstance>();

@@ -1,7 +1,6 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
@@ -21,16 +20,11 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            if (ch.IsAffected(AffectedByTypes.Blind))
-            {
-                color.send_to_char(
-                    !ch.Equals(victim)
-                        ? "You work your cure, but it has no apparent effect."
-                        : "You don't seem to be blind.",
-                    ch);
-                return ReturnTypes.SpellFailed;
-            }
-
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Blind),
+                !ch.Equals(victim)
+                    ? "You work your cure, but it has no apparent effect."
+                    : "You don't seem to be blind.")) return ReturnTypes.SpellFailed;
+            
             // TODO: affect_strip(victim, AffectedByTypes.Blind);
             
             color.set_char_color(ATTypes.AT_MAGIC, victim);

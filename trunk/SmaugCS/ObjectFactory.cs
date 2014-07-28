@@ -3,6 +3,7 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
@@ -181,8 +182,8 @@ namespace SmaugCS
             foreach (ObjectInstance obj in ch.Carrying)
             {
                 obj.FromCharacter();
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Inventory)
-                    || Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.DeathRot))
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory)
+                    || obj.ExtraFlags.IsSet(ItemExtraFlags.DeathRot))
                     handler.extract_obj(obj);
                 else
                     obj.ToObject(corpse);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
@@ -76,7 +77,7 @@ namespace SmaugCS
             SocialData social = DatabaseManager.Instance.GetEntity<SocialData>(command);
             if (social == null)
                 return false;
-            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.NoEmote))
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.NoEmote))
             {
                 color.send_to_char("You are anti-social!\r\n", ch);
                 return true;

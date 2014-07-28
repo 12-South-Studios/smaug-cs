@@ -28,7 +28,7 @@ namespace SmaugCS.Loaders
 
         public override AreaData LoadArea(AreaData area)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(FilePath)))
+            /*using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(FilePath)))
             {
                 string word = string.Empty;
                 AreaData newArea = area;
@@ -80,12 +80,13 @@ namespace SmaugCS.Loaders
                          && !word.Equals("ENDAREA", StringComparison.OrdinalIgnoreCase));
 
                 return newArea;
-            }
+            }*/
+            return null;
         }
 
         #endregion
 
-        private static ExtraDescriptionData ReadExtraDescription(TextReaderProxy proxy)
+        /*private static ExtraDescriptionData ReadExtraDescription(TextReaderProxy proxy)
         {
             string word;
             ExtraDescriptionData ed = new ExtraDescriptionData();
@@ -736,6 +737,6 @@ namespace SmaugCS.Loaders
                         break;
                 }
             } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#endobject"));
-        }
+        }*/
     }
 }

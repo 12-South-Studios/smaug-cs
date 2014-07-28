@@ -81,7 +81,7 @@ namespace SmaugCS.Repositories
             newObject.Description = cloneObject.Description;
             newObject.Action = cloneObject.Action;
             newObject.Type = cloneObject.Type;
-            newObject.ExtraFlags = new ExtendedBitvector(cloneObject.ExtraFlags);
+            newObject.ExtraFlags = cloneObject.ExtraFlags;
             newObject.Flags = cloneObject.Flags;
             newObject.WearFlags = cloneObject.WearFlags;
             Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);

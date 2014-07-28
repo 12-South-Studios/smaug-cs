@@ -1,16 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
 {
-    class Push
+    public static class Push
     {
         public static void do_push(CharacterInstance ch, string argument)
         {
-            // TODO
+            string firstArg = argument.FirstWord();
+            if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Push what?")) return;
+
+            if (handler.ms_find_obj(ch)) return;
+
+            ObjectInstance obj = handler.get_obj_here(ch, firstArg);
+            if (obj == null)
+            {
+                comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, obj, ToTypes.Character);
+                return;
+            }
+
+            PullOrPush.pullorpush(ch, obj, false);
         }
     }
 }

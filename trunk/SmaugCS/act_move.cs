@@ -6,6 +6,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
@@ -64,7 +65,7 @@ namespace SmaugCS
         }
         private static string GetDecorateRoom_PreAndPost_3(SectorTypes sector, int x)
         {
-            string[] outputArray = new[] { ".", " not too far away.", ", and ", " nearby." };
+            string[] outputArray = { ".", " not too far away.", ", and ", " nearby." };
 
             return string.Format("{0}{1}{2}", string.Empty, GameConstants.RoomSents[(int)sector][x], outputArray[SmaugRandom.Between(0, 3)]);
         }
@@ -195,14 +196,15 @@ namespace SmaugCS
             ExitData xit = newRoom.GetExit(vdir);
             if (!found || xit == null)
             {
-                xit = db.make_exit(newRoom, exit.GetDestination(), vdir);
+                //xit = db.make_exit(newRoom, exit.GetDestination(), vdir);
                 xit.Key = -1;
                 xit.Distance = (int)distance;
             }
 
             if (!found)
             {
-                ExitData bxit = db.make_exit(newRoom, backroom, GameConstants.rev_dir[vdir]);
+                //ExitData bxit = db.make_exit(newRoom, backroom, GameConstants.rev_dir[vdir]);
+                ExitData bxit = null;
                 bxit.Key = -1;
                 if ((serial & 65536) != exit.vnum)
                     bxit.Distance = (int)roomnum;
@@ -499,12 +501,12 @@ namespace SmaugCS
 
             foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
             {
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Buried)
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried)
                     || !Macros.CAN_WEAR(obj, (int)ItemWearFlags.Take))
                     continue;
 
                 int resistance = obj.GetObjectWeight();
-                if (Macros.IS_OBJ_STAT(obj, (int)ItemExtraFlags.Metallic))
+                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
                     resistance = (resistance * 6) / 5;
 
                 switch (obj.ItemType)
@@ -555,50 +557,27 @@ namespace SmaugCS
             return ReturnTypes.None;
         }
 
-        private static readonly Dictionary<DirectionPullTypes, PullcheckMessages> PullTypeMap = new Dictionary<DirectionPullTypes, PullcheckMessages>()
-            {
-                { DirectionPullTypes.Whirlpool, new PullcheckMessages() { ToChar = "You are sucked $T!", ToRoom = "$n is sucked $T!", DestRoom = "$n is sucked in from $T!", ObjMsg = "$p is sucked $T.", DestObj = "$p is sucked in from $T!"}},
-                { DirectionPullTypes.Vacuum, new PullcheckMessages() { ToChar = "You are sucked $T!", ToRoom = "$n is sucked $T!", DestRoom = "$n is sucked in from $T!", ObjMsg = "$p is sucked $T.", DestObj = "$p is sucked in from $T!"}},
-                { DirectionPullTypes.Current, new PullcheckMessages() { ToChar = "You drift $T.", ToRoom = "$n drifts $T.", DestRoom = "$n drifts in from $T.", ObjMsg = "$p drifts $T.", DestObj = "$p drifts in from $T."}},
-                { DirectionPullTypes.Lava, new PullcheckMessages() { ToChar = "You drift $T.", ToRoom = "$n drifts $T.", DestRoom = "$n drifts in from $T.", ObjMsg = "$p drifts $T.", DestObj = "$p drifts in from $T."}},
-                { DirectionPullTypes.Breeze, new PullcheckMessages() { ToChar = "You drift $T.", ToRoom = "$n drifts $T.", DestRoom = "$n drifts in from $T.", ObjMsg = "$p drifts $T in the breeze.", DestObj = "$p drifts in from $T."}},
-                { DirectionPullTypes.Geyser, new PullcheckMessages() { ToChar = "You are pushed $T!", ToRoom = "$n is pushed $T!", DestRoom = "$n is pushed in from $T!", DestObj = "$p floats in from $T."}},
-                { DirectionPullTypes.Wave, new PullcheckMessages() { ToChar = "You are pushed $T!", ToRoom = "$n is pushed $T!", DestRoom = "$n is pushed in from $T!", DestObj = "$p floats in from $T."}},
-                { DirectionPullTypes.Earthquake, new PullcheckMessages() { ToChar = "The earth opens up and you fall $T!", ToRoom = "The earth opens up and $n falls $T!", DestRoom = "$n falls from $T!", ObjMsg = "$p falls $T.", DestObj = "$p falls from $T."}},
-                { DirectionPullTypes.Sinkhole, new PullcheckMessages() { ToChar = "The ground suddenly gives way and you fall $T!", ToRoom = "The ground suddenly gives way beneath $n!", DestRoom = "$n falls from $T!", ObjMsg = "$p falls $T.", DestObj = "$p falls from $T."}},
-                { DirectionPullTypes.Quicksand, new PullcheckMessages() { ToChar = "You begin to sink $T into the quicksand!", ToRoom = "$n begins to sink $t into the quicksand!", DestRoom = "$n sinks in from $T!", ObjMsg = "$p begins to sink $t into the quicksand.", DestObj = "$p sinks in from $T."}},
-                { DirectionPullTypes.Landslide, new PullcheckMessages() { ToChar = "The ground starts to slide $T, taking you with it!", ToRoom = "The ground starts to slide $T, taking $n with it!", DestRoom = "$n slides in from $T!", ObjMsg = "$p slides $T.", DestObj = "$p slides in from $T."}},
-                { DirectionPullTypes.Slip, new PullcheckMessages() { ToChar = "You lose your footing!", ToRoom = "$n loses $s footing!", DestRoom = "$n slides in from $T!", ObjMsg = "$p slides $T.", DestObj = "$p slides in from $T."}},
-                { DirectionPullTypes.Vortex, new PullcheckMessages() { ToChar = "You are sucked into a swirling vortex of colors!", ToRoom = "$n is sucked into a swirling vortex of colors!", DestRoom = "$n appears from a swirling vortex of colors!", ObjMsg = "$p is sucked into a swirling vortex of colors!", DestObj = "$p appears from a swirling vortex of colors!"}},
-                { DirectionPullTypes.HotAir, new PullcheckMessages() { ToChar = "A blast of hot air blows you $T!", ToRoom = "$n is blown $T by a blast of hot air!", DestRoom = "$n is blown in from $T by a blast of hot air!", ObjMsg = "$p is blown $T,", DestObj = "$p is blown in from $T."}},
-                { DirectionPullTypes.ColdWind, new PullcheckMessages() { ToChar = "A bitter cold wind forces you $T!", ToRoom = "$n is forced $t by a bitter cold wind!", DestRoom = "$n is forced in from $T by a bitter cold wind!", ObjMsg = "$p is blown $T.", DestObj = "$p is blown in from $T."}},
-                { DirectionPullTypes.Wind, new PullcheckMessages() { ToChar = "A strong wind pushes you $T!", ToRoom = "$n is blown $t by a strong wind!", DestRoom = "$n is blown in from $T by a strong wind!", ObjMsg = "$p is blown $T.", DestObj = "$p is blown in from $T."}},
-                { DirectionPullTypes.Storm, new PullcheckMessages() { ToChar = "The raging storm drives you $T!", ToRoom = "$n is driven $T by the rating storm!", DestRoom = "$n is driven in from $T by a raging storm!", ObjMsg = "$p is blown $T.", DestObj = "$p is blown in from $T."}},
-            };
         private static PullcheckMessages GetPullcheckMessages(int pull, DirectionPullTypes pulltype)
         {
-            if (PullTypeMap.ContainsKey(pulltype))
-                return PullTypeMap[pulltype];
-
-            if (pull > 0)
-            {
-                return new PullcheckMessages()
-                    {
-                        ToChar = "You are pulled $T!",
-                        ToRoom = "$n is pulled $T.",
-                        DestRoom = "$n is pulled in from $T.",
-                        ObjMsg = "$p is pulled $T.",
-                        DestObj = "$p is pulled in from $T."
-                    };
-            }
-            return new PullcheckMessages()
+            PullcheckAttribute attrib = pulltype.GetAttribute<PullcheckAttribute>();
+            if (attrib != null)
+                return new PullcheckMessages
                 {
-                    ToChar = "You are pushed $T!",
-                    ToRoom = "$n is pushed $T.",
-                    DestRoom = "$n is pushed in from $T.",
-                    ObjMsg = "$p is pushed $T.",
-                    DestObj = "$p is pushed in from $T."
+                    ToChar = attrib.ToChar,
+                    ToRoom = attrib.ToRoom,
+                    DestRoom = attrib.DestRoom,
+                    ObjMsg = attrib.ObjMsg,
+                    DestObj = attrib.DestObj
                 };
+
+            return new PullcheckMessages
+            {
+                ToChar = pull > 0 ? "You are pulled $T!" : "You are pushed $T!",
+                ToRoom = pull > 0 ? "$n is pulled $T." : "$n is pushed $T.",
+                DestRoom = pull > 0 ? "$n is pulled in from $T." : "$n is pushed in from $T.",
+                ObjMsg = pull > 0 ? "$p is pulled $T." : "$p is pushed $T.",
+                DestObj = pull > 0 ? "$p is pulled in from $T." : "$p is pushed in from $T."
+            };
         }
 
         private class PullcheckMessages
