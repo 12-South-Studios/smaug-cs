@@ -1,40 +1,114 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
+using System.Timers;
+using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
+using SmallDBConnectivity;
 
 namespace SmaugCS.Logging
 {
-    public sealed class LogManager : GameSingleton, ILogManager
+    public sealed class LogManager : ILogManager
     {
-        private static LogManager _instance;
-        private static readonly object Padlock = new object();
-
-        private static string _dataPath;
         public ILogWrapper LogWrapper { get; private set; }
+        private static IKernel _kernel;
+        private ISmallDb SmallDb { get; set; }
+        private IDbConnection Connection { get; set; }
 
-        private const string BootLogFormat = "[BOOT] {0}";
-        private const string BugLogFormat = "[BUG] {0}";
-        private static string LogFormat = "{0}";
+        private readonly List<LogEntry> _pendingLogs;
+        private ITimer _dbDumpTimer;
 
-        private LogManager() {}
-
-        public static LogManager Instance
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ISmallDb smallDb, IDbConnection connection, int logDumpFrequency)
         {
-            get
+            LogWrapper = logWrapper;
+            _kernel = kernel;
+            SmallDb = smallDb;
+            Connection = connection;
+
+            _pendingLogs = new List<LogEntry>();
+            _dbDumpTimer = new CommonTimer();
+            _dbDumpTimer.Elapsed += DbDumpTimerOnElapsed;
+            _dbDumpTimer.Interval = logDumpFrequency;
+
+            _dbDumpTimer.Start();
+        }
+
+        private void DbDumpTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+        {
+            if (!_pendingLogs.Any()) return;
+
+            List<LogEntry> logsToDump = new List<LogEntry>(_pendingLogs);
+            _pendingLogs.Clear();
+
+            IDbTransaction scope = Connection.BeginTransaction();
+            try
             {
-                lock (Padlock)
+                List<SqlParameter> parameters = new List<SqlParameter>
                 {
-                    return _instance ?? (_instance = new LogManager());
+                    new SqlParameter("@tvpLogTable", SqlDbType.Structured) {Value = GetLogEntryTable(logsToDump)}
+                };
+                SmallDb.ExecuteNonQuery(Connection, "cp_AddLog", parameters);
+                scope.Commit();
+            }
+            catch (Exception ex)
+            {
+                DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
+
+                if (scope != null)
+                    scope.Rollback();
+
+                if (logsToDump.Any())
+                {
+                    _pendingLogs.AddRange(logsToDump);
+                    logsToDump.Clear();
                 }
+            }
+            finally
+            {
+                if (scope != null)
+                    scope.Dispose();
+                logsToDump.Clear();
             }
         }
 
-        public void Initialize(ILogWrapper logWrapper, string path)
+        private DataTable GetLogEntryTable(IEnumerable<LogEntry> logs)
         {
-            LogWrapper = logWrapper;
-            _dataPath = path;
+            var dt = GetLogDataTable();
+
+            foreach (LogEntry log in logs)
+            {
+                DataRow dr = dt.NewRow();
+                dr["LogTypeId"] = log.LogType;
+                dr["Text"] = log.Text;
+                dt.Rows.Add(dr);
+            }
+
+            return dt;
+        }
+
+        private static DataTable GetLogDataTable()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("LogTypeId", typeof (int));
+            dt.Columns.Add("Text", typeof (string));
+            return dt;
+        }
+
+        public static ILogManager Instance
+        {
+            get { return _kernel.Get<ILogManager>(); }
+        }
+
+        public void DatabaseFailureLog(string str, params object[] args)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(str, args);
+            LogWrapper.InfoFormat("[FATAL] {0}", sb.ToString());
         }
 
         #region Boot Log
@@ -48,7 +122,7 @@ namespace SmaugCS.Logging
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(str, args);
-            LogWrapper.InfoFormat(BootLogFormat, sb.ToString());
+            LogWrapper.InfoFormat("[BOOT] {0}", sb.ToString());
         }
 
         public void Boot(Exception ex)
@@ -57,12 +131,20 @@ namespace SmaugCS.Logging
         }
         #endregion
 
+        private void Log(LogTypes logType, string str, params object[] args)
+        {
+            LogEntry entry = new LogEntry
+            {
+                LogType = logType, 
+                Text = string.Format(str, args)
+            };
+            _pendingLogs.Add(entry);
+        }
+
         #region Bug Log
         public void Bug(string str, params object[] args)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat(str, args);
-            LogWrapper.InfoFormat(BugLogFormat, sb.ToString());
+            Log(LogTypes.Bug, str, args);
         }
 
         public void Bug(Exception ex)
@@ -74,30 +156,25 @@ namespace SmaugCS.Logging
         #region Error Log
         public void Error(Exception ex)
         {
-            LogWrapper.Error(ex.Message, ex);
+            Error(ex.Message + "\n{0}", ex.StackTrace);
         }
 
         public void Error(string str, params object[] args)
         {
-            LogWrapper.ErrorFormat(str, args);
+            Log(LogTypes.Error, str, args);
         }
         #endregion
 
-        #region General Log
-        public void Log(LogTypes logType, int level, string fmt, params object[] args)
+        #region Info Log
+        public void Info(string str, params object[] args)
         {
-            Log(string.Format(fmt, args), logType, level);
-        }
-
-        public void Log(string fmt, params object[] args)
-        {
-            //Log(string.Format(fmt, args), LogTypes.Normal, LevelConstants.LEVEL_LOG);
+            Log(LogTypes.Info, str, args);
         }
 
         [LuaFunction("LLog", "Logs a string", "Text to log")]
         public void LuaLog(string txt)
         {
-            //Log(txt, (short)LogTypes.Normal, (short)LevelConstants.LEVEL_LOG);
+            Info(txt);
         }
         #endregion
 

@@ -17,7 +17,7 @@ namespace SmaugCS.Lookup
         public SpellLookupTable()
             : base(new SpellFunction {Value = (id, level, ch, vo) =>
                 {
-                    color.send_to_char("That's not a spell!\r\n", ch);
+                    color.send_to_char("That's not a spell!", ch);
                     return ReturnTypes.None;
                 }})
         {

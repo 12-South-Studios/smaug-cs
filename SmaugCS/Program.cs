@@ -1,31 +1,216 @@
 ﻿using System;
 using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Text;
 using Ninject;
 using Realm.Library.Common.Logging;
-using Realm.Library.Lua;
 using Realm.Library.Network;
-using SmallDBConnectivity;
 using SmaugCS.Ban;
 using SmaugCS.Board;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.LuaHelpers;
+using SmaugCS.Interfaces;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.News;
+using SmaugCS.Repositories;
 using SmaugCS.Weather;
 using log4net;
-using LogManager = SmaugCS.Logging.LogManager;
 
 namespace SmaugCS
 {
     public class Program
     {
+        private static readonly ILog Logger =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static ITcpServer NetworkManager { get; private set; }
+        public static IKernel Kernel { get; private set; }
+        public static ILogManager LogManager { get; private set; }
+        public static ILookupManager LookupManager { get; private set; }
+        public static ILuaManager LuaManager { get; private set; }
+        public static IDatabaseManager DatabaseManager { get; private set; }
+        public static IGameManager GameManager { get; private set; }
+        public static IBanManager BanManager { get; private set; }
+        public static IBoardManager BoardManager { get; private set; }
+        public static ICalendarManager CalendarManager { get; private set; }
+        public static IWeatherManager WeatherManager { get; private set; }
+        public static INewsManager NewsManager { get; private set; }
+
+        static void Main()
+        {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            
+            try
+            {
+                ConfigureLogging();
+                InitializeNinjectKernel();
+
+                OnServerStart();
+                GameManager.DoLoop();
+                OnServerStop();
+            }
+            catch (Exception ex)
+            {
+                LogManager.Boot(ex);
+                Environment.Exit(0);
+            }
+        }
+
+        private static void ConfigureLogging()
+        {
+            GlobalContext.Properties["BootLogName"] = string.Format("{0}\\{1}_{2}.log",
+                                                                    GameConstants.GetLogPath(), "BootLog",
+                                                                    DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+            GlobalContext.Properties["BugsLogName"] = string.Format("{0}\\{1}.log",
+                                                                    GameConstants.GetLogPath(), "Bugs");
+            GlobalContext.Properties["SmaugLogName"] = string.Format("{0}\\{1}.log",
+                                                                     GameConstants.GetLogPath(), "Smaug");
+
+            log4net.Config.XmlConfigurator.Configure();
+        }
+
+        private static void InitializeNinjectKernel()
+        {
+            Kernel = new StandardKernel();
+
+            Kernel.Bind<ILogWrapper>().To<LogWrapper>()
+                .WithConstructorArgument("log", Logger)
+                .WithConstructorArgument("level", LogLevel.Debug);
+
+            Kernel.Load(new SmaugModule());
+            Kernel.Load("SmaugCS.*.dll");
+        }
+
+        private static void OnServerStart()
+        {
+            LogManager = Kernel.Get<ILogManager>();
+            LogManager.Boot("---------------------[ Boot Log ]--------------------");
+
+            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
+            LogManager.Boot("{0} SystemDirectories loaded.", loaded);
+
+            loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
+            LogManager.Boot("{0} SystemFiles loaded.", loaded);
+
+            LookupManager = Kernel.Get<ILookupManager>();
+
+            LuaManager = Kernel.Get<ILuaManager>();
+
+            NetworkManager = Kernel.Get<ITcpServer>();
+            NetworkManager.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
+                           IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
+            NetworkManager.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
+
+            DatabaseManager = Kernel.Get<IDatabaseManager>();
+
+            IInitializer luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
+            if (luaInitializer == null)
+                throw new ApplicationException(string.Format("LuaInitializer failed to start"));
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
+
+            BanManager = Kernel.Get<IBanManager>();
+            //BanManager.LoadBans();
+
+            BoardManager = Kernel.Get<IBoardManager>();
+            //BoardManager.LoadBoards();
+            // TODO: Load Projects
+
+            CalendarManager = Kernel.Get<ICalendarManager>();
+
+            GameManager.GameTime.SetTimeOfDay(GameManager.SystemData);
+
+            WeatherManager = Kernel.Get<IWeatherManager>();
+            WeatherManager.InitializeWeatherMap(WEATHER_SIZE_X, WEATHER_SIZE_Y);
+
+            NewsManager = Kernel.Get<INewsManager>();
+            
+            LogManager.Boot("Lua Types and Functions initialized.");
+            InitializeGameData();           
+        }
+
+        private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
+        {
+            ITcpUser user = (ITcpUser) sender;
+            
+            // TODO: if disconnected, Remove from CharacterRepository
+            // TODO: if connected, create new instance and add to CharacterRepository
+        }
+
+        private static void OnServerStop()
+        {
+            NetworkManager.Shutdown("Shutting down MUD");
+
+            // TODO: Shutdown Managers
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        {
+            LogManager.Bug((Exception)unhandledExceptionEventArgs.ExceptionObject);
+        }
+
+        private static void InitializeGameData()
+        {
+            LogManager.Boot("Initializing Game Data");
+
+            ExecuteLuaScripts();
+            LoaderInitializer.Initialize();
+
+            //// Pre-Tests the module_Area to catch any errors early before area load
+            LuaManager.DoLuaScript(GameConstants.GetDataPath() + "//modules//module_area.lua");
+
+            LoaderInitializer.Load();
+        }
+
+        private static void ExecuteLuaScripts()
+        {
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
+            LogManager.Boot("{0} Commands loaded.", DatabaseManager.COMMANDS.Count);
+
+            LookupManager.CommandLookup.UpdateFunctionReferences(DatabaseManager.COMMANDS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
+            LogManager.Boot("{0} SpecFuns loaded.", DatabaseManager.SPEC_FUNS.Count);
+            //SpecFunLookupTable.UpdateCommandFunctionReferences(DatabaseManager.Instance.SPEC_FUNS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
+            LogManager.Boot("{0} Socials loaded.", DatabaseManager.SOCIALS.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
+            LogManager.Boot("{0} Skills loaded.", DatabaseManager.SKILLS.Count);
+
+            LookupManager.SkillLookup.UpdateFunctionReferences(DatabaseManager.SKILLS.Values);
+            LookupManager.SpellLookup.UpdateFunctionReferences(DatabaseManager.SKILLS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
+            LogManager.Boot("{0} Liquids loaded.", DatabaseManager.LIQUIDS.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
+            LogManager.Boot("{0} Mixtures loaded.",
+                                     DatabaseManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
+            // TODO: Update function references
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
+            LogManager.Boot("{0} Herbs loaded.", DatabaseManager.SKILLS.Values.Count(x => x.Type == SkillTypes.Herb));
+            LookupManager.SkillLookup.UpdateFunctionReferences(DatabaseManager.SKILLS.Values.Where(x => x.Type == SkillTypes.Herb));
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
+            LogManager.Boot("{0} Tongues loaded.", DatabaseManager.LANGUAGES.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
+            LogManager.Boot("{0} Planes loaded.",
+                                     DatabaseManager.GetRepository<PlaneData>(RepositoryTypes.Planes).Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
+            LogManager.Boot("{0} Morphs loaded.",
+                                     DatabaseManager.GetRepository<MorphData>(RepositoryTypes.Morphs).Count);
+
+        }
+
         #region Old Constants
         public static int BERR = 255;
 
@@ -136,7 +321,7 @@ namespace SmaugCS
         public static int MAX_PERSONAL = 5; // Max personal skills
         public static int MAX_WHERE_NAME = 29;
 
- 
+
         public bool DONT_UPPER { get; set; }
 
         /*public static int SECONDS_PER_TICK = SystemData.SecondsPerTick;
@@ -200,7 +385,7 @@ namespace SmaugCS
         public static int SPOW_MASK = ALL_BITS & ~(BV09 | BV10);
         public static int SSAV_MASK = ALL_BITS & ~(BV11 | BV12 | BV13);
 
-        
+
 
         public static int MAX_ITEM_TYPE = (int)ItemTypes.DrinkMixture;
 
@@ -395,205 +580,6 @@ namespace SmaugCS
 
         #endregion
         #endregion
-
-        private static readonly ILog Logger =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private static TcpServer _networkMgr;
-        public static IKernel Kernel { get; private set; }
-
-        static void Main()
-        {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-            
-            try
-            {
-                ConfigureLogging();
-                InitializeNinjectKernel();
-
-                OnServerStart();
-                GameManager.Instance.DoLoop();
-                OnServerStop();
-            }
-            catch (Exception ex)
-            {
-                LogManager.Instance.Boot(ex);
-                Environment.Exit(0);
-            }
-        }
-
-        private static void InitializeNinjectKernel()
-        {
-            Kernel = new StandardKernel();
-
-            Kernel.Load("SmaugCS.*.dll");
-        }
-
-        private static void ConfigureLogging()
-        {
-            GlobalContext.Properties["BootLogName"] = string.Format("{0}\\{1}_{2}.log",
-                                                                    GameConstants.GetLogPath(), "BootLog",
-                                                                    DateTime.Now.ToString("yyyyMMdd-HHmmss"));
-            GlobalContext.Properties["BugsLogName"] = string.Format("{0}\\{1}.log",
-                                                                    GameConstants.GetLogPath(), "Bugs");
-            GlobalContext.Properties["SmaugLogName"] = string.Format("{0}\\{1}.log",
-                                                                     GameConstants.GetLogPath(), "Smaug");
-
-            log4net.Config.XmlConfigurator.Configure();
-        }
-
-        private static void OnServerStart()
-        {
-            LogWrapper logWrapper = new LogWrapper(Logger, LogLevel.Debug);
-            LogManager.Instance.Initialize(logWrapper, GameConstants.GetDataPath());
-            LogManager.Instance.Boot("---------------------[ Boot Log ]--------------------");
-
-            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
-            LogManager.Instance.Boot("{0} SystemDirectories loaded.", loaded);
-
-            loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
-            LogManager.Instance.Boot("{0} SystemFiles loaded.", loaded);
-
-            LookupManager.Instance.Initialize();
-
-            LuaManager.Instance.Initialize(LogManager.Instance, GameConstants.GetDataPath());
-            InitializeLuaInjections();
-            InitializeLuaFunctions();
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
-
-            _networkMgr = new TcpServer(logWrapper, new TcpUserRepository());
-            _networkMgr.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
-                           IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
-            _networkMgr.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
-
-            DatabaseManager.Instance.Initialize(LogManager.Instance);
-            //DatabaseManager.Instance.InitializeDatabase(false);
-
-            string connectionString = ConfigurationManager.ConnectionStrings["SmaugDB"]
-                .ConnectionString.Replace("|DataPath|", GameConstants.GetDataPath());
-
-            IDbConnection connection = new SqlConnection(connectionString);
-
-            BanManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
-            BanManager.Instance.LoadBans();
-
-            BoardManager.Instance.Initialize(LogManager.Instance, new SmallDb(), connection);
-            BoardManager.Instance.LoadBoards();
-            // TODO: Load Projects
-
-            GameManager.Instance.Initialize(false);
-            CalendarManager.Instance.Initialize(LogManager.Instance, GameManager.Instance);
-            GameManager.Instance.GameTime.SetTimeOfDay(GameManager.Instance.SystemData);
-            WeatherManager.Instance.InitializeWeatherMap(WEATHER_SIZE_X, WEATHER_SIZE_Y);
-
-            InitializeGameData();           
-        }
-
-        private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
-        {
-            ITcpUser user = (ITcpUser) sender;
-            
-            // TODO: if disconnected, Remove from CharacterRepository
-            // TODO: if connected, create new instance and add to CharacterRepository
-        }
-
-        private static void OnServerStop()
-        {
-            _networkMgr.Shutdown("Shutting down MUD");
-
-            // TODO: Shutdown Managers
-        }
-
-        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
-        {
-            LogManager.Instance.Bug((Exception)unhandledExceptionEventArgs.ExceptionObject);
-        }
-
-        private static void InitializeLuaInjections()
-        {
-            LuaAreaFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, LogManager.Instance);
-            LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, GameConstants.GetDataPath());
-            LuaMobFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaObjectFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaRoomFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaLookupFunctions.InitializeReferences(LookupManager.Instance, LogManager.Instance);
-        }
-
-        private static void InitializeLuaFunctions()
-        {
-            var proxy = new LuaInterfaceProxy();
-            var luaFuncRepo = new LuaFunctionRepository();
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaAreaFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaGetFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaMobFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaObjectFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LuaRoomFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LuaLookupFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LogManager));
-            proxy.RegisterFunctions(luaFuncRepo);
-            LuaManager.Instance.InitializeLuaProxy(proxy);  
-        }
-
-        private static void InitializeGameData()
-        {
-            LogManager.Instance.Boot("Initializing Game Data");
-
-            ExecuteLuaScripts();
-            LoaderInitializer.Initialize();
-
-            //// Pre-Tests the module_Area to catch any errors early before area load
-            LuaManager.Instance.DoLuaScript(GameConstants.GetDataPath() + "//modules//module_area.lua");
-
-            LoaderInitializer.Load();
-        }
-
-        private static void ExecuteLuaScripts()
-        {
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
-            LogManager.Instance.Boot("{0} Commands loaded.", DatabaseManager.Instance.COMMANDS.Count);
-
-            LookupManager.Instance.CommandLookup.UpdateFunctionReferences(DatabaseManager.Instance.COMMANDS.Values);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
-            LogManager.Instance.Boot("{0} SpecFuns loaded.", DatabaseManager.Instance.SPEC_FUNS.Count);
-            //SpecFunLookupTable.UpdateCommandFunctionReferences(DatabaseManager.Instance.SPEC_FUNS.Values);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
-            LogManager.Instance.Boot("{0} Socials loaded.", DatabaseManager.Instance.SOCIALS.Count);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
-            LogManager.Instance.Boot("{0} Skills loaded.", DatabaseManager.Instance.SKILLS.Count);
-
-            LookupManager.Instance.SkillLookup.UpdateFunctionReferences(DatabaseManager.Instance.SKILLS.Values);
-            LookupManager.Instance.SpellLookup.UpdateFunctionReferences(DatabaseManager.Instance.SKILLS.Values);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
-            LogManager.Instance.Boot("{0} Liquids loaded.", DatabaseManager.Instance.LIQUIDS.Count);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
-            LogManager.Instance.Boot("{0} Mixtures loaded.",
-                                     DatabaseManager.Instance.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
-            // TODO: Update function references
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
-            LogManager.Instance.Boot("{0} Herbs loaded.", DatabaseManager.Instance.GetSkills(SkillTypes.Herb).Count());
-            LookupManager.Instance.SkillLookup.UpdateFunctionReferences(DatabaseManager.Instance.GetSkills(SkillTypes.Herb));
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
-            LogManager.Instance.Boot("{0} Tongues loaded.", DatabaseManager.Instance.LANGUAGES.Count);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
-            LogManager.Instance.Boot("{0} Planes loaded.",
-                                     DatabaseManager.Instance.GetRepository<PlaneData>(RepositoryTypes.Planes).Count);
-
-            LuaManager.Instance.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
-            LogManager.Instance.Boot("{0} Morphs loaded.",
-                                     DatabaseManager.Instance.GetRepository<MorphData>(RepositoryTypes.Morphs).Count);
-
-        }
 
     }
 }

@@ -100,6 +100,7 @@
     <Compile Include="Interfaces\IVerifiable.cs" />
     <Compile Include="KilledData.cs" />
     <Compile Include="LiquidData.cs" />
+    <Compile Include="LookupBase.cs" />
     <Compile Include="mccp_data.cs" />
     <Compile Include="MixtureData.cs" />
     <Compile Include="MorphData.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Shops\RepairShopData.cs" />
     <Compile Include="Shops\ShopData.cs" />
     <Compile Include="SkillData.cs" />
+    <Compile Include="SkillMasteryData.cs" />
     <Compile Include="SmaugAffect.cs" />
     <Compile Include="snswap_data.cs" />
     <Compile Include="SocialData.cs" />

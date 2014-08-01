@@ -7,6 +7,7 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
+    [Category("Data")]
     public class RealAtomTest
     {
         [TestCase(5.5D)]

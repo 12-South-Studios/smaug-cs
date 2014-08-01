@@ -1,8 +1,10 @@
-﻿using SmaugCS.Common;
+﻿using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells.Smaug
@@ -13,83 +15,57 @@ namespace SmaugCS.Spells.Smaug
         {
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
-            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
-            {
-                magic.failed_casting(skill, ch, null, null);
+            if (CheckFunctions.CheckIfTrueCasting(ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe), skill, ch))
                 return ReturnTypes.SpellFailed;
-            }
 
             if (string.IsNullOrEmpty(skill.HitCharacterMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitCharacterMessage, ch, null, null, ToTypes.Character);
             if (string.IsNullOrEmpty(skill.HitRoomMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, null, ToTypes.Room);
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
+            foreach (CharacterInstance vch in ch.CurrentRoom.Persons
+                .Where(x => x.IsNpc() || !x.Act.IsSet(PlayerFlags.WizardInvisibility) ||
+                    x.PlayerData.WizardInvisible < LevelConstants.GetLevel("Immortal"))
+                .Where(x => !x.Equals(ch))
+                .Where(x => !fight.is_safe(ch, x, false))
+                .Where(x => ch.IsNpc() || x.IsNpc() || ch.IsInArena() || (ch.IsPKill() && x.IsPKill())))
             {
-                if (!vch.IsNpc() && vch.Act.IsSet(PlayerFlags.WizardInvisibility)
-                    && vch.PlayerData.WizardInvisible >= LevelConstants.GetLevel("Immortal"))
-                    continue;
-
-                if (vch.Equals(ch))
-                    continue;
-
-                if (fight.is_safe(ch, vch, false))
-                    continue;
-
-                if (!ch.IsNpc() && !vch.IsNpc() && !ch.IsInArena()
-                    && (!ch.IsPKill() || !vch.IsPKill()))
-                    continue;
-
                 bool saved = skill.CheckSave(level, ch, vch);
-                if (saved && Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate)
-                {
-                    magic.failed_casting(skill, ch, vch, null);
+                if (saved &&
+                    CheckFunctions.CheckIfTrueCasting(Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate,
+                        skill, ch, CastingFunctionType.Failed, vch))
                     continue;
-                }
 
-                int damage = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.die_char) : SmaugRandom.Between(1, level/2);
+                int damage = GetBaseDamage(level, ch, skill);
 
                 if (saved)
                 {
                     SpellSaveEffectTypes spellSaveType =
-                        Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(Macros.SPELL_SAVE(skill));
+                        Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(
+                            Macros.SPELL_SAVE(skill));
                     switch (spellSaveType)
                     {
                         case SpellSaveEffectTypes.ThreeQuartersDamage:
-                            damage = (damage*3)/4;
+                            damage = GetThreeQuartersDamage(damage);
                             break;
+
                         case SpellSaveEffectTypes.HalfDamage:
-                            damage >>= 1;
+                            damage = GetHalfDamage(damage);
                             break;
+
                         case SpellSaveEffectTypes.QuarterDamage:
-                            damage >>= 2;
+                            damage = GetQuarterDamage(damage);
                             break;
+
                         case SpellSaveEffectTypes.EighthDamage:
-                            damage >>= 3;
+                            damage = GetEighthDamage(damage);
                             break;
+
                         case SpellSaveEffectTypes.Absorb:
-                            comm.act(ATTypes.AT_MAGIC, "$N absorbs your $t!", ch, skill.DamageMessage, vch, ToTypes.Character);
-                            comm.act(ATTypes.AT_MAGIC, "You absorb $N's $t!", vch, skill.DamageMessage, ch, ToTypes.Character);
-                            comm.act(ATTypes.AT_MAGIC, "$N absorbs $n's $t!", ch, skill.DamageMessage, vch, ToTypes.NotVictim);
-
-                            vch.CurrentHealth = 0.GetNumberThatIsBetween(vch.CurrentHealth + damage, vch.MaximumHealth);
-                            fight.update_pos(vch);
-
-                            if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who.Equals(vch))
-                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who.Equals(ch))))
-                            {
-                                int xp = ch.CurrentFighting != null
-                                    ? ch.CurrentFighting.Experience
-                                    : vch.CurrentFighting.Experience;
-                                int xpGain = xp*damage*2/vch.MaximumHealth;
-
-                                ch.GainXP(0 - xpGain);
-                            }
+                            AbsorbDamage(ch, skill, vch, damage);
                             continue;
                         case SpellSaveEffectTypes.Reflect:
-                            Attack.spell_attack(sn, level, vch, ch);
-                            if (ch.CharDied())
-                                break;
+                            if (ReflectDamage(sn, level, ch, vch)) break;
                             continue;
                     }
                 }
@@ -106,6 +82,63 @@ namespace SmaugCS.Spells.Smaug
                     break;
             }
             return ReturnTypes.None;
+        }
+
+        private static int GetBaseDamage(int level, CharacterInstance ch, SkillData skill)
+        {
+            return !string.IsNullOrEmpty(skill.Dice)
+                ? magic.dice_parse(ch, level, skill.die_char)
+                : SmaugRandom.Between(1, level/2);
+        }
+
+        private static bool ReflectDamage(int sn, int level, CharacterInstance ch, CharacterInstance vch)
+        {
+            Attack.spell_attack(sn, level, vch, ch);
+            return ch.CharDied();
+        }
+
+        private static void AbsorbDamage(CharacterInstance ch, SkillData skill, CharacterInstance vch, int damage)
+        {
+            comm.act(ATTypes.AT_MAGIC, "$N absorbs your $t!", ch, skill.DamageMessage, vch, ToTypes.Character);
+            comm.act(ATTypes.AT_MAGIC, "You absorb $N's $t!", vch, skill.DamageMessage, ch, ToTypes.Character);
+            comm.act(ATTypes.AT_MAGIC, "$N absorbs $n's $t!", ch, skill.DamageMessage, vch, ToTypes.NotVictim);
+
+            vch.CurrentHealth = 0.GetNumberThatIsBetween(vch.CurrentHealth + damage, vch.MaximumHealth);
+            fight.update_pos(vch);
+
+            if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who.Equals(vch))
+                               || (vch.CurrentFighting != null && vch.CurrentFighting.Who.Equals(ch))))
+            {
+                int xp = ch.CurrentFighting != null
+                    ? ch.CurrentFighting.Experience
+                    : vch.CurrentFighting.Experience;
+                int xpGain = xp*damage*2/vch.MaximumHealth;
+
+                ch.GainXP(0 - xpGain);
+            }
+        }
+
+        private static int GetEighthDamage(int damage)
+        {
+            damage >>= 3;
+            return damage;
+        }
+
+        private static int GetQuarterDamage(int damage)
+        {
+            damage >>= 2;
+            return damage;
+        }
+
+        private static int GetHalfDamage(int damage)
+        {
+            damage >>= 1;
+            return damage;
+        }
+
+        private static int GetThreeQuartersDamage(int damage)
+        {
+            return (damage * 3) / 4;
         }
     }
 }

@@ -2,9 +2,8 @@
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;
-using SmaugCS.Repositories;
 
-namespace SmaugCS.Managers
+namespace SmaugCS.Repositories
 {
     public enum RepositoryTypes
     {

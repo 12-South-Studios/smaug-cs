@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Moq;
+using Ninject;
 using NUnit.Framework;
 using SmallDBConnectivity;
 using SmaugCS.Logging;
@@ -48,8 +49,8 @@ namespace SmaugCS.Ban.Tests
             var mockConnection = new Mock<IDbConnection>();
             mockConnection.Setup(x => x.BeginTransaction()).Returns(new FakeTransaction());
 
-           // _banManager = BanManager.Instance;
-            _banManager.Initialize(mockLogger.Object, mockDb.Object, mockConnection.Object);
+            var mockKernel = new Mock<IKernel>();
+            _banManager = new BanManager(mockLogger.Object, mockDb.Object, mockConnection.Object, mockKernel.Object);
         }
 
         [TearDown]

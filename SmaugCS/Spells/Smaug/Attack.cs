@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells.Smaug
@@ -14,15 +15,11 @@ namespace SmaugCS.Spells.Smaug
             CharacterInstance vch = (CharacterInstance) vo;
 
             bool saved = skill.CheckSave(level, ch, vch);
-            if (saved && Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate)
-            {
-                magic.failed_casting(skill, ch, vch, null);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(
+                saved && Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate, skill, ch,
+                CastingFunctionType.Failed, vch)) return ReturnTypes.SpellFailed;
 
-            int damage = !string.IsNullOrEmpty(skill.Dice)
-                ? magic.dice_parse(ch, level, skill.die_char)
-                : SmaugRandom.Between(1, level/2);
+            int damage = GetBaseDamage(level, ch, skill);
 
             if (saved)
             {
@@ -31,38 +28,19 @@ namespace SmaugCS.Spells.Smaug
                 switch (spellSaveType)
                 {
                     case SpellSaveEffectTypes.ThreeQuartersDamage:
-                        damage = (damage*3)/4;
+                        damage = GetThreeQuartersDamage(damage);
                         break;
                     case SpellSaveEffectTypes.HalfDamage:
-                        damage >>= 1;
+                        damage = GetHalfDamage(damage);
                         break;
                     case SpellSaveEffectTypes.QuarterDamage:
-                        damage >>= 2;
+                        damage = GetQuarterDamage(damage);
                         break;
                     case SpellSaveEffectTypes.EighthDamage:
-                        damage >>= 3;
+                        damage = GetEighthDamage(damage);
                         break;
                     case SpellSaveEffectTypes.Absorb:
-                        comm.act(ATTypes.AT_MAGIC, "$N absorbs your $t!", ch, skill.DamageMessage, vch,
-                            ToTypes.Character);
-                        comm.act(ATTypes.AT_MAGIC, "You absorb $N's $t!", vch, skill.DamageMessage, ch,
-                            ToTypes.Character);
-                        comm.act(ATTypes.AT_MAGIC, "$N absorbs $n's $t!", ch, skill.DamageMessage, vch,
-                            ToTypes.NotVictim);
-
-                        vch.CurrentHealth = 0.GetNumberThatIsBetween(vch.CurrentHealth + damage, vch.MaximumHealth);
-                        fight.update_pos(vch);
-
-                        if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who.Equals(vch))
-                                           || (vch.CurrentFighting != null && vch.CurrentFighting.Who.Equals(ch))))
-                        {
-                            int xp = ch.CurrentFighting != null
-                                ? ch.CurrentFighting.Experience
-                                : vch.CurrentFighting.Experience;
-                            int xpGain = xp*damage*2/vch.MaximumHealth;
-
-                            ch.GainXP(0 - xpGain);
-                        }
+                        AbsorbDamage(ch, skill, vch, damage);
                         return ReturnTypes.None;
                     case SpellSaveEffectTypes.Reflect:
                         return spell_attack(sn, level, vch, ch);
@@ -78,6 +56,60 @@ namespace SmaugCS.Spells.Smaug
                 retcode = AffectCharacter.spell_affectchar(sn, level, ch, vch);
 
             return retcode;
+        }
+
+        private static void AbsorbDamage(CharacterInstance ch, SkillData skill, CharacterInstance vch, int damage)
+        {
+            comm.act(ATTypes.AT_MAGIC, "$N absorbs your $t!", ch, skill.DamageMessage, vch,
+                ToTypes.Character);
+            comm.act(ATTypes.AT_MAGIC, "You absorb $N's $t!", vch, skill.DamageMessage, ch,
+                ToTypes.Character);
+            comm.act(ATTypes.AT_MAGIC, "$N absorbs $n's $t!", ch, skill.DamageMessage, vch,
+                ToTypes.NotVictim);
+
+            vch.CurrentHealth = 0.GetNumberThatIsBetween(vch.CurrentHealth + damage, vch.MaximumHealth);
+            fight.update_pos(vch);
+
+            if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who.Equals(vch))
+                               || (vch.CurrentFighting != null && vch.CurrentFighting.Who.Equals(ch))))
+            {
+                int xp = ch.CurrentFighting != null
+                    ? ch.CurrentFighting.Experience
+                    : vch.CurrentFighting.Experience;
+                int xpGain = xp*damage*2/vch.MaximumHealth;
+
+                ch.GainXP(0 - xpGain);
+            }
+        }
+
+        private static int GetEighthDamage(int damage)
+        {
+            damage >>= 3;
+            return damage;
+        }
+
+        private static int GetQuarterDamage(int damage)
+        {
+            damage >>= 2;
+            return damage;
+        }
+
+        private static int GetHalfDamage(int damage)
+        {
+            damage >>= 1;
+            return damage;
+        }
+
+        private static int GetThreeQuartersDamage(int damage)
+        {
+            return (damage*3)/4;
+        }
+
+        private static int GetBaseDamage(int level, CharacterInstance ch, SkillData skill)
+        {
+            return !string.IsNullOrEmpty(skill.Dice)
+                ? magic.dice_parse(ch, level, skill.die_char)
+                : SmaugRandom.Between(1, level/2);
         }
     }
 }

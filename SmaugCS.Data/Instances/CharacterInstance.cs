@@ -82,7 +82,7 @@ namespace SmaugCS.Data
         public int Resistance { get; set; }
         public int Susceptibility { get; set; }
         public ExtendedBitvector Attacks { get; set; }
-        public ExtendedBitvector Defenses { get; set; }
+        public int Defenses { get; set; }
         public int Speaks { get; set; }
         public int Speaking { get; set; }
         public SavingThrowData SavingThrows { get; set; }

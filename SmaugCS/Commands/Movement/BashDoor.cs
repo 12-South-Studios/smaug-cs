@@ -36,7 +36,7 @@ namespace SmaugCS.Commands.Movement
 
             int damage = (actor.MaximumHealth/20) + 10;
             fight.damage(actor, actor, damage, (int)skill.ID);
-            skills.learn_from_failure(actor, (int)skill.ID);
+            //skills.learn_from_failure(actor, (int)skill.ID);
         }
 
         private static void BashSomething(CharacterInstance actor, ExitData exit, SkillData skill, string arg)
@@ -67,7 +67,7 @@ namespace SmaugCS.Commands.Movement
 
             comm.act(ATTypes.AT_SKILL, "Crash! You bashed open the $d!", actor, null, keyword, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n bashes open the $d!", actor, null, keyword, ToTypes.Room);
-            skills.learn_from_success(actor, (int)skill.ID);
+            //skills.learn_from_success(actor, (int)skill.ID);
 
             ExitData reverseExit = exit.GetReverseExit();
             BashExit(reverseExit);

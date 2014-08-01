@@ -18,6 +18,8 @@ namespace SmaugCS.Tests
 	[TestFixture]
 	public class LuaCreateFunctionTests
 	{
+        public static LuaManager LuaMgr { get; set; }
+
 		[SetUp]
 		public void OnSetup()
 		{
@@ -26,20 +28,19 @@ namespace SmaugCS.Tests
 			
 			const string dataPath = "D://Projects//SmaugCS//trunk//data";
 
-			LuaManager.Instance.Initialize(mockLogManager.Object, dataPath);
+            LuaMgr = new LuaManager(mockLogManager.Object.LogWrapper, dataPath);
 
-			DatabaseManager dbMgr = DatabaseManager.Instance;
-			dbMgr.Initialize(mockLogManager.Object);
+			DatabaseManager dbMgr = new DatabaseManager(mockLogManager.Object);
 
-			LuaGetFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, dataPath);
-			LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, mockLogManager.Object);
+            LuaGetFunctions.InitializeReferences(LuaMgr, dbMgr, dataPath);
+            LuaCreateFunctions.InitializeReferences(LuaMgr, dbMgr, mockLogManager.Object);
 
 			var luaProxy = new LuaInterfaceProxy();
 
 			var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaCreateFunctions));
 			luaProxy.RegisterFunctions(luaFuncRepo);
 
-			LuaManager.Instance.InitializeLuaProxy(luaProxy); 
+            LuaMgr.InitializeLuaProxy(luaProxy);
 		}
 
 		#region MudProg
@@ -56,7 +57,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateMudProgTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetMudProgLuaScript());
+			LuaMgr.Proxy.DoString(GetMudProgLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<MudProgData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -80,7 +81,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateShopTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetShopLuaScript());
+			LuaMgr.Proxy.DoString(GetShopLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ShopData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -111,7 +112,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateResetTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetResetLuaScript());
+			LuaMgr.Proxy.DoString(GetResetLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ResetData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -124,7 +125,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateReset_AddReset_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetResetLuaScript());
+			LuaMgr.Proxy.DoString(GetResetLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ResetData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -150,7 +151,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateLiquid_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetLiquidLuaScript());
+			LuaMgr.Proxy.DoString(GetLiquidLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<LiquidData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -188,7 +189,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateHerb_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetHerbLuaScript());
+			LuaMgr.Proxy.DoString(GetHerbLuaScript());
 			var result = LuaCreateFunctions.GetLastObject(typeof(SkillData)).CastAs<SkillData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -224,7 +225,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateSkill_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetSkillLuaScript());
+			LuaMgr.Proxy.DoString(GetSkillLuaScript());
 			var result = LuaCreateFunctions.GetLastObject(typeof(SkillData)).CastAs<SkillData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -250,7 +251,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateSmaugAffect_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetSmaugAffectLuaScript());
+			LuaMgr.Proxy.DoString(GetSmaugAffectLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<SmaugAffect>();
 
 			Assert.That(result, Is.Not.Null);
@@ -273,7 +274,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateSpecialFunction_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetSpecFunLuaScript());
+			LuaMgr.Proxy.DoString(GetSpecFunLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<SpecialFunction>();
 
 			Assert.That(result, Is.Not.Null);
@@ -293,7 +294,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateCommand_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetCommandLuaScript());
+			LuaMgr.Proxy.DoString(GetCommandLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<CommandData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -319,7 +320,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateSocial_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetSocialLuaScript());
+			LuaMgr.Proxy.DoString(GetSocialLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<SocialData>();
 
 			Assert.That(result, Is.Not.Null); 
@@ -340,7 +341,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateSpellComponent_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetSpellCommponentLuaScript());
+			LuaMgr.Proxy.DoString(GetSpellCommponentLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<SpellComponent>();
 
 			Assert.That(result, Is.Not.Null);
@@ -373,7 +374,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClassTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			LuaMgr.Proxy.DoString(GetClassLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -388,7 +389,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClass_SetPrimaryAttribute_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			LuaMgr.Proxy.DoString(GetClassLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -398,7 +399,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClass_SetSecondaryAttribute_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			LuaMgr.Proxy.DoString(GetClassLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -408,7 +409,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClass_SetDeficientAttribute_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			LuaMgr.Proxy.DoString(GetClassLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -418,7 +419,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClass_SetType_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			LuaMgr.Proxy.DoString(GetClassLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -428,7 +429,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClass_AddSkill_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClassLuaScript());
+			LuaMgr.Proxy.DoString(GetClassLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -446,7 +447,7 @@ namespace SmaugCS.Tests
 			var script = GetClassLuaScript();
 			script += "class.this:AddSkill(\"aggressive style\", 20, 50);";
 
-			Assert.Throws<InvalidDataException>(() => LuaManager.Instance.Proxy.DoString(script));
+			Assert.Throws<InvalidDataException>(() => LuaMgr.Proxy.DoString(script));
 		}
 		#endregion
 
@@ -472,7 +473,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateRaceTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetRaceLuaScript());
+			LuaMgr.Proxy.DoString(GetRaceLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -488,7 +489,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateRace_AddWhereName_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetRaceLuaScript());
+			LuaMgr.Proxy.DoString(GetRaceLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -499,7 +500,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateRace_AddAffectedBy_Test()
 		{
-			LuaManager.Instance.Proxy.DoString(GetRaceLuaScript());
+			LuaMgr.Proxy.DoString(GetRaceLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -524,7 +525,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClanTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetClanLuaScript());
+            LuaMgr.Proxy.DoString(GetClanLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClanData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -551,7 +552,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateDeityTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetDeityLuaScript());
+			LuaMgr.Proxy.DoString(GetDeityLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<DeityData>();
 
 			Assert.That(result, Is.Not.Null);
@@ -580,7 +581,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateLanguageTest()
 		{
-			LuaManager.Instance.Proxy.DoString(GetLanguageLuaScript());
+			LuaMgr.Proxy.DoString(GetLanguageLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<Language.LanguageData>();
 
 			Assert.That(result, Is.Not.Null); 

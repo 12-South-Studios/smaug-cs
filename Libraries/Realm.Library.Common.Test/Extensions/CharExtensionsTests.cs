@@ -3,6 +3,7 @@
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [Category("Extensions")]
     public class CharExtensionsTests
     {
         [TestCase('a', true)]

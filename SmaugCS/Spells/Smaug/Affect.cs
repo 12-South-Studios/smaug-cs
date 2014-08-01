@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using System.Linq;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -34,7 +35,7 @@ namespace SmaugCS.Spells.Smaug
             if (skill.Flags.IsSet(SkillFlags.Area))
                 target.AreaSpell = true;
 
-            CharacterInstance victim = (CharacterInstance) vo;
+            CharacterInstance victim = (CharacterInstance)vo;
 
             if (!target.GroupSpell && !target.AreaSpell)
             {
@@ -46,12 +47,12 @@ namespace SmaugCS.Spells.Smaug
             {
                 if (string.IsNullOrEmpty(skill.HitCharacterMessage))
                     target.HitCharacter = true;
-                else 
+                else
                     comm.act(ATTypes.AT_MAGIC, skill.HitCharacterMessage, ch, null, null, ToTypes.Character);
 
                 if (string.IsNullOrEmpty(skill.HitRoomMessage))
                     target.HitRoom = true;
-                else 
+                else
                     comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, null, ToTypes.Room);
 
                 if (string.IsNullOrEmpty(skill.HitVictimMessage))
@@ -59,12 +60,7 @@ namespace SmaugCS.Spells.Smaug
                 victim = victim != null ? victim.CurrentRoom.Persons.First() : ch.CurrentRoom.Persons.First();
             }
 
-            if (victim == null)
-            {
-                // TODO Exception, log it
-                magic.failed_casting(skill, ch, null, null);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfNullObjectCasting(victim, skill, ch)) return ReturnTypes.SpellFailed;
 
             foreach (CharacterInstance vch in victim.CurrentRoom.Persons)
             {
@@ -86,7 +82,7 @@ namespace SmaugCS.Spells.Smaug
                     || victim.Immunity.IsSet(ResistanceTypes.Magic)
                     || victim.IsImmune(resType)
                     || skill.CheckSave(level, ch, victim)
-                    || (!skill.Flags.IsSet(SkillFlags.ReCastable) && !victim.IsAffectedBy((int) skill.ID)))
+                    || (!skill.Flags.IsSet(SkillFlags.ReCastable) && !victim.IsAffectedBy((int)skill.ID)))
                     return;
 
                 if (targetValues.HitVictim && !ch.Equals(victim))
@@ -117,50 +113,34 @@ namespace SmaugCS.Spells.Smaug
             {
                 if (retCode == ReturnTypes.VictimImmune)
                     magic.immune_casting(skill, ch, victim, null);
-                else 
+                else
                     magic.successful_casting(skill, ch, victim, null);
             }
         }
 
         private static ReturnTypes CastSingleTargetSpell(SkillData skill, int level, CharacterInstance ch, CharacterInstance victim)
         {
-            if (victim == null)
-            {
-                magic.failed_casting(skill, ch, null, null);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfNullObjectCasting(victim, skill, ch)) return ReturnTypes.SpellFailed;
 
-            if ((skill.Type != SkillTypes.Herb
-                 && victim.Immunity.IsSet(ResistanceTypes.Magic))
-                ||
-                victim.IsImmune(
-                    Realm.Library.Common.EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill))))
-            {
-                magic.immune_casting(skill, ch, victim, null);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(
+                    (skill.Type != SkillTypes.Herb && victim.Immunity.IsSet(ResistanceTypes.Magic))
+                    ||
+                    victim.IsImmune(
+                        Realm.Library.Common.EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill))),
+                    skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
-            if (victim.IsAffectedBy((int) skill.ID)
-                && !skill.Flags.IsSet(SkillFlags.Accumulative)
-                && !skill.Flags.IsSet(SkillFlags.ReCastable))
-            {
-                magic.failed_casting(skill, ch, victim, null);
+            if (CheckFunctions.CheckIfTrueCasting(
+                    victim.IsAffectedBy((int) skill.ID) && !skill.Flags.IsSet(SkillFlags.Accumulative)
+                    && !skill.Flags.IsSet(SkillFlags.ReCastable), skill, ch, CastingFunctionType.Failed, victim))
                 return ReturnTypes.SpellFailed;
-            }
 
             SmaugAffect saf = skill.Affects.FirstOrDefault();
-            if (saf != null && saf.Location == (int) ApplyTypes.StripSN
-                && !victim.IsAffectedBy(magic.dice_parse(ch, level, saf.Modifier)))
-            {
-                magic.failed_casting(skill, ch, victim, null);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(saf != null && saf.Location == (int) ApplyTypes.StripSN
+                                                  && !victim.IsAffectedBy(magic.dice_parse(ch, level, saf.Modifier)),
+                skill, ch, CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
-            if (skill.CheckSave(level, ch, victim))
-            {
-                magic.failed_casting(skill, ch, victim, null);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(skill.CheckSave(level, ch, victim), skill, ch,
+                CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
             return ReturnTypes.None;
         }

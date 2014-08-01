@@ -1,7 +1,10 @@
-﻿namespace SmaugCS.Data
+﻿using System;
+
+namespace SmaugCS.Data
 {
     public class IgnoreData
     {
-        public string name { get; set; }
+        public DateTime IgnoredOn { get; set; }
+        public string Name { get; set; }
     }
 }

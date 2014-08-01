@@ -22,7 +22,7 @@ namespace Realm.Library.Network
         /// <param name="tcpClient"></param>
         /// <param name="formatter"></param>
         [ExcludeFromCodeCoverage]
-        protected TcpClientWrapper(LogWrapper log, TcpClient tcpClient, IFormatter formatter)
+        protected TcpClientWrapper(ILogWrapper log, TcpClient tcpClient, IFormatter formatter)
         {
             Validation.IsNotNull(log, "log");
             Validation.IsNotNull(tcpClient, "tcpClient");
@@ -43,7 +43,7 @@ namespace Realm.Library.Network
         /// <summary>
         /// Gets a reference to the ILog interface
         /// </summary>
-        protected LogWrapper Log { get; private set; }
+        protected ILogWrapper Log { get; private set; }
 
         /// <summary>
         /// Gets a reference to the TcpClient attached to this object

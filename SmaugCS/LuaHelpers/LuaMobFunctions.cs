@@ -2,6 +2,7 @@
 using Realm.Library.Lua;
 
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers

@@ -1,47 +1,29 @@
-﻿using Realm.Library.Common;
+﻿using Ninject;
+using Realm.Library.Common;
+using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Managers
 {
-    public sealed class LuaManager : GameSingleton, ILuaManager
+    public sealed class LuaManager : ILuaManager
     {
-        private static LuaManager _instance;
-        private static readonly object Padlock = new object();
-
         private string _dataPath;
-        private static ILogManager _logManager;
+        private static ILogWrapper _logWrapper;
 
         public LuaVirtualMachine LUA { get; private set; }
         public LuaInterfaceProxy Proxy { get; private set; }
 
-        private LuaManager()
+        public LuaManager(ILogWrapper logWrapper, string path)
         {
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public static LuaManager Instance
-        {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new LuaManager());
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logManager"></param>
-        public void Initialize(ILogManager logManager, string path)
-        {
-            _logManager = logManager;
+            _logWrapper = logWrapper;
             _dataPath = path;
+        }
+
+        public static ILuaManager Instance
+        {
+            get { return Program.Kernel.Get<ILuaManager>(); }
         }
 
         /// <summary>

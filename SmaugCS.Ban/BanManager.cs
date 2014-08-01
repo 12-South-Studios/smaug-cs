@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Timers;
+using Ninject;
 using Realm.Library.Common;
 using SmallDBConnectivity;
 using SmaugCS.Data;
@@ -12,20 +13,22 @@ using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
 {
-    public sealed class BanManager : GameSingleton, IBanManager
+    public sealed class BanManager : IBanManager
     {
-        private static BanManager _instance;
-        private static readonly object Padlock = new object();
-
         private readonly List<BanData> _bans;
-        private ILogManager _logManager;
-        private ISmallDb _smallDb;
-        private IDbConnection _connection;
+        private readonly ILogManager _logManager;
+        private readonly ISmallDb _smallDb;
+        private readonly IDbConnection _connection;
         private readonly CommonTimer _timer;
+        private static IKernel _kernel;
 
-        [ExcludeFromCodeCoverage]
-        private BanManager()
+        public BanManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IKernel kernel)
         {
+            _logManager = logManager;
+            _smallDb = smallDb;
+            _connection = connection;
+            _kernel = kernel;
+
             _bans = new List<BanData>();
             _timer = new CommonTimer {Interval = 60000};
             _timer.Elapsed += TimerOnElapsed;
@@ -39,32 +42,14 @@ namespace SmaugCS.Ban
                 _connection.Dispose();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        [ExcludeFromCodeCoverage]
-        public static BanManager Instance
+        public static IBanManager Instance
         {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new BanManager());
-                }
-            }
+            get { return _kernel.Get<IBanManager>(); }
         }
 
         public void ClearBans()
         {
             _bans.Clear();
-        }
-
-        [ExcludeFromCodeCoverage]
-        public void Initialize(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
-        {
-            _logManager = logManager;
-            _smallDb = smallDb;
-            _connection = connection;
         }
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)

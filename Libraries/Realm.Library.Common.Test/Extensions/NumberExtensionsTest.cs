@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [Category("Extensions")]
     public class NumberExtensionsTest
     {
         [TestCase(5, 1, 10, true, true)]

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 
-// ReSharper disable CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
     public interface ILookupManager
     {
@@ -13,5 +11,9 @@ namespace SmaugCS.Data
         IEnumerable<string> GetLookups(string table);
         string GetLookup(string table, int index);
         ResistanceTypes GetResistanceType(SpellDamageTypes type);
+
+        LookupBase<CommandData, DoFunction> CommandLookup { get; }
+        LookupBase<SkillData, DoFunction> SkillLookup { get; }
+        LookupBase<SkillData, SpellFunction> SpellLookup { get; }
     }
 }

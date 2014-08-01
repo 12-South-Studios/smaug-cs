@@ -6,6 +6,7 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [Category("Extensions")]
     public class ExceptionExtensionTests
     {
         private class TestException : Exception

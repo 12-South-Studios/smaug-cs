@@ -82,6 +82,8 @@
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Types" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Boards" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Settings\Work.publish.xml" />
@@ -102,6 +104,19 @@
     <Build Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types\BanTableType.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\News.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\NewsEntries.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\BoardTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Boards.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_dbo.BoardTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Notes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\NoteVotes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\NoteVoteTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\BoardNotes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\LogTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Logs.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs\cp_AddLog.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs\cp_GetLogs.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types\LogTableType.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_dbo.LogTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

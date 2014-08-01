@@ -4,7 +4,6 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
-
 namespace SmaugCS.Tests.Extensions
 {
     [TestFixture]

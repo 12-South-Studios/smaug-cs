@@ -13,6 +13,7 @@ namespace Realm.Library.Common.Test.Extensions
     }
 
     [TestFixture]
+    [Category("Extensions")]
     public class CellExtensionsTest
     {
         private static TestCell GetTestCell() { return new TestCell(1, "test"); }

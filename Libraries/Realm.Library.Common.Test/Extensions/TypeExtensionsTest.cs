@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [Category("Extensions")]
     public static class TypeExtensionsTest
     {
         private class HelperObject

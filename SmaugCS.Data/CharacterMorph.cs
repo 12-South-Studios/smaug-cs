@@ -21,8 +21,7 @@ namespace SmaugCS.Data
 
         public Dictionary<StatisticTypes, int> Statistics { get; set; }
         public SavingThrowData SavingThrows { get; set; }
-        public short tumble { get; set; }
-
+        
         public CharacterMorph()
         {
             Statistics = new Dictionary<StatisticTypes, int>();

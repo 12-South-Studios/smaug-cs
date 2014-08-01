@@ -48,7 +48,7 @@ namespace SmaugCS.Commands
                     update.gain_condition(ch, ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
                 else if (ch.Level < LevelConstants.GetLevel("immortal"))
                     ch.CurrentMana -= _mana/2;
-                skills.learn_from_failure(ch, (int)_skill.ID);
+                //skills.learn_from_failure(ch, (int)_skill.ID);
                 return;
             }
 

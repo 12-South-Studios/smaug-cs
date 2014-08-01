@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Data;
-using SmallDBConnectivity;
 using SmaugCS.Data;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
 {
     public interface IBanManager
     {
-        void Initialize(ILogManager logManager, ISmallDb smallDb, IDbConnection connection);
-
         void LoadBans();
         void ClearBans();
 

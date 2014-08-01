@@ -7,7 +7,7 @@ using SmaugCS.Data;
 
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
-
+using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
@@ -18,7 +19,7 @@ namespace SmaugCS.Data
 
 
         public IEnumerable<int> SkillLevels { get; set; }
-        public int[] skill_adept { get; set; }
+        public IEnumerable<SkillMasteryData> SkillMasteries { get; set; }
         public int[] RaceLevel { get; set; }
         public int[] RaceAdept { get; set; }
 
@@ -70,6 +71,7 @@ namespace SmaugCS.Data
             Affects = new List<SmaugAffect>();
             Components = new List<SpellComponent>();
             Teachers = new List<string>();
+            SkillMasteries = new List<SkillMasteryData>();
         }
 
         public static int Compare(SkillData sk1, SkillData sk2)

@@ -100,7 +100,6 @@ namespace SmaugCS.SpecFuns
                         comm.act(ATTypes.AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, ToTypes.Room);
                         ch.CurrentRoom.FromRoom(ch);
                         oldRoom.ToRoom(ch);
-                        ;
                     }
                     else
                     {

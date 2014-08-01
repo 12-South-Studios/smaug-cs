@@ -20,7 +20,7 @@ namespace Realm.Library.Network
         /// <param name="tcpClient"></param>
         /// <param name="formatter"></param>
         [ExcludeFromCodeCoverage]
-        public TcpUser(LogWrapper log, TcpClient tcpClient, IFormatter formatter)
+        public TcpUser(ILogWrapper log, TcpClient tcpClient, IFormatter formatter)
             : base(log, tcpClient, formatter)
         {
             var guid = Guid.NewGuid();

@@ -6,6 +6,7 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [Category("Extensions")]
     public class StringExtensionsTest
     {
         #region ToByteArray

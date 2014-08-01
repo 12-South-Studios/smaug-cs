@@ -1,5 +1,8 @@
 ﻿using System.Timers;
+using Moq;
+using Ninject;
 using NUnit.Framework;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Tests
@@ -8,12 +11,13 @@ namespace SmaugCS.Tests
     public class TimerManagerTests
     {
         private bool _callback;
-        private static TimerManager _mgr;
+        private static ITimerManager _mgr;
 
         [SetUp]
         public void OnSetup()
         {
-            _mgr = TimerManager.Instance;
+            var mockKernel = new Mock<IKernel>();
+            _mgr = new TimerManager(mockKernel.Object);
         }
 
         private void Callback(object sender, ElapsedEventArgs elapsedEventArgs)
@@ -26,7 +30,7 @@ namespace SmaugCS.Tests
         {
             _mgr.AddTimer(200, Callback);
 
-            Assert.That(() => _callback, Is.True.After(250));
+            Assert.That(() => _callback, Is.True.After(500));
         }
 
         [Test]

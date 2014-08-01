@@ -4,6 +4,7 @@ using Realm.Library.Common;
 using Realm.Library.Lua;
 using SmaugCS.Constants;
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers

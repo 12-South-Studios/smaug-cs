@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SmaugCS.Board
 {
-    interface IBoardManager
+    public interface IBoardManager
     {
+        void LoadBoards();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
@@ -10,7 +11,9 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
+using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -19,6 +22,42 @@ namespace SmaugCS
 {
     public static class CharacterInstanceExtensions
     {
+
+        public static bool CanUseSkill(this CharacterInstance ch, int percent, int skillID)
+        {
+            SkillData skill = DatabaseManager.Instance.SKILLS.Get(skillID);
+            if (skill == null)
+            {
+                // TODO Exception, log it
+                return false;
+            }
+
+            return CanUseSkill(ch, percent, skill);
+        }
+
+        public static bool CanUseSkill(this CharacterInstance ch, int percent, SkillData skill)
+        {
+            bool check = false;
+
+            if (ch.IsNpc() && percent < 85)
+                check = true;
+            else if (!ch.IsNpc() && percent < Macros.LEARNED(ch, (int)skill.ID))
+                check = true;
+            else if (ch.CurrentMorph != null
+                     && ch.CurrentMorph.Morph != null
+                     && ch.CurrentMorph.Morph.skills.IsAnyEqual(skill.Name)
+                     && percent < 85)
+                check = true;
+
+            if (ch.CurrentMorph != null
+                && ch.CurrentMorph.Morph != null
+                && ch.CurrentMorph.Morph.no_skills.IsAnyEqual(skill.Name))
+                check = false;
+
+            return check;
+        }
+
+
         public static int GetCondition(this CharacterInstance ch, ConditionTypes condition)
         {
             return ch.PlayerData != null ? ch.PlayerData.ConditionTable[condition] : 0;
@@ -111,7 +150,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc()) return false;
 
-            TimerData timer = handler.get_timerptr(ch, TimerTypes.ASupressed);
+            TimerData timer = ch.GetTimer(TimerTypes.ASupressed);
             if (timer == null) return false;
             if (timer.Value == -1) return true;
             return timer.Count >= 1;
@@ -793,10 +832,11 @@ namespace SmaugCS
             if (ch.IsNpc())
                 return;
 
+            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
             if (add)
                 ch.PlayerData.Learned[sn] += mod;
             else
-                ch.PlayerData.Learned[sn] = (ch.PlayerData.Learned[sn] + mod).GetNumberThatIsBetween(0, Macros.GET_ADEPT(ch, sn));
+                ch.PlayerData.Learned[sn] = (ch.PlayerData.Learned[sn] + mod).GetNumberThatIsBetween(0, skill.GetMasteryLevel(ch));
         }
 
         #region Experience
@@ -1668,5 +1708,38 @@ namespace SmaugCS
             return db.ExtractedCharQueue.Any(ccd => ccd.Character == ch);
         }
 
+        #region Timer Functions
+        public static bool AddTimer(this CharacterInstance ch, TimerTypes type, int count, Action<CharacterInstance, string> fun, int value)
+        {
+            if (ch.Timers.Any(x => x.Type == type))
+                return false;
+
+            TimerData timer = new TimerData
+            {
+                Count = count,
+                Type = type,
+                Value = value,
+                Action = new DoFunction {Value = fun}
+            };
+            ch.Timers.Add(timer);
+            return true;
+        }
+
+        public static TimerData GetTimer(this CharacterInstance ch, TimerTypes type)
+        {
+            return ch.Timers.FirstOrDefault(x => x.Type == type);
+        }
+
+        public static bool RemoveTimer(this CharacterInstance ch, TimerTypes type)
+        {
+            TimerData timer = ch.GetTimer(type);
+            return timer != null && ch.Timers.Remove(timer);
+        }
+
+        public static bool RemoveTimer(this CharacterInstance ch, TimerData timer)
+        {
+            return ch.Timers.Any(x => x == timer) && ch.Timers.Remove(timer);
+        }
+        #endregion
     }
 }

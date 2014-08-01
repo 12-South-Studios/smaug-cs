@@ -5,6 +5,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Helpers;
+using SmaugCS.MudProgs.MobileProgs;
 
 
 namespace SmaugCS.Commands.Social
@@ -72,7 +73,7 @@ namespace SmaugCS.Commands.Social
                                   string.Format("{0}: {1}", ch.IsNpc() ? ch.ShortDescription : ch.Name, argument));
             }
 
-            mud_prog.mprog_speech_trigger(argument, ch);
+            SpeechProg.Execute(argument, ch);
             if (ch.CharDied())
                 return;
             mud_prog.oprog_speech_trigger(argument, ch);
