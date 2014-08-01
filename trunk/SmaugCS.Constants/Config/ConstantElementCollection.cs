@@ -2,9 +2,6 @@
 
 namespace SmaugCS.Constants.Config
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ConstantElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

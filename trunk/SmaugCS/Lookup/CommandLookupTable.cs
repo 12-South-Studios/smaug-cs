@@ -15,7 +15,7 @@ namespace SmaugCS.Lookup
         /// 
         /// </summary>
         public CommandLookupTable()
-            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?\r\n", ch)})
+            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?", ch)})
         {
             LookupTable.Add("do_say", new DoFunction {Value = Say.do_say});
 

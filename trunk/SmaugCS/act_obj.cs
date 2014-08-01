@@ -7,10 +7,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Data;
-
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -27,10 +24,10 @@ namespace SmaugCS
                 return;
             }
 
-            if (obj.magic_flags.IsSet((int)ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
+            if (obj.magic_flags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
             {
-                short timer = handler.get_timer(ch, (int)TimerTypes.PKilled);
-                if (ch.CanPKill() && timer == 0)
+                TimerData timer = ch.GetTimer(TimerTypes.PKilled);
+                if (ch.CanPKill() && timer == null)
                 {
                     if (ch.Level - obj.Value[5] > 5 || obj.Value[5] - ch.Level > 5)
                     {
@@ -38,7 +35,7 @@ namespace SmaugCS
                         return;
                     }
 
-                    obj.magic_flags.RemoveBit((int)ItemMagicFlags.PKDisarmed);
+                    obj.magic_flags.RemoveBit(ItemMagicFlags.PKDisarmed);
                     obj.Value[5] = 0;
                 }
             }

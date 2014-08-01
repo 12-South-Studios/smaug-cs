@@ -491,25 +491,25 @@ namespace SmaugCS
             {
                 if (!victim.IsNpc())
                 {
-                    if (CheckFunctions.CheckIfTrue(ch, handler.get_timer(ch, (int) TimerTypes.PKilled) > 0,
+                    if (CheckFunctions.CheckIfTrue(ch, ch.GetTimer(TimerTypes.PKilled) != null,
                         !silence ? "You have been killed in the last 5 minutes." : "")) return null;
 
-                    if (CheckFunctions.CheckIfTrue(ch, handler.get_timer(victim, (int) TimerTypes.PKilled) > 0,
+                    if (CheckFunctions.CheckIfTrue(ch, victim.GetTimer(TimerTypes.PKilled) != null,
                         !silence ? "This player has been killed in the last 5 minutes." : "")) return null;
 
-                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet(PlayerFlags.Nice) && ch != victim,
+                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet(PlayerFlags.Nice) && !Equals(ch, victim),
                         !silence ? "You are too nice to attack another player." : "")) return null;
 
                     if (victim != ch)
                     {
                         if (!silence)
                             color.send_to_char("You really shouldn't do this to another player...", ch);
-                        else if (fight.who_fighting(victim) != ch)
+                        else if (!Equals(fight.who_fighting(victim), ch))
                             return null;
                     }
                 }
 
-                if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim,
+                if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm) && Equals(ch.Master, victim),
                     !silence ? "You can't do that to your own follower." : "")) return null;
             }
 
@@ -517,7 +517,8 @@ namespace SmaugCS
             return victim;
         }
 
-        private static object TargetCharacterWithDefensiveSpell(string arg, CharacterInstance ch, bool silence, SkillData skill)
+        private static object TargetCharacterWithDefensiveSpell(string arg, CharacterInstance ch, bool silence, 
+            SkillData skill)
         {
             CharacterInstance victim;
 
@@ -535,7 +536,7 @@ namespace SmaugCS
                 SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
                 victim = fight.who_fighting(ch);
 
-            if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
+            if (CheckFunctions.CheckIfTrue(ch, Equals(ch, victim) && skill.Flags.IsSet(SkillFlags.NoSelf),
                 !silence ? "You can't cast this on yourself!" : "")) return null;
 
             return victim;
@@ -619,17 +620,14 @@ namespace SmaugCS
                         targetName = obj.Name;
                     break;
                 case TargetTypes.OffensiveCharacter:
-                    if (victim != ch)
+                    if (!Equals(victim, ch))
                     {
                         if (victim == null)
                             victim = fight.who_fighting(ch);
-                        if (victim == null || (!victim.IsNpc() && !victim.IsInArena()))
-                        {
-                            color.send_to_char("You can't do that.\r\n", ch);
-                            return ReturnTypes.None;
-                        }
+                        if (CheckFunctions.CheckIfTrue(ch, victim == null || (!victim.IsNpc() && !victim.IsInArena()),
+                            "You can't do that.")) return ReturnTypes.None;
                     }
-                    if (ch != victim && fight.is_safe(ch, victim, true))
+                    if (!Equals(ch, victim) && fight.is_safe(ch, victim, true))
                         return ReturnTypes.None;
                     vo = victim;
                     break;
@@ -637,26 +635,19 @@ namespace SmaugCS
                     if (victim == null)
                         victim = ch;
                     vo = victim;
-                    if (skill.Type != SkillTypes.Herb && victim.Immunity.IsSet((int)ResistanceTypes.Magic))
-                    {
-                        immune_casting(skill, ch, victim, null);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrueCasting(
+                        skill.Type != SkillTypes.Herb && victim.Immunity.IsSet(ResistanceTypes.Magic),
+                        skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.None;
                     break;
                 case TargetTypes.Self:
                     vo = ch;
-                    if (skill.Type != SkillTypes.Herb && ch.Immunity.IsSet((int)ResistanceTypes.Magic))
-                    {
-                        immune_casting(skill, ch, victim, null);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrueCasting(
+                            skill.Type != SkillTypes.Herb && ch.Immunity.IsSet(ResistanceTypes.Magic),
+                            skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.None;
                     break;
                 case TargetTypes.InventoryObject:
-                    if (obj == null)
-                    {
-                        color.send_to_char("You can't do that!\r\n", ch);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't do that!")) return ReturnTypes.None;
+
                     vo = obj;
                     break;
             }

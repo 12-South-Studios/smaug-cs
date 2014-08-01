@@ -4,51 +4,33 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Realm.Library.Common;
+using Ninject;
 using SmallDBConnectivity;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Board
 {
-    public sealed class BoardManager : GameSingleton
+    public sealed class BoardManager : IBoardManager
     {
-        private static BoardManager _instance;
-        private static readonly object Padlock = new object();
-
         private readonly List<BoardData> _boards;
-        private readonly List<ProjectData> _projects;
-        private ILogManager _logManager;
-        private ISmallDb _smallDb;
-        private IDbConnection _connection;
+        private readonly ILogManager _logManager;
+        private readonly ISmallDb _smallDb;
+        private readonly IDbConnection _connection;
+        private static IKernel _kernel;
 
-        [ExcludeFromCodeCoverage]
-        private BoardManager()
-        {
-            _boards = new List<BoardData>();
-            _projects = new List<ProjectData>();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        [ExcludeFromCodeCoverage]
-        public static BoardManager Instance
-        {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new BoardManager());
-                }
-            }
-        }
-
-        [ExcludeFromCodeCoverage]
-        public void Initialize(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
+        public BoardManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IKernel kernel)
         {
             _logManager = logManager;
             _smallDb = smallDb;
             _connection = connection;
+            _kernel = kernel;
+
+            _boards = new List<BoardData>();
+        }
+
+        public static IBoardManager Instance
+        {
+            get { return _kernel.Get<IBoardManager>(); }
         }
 
         [ExcludeFromCodeCoverage]

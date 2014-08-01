@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Serializers
 {
     [TestFixture]
+    [Category("Serializers")]
     public class XmlExtensionTests
     {
         [Serializable]

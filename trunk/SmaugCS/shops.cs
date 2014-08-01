@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Shops;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -17,22 +18,18 @@ namespace SmaugCS
             CharacterInstance keeper =
                 ch.CurrentRoom.Persons.FirstOrDefault(mob => mob.IsNpc() && mob.MobIndex.Shop != null);
 
-            if (keeper == null)
-            {
-                color.send_to_char("You can't do that here.\r\n", ch);
-                return null;
-            }
+            if (CheckFunctions.CheckIfNullObject(ch, keeper, "You can't do that here.")) return null;
 
             if (!ch.IsNpc())
             {
-                if (ch.Act.IsSet((int)PlayerFlags.Killer))
+                if (ch.Act.IsSet(PlayerFlags.Killer))
                     Say.do_say(keeper, "Murderers are not welcome here!");
-                else if (ch.Act.IsSet((int)PlayerFlags.Thief))
+                else if (ch.Act.IsSet(PlayerFlags.Thief))
                     Say.do_say(keeper, "Thieves are not welcome here!");
 
-                if (ch.Act.IsSet((int)PlayerFlags.Killer))
+                if (ch.Act.IsSet(PlayerFlags.Killer))
                     Shout.do_shout(keeper, string.Format("{0} the KILLER is over here!", ch.Name));
-                else if (ch.Act.IsSet((int)PlayerFlags.Thief))
+                else if (ch.Act.IsSet(PlayerFlags.Thief))
                     Shout.do_shout(keeper, string.Format("{0} the THIEF is over here!", ch.Name));
                 return null;
             }
@@ -40,9 +37,7 @@ namespace SmaugCS
             CharacterInstance whof = fight.who_fighting(keeper);
             if (whof != null)
             {
-                if (whof == ch)
-                    color.send_to_char("I don't think that's a good idea...\r\n", ch);
-                else
+                if (!CheckFunctions.CheckIfEquivalent(ch, whof, ch, "I don't think that's a good idea..."))
                     Say.do_say(keeper, "I'm too busy for that!");
 
                 return null;
@@ -78,18 +73,12 @@ namespace SmaugCS
                 }
             }
 
-            if (keeper.CurrentPosition == PositionTypes.Sleeping)
-            {
-                color.send_to_char("While they're asleep?\r\n", ch);
+            if (CheckFunctions.CheckIfTrue(ch, keeper.CurrentPosition == PositionTypes.Sleeping, "While they're asleep?"))
                 return null;
-            }
 
-            if ((int)keeper.CurrentPosition < (int)PositionTypes.Sleeping)
-            {
-                color.send_to_char("I don't think they can hear you...\r\n", ch);
-                return null;
-            }
-
+            if (CheckFunctions.CheckIfTrue(ch, (int) keeper.CurrentPosition < (int) PositionTypes.Sleeping,
+                "I don't think they can hear you...")) return null;
+                
             if (!keeper.CanSee(ch))
             {
                 Say.do_say(keeper, "I don't trade with folks I can't see.");
@@ -97,7 +86,7 @@ namespace SmaugCS
             }
 
             int speakswell = keeper.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, keeper));
-            if ((Common.SmaugRandom.Percent() % 65) > speakswell)
+            if ((SmaugRandom.Percent() % 65) > speakswell)
             {
                 string buffer;
                 if (speakswell > 60)

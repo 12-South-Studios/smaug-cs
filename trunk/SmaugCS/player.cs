@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -132,12 +134,13 @@ namespace SmaugCS
 
         public static void set_title(CharacterInstance ch, string title)
         {
-            // TODO
-        }
+            if (ch.IsNpc())
+            {
+                // TODO Exception, log it
+                return;
+            }
 
-        public static void do_title(CharacterInstance ch, string argument)
-        {
-            // TODO
+            ch.PlayerData.Title = Char.IsLetterOrDigit(title[0]) ? title.Substring(1) : title;
         }
 
         public static void do_homepage(CharacterInstance ch, string argument)

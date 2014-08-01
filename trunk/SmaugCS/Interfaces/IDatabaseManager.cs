@@ -3,14 +3,14 @@ using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;
 using SmaugCS.Logging;
+using SmaugCS.Managers;
 using SmaugCS.Repositories;
 
-namespace SmaugCS.Managers
+namespace SmaugCS.Interfaces
 {
     public interface IDatabaseManager
     {
         ILogManager LogManager { get; }
-        void Initialize(ILogManager logManager);
 
         void AddToRepository<T>(T obj) where T : Entity;
         long GenerateNewId<T>() where T : Entity;
@@ -18,6 +18,8 @@ namespace SmaugCS.Managers
         T GetEntity<T>(int id) where T : class;
         T GetEntity<T>(string name) where T : class;
         T GetEntity<T>(long id) where T : class;
+
+        GenericRepository<T> GetRepository<T>(RepositoryTypes type) where T : class;
 
         RoomRepository ROOMS { get; }
         AreaRepository AREAS { get; }

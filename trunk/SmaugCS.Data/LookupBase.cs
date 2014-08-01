@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common;
 
-namespace SmaugCS.Lookup
+namespace SmaugCS.Data
 {
     /// <summary>
     /// 

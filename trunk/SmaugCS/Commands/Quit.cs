@@ -69,9 +69,9 @@ namespace SmaugCS.Commands
                 }
             }
 
-            LogManager.Instance.Log(
+            LogManager.Instance.Info(
                 string.Format("{0} has quit (Room {1}).", ch.Name, ch.CurrentRoom != null ? ch.CurrentRoom.Vnum : -1),
-                LogTypes.Comm, ch.Trust);
+                LogTypes.Info, ch.Trust);
 
             handler.extract_char(ch, true);
         }

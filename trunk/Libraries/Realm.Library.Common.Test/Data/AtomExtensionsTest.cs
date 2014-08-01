@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 using Realm.Library.Common.Data;
 
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [ExcludeFromCodeCoverage]
+    [Category("Data")]
     public class AtomExtensionsTest
     {
         [Test]

@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[LogTypes]
+(
+	[LogTypeId] TINYINT NOT NULL,
+	[Name] VARCHAR(50) NOT NULL,
+
+	CONSTRAINT [PK_LogTypes]
+		PRIMARY KEY CLUSTERED ([LogTypeId] ASC)
+)

@@ -27,7 +27,7 @@ namespace Realm.Library.Network
         /// </summary>
         /// <param name="log"></param>
         /// <param name="repository"></param>
-        public TcpServer(LogWrapper log, ITcpUserRepository repository)
+        public TcpServer(ILogWrapper log, ITcpUserRepository repository)
         {
             Validation.IsNotNull(log, "log");
             Validation.IsNotNull(repository, "repository");
@@ -38,7 +38,7 @@ namespace Realm.Library.Network
             Log.Debug("TcpServer initialized.");
         }
 
-        private LogWrapper Log { get; set; }
+        private ILogWrapper Log { get; set; }
 
         private ITcpUserRepository Repository { get; set; }
 

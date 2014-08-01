@@ -1,31 +1,22 @@
-﻿using Realm.Library.Common;
+﻿using Ninject;
+using Realm.Library.Common;
 using SmaugCS.Data;
 
 namespace SmaugCS.Weather
 {
-    public sealed class WeatherManager : GameSingleton
+    public sealed class WeatherManager : IWeatherManager
     {
-        private static WeatherManager _instance;
-        private static readonly object Padlock = new object();
-
         public WeatherMap Weather { get; set; }
+        private static IKernel _kernel;
 
-        private WeatherManager()
+        public WeatherManager(IKernel kernel)
         {
+            _kernel = kernel;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public static WeatherManager Instance
+        public static IWeatherManager Instance
         {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new WeatherManager());
-                }
-            }
+            get { return _kernel.Get<IWeatherManager>(); }
         }
 
         public WeatherCell GetWeather(AreaData area)

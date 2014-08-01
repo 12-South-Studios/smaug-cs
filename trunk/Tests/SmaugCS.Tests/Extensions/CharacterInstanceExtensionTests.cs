@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
 

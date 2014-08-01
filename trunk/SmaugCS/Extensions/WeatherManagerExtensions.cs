@@ -13,7 +13,7 @@ namespace SmaugCS
 {
     public static class WeatherManagerExtensions
     {
-        public static void InitializeWeatherMap(this WeatherManager manager, int weatherSizeX, int weatherSizeY)
+        public static void InitializeWeatherMap(this IWeatherManager manager, int weatherSizeX, int weatherSizeY)
         {
             WeatherMap newMap = new WeatherMap(GameManager.Instance.GameTime, weatherSizeX, weatherSizeY);
             newMap.LoadMap(SystemFileTypes.StarMap, newMap.StarMap);
@@ -23,7 +23,7 @@ namespace SmaugCS
             manager.Weather = newMap;
         }
 
-        public static void WeatherMessage(this WeatherManager manager, string txt, int x, int y)
+        public static void WeatherMessage(this IWeatherManager manager, string txt, int x, int y)
         {
             IEnumerable<DescriptorData> players = db.DESCRIPTORS.Where(c => c.ConnectionStatus == ConnectionTypes.Playing
                                                                     && c.Character != null

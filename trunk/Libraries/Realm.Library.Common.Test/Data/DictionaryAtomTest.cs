@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using NUnit.Framework;
 using Realm.Library.Common.Data;
 
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
+    [Category("Data")]
     public class DictionaryAtomTest
     {
         [Test]

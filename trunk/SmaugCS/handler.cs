@@ -1132,35 +1132,6 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void add_timer(CharacterInstance ch, short type, int count, Action<CharacterInstance, string> fun, int value)
-        {
-            // TODO
-        }
-
-        public static TimerData get_timerptr(CharacterInstance ch, TimerTypes type)
-        {
-            // TODO
-            return null;
-        }
-
-        public static short get_timer(CharacterInstance ch, short type)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static void extract_timer(CharacterInstance ch, TimerData timer)
-        {
-            // TODO
-        }
-
-        public static void remove_timer(CharacterInstance ch, short type)
-        {
-            // TODO
-        }
-
-
-
         public static bool chance(CharacterInstance ch, int percent)
         {
             return (SmaugRandom.Percent() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +

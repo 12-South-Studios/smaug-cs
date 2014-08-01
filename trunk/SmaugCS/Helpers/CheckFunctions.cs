@@ -12,6 +12,7 @@ namespace SmaugCS.Helpers
     /// </summary>
     public static class CheckFunctions
     {
+        #region Check SendToChar Functions
         private static bool SendToChar(CharacterInstance actor, string message, ATTypes atType = ATTypes.AT_PLAIN)
         {
             if (atType != ATTypes.AT_PLAIN)
@@ -128,5 +129,50 @@ namespace SmaugCS.Helpers
                 return SendToChar(ch, message);
             return false;
         }
+        #endregion
+
+        #region Check Casting Functions
+
+        private static void ExecuteCastingType(CastingFunctionType castingType, SkillData skill, CharacterInstance ch,
+            CharacterInstance victim = null, ObjectInstance obj = null)
+        {
+            switch (castingType)
+            {
+                case CastingFunctionType.Success:
+                    magic.successful_casting(skill, ch, victim, obj);
+                    break;
+                case CastingFunctionType.Immune:
+                    magic.immune_casting(skill, ch, victim, obj);
+                    break;
+                default:
+                    magic.failed_casting(skill, ch, victim, obj);
+                    break;
+            }
+        }
+
+        public static bool CheckIfTrueCasting(bool value, SkillData skill, CharacterInstance ch,
+            CastingFunctionType castingType = CastingFunctionType.Failed, CharacterInstance victim = null,
+            ObjectInstance obj = null)
+        {
+            if (value)
+            {
+                ExecuteCastingType(castingType, skill, ch, victim, obj);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool CheckIfNullObjectCasting(object objToCheck, SkillData skill, CharacterInstance ch,
+            CastingFunctionType castingType = CastingFunctionType.Failed, CharacterInstance victim = null,
+            ObjectInstance obj = null)
+        {
+            if (objToCheck == null)
+            {
+                ExecuteCastingType(castingType, skill, ch, victim, obj);
+                return true;
+            }
+            return false;
+        }
+        #endregion
     }
 }

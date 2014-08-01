@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmaugCS.News
 {
-    interface INewsManager
+    public interface INewsManager
     {
     }
 }

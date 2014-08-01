@@ -1,10 +1,12 @@
 ﻿using System.Text;
+using Moq;
 using NUnit.Framework;
 using Realm.Library.Common;
+using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Data;
-
+using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
@@ -38,11 +40,15 @@ namespace SmaugCS.Tests.Repositories
         [SetUp]
         public void OnSetup()
         {
-            LuaAreaFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaRoomFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
+            LuaManager luaMgr = new LuaManager(new Mock<ILogWrapper>().Object, string.Empty);
 
-            DatabaseManager.Instance.AREAS.Clear();
-            DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Clear();
+            DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
+
+            LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr);
+            LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr);
+
+            dbMgr.AREAS.Clear();
+            dbMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Clear();
 
             var luaProxy = new LuaInterfaceProxy();
 
@@ -50,7 +56,7 @@ namespace SmaugCS.Tests.Repositories
             luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaRoomFunctions));
             luaProxy.RegisterFunctions(luaFuncRepo);
 
-            LuaManager.Instance.InitializeLuaProxy(luaProxy);
+            luaMgr.InitializeLuaProxy(luaProxy);
         }
 
         [Test]

@@ -96,15 +96,17 @@ namespace SmaugCS
             return bv;
         }
 
-        public static ExtendedBitvector GetDefenses(this MobTemplate template)
+        public static int GetDefenses(this MobTemplate template)
         {
-            ExtendedBitvector bv = new ExtendedBitvector();
+            int flags = 0;
             string[] words = template.Defenses.Split(new[] { ' ' });
+
             foreach (string word in words)
             {
-                bv.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<DefenseTypes>(word));
+                flags.SetBit((int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<DefenseTypes>(word));
             }
-            return bv;
+
+            return flags;
         }
     }
 }

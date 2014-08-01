@@ -54,38 +54,6 @@ namespace SmaugCS.Board
                 BoardId = @BoardId;";
         #endregion
 
-        #region Projects
-        public const string ProjectGetAll =
-            @"SELECT ProjectId, Name, Owner, Coder, Status, Date, Description, Taken 
-                FROM Projects;";
-
-        public const string ProjectGetNotes =
-            @"SELECT n.NoteId, n.Sender, n.DateSent, n.RecipientList, n.Subject, n.Voting, 
-                n.YesVotes, n.NoVotes, n.Abstentions, n.Text FROM ProjectNoteMap pnm 
-                JOIN Notes n ON pnm.NoteId = n.NoteId WHERE pnm.ProjectId = @ProjectId;";
-
-        public const string ProjectSave =
-            @"INSERT INTO Projects (Name, Owner, Coder, Status, Date, Description, Taken) 
-                VALUES (@Name, @Owner, @Coder, @Status, @Date, @Description, @Taken);";
-
-        public const string ProjectSaveNote =
-            @"INSERT INTO ProjectNoteMap (ProjectId, NoteId) VALUES (@ProjectId, @NoteId);";
-
-        public const string ProjectDelete =
-            @"DELETE FROM Projects WHERE ProjectId = @ProjectId;";
-
-        public const string ProjectDeleteNote =
-            @"DELETE FROM ProjectNoteMap WHERE ProjectId = @ProjectId AND NoteId = @NoteId;";
-
-        public const string ProjectDeleteNotes =
-            @"DELETE FROM ProjectNoteMap WHERE ProjectId = @ProjectId;";
-
-        public const string ProjectUpdate =
-            @"UPDATE Projects SET Name = @Name, Owner = @Owner, Coder = @Coder, Status = 
-                @Status, Date = @Date, Description = @Description, Taken = @Taken 
-                WHERE ProjectId = @ProjectId;";
-        #endregion
-
         #region Notes
         public const string NoteSave =
             @"INSERT INTO Notes (Sender, DateSent, RecipientList, Subject, Voting, 

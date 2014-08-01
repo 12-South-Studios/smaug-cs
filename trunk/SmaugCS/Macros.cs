@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -15,10 +16,11 @@ namespace SmaugCS
     {
         public static int ASSIGN_GSN(string value)
         {
-            int retVal = DatabaseManager.Instance.AddSkill(value);
+           /* int retVal = DatabaseManager.Instance.SKILLS.Add(value);
             if (retVal == -1)
                 throw new DuplicateEntryException("{0} already exists", value);
-            return retVal;
+            return retVal;*/
+            throw new NotImplementedException();
         }
 
         public static string PERS(CharacterInstance ch, CharacterInstance looker)
@@ -73,7 +75,7 @@ namespace SmaugCS
         }
         public static bool IS_VALID_SN(int sn)
         {
-            return DatabaseManager.Instance.LookupSkill(sn.ToString()) != null;
+            return DatabaseManager.Instance.SKILLS.Get(sn) != null;
         }
         public static bool IS_VALID_DISEASE(int sn)
         {
@@ -172,11 +174,6 @@ namespace SmaugCS
         public static void DamageMessage(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
         {
             fight.new_dam_message(ch, victim, dam, dt, null);
-        }
-
-        public static int GET_ADEPT(CharacterInstance ch, int sn)
-        {
-            return DatabaseManager.Instance.SKILLS.Values.ToList()[sn].skill_adept[(int)ch.CurrentClass];
         }
 
         public static int LEARNED(CharacterInstance ch, int sn)

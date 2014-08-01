@@ -1,62 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 using SmaugCS.Loaders;
 using SmaugCS.Logging;
 using SmaugCS.Objects;
 
 namespace SmaugCS.Managers
 {
-    public sealed class CalendarManager : GameSingleton
+    public sealed class CalendarManager : ICalendarManager
     {
-        private static CalendarManager _instance;
-        private static readonly object Padlock = new object();
-
         private SystemData _systemData;
         private static bool _winterFreeze;
 
-        private CalendarManager()
+        private readonly ILogManager _logManager;
+        private readonly IGameManager _gameManager;
+
+        public CalendarManager(ILogManager logManager, IGameManager gameManager)
         {
+            _logManager = logManager;
+            _gameManager = gameManager;
         }
 
-        public static CalendarManager Instance
+        public static ICalendarManager Instance
         {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new CalendarManager());
-                }
-            }
+            get { return Program.Kernel.Get<ICalendarManager>(); }
         }
 
-        public void Initialize(ILogManager logManager, IGameManager gameManager)
+        public void Initialize()
         {
-            _systemData = gameManager.SystemData;
-            logManager.Boot("Setting time and weather.");
+            _systemData = _gameManager.SystemData;
+            _logManager.Boot("Setting time and weather.");
             TimeLoader timeLoader = new TimeLoader();
             TimeInfoData timeInfo = timeLoader.LoadTimeInfo();
             if (timeInfo != null)
             {
-                gameManager.SetGameTime(timeInfo);
+                _gameManager.SetGameTime(timeInfo);
 
-                logManager.Boot("Resetting mud time based on current system time.");
+                _logManager.Boot("Resetting mud time based on current system time.");
                 long lhour = (DateTime.Now.ToFileTimeUtc() - 650336715)/
-                             (gameManager.SystemData.PulseTick/gameManager.SystemData.PulsesPerSecond);
-                gameManager.GameTime.Hour = (int)(lhour % gameManager.SystemData.HoursPerDay);
+                             (_gameManager.SystemData.PulseTick/_gameManager.SystemData.PulsesPerSecond);
+                _gameManager.GameTime.Hour = (int)(lhour % _gameManager.SystemData.HoursPerDay);
 
-                long lday = lhour / gameManager.SystemData.HoursPerDay;
-                gameManager.GameTime.Day = (int)(lday % gameManager.SystemData.DaysPerMonth);
+                long lday = lhour / _gameManager.SystemData.HoursPerDay;
+                _gameManager.GameTime.Day = (int)(lday % _gameManager.SystemData.DaysPerMonth);
 
-                long lmonth = lday / gameManager.SystemData.DaysPerMonth;
-                gameManager.GameTime.Month = (int)(lmonth % gameManager.SystemData.MonthsPerYear);
+                long lmonth = lday / _gameManager.SystemData.DaysPerMonth;
+                _gameManager.GameTime.Month = (int)(lmonth % _gameManager.SystemData.MonthsPerYear);
 
-                gameManager.GameTime.Year = (int)(lmonth % gameManager.SystemData.MonthsPerYear);
+                _gameManager.GameTime.Year = (int)(lmonth % _gameManager.SystemData.MonthsPerYear);
             }
         }
 

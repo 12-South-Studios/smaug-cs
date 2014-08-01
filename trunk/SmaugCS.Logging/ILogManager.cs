@@ -7,7 +7,7 @@ namespace SmaugCS.Logging
     {
         ILogWrapper LogWrapper { get; }
 
-        void Initialize(ILogWrapper logWrapper, string path);
+        void DatabaseFailureLog(string str, params object[] args);
 
         void Boot(string str, params object[] args);
         void Boot(Exception ex);
@@ -18,7 +18,6 @@ namespace SmaugCS.Logging
         void Error(Exception ex);
         void Error(string str, params object[] args);
 
-        void Log(string str, params object[] args);
-        void Log(LogTypes logType, int level, string fmt, params object[] args);
+        void Info(string str, params object[] args);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Logging;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -191,7 +193,37 @@ namespace SmaugCS
 
         public static void remove_portal(ObjectInstance portal)
         {
-            // TODO
+            if (portal == null)
+            {
+                // TODO Exeption, log it
+                return;
+            }
+
+            RoomTemplate fromRoom = portal.InRoom;
+            if (fromRoom == null)
+            {
+                // TODO Exception log it
+                return;
+            }
+
+            ExitData exit = fromRoom.Exits.FirstOrDefault(xit => xit.Flags.IsSet(ExitFlags.Portal));
+            if (exit == null)
+            {
+                // TODO Exception, log it
+                return;
+            }
+
+            if (exit.Direction != DirectionTypes.Portal)
+            {
+                // TODO Exception, log it
+            }
+
+            if (exit.GetDestination(DatabaseManager.Instance) == null)
+            {
+                // TODO Exception, log it
+            }
+
+            handler.extract_exit(fromRoom, exit);
         }
 
         public static void reboot_check(DateTime reset)

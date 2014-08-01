@@ -49,8 +49,8 @@ namespace SmaugCS
             ch.PreviousRoom = room;
             ch.CurrentRoom = null;
 
-            if (!ch.IsNpc() && handler.get_timer(ch, (int)TimerTypes.ShoveDrag) > 0)
-                handler.remove_timer(ch, (int)TimerTypes.ShoveDrag);
+            if (!ch.IsNpc() && ch.GetTimer(TimerTypes.ShoveDrag) != null)
+                ch.RemoveTimer(TimerTypes.ShoveDrag);
         }
 
         public static void ToRoom(this RoomTemplate room, CharacterInstance ch)
@@ -103,12 +103,12 @@ namespace SmaugCS
                 localRoom.AddAffect(affect);
 
             if (!ch.IsNpc() && localRoom.Flags.IsSet(RoomFlags.Safe)
-                && handler.get_timer(ch, (int)TimerTypes.ShoveDrag) <= 0)
-                handler.add_timer(ch, (int)TimerTypes.ShoveDrag, 10, null, 0);
+                && ch.GetTimer(TimerTypes.ShoveDrag) == null)
+                ch.AddTimer(TimerTypes.ShoveDrag, 10, null, 0);
 
             if (localRoom.Flags.IsSet(RoomFlags.Teleport) && localRoom.TeleportDelay > 0)
             {
-                if (db.TELEPORT.Exists(x => x.Room == localRoom))
+                if (db.TELEPORT.Exists(x => Equals(x.Room, localRoom)))
                     return;
 
                 db.TELEPORT.Add(new TeleportData

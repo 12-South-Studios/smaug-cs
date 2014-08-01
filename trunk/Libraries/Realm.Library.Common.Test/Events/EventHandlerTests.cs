@@ -8,6 +8,7 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Events
 {
     [TestFixture]
+    [Category("Events")]
     public class EventHandlerTests
     {
         private class FakeObject

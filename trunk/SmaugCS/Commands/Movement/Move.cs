@@ -2,11 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-using SmaugCS.Data;
-
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -45,7 +41,7 @@ namespace SmaugCS.Commands.Movement
 #if DEBUG
             if (exit != null)
             {
-                LogManager.Instance.Log("{0} to door {1}", ch.Name, pexit.Direction);
+                LogManager.Instance.Info("{0} to door {1}", ch.Name, pexit.Direction);
             }
 #endif
 

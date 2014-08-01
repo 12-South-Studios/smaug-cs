@@ -14,7 +14,7 @@ namespace SmaugCS.Lookup
         /// 
         /// </summary>
         public SkillLookupTable()
-            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?\r\n", ch)})
+            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?", ch)})
         {
         }
 

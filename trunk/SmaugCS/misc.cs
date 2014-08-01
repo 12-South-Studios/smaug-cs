@@ -1,6 +1,4 @@
-﻿using SmaugCS.Common;
-using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
 

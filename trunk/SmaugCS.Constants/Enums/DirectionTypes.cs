@@ -15,6 +15,7 @@ namespace SmaugCS.Constants.Enums
         Northwest,
         Southeast,
         Southwest,
-        Somewhere
+        Somewhere,
+        Portal
     }
 }

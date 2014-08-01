@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells.Smaug
@@ -25,11 +26,7 @@ namespace SmaugCS.Spells.Smaug
             }
 
             ObjectTemplate oi = DatabaseManager.Instance.OBJECT_INDEXES.Get(id);
-            if (oi == null)
-            {
-                magic.failed_casting(skill, ch, null, null);
-                return ReturnTypes.None;
-            }
+            if (CheckFunctions.CheckIfNullObjectCasting(oi, skill, ch)) return ReturnTypes.None;
 
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(oi);
             obj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 0;

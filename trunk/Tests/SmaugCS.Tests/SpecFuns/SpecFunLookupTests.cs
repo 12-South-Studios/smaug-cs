@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
 using SmaugCS.SpecFuns;

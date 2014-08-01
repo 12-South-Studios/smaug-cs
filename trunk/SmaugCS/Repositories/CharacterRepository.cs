@@ -83,7 +83,7 @@ namespace SmaugCS.Repositories
             mob.Immunity = mobParent.GetImmunity();
             mob.Susceptibility = mobParent.GetSusceptibility();
             mob.Attacks = new ExtendedBitvector(mobParent.GetAttacks());
-            mob.Defenses = new ExtendedBitvector(mobParent.GetDefenses());
+            mob.Defenses = mobParent.GetDefenses();
             mob.NumberOfAttacks = mobParent.NumberOfAttacks;
             //mob.Speaks = build.get_langflag(mobParent.Speaks);
             //mob.Speaking = build.get_langflag(mobParent.Speaking);

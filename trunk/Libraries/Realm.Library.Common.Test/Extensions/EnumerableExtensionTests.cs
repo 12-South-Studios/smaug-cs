@@ -4,11 +4,12 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [Category("Extensions")]
     public class EnumerableExtensionTests
     {
         private static IEnumerable<int> GetEnumerableIntegerList()
         {
-            return new List<int>() { 5, 10, 15, 20, 25 };
+            return new List<int> { 5, 10, 15, 20, 25 };
         }
 
         private class Fake

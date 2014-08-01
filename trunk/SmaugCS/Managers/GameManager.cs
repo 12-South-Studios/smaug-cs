@@ -1,30 +1,21 @@
-﻿using Realm.Library.Common;
+﻿using Ninject;
 using Realm.Library.NCalcExt;
 using SmaugCS.Data;
-using SmaugCS.Data;
+using SmaugCS.Interfaces;
 
 namespace SmaugCS.Managers
 {
-    public sealed class GameManager : GameSingleton, IGameManager
+    public sealed class GameManager : IGameManager
     {
-        private static GameManager _instance;
-        private static readonly object Padlock = new object();
-
-        private GameManager()
+        public GameManager()
         {
             ExpParser = new ExpressionParser(ExpressionTableInitializer.GetExpressionTable());
             SystemData = new SystemData();
         }
 
-        public static GameManager Instance
+        public static IGameManager Instance
         {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new GameManager());
-                }
-            }
+            get { return Program.Kernel.Get<IGameManager>(); }
         }
 
         public SystemData SystemData { get; private set; }
@@ -39,11 +30,6 @@ namespace SmaugCS.Managers
         public ExpressionParser ExpParser { get; private set; }
 
         public static CharacterInstance CurrentCharacter { get; set; }
-
-        public void Initialize(bool p)
-        {
-
-        }
 
         public void DoLoop()
         {

@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ninject;
 using Realm.Library.Common;
+using Realm.Library.Common.Logging;
 using SmaugCS.Attributes;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Repositories;
 
 namespace SmaugCS.Managers
 {
-    public sealed class DatabaseManager : GameSingleton, IDatabaseManager
+    public sealed class DatabaseManager : IDatabaseManager
     {
-        private static DatabaseManager _instance;
-        private static readonly object Padlock = new object();
-
         private readonly Dictionary<RepositoryTypes, object> _repositories;
         public ILogManager LogManager { get; private set; }
 
-        private DatabaseManager()
+        public DatabaseManager(ILogManager logManager)
         {
+            LogManager = logManager;
             _repositories = new Dictionary<RepositoryTypes, object>();
             foreach (RepositoryTypes repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
@@ -32,24 +33,9 @@ namespace SmaugCS.Managers
             }
         }
 
-        public static DatabaseManager Instance
+        public static IDatabaseManager Instance
         {
-            get
-            {
-                lock (Padlock)
-                {
-                    return _instance ?? (_instance = new DatabaseManager());
-                }
-            }
-        }
-
-        /// <summary>
-        /// Initializes the singleton with injected values
-        /// </summary>
-        /// <param name="logManager"></param>
-        public void Initialize(ILogManager logManager)
-        {
-            LogManager = logManager;
+            get { return Program.Kernel.Get<IDatabaseManager>(); }
         }
 
         /// <summary>

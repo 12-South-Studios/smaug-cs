@@ -59,9 +59,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Build\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SQL_CE</DefineConstants>
-    <DocumentationFile>..\Build\Debug\SmaugCS.XML</DocumentationFile>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -82,7 +83,12 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="LuaInterface">
+    <Reference Include="lua51, Version=0.0.0.0, Culture=neutral, PublicKeyToken=1e1fb15b02227b8a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\lua51.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\LuaInterface.dll</HintPath>
     </Reference>
     <Reference Include="NCalc">
@@ -95,13 +101,20 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="VikingErik.LuaInterface">
+      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\TypeMapAttribute.cs" />
     <Compile Include="Commands\Ban\Ban.cs" />
     <Compile Include="Commands\Movement\PullOrPush.cs" />
+    <Compile Include="Commands\Player\Title.cs" />
     <Compile Include="Exceptions\ObjectNotFoundException.cs" />
+    <Compile Include="Extensions\MudProgExtensions.cs" />
     <Compile Include="Extensions\SkillDataExtensions.cs" />
+    <Compile Include="Helpers\CastingFunctionType.cs" />
     <Compile Include="Helpers\CheckFunctions.cs" />
     <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="Exceptions\CharacterDiedException.cs" />
@@ -202,15 +215,16 @@
     <Compile Include="Constants\GameConstants.cs" />
     <Compile Include="Constants\LevelConstants.cs" />
     <Compile Include="Helpers\HelperFunctions.cs" />
+    <Compile Include="Interfaces\IInitializer.cs" />
     <Compile Include="LoaderInitializer.cs" />
     <Compile Include="Loaders\ClassLoader.cs" />
     <Compile Include="Loaders\RaceLoader.cs" />
     <Compile Include="Lookup\CommandLookupTable.cs" />
-    <Compile Include="Lookup\LookupBase.cs" />
     <Compile Include="Lookup\SkillLookupTable.cs" />
     <Compile Include="Lookup\SpellLookupTable.cs" />
     <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
     <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaInitializer.cs" />
     <Compile Include="LuaHelpers\LuaLookupFunctions.cs" />
     <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
     <Compile Include="LuaHelpers\LuaMobFunctions.cs" />
@@ -218,11 +232,26 @@
     <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
     <Compile Include="Managers\CalendarManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
-    <Compile Include="Managers\IDatabaseManager.cs" />
-    <Compile Include="Managers\IGameManager.cs" />
+    <Compile Include="Interfaces\ICalendarManager.cs" />
+    <Compile Include="Interfaces\IDatabaseManager.cs" />
+    <Compile Include="Interfaces\IGameManager.cs" />
+    <Compile Include="Interfaces\ITimerManager.cs" />
     <Compile Include="Managers\LuaManager.cs" />
-    <Compile Include="Managers\RepositoryTypes.cs" />
+    <Compile Include="Repositories\RepositoryTypes.cs" />
+    <Compile Include="MudProgs\MobileProgs\DeathProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\FightProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\HitPercentProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\SpeechProg.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Skills\Ability.cs" />
+    <Compile Include="Skills\Disarm.cs" />
+    <Compile Include="Skills\Dodge.cs" />
+    <Compile Include="Skills\Grip.cs" />
+    <Compile Include="Skills\Skill.cs" />
+    <Compile Include="Skills\Parry.cs" />
+    <Compile Include="Skills\Trip.cs" />
+    <Compile Include="Skills\Tumble.cs" />
+    <Compile Include="SmaugModule.cs" />
     <Compile Include="SpecFuns\BreathAcid.cs" />
     <Compile Include="SpecFuns\BreathAny.cs" />
     <Compile Include="SpecFuns\BreathFire.cs" />
@@ -719,6 +748,7 @@
     <Compile Include="Spells\Ventriloquate.cs" />
     <Compile Include="Spells\Life\Weaken.cs" />
     <Compile Include="Spells\WordOfRecall.cs" />
+    <Compile Include="SqlConnectionProvider.cs" />
     <Compile Include="SqlQueries.cs" />
     <Compile Include="StringExt.cs" />
     <Compile Include="Loaders\Obsolete\AreaLoader.cs" />
@@ -940,6 +970,10 @@
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
       <Name>SmaugCS.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.News\SmaugCS.News.csproj">
+      <Project>{6f43c8d6-b168-4e77-b12a-ebb49dce8019}</Project>
+      <Name>SmaugCS.News</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj">
       <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>
       <Name>SmaugCS.Weather</Name>
@@ -967,14 +1001,15 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MudProgs\ObjectProgs\" />
+    <Folder Include="MudProgs\RoomProgs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
     <PostBuildEvent>
-    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
-    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

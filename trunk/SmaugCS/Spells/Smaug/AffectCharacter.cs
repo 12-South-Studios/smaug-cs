@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
@@ -14,7 +10,7 @@ namespace SmaugCS.Spells.Smaug
         public static ReturnTypes spell_affectchar(int sn, int level, CharacterInstance ch, object vo)
         {
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
-            CharacterInstance victim = (CharacterInstance) vo;
+            CharacterInstance victim = (CharacterInstance)vo;
 
             if (skill.Flags.IsSet(SkillFlags.ReCastable))
                 victim.StripAffects(sn);
@@ -42,13 +38,11 @@ namespace SmaugCS.Spells.Smaug
                     victim = ch;
                 }
                 else
-                    victim = (CharacterInstance) vo;
+                    victim = (CharacterInstance)vo;
 
                 // TODO Something with smaug bitvectors
-
-                
             }
-            
+
             fight.update_pos(victim);
             return ReturnTypes.None;
         }

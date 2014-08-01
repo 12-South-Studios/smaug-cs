@@ -12,9 +12,9 @@ namespace SmaugCS
         public static void Log(this LogManager logManager, string str, LogTypes logType, int level)
         {
             string buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
-            logManager.Log(str);
+            logManager.Info(str);
 
-            switch (logType)
+            /*switch (logType)
             {
                 case LogTypes.Build:
                     ChatManager.to_channel(buffer, ChannelTypes.Build, "Build", level);
@@ -30,7 +30,7 @@ namespace SmaugCS
                 default:
                     ChatManager.to_channel(buffer, ChannelTypes.Log, "Log", level);
                     break;
-            }
+            }*/
         }
     }
 }

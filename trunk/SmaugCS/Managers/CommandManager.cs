@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 
 namespace SmaugCS.Managers
 {

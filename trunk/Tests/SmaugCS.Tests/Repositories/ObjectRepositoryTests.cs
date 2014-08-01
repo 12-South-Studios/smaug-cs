@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Text;
+using Moq;
+using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
+using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
+using SmallDBConnectivity;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
@@ -50,10 +54,21 @@ namespace SmaugCS.Tests.Repositories
         [SetUp]
         public void OnSetup()
         {
-            LuaObjectFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance);
-            LuaCreateFunctions.InitializeReferences(LuaManager.Instance, DatabaseManager.Instance, LogManager.Instance);
+            var mockKernel = new Mock<IKernel>();
+            var mockDb = new Mock<ISmallDb>();
+            var mockCnx = new Mock<IDbConnection>();
+            var mockLogger = new Mock<ILogWrapper>();
 
-            DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Clear();
+            LuaManager luaMgr = new LuaManager(mockLogger.Object, string.Empty);
+            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockDb.Object, mockCnx.Object, 500);
+
+            var mockLogManager = new Mock<ILogManager>();
+            DatabaseManager dbMgr = new DatabaseManager(mockLogManager.Object);
+
+            LuaObjectFunctions.InitializeReferences(luaMgr, dbMgr);
+            LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
+
+            dbMgr.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Clear();
 
             _proxy = new LuaInterfaceProxy();
 
@@ -61,7 +76,7 @@ namespace SmaugCS.Tests.Repositories
             luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));
             _proxy.RegisterFunctions(luaFuncRepo);
 
-            LuaManager.Instance.InitializeLuaProxy(_proxy);
+            luaMgr.InitializeLuaProxy(_proxy);
         }
 
         [Test]

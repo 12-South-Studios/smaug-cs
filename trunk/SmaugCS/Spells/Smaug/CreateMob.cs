@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells.Smaug
@@ -26,18 +27,10 @@ namespace SmaugCS.Spells.Smaug
             }
 
             MobTemplate mi = DatabaseManager.Instance.MOBILE_INDEXES.Get(id);
-            if (mi == null)
-            {
-                magic.failed_casting(skill, ch, null, null);
-                return ReturnTypes.None;
-            }
+            if (CheckFunctions.CheckIfNullObjectCasting(mi, skill, ch)) return ReturnTypes.None;
 
             CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(mi);
-            if (mob == null)
-            {
-                magic.failed_casting(skill, ch, null, null);
-                return ReturnTypes.None;
-            }
+            if (CheckFunctions.CheckIfNullObjectCasting(mob, skill, ch)) return ReturnTypes.None;
 
             mob.Level = lvl.GetLowestOfTwoNumbers(!string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : mob.Level);
             mob.ArmorClass = mob.Level.Interpolate(100, -100);

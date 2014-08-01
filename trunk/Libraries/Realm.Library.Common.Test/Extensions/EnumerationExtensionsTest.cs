@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
+    [NUnit.Framework.Category("Extensions")]
     public class EnumerationExtensionsTest
     {
         public enum EnumTest

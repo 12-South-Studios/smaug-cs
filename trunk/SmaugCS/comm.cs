@@ -7,9 +7,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-using SmaugCS.Data;
-
 using SmaugCS.Logging;
 
 namespace SmaugCS
@@ -425,7 +422,7 @@ namespace SmaugCS
         {
             act_wiz.echo_to_all(ATTypes.AT_IMMORT, "MUD shutting down by system operator NOW!!", (int)EchoTypes.All);
             db.shutdown_mud("MUD shutdown by system operator");
-            LogManager.Instance.Log("MUD shutdown by system operator");
+            LogManager.Instance.Info("MUD shutdown by system operator");
 
             Thread.Sleep(5000);
 

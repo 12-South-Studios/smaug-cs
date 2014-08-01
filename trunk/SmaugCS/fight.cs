@@ -12,8 +12,11 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Exceptions;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs.MobileProgs;
 using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS
@@ -113,7 +116,7 @@ namespace SmaugCS
                             }
                         }
 
-                        if ((int)paf.Type == DatabaseManager.Instance.LookupSkill("possess"))
+                        if ((int)paf.Type == (int)DatabaseManager.Instance.GetEntity<SkillData>("possess").ID)
                         {
                             ch.Descriptor.Character = ch.Descriptor.Original;
                             ch.Descriptor.Original = null;
@@ -141,7 +144,7 @@ namespace SmaugCS
                 retCode = ReturnTypes.None;
                 if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe))
                 {
-                    LogManager.Instance.Log("{0} fighting {1} in a SAFE room.", ch.Name, victim.Name);
+                    LogManager.Instance.Info("{0} fighting {1} in a SAFE room.", ch.Name, victim.Name);
                     stop_fighting(ch, true);
                 }
                 else if (ch.IsAwake() && ch.CurrentRoom == victim.CurrentRoom)
@@ -163,10 +166,10 @@ namespace SmaugCS
                 mud_prog.rprog_rfight_trigger(ch);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
-                mud_prog.mprog_hitprcnt_trigger(ch, victim);
+                HitPercentProg.Execute(ch, victim);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
-                mud_prog.mprog_fight_trigger(ch, victim);
+                FightProg.Execute(ch, victim);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
 
@@ -243,7 +246,7 @@ namespace SmaugCS
                     ch.SubState = tempsub;
                     break;
             }
-            handler.extract_timer(ch, timer);
+            ch.RemoveTimer(timer);
         }
 
         /// <summary>
@@ -259,16 +262,16 @@ namespace SmaugCS
             if (!ch.IsNpc() && !victim.IsNpc())
             {
                 if (ch.Act.IsSet((int)PlayerFlags.Nice))
-                    return (int)ReturnTypes.None;
+                    return ReturnTypes.None;
 
-                handler.add_timer(ch, (int)TimerTypes.RecentFight, 11, null, 0);
-                handler.add_timer(victim, (int)TimerTypes.RecentFight, 11, null, 0);
+                ch.AddTimer(TimerTypes.RecentFight, 11, null, 0);
+                victim.AddTimer(TimerTypes.RecentFight, 11, null, 0);
             }
 
             if (ch.IsAttackSuppressed())
-                return (int)ReturnTypes.None;
+                return ReturnTypes.None;
 
-            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.NoAttack))
+            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.NoAttack))
                 return 0;
 
             // TODO finish this
@@ -286,7 +289,7 @@ namespace SmaugCS
 
             DamageTypes damageType = Realm.Library.Common.EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]);
             LookupSkillAttribute attrib = damageType.GetAttribute<LookupSkillAttribute>();
-            sn = DatabaseManager.Instance.LookupSkill(attrib.Skill);
+            sn = (int)DatabaseManager.Instance.GetEntity<SkillData>(attrib.Skill).ID;
 
             if (sn != -1)
                 bonus = (Macros.LEARNED(ch, sn) - 50) / 10;
@@ -464,8 +467,12 @@ namespace SmaugCS
             if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_00 - victimArmorClass))
             {
                 // Miss!
-                if (sn != -1)
-                    skills.learn_from_failure(ch, sn);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
+                if (skill == null)
+                    throw new ObjectNotFoundException("Skill 'poison' not found");
+
+                // TODO Do something with poison skill
+                skill.LearnFromFailure(ch);
                 fight.damage(ch, victim, 0, damageType);
                 // TODO Tail_chain?
                 return ReturnTypes.None;
@@ -484,17 +491,21 @@ namespace SmaugCS
             damage = ModifyDamageByFightingStyle(victim, damage);
             damage = ModifyDamageByFightingStyle(ch, damage);
 
-            if (!ch.IsNpc() && ch.PlayerData.Learned[DatabaseManager.Instance.LookupSkill("enhanced damage")] > 0)
+            SkillData dmgSkill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
+            if (dmgSkill == null)
+                throw new ObjectNotFoundException("Skill 'enhanced damage' not found");
+
+            if (!ch.IsNpc() && ch.PlayerData.Learned[(int)dmgSkill.ID] > 0)
             {
-                damage += damage * Macros.LEARNED(ch, DatabaseManager.Instance.LookupSkill("enhanced damage") / 120);
-                skills.learn_from_success(ch, DatabaseManager.Instance.LookupSkill("enhanced damage"));
+                damage += damage * Macros.LEARNED(ch, (int)dmgSkill.ID);
+                dmgSkill.LearnFromSuccess(ch);
             }
 
             if (!victim.IsAwake())
                 damage *= 2;
-            if (dt == DatabaseManager.Instance.LookupSkill("backstab"))
+            if (dt == (int)DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID)
                 damage *= (2 + (ch.Level - (victim.Level / 4)).GetNumberThatIsBetween(2, 30) / 8);
-            if (dt == DatabaseManager.Instance.LookupSkill("circle"))
+            if (dt == (int)DatabaseManager.Instance.GetEntity<SkillData>("circle").ID)
                 damage *= (2 + (ch.Level - (victim.Level / 4)).GetNumberThatIsBetween(2, 30) / 16);
             if (damage <= 0)
                 damage = 1;
@@ -548,10 +559,10 @@ namespace SmaugCS
 
             if (sn != -1)
             {
-                if (damage > 0)
-                    skills.learn_from_success(ch, sn);
-                else
-                    skills.learn_from_failure(ch, sn);
+                //if (damage > 0)
+                //    skills.learn_from_success(ch, sn);
+                //else
+                //    skills.learn_from_failure(ch, sn);
             }
 
             // immune to damage
@@ -621,31 +632,31 @@ namespace SmaugCS
             // Magic shields that retaliate
             if (victim.IsAffected(AffectedByTypes.FireShield)
                 && !ch.IsAffected(AffectedByTypes.FireShield))
-                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("flare"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug((int)DatabaseManager.Instance.GetEntity<SkillData>("flare").ID, off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.IceShield)
                 && !ch.IsAffected(AffectedByTypes.IceShield))
-                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("iceshard"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug((int)DatabaseManager.Instance.GetEntity<SkillData>("iceshard").ID, off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.ShockShield)
             && !ch.IsAffected(AffectedByTypes.ShockShield))
-                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("torrent"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug((int)DatabaseManager.Instance.GetEntity<SkillData>("torrent").ID, off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.AcidMist)
             && !ch.IsAffected(AffectedByTypes.AcidMist))
-                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("acidshot"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug((int)DatabaseManager.Instance.GetEntity<SkillData>("acidshot").ID, off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.VenomShield)
             && !ch.IsAffected(AffectedByTypes.VenomShield))
-                retcode = Smaug.spell_smaug(DatabaseManager.Instance.LookupSkill("venomshot"), off_shld_lvl(victim, ch), victim, ch);
+                retcode = Smaug.spell_smaug((int)DatabaseManager.Instance.GetEntity<SkillData>("venomshot").ID, off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
@@ -746,8 +757,8 @@ namespace SmaugCS
         private static ReturnTypes ProjectileMissed(CharacterInstance ch, int proficiencySkillNumber,
                                                    ObjectInstance projectile, CharacterInstance victim, int dt)
         {
-            if (proficiencySkillNumber != -1)
-                skills.learn_from_failure(ch, proficiencySkillNumber);
+           // if (proficiencySkillNumber != -1)
+                //skills.learn_from_failure(ch, proficiencySkillNumber);
 
             if (SmaugRandom.Percent() < 50)
                 handler.extract_obj(projectile);
@@ -780,7 +791,7 @@ namespace SmaugCS
                 if (ch.PlayerData.Learned[skill.ID] > 0)
                 {
                     damage += damage * Macros.LEARNED(ch, (int)skill.ID);
-                    skills.learn_from_success(ch, (int)skill.ID);
+                   // skills.learn_from_success(ch, (int)skill.ID);
                 }
             }
 
@@ -925,7 +936,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (handler.get_timer(victim, (int)TimerTypes.PKilled) > 0)
+            if (victim.GetTimer(TimerTypes.PKilled) != null)
             {
                 if (show_messg)
                 {
@@ -935,7 +946,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (handler.get_timer(ch, (int)TimerTypes.PKilled) > 0)
+            if (ch.GetTimer(TimerTypes.PKilled) != null)
             {
                 if (show_messg)
                 {
@@ -1111,7 +1122,7 @@ namespace SmaugCS
                     victim.PlayerData.PvPDeaths++;
                     victim.AdjustFavor(11, 1);
                     ch.AdjustFavor(2, 1);
-                    handler.add_timer(victim, (short)TimerTypes.PKilled, 115, null, 0);
+                    victim.AddTimer(TimerTypes.PKilled, 115, null, 0);
                     Macros.WAIT_STATE(victim, 3 * GameManager.Instance.SystemData.PulseViolence);
                     return;
                 }
@@ -1482,7 +1493,7 @@ namespace SmaugCS
                 return raw_kill(ch, victim);
             }
 
-            mud_prog.mprog_death_trigger(ch, victim);
+            DeathProg.Execute(ch, victim);
             if (victim.CharDied())
                 return null;
 

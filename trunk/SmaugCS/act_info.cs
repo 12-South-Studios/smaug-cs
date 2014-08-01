@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Realm.Library.Common;
-using SmaugCS.Commands;
-using SmaugCS.Commands.Skills;
-using SmaugCS.Commands.Skills.Thief;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-
+using SmaugCS.Exceptions;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 using SmaugCS.Constants;
@@ -507,10 +503,10 @@ namespace SmaugCS
             else
                 buffer += Macros.PERS(victim, ch);
 
-            if (!victim.IsNpc() && !ch.Act.IsSet((int)PlayerFlags.Brief))
+            if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
                 buffer += victim.PlayerData.Title;
 
-            TimerData timer = handler.get_timerptr(ch, TimerTypes.DoFunction);
+            TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
             if (timer != null)
             {
                 object[] attributes = timer.Action.Value.Method.GetCustomAttributes(typeof (DescriptorAttribute), false);
@@ -741,14 +737,18 @@ namespace SmaugCS
                                 DatabaseManager.Instance.GetClass(victim.CurrentClass).Name);
             }
 
-            if (SmaugRandom.Percent() < Macros.LEARNED(ch, 0)) // TODO: gsn_peek
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("peek");
+            if (skill == null)
+                throw new ObjectNotFoundException("Skill 'peek' not found");
+
+            if (SmaugRandom.Percent() < Macros.LEARNED(ch, (int) skill.ID))
             {
                 color.ch_printf(ch, "\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
                 show_list_to_char(victim.Carrying, ch, true, true);
-                skills.learn_from_success(ch, 0);    // TODO gsn_peek
+                skill.LearnFromSuccess(ch);
             }
-            else if (ch.PlayerData.Learned[0] > 0)  // TODO gsn_peek
-                skills.learn_from_failure(ch, 0);   // TODO gsn_peek
+            else if (ch.PlayerData.Learned[0] > (int)skill.ID)
+                skill.LearnFromFailure(ch);
         }
 
         public static void show_char_to_char(IEnumerable<CharacterInstance> list, CharacterInstance ch)

@@ -16,11 +16,7 @@ namespace SmaugCS.Spells.Smaug
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
             WeatherCell cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
-            if (obj == null)
-            {
-                magic.failed_casting(skill, ch, null, null);
-                return ReturnTypes.None;
-            }
+            if (CheckFunctions.CheckIfNullObjectCasting(obj, skill, ch)) return ReturnTypes.None;
 
             switch (Macros.SPELL_ACTION(skill))
             {
@@ -37,11 +33,10 @@ namespace SmaugCS.Spells.Smaug
                         (obj.ItemType == ItemTypes.Food || obj.ItemType == ItemTypes.Cook ||
                          obj.ItemType == ItemTypes.DrinkContainer))
                         return PurifySpellAction(skill, ch, obj);
-                    if (Macros.SPELL_CLASS(skill) != (int) SpellClassTypes.None)
-                    {
-                        magic.failed_casting(skill, ch, null, obj);
-                        return ReturnTypes.None;
-                    }
+
+                    if (CheckFunctions.CheckIfTrueCasting(Macros.SPELL_CLASS(skill) != (int) SpellClassTypes.None, skill,
+                        ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
+
                     return CloneObjectSpellAction(skill, level, ch, obj);
                 case (int)SpellActTypes.Obscure:
                     return ObscureSpellAction(skill, level, ch, obj);
@@ -77,27 +72,19 @@ namespace SmaugCS.Spells.Smaug
             switch (Macros.SPELL_POWER(skill))
             {
                 case (int)SpellPowerTypes.Minor:
-                    if ((ch.Level - obj.Level < 20) || (obj.Cost > (ch.Level*ch.GetCurrentIntelligence()/5)))
-                    {
-                        magic.failed_casting(skill, ch, null, obj);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrueCasting(
+                            (ch.Level - obj.Level < 20) || (obj.Cost > (ch.Level*ch.GetCurrentIntelligence()/5)),
+                            skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
                 case (int)SpellPowerTypes.Greater:
-                    if ((ch.Level - obj.Level < 5) ||
-                        (obj.Cost > (ch.Level*10*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom())))
-                    {
-                        magic.failed_casting(skill, ch, null, obj);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 5) ||
+                        (obj.Cost > (ch.Level*10*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom())),
+                        skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
                 case (int)SpellPowerTypes.Major:
-                    if ((ch.Level - obj.Level < 0) ||
-                        (obj.Cost > (ch.Level*50*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom())))
-                    {
-                        magic.failed_casting(skill, ch, null, obj);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 0) ||
+                        (obj.Cost > (ch.Level * 50 * ch.GetCurrentIntelligence() * ch.GetCurrentWisdom())),
+                        skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
 
                     ObjectInstance clonedObj = null;    // TODO Clone ObjectInstance
                     clonedObj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 0;
@@ -105,12 +92,9 @@ namespace SmaugCS.Spells.Smaug
                     magic.successful_casting(skill, ch, null, obj);
                     break;
                 default:
-                    if ((ch.Level - obj.Level < 10) ||
-                        (obj.Cost > ch.Level*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom()))
-                    {
-                        magic.failed_casting(skill, ch, null, obj);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 10) ||
+                        (obj.Cost > ch.Level * ch.GetCurrentIntelligence() * ch.GetCurrentWisdom()),
+                        skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
             }
 
@@ -167,16 +151,12 @@ namespace SmaugCS.Spells.Smaug
             return ReturnTypes.None;
         }
 
-
         private static ReturnTypes ObscureSpellAction(SkillData skill, int level, CharacterInstance ch, ObjectInstance obj)
         {
             int percent = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 20;
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible)
-                || handler.chance(ch, percent))
-            {
-                magic.failed_casting(skill, ch, null, null);
+            if (CheckFunctions.CheckIfTrueCasting(
+                    obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || handler.chance(ch, percent), skill, ch))
                 return ReturnTypes.SpellFailed;
-            }
 
             magic.successful_casting(skill, ch, null, obj);
             obj.ExtraFlags.SetBit(ItemExtraFlags.Invisible);
@@ -187,18 +167,16 @@ namespace SmaugCS.Spells.Smaug
         {
             if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison)
             {
-                if (obj.ItemType == ItemTypes.DrinkContainer
-                    || obj.ItemType == ItemTypes.Food
-                    || obj.ItemType == ItemTypes.Cook)
-                {
-                    if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.Cook && obj.Value[2] == 0,
-                        "It looks undercooked.")) return ReturnTypes.None;
-                    if (CheckFunctions.CheckIfTrue(ch, obj.Value[3] != 0, "You smell poisonous fumes."))
-                        return ReturnTypes.None;
-                    color.send_to_char("It looks very delicious.", ch);
-                }
-                else 
-                    color.send_to_char("It doesn't look poisoned.", ch);
+                if (CheckFunctions.CheckIfTrue(ch,
+                    obj.ItemType != ItemTypes.DrinkContainer && obj.ItemType != ItemTypes.Food &&
+                    obj.ItemType != ItemTypes.Cook, "It doesn't look poisoned.")) return ReturnTypes.None;
+
+                if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.Cook && obj.Value[2] == 0,
+                    "It looks undercooked.")) return ReturnTypes.None;
+                if (CheckFunctions.CheckIfTrue(ch, obj.Value[3] != 0, "You smell poisonous fumes."))
+                    return ReturnTypes.None;
+
+                color.send_to_char("It looks very delicious.", ch);
             }
             return ReturnTypes.None;
         }

@@ -10,10 +10,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Data.Shops;
-using SmaugCS.Data;
-
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -44,14 +41,6 @@ namespace SmaugCS
                 || (reservedName.StartsWithIgnoreCase("*")
                 && reservedName.ContainsIgnoreCase(name)));
         }
-
-        public static RoomTemplate[] ROOM_INDEX_HASH = new RoomTemplate[Program.MAX_KEY_HASH];
-        public static MobTemplate[] MOB_INDEX_HASH = new MobTemplate[Program.MAX_KEY_HASH];
-        public static ObjectTemplate[] OBJECT_INDEX_HASH = new ObjectTemplate[Program.MAX_KEY_HASH];
-        public static RoomTemplate[] VROOM_HASH = new RoomTemplate[64];
-        public static CommandData[] COMMAND_HASH = new CommandData[126];
-
-
 
         #region Objects
         public static int NumberOfObjectsLoaded { get; set; }
@@ -99,21 +88,6 @@ namespace SmaugCS
         public static List<ShopData> SHOP = new List<ShopData>();
         public static List<RepairShopData> REPAIR = new List<RepairShopData>();
         public static List<TeleportData> TELEPORT = new List<TeleportData>();
-
-        #region Projects
-        public static List<ProjectData> PROJECTS = new List<ProjectData>();
-        public static ProjectData GetProject(int num)
-        {
-            int count = 0;
-            foreach (ProjectData project in PROJECTS)
-            {
-                count++;
-                if (count == num)
-                    return project;
-            }
-            return null;
-        }
-        #endregion
 
         public static List<ObjectInstance> ExtractedObjectQueue = new List<ObjectInstance>();
         public static List<ExtracedCharacterData> ExtractedCharQueue = new List<ExtracedCharacterData>();
@@ -488,9 +462,7 @@ namespace SmaugCS
             while ((af = ch.Affects.First()) != null)
                 ch.RemoveAffect(af);
 
-            TimerData timer;
-            while ((timer = ch.Timers.First()) != null)
-                handler.extract_timer(ch, timer);
+            ch.Timers.Clear();
 
             //if (ch.CurrentEditor != null)
             //    build.stop_editing(ch);

@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Exceptions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -92,12 +93,20 @@ namespace SmaugCS.Spells.Smaug
             {
                 if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison)
                 {
-                    // TODO Get poison skill
+                    SkillData poisonSkill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
+                    if (poisonSkill == null)
+                        throw new ObjectNotFoundException("Skill 'poison' not found");
+
+                    // TODO Do something with poison skill
                 }
 
                 if (Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Illusion)
                 {
-                    // TODO Get blindness skill
+                    SkillData blindSkill = DatabaseManager.Instance.GetEntity<SkillData>("blindness");
+                    if (blindSkill == null)
+                        throw new ObjectNotFoundException("Skill 'blindness' not found");
+
+                    // TODO Do something with blindness skill
                 }
             }
             return Affect.spell_affect((int) skill.ID, level, ch, vo);

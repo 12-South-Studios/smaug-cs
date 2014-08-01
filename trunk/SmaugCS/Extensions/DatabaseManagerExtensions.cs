@@ -3,6 +3,7 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 

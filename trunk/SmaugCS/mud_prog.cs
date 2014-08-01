@@ -1,5 +1,12 @@
-﻿using SmaugCS.Data;
+﻿using System;
+using System.Linq;
+using LuaInterface;
+using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data;
+using SmaugCS.Extensions;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -318,15 +325,29 @@ namespace SmaugCS
         {
             // TODO
             return false;
-        }
+        }*/
 
-        public static void mprog_percent_check(CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
-                                               int type)
+        public static void CheckIfExecute(CharacterInstance mob, MudProgTypes type)
         {
-            // TODO
+            foreach (MudProgData mprog in mob.MobIndex.MudProgs)
+            {
+                int chance;
+                if (!Int32.TryParse(mprog.ArgList, out chance))
+                {
+                    // TODO Exception, log it
+                    return;
+                }
+
+                if (mprog.Type != type || SmaugRandom.Percent() > chance) continue;
+
+                mprog.Execute(mob);
+
+                if (type != MudProgTypes.Greet && type != MudProgTypes.GreetAll)
+                    break;
+            }
         }
 
-        public static void mprog_time_check(CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
+        /*public static void mprog_time_check(CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
                                             int type)
         {
             // TODO
@@ -347,17 +368,7 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void mprog_death_trigger(CharacterInstance killer, CharacterInstance mob)
-        {
-            // TODO
-        }
-
         public static void mprog_entry_trigger(CharacterInstance mob)
-        {
-            // TODO
-        }
-
-        public static void mprog_fight_trigger(CharacterInstance mob, CharacterInstance ch)
         {
             // TODO
         }
@@ -377,11 +388,6 @@ namespace SmaugCS
             // TODO
         }
 
-        public static void mprog_hitprcnt_trigger(CharacterInstance mob, CharacterInstance ch)
-        {
-            // TODO
-        }
-
         public static void mprog_random_trigger(CharacterInstance mob)
         {
             // TODO
@@ -393,11 +399,6 @@ namespace SmaugCS
         }
 
         public static void mprog_hour_trigger(CharacterInstance mob)
-        {
-            // TODO
-        }
-
-        public static void mprog_speech_trigger(string txt, CharacterInstance actor)
         {
             // TODO
         }

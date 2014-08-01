@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Comparers
 {
     [TestFixture]
+    [Category("Comparers")]
     public class NaturalSortStringComparerTest
     {
         [TestCase(new object[] { "Test", "Test" }, new object[] { "Test", "Test" }, true)]
