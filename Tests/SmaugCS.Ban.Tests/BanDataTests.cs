@@ -11,7 +11,7 @@ namespace SmaugCS.Ban.Tests
         {
             DataTable table = new DataTable("BanData");
             table.Columns.Add("BanId");
-            table.Columns.Add("BanType");
+            table.Columns.Add("BanTypeName");
             table.Columns.Add("Name");
             table.Columns.Add("Note");
             table.Columns.Add("BannedBy");
@@ -32,7 +32,7 @@ namespace SmaugCS.Ban.Tests
             var row = table.NewRow();
             row["BanId"] = 1;
             row["Name"] = "TestBan";
-            row["BanType"] = BanTypes.Site;
+            row["BanTypeName"] = BanTypes.Site;
             row["Note"] = "This is a test ban";
             row["BannedBy"] = "Admin";
             row["BannedOn"] = DateTime.Parse("1/1/2014 8:00:00 AM");
@@ -65,7 +65,7 @@ namespace SmaugCS.Ban.Tests
             var row = table.NewRow();
             row["BanId"] = 1;
             row["Name"] = "TestBan";
-            row["BanType"] = BanTypes.Site;
+            row["BanTypeName"] = BanTypes.Site;
             row["BannedBy"] = "Admin";
             row["BannedOn"] = DateTime.Parse("1/1/2014 8:00:00 AM");
             row["Duration"] = 3600;

@@ -66,6 +66,8 @@
     <Compile Include="Config\StaticStringConfigurationSection.cs" />
     <Compile Include="Config\MayorTextStringsElementCollection.cs" />
     <Compile Include="Config\MayorTextStringElement.cs" />
+    <Compile Include="Config\SystemValueElementCollection.cs" />
+    <Compile Include="Config\SystemValueElement.cs" />
     <Compile Include="DamageResistanceAttribute.cs" />
     <Compile Include="DescriptorAttribute.cs" />
     <Compile Include="Enums\HealthConditionTypes.cs" />

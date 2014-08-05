@@ -2,7 +2,6 @@
 using Realm.Library.Lua;
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
-using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -33,7 +32,7 @@ namespace SmaugCS.LuaHelpers
         }
 
         [LuaFunction("LCreateArea", "Creates a new Area", "Id of the Area", "Name of the Area")]
-        public static AreaData LuaCreateArea(string id, string name)
+        public static AreaData LuaCreateArea(int id, string name)
         {
             long areaId = Convert.ToInt64(id);
 

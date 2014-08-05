@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SmaugCS.Board
 {
     public static class SqlProcedureStatics
     {
         #region Boards
-        public const string BoardGetAll =
+        /*public const string BoardGetAll =
             @"SELECT b.BoardId, b.ReadGroup, b.PostGroup, b.ExtraReaders, b.ExtraRemovers, 
                 b.OTakeMessage, b.OPostMessage, b.ORemoveMessage, b.OCopyMessage, b.PostMessage, 
                 b.OReadMessage, b.OListMessage, b.MinimumReadLevel, b.MinimumPostLevel, 
                 b.MinimumRemoveLevel, b.MaximumPosts, bt.Name as BoardType FROM Boards b 
-                JOIN BoardTypes bt ON b.BoardTypeId = bt.BoardTypeId;";
+                JOIN BoardTypes bt ON b.BoardTypeId = bt.BoardTypeId;";*/
+        public const string BoardGetAll = "cp_GetBoards";
 
-        public const string BoardGetNotes =
+        /*public const string BoardGetNotes =
             @"SELECT n.NoteId, n.Sender, n.DateSent, n.RecipientList, n.Subject, n.Voting, 
                 n.YesVotes, n.NoVotes, n.Abstentions, n.Text FROM BoardNoteMap bnm 
-                JOIN Notes n ON bnm.NoteId = n.NoteId WHERE bnm.BoardId = @BoardId;";
+                JOIN Notes n ON bnm.NoteId = n.NoteId WHERE bnm.BoardId = @BoardId;";*/
+        public const string BoardGetNotes = "cp_GetBoardNotes";
 
         public const string BoardSave =
             @"INSERT INTO Boards (ReadGroup, PostGroup, ExtraReaders, ExtraRemovers, 

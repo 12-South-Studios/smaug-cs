@@ -102,6 +102,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.XML" />
     <Reference Include="VikingErik.LuaInterface">
       <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
     </Reference>

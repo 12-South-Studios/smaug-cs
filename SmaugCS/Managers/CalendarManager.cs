@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
+using SmallDBConnectivity;
+using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Interfaces;
-using SmaugCS.Loaders;
 using SmaugCS.Logging;
 using SmaugCS.Objects;
 
@@ -21,10 +23,16 @@ namespace SmaugCS.Managers
 
         private readonly ILogManager _logManager;
         private readonly IGameManager _gameManager;
+                private readonly ISmallDb _smallDb;
+        private readonly IDbConnection _connection;
 
-        public CalendarManager(ILogManager logManager, IGameManager gameManager)
+        public TimeInfoData GameTime { get; private set; }
+
+        public CalendarManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IGameManager gameManager)
         {
             _logManager = logManager;
+            _smallDb = smallDb;
+            _connection = connection;
             _gameManager = gameManager;
         }
 
@@ -37,25 +45,50 @@ namespace SmaugCS.Managers
         {
             _systemData = _gameManager.SystemData;
             _logManager.Boot("Setting time and weather.");
-            TimeLoader timeLoader = new TimeLoader();
-            TimeInfoData timeInfo = timeLoader.LoadTimeInfo();
-            if (timeInfo != null)
+
+            try
             {
-                _gameManager.SetGameTime(timeInfo);
+                DataTable dt = _smallDb.ExecuteQuery(_connection, "live.cp_GetGameState");
+                TimeInfoData timeInfo;
+                if (dt.Rows.Count == 0)
+                    timeInfo = new TimeInfoData {Day = 28, Hour = 0, Month = 6, Year = 628};
+                else
+                {
+                    DataRow row = dt.Rows.OfType<DataRow>().FirstOrDefault();
+                    timeInfo = new TimeInfoData
+                    {
+                        Year = row.GetDataValue("GameYear", 628),
+                        Month = row.GetDataValue("GameMonth", 6),
+                        Day = row.GetDataValue("GameDay", 28),
+                        Hour = row.GetDataValue("GameHour", 0)
+                    };
+                }
 
-                _logManager.Boot("Resetting mud time based on current system time.");
-                long lhour = (DateTime.Now.ToFileTimeUtc() - 650336715)/
-                             (_gameManager.SystemData.PulseTick/_gameManager.SystemData.PulsesPerSecond);
-                _gameManager.GameTime.Hour = (int)(lhour % _gameManager.SystemData.HoursPerDay);
-
-                long lday = lhour / _gameManager.SystemData.HoursPerDay;
-                _gameManager.GameTime.Day = (int)(lday % _gameManager.SystemData.DaysPerMonth);
-
-                long lmonth = lday / _gameManager.SystemData.DaysPerMonth;
-                _gameManager.GameTime.Month = (int)(lmonth % _gameManager.SystemData.MonthsPerYear);
-
-                _gameManager.GameTime.Year = (int)(lmonth % _gameManager.SystemData.MonthsPerYear);
+                UpdateGameTime(timeInfo);
+                GameTime = timeInfo;
             }
+            catch (Exception ex)
+            {
+                _logManager.Error(ex);
+            }
+        }
+
+        private void UpdateGameTime(TimeInfoData timeInfo)
+        {
+            _gameManager.SetGameTime(timeInfo);
+
+            _logManager.Boot("Resetting mud time based on current system time.");
+            long lhour = (DateTime.Now.ToFileTimeUtc() - 650336715) /
+                         (GameConstants.GetSystemValue<int>("PulseTick") / GameConstants.GetSystemValue<int>("PulsesPerSecond"));
+            _gameManager.GameTime.Hour = (int)(lhour % GameConstants.GetSystemValue<int>("HoursPerDay"));
+
+            long lday = lhour / GameConstants.GetSystemValue<int>("HoursPerDay");
+            _gameManager.GameTime.Day = (int)(lday % GameConstants.GetSystemValue<int>("DaysPerMonth"));
+
+            long lmonth = lday / GameConstants.GetSystemValue<int>("DaysPerMonth");
+            _gameManager.GameTime.Month = (int)(lmonth % GameConstants.GetSystemValue<int>("MonthsPerYear"));
+
+            _gameManager.GameTime.Year = (int)(lmonth % GameConstants.GetSystemValue<int>("MonthsPerYear"));
         }
 
         private static readonly List<TimezoneData> TimezoneTable = new List<TimezoneData>
@@ -167,29 +200,31 @@ namespace SmaugCS.Managers
 
         public void CalculateSeason(TimeInfoData gameTime)
         {
-            int day = gameTime.Month * _systemData.DaysPerMonth + gameTime.Day;
-            if (day < _systemData.DaysPerYear / 4)
+            int day = gameTime.Month * GameConstants.GetSystemValue<int>("DaysPerMonth") + gameTime.Day;
+            int daysPerYear = GameConstants.GetSystemValue<int>("DaysPerYear");
+
+            if (day < daysPerYear / 4)
             {
                 gameTime.Season = SeasonTypes.Spring;
                 if (gameTime.Hour == 0 && day == 0)
                     StartSpringSeason();
             }
-            else if (day < (_systemData.DaysPerYear / 4) * 2)
+            else if (day < (daysPerYear / 4) * 2)
             {
                 gameTime.Season = SeasonTypes.Summer;
-                if (gameTime.Hour == 0 && day == (_systemData.DaysPerYear / 4))
+                if (gameTime.Hour == 0 && day == (daysPerYear / 4))
                     StartSummerSeason();
             }
-            else if (day < (_systemData.DaysPerYear / 4) * 3)
+            else if (day < (daysPerYear / 4) * 3)
             {
                 gameTime.Season = SeasonTypes.Fall;
-                if (gameTime.Hour == 0 && day == (_systemData.DaysPerYear / 4) * 2)
+                if (gameTime.Hour == 0 && day == (daysPerYear / 4) * 2)
                     StartFallSeason();
             }
-            else if (day < _systemData.DaysPerYear)
+            else if (day < daysPerYear)
             {
                 gameTime.Season = SeasonTypes.Winter;
-                if (gameTime.Hour == 0 && day == (_systemData.DaysPerYear / 4) * 3)
+                if (gameTime.Hour == 0 && day == (daysPerYear / 4) * 3)
                     StartWinterSeason();
             }
             else

@@ -74,6 +74,15 @@ namespace SmaugCS.Weather
             MoonMap = new List<string>();
         }
 
+        public WeatherMap(TimeInfoData gameTime, int width, int height, IEnumerable<WeatherCell> cells) 
+            : this(gameTime, width, height)
+        {
+            foreach (WeatherCell cell in cells)
+            {
+                Map[cell.XCoord, cell.YCoord] = cell;
+            }
+        }
+
         public void LoadMap(SystemFileTypes fileType, List<string> map)
         {
             string path = SystemConstants.GetSystemFile(fileType);

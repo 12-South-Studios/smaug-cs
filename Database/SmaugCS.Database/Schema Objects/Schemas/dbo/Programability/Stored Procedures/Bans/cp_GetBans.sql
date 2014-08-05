@@ -8,7 +8,7 @@ Date		Author			Description
 --------------------------------------------------------------------------
 */
 CREATE PROCEDURE [dbo].[cp_GetBans]
-	@banType TINYINT
+	@banType TINYINT = NULL
 AS 
 BEGIN
 	SET NOCOUNT ON;
@@ -27,7 +27,7 @@ BEGIN
 		,b.Prefix
 		,b.Suffix
 	FROM dbo.Bans b 
-	JOIN dbo.BanTypes bt ON b.BanTYpeId = bt.BanTypeId 
+	JOIN dbo.BanTypes bt ON b.BanTypeId = bt.BanTypeId 
 	WHERE ((@banType IS NULL) OR (b.BanTypeId = @banType)) 
 		AND Active = 1;
 		

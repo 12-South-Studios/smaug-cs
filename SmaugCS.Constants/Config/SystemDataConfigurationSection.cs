@@ -24,5 +24,14 @@ namespace SmaugCS.Constants.Config
         {
             get { return (SystemFileElementCollectionn) this["SystemFiles"]; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [ConfigurationProperty("SystemValues")]
+        public SystemValueElementCollection SystemValues
+        {
+            get { return (SystemValueElementCollection)this["SystemValues"]; }
+        }
     }
 }

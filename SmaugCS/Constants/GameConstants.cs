@@ -58,6 +58,14 @@ namespace SmaugCS.Constants
             return element != null && Convert.ToBoolean(element.Value);
         }
 
+        public static T GetSystemValue<T>(string name)
+        {
+            var section = ConfigurationManagerFunctions.GetSection<SystemDataConfigurationSection>("SystemDataSection");
+            var element =
+                section.SystemValues.Cast<SystemValueElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
+            return element != null ? (T)Convert.ChangeType(element.Value, typeof (T)) : default(T);
+        }
+
         /// <summary>
         /// 
         /// </summary>

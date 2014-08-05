@@ -119,18 +119,28 @@ namespace SmaugCS.LuaHelpers
                 { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
 
             if (type.EqualsIgnoreCase("herb"))
-            {
-                _dbManager.AddToRepository(newSkill);
-                _luaManager.Proxy.CreateTable("herb");
-            }
-            else
-            {
-                _dbManager.AddToRepository(newSkill);
-                _luaManager.Proxy.CreateTable("skill");
-            }
+                throw new InvalidOperationException(string.Format("Use of LCreateSkill for Herbs is deprecated"));
+            
+            _dbManager.AddToRepository(newSkill);
+            _luaManager.Proxy.CreateTable("skill");
 
             AddLastObject(newSkill);
             return newSkill;
+        }
+
+        [LuaFunction("LCreateHerb", "Creates a new herb", "ID of the herb", "Herb Name", "Herb Type")]
+        public static HerbData LuaCreateHerb(int id, string name, string type)
+        {
+            HerbData newHerb = new HerbData(id, name) { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
+
+            if (!type.EqualsIgnoreCase("herb"))
+                throw new InvalidOperationException(string.Format("Use of LCreateHerb for Non-Herbs is not supported"));
+
+            _dbManager.AddToRepository(newHerb);
+            _luaManager.Proxy.CreateTable("herb");
+
+            AddLastObject(newHerb);
+            return newHerb;
         }
 
         [LuaFunction("LCreateSmaugAffect", "Creates a new Smaug Affect", "duration", "location", "modifier", "flags")]

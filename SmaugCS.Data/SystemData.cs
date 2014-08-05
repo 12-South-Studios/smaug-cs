@@ -47,7 +47,7 @@ namespace SmaugCS.Data
         public bool WAIT_FOR_AUTH { get; set; }
         public bool WizardLock { get; set; }
         public int MaxHolidays { get; set; }
-        public int SecondsPerTick { get; set; }
+        /*public int SecondsPerTick { get; set; }
         public int PulsesPerSecond { get; set; }
         public int PulseTick { get; set; }
         public int PulseViolence { get; set; }
@@ -64,7 +64,7 @@ namespace SmaugCS.Data
         public int HourOfNoon { get; set; }
         public int HourOfSunset { get; set; }
         public int HourOfNightBegin { get; set; }
-        public int HourOfMidnight { get; set; }
+        public int HourOfMidnight { get; set; }*/
 
         public Dictionary<PlayerPermissionTypes, int> PlayerPermissions = new Dictionary<PlayerPermissionTypes, int>()
             /*{
@@ -104,12 +104,7 @@ namespace SmaugCS.Data
             MorphOpt = 1;
             PlayerKillLoot = 1;
             WizardLock = false;
-            SecondsPerTick = 70;
-            PulsesPerSecond = 4;
-            HoursPerDay = 24;
-            DaysPerWeek = 7;
-            DaysPerMonth = 31;
-            MonthsPerYear = 17;
+
             SaveFlags = (int)(AutoSaveFlags.Death | AutoSaveFlags.PasswordChange |
                          AutoSaveFlags.Auto | AutoSaveFlags.Put | AutoSaveFlags.Drop |
                          AutoSaveFlags.Give | AutoSaveFlags.Auction | AutoSaveFlags.ZapDrop |

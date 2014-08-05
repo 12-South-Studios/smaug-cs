@@ -65,6 +65,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
+      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
+      <Name>Realm.Library.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SmaugCS.Weather\SmaugCS.Weather.csproj">
       <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>
       <Name>SmaugCS.Weather</Name>

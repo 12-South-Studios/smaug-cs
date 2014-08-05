@@ -80,9 +80,11 @@ namespace SmaugCS.Tests.Repositories
             var mockDb = new Mock<ISmallDb>();
             var mockCnx = new Mock<IDbConnection>();
             var mockLogger = new Mock<ILogWrapper>();
+            var mockTimer = new Mock<ITimer>();
 
             LuaManager luaMgr = new LuaManager(mockLogger.Object, string.Empty);
-            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockDb.Object, mockCnx.Object, 500);
+            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockDb.Object, mockCnx.Object,
+                mockTimer.Object);
             DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
 
             LuaMobFunctions.InitializeReferences(luaMgr, dbMgr);

@@ -61,8 +61,11 @@ function LoadHerbs()
 	herb:AddAffect(CreateSmaugAffect("10", 0, "", 4194304));
 end
 
+ObjectID = 0;
 function CreateHerb(name)
-	newHerb = LCreateSkill(name, "herb");
+    ObjectID = ObjectID + 1;
+
+	newHerb = LCreateHerb(ObjectID, name, "herb");
 	herb.this = newHerb;
 	return herb.this;
 end

@@ -171,7 +171,7 @@ namespace SmaugCS.Tests
 		private static string GetHerbLuaScript()
 		{
 			var sb = new StringBuilder();
-			sb.Append("newHerb = LCreateSkill(1, \"black gwyvel\", \"herb\");");
+			sb.Append("newHerb = LCreateHerb(1, \"black gwyvel\", \"herb\");");
 			sb.Append("herb.this = newHerb;");
 			sb.Append("herb.this.Rounds = 12;");
 			sb.Append("herb.this.DamageMessage = \"smoke\";");
@@ -190,7 +190,7 @@ namespace SmaugCS.Tests
 		public void LuaCreateHerb_Test()
 		{
 			LuaMgr.Proxy.DoString(GetHerbLuaScript());
-			var result = LuaCreateFunctions.GetLastObject(typeof(SkillData)).CastAs<SkillData>();
+			var result = LuaCreateFunctions.GetLastObject(typeof(HerbData)).CastAs<HerbData>();
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Rounds, Is.EqualTo(12));

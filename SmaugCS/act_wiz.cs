@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Logging;
@@ -162,22 +163,22 @@ namespace SmaugCS
 
         public static void update_calendar()
         {
-            GameManager.Instance.SystemData.DaysPerYear = GameManager.Instance.SystemData.DaysPerMonth * GameManager.Instance.SystemData.MonthsPerYear;
-            GameManager.Instance.SystemData.HourOfSunrise = GameManager.Instance.SystemData.HoursPerDay / 4;
-            GameManager.Instance.SystemData.HourOfDayBegin = GameManager.Instance.SystemData.HourOfSunrise + 1;
-            GameManager.Instance.SystemData.HourOfNoon = GameManager.Instance.SystemData.HoursPerDay / 2;
-            GameManager.Instance.SystemData.HourOfSunset = ((GameManager.Instance.SystemData.HoursPerDay / 4) * 3);
-            GameManager.Instance.SystemData.HourOfNightBegin = GameManager.Instance.SystemData.HourOfSunset + 1;
-            GameManager.Instance.SystemData.HourOfMidnight = GameManager.Instance.SystemData.HoursPerDay;
-            CalendarManager.Instance.CalculateSeason(GameManager.Instance.GameTime);
+            /*GameConstants.GetSystemValue<int>("DaysPerYear") = GameConstants.GetSystemValue<int>("DaysPerMonth * GameConstants.GetSystemValue<int>("MonthsPerYear;
+            GameConstants.GetSystemValue<int>("HourOfSunrise = GameConstants.GetSystemValue<int>("HoursPerDay / 4;
+            GameConstants.GetSystemValue<int>("HourOfDayBegin = GameConstants.GetSystemValue<int>("HourOfSunrise + 1;
+            GameConstants.GetSystemValue<int>("HourOfNoon = GameConstants.GetSystemValue<int>("HoursPerDay / 2;
+            GameConstants.GetSystemValue<int>("HourOfSunset = ((GameConstants.GetSystemValue<int>("HoursPerDay / 4) * 3);
+            GameConstants.GetSystemValue<int>("HourOfNightBegin = GameConstants.GetSystemValue<int>("HourOfSunset + 1;
+            GameConstants.GetSystemValue<int>("HourOfMidnight = GameConstants.GetSystemValue<int>("HoursPerDay;
+            CalendarManager.Instance.CalculateSeason(GameManager.Instance.GameTime);*/
         }
 
         public static void update_timers()
         {
-            GameManager.Instance.SystemData.PulseTick = GameManager.Instance.SystemData.SecondsPerTick * GameManager.Instance.SystemData.PulsesPerSecond;
-            GameManager.Instance.SystemData.PulseViolence = 3 * GameManager.Instance.SystemData.PulsesPerSecond;
-            GameManager.Instance.SystemData.PulseMobile = 4 * GameManager.Instance.SystemData.PulsesPerSecond;
-            GameManager.Instance.SystemData.PulseCalendar = 4 * GameManager.Instance.SystemData.PulseTick;
+            /*GameConstants.GetSystemValue<int>("PulseTick = GameConstants.GetSystemValue<int>("SecondsPerTick * GameConstants.GetSystemValue<int>("PulsesPerSecond;
+            GameConstants.GetSystemValue<int>("PulseViolence = 3 * GameConstants.GetSystemValue<int>("PulsesPerSecond;
+            GameConstants.GetSystemValue<int>("PulseMobile = 4 * GameConstants.GetSystemValue<int>("PulsesPerSecond;
+            GameConstants.GetSystemValue<int>("PulseCalendar = 4 * GameConstants.GetSystemValue<int>("PulseTick;*/
         }
 
         public static void get_reboot_string()

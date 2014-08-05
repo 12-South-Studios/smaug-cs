@@ -73,7 +73,7 @@ namespace SmaugCS
         public static List<BoardData> BOARDS = new List<BoardData>();
         public static BoardData GetBoard(ObjectInstance obj)
         {
-            return BOARDS.FirstOrDefault(x => x.BoardObjectVnum == obj.ObjectIndex.Vnum);
+            return BOARDS.FirstOrDefault(x => x.BoardObjectId == obj.ObjectIndex.Vnum);
         }
         public static BoardData FindBoard(CharacterInstance ch)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -12,9 +13,9 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Exceptions;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.News;
 using SmaugCS.Repositories;
 using SmaugCS.Weather;
@@ -99,7 +100,7 @@ namespace SmaugCS
             LookupManager = Kernel.Get<ILookupManager>();
 
             LuaManager = Kernel.Get<ILuaManager>();
-
+            
             NetworkManager = Kernel.Get<ITcpServer>();
             NetworkManager.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
@@ -114,31 +115,53 @@ namespace SmaugCS
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
 
             BanManager = Kernel.Get<IBanManager>();
-            //BanManager.LoadBans();
-
             BoardManager = Kernel.Get<IBoardManager>();
-            //BoardManager.LoadBoards();
-            // TODO: Load Projects
-
             CalendarManager = Kernel.Get<ICalendarManager>();
 
-            GameManager.GameTime.SetTimeOfDay(GameManager.SystemData);
+            GameManager = Kernel.Get<IGameManager>();
+            GameManager.SetGameTime(CalendarManager.GameTime);
+            GameManager.GameTime.SetTimeOfDay(GameConstants.GetSystemValue<int>("HourOfSunrise"),
+                GameConstants.GetSystemValue<int>("HourOfDayBegin"), GameConstants.GetSystemValue<int>("HourOfSunset"),
+                GameConstants.GetSystemValue<int>("HourOfNightBegin"));
 
             WeatherManager = Kernel.Get<IWeatherManager>();
-            WeatherManager.InitializeWeatherMap(WEATHER_SIZE_X, WEATHER_SIZE_Y);
 
-            NewsManager = Kernel.Get<INewsManager>();
+            //NewsManager = Kernel.Get<INewsManager>();
             
-            LogManager.Boot("Lua Types and Functions initialized.");
             InitializeGameData();           
         }
 
         private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
         {
             ITcpUser user = (ITcpUser) sender;
-            
-            // TODO: if disconnected, Remove from CharacterRepository
-            // TODO: if connected, create new instance and add to CharacterRepository
+
+            if (networkEventArgs.SocketStatus == TcpSocketStatus.Disconnected)
+                DisconnectUser(user);
+            else
+                ConnectUser(user);
+        }
+
+        private static void ConnectUser(ITcpUser user)
+        {
+            DescriptorData descrip = new DescriptorData(9999, 9999, 9999) {User = user};
+            db.DESCRIPTORS.Add(descrip);
+        }
+
+        private static void DisconnectUser(ITcpClientWrapper user)
+        {
+            CharacterInstance character = DatabaseManager.CHARACTERS.Values.FirstOrDefault(x => x.Descriptor.User == user);
+            if (character == null)
+            {
+                DescriptorData descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);
+                if (descrip == null)
+                    throw new ObjectNotFoundException(string.Format("Character not found matching user {0}",
+                    user.IpAddress));
+
+                db.DESCRIPTORS.Remove(descrip);
+                return;
+            }
+
+            DatabaseManager.CHARACTERS.Delete(character.ID);
         }
 
         private static void OnServerStop()
@@ -195,19 +218,17 @@ namespace SmaugCS
             // TODO: Update function references
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
-            LogManager.Boot("{0} Herbs loaded.", DatabaseManager.SKILLS.Values.Count(x => x.Type == SkillTypes.Herb));
-            LookupManager.SkillLookup.UpdateFunctionReferences(DatabaseManager.SKILLS.Values.Where(x => x.Type == SkillTypes.Herb));
+            LogManager.Boot("{0} Herbs loaded.", DatabaseManager.HERBS.Count);
+            LookupManager.SkillLookup.UpdateFunctionReferences(DatabaseManager.HERBS.Values);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
             LogManager.Boot("{0} Tongues loaded.", DatabaseManager.LANGUAGES.Count);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
-            LogManager.Boot("{0} Planes loaded.",
-                                     DatabaseManager.GetRepository<PlaneData>(RepositoryTypes.Planes).Count);
+            LogManager.Boot("{0} Planes loaded.", DatabaseManager.PLANES.Count);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
-            LogManager.Boot("{0} Morphs loaded.",
-                                     DatabaseManager.GetRepository<MorphData>(RepositoryTypes.Morphs).Count);
+            LogManager.Boot("{0} Morphs loaded.", DatabaseManager.MORPHS.Count);
 
         }
 
@@ -425,10 +446,6 @@ namespace SmaugCS
 
         public static int MAX_LIQUIDS = 100;
         public static int MAX_COND_VALUE = 100;
-
-        //Change these values to expand or contract your weather map according to your world size.
-        public static int WEATHER_SIZE_X = 3;   // width
-        public static int WEATHER_SIZE_Y = 3;   // height
 
 
         #region News

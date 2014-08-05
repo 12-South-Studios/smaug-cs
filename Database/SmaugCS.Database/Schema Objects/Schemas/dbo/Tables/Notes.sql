@@ -3,7 +3,7 @@
 	[NoteId] INT IDENTITY NOT NULL,
 	[Sender] VARCHAR(1024) NOT NULL,
 	[DateSent] DATETIME NOT NULL,
-	[ReceipientList] VARCHAR(1024) NULL,
+	[RecipientList] VARCHAR(1024) NULL,
 	[Subject] VARCHAR(1024) NULL,
 	[Voting] BIT NULL,
 	[Text] VARCHAR(MAX) NULL,

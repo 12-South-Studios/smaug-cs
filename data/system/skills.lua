@@ -1908,13 +1908,16 @@ Rounds       8
 Code         spell_smaug
 Dammsg       ~
 Wearoff      Your levitation spell wears off and you return to the
-ground.~
+
+ground.~
 Hitchar      You slowly rise into the air.~
 Hitvict      Your feet slowly rise off of the ground.~
 Hitroom      $N bows $S head in concentration and $S feet rise off the
-ground.~
+
+ground.~
 Misschar     You concentrate heavily, but your feet stay anchored to the
-earth.~
+
+earth.~
 Affect       'l*23' 26 'floating' 21
 Minlevel     27
 End
@@ -2205,8 +2208,10 @@ Code         spell_smaug
 Dammsg       occular explosium~
 Hitchar      You nearly cause $N's eyes to explode!~
 Hitvict      Blood spurts from your eye sockets as you experience the pain
-of oc
-cular explosium!~
+
+of oc
+
+cular explosium!~
 Dice         20d1~
 Components   v+49~
 Affect       '' 60 '95' -1
@@ -3321,7 +3326,8 @@ Hitchar      Toxic venom passes into the body of $N.~
 Hitvict      You shiver as $n reaches towards you and infuses you with toxic venom!~
 Hitroom      $N shivers as $n infuses $M body with toxic venom.~
 Misschar     You reach a hand toward $N, but $E evades your venomous
-touch.~
+
+touch.~
 Minlevel     5
 End
 
@@ -4663,7 +4669,8 @@ Wearoff      Your footsteps and form once again become discernible.~
 Hitchar      Your steps become silent and your form hidden.~
 Hitvict      Your steps become silent and your form hidden.~
 Misschar     You clumsily attempt to mask your footsteps and hide in
-shadows.~
+
+shadows.~
 Missvict     You attempt to mask your footsteps.~
 Affect       'l*6' 26 'sneak' 15
 Affect       'l*6' 26 'hide' 16
@@ -4723,8 +4730,11 @@ function LoadTongues()
 	CreateSkill("trollese", "tongue", 0, 0, 1);
 end
 
+ObjectID = 0;
 function CreateSkill(name, skillType, minPosition, slot, minLevel)
-	newSkill = LCreateSkill(name, skillType);
+    ObjectID = ObjectID + 1;
+
+	newSkill = LCreateSkill(ObjectID, name, skillType);
 	skill.this = newSkill;
 	skill.this.MinimumPosition = minPosition;
 	skill.this.Slot = slot;

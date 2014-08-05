@@ -895,8 +895,8 @@ namespace SmaugCS
         {
             if (ch.IsNpc()) return -1;
 
-            int num_days = ((GameManager.Instance.GameTime.Month + 1) * GameManager.Instance.SystemData.DaysPerMonth) + GameManager.Instance.GameTime.Day;
-            int ch_days = ((ch.PlayerData.Month + 1) * GameManager.Instance.SystemData.DaysPerMonth) + ch.PlayerData.Day;
+            int num_days = ((GameManager.Instance.GameTime.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) + GameManager.Instance.GameTime.Day;
+            int ch_days = ((ch.PlayerData.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) + ch.PlayerData.Day;
             int age = GameManager.Instance.GameTime.Year - ch.PlayerData.Year;
 
             if (ch_days - num_days > 0)
