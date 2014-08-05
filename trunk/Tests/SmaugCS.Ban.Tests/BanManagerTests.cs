@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using Ninject;
 using NUnit.Framework;
+using Realm.Library.Common;
 using SmallDBConnectivity;
 using SmaugCS.Logging;
 
@@ -50,7 +51,10 @@ namespace SmaugCS.Ban.Tests
             mockConnection.Setup(x => x.BeginTransaction()).Returns(new FakeTransaction());
 
             var mockKernel = new Mock<IKernel>();
-            _banManager = new BanManager(mockLogger.Object, mockDb.Object, mockConnection.Object, mockKernel.Object);
+            var mockTimer = new Mock<ITimer>();
+
+            _banManager = new BanManager(mockLogger.Object, mockDb.Object, mockConnection.Object, mockKernel.Object,
+                mockTimer.Object);
         }
 
         [TearDown]

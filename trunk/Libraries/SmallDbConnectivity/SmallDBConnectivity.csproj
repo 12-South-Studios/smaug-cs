@@ -68,7 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionExtension.cs" />
     <Compile Include="ISmallDb.cs" />
     <Compile Include="SmallDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

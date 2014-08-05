@@ -129,6 +129,11 @@ namespace SmaugCS.Managers
             get { return GetRepository<SkillData>(RepositoryTypes.Skills); }
         }
 
+        public GenericRepository<HerbData> HERBS
+        {
+            get { return GetRepository<HerbData>(RepositoryTypes.Herbs); }
+        } 
+
         public GenericRepository<SpecialFunction> SPEC_FUNS
         {
             get { return GetRepository<SpecialFunction>(RepositoryTypes.SpecFuns); }
@@ -174,6 +179,20 @@ namespace SmaugCS.Managers
             get { return GetRepository<CouncilData>(RepositoryTypes.Councils); }
         }
 
+        public GenericRepository<PlaneData> PLANES
+        {
+            get { return GetRepository<PlaneData>(RepositoryTypes.Planes); }
+        }
+
+        public GenericRepository<MorphData> MORPHS
+        {
+            get { return GetRepository<MorphData>(RepositoryTypes.Morphs); }
+        }
+
+        public GenericRepository<HintData> HINTS
+        {
+            get { return GetRepository<HintData>(RepositoryTypes.Hints); }
+        } 
         #endregion
 
         #region Get Methods

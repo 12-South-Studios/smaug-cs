@@ -1,10 +1,13 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using Realm.Library.Network;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
 namespace SmaugCS.Data
 {
     public class DescriptorData
     {
+        public ITcpUser User { get; set; }
+
         public CharacterInstance Character { get; set; }
         public CharacterInstance Original { get; set; }
         public mccp_data mccp { get; set; }

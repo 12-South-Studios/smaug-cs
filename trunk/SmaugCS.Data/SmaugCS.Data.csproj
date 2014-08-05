@@ -82,6 +82,7 @@
     <Compile Include="ExtraDescriptionData.cs" />
     <Compile Include="FightingData.cs" />
     <Compile Include="HelpData.cs" />
+    <Compile Include="HerbData.cs" />
     <Compile Include="HintData.cs" />
     <Compile Include="HolidayData.cs" />
     <Compile Include="HuntHateFearData.cs" />
@@ -150,6 +151,10 @@
     <ProjectReference Include="..\Libraries\Realm.Library.Lua\Realm.Library.Lua.csproj">
       <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
       <Name>Realm.Library.Lua</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Network\Realm.Library.Network.csproj">
+      <Project>{551f2b16-cec5-4e16-8f30-290005c04e16}</Project>
+      <Name>Realm.Library.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>

@@ -1,4 +1,7 @@
-﻿namespace SmaugCS.Board
+﻿using System;
+using SmaugCS.Common;
+
+namespace SmaugCS.Board
 {
     public class NoteData
     {
@@ -20,7 +23,16 @@
 
         public static NoteData Translate(System.Data.DataRow row)
         {
-            throw new System.NotImplementedException();
+            NoteData note = new NoteData(Convert.ToInt32(row["NoteId"]))
+            {
+                Sender = row.GetDataValue("Sender", string.Empty),
+                DateSent = row.GetDataValue("DateSent", DateTime.Now).ToString(),
+                RecipientList = row.GetDataValue("RecipientList", string.Empty),
+                Subject = row.GetDataValue("Subject", string.Empty),
+                Voting = row.GetDataValue("Voting", 1),
+                Text = row.GetDataValue("Text", string.Empty)
+            };
+            return note;
         }
     }
 }

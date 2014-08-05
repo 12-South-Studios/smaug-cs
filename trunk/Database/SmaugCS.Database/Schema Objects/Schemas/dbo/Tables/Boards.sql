@@ -2,6 +2,7 @@
 (
 	[BoardId] INT IDENTITY NOT NULL,
 	[BoardTypeId] TINYINT NOT NULL,
+	[Name] VARCHAR(100) NOT NULL,
     [ReadGroup] VARCHAR(1024) NULL, 
     [PostGroup] VARCHAR(1024) NULL, 
     [ExtraReaders] VARCHAR(1024) NULL, 

@@ -11,7 +11,18 @@ Post-Deployment Script Template
 */
 
 -- Populate all reference tables
---:r .\POPULATE_dbo.BanTypes.sql
---:r .\POPULATE_dbo.BoardTypes.sql
---:r .\POPULATE_dbo.LogTypes.sql
+:r .\POPULATE_RefData_dbo.BanTypes.sql
+:r .\POPULATE_RefData_dbo.BoardTypes.sql
+:r .\POPULATE_RefData_dbo.LogTypes.sql
+:r .\POPULATE_RefData_dbo.NoteVoteTypes.sql
+:r .\POPULATE_RefData_dbo.HemisphereTypes.sql
+:r .\POPULATE_RefData_dbo.ClimateTypes.sql
+
+-- Populate some data tables (do this for Defaults!)
+:r .\POPULATE_DefaultData_dbo.Boards.sql
+:r .\POPULATE_DefaultData_live.GameState.sql
+
+
+-- Populate some data tables (do this for testing!)
+:r .\POPULATE_TestData_dbo.Bans.sql
 

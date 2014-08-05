@@ -8,7 +8,7 @@ Date		Author			Description
 --------------------------------------------------------------------------
 */
 CREATE PROCEDURE [dbo].[cp_AddOrUpdateBan]
-	@banId INT,
+	@banId INT = NULL,
 	@tvpBanTable BanTableType READONLY
 AS 
 BEGIN

@@ -30,7 +30,7 @@ namespace SmaugCS.Repositories
         [TypeMap(Repository = typeof(GenericRepository<LiquidData>), Object = typeof(LiquidData))]
         Liquids,
 
-        [TypeMap(Repository = typeof(GenericRepository<SkillData>), Object = typeof(SkillData))]
+        [TypeMap(Repository = typeof(GenericRepository<HerbData>), Object = typeof(HerbData))]
         Herbs,
 
         [TypeMap(Repository = typeof(GenericRepository<SkillData>), Object = typeof(SkillData))]
@@ -62,11 +62,17 @@ namespace SmaugCS.Repositories
 
         [TypeMap(Repository = typeof(GenericRepository<CouncilData>), Object = typeof(CouncilData))]
         Councils,
+
+        [TypeMap(Repository = typeof(GenericRepository<HintData>), Object = typeof(HintData))]
         Hints,
 
         [TypeMap(Repository = typeof(GenericRepository<MixtureData>), Object = typeof(MixtureData))]
         Mixtures,
+
+        [TypeMap(Repository = typeof(GenericRepository<PlaneData>), Object = typeof(PlaneData))]
         Planes,
+
+        [TypeMap(Repository = typeof(GenericRepository<MorphData>), Object = typeof(MorphData))]
         Morphs
     }
 }

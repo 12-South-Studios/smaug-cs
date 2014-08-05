@@ -36,7 +36,7 @@ namespace SmaugCS.Commands.Liquids
 
             DrinkFrom(ch, obj);
 
-            int pulsesPerSecond = GameManager.Instance.SystemData.PulsesPerSecond;
+            int pulsesPerSecond = GameConstants.GetSystemValue<int>("PulsesPerSecond");
             Macros.WAIT_STATE(ch, fight.who_fighting(ch) != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
         }
 

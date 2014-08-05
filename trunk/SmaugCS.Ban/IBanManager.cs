@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using SmaugCS.Data;
 
 namespace SmaugCS.Ban
 {
     public interface IBanManager
     {
-        void LoadBans();
         void ClearBans();
 
         bool AddBan(BanData ban);
@@ -17,5 +17,7 @@ namespace SmaugCS.Ban
 
         bool CheckTotalBans(string host, int supremeLevel);
         bool CheckBans(CharacterInstance ch, int type);
+
+        void Initialize();
     }
 }

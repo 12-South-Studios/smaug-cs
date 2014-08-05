@@ -25,7 +25,7 @@ namespace SmaugCS.Board.Tests
             table.Columns.Add("MinimumPostLevel");
             table.Columns.Add("MinimumRemoveLevel");
             table.Columns.Add("MaximumPosts");
-            table.Columns.Add("BoardType");
+            table.Columns.Add("BoardTypeName");
             table.Columns.Add("OListMessage");
             return table;
         }
@@ -51,7 +51,7 @@ namespace SmaugCS.Board.Tests
             row["MinimumPostLevel"] = 5;
             row["MinimumRemoveLevel"] = 10;
             row["MaximumPosts"] = 1000;
-            row["BoardType"] = "Note";
+            row["BoardTypeName"] = "Note";
             row["OListMessage"] = "$N listed the messages.";
 
             var board = BoardData.Translate(row);
@@ -86,7 +86,7 @@ namespace SmaugCS.Board.Tests
             row["MinimumPostLevel"] = 5;
             row["MinimumRemoveLevel"] = 10;
             row["MaximumPosts"] = 1000;
-            row["BoardType"] = "Note";
+            row["BoardTypeName"] = "Note";
 
             var board = BoardData.Translate(row);
 

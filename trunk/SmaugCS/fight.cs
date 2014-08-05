@@ -1123,7 +1123,7 @@ namespace SmaugCS
                     victim.AdjustFavor(11, 1);
                     ch.AdjustFavor(2, 1);
                     victim.AddTimer(TimerTypes.PKilled, 115, null, 0);
-                    Macros.WAIT_STATE(victim, 3 * GameManager.Instance.SystemData.PulseViolence);
+                    Macros.WAIT_STATE(victim, 3 * GameConstants.GetSystemValue<int>("PulseViolence"));
                     return;
                 }
             }

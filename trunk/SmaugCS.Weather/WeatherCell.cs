@@ -1,12 +1,18 @@
-﻿using Realm.Library.Common;
+﻿using System;
+using System.Data;
+using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Weather
 {
-    public class WeatherCell
+    public class WeatherCell : Cell
     {
         public ClimateTypes Climate { get; set; }
         public HemisphereTypes Hemisphere { get; set; }
+        public int XCoord { get; set; }
+        public int YCoord { get; set; }
         public int Temperature { get; set; }
         public int Pressure { get; set; }
         public int CloudCover { get; set; }
@@ -94,5 +100,27 @@ namespace SmaugCS.Weather
         }
 
         #endregion
+
+        public static WeatherCell Translate(DataRow dataRow)
+        {
+            WeatherCell cell = new WeatherCell
+            {
+                ID = Convert.ToInt32(dataRow["WeatherCellId"]),
+                XCoord = dataRow.GetDataValue("CellXCoord", 0),
+                YCoord = dataRow.GetDataValue("CellYCoord", 0),
+                Hemisphere =
+                    EnumerationExtensions.GetEnum<HemisphereTypes>(dataRow.GetDataValue("HemisphereName", string.Empty)),
+                Climate = EnumerationExtensions.GetEnum<ClimateTypes>(dataRow.GetDataValue("ClimateName", string.Empty)),
+                CloudCover = dataRow.GetDataValue("CloudCover", 0),
+                Energy = dataRow.GetDataValue("Energy", 0),
+                Humidity = dataRow.GetDataValue("Humidity", 0),
+                Precipitation = dataRow.GetDataValue("Precipitation", 0),
+                Pressure = dataRow.GetDataValue("Pressure", 0),
+                Temperature = dataRow.GetDataValue("Temperature", 0),
+                WindSpeedX = dataRow.GetDataValue("WindSpeedX", 0),
+                WindSpeedY = dataRow.GetDataValue("WindSpeedY", 0)
+            };
+            return cell;
+        }
     }
 }

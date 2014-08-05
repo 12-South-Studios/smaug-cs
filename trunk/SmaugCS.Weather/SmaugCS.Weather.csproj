@@ -62,6 +62,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\ClimateTypes.cs" />
@@ -90,6 +92,10 @@
       <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
       <Name>Realm.Library.Patterns.Singleton</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
+      <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
+      <Name>SmallDBConnectivity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
@@ -101,6 +107,10 @@
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
       <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
       <Name>SmaugCS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
+      <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
+      <Name>SmaugCS.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

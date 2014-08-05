@@ -10,7 +10,7 @@ namespace SmaugCS.Board
     {
         public int Id { get; private set; }
         public BoardTypes Type { get; private set; }
-
+        public string Name { get; set; }
         public string ReadGroup { get; set; }
         public string PostGroup { get; set; }
         public string ExtraReaders { get; set; }
@@ -26,8 +26,7 @@ namespace SmaugCS.Board
         public int MinimumPostLevel { get; set; }
         public int MinimumRemoveLevel { get; set; }
         public int MaximumPosts { get; set; }
-
-        public int BoardObjectVnum { get; set; }
+        public int BoardObjectId { get; set; }
 
         public List<NoteData> NoteList { get; private set; }
 
@@ -42,7 +41,7 @@ namespace SmaugCS.Board
         {
             proxy.Write("#BOARD\n");
             proxy.Write("Filename          {0}~\n", NoteFile);
-            proxy.Write("Vnum              {0}\n", BoardObjectVnum);
+            proxy.Write("Vnum              {0}\n", BoardObjectId);
             proxy.Write("Min_read_level    {0}\n", MinimumReadLevel);
             proxy.Write("Min_post_level    {0}\n", MinimumPostLevel);
             proxy.Write("Min_remove_level  {0}\n", MinimumRemoveLevel);
@@ -160,8 +159,9 @@ namespace SmaugCS.Board
         public static BoardData Translate(DataRow dataRow)
         {
             BoardData board = new BoardData(Convert.ToInt32(dataRow["BoardId"]),
-                Realm.Library.Common.EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardType"].ToString()))
+                Realm.Library.Common.EnumerationExtensions.GetEnumByName<BoardTypes>(dataRow["BoardTypeName"].ToString()))
                 {
+                    Name = dataRow.GetDataValue("Name", string.Empty),
                     ReadGroup = dataRow.GetDataValue("ReadGroup", string.Empty),
                     PostGroup = dataRow.GetDataValue("PostGroup", string.Empty),
                     ExtraReaders = dataRow.GetDataValue("ExtraReaders", string.Empty),
@@ -176,7 +176,8 @@ namespace SmaugCS.Board
                     MinimumReadLevel = dataRow.GetDataValue("MinimumReadLevel", 0),
                     MinimumPostLevel = dataRow.GetDataValue("MinimumPostLevel", 0),
                     MinimumRemoveLevel = dataRow.GetDataValue("MinimumRemoveLevel", 0),
-                    MaximumPosts = dataRow.GetDataValue("MaximumPosts", 0)
+                    MaximumPosts = dataRow.GetDataValue("MaximumPosts", 0),
+                    BoardObjectId = dataRow.GetDataValue("BoardObjectId", 0)
                 };
             return board;
         }

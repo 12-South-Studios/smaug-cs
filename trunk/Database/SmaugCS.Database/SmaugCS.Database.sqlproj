@@ -20,7 +20,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <SqlServerVerification>False</SqlServerVerification>
+    <SqlServerVerification>True</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
   </PropertyGroup>
@@ -84,11 +84,13 @@
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Boards" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\News" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Weather" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Settings\Work.publish.xml" />
     <None Include="Publish Settings\Home.publish.xml" />
-    <None Include="Scripts\Post-Deployment\POPULATE_dbo.BanTypes.sql" />
+    <None Include="Publish Settings\Azure.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\Server.sql" />
@@ -106,7 +108,6 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\NewsEntries.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\BoardTypes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\Boards.sql" />
-    <None Include="Scripts\Post-Deployment\POPULATE_dbo.BoardTypes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\Notes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\NoteVotes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\NoteVoteTypes.sql" />
@@ -116,7 +117,23 @@
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs\cp_AddLog.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs\cp_GetLogs.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Types\User-Defined Table Types\LogTableType.sql" />
-    <None Include="Scripts\Post-Deployment\POPULATE_dbo.LogTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Boards\cp_GetBoards.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Boards\cp_GetBoardNotes.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\GameState.sql" />
+    <Build Include="Schema Objects\Schemas\live\Programability\Stored Procedures\cp_GetGameState.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_TestData_dbo.Bans.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_DefaultData_dbo.Boards.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_DefaultData_live.GameState.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.BanTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.BoardTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.LogTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.NoteVoteTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\HemisphereTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ClimateTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\WeatherCells.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.HemisphereTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.ClimateTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Weather\cp_GetWeatherCells.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

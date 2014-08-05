@@ -33,8 +33,7 @@ namespace SmaugCS.Board
             get { return _kernel.Get<IBoardManager>(); }
         }
 
-        [ExcludeFromCodeCoverage]
-        public void LoadBoards()
+        public void Initialize()
         {
             try
             {
@@ -57,9 +56,9 @@ namespace SmaugCS.Board
         private void LoadNotesForBoard(BoardData board)
         {
             List<NoteData> notes = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BoardGetNotes,
-                                                         TranslateNoteData, new List<SqlParameter>()
+                                                         TranslateNoteData, new List<SqlParameter>
                                                              {
-                                                                 new SqlParameter("@BoardId", board.Id)
+                                                                 new SqlParameter("@boardId", board.Id)
                                                              });
             board.NoteList.AddRange(notes);
         }

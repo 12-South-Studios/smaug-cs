@@ -19,10 +19,11 @@ namespace SmaugCS.Ban
         private readonly ILogManager _logManager;
         private readonly ISmallDb _smallDb;
         private readonly IDbConnection _connection;
-        private readonly CommonTimer _timer;
+        private readonly ITimer _timer;
         private static IKernel _kernel;
 
-        public BanManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IKernel kernel)
+        public BanManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IKernel kernel,
+            ITimer timer)
         {
             _logManager = logManager;
             _smallDb = smallDb;
@@ -30,14 +31,22 @@ namespace SmaugCS.Ban
             _kernel = kernel;
 
             _bans = new List<BanData>();
-            _timer = new CommonTimer {Interval = 60000};
+            _timer = timer;
+
+            if (_timer.Interval <= 0)
+                _timer.Interval = 60000;
+
             _timer.Elapsed += TimerOnElapsed;
+            _timer.Start();
         }
 
         ~BanManager()
         {
             if (_timer != null)
+            {
+                _timer.Stop();
                 _timer.Dispose();
+            }
             if (_connection != null)
                 _connection.Dispose();
         }
@@ -54,21 +63,21 @@ namespace SmaugCS.Ban
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            List<BanData> toRemove = new List<BanData>();
+            if (!_bans.Any()) return;
 
-            foreach (BanData ban in _bans.Where(b => b.IsExpired()))
+            List<BanData> toRemove = new List<BanData>(_bans.Where(b => b.IsExpired()));
+
+            foreach (BanData ban in toRemove)
             {
                 // TODO Do something
 
                 DeleteBan(ban.Id);
-                toRemove.Add(ban);
             }
 
             toRemove.ForEach(b => _bans.Remove(b));
         }
 
-        [ExcludeFromCodeCoverage]
-        public void LoadBans()
+        public void Initialize()
         {
             try
             {

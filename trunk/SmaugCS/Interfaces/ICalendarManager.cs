@@ -6,5 +6,6 @@ namespace SmaugCS.Interfaces
     {
         void Initialize();
         void CalculateSeason(TimeInfoData gameTime);
+        TimeInfoData GameTime { get; }
     }
 }

@@ -5,12 +5,12 @@
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
-function LoadTongues()
-	newLang = LCreateLanguage("common");
+function LoadLanguages()
+	newLang = LCreateLanguage("Common", "Common");
 	lang.this = newLang;
 	lang.this.Alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
-	newLang = LCreateLanguage("default");
+	newLang = LCreateLanguage("default", "Unknown");
 	lang.this = newLang;
 	lang.this.Alphabet = "ekjrugtlohfqbxyvndwmaczsip";
 	
@@ -26,7 +26,7 @@ function LoadTongues()
 end
 
 function LoadHalfling()
-	newLang = LCreateLanguage("halfling");
+	newLang = LCreateLanguage("halfling", "Halfling");
 	lang.this = newLang;
 	
 	lang.this:AddPreConversion("halfling", "banakil");
@@ -80,7 +80,7 @@ end
 
 function LoadElvish()
 	-- 'flutey' language.. slam some harsh sounds..
-	newLang = LCreateLanguage("elvish");
+	newLang = LCreateLanguage("elvish", "Elven");
 	lang.this = newLang;
 	
 	lang.this:AddPreConversion("hour time", "lumenn");
@@ -168,7 +168,7 @@ end
 
 function LoadDwarven()
 	-- opposite of elven.. extreme on the harsh tones..
-	newLang = LCreateLanguage("dwarven");
+	newLang = LCreateLanguage("dwarven", "Dwarven");
 	lang.this = newLang;
 	
 	lang.this:AddPreConversion("age", "bahd");
@@ -343,7 +343,7 @@ end
 
 function LoadOgre()
 	-- harsh and primative
-	newLang = LCreateLanguage("ogre");
+	newLang = LCreateLanguage("ogre", "Ogre");
 	lang.this = newLang;
 	lang.this:AddPreConversion("ee", "au");
 	lang.this:AddPreConversion("eth", "ok");
@@ -374,7 +374,7 @@ end
 
 function LoadTroll()
 	-- harsh and primative, similar to ogre
-	newLang = LCreateLanguage("troll");
+	newLang = LCreateLanguage("trollese", "Trollish");
 	lang.this = newLang;
 	lang.this:AddPreConversion("ee", "au");
 	lang.this:AddPreConversion("eth", "ok");
@@ -405,7 +405,7 @@ end
 
 function LoadGoblin()
 	-- bastardization of elvish.  harsh
-	newLang = LCreateLanguage("goblin");
+	newLang = LCreateLanguage("goblin", "Goblin");
 	lang.this = newLang;
 	lang.this:AddPreConversion("ee", "ou");
 	lang.this:AddPreConversion("eth", "om");
@@ -440,7 +440,7 @@ end
 
 function LoadOrcish()
 	-- basically the same as goblin... a little nastier
-	newLang = LCreateLanguage("orcish");
+	newLang = LCreateLanguage("orcish", "Orcish");
 	lang.this = newLang;
 	lang.this:AddPreConversion("and", "agh");
 	lang.this:AddPreConversion("one", "ash");
@@ -501,7 +501,7 @@ end
 
 function LoadPixie()
 	-- these are just made up now.. i dunno what a pixie sounds like..
-	newLang = LCreateLanguage("pixie");
+	newLang = LCreateLanguage("pixie", "Pixie");
 	lang.this = newLang;
 	
 	lang.this:AddPreConversion("lair", "sgz");
@@ -523,7 +523,7 @@ end
 
 function LoadMagical()
 	-- emulate say_spell from magic.c
-	newLang = LCreateLanguage("magical");
+	newLang = LCreateLanguage("magical", "Magical");
 	lang.this = newLang;
 	lang.this:AddPreConversion("ar", "abra");
 	lang.this:AddPreConversion("au", "kada");
@@ -550,6 +550,6 @@ function LoadMagical()
 	lang.this.Alphabet = "abqezyopuytrwiasdfghjzxnlk";
 end
 
-LoadTongues();
+LoadLanguages();
 
 -- EOF

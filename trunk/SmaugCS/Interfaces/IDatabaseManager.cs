@@ -29,6 +29,7 @@ namespace SmaugCS.Interfaces
         ObjInstanceRepository OBJECTS { get; }
         GenericRepository<LiquidData> LIQUIDS { get; }
         GenericRepository<SkillData> SKILLS { get; }
+        GenericRepository<HerbData> HERBS { get; }
         GenericRepository<SpecialFunction> SPEC_FUNS { get; }
         GenericRepository<CommandData> COMMANDS { get; }
         GenericRepository<LanguageData> LANGUAGES { get; }
@@ -38,5 +39,8 @@ namespace SmaugCS.Interfaces
         GenericRepository<SocialData> SOCIALS { get; }
         GenericRepository<ClanData> CLANS { get; }
         GenericRepository<CouncilData> COUNCILS { get; }
+        GenericRepository<PlaneData> PLANES { get; }
+        GenericRepository<MorphData> MORPHS { get; }
+        GenericRepository<HintData> HINTS { get; }
     }
 }

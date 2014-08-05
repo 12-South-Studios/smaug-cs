@@ -16,14 +16,17 @@ namespace SmaugCS.Logging
     public sealed class LogManager : ILogManager
     {
         public ILogWrapper LogWrapper { get; private set; }
+
         private static IKernel _kernel;
         private ISmallDb SmallDb { get; set; }
         private IDbConnection Connection { get; set; }
-
         private readonly List<LogEntry> _pendingLogs;
-        private ITimer _dbDumpTimer;
+        private readonly ITimer _dbDumpTimer;
 
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ISmallDb smallDb, IDbConnection connection, int logDumpFrequency)
+        public static ILogManager Instance { get { return _kernel.Get<ILogManager>(); } }
+
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ISmallDb smallDb, IDbConnection connection,
+            ITimer timer)
         {
             LogWrapper = logWrapper;
             _kernel = kernel;
@@ -31,11 +34,23 @@ namespace SmaugCS.Logging
             Connection = connection;
 
             _pendingLogs = new List<LogEntry>();
-            _dbDumpTimer = new CommonTimer();
+
+            _dbDumpTimer = timer;
             _dbDumpTimer.Elapsed += DbDumpTimerOnElapsed;
-            _dbDumpTimer.Interval = logDumpFrequency;
+
+            if (_dbDumpTimer.Interval <= 0)
+                _dbDumpTimer.Interval = 500;
 
             _dbDumpTimer.Start();
+        }
+
+        ~LogManager()
+        {
+            if (_dbDumpTimer != null)
+            {
+                _dbDumpTimer.Stop();
+                _dbDumpTimer.Dispose();
+            }
         }
 
         private void DbDumpTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
@@ -50,7 +65,10 @@ namespace SmaugCS.Logging
             {
                 List<SqlParameter> parameters = new List<SqlParameter>
                 {
-                    new SqlParameter("@tvpLogTable", SqlDbType.Structured) {Value = GetLogEntryTable(logsToDump)}
+                    new SqlParameter("@tvpLogTable", SqlDbType.Structured)
+                    {
+                        Value = LogEntry.GetLogEntryDataTable(logsToDump)
+                    }
                 };
                 SmallDb.ExecuteNonQuery(Connection, "cp_AddLog", parameters);
                 scope.Commit();
@@ -74,34 +92,6 @@ namespace SmaugCS.Logging
                     scope.Dispose();
                 logsToDump.Clear();
             }
-        }
-
-        private DataTable GetLogEntryTable(IEnumerable<LogEntry> logs)
-        {
-            var dt = GetLogDataTable();
-
-            foreach (LogEntry log in logs)
-            {
-                DataRow dr = dt.NewRow();
-                dr["LogTypeId"] = log.LogType;
-                dr["Text"] = log.Text;
-                dt.Rows.Add(dr);
-            }
-
-            return dt;
-        }
-
-        private static DataTable GetLogDataTable()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("LogTypeId", typeof (int));
-            dt.Columns.Add("Text", typeof (string));
-            return dt;
-        }
-
-        public static ILogManager Instance
-        {
-            get { return _kernel.Get<ILogManager>(); }
         }
 
         public void DatabaseFailureLog(string str, params object[] args)
@@ -177,6 +167,5 @@ namespace SmaugCS.Logging
             Info(txt);
         }
         #endregion
-
     }
 }

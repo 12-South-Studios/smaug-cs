@@ -18,15 +18,15 @@ namespace SmaugCS.Data
         public SunPositionTypes Sunlight { get; set; }
         public SeasonTypes Season { get; set; }
 
-        public void SetTimeOfDay(SystemData sysData)
+        public void SetTimeOfDay(int hourSunrise, int hourDayBegin, int hourSunset, int hourNightBegin)
         {
-            if (Hour < sysData.HourOfSunrise)
+            if (Hour < hourSunrise)
                 Sunlight = SunPositionTypes.Dark;
-            else if (Hour < sysData.HourOfDayBegin)
+            else if (Hour < hourDayBegin)
                 Sunlight = SunPositionTypes.Sunrise;
-            else if (Hour < sysData.HourOfSunset)
+            else if (Hour < hourSunset)
                 Sunlight = SunPositionTypes.Light;
-            else if (Hour < sysData.HourOfNightBegin)
+            else if (Hour < hourNightBegin)
                 Sunlight = SunPositionTypes.Sunset;
             else
                 Sunlight = SunPositionTypes.Dark;

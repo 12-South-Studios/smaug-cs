@@ -8,6 +8,6 @@ namespace SmaugCS.Board
 {
     public interface IBoardManager
     {
-        void LoadBoards();
+        void Initialize();
     }
 }
