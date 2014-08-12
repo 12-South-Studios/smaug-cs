@@ -500,7 +500,7 @@ namespace SmaugCS
                 return ch;
 
             int vnum;
-            if (ch.Trust >= LevelConstants.GetLevel("savior") && arg.IsNumeric())
+            if (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumeric())
                 vnum = Convert.ToInt32(arg);
             else
                 vnum = -1;
@@ -551,7 +551,7 @@ namespace SmaugCS
                 return ch;
 
             // Allow reference by vnum
-            int vnum = (ch.Trust >= LevelConstants.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
 
@@ -680,7 +680,7 @@ namespace SmaugCS
             int number = tuple.Item1;
             string arg = tuple.Item2;
 
-            int vnum = (ch.Trust >= LevelConstants.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
             foreach (ObjectInstance obj in ch.Carrying
@@ -723,7 +723,7 @@ namespace SmaugCS
             int number = tuple.Item1;
             string arg = tuple.Item2;
 
-            int vnum = (ch.Trust >= LevelConstants.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
             foreach (ObjectInstance obj in ch.Carrying
@@ -789,7 +789,7 @@ namespace SmaugCS
             int number = tuple.Item1;
             string arg = tuple.Item2;
 
-            int vnum = (ch.Trust >= LevelConstants.GetLevel("savior") && arg.IsNumber()) ? arg.ToInt32() : -1;
+            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
 
             int count = 0;
             foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values

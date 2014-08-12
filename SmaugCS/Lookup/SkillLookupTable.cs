@@ -5,17 +5,12 @@ using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class SkillLookupTable : LookupBase<SkillData, DoFunction>
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public SkillLookupTable()
             : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?", ch)})
         {
+            // TODO Add skills here
         }
 
         public override void UpdateFunctionReferences(IEnumerable<SkillData> values)

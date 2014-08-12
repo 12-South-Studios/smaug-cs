@@ -228,6 +228,7 @@
     <Compile Include="LuaHelpers\LuaInitializer.cs" />
     <Compile Include="LuaHelpers\LuaLookupFunctions.cs" />
     <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaManagerFunctions.cs" />
     <Compile Include="LuaHelpers\LuaMobFunctions.cs" />
     <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
     <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
@@ -641,7 +642,7 @@
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
     <Compile Include="Loaders\Incomplete\CommentLoader.cs" />
-    <Compile Include="Loaders\Incomplete\CouncilLoader.cs" />
+    <Compile Include="Loaders\CouncilLoader.cs" />
     <Compile Include="Loaders\DeityListLoader.cs" />
     <Compile Include="Loaders\Incomplete\HintLoader.cs" />
     <Compile Include="Loaders\Incomplete\HolidayLoader.cs" />

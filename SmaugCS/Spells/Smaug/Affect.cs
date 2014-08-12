@@ -85,7 +85,7 @@ namespace SmaugCS.Spells.Smaug
                     || (!skill.Flags.IsSet(SkillFlags.ReCastable) && !victim.IsAffectedBy((int)skill.ID)))
                     return;
 
-                if (targetValues.HitVictim && !ch.Equals(victim))
+                if (targetValues.HitVictim && ch != victim)
                 {
                     comm.act(ATTypes.AT_MAGIC, skill.HitVictimMessage, ch, null, victim, ToTypes.Victim);
                     if (targetValues.HitRoom)
@@ -97,7 +97,7 @@ namespace SmaugCS.Spells.Smaug
                 else if (targetValues.HitRoom)
                     comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, victim, ToTypes.Room);
 
-                if (ch.Equals(victim))
+                if (ch == victim)
                 {
                     if (targetValues.HitVictim)
                         comm.act(ATTypes.AT_MAGIC, skill.HitVictimMessage, ch, null, ch, ToTypes.Character);

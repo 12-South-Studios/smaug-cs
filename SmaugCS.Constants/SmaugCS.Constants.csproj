@@ -70,6 +70,7 @@
     <Compile Include="Config\SystemValueElement.cs" />
     <Compile Include="DamageResistanceAttribute.cs" />
     <Compile Include="DescriptorAttribute.cs" />
+    <Compile Include="Enums\DeityFieldTypes.cs" />
     <Compile Include="Enums\HealthConditionTypes.cs" />
     <Compile Include="LookupSkillAttribute.cs" />
     <Compile Include="ArmorClassAttribute.cs" />

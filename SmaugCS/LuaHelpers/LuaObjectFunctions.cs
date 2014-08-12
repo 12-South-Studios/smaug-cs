@@ -3,6 +3,7 @@ using Realm.Library.Lua;
 
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers
@@ -11,13 +12,16 @@ namespace SmaugCS.LuaHelpers
     {
         private static ILuaManager _luaManager;
         private static IDatabaseManager _dbManager;
+        private static ILogManager _logManager;
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager)
+        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, 
+            ILogManager logManager)
         {
             _luaManager = luaManager;
             _dbManager = dbManager;
+            _logManager = logManager;
         }
 
         [LuaFunction("LGetLastObj", "Retrieves the Last Object")]
@@ -41,6 +45,8 @@ namespace SmaugCS.LuaHelpers
             ObjectTemplate newObj = _dbManager.OBJECT_INDEXES.Create(objId, name);
             _luaManager.Proxy.CreateTable("object");
             LastObject = newObj;
+
+            _logManager.Boot("Object Template (id={0}, Name={1}) created.", id, name);
             return newObj;
         }
     }

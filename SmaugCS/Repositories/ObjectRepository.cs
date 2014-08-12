@@ -9,19 +9,10 @@ using SmaugCS.Data;
 
 namespace SmaugCS.Repositories
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ObjectRepository : Repository<long, ObjectTemplate>, ITemplateRepository<ObjectTemplate>
     {
         private ObjectTemplate LastObject { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public ObjectTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
@@ -32,28 +23,14 @@ namespace SmaugCS.Repositories
                 });
 
 
-            ObjectTemplate newObject = new ObjectTemplate(vnum, name)
-                                           {
-                                               ShortDescription = string.Format("A newly created {0}", name),
-                                               Description =
-                                                   string.Format("Somebody dropped a newly created {0} here.", name),
-                                               Type = ItemTypes.Trash,
-                                               Weight = 1,
-                                           };
-            newObject.ExtraFlags.SetBit((int)ItemExtraFlags.Prototype);
+            ObjectTemplate newObject = new ObjectTemplate(vnum, name);
+            newObject.ExtraFlags.SetBit(ItemExtraFlags.Prototype);
 
             Add(vnum, newObject);
             LastObject = newObject;
             return newObject;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="cvnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public ObjectTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());

@@ -52,8 +52,8 @@ namespace SmaugCS
         /// </remarks>
         public static bool check_parse_name(string name, bool newchar)
         {
-            if (name.Length < GameConstants.GetIntegerConstant("MinNameLength")
-                || name.Length > GameConstants.GetIntegerConstant("MaxNameLength"))
+            if (name.Length < GameConstants.GetConstant<int>("MinNameLength")
+                || name.Length > GameConstants.GetConstant<int>("MaxNameLength"))
                 return false;
 
             return name.IsAlphaNum();

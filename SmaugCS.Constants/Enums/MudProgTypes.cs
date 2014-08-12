@@ -11,7 +11,7 @@ namespace SmaugCS.Constants.Enums
         InFile = -2,
 
         [Name("act_prog")]
-        Act,
+        Act = 1,
 
         [Name("speech_prog")]
         Speech,

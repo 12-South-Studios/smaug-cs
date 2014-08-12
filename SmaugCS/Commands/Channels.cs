@@ -53,7 +53,7 @@ namespace SmaugCS.Commands
             int minTrust = 0;
             RequireTrustChannelAttribute trustAttrib = channelType.GetAttribute<RequireTrustChannelAttribute>();
             if (trustAttrib != null)
-                minTrust = GameConstants.GetIntegerConstant(trustAttrib.TrustType);
+                minTrust = GameConstants.GetConstant<int>(trustAttrib.TrustType);
 
             if (attrib.Verify(channelType, ch, minTrust))
             {
@@ -111,7 +111,7 @@ namespace SmaugCS.Commands
             int minTrust = 0;
             RequireTrustChannelAttribute trustAttrib = channelType.GetAttribute<RequireTrustChannelAttribute>();
             if (trustAttrib != null)
-                minTrust = GameConstants.GetIntegerConstant(trustAttrib.TrustType);
+                minTrust = GameConstants.GetConstant<int>(trustAttrib.TrustType);
 
             if (attrib.Verify(channelType, ch, minTrust))
                 verifyAction.Invoke(ch, channelType);

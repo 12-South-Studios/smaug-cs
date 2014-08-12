@@ -108,7 +108,7 @@ namespace SmaugCS
 
             if (localRoom.Flags.IsSet(RoomFlags.Teleport) && localRoom.TeleportDelay > 0)
             {
-                if (db.TELEPORT.Exists(x => Equals(x.Room, localRoom)))
+                if (db.TELEPORT.Exists(x => x.Room == localRoom))
                     return;
 
                 db.TELEPORT.Add(new TeleportData

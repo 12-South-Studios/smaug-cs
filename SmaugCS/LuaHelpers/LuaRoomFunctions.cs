@@ -5,6 +5,7 @@ using Realm.Library.Patterns.Repository;
 
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
+using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers
@@ -13,13 +14,16 @@ namespace SmaugCS.LuaHelpers
     {
         private static ILuaManager _luaManager;
         private static IDatabaseManager _dbManager;
+        private static ILogManager _logManager;
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager)
+        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, 
+            ILogManager logManager)
         {
             _luaManager = luaManager;
             _dbManager = dbManager;
+            _logManager = logManager;
         }
 
         [LuaFunction("LGetLastRoom", "Retrieves the Last Room")]
@@ -44,6 +48,8 @@ namespace SmaugCS.LuaHelpers
             _luaManager.Proxy.CreateTable("room");
             _dbManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(roomId, newRoom);
             LastObject = newRoom;
+
+            _logManager.Boot("Room Template (id={0}, name={1}) created", id, name);
             return newRoom;
         }
     }

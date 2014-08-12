@@ -31,11 +31,6 @@ namespace SmaugCS.Data
         public ItemTypes Type { get; set; }
         public List<string> Spells { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
         public ObjectTemplate(long id, string name)
             : base(id, name)
         {
@@ -43,17 +38,13 @@ namespace SmaugCS.Data
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Affects = new List<AffectData>();
             Spells = new List<string>();
+
+            ShortDescription = string.Format("A newly created {0}", name);
+            Description = string.Format("Somebody dropped a newly created {0} here.", name);
+            Type = ItemTypes.Trash;
+            Weight = 1;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <param name="v3"></param>
-        /// <param name="v4"></param>
-        /// <param name="v5"></param>
-        /// <param name="v6"></param>
         public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
         {
             Value[0] = v1;
@@ -64,24 +55,12 @@ namespace SmaugCS.Data
             Value[5] = v6;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="spell"></param>
         public void AddSpell(string spell)
         {
             if (!Spells.Contains(spell.ToLower()))
                 Spells.Add(spell.ToLower());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="duration"></param>
-        /// <param name="modifier"></param>
-        /// <param name="location"></param>
-        /// <param name="bitvector"></param>
         public void AddAffect(int type, int duration, int modifier, int location, string bitvector)
         {
             AffectData newAffect = new AffectData
@@ -95,14 +74,6 @@ namespace SmaugCS.Data
             Affects.Add(newAffect);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="weight"></param>
-        /// <param name="cost"></param>
-        /// <param name="rent"></param>
-        /// <param name="level"></param>
-        /// <param name="layers"></param>
         public void SetStats(int weight, int cost, int rent, int level, int layers)
         {
             Weight = weight;

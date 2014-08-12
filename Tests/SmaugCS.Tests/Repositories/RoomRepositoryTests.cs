@@ -38,7 +38,7 @@ namespace SmaugCS.Tests.Repositories
             sb.Append(
                 "room.this:AddExtraDescription(\"rainbow\", \"The rainbow softly glows with beams of light in colors that defy description.\");");
 
-            sb.Append("room.this:AddExit(exit.this);");
+            sb.Append("room.this:AddExitObject(exit.this);");
             sb.Append("room.this:AddExit(\"down\", 800, \"The rainbow extends below you towards Darkhaven.\");");
 
             sb.Append("room.this:AddReset(\"door\", 15, 807, 2, 2);");
@@ -66,7 +66,7 @@ namespace SmaugCS.Tests.Repositories
             var mockLogMgr = new Mock<ILogManager>();
             DatabaseManager dbMgr = new DatabaseManager(mockLogMgr.Object);
 
-            LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr);
+            LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
 
             dbMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Clear();
@@ -121,9 +121,9 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Exits[0].Flags.IsSet((int)ExitFlags.IsDoor), Is.True);
-            Assert.That(result.Exits[0].Flags.IsSet((int)ExitFlags.Locked), Is.True);
-            Assert.That(result.Exits[0].Flags.IsSet((int)ExitFlags.Hidden), Is.False);
+            Assert.That(result.Exits[0].Flags.IsSet(ExitFlags.IsDoor), Is.True);
+            Assert.That(result.Exits[0].Flags.IsSet(ExitFlags.Locked), Is.True);
+            Assert.That(result.Exits[0].Flags.IsSet(ExitFlags.Hidden), Is.False);
         }
 
         [Test]

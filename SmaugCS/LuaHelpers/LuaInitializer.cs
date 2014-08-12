@@ -24,13 +24,14 @@ namespace SmaugCS.LuaHelpers
 
         public void InitializeLuaInjections(string dataPath)
         {
-            LuaAreaFunctions.InitializeReferences(_luaManager, _dbManager);
+            LuaAreaFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
             LuaCreateFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
             LuaGetFunctions.InitializeReferences(_luaManager, _dbManager, dataPath);
-            LuaMobFunctions.InitializeReferences(_luaManager, _dbManager);
-            LuaObjectFunctions.InitializeReferences(_luaManager, _dbManager);
-            LuaRoomFunctions.InitializeReferences(_luaManager, _dbManager);
+            LuaMobFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
+            LuaObjectFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
+            LuaRoomFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
             LuaLookupFunctions.InitializeReferences(_lookupManager, _logManager);
+            LuaManagerFunctions.InitializeReferences(_logManager);
         }
 
         public void InitializeLuaFunctions()
@@ -44,7 +45,7 @@ namespace SmaugCS.LuaHelpers
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaObjectFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaRoomFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaLookupFunctions));
-            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LogManager));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaManagerFunctions));
             proxy.RegisterFunctions(luaFuncRepo);
             _luaManager.InitializeLuaProxy(proxy);
         }

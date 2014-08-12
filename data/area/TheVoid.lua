@@ -1,12 +1,12 @@
 -- THEVOID.LUA
 -- This is the zone-file for The Void
--- Revised: 2013.11.23
+-- Revised: 2014.08.07
 -- Author: Jason Murdick
 -- Version: 1.0
---f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
+f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 
 function LoadArea()
-	--LBootLog("=================== AREA 'THE VOID' INITIALIZING ===================");
+	LBootLog("=================== AREA 'THE VOID' INITIALIZING ===================");
     newArea = LCreateArea(1, "The Void");
 	area.this = newArea;
 	area.this.Author = "RoD";
@@ -23,11 +23,11 @@ function LoadArea()
 	Arena();
 	OtherRooms();
 	
-	--LBootLog("=================== AREA 'THE VOID' - COMPLETED ================");
+	LBootLog("=================== AREA 'THE VOID' - COMPLETED ================");
 end
 
 function Mobs()
-	--LBootLog("=================== AREA 'THE VOID' - MOBS ===================");
+	LBootLog("=================== AREA 'THE VOID' - MOBS ===================");
 	mobile = CreateMobile(1, "translucent figure", "A translucent figure");
 	mobile.LongDescription = "A translucent figure is here, contemplating a higher reality.";
 	mobile.Class = "mage";
@@ -769,7 +769,7 @@ function Mobs()
 --Speaking   common~
 --#ENDMOBILE
 ----]]
---end
+end
 
 function Objects()
 	LBootLog("=================== AREA 'THE VOID' - COMMON OBJECTS ===================");
@@ -777,7 +777,7 @@ function Objects()
 	object.ShortDescription = "a gold coin";
 	object.LongDescription = "One miserable gold coin.";
 	object:SetStats(1, 0, 0, 0, 0);
-	object:SetValues(1, 0, 0, 0, 0);
+	object:SetValues(1, 0, 0, 0, 0, 0);
 	
 	object = CreateObject(3, "coins gold", "money");
 	object.ShortDescription = "%d gold coins";
@@ -989,7 +989,7 @@ function Objects()
     object.WearFlags = "take";
     object:SetStats(1, 0, 0, 0, 0);
 
-    object = Createobject(41, "orb", "lever");
+    object = CreateObject(41, "orb", "lever");
     object.ShortDescription = "the orb";
     object.LongDescription = "A small orb tops a slender pedestal of glowing crystal.";
     object:SetStats(1, 0, 0, 0, 0);
@@ -1640,7 +1640,7 @@ function Objects()
 --Stats    1 0 0 0 0
 --#ENDOBJECT
 ----]]
---end
+end
 
 function SystemRooms()
 	LBootLog("=================== AREA 'THE VOID' - ROOMS ====================");
@@ -1667,7 +1667,7 @@ function SystemRooms()
 		MPMSet(ch, "thirst 100");
 		MPRestore(ch, 2);
 	]]));
-	room:AddMudProg(CreateMudPRog("act_prog", "is", 
+	room:AddMudProg(CreateMudProg("act_prog", "is", 
 	[[
 		local ch = LGetCurrentCharacter();
 		MPMSet(ch, "full 50");

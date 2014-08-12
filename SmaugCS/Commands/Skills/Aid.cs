@@ -54,7 +54,7 @@ namespace SmaugCS.Commands.Skills
             comm.act(ATTypes.AT_SKILL, "You aid $N!", ch, null, victim, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n aids $N!", ch, null, victim, ToTypes.Room);
             skill.LearnFromSuccess(ch);
-            ch.AdjustFavor(8, 1);
+            ch.AdjustFavor(DeityFieldTypes.Aid, 1);
 
             if (victim.CurrentHealth < 1)
                 victim.CurrentHealth = 1;

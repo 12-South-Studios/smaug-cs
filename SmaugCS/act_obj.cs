@@ -17,7 +17,7 @@ namespace SmaugCS
     {
         public static void get_obj(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
         {
-            if (!Macros.CAN_WEAR(obj, (int)ItemWearFlags.Take)
+            if (!obj.WearFlags.IsSet(ItemWearFlags.Take)
                 && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)))
             {
                 color.send_to_char("You can't take that.\r\n", ch);
@@ -333,7 +333,7 @@ namespace SmaugCS
             if (wear_bit > -1)
             {
                 bit = wear_bit;
-                if (!Macros.CAN_WEAR(obj, 1 << bit))
+                if (!obj.WearFlags.IsSet(1 << bit))
                 {
                     if (fReplace)
                     {
@@ -359,7 +359,7 @@ namespace SmaugCS
                 bit = -1;
                 for (int x = 1; x < 31; x++)
                 {
-                    if (Macros.CAN_WEAR(obj, 1 << x))
+                    if (obj.WearFlags.IsSet(1 << x))
                     {
                         bit = x;
                         break;

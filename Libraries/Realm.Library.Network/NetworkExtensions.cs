@@ -22,7 +22,7 @@ namespace Realm.Library.Network
 
             try
             {
-                return IPAddress.Parse(ipAddress.Equals("localhost", StringComparison.OrdinalIgnoreCase)
+                return IPAddress.Parse(ipAddress.EqualsIgnoreCase("localhost")
                     ? Resources.LOCALHOST_IP : ipAddress);
             }
             catch (FormatException)

@@ -13,7 +13,7 @@ namespace SmaugCS
     {
         public static void gain_condition(CharacterInstance ch, ConditionTypes condition, int value)
         {
-            if (value == 0 || ch.IsNpc() || ch.Level >= LevelConstants.GetLevel("immortal")
+            if (value == 0 || ch.IsNpc() || ch.Level >= LevelConstants.ImmortalLevel
                 || ch.IsNotAuthorized())
                 return;
 
@@ -47,7 +47,7 @@ namespace SmaugCS
         {
             ReturnTypes retcode = ReturnTypes.None;
 
-            if (ch.Level < LevelConstants.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
+            if (ch.Level < LevelConstants.AvatarLevel && ch.CurrentClass != ClassTypes.Vampire)
             {
                 color.set_char_color(ATTypes.AT_HUNGRY, ch);
                 DescriptorAttribute attrib = ConditionTypes.Full.GetAttribute<DescriptorAttribute>();
@@ -76,7 +76,7 @@ namespace SmaugCS
         {
             ReturnTypes retcode = ReturnTypes.None;
 
-            if (ch.Level < LevelConstants.GetLevel("avatar") && ch.CurrentClass != ClassTypes.Vampire)
+            if (ch.Level < LevelConstants.AvatarLevel && ch.CurrentClass != ClassTypes.Vampire)
             {
                 color.set_char_color(ATTypes.AT_THIRSTY, ch);
                 DescriptorAttribute attrib = ConditionTypes.Thirsty.GetAttribute<DescriptorAttribute>();
@@ -101,7 +101,7 @@ namespace SmaugCS
         {
             ReturnTypes retcode = ReturnTypes.None;
 
-            if (ch.Level < LevelConstants.GetLevel("avatar"))
+            if (ch.Level < LevelConstants.AvatarLevel)
             {
                 color.set_char_color(ATTypes.AT_BLOOD, ch);
                 DescriptorAttribute attrib = ConditionTypes.Bloodthirsty.GetAttribute<DescriptorAttribute>();

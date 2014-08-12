@@ -64,15 +64,6 @@ namespace SmaugCS
                           : ch.wait.GetHighestOfTwoNumbers(npulse));
         }
 
-        public static ExitData EXIT(CharacterInstance ch, short door)
-        {
-            return ch.CurrentRoom.GetExit(door);
-        }
-        public static bool CAN_GO(CharacterInstance ch, short door)
-        {
-            ExitData exit = EXIT(ch, door);
-            return exit != null && exit.Destination != null && !exit.Flags.IsSet((int)ExitFlags.Closed);
-        }
         public static bool IS_VALID_SN(int sn)
         {
             return DatabaseManager.Instance.SKILLS.Get(sn) != null;
@@ -154,11 +145,6 @@ namespace SmaugCS
         public static bool IS_POISON(int dt)
         {
             return IS_VALID_SN(dt) && SPELL_DAMAGE(DatabaseManager.Instance.SKILLS.Values.ToList()[dt]) == (int)SpellDamageTypes.Poison;
-        }
-
-        public static bool CAN_WEAR(ObjectInstance obj, int part)
-        {
-            return obj.WearFlags.IsSet(part);
         }
 
         public static string NAME(CharacterInstance ch)

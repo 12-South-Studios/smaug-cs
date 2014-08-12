@@ -52,7 +52,7 @@ namespace SmaugCS.Spells
             {
                 SkillNumber = sn,
                 Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
-                           GameConstants.GetIntegerConstant("AffectDurationConversionValue")
+                           GameConstants.GetConstant<int>("AffectDurationConversionValue")
             };
             // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);

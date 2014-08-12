@@ -23,8 +23,12 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Area);
-            IEnumerable<string> areaList = GameConstants.GetAppSetting("Areas").Split(new[] { ',' });
 
+            string areas = GameConstants.GetAppSetting("Areas");
+            if (string.IsNullOrEmpty(areas))
+                throw new EntryNotFoundException("Areas list not found in app.config");
+
+            IEnumerable<string> areaList = areas.Split(new[] { ',' });
             foreach (string areaName in areaList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + areaName + ".lua");

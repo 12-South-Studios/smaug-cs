@@ -8,6 +8,7 @@ luanet.load_assembly("SmaugCS");
 luanet.load_assembly("SmaugCS.Ban");
 luanet.load_assembly("SmaugCS.Board");
 luanet.load_assembly("SmaugCS.Common");
+luanet.load_assembly("SmaugCS.Communication");
 luanet.load_assembly("SmaugCS.Constants");
 luanet.load_assembly("SmaugCS.Data");
 luanet.load_assembly("SmaugCS.Language");
@@ -26,11 +27,12 @@ luanet.load_assembly("Realm.Library.Patterns.Singleton");
 luanet.load_assembly("SmallDBConnectivity");
 
 -- Objects
-luanet.import_type("Realm.Library.Common.Cell");
+luanet.import_type("Realm.Library.Common.ICell");
 luanet.import_type("Realm.Library.Common.Entity");
 luanet.import_type("Realm.Library.Common.IEntity");
 luanet.import_type("Realm.Library.Common.Property");
 luanet.import_type("Realm.Library.Common.TinyTypeBase");
+luanet.import_type("Realm.Library.Common.ILogWrapper");
 
 luanet.import_type("SmaugCS.Data.AffectData");
 luanet.import_type("SmaugCS.Data.AreaData");
@@ -71,5 +73,7 @@ luanet.import_type("SmaugCS.Data.ObjectTemplate");
 luanet.import_type("SmaugCS.Data.Instance");
 luanet.import_type("SmaugCS.Data.CharacterInstance");
 luanet.import_type("SmaugCS.Data.ObjectInstance");
+
+luanet.import_type("SmaugCS.Logging.ILogManager");
 
 -- EOF

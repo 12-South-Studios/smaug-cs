@@ -29,7 +29,7 @@ namespace SmaugCS.SpecFuns
                 return false;
 
             CharacterInstance victim =
-                ch.CurrentRoom.Persons.Where(vch => !vch.Equals(ch))
+                ch.CurrentRoom.Persons.Where(vch => vch != ch)
                   .Where(ch.CanSee)
                   .FirstOrDefault(vch => SmaugRandom.Bits(1) != 0);
 

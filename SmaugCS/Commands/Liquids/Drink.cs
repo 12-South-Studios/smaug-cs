@@ -14,7 +14,7 @@ namespace SmaugCS.Commands.Liquids
     {
         private static int GetMaximumCondition()
         {
-            return GameConstants.GetIntegerConstant("MaximumConditionValue");
+            return GameConstants.GetConstant<int>("MaximumConditionValue");
         }
 
         public static void do_drink(CharacterInstance ch, string argument)

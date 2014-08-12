@@ -18,10 +18,10 @@ namespace SmaugCS.SpecFuns
                 return false;
 
             CharacterInstance victim =
-                ch.CurrentRoom.Persons.Where(v => !v.Equals(ch))
-                  .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && fight.who_fighting(vch).Equals(ch));
+                ch.CurrentRoom.Persons.Where(v => v != ch)
+                  .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && fight.who_fighting(vch) == ch);
 
-            if (victim == null || victim.Equals(ch))
+            if (victim == null || victim == ch)
                 return false;
 
             SkillData skill = handler.PickSpell(SpellLevelLookupTable, ch.Level);

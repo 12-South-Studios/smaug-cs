@@ -231,7 +231,7 @@
 //                    level = 1;
 //                    break;
 //                case "mortal":
-//                    level = LevelConstants.GetLevel("avatar");
+//                    level = LevelConstants.AvatarLevel;
 //                    break;
 //                case "warn":
 //                    level = (int)BanTypes.Warn;

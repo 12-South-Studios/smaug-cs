@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
+using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
@@ -22,15 +22,27 @@ namespace SmaugCS
 {
     public static class CharacterInstanceExtensions
     {
-
-        public static bool CanUseSkill(this CharacterInstance ch, int percent, int skillID)
+        public static int GetVampArmorClass(this CharacterInstance ch, IGameManager gameManager = null)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(skillID);
+            if (!ch.IsVampire() || !ch.IsOutside()) return 0;
+
+            ArmorClassAttribute attrib =
+                (gameManager ?? GameManager.Instance).GameTime.Sunlight.GetAttribute<ArmorClassAttribute>();
+            return attrib.ModValue;
+        }
+
+        public static bool CanGo(this CharacterInstance ch, DirectionTypes direction)
+        {
+            ExitData exit = ch.CurrentRoom.GetExit((int)direction);
+            return exit != null && exit.Destination > 0 && !exit.Flags.IsSet(ExitFlags.Closed);
+        }
+
+        public static bool CanUseSkill(this CharacterInstance ch, int percent, int skillId,
+            IDatabaseManager dbManager = null)
+        {
+            SkillData skill = (dbManager ?? DatabaseManager.Instance).SKILLS.Get(skillId);
             if (skill == null)
-            {
-                // TODO Exception, log it
-                return false;
-            }
+                throw new EntryNotFoundException("Skill {0} not found", skillId);
 
             return CanUseSkill(ch, percent, skill);
         }
@@ -63,9 +75,6 @@ namespace SmaugCS
             return ch.PlayerData != null ? ch.PlayerData.ConditionTable[condition] : 0;
         }
 
-        /// <summary>
-        /// If favor crosses over the line then strip the affect
-        /// </summary>
         public static void CheckForExtremeFavor(this CharacterInstance ch, int oldfavor)
         {
             DeityData deity = ch.PlayerData.CurrentDeity;
@@ -75,7 +84,7 @@ namespace SmaugCS
                 ch.update_aris();
         }
 
-        public static void AdjustFavor(this CharacterInstance ch, int field, int mod)
+        public static void AdjustFavor(this CharacterInstance ch, DeityFieldTypes field, int mod)
         {
             if (ch.IsNpc() || ch.PlayerData.CurrentDeity == null)
                 return;
@@ -106,7 +115,7 @@ namespace SmaugCS
                 return;
 
             long id = mob.MobIndex.ID;
-            int maxTrack = GameConstants.GetIntegerConstant("MaxKillTrack");
+            int maxTrack = GameConstants.GetConstant<int>("MaxKillTrack");
 
             KilledData killed = ch.PlayerData.Killed.FirstOrDefault(x => x.ID == id);
             if (killed == null)
@@ -223,7 +232,7 @@ namespace SmaugCS
         {
             if (!obj.ExtraFlags.IsSet(ItemExtraFlags.NoDrop))
                 return true;
-            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return true;
             if (ch.IsNpc() && ch.MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
                 return true;
@@ -504,11 +513,10 @@ namespace SmaugCS
             return type != ResistanceTypes.Unknown && ch.Immunity.IsSet(type);
         }
 
-        public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type, ILookupManager lookupManager = null)
+        public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type,
+            ILookupManager lookupManager = null)
         {
-            ResistanceTypes resType = lookupManager == null
-                                          ? LookupManager.Instance.GetResistanceType(type)
-                                          : lookupManager.GetResistanceType(type);
+            ResistanceTypes resType = (lookupManager ?? LookupManager.Instance).GetResistanceType(type);
 
             return resType != ResistanceTypes.Unknown && ch.Immunity.IsSet(resType);
         }
@@ -531,9 +539,7 @@ namespace SmaugCS
 
         public static bool CanCast(this CharacterInstance ch, IDatabaseManager dbManager = null)
         {
-            ClassData cls = dbManager == null
-                                ? DatabaseManager.Instance.GetClass(ch.CurrentClass)
-                                : dbManager.GetClass(ch.CurrentClass);
+            ClassData cls = (dbManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
 
             return cls.IsSpellcaster;
         }
@@ -636,7 +642,7 @@ namespace SmaugCS
         {
             return ch.ArmorClass + (ch.IsAwake()
                                    ? GameConstants.dex_app[ch.GetCurrentDexterity()].defensive
-                                   : 0) + fight.VAMP_AC(ch);
+                                   : 0) + ch.GetVampArmorClass();
         }
         public static int GetHitroll(this CharacterInstance ch)
         {
@@ -855,11 +861,12 @@ namespace SmaugCS
             return wexp.GetNumberThatIsBetween(GameConstants.MinimumExperienceWorth, GameConstants.MaximumExperienceWorth);
         }
 
-        public static int GetExperienceBase(this CharacterInstance ch)
+        public static int GetExperienceBase(this CharacterInstance ch, IDatabaseManager databaseManager = null)
         {
             return ch.IsNpc()
                 ? 1000
-                : DatabaseManager.Instance.CLASSES.Values.First(x => x.Type == ch.CurrentClass).BaseExperience;
+                : (databaseManager ?? DatabaseManager.Instance).CLASSES.Values.First(
+                    x => x.Type == ch.CurrentClass).BaseExperience;
         }
 
         public static int GetExperienceLevel(this CharacterInstance ch, int level)
@@ -869,7 +876,7 @@ namespace SmaugCS
 
         public static int GetLevelExperience(this CharacterInstance ch, int cexp)
         {
-            int x = LevelConstants.GetLevel("supreme");
+            int x = LevelConstants.GetLevel(ImmortalTypes.Supreme);
             int lastx = x;
             int y = 0;
 
@@ -885,7 +892,8 @@ namespace SmaugCS
                     y = x;
             }
 
-            return y < 1 ? 1 : y > LevelConstants.GetLevel("supreme") ? LevelConstants.GetLevel("supreme") : y;
+            return y < 1 ? 1 : y > LevelConstants.GetLevel(ImmortalTypes.Supreme) 
+                ? LevelConstants.GetLevel(ImmortalTypes.Supreme) : y;
         }
         #endregion
 
@@ -958,7 +966,7 @@ namespace SmaugCS
         {
             int penalty = 0;
 
-            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return ch.Trust * 200;
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return ch.Level * 200;
@@ -977,7 +985,7 @@ namespace SmaugCS
 
         public static int CanCarryMaxWeight(this CharacterInstance ch)
         {
-            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return 1000000;
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return 1000000;
@@ -1023,12 +1031,12 @@ namespace SmaugCS
             return movement;
         }
 
-        public static void AdvanceLevel(this CharacterInstance ch)
+        public static void AdvanceLevel(this CharacterInstance ch, IDatabaseManager databaseManager = null)
         {
             string buffer = string.Format("the {0}", tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender));
             player.set_title(ch, buffer);
 
-            ClassData myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+            ClassData myClass = (databaseManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
 
             int add_hp = GameConstants.con_app[ch.GetCurrentConstitution()].hitp +
                          SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
@@ -1058,9 +1066,9 @@ namespace SmaugCS
             if (!ch.IsNpc())
                 ch.Act.RemoveBit((int)PlayerFlags.BoughtPet);
 
-            if (ch.Level == LevelConstants.GetLevel("avatar"))
+            if (ch.Level == LevelConstants.AvatarLevel)
                 ch.AdvanceLevelAvatar();
-            if (ch.Level < LevelConstants.GetLevel("immortal"))
+            if (ch.Level < LevelConstants.ImmortalLevel)
             {
                 if (ch.IsVampire())
                     buffer = string.Format("Your gain is: {0}/{1} hp, {2}/{3} bp, {4}/{5} mv, {6}/{7} prac.\r\n",
@@ -1093,7 +1101,7 @@ namespace SmaugCS
 
         public static void GainXP(this CharacterInstance ch, int gain)
         {
-            if (ch.IsNpc() || (ch.Level >= LevelConstants.GetLevel("avatar")))
+            if (ch.IsNpc() || (ch.Level >= LevelConstants.AvatarLevel))
                 return;
 
             double modgain = gain;
@@ -1143,7 +1151,7 @@ namespace SmaugCS
                 return;
             }
 
-            while (ch.Level < LevelConstants.GetLevel("avatar") && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
+            while (ch.Level < LevelConstants.AvatarLevel && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
                 color.set_char_color(ATTypes.AT_WHITE | ATTypes.AT_BLINK, ch);
                 ch.Level += 1;
@@ -1331,7 +1339,7 @@ namespace SmaugCS
         public static bool WillFall(this CharacterInstance ch, int fall)
         {
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.NoFloor)
-                && Macros.CAN_GO(ch, (short)DirectionTypes.Down)
+                && ch.CanGo(DirectionTypes.Down)
                 && (!ch.IsAffected(AffectedByTypes.Flying)
                     || (ch.CurrentMount != null && !ch.CurrentMount.IsAffected(AffectedByTypes.Flying))))
             {
@@ -1626,7 +1634,7 @@ namespace SmaugCS
                 ch.CurrentRoom.ToRoom(obj);
                 mud_prog.oprog_zap_trigger(ch, obj);
 
-                if (GameManager.Instance.SystemData.SaveFlags.IsSet((int)AutoSaveFlags.ZapDrop)
+                if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.ZapDrop)
                     && !ch.CharDied())
                     save.save_char_obj(ch);
                 return;
@@ -1652,10 +1660,7 @@ namespace SmaugCS
         public static void Unequip(this CharacterInstance ch, ObjectInstance obj)
         {
             if (obj.WearLocation == WearLocations.None)
-            {
-                LogManager.Instance.Bug("already unequipped");
                 return;
-            }
 
             ch.CarryNumber += obj.GetObjectNumber();
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))

@@ -6,20 +6,11 @@ using SmaugCS.Data;
 
 namespace SmaugCS.Repositories
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class CharacterRepository : Repository<long, CharacterInstance>, IInstanceRepository<CharacterInstance>
     {
         private static int _idSpace = 1;
         private static int GetNextId { get { return _idSpace++; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
         public CharacterInstance Create(Template parent, params object[] args)
         {
             Validation.IsNotNull(parent, "parent");

@@ -497,19 +497,19 @@ namespace SmaugCS
                     if (CheckFunctions.CheckIfTrue(ch, victim.GetTimer(TimerTypes.PKilled) != null,
                         !silence ? "This player has been killed in the last 5 minutes." : "")) return null;
 
-                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet(PlayerFlags.Nice) && !Equals(ch, victim),
+                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet(PlayerFlags.Nice) && ch != victim,
                         !silence ? "You are too nice to attack another player." : "")) return null;
 
                     if (victim != ch)
                     {
                         if (!silence)
                             color.send_to_char("You really shouldn't do this to another player...", ch);
-                        else if (!Equals(fight.who_fighting(victim), ch))
+                        else if (fight.who_fighting(victim) != ch)
                             return null;
                     }
                 }
 
-                if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm) && Equals(ch.Master, victim),
+                if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim,
                     !silence ? "You can't do that to your own follower." : "")) return null;
             }
 
@@ -536,7 +536,7 @@ namespace SmaugCS
                 SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
                 victim = fight.who_fighting(ch);
 
-            if (CheckFunctions.CheckIfTrue(ch, Equals(ch, victim) && skill.Flags.IsSet(SkillFlags.NoSelf),
+            if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
                 !silence ? "You can't cast this on yourself!" : "")) return null;
 
             return victim;
@@ -620,14 +620,14 @@ namespace SmaugCS
                         targetName = obj.Name;
                     break;
                 case TargetTypes.OffensiveCharacter:
-                    if (!Equals(victim, ch))
+                    if (victim != ch)
                     {
                         if (victim == null)
                             victim = fight.who_fighting(ch);
                         if (CheckFunctions.CheckIfTrue(ch, victim == null || (!victim.IsNpc() && !victim.IsInArena()),
                             "You can't do that.")) return ReturnTypes.None;
                     }
-                    if (!Equals(ch, victim) && fight.is_safe(ch, victim, true))
+                    if (ch != victim && fight.is_safe(ch, victim, true))
                         return ReturnTypes.None;
                     vo = victim;
                     break;

@@ -15,10 +15,10 @@ namespace SmaugCS.SpecFuns
 
             foreach (
                 CharacterInstance victim in
-                    ch.CurrentRoom.Persons.Where(victim => !victim.Equals(ch))
+                    ch.CurrentRoom.Persons.Where(victim => victim != ch)
                       .Where(
                           victim =>
-                          !victim.IsNpc() && victim.Level < LevelConstants.GetLevel("immortal") && SmaugRandom.Bits(2) == 0 &&
+                          !victim.IsNpc() && victim.Level < LevelConstants.ImmortalLevel && SmaugRandom.Bits(2) == 0 &&
                           ch.CanSee(victim)))
             {
                 if (victim.IsAwake() && SmaugRandom.Between(0, ch.Level) == 0)

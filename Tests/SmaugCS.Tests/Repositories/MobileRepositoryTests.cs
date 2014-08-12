@@ -45,7 +45,7 @@ namespace SmaugCS.Tests.Repositories
             sb.Append("mobile.this:SetStats2(18, 18, 180);");
             sb.Append("mobile.this:SetStats3(5, 3, 10);");
             sb.Append("mobile.this:SetStats4(50, 100, 2, 5, 6);");
-            sb.Append("mobile.this:SetAttribs(11, 12, 13, 14, 15, 16, 17);");
+            sb.Append("mobile.this:SetAttributes(11, 12, 13, 14, 15, 16, 17);");
             sb.Append("mobile.this:SetSaves(3, 5, 3, 5, 3);");
             sb.Append("mobile.this.Speaks = \"magical\"");
             sb.Append("mobile.this.Speaking = \"magical\"");
@@ -87,7 +87,7 @@ namespace SmaugCS.Tests.Repositories
                 mockTimer.Object);
             DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
 
-            LuaMobFunctions.InitializeReferences(luaMgr, dbMgr);
+            LuaMobFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
 
             dbMgr.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Clear();

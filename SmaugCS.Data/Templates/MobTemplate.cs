@@ -43,11 +43,6 @@ namespace SmaugCS.Data
         public SavingThrowData SavingThrows { get; set; }
         public Dictionary<StatisticTypes, int> Statistics { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
         public MobTemplate(long id, string name)
             : base(id, name)
         {
@@ -55,28 +50,22 @@ namespace SmaugCS.Data
             HitDice = new DiceData();
             DamageDice = new DiceData();
             Statistics = new Dictionary<StatisticTypes, int>();
+
+            ShortDescription = string.Format("A newly created {0}", name);
+            LongDescription = string.Format("Somebody abandoned a newly created {0} here.", name);
+            Level = 1;
+            Position = "standing";
+            DefensivePosition = "standing";
+            Class = "warrior";
+            Race = "human";
+            Gender = "male";
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public int GetStatistic(StatisticTypes type)
         {
             return Statistics.ContainsKey(type) ? Statistics[type] : 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="align"></param>
-        /// <param name="level"></param>
-        /// <param name="thac0"></param>
-        /// <param name="ac"></param>
-        /// <param name="gold"></param>
-        /// <param name="xp"></param>
         public void SetStats1(int align, int level, int thac0, int ac, int gold, int xp)
         {
             Statistics[StatisticTypes.Alignment] = align;
@@ -87,36 +76,16 @@ namespace SmaugCS.Data
             Experience = xp;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="numberHitDice"></param>
-        /// <param name="sizeHitDice"></param>
-        /// <param name="bonusHitDice"></param>
         public void SetStats2(int numberHitDice, int sizeHitDice, int bonusHitDice)
         {
             HitDice = new DiceData { NumberOf = numberHitDice, SizeOf = sizeHitDice, Bonus = bonusHitDice };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="numberDmgDice"></param>
-        /// <param name="sizeDmgDice"></param>
-        /// <param name="bonusDmgDice"></param>
         public void SetStats3(int numberDmgDice, int sizeDmgDice, int bonusDmgDice)
         {
             DamageDice = new DiceData { NumberOf = numberDmgDice, SizeOf = sizeDmgDice, Bonus = bonusDmgDice };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="weight"></param>
-        /// <param name="numberAttacks"></param>
-        /// <param name="hitRoll"></param>
-        /// <param name="dmgRoll"></param>
         public void SetStats4(int height, int weight, int numberAttacks, int hitRoll, int dmgRoll)
         {
             Height = height;
@@ -126,17 +95,7 @@ namespace SmaugCS.Data
             Statistics[StatisticTypes.DamageRoll] = dmgRoll;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="strength"></param>
-        /// <param name="intelligence"></param>
-        /// <param name="wisdom"></param>
-        /// <param name="dexterity"></param>
-        /// <param name="constitution"></param>
-        /// <param name="charisma"></param>
-        /// <param name="luck"></param>
-        public void SetAttribs(int strength, int intelligence, int wisdom, int dexterity, int constitution, int charisma,
+        public void SetAttributes(int strength, int intelligence, int wisdom, int dexterity, int constitution, int charisma,
                                int luck)
         {
             Statistics[StatisticTypes.Strength] = strength;
@@ -148,14 +107,6 @@ namespace SmaugCS.Data
             Statistics[StatisticTypes.Luck] = luck;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="saveVsDeath"></param>
-        /// <param name="saveVsWand"></param>
-        /// <param name="saveVsParalysis"></param>
-        /// <param name="saveVsBreath"></param>
-        /// <param name="saveVsSpell"></param>
         public void SetSaves(int saveVsDeath, int saveVsWand, int saveVsParalysis, int saveVsBreath, int saveVsSpell)
         {
             SavingThrows = new SavingThrowData
@@ -171,6 +122,21 @@ namespace SmaugCS.Data
         public void AddShop(ShopData shop)
         {
             Shop = shop;
+        }
+
+        public void AddConversation(string keyword, string text)
+        {
+            if (string.IsNullOrEmpty(keyword) || string.IsNullOrEmpty(text))
+                return;
+
+            MudProgData mp = new MudProgData()
+            {
+                Type = MudProgTypes.Speech,
+                ArgList = keyword,
+                Script = string.Format("LMobEmote(\"{0}\");", text)
+            };
+
+            AddMudProg(mp);
         }
 
         /*public void SaveFUSS(TextWriterProxy proxy, bool install)

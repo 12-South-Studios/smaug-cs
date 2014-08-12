@@ -99,8 +99,7 @@ namespace SmaugCS.Constants
         /// <returns></returns>
         public static int get_pulltype(string value)
         {
-            if (value.Equals("none", StringComparison.OrdinalIgnoreCase)
-                || value.Equals("clear", StringComparison.OrdinalIgnoreCase))
+            if (value.EqualsIgnoreCase("none") || value.EqualsIgnoreCase("clear"))
                 return 0;
 
             int index = GetIndexOf(value, BuilderConstants.ex_pmisc);

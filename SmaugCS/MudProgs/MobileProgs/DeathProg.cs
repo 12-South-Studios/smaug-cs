@@ -7,7 +7,7 @@ namespace SmaugCS.MudProgs.MobileProgs
     {
         public static void Execute(CharacterInstance killer, CharacterInstance mob)
         {
-            if (mob.IsNpc() && !Equals(killer, mob) &&
+            if (mob.IsNpc() && killer != mob &&
                 mob.MobIndex.HasProg(MudProgTypes.Death))
             {
                 mob.CurrentPosition = PositionTypes.Standing;
