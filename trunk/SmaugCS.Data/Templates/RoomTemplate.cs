@@ -45,6 +45,8 @@ namespace SmaugCS.Data
             PermanentAffects = new List<AffectData>();
             Affects = new List<AffectData>();
             MudProgActs = new List<MudProgActData>();
+
+            SectorType = SectorTypes.Inside;
         }
 
         #region Affects
@@ -86,7 +88,7 @@ namespace SmaugCS.Data
             return Exits.FirstOrDefault(exit => ++x == count);
         }
 
-        public void AddExit(string direction, int destination, string description)
+        public void AddExit(string direction, long destination, string description)
         {
             DirectionTypes dir = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
             if (Exits.Any(x => x.Direction == dir))
@@ -101,7 +103,7 @@ namespace SmaugCS.Data
                                    };
             Exits.Add(newExit);
         }
-        public void AddExit(ExitData exit)
+        public void AddExitObject(ExitData exit)
         {
             if (Exits.Any(x => x.Direction == exit.Direction))
                 return;
@@ -185,6 +187,15 @@ namespace SmaugCS.Data
             SectorType = Realm.Library.Common.EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
         }
 
+        public void SetFlags(string flags)
+        {
+            string[] words = flags.Split(new[] { ' ' });
+            foreach (string word in words)
+            {
+                Flags += (int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<RoomFlags>(word);
+            }
+
+        }
         /*public void SaveFUSS(TextWriterProxy proxy, bool install)
         {
             if (install)

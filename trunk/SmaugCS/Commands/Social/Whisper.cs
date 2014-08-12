@@ -75,7 +75,7 @@ namespace SmaugCS.Commands.Social
 
             if (victim.Descriptor != null
                 && (victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing)
-                && (ch.Trust < LevelConstants.GetLevel("god")))
+                && (ch.Trust < LevelConstants.GetLevel(ImmortalTypes.God)))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer.  Please try again in a few minutes.",
                     ch, 0, victim, ToTypes.Character);

@@ -11,7 +11,7 @@ namespace SmaugCS.MudProgs.MobileProgs
             {
                 if (mob.IsNpc() && mob.MobIndex.HasProg(MudProgTypes.Speech))
                 {
-                    if (actor.IsNpc() && Equals(actor.MobIndex, mob.MobIndex))
+                    if (actor.IsNpc() && actor.MobIndex == mob.MobIndex)
                         continue;
 
                     // TODO: Trigger on words or phrases?

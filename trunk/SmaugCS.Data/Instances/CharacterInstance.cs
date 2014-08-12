@@ -176,7 +176,7 @@ namespace SmaugCS.Data
             return IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
         }
 
-        //LevelConstants.GetLevel("immortal")
+        //LevelConstants.ImmortalLevel
         public bool IsImmortal(int level = 51)
         {
             return Trust >= level;

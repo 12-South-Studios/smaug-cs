@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Config;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Managers;
@@ -19,101 +18,78 @@ namespace SmaugCS.Constants
             return ConfigurationManager.AppSettings[name];
         }
 
+        private static ConstantConfigurationSection _configSection;
+
         private static ConstantElement GetConfigConstant(string elementName)
         {
-            var section = ConfigurationManagerFunctions.GetSection<ConstantConfigurationSection>("ConstantSection");
-            return section.Constants.Cast<ConstantElement>().FirstOrDefault(element => element.Name.EqualsIgnoreCase(elementName));
+            if (_configSection == null)
+                _configSection =
+                    ConfigurationManagerFunctions.GetSection<ConstantConfigurationSection>("ConstantSection");
+            return
+                _configSection.Constants.Cast<ConstantElement>()
+                    .FirstOrDefault(element => element.Name.EqualsIgnoreCase(elementName));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Int32 GetIntegerConstant(string name)
+        public static T GetConstant<T>(string name)
         {
             var element = GetConfigConstant(name);
-            return element != null ? Convert.ToInt32(element.Value) : -1;
+            return element != null ? (T)Convert.ChangeType(element.Value, typeof(T)) : default(T);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static String GetStringConstant(string name)
-        {
-            var element = GetConfigConstant(name);
-            return element != null ? element.Value : string.Empty;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Boolean GetBooleanConstant(string name)
-        {
-            var element = GetConfigConstant(name);
-            return element != null && Convert.ToBoolean(element.Value);
-        }
+        private static SystemDataConfigurationSection _dataSection;
 
         public static T GetSystemValue<T>(string name)
         {
-            var section = ConfigurationManagerFunctions.GetSection<SystemDataConfigurationSection>("SystemDataSection");
+            if (_dataSection == null)
+                _dataSection =
+                    ConfigurationManagerFunctions.GetSection<SystemDataConfigurationSection>("SystemDataSection");
             var element =
-                section.SystemValues.Cast<SystemValueElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
-            return element != null ? (T)Convert.ChangeType(element.Value, typeof (T)) : default(T);
+                _dataSection.SystemValues.Cast<SystemValueElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
+            return element != null ? (T) Convert.ChangeType(element.Value, typeof (T)) : default(T);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        private static VnumConfigurationSection _vnumSection;
+
         public static Int32 GetVnum(string name)
         {
-            var section = ConfigurationManagerFunctions.GetSection<VnumConfigurationSection>("VnumSection");
+            if (_vnumSection == null)
+                _vnumSection = ConfigurationManagerFunctions.GetSection<VnumConfigurationSection>("VnumSection");
             var element =
-                (section.RoomVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name)) ??
-                 section.MobileVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name))) ??
-                section.ObjectVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
+                (_vnumSection.RoomVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name)) ??
+                 _vnumSection.MobileVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name))) ??
+                _vnumSection.ObjectVnums.Cast<VnumElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
             return element != null ? Convert.ToInt32(element.Value) : -1;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public static string GetDataPath()
         {
-            return string.Format("{0}\\{1}\\", GetStringConstant("AppPath"), "data");
+            return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "data");
         }
 
         public static string GetLogPath()
         {
-            return string.Format("{0}\\{1}\\", GetStringConstant("AppPath"), "logs");
+            return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "logs");
         }
         #endregion
 
 
         public static int MaximumExperienceWorth
         {
-            get { return GetIntegerConstant("MaximumExperienceValue"); }
+            get { return GetConstant<int>("MaximumExperienceValue"); }
         }
         public static int MinimumExperienceWorth
         {
-            get { return GetIntegerConstant("MinimumExperienceValue"); }
+            get { return GetConstant<int>("MinimumExperienceValue"); }
         }
 
         public static int MaximumWearLayers
         {
-            get { return GetIntegerConstant("MaximumLayers"); }
+            get { return GetConstant<int>("MaximumLayers"); }
         }
 
         public static int MaximumWearLocations
         {
-            get { return GetIntegerConstant("MaximumWearLocations"); }
+            get { return GetConstant<int>("MaximumWearLocations"); }
         }
 
 

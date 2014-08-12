@@ -304,11 +304,11 @@ namespace SmaugCS
                     pstrShow = format_obj_to_char(obj, ch, fShort);
                     fCombine = false;
 
-                    if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Combine))
+                    if (ch.IsNpc() || ch.Act.IsSet(PlayerFlags.Combine))
                     {
                         for (int i = nShow - 1; i >= 0; i--)
                         {
-                            if (prgpstrShow[i].Equals(pstrShow))
+                            if (prgpstrShow[i] == pstrShow)
                             {
                                 prgnShow[i] += obj.Count;
                                 fCombine = true;
@@ -355,7 +355,7 @@ namespace SmaugCS
 
             if (fShowNothing && nShow == 0)
             {
-                if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Combine))
+                if (ch.IsNpc() || ch.Act.IsSet(PlayerFlags.Combine))
                     color.send_to_char("     ", ch);
                 color.set_char_color(ATTypes.AT_OBJECT, ch);
                 color.send_to_char("Nothing.\r\n", ch);
@@ -372,7 +372,7 @@ namespace SmaugCS
                 color.set_char_color(attrib.ATType, ch);
         }
 
-        private static List<AffectedByTypes> AffectedByList = new List<AffectedByTypes> 
+        private static readonly List<AffectedByTypes> AffectedByList = new List<AffectedByTypes> 
         { 
             AffectedByTypes.FireShield, AffectedByTypes.ShockShield, AffectedByTypes.AcidMist,
             AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
@@ -452,7 +452,7 @@ namespace SmaugCS
 
             if (!victim.IsNpc())
             {
-                if (victim.IsImmortal() && victim.Level > LevelConstants.GetLevel("avatar"))
+                if (victim.IsImmortal() && victim.Level > LevelConstants.GetLevel(ImmortalTypes.Avatar))
                     color.send_to_char_color("&P(&WImmortal&P) ", ch);
                 if (victim.PlayerData.Clan != null
                     && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
@@ -460,7 +460,7 @@ namespace SmaugCS
                     && (victim.PlayerData.Clan.ClanType != ClanTypes.Order
                     || victim.PlayerData.Clan.ClanType != ClanTypes.Guild))
                     color.ch_printf_color(ch, "%s ", victim.PlayerData.Clan.Badge);
-                else if (victim.CanPKill() && victim.Level < LevelConstants.GetLevel("immortal"))
+                else if (victim.CanPKill() && victim.Level < LevelConstants.ImmortalLevel)
                     color.send_to_char_color("&P(&wUnclanned&P) ", ch);
             }
 

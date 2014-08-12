@@ -24,9 +24,9 @@ namespace SmaugCS
             Kernel.Bind<ISmallDb>().To<SmallDb>();
 
             Kernel.Bind<ITimer>().To<CommonTimer>().Named("LogDumpTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetIntegerConstant("LogDumpFrequencyMS"));
+                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("LogDumpFrequencyMS"));
             Kernel.Bind<ITimer>().To<CommonTimer>().Named("BanExpireTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetIntegerConstant("BanExpireFrequencyMS"));
+                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("BanExpireFrequencyMS"));
 
             Kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope()
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
@@ -77,8 +77,8 @@ namespace SmaugCS
                 .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
                 .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
                 .OnActivation(x => x.Initialize(Kernel.Get<IGameManager>().GameTime,
-                    GameConstants.GetIntegerConstant("WeatherWidth"),
-                    GameConstants.GetIntegerConstant("WeatherHeight")));
+                    GameConstants.GetConstant<int>("WeatherWidth"),
+                    GameConstants.GetConstant<int>("WeatherHeight")));
 
             Kernel.Bind<INewsManager>().To<NewsManager>().InSingletonScope();
 

@@ -299,7 +299,7 @@ namespace SmaugCS
 
                 string buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
                 //log_string(buffer);
-                ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.GetLevel("immortal"));
+                ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
                 handler.extract_char(ch, false);
             }
         }
@@ -499,7 +499,7 @@ namespace SmaugCS
             foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
             {
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried)
-                    || !Macros.CAN_WEAR(obj, (int)ItemWearFlags.Take))
+                    || !obj.WearFlags.IsSet(ItemWearFlags.Take))
                     continue;
 
                 int resistance = obj.GetObjectWeight();

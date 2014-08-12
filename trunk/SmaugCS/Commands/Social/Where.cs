@@ -53,7 +53,7 @@ namespace SmaugCS.Commands
             foreach (CharacterInstance victim in victimList)
             {
                 color.pager_printf_color(ch, "&P{0}  ", victim.Name.PadRight(13, ' '));
-                if (victim.IsImmortal() && victim.Level > LevelConstants.GetLevel("Avatar"))
+                if (victim.IsImmortal() && victim.Level > LevelConstants.AvatarLevel)
                     color.send_to_pager_color("&P(&WImmortal&P)\t", ch);
                 else if (victim.CanPKill() && victim.PlayerData.Clan != null
                          && victim.PlayerData.Clan.ClanType != ClanTypes.Order

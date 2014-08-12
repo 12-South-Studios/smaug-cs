@@ -264,7 +264,7 @@ namespace SmaugCS.Commands.Movement
 
                 int minLevel = obj.Value[2] > 0 ? obj.Value[2] : ch.Level;
                 magic.obj_cast_spell(obj.Value[1],
-                    1.GetNumberThatIsBetween(minLevel, GameConstants.GetIntegerConstant("MaximumLevel")), ch, ch, null);
+                    1.GetNumberThatIsBetween(minLevel, LevelConstants.MaxLevel), ch, ch, null);
                 return true;
             }
             return false;
@@ -353,7 +353,7 @@ namespace SmaugCS.Commands.Movement
                     }
                 }
 
-                int level = 0.GetNumberThatIsBetween(obj.Value[3], GameConstants.GetIntegerConstant("MaximumLevel"));
+                int level = 0.GetNumberThatIsBetween(obj.Value[3], LevelConstants.MaxLevel);
                 ObjectInstance instance = DatabaseManager.Instance.OBJECTS.Create(template, level);
                 if (instance == null)
                 {
@@ -365,7 +365,7 @@ namespace SmaugCS.Commands.Movement
                     room.ToRoom(instance);
                 else
                 {
-                    if (Macros.CAN_WEAR(obj, (int) ItemWearFlags.Take))
+                    if (obj.WearFlags.IsSet(ItemWearFlags.Take))
                         instance.ToCharacter(ch);
                     else
                         ch.CurrentRoom.ToRoom(instance);

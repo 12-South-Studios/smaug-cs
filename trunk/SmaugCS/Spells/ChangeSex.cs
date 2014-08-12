@@ -30,7 +30,7 @@ namespace SmaugCS.Spells
             AffectData af = new AffectData
             {
                 SkillNumber = sn,
-                Duration = (10*level*GameConstants.GetIntegerConstant("AffectDurationConversionValue")),
+                Duration = (10 * level * GameConstants.GetConstant<int>("AffectDurationConversionValue")),
                 Location = ApplyTypes.Gender
             };
 

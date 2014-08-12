@@ -70,8 +70,8 @@ namespace SmaugCS.Spells.Smaug
             vch.CurrentHealth = 0.GetNumberThatIsBetween(vch.CurrentHealth + damage, vch.MaximumHealth);
             fight.update_pos(vch);
 
-            if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who.Equals(vch))
-                               || (vch.CurrentFighting != null && vch.CurrentFighting.Who.Equals(ch))))
+            if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who == vch)
+                               || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))
             {
                 int xp = ch.CurrentFighting != null
                     ? ch.CurrentFighting.Experience

@@ -6,14 +6,8 @@ using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class SpellLookupTable : LookupBase<SkillData, SpellFunction>
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public SpellLookupTable()
             : base(new SpellFunction {Value = (id, level, ch, vo) =>
                 {
@@ -22,6 +16,8 @@ namespace SmaugCS.Lookup
                 }})
         {
             LookupTable.Add("spell_smaug", new SpellFunction {Value = Spells.Smaug.Smaug.spell_smaug});
+
+            // TODO Add spells here
         }
 
         public override void UpdateFunctionReferences(IEnumerable<SkillData> values)

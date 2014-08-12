@@ -32,7 +32,7 @@ namespace SmaugCS
             foreach (ObjectInstance content in corpse.Contents
                 .Where(x => x.ItemType == ItemTypes.Money)
                 .Where(ch.CanSee)
-                .Where(x => Macros.CAN_WEAR(x, (int)ItemWearFlags.Take) && ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
+                .Where(x => x.WearFlags.IsSet(ItemWearFlags.Take) && ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
                 .Where(x => x.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
             {
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
@@ -54,15 +54,6 @@ namespace SmaugCS
                 Split.do_split(ch, string.Format("{0}", ch.CurrentCoin - oldgold));
 
             return true;
-        }
-
-        public static int VAMP_AC(CharacterInstance ch)
-        {
-            if (!ch.IsVampire() || !ch.IsOutside()) return 0;
-
-            ArmorClassAttribute attrib =
-                GameManager.Instance.GameTime.Sunlight.GetAttribute<ArmorClassAttribute>();
-            return attrib.ModValue;
         }
 
         private static int Pulse { get; set; }
@@ -890,7 +881,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (!ch.IsNpc() && ch.Level >= LevelConstants.GetLevel("immortal"))
+            if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return false;
 
             if (!ch.IsNpc() && !victim.IsNpc() && ch != victim
@@ -1004,18 +995,18 @@ namespace SmaugCS
                     if (ch.PlayerData.CurrentDeity != null)
                     {
                         if (victim.CurrentRace == ch.PlayerData.CurrentDeity.NPCRace)
-                            ch.AdjustFavor(3, levelRatio);
+                            ch.AdjustFavor(DeityFieldTypes.KillNPCRace, levelRatio);
                         else if (victim.CurrentRace == ch.PlayerData.CurrentDeity.NPCFoe)
-                            ch.AdjustFavor(17, levelRatio);
+                            ch.AdjustFavor(DeityFieldTypes.KillNPCFoe, levelRatio);
                         else
-                            ch.AdjustFavor(2, levelRatio);
+                            ch.AdjustFavor(DeityFieldTypes.Kill, levelRatio);
                     }
                 }
                 return;
             }
 
             // if you kill yourself, nothing happens
-            if (ch == victim || ch.Level >= LevelConstants.GetLevel("immortal"))
+            if (ch == victim || ch.Level >= LevelConstants.ImmortalLevel)
                 return;
 
             // Any character in the arena is okay to kill
@@ -1120,8 +1111,8 @@ namespace SmaugCS
                     }
 
                     victim.PlayerData.PvPDeaths++;
-                    victim.AdjustFavor(11, 1);
-                    ch.AdjustFavor(2, 1);
+                    victim.AdjustFavor(DeityFieldTypes.Die, 1);
+                    ch.AdjustFavor(DeityFieldTypes.Kill, 1);
                     victim.AddTimer(TimerTypes.PKilled, 115, null, 0);
                     Macros.WAIT_STATE(victim, 3 * GameConstants.GetSystemValue<int>("PulseViolence"));
                     return;
@@ -1151,15 +1142,15 @@ namespace SmaugCS
                     victim.PlayerData.PvEDeaths++;
                     victim.CurrentRoom.Area.PvEDeaths++;
 
-                    int levelRatio = (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.GetLevel("avatar"));
+                    int levelRatio = (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.AvatarLevel);
                     if (victim.PlayerData.CurrentDeity != null)
                     {
                         if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCRace)
-                            victim.AdjustFavor(12, levelRatio);
+                            victim.AdjustFavor(DeityFieldTypes.DieNPCRace, levelRatio);
                         else if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCFoe)
-                            victim.AdjustFavor(15, levelRatio);
+                            victim.AdjustFavor(DeityFieldTypes.DieNPCFoe, levelRatio);
                         else
-                            victim.AdjustFavor(11, levelRatio);
+                            victim.AdjustFavor(DeityFieldTypes.Die, levelRatio);
                     }
                 }
                 return;
@@ -1240,7 +1231,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (ch.IsNpc() || ch == victim || ch.Level >= LevelConstants.GetLevel("immortal") ||
+            if (ch.IsNpc() || ch == victim || ch.Level >= LevelConstants.ImmortalLevel ||
                 ch.Act.IsSet((int)PlayerFlags.Attacker) || ch.Act.IsSet((int)PlayerFlags.Killer))
                 return;
 

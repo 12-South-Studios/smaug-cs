@@ -12,7 +12,7 @@ namespace SmaugCS.Commands.Social
         public static void do_speak(CharacterInstance ch, string argument)
         {
             string firstArg = argument.FirstWord();
-            if (firstArg.Equals("all", StringComparison.OrdinalIgnoreCase)
+            if (firstArg.EqualsIgnoreCase("all")
                 || ch.IsImmortal())
             {
                 color.set_char_color(ATTypes.AT_SAY, ch);

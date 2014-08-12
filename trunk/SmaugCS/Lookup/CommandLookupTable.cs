@@ -6,19 +6,14 @@ using Realm.Library.Common;
 
 namespace SmaugCS.Lookup
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class CommandLookupTable : LookupBase<CommandData, DoFunction>
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public CommandLookupTable()
             : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?", ch)})
         {
             LookupTable.Add("do_say", new DoFunction {Value = Say.do_say});
 
+            // TODO Add command references here
         }
 
         public override void UpdateFunctionReferences(IEnumerable<CommandData> values)

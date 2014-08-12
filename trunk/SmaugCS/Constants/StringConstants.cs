@@ -6,20 +6,16 @@ namespace SmaugCS.Constants
 {
     public static class StringConstants
     {
+        private static StaticStringConfigurationSection _section;
+
         private static MayorTextStringElement GetTextString(string elementName)
         {
-            var section =
-                ConfigurationManagerFunctions.GetSection<StaticStringConfigurationSection>("StaticStringSection");
-            return
-                section.MayorTextStrings.Cast<MayorTextStringElement>()
-                    .FirstOrDefault(element => element.Name.EqualsIgnoreCase(elementName));
+            if (_section == null)
+                _section = ConfigurationManagerFunctions.GetSection<StaticStringConfigurationSection>("StaticStringSection");
+            return _section.MayorTextStrings.Cast<MayorTextStringElement>()
+                .FirstOrDefault(element => element.Name.EqualsIgnoreCase(elementName));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public static string GetMayorText(string name)
         {
             var element = GetTextString(name);

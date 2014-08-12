@@ -19,9 +19,9 @@ namespace Realm.Library.Common
             Validation.IsNotNullOrEmpty(compareTo, "compareTo");
 
             bool returnVal = false;
-            if (value.Name.Equals(compareTo, StringComparison.OrdinalIgnoreCase)) returnVal = true;
+            if (value.Name.EqualsIgnoreCase(compareTo)) returnVal = true;
             else if (value.Name.IndexOf(compareTo, StringComparison.OrdinalIgnoreCase) > -1) returnVal = true;
-            else if (value.ID.ToString(CultureInfo.InvariantCulture).Equals(compareTo, StringComparison.OrdinalIgnoreCase)) returnVal = true;
+            else if (value.ID.ToString(CultureInfo.InvariantCulture).EqualsIgnoreCase(compareTo)) returnVal = true;
             return returnVal;
         }
     }

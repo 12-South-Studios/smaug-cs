@@ -18,7 +18,7 @@ namespace SmaugCS.SpecFuns
             CharacterInstance victim = null;
             CharacterInstance ech = null;
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => !vch.Equals(ch)))
+            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {
                 victim = vch;
 
@@ -27,7 +27,7 @@ namespace SmaugCS.SpecFuns
                     break;
 
                 if (vch.CurrentFighting != null 
-                    && !fight.who_fighting(vch).Equals(ch) 
+                    && fight.who_fighting(vch) != ch
                     && vch.CurrentAlignment < maxEvil)
                 {
                     maxEvil = vch.CurrentAlignment;

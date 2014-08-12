@@ -238,7 +238,7 @@ namespace SmaugCS.Managers
         {
 
             GameManager.Instance.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadAllMail, LevelConstants.GetLevel("demi"));
-            GameManager.Instance.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, LevelConstants.GetLevel("immortal"));
+            GameManager.Instance.SystemData.PlayerPermissions.Add(PlayerPermissionTypes.ReadMailFree, LevelConstants.ImmortalLevel);
             // TODO Do the rest of the system data
 
             if (!db.load_systemdata(GameManager.Instance.SystemData))

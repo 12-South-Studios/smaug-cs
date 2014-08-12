@@ -21,7 +21,7 @@ namespace SmaugCS.Spells
             }
 
             if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Blind),
-                !ch.Equals(victim)
+                ch != victim
                     ? "You work your cure, but it has no apparent effect."
                     : "You don't seem to be blind.")) return ReturnTypes.SpellFailed;
             
@@ -29,7 +29,7 @@ namespace SmaugCS.Spells
             
             color.set_char_color(ATTypes.AT_MAGIC, victim);
             color.send_to_char("Your vision returns!", victim);
-            if (!ch.Equals(victim))
+            if (ch != victim)
                 color.send_to_char("You work your cure, restoring vision.", ch);
             return ReturnTypes.None;
         }

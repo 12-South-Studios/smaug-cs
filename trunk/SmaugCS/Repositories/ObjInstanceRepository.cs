@@ -8,20 +8,11 @@ using SmaugCS.Data;
 
 namespace SmaugCS.Repositories
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ObjInstanceRepository : Repository<long, ObjectInstance>, IInstanceRepository<ObjectInstance>
     {
         private static long _idSpace = 1;
         private static long GetNextId { get { return _idSpace++; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
         public ObjectInstance Create(Template parent, params object[] args)
         {
             Validation.IsNotNull(parent, "parent");

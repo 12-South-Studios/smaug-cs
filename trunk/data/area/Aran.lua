@@ -1,14 +1,12 @@
 -- ARAN.LUA
 -- This is the zone-file for the Aran
--- Revised: 101013.12.16
+-- Revised: 2014.08.07
 -- Author: Jason Murdick
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 
-LoadArea()	-- EXECUTE THE AREA
-
 function LoadArea()
-	systemLog("=================== AREA 'ARAN' INITIALIZING ===================");
+	LBootLog("=================== AREA 'ARAN' INITIALIZING ===================");
 	newArea = LCreateArea(3, "Aran");
 	area.this = newArea;
 	area.this.Author = "AmonGwareth";
@@ -23,11 +21,11 @@ function LoadArea()
 	Objects();
 	Rooms();
 	
-	systemLog("=================== AREA 'ARAN' - COMPLETED ================");
+	LBootLog("=================== AREA 'ARAN' - COMPLETED ================");
 end
 	
 function Mobs()
-	systemLog("=================== AREA 'ARAN' - MOBS ===================");
+	LBootLog("=================== AREA 'ARAN' - MOBS ===================");
 	mobile = CreateMobile(10101, "laeban tay shopkeeper armourer", "Laeban Tay the Armourer");
 	mobile.LongDescription = "Laeban Tay, a burly Dwarven armourer, is working at the forge.";
 	mobile.Description = [[A squat and burly Dwarf who looks as though he has seen a few rough 
@@ -61,7 +59,7 @@ function Mobs()
 	
 	mobile = CreateMobile(10102, "guard guardsman", "Dusharan Guardsman");
 	mobile.LongDescription = "A Dusharan Guardsman stands here keeping the peace.";
-	mobile.Description = [[THis guardsman has light skin, is tall, as most of his people are, and fair 
+	mobile.Description = [[This guardsman has light skin, is tall, as most of his people are, and fair 
 	haired.  His steel gray eyes watch the crowd intently for signs of trouble, though there seldom 
 	is any.]];
 	
@@ -197,7 +195,7 @@ function Objects()
 end
 
 function Rooms()
-	systemLog("=================== AREA 'ARAN' - ROOMS ====================");
+	LBootLog("=================== AREA 'ARAN' - ROOMS ====================");
 	room = CreateRoom(10101, "Khamlos Avenue", "city", area.this);
 	room.Description = [[You are standing in the middle of a broad and busy street which cuts through 
 	the middle of the city known as Aran of the Southern Gate. This main thoroughfare thruogh the city leads 
@@ -218,7 +216,7 @@ function Rooms()
 	beyond the favor of Palurien is not known, but for many centuries the temple was the focus of the city and 
 	indeed of the region. The Temple is built of granite and is covered with ornamentations and statues, many 
 	of which are composed of rare metals. Most of the valuable metals, however, were removed long ago.]]);
-	AddExitToRoom(room, "west inn guild", 107, "An open doorway leads west into the Inn", "isdoor");
+	AddExitToRoom(room, "west", 107, "An open doorway leads west into the Inn", "isdoor");
 	AddExitToRoom(room, "north", 10102, "This broad avenue continues north, deeper into the city", "");
 	AddExitToRoom(room, "east", 10136, "Broad marble steps climb up to huge stone doors which stand open and inviting.", "isdoor");
 	AddExitToRoom(room, "south", 10105, "This broad avenue continues south towards the Southern Gate.", "");
@@ -303,7 +301,7 @@ function Rooms()
 	-- south 10118
 	-- north 10128
 	
-	room = CreateRoom(10120 "Desara Avenue", "city", area.this);
+	room = CreateRoom(10120, "Desara Avenue", "city", area.this);
 	-- west 10118
 	-- east 10102
 	-- south 10133
@@ -396,5 +394,7 @@ function Rooms()
 	-- down 10133
 	
 end
+
+LoadArea()	-- EXECUTE THE AREA
 
 -- EOF 

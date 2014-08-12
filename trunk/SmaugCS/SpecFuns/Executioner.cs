@@ -18,7 +18,7 @@ namespace SmaugCS.SpecFuns
             string crime = string.Empty;
             CharacterInstance victim = null;
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => !vch.Equals(ch)))
+            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {
                 victim = vch;
                 crime = GetCrime(victim);

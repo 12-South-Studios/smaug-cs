@@ -102,12 +102,6 @@ namespace SmaugCS.Logging
         }
 
         #region Boot Log
-        [LuaFunction("LBootLog", "Logs an entry to the boot log", "Text to log")]
-        public void LuaBootLog(string txt)
-        {
-            Boot(txt);
-        }
-
         public void Boot(string str, params object[] args)
         {
             StringBuilder sb = new StringBuilder();

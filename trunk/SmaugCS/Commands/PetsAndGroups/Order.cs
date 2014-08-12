@@ -24,7 +24,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             CharacterInstance victim = null;
 
             string secondArg = argument.SecondWord();
-            if (secondArg.Equals("all", StringComparison.OrdinalIgnoreCase))
+            if (secondArg.EqualsIgnoreCase("all"))
                 all = true;
             else
             {

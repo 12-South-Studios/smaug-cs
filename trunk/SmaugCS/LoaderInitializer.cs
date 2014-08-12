@@ -23,7 +23,7 @@ namespace SmaugCS
             Loaders.Add(new ClanLoader());
             Loaders.Add(new CouncilLoader());
             Loaders.Add(new DeityListLoader());
-            Loaders.Add(new WatchListLoader());
+            //Loaders.Add(new WatchListLoader());
         }
 
         /// <summary>

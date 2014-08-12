@@ -80,7 +80,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static int GetMaximumCondition()
         {
-            return GameConstants.GetIntegerConstant("MaximumConditionValue");
+            return GameConstants.GetConstant<int>("MaximumConditionValue");
         }
 
         private static IEnumerable<ItemTypes> ChooseSourceItemTypes(CharacterInstance ch, ObjectInstance obj)

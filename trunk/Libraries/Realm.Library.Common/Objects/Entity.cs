@@ -36,7 +36,7 @@ namespace Realm.Library.Common
                 return false;
 
             var entity = obj.CastAs<Entity>();
-            return entity.IsNotNull() && (ID == entity.ID && Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
+            return entity.IsNotNull() && (ID == entity.ID && Name.EqualsIgnoreCase(entity.Name));
         }
 
         /// <summary>

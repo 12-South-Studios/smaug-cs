@@ -6,20 +6,10 @@ using SmaugCS.Data;
 
 namespace SmaugCS.Repositories
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class MobileRepository : Repository<long, MobTemplate>, ITemplateRepository<MobTemplate>
     {
         private MobTemplate LastMob { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="cvnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public MobTemplate Create(long vnum, long cvnum, string name)
         {
             Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
@@ -76,12 +66,6 @@ namespace SmaugCS.Repositories
             newMob.Defenses = cloneMob.Defenses;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vnum"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public MobTemplate Create(long vnum, string name)
         {
             Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
@@ -91,18 +75,7 @@ namespace SmaugCS.Repositories
                         throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
                 });
 
-            MobTemplate newMob = new MobTemplate(vnum, name)
-                                     {
-                                         ShortDescription = string.Format("A newly created {0}", name),
-                                         LongDescription =
-                                             string.Format("Somebody abandoned a newly created {0} here.", name),
-                                         Level = 1,
-                                         Position = "standing",
-                                         DefensivePosition = "standing",
-                                         Class = "warrior",
-                                         Race = "human",
-                                         Gender = "male"
-                                     };
+            MobTemplate newMob = new MobTemplate(vnum, name);
             newMob.Statistics[StatisticTypes.Strength] = 13;
             newMob.Statistics[StatisticTypes.Dexterity] = 13;
             newMob.Statistics[StatisticTypes.Intelligence] = 13;

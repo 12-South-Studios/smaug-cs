@@ -28,7 +28,7 @@ namespace SmaugCS.Commands.MudProgs
                 victim.Name, victim.Descriptor.host, victim.CurrentRace.GetName(),
                 victim.CurrentClass.GetName(), victim.IsPKill() ? "(Deadly)" : "(Peaceful)");
 
-            ChatManager.to_channel(buf, ChannelTypes.Auth, "Auth", LevelConstants.GetLevel("Immortal"));
+            ChatManager.to_channel(buf, ChannelTypes.Auth, "Auth", LevelConstants.ImmortalLevel);
             victim.PlayerData.AuthState = -1;
         }
     }

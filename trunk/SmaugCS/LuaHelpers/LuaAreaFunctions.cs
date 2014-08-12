@@ -2,6 +2,7 @@
 using Realm.Library.Lua;
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
+using SmaugCS.Logging;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -9,13 +10,16 @@ namespace SmaugCS.LuaHelpers
     {
         private static ILuaManager _luaManager;
         private static IDatabaseManager _dbManager;
+        private static ILogManager _logManager;
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager)
+        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, 
+            ILogManager logManager)
         {
             _luaManager = luaManager;
             _dbManager = dbManager;
+            _logManager = logManager;
         }
 
         [LuaFunction("LGetLastArea", "Retrieves the Last Area")]
@@ -40,6 +44,8 @@ namespace SmaugCS.LuaHelpers
             _luaManager.Proxy.CreateTable("area");
             LastObject = newArea;
             _dbManager.AREAS.Add(areaId, newArea);
+
+            _logManager.Boot("Area (id={0}, name={1}) created.", id, name);
             return newArea;
         }
     }

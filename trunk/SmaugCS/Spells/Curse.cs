@@ -28,7 +28,7 @@ namespace SmaugCS.Spells
             AffectData af = new AffectData
             {
                 SkillNumber = sn,
-                Duration = ((4*level)*GameConstants.GetIntegerConstant("AffectDurationConversionValue")),
+                Duration = ((4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue")),
                 Location = ApplyTypes.HitRoll,
                 Modifier = -1
             };
@@ -38,7 +38,7 @@ namespace SmaugCS.Spells
             af = new AffectData
             {
                 SkillNumber = sn,
-                Duration = ((4*level)*GameConstants.GetIntegerConstant("AffectDurationConversionValue")),
+                Duration = ((4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue")),
                 Location = ApplyTypes.SaveVsSpell,
                 Modifier = 1
             };

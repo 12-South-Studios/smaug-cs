@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants;
+﻿using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Helpers;
@@ -34,7 +35,7 @@ namespace SmaugCS.Spells.Smaug
 
             magic.successful_casting(skill, ch, null, obj);
 
-            if (Macros.CAN_WEAR(obj, (int) ItemWearFlags.Take))
+            if (obj.WearFlags.IsSet(ItemWearFlags.Take))
                 obj.ToCharacter(ch);
             else
                 ch.CurrentRoom.ToRoom(obj);

@@ -79,7 +79,7 @@ namespace SmaugCS.Data.Organizations
 
         public void UpdateRoster(CharacterInstance ch)
         {
-            RosterData roster = Members.Find(x => x.Name.Equals(ch.Name, StringComparison.OrdinalIgnoreCase));
+            RosterData roster = Members.Find(x => x.Name.EqualsIgnoreCase(ch.Name));
             if (roster != null)
             {
                 roster.Level = ch.Level;
@@ -106,7 +106,7 @@ namespace SmaugCS.Data.Organizations
 
         public void RemoveFromRoster(string name)
         {
-            RosterData roster = Members.Find(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            RosterData roster = Members.Find(x => x.Name.EqualsIgnoreCase(name));
             if (roster != null)
                 Members.Remove(roster);
         }

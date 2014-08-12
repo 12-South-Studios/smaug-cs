@@ -67,7 +67,7 @@ namespace SmaugCS.Tests.Repositories
             var mockLogManager = new Mock<ILogManager>();
             DatabaseManager dbMgr = new DatabaseManager(mockLogManager.Object);
 
-            LuaObjectFunctions.InitializeReferences(luaMgr, dbMgr);
+            LuaObjectFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
 
             dbMgr.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Clear();

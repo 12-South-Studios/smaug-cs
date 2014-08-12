@@ -36,7 +36,8 @@ namespace SmaugCS.LuaHelpers
         }
         #endregion
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, ILogManager logManager)
+        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager,
+            ILogManager logManager)
         {
             _luaManager = luaManager;
             _dbManager = dbManager;
@@ -64,6 +65,8 @@ namespace SmaugCS.LuaHelpers
                                    };
             _luaManager.Proxy.CreateTable("exit");
             AddLastObject(newExit);
+
+            _logManager.Boot("Exit '{0}' created in direction {1} to room {2}", name, direction, destination);
             return newExit;
         }
 
@@ -97,6 +100,8 @@ namespace SmaugCS.LuaHelpers
 
             _luaManager.Proxy.CreateTable("reset");
             AddLastObject(newReset);
+
+            _logManager.Boot("Reset '{0}' created", resetType);
             return newReset;
         }
 
@@ -109,6 +114,7 @@ namespace SmaugCS.LuaHelpers
             AddLastObject(newLiquid);
             _dbManager.AddToRepository(newLiquid);
 
+            _logManager.Boot("Liquid (id={0}, name={1}) created", id, name);
             return newLiquid;
         }
 
@@ -124,6 +130,7 @@ namespace SmaugCS.LuaHelpers
             _dbManager.AddToRepository(newSkill);
             _luaManager.Proxy.CreateTable("skill");
 
+            _logManager.Boot("Skill (id={0}, name={1}) created", id, name);
             AddLastObject(newSkill);
             return newSkill;
         }
@@ -139,6 +146,7 @@ namespace SmaugCS.LuaHelpers
             _dbManager.AddToRepository(newHerb);
             _luaManager.Proxy.CreateTable("herb");
 
+            _logManager.Boot("Herb (id={0}, name={1}) created", id, name);
             AddLastObject(newHerb);
             return newHerb;
         }
@@ -195,6 +203,7 @@ namespace SmaugCS.LuaHelpers
             AddLastObject(newCommand);
             _dbManager.AddToRepository(newCommand);
 
+            _logManager.Boot("Command '{0}' created", name);
             return newCommand;
         }
 
@@ -206,8 +215,8 @@ namespace SmaugCS.LuaHelpers
             _luaManager.Proxy.CreateTable("social");
             AddLastObject(newSocial);
             _dbManager.AddToRepository(newSocial);
-            _logManager.Boot("Social {0} added", newSocial.Name);
 
+            _logManager.Boot("Social {0} created", name);
             return newSocial;
         }
 
@@ -240,7 +249,8 @@ namespace SmaugCS.LuaHelpers
             _luaManager.Proxy.CreateTable("class");
             AddLastObject(newClass);
             _dbManager.AddToRepository(newClass);
-            
+
+            _logManager.Boot("Class '{0}' created", name);
             return newClass;
         }
 
@@ -256,6 +266,7 @@ namespace SmaugCS.LuaHelpers
             AddLastObject(newRace);
             _dbManager.AddToRepository(newRace);
 
+            _logManager.Boot("Race '{0}' created", name);
             return newRace;
         }
 
@@ -268,6 +279,7 @@ namespace SmaugCS.LuaHelpers
             AddLastObject(newClan);
             _dbManager.AddToRepository(newClan);
 
+            _logManager.Boot("Clan '{0}' created", name);
             return newClan;
         }
 
@@ -280,6 +292,7 @@ namespace SmaugCS.LuaHelpers
             AddLastObject(newDeity);
             _dbManager.AddToRepository(newDeity);
 
+            _logManager.Boot("Deity '{0}' created", name);
             return newDeity;
         }
 
@@ -293,6 +306,7 @@ namespace SmaugCS.LuaHelpers
             AddLastObject(newLang);
             _dbManager.AddToRepository(newLang);
 
+            _logManager.Boot("Language '{0}' created", name);
             return newLang;
         }
     }

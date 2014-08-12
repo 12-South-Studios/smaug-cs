@@ -46,7 +46,7 @@ namespace SmaugCS.Spells.Smaug
             {
                 Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID),
                 Duration = (SmaugRandom.Fuzzy((level + 1)/3) + 1)*
-                           GameConstants.GetIntegerConstant("AffectDurationConversionValue")
+                           GameConstants.GetConstant<int>("AffectDurationConversionValue")
             };
             mob.AddAffect(af);
 

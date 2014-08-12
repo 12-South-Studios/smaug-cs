@@ -1,10 +1,13 @@
-﻿using System.Text;
+﻿using System.Data;
+using System.Text;
 using Moq;
+using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
+using SmallDBConnectivity;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
@@ -44,8 +47,11 @@ namespace SmaugCS.Tests.Repositories
 
             DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
 
-            LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr);
-            LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr);
+            LogManager logMgr = new LogManager(new Mock<ILogWrapper>().Object, new Mock<IKernel>().Object,
+                new Mock<ISmallDb>().Object, new Mock<IDbConnection>().Object, new Mock<ITimer>().Object);
+
+            LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
+            LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
 
             dbMgr.AREAS.Clear();
             dbMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Clear();

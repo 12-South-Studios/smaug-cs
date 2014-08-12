@@ -1,12 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Organizations;
-using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -30,8 +25,12 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Clan);
-            IEnumerable<string> clanList = GameConstants.GetAppSetting("Clans").Split(new[] { ',' });
 
+            string clans = GameConstants.GetAppSetting("Clans");
+            if (string.IsNullOrEmpty(clans))
+                return;
+
+            IEnumerable<string> clanList = clans.Split(new[] { ',' });
             foreach (string clanName in clanList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + clanName + ".lua");

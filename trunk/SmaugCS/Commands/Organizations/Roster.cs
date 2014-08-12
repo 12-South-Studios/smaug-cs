@@ -60,7 +60,7 @@ namespace SmaugCS.Commands.Organizations
             argument = tuple.Item2;
             string arg2 = tuple.Item1;
 
-            if (arg2.Equals("remove", StringComparison.OrdinalIgnoreCase))
+            if (arg2.EqualsIgnoreCase("remove"))
             {
                 if (string.IsNullOrWhiteSpace(argument))
                 {

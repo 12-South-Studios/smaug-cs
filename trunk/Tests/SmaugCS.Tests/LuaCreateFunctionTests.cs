@@ -545,7 +545,7 @@ namespace SmaugCS.Tests
 			sb.Append("deity.this = newDeity;");
 			sb.Append("deity.this.Description = \"This is a deity description\";");
 			sb.Append("deity.this.Worshippers = 1673;");
-			sb.Append("deity.this.Flee = -2;");
+			sb.Append("deity.this:AddFieldValue(\"Flee\", -2);");
 			return sb.ToString();
 		}
 
@@ -559,7 +559,7 @@ namespace SmaugCS.Tests
 			Assert.That(result.Name, Is.EqualTo("Maron"));
 			Assert.That(result.Description, Is.EqualTo("This is a deity description"));
 			Assert.That(result.Worshippers, Is.EqualTo(1673));
-			Assert.That(result.Flee, Is.EqualTo(-2));
+			Assert.That(result.GetFieldValue(DeityFieldTypes.Flee), Is.EqualTo(-2));
 		}
 		#endregion
 

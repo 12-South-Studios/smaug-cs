@@ -29,19 +29,19 @@ function AddExitToRoom(room, direction, location, description, flags)
 	newExit = LCreateExit(direction, location, description);
 	exit.this = newExit;
 	exit.this.Flags = flags;
-	room:AddExit(exit.this);
+	room:AddExitObject(exit.this);
 	return exit.this;
 end
 
-function AddDoorReest(roomRef, direction, state)
-	newReset = LCreateReset("door", 0, DirectionToNumber(direction), DoorStateToNumber(state));
+function AddDoorReset(room, direction, state)
+	newReset = LCreateReset("door", 0, DirectionToNumber(direction), DoorStateToNumber(state), 0);
 	reset.this = newReset;
-	roomRef:AddReset(reset.this);
+	room:AddReset(reset.this);
 	return reset.this;
 end
 
 function CreateMobile(vnum, keywords, name)
-	newMob = LCreateMobile(100, keywords);
+	newMob = LCreateMobile(vnum, keywords);
 	mobile.this = newMob;
 	mobile.this.ShortDescription = name;
 	mobile.this.Speaks = "common";
@@ -114,7 +114,7 @@ function DirectionToNumber(direction)
 	directions["somewhere"] = 10;
 	
 	local val;
-	if (not directions.contains(direction)) then
+    if (directions[direction] == nil) then
 		val = 10;
 	else 
 		val = directions[direction];

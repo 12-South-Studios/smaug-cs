@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Logging;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Loaders
@@ -26,8 +22,12 @@ namespace SmaugCS.Loaders
         public override void Load()
         {
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Class);
-            IEnumerable<string> classList = GameConstants.GetAppSetting("Classes").Split(new[] { ',' });
 
+            string classes = GameConstants.GetAppSetting("Classes");
+            if (string.IsNullOrEmpty(classes))
+                throw new EntryNotFoundException("Classes not found in app.config");
+
+            IEnumerable<string> classList = classes.Split(new[] { ',' });
             foreach (string className in classList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + className + ".lua");

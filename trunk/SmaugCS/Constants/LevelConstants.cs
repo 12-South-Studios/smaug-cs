@@ -1,46 +1,29 @@
-﻿using SmaugCS.Constants.Enums;
-using System;
-using System.Collections.Generic;
+﻿using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants
 {
     public static class LevelConstants
     {
         private static int? _maxLevel;
-        /// <summary>
-        /// 
-        /// </summary>
+
         public static int MaxLevel
         {
             get
             {
-                return _maxLevel == null
-                           ? _maxLevel.GetValueOrDefault(GameConstants.GetIntegerConstant("MaximumLevel"))
-                           : _maxLevel.Value;
+                if (_maxLevel == null)
+                    _maxLevel = GameConstants.GetConstant<int>("MaximumLevel");
+                return _maxLevel.Value;
             }
-            set { _maxLevel = value; }
+            internal set { _maxLevel = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static int GetLevel(string type)
+        public static int GetLevel(ImmortalTypes type)
         {
-            Enum enumType = Realm.Library.Common.EnumerationFunctions.GetEnumByName<ImmortalTypes>(type);
-            int value = Realm.Library.Common.EnumerationExtensions.GetValue(enumType);
-            return MaxLevel - value;
+            return MaxLevel - type.GetValue();
         }
 
-        public static int LEVEL_LOG
-        {
-            get { return GetLevel("lesser"); }
-        }
-
-        public static int LEVEL_HIGOD
-        {
-            get { return GetLevel("god"); }
-        }
+        public static int ImmortalLevel { get { return GetLevel(ImmortalTypes.Immortal); } }
+        public static int AvatarLevel { get { return GetLevel(ImmortalTypes.Avatar); } }
     }
 }

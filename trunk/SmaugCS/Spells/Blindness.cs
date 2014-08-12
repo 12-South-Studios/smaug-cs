@@ -32,7 +32,7 @@ namespace SmaugCS.Spells
                     SkillNumber = sn,
                     Location = ApplyTypes.HitRoll,
                     Modifier = -4,
-                    Duration = (1 + (level/3))*GameConstants.GetIntegerConstant("AffectDurationConversionValue"),
+                    Duration = (1 + (level / 3)) * GameConstants.GetConstant<int>("AffectDurationConversionValue"),
                     //BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Blind)
                 };
 
