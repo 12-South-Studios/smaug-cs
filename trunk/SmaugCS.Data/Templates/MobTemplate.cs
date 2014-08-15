@@ -8,6 +8,11 @@ namespace SmaugCS.Data
 {
     public class MobTemplate : Template
     {
+        public static MobTemplate Create(long id, string name)
+        {
+            return new MobTemplate(id, name);
+        }
+
         public SpecialFunction SpecialFunction { get; set; }
         public ShopData Shop { get; set; }
         public RepairShopData RepairShop { get; set; }
@@ -43,12 +48,12 @@ namespace SmaugCS.Data
         public SavingThrowData SavingThrows { get; set; }
         public Dictionary<StatisticTypes, int> Statistics { get; set; }
 
-        public MobTemplate(long id, string name)
+        private MobTemplate(long id, string name)
             : base(id, name)
         {
-            SavingThrows = new SavingThrowData();
-            HitDice = new DiceData();
-            DamageDice = new DiceData();
+            SavingThrows = SavingThrowData.Create();
+            HitDice = DiceData.Create();
+            DamageDice = DiceData.Create();
             Statistics = new Dictionary<StatisticTypes, int>();
 
             ShortDescription = string.Format("A newly created {0}", name);
@@ -78,12 +83,18 @@ namespace SmaugCS.Data
 
         public void SetStats2(int numberHitDice, int sizeHitDice, int bonusHitDice)
         {
-            HitDice = new DiceData { NumberOf = numberHitDice, SizeOf = sizeHitDice, Bonus = bonusHitDice };
+            HitDice = DiceData.Create();
+            HitDice.NumberOf = numberHitDice;
+            HitDice.SizeOf = sizeHitDice;
+            HitDice.Bonus = bonusHitDice;
         }
 
         public void SetStats3(int numberDmgDice, int sizeDmgDice, int bonusDmgDice)
         {
-            DamageDice = new DiceData { NumberOf = numberDmgDice, SizeOf = sizeDmgDice, Bonus = bonusDmgDice };
+            DamageDice = DiceData.Create();
+            DamageDice.NumberOf = numberDmgDice;
+            DamageDice.SizeOf = sizeDmgDice;
+            DamageDice.Bonus = bonusDmgDice;
         }
 
         public void SetStats4(int height, int weight, int numberAttacks, int hitRoll, int dmgRoll)
@@ -109,14 +120,12 @@ namespace SmaugCS.Data
 
         public void SetSaves(int saveVsDeath, int saveVsWand, int saveVsParalysis, int saveVsBreath, int saveVsSpell)
         {
-            SavingThrows = new SavingThrowData
-                               {
-                                   SaveVsPoisonDeath = saveVsDeath,
-                                   SaveVsWandRod = saveVsWand,
-                                   SaveVsParalysisPetrify = saveVsParalysis,
-                                   SaveVsBreath = saveVsBreath,
-                                   SaveVsSpellStaff = saveVsSpell
-                               };
+            SavingThrows = SavingThrowData.Create();
+            SavingThrows.SaveVsPoisonDeath = saveVsDeath;
+            SavingThrows.SaveVsWandRod = saveVsWand;
+            SavingThrows.SaveVsParalysisPetrify = saveVsParalysis;
+            SavingThrows.SaveVsBreath = saveVsBreath;
+            SavingThrows.SaveVsSpellStaff = saveVsSpell;
         }
 
         public void AddShop(ShopData shop)
@@ -129,12 +138,10 @@ namespace SmaugCS.Data
             if (string.IsNullOrEmpty(keyword) || string.IsNullOrEmpty(text))
                 return;
 
-            MudProgData mp = new MudProgData()
-            {
-                Type = MudProgTypes.Speech,
-                ArgList = keyword,
-                Script = string.Format("LMobEmote(\"{0}\");", text)
-            };
+            MudProgData mp = MudProgData.Create();
+            mp.Type = MudProgTypes.Speech;
+            mp.ArgList = keyword;
+            mp.Script = string.Format("LMobEmote(\"{0}\");", text);
 
             AddMudProg(mp);
         }

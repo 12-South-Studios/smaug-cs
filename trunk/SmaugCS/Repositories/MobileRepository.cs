@@ -41,8 +41,8 @@ namespace SmaugCS.Repositories
             newMob.Level = cloneMob.Level;
             newMob.Statistics[StatisticTypes.ToHitArmorClass0] = cloneMob.GetStatistic(StatisticTypes.ToHitArmorClass0);
             newMob.Statistics[StatisticTypes.ArmorClass] = cloneMob.GetStatistic(StatisticTypes.ArmorClass);
-            newMob.HitDice = new DiceData(cloneMob.HitDice);
-            newMob.DamageDice = new DiceData(cloneMob.DamageDice);
+            newMob.HitDice = DiceData.Clone(cloneMob.HitDice);
+            newMob.DamageDice = DiceData.Clone(cloneMob.DamageDice);
             newMob.Gold = cloneMob.Gold;
             newMob.Experience = cloneMob.Experience;
             newMob.Position = cloneMob.Position;
@@ -75,7 +75,7 @@ namespace SmaugCS.Repositories
                         throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
                 });
 
-            MobTemplate newMob = new MobTemplate(vnum, name);
+            MobTemplate newMob = MobTemplate.Create(vnum, name);
             newMob.Statistics[StatisticTypes.Strength] = 13;
             newMob.Statistics[StatisticTypes.Dexterity] = 13;
             newMob.Statistics[StatisticTypes.Intelligence] = 13;

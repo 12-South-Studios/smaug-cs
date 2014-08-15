@@ -19,7 +19,7 @@ namespace SmaugCS.Commands.Skills
             string arg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, arg, "Aid whom?")) return;
 
-            CharacterInstance victim = handler.get_char_room(ch, arg);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "Not on mobs.")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentMount, "You can't do that while mounted.")) return;

@@ -26,7 +26,7 @@ namespace SmaugCS.Commands.Social
                return;
            }
 
-           CharacterInstance victim = handler.get_char_room(ch, firstWord);
+           CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstWord);
            if (CheckFunctions.CheckIfNullObject(ch, victim, "They're not here.")) return;
 
            if (victim.CanSee(ch))

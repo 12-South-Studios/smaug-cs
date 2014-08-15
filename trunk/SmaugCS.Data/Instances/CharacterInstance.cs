@@ -15,6 +15,11 @@ namespace SmaugCS.Data
     [XmlRoot("Character")]
     public class CharacterInstance : Instance, IVerifiable
     {
+        public static CharacterInstance Create(int id, string name)
+        {
+            return new CharacterInstance(id, name);
+        }
+
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
         public FightingData CurrentFighting { get; set; }
@@ -124,12 +129,12 @@ namespace SmaugCS.Data
         public int ResetNum { get; set; }
         public LuaInterfaceProxy LuaVM { get; set; }
 
-        public CharacterInstance(int id, string name)
+        private CharacterInstance(int id, string name)
             : base(id, name)
         {
             Colors = new Dictionary<ATTypes, char>();
-            SavingThrows = new SavingThrowData();
-            LuaVM = new LuaInterfaceProxy();
+            SavingThrows = SavingThrowData.Create();
+            LuaVM = LuaInterfaceProxy.Create();
             Timers = new List<TimerData>();
         }
 
@@ -163,12 +168,12 @@ namespace SmaugCS.Data
         #region IVerifiable
         public bool IsNpc()
         {
-            return Act.IsSet((int)ActFlags.IsNpc);
+            return Act.IsSet(ActFlags.IsNpc);
         }
 
         public bool IsAffected(AffectedByTypes affectedBy)
         {
-            return AffectedBy.IsSet((int)affectedBy);
+            return AffectedBy.IsSet(affectedBy);
         }
 
         public bool IsFloating()

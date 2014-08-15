@@ -4,6 +4,11 @@ namespace SmaugCS.Data
 {
     public class MudProgData
     {
+        public static MudProgData Create()
+        {
+            return new MudProgData();
+        }
+
         public MudProgTypes Type { get; set; }
         public bool triggered { get; set; }
         public int resetdelay { get; set; }
@@ -11,6 +16,10 @@ namespace SmaugCS.Data
         public string Script { get; set; }
         public bool IsFileProg { get; set; }
 
+        private MudProgData()
+        {
+            
+        }
         /*public bool Save(TextWriterProxy proxy)
         {
             if (arglist.IsNullOrEmpty())

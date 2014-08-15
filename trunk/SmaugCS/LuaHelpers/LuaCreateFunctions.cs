@@ -47,7 +47,8 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateMudProg", "Creates a new mudprog", "Type of Prog")]
         public static MudProgData LuaCreateMudProg(string progType)
         {
-            MudProgData newMudProg = new MudProgData { Type = EnumerationExtensions.GetEnumByName<MudProgTypes>(progType) };
+            MudProgData newMudProg = MudProgData.Create();
+            newMudProg.Type = EnumerationExtensions.GetEnumByName<MudProgTypes>(progType);
             _luaManager.Proxy.CreateTable("mprog");
             AddLastObject(newMudProg);
             return newMudProg;
@@ -57,12 +58,10 @@ namespace SmaugCS.LuaHelpers
         public static ExitData LuaCreateExit(string direction, long destination, string name)
         {
             DirectionTypes dir = EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
-            ExitData newExit = new ExitData((int)dir, name)
-                                   {
-                                       Destination = destination,
-                                       Direction = dir,
-                                       Keywords = direction
-                                   };
+            ExitData newExit = ExitData.Create((int)dir, name);
+            newExit.Destination = destination;
+            newExit.Direction = dir;
+            newExit.Keywords = direction;
             _luaManager.Proxy.CreateTable("exit");
             AddLastObject(newExit);
 
@@ -91,11 +90,9 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateReset", "Creates a new Reset", "Reset Type", "Extra", "Arg1", "Arg2", "Arg3")]
         public static ResetData LuaCreateReset(string resetType, int extra, int arg1, int arg2, int arg3)
         {
-            ResetData newReset = new ResetData
-                                     {
-                                         Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(resetType),
-                                         Extra = extra
-                                     };
+            ResetData newReset = ResetData.Create();
+            newReset.Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(resetType);
+            newReset.Extra = extra;
             newReset.SetArgs(arg1, arg2, arg3);
 
             _luaManager.Proxy.CreateTable("reset");
@@ -121,8 +118,8 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSkill", "Creates a new skill", "ID of the skill", "Skill Name", "Skill Type")]
         public static SkillData LuaCreateSkill(int id, string name, string type)
         {
-            SkillData newSkill = new SkillData(id, name)
-                { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
+            SkillData newSkill = SkillData.Create(id, name);
+            newSkill.Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type);
 
             if (type.EqualsIgnoreCase("herb"))
                 throw new InvalidOperationException(string.Format("Use of LCreateSkill for Herbs is deprecated"));

@@ -52,7 +52,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (skill.Flags.IsSet(SkillFlags.Distant))
             {
-                CharacterInstance victim = handler.get_char_world(ch, string.Empty);    // TODO Get TargetName from where?
+                CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, string.Empty);    // TODO Get TargetName from where?
                 if (victim != null && !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral)
                     && skill.Flags.IsSet(SkillFlags.Character))
                     return Affect.spell_affect((int) skill.ID, level, ch, victim);
@@ -60,7 +60,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (skill.Flags.IsSet(SkillFlags.Character))
             {
-                CharacterInstance victim = handler.get_char_world(ch, string.Empty);    // TODO Get TargetName from where?
+                CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, string.Empty);    // TODO Get TargetName from where?
                 if (victim != null)
                     return Affect.spell_affect((int) skill.ID, level, ch, victim);
             }

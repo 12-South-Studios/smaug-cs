@@ -70,7 +70,7 @@ namespace SmaugCS.Data
         public RaceData(long id, string name) : base(id, name)
         {
             WhereNames = new List<string>();
-            SavingThrows = new SavingThrowData();
+            SavingThrows = SavingThrowData.Create();
             AffectedBy = new ExtendedBitvector();
         }
 

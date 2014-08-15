@@ -42,12 +42,10 @@ namespace SmaugCS.Spells.Smaug
             ch.CurrentRoom.ToRoom(mob);
             mob.AddFollower(ch);
 
-            AffectData af = new AffectData
-            {
-                Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID),
-                Duration = (SmaugRandom.Fuzzy((level + 1)/3) + 1)*
-                           GameConstants.GetConstant<int>("AffectDurationConversionValue")
-            };
+            AffectData af = AffectData.Create();
+            af.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID);
+            af.Duration = (SmaugRandom.Fuzzy((level + 1)/3) + 1)*
+                          GameConstants.GetConstant<int>("AffectDurationConversionValue");
             mob.AddAffect(af);
 
             return ReturnTypes.None;

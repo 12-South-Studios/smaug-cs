@@ -27,12 +27,10 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            AffectData af = new AffectData
-            {
-                SkillNumber = sn,
-                Duration = (10 * level * GameConstants.GetConstant<int>("AffectDurationConversionValue")),
-                Location = ApplyTypes.Gender
-            };
+            AffectData af = AffectData.Create();
+            af.SkillNumber = sn;
+            af.Duration = (10 * level * GameConstants.GetConstant<int>("AffectDurationConversionValue"));
+            af.Location = ApplyTypes.Gender;
 
             do
             {

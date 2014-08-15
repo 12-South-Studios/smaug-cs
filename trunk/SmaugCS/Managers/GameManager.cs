@@ -7,8 +7,12 @@ namespace SmaugCS.Managers
 {
     public sealed class GameManager : IGameManager
     {
-        public GameManager()
+        private static IDatabaseManager _dbManager;
+
+        public GameManager(IDatabaseManager databaseManager)
         {
+            _dbManager = databaseManager;
+
             ExpParser = new ExpressionParser(ExpressionTableInitializer.GetExpressionTable());
             SystemData = new SystemData();
         }
@@ -33,7 +37,15 @@ namespace SmaugCS.Managers
 
         public void DoLoop()
         {
+            InitializeResets();
 
+            // TODO Loop here
+        }
+
+        private void InitializeResets()
+        {
+            foreach (AreaData area in _dbManager.AREAS.Values)
+                area.FireStartupResets();
         }
     }
 }

@@ -179,13 +179,11 @@ namespace SmaugCS
             RoomTemplate newRoom = null;
             if (!found)
             {
-                newRoom = new RoomTemplate(serial, "New room")
-                    {
-                        Area = room.Area,
-                        TeleportToVnum = roomnum,
-                        SectorType = room.SectorType,
-                        Flags = room.Flags
-                    };
+                newRoom = RoomTemplate.Create(serial, "New room");
+                newRoom.Area = room.Area;
+                newRoom.TeleportToVnum = roomnum;
+                newRoom.SectorType = room.SectorType;
+                newRoom.Flags = room.Flags;
                 decorate_room(newRoom);
                 DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
             }

@@ -11,6 +11,11 @@ namespace SmaugCS.Data
 {
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
+        public static ObjectTemplate Create(long id, string name)
+        {
+            return new ObjectTemplate(id, name);
+        }
+
         public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
         public List<AffectData> Affects { get; set; }
         public int ExtraFlags { get; set; }
@@ -31,7 +36,7 @@ namespace SmaugCS.Data
         public ItemTypes Type { get; set; }
         public List<string> Spells { get; set; }
 
-        public ObjectTemplate(long id, string name)
+        private ObjectTemplate(long id, string name)
             : base(id, name)
         {
             Value = new int[6];
@@ -63,14 +68,12 @@ namespace SmaugCS.Data
 
         public void AddAffect(int type, int duration, int modifier, int location, string bitvector)
         {
-            AffectData newAffect = new AffectData
-                {
-                    Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type),
-                    Duration = duration,
-                    Modifier = modifier,
-                    Location = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location),
-                    BitVector = bitvector.ToBitvector()
-                };
+            AffectData newAffect = AffectData.Create();
+            newAffect.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type);
+            newAffect.Duration = duration;
+            newAffect.Modifier = modifier;
+            newAffect.Location = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location);
+            newAffect.BitVector = bitvector.ToBitvector();
             Affects.Add(newAffect);
         }
 
@@ -97,7 +100,9 @@ namespace SmaugCS.Data
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
                 if (foundEd == null)
                 {
-                    foundEd = new ExtraDescriptionData { Keyword = word, Description = description };
+                    foundEd = ExtraDescriptionData.Create();
+                    foundEd.Keyword = word;
+                    foundEd.Description = description;
                     ExtraDescriptions.Add(foundEd);
                 }
             }

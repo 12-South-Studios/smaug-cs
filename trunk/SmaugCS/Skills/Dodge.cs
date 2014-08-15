@@ -3,13 +3,15 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Exceptions;
 using SmaugCS.Extensions;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Skills
 {
     public static class Dodge
     {
-        public static bool CheckDodge(CharacterInstance ch, CharacterInstance victim)
+        public static bool CheckDodge(CharacterInstance ch, CharacterInstance victim, 
+            IDatabaseManager databaseManager = null, IGameManager gameManager = null)
         {
             if (!victim.IsAwake())
                 return false;
@@ -17,7 +19,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Dodge))
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("dodge");
+            SkillData skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>("dodge");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'dodge' not found");
 
@@ -26,7 +28,8 @@ namespace SmaugCS.Skills
             if (victim.IsNpc())
                 chances = 60.GetLowestOfTwoNumbers(2*victim.Level);
             else
-                chances = Macros.LEARNED(victim, (int) skill.ID)/GameManager.Instance.SystemData.DodgeMod;
+                chances = Macros.LEARNED(victim, (int) skill.ID)/
+                          (gameManager ?? GameManager.Instance).SystemData.DodgeMod;
 
             if (chances != 0 && victim.CurrentMorph != null)
                 chances += victim.CurrentMorph.Morph.DodgeChances;

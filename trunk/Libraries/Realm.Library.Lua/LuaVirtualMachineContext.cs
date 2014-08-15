@@ -32,7 +32,7 @@ namespace Realm.Library.Lua
 
             _repository = repository;
             _cache = new LuaScriptCache();
-            _proxy = new LuaInterfaceProxy();
+            _proxy = LuaInterfaceProxy.Create();
             Enumerable.Range(0, numberVirtualMachines)
                       .ToList()
                       .ForEach(i => _virtualMachines.Enqueue(new LuaVirtualMachine(i + 1, log, repository, _proxy)));

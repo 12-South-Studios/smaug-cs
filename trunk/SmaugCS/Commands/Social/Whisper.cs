@@ -30,7 +30,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            CharacterInstance victim = handler.get_char_room(ch, firstArgument);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArgument);
             if (victim == null)
             {
                 color.send_to_char("They aren't here.\r\n", ch);

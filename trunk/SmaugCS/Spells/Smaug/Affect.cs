@@ -24,11 +24,8 @@ namespace SmaugCS.Spells.Smaug
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
             if (!skill.Affects.Any())
-            {
-                // TODO Exception, log it
                 return ReturnTypes.None;
-            }
-
+            
             TargetBooleanValues target = new TargetBooleanValues();
             if (skill.Flags.IsSet(SkillFlags.GroupSpell))
                 target.GroupSpell = true;
@@ -62,13 +59,11 @@ namespace SmaugCS.Spells.Smaug
 
             if (CheckFunctions.CheckIfNullObjectCasting(victim, skill, ch)) return ReturnTypes.SpellFailed;
 
-            foreach (CharacterInstance vch in victim.CurrentRoom.Persons)
-            {
-                CastTargetSpellAtVictim(ch, vch, skill, target, level);
-                if (!target.GroupSpell && !target.AreaSpell)
-                    break;
-            }
-
+            if (!target.GroupSpell && !target.AreaSpell)
+                CastTargetSpellAtVictim(ch, victim.CurrentRoom.Persons.First(), skill, target, level);
+            else
+                victim.CurrentRoom.Persons.ForEach(vch => CastTargetSpellAtVictim(ch, vch, skill, target, level));
+            
             return ReturnTypes.None;
         }
 

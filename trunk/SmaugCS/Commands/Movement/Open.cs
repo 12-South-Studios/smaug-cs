@@ -22,7 +22,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            ObjectInstance obj = handler.get_obj_here(ch, firstArg);
+            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj != null)
             {
                 OpenObject(ch, obj, firstArg);

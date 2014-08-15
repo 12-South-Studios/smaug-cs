@@ -2,13 +2,23 @@
 {
     public class DiceData
     {
+        public static DiceData Clone(DiceData dice)
+        {
+            return new DiceData(dice);
+        }
+
+        public static DiceData Create()
+        {
+            return new DiceData();
+        }
+
         public int NumberOf { get; set; }
         public int SizeOf { get; set; }
         public int Bonus { get; set; }
 
-        public DiceData() { }
+        private DiceData() { }
 
-        public DiceData(DiceData dice)
+        private DiceData(DiceData dice)
         {
             NumberOf = dice.NumberOf;
             SizeOf = dice.SizeOf;

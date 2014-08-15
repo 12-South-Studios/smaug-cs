@@ -119,9 +119,10 @@ namespace SmaugCS.Weather
                 for (int x = 0; x < Width; x++)
                 {
                     WeatherCell cell = new WeatherCell
-                                           {
-                                               Hemisphere = Realm.Library.Common.EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
-                                           };
+                    {
+                        Hemisphere =
+                            Realm.Library.Common.EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
+                    };
 
                     cell.ChangeTemperature(SmaugRandom.Between(-30, 100));
                     cell.ChangePressure(SmaugRandom.Between(0, 100));

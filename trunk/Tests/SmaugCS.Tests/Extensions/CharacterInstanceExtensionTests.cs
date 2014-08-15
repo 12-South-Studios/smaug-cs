@@ -19,7 +19,7 @@ namespace SmaugCS.Tests.Extensions
         public void OnSetup()
         {
             LevelConstants.MaxLevel = 65;
-            _ch = new CharacterInstance(1, "Tester");
+            _ch = CharacterInstance.Create(1, "Tester");
         }
 
         [TestCase(PositionTypes.Aggressive, true)]
@@ -60,18 +60,18 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void TimesKilled_MobIsPlayer_Test()
         {
-            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            CharacterInstance mob = CharacterInstance.Create(2, "TesterMob");
             Assert.That(_ch.TimesKilled(mob), Is.EqualTo(0));
         }
 
         [Test]
         public void TimesKilled_NoMatch_Test()
         {
-            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            CharacterInstance mob = CharacterInstance.Create(2, "TesterMob");
             mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
-            mob.Parent = new MobTemplate(2, "Template");
+            mob.Parent = MobTemplate.Create(2, "Template");
 
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
 
             Assert.That(_ch.TimesKilled(mob), Is.EqualTo(0));
         }
@@ -79,11 +79,11 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void TimesKilled_Match_Test()
         {
-            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            CharacterInstance mob = CharacterInstance.Create(2, "TesterMob");
             mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
-            mob.Parent = new MobTemplate(2, "Template");
+            mob.Parent = MobTemplate.Create(2, "Template");
 
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
             _ch.PlayerData.Killed.Add(new KilledData(2));
 
             Assert.That(_ch.TimesKilled(mob), Is.EqualTo(1));
@@ -165,9 +165,9 @@ namespace SmaugCS.Tests.Extensions
             Assert.That(_ch.IsAwake(), Is.EqualTo(expectedValue));
         }
 
-        [TestCase(ActFlags.IsNpc, RaceTypes.Elf, ClassTypes.Cleric, false)]
+        [TestCase(ActFlags.IsNpc, RaceTypes.Caorlei, ClassTypes.Cleric, false)]
         [TestCase(ActFlags.Immortal, RaceTypes.Vampire, ClassTypes.Cleric, true)]
-        [TestCase(ActFlags.Immortal, RaceTypes.Elf, ClassTypes.Vampire, true)]
+        [TestCase(ActFlags.Immortal, RaceTypes.Caorlei, ClassTypes.Vampire, true)]
         public void IsVampire_Test(ActFlags actFlag, RaceTypes race, ClassTypes cls, bool expectedValue)
         {
             _ch.Act = _ch.Act.SetBit(actFlag);
@@ -186,14 +186,15 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void IsDevoted_NoDeity_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
             Assert.That(_ch.IsDevoted(), Is.False);
         }
 
         [Test]
         public void IsDevoted_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1) {CurrentDeity = new DeityData(1, "Test")};
+            _ch.PlayerData = PlayerData.Create(1, 1);
+            _ch.PlayerData.CurrentDeity = new DeityData(1, "Test");
             Assert.That(_ch.IsDevoted(), Is.True);
         }
 
@@ -202,7 +203,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(RoomFlags.Tunnel, false)]
         public void IsOutside_Test(RoomFlags flag, bool expectedValue)
         {
-            _ch.CurrentRoom = new RoomTemplate(1, "Test");
+            _ch.CurrentRoom = RoomTemplate.Create(1, "Test");
             _ch.CurrentRoom.Flags = _ch.CurrentRoom.Flags.SetBit(flag);
             Assert.That(_ch.IsOutside(), Is.EqualTo(expectedValue));
         }
@@ -231,14 +232,14 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void IsRetired_NoFlag_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
             Assert.That(_ch.IsRetired(), Is.False);
         }
 
         [Test]
         public void IsRetired_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
             _ch.PlayerData.Flags = _ch.PlayerData.Flags.SetBit((int) PCFlags.Retired);
             Assert.That(_ch.IsRetired(), Is.True);
         }
@@ -252,14 +253,14 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void IsGuest_NoFlag_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
             Assert.That(_ch.IsGuest(), Is.False);
         }
 
         [Test]
         public void IsGuest_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
+            _ch.PlayerData = PlayerData.Create(1, 1);
             _ch.PlayerData.Flags = _ch.PlayerData.Flags.SetBit((int)PCFlags.Guest);
             Assert.That(_ch.IsGuest(), Is.True);
         }

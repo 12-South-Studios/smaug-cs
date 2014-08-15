@@ -13,7 +13,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Follow whom?")) return;
 
 
-            CharacterInstance victim = handler.get_char_room(ch, firstArg);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (ch.IsAffected(AffectedByTypes.Charm) && ch.Master != null)

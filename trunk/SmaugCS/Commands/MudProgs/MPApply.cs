@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.MudProgs
 
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Mpapply - bad syntax")) return;
 
-            CharacterInstance victim = handler.get_char_room(ch, argument);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "Mpapply - no such player in room.")) return;
 
             if (CheckFunctions.CheckIfNullObject(ch, victim.Descriptor, "Not on link-dead players")) return;

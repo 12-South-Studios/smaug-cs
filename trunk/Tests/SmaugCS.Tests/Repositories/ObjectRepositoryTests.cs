@@ -72,7 +72,7 @@ namespace SmaugCS.Tests.Repositories
 
             dbMgr.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Clear();
 
-            _proxy = new LuaInterfaceProxy();
+            _proxy = LuaInterfaceProxy.Create();
 
             var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaObjectFunctions));
             luaFuncRepo = LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));

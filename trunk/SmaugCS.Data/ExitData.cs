@@ -11,6 +11,11 @@ namespace SmaugCS.Data
     [XmlRoot("Exit")]
     public class ExitData : Entity
     {
+        public static ExitData Create(long id, string name)
+        {
+            return new ExitData(id, name);
+        }
+
         [XmlElement("Reverse")]
         public long Reverse { get; set; }
 
@@ -44,7 +49,7 @@ namespace SmaugCS.Data
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
-        public ExitData(long id, string name) : base(id, name) { }
+        private ExitData(long id, string name) : base(id, name) { }
 
         /// <summary>
         /// 

@@ -12,7 +12,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Dismiss whom?")) return;
 
-            CharacterInstance victim = handler.get_char_room(ch, firstArg);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (victim.IsAffected(AffectedByTypes.Charm)

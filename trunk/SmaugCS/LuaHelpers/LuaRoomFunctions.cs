@@ -43,7 +43,7 @@ namespace SmaugCS.LuaHelpers
         public static RoomTemplate LuaCreateRoom(string id, string name)
         {
             long roomId = Convert.ToInt64(id);
-            RoomTemplate newRoom = new RoomTemplate(roomId, name);
+            RoomTemplate newRoom = RoomTemplate.Create(roomId, name);
 
             _luaManager.Proxy.CreateTable("room");
             _dbManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(roomId, newRoom);

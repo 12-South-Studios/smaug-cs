@@ -14,6 +14,11 @@ namespace SmaugCS.Data
     [XmlRoot("Object")]
     public class ObjectInstance : Instance, IHasExtraFlags, IHasExtraDescriptions
     {
+        public static ObjectInstance Create(long id, string name, int maxWear, int maxLayers)
+        {
+            return new ObjectInstance(id, name, maxWear, maxLayers);
+        }
+
         public List<ObjectInstance> Contents { get; set; }
         public ObjectInstance InObject { get; set; }
         public CharacterInstance CarriedBy { get; set; }
@@ -45,7 +50,7 @@ namespace SmaugCS.Data
         /// <param name="id"></param>
         /// <param name="maxWear"></param>
         /// <param name="maxLayers"></param>
-        public ObjectInstance(long id, string name, int maxWear, int maxLayers)
+        private ObjectInstance(long id, string name, int maxWear, int maxLayers)
             : base(id, name)
         {
             Value = new int[6];
@@ -112,7 +117,9 @@ namespace SmaugCS.Data
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
                 if (foundEd == null)
                 {
-                    foundEd = new ExtraDescriptionData { Keyword = keywords, Description = description };
+                    foundEd = ExtraDescriptionData.Create();
+                    foundEd.Keyword = keywords;
+                    foundEd.Description = description;
                     ExtraDescriptions.Add(foundEd);
                 }
             }

@@ -19,20 +19,18 @@ namespace SmaugCS.Repositories
             Validation.Validate(parent is ObjectTemplate, "Invalid Template Type");
 
             ObjectTemplate objParent = parent.CastAs<ObjectTemplate>();
-            ObjectInstance obj = new ObjectInstance(GetNextId, parent.Name, 99, 99)
-                {
-                    Parent = parent,
-                    Level = (args == null || args.Length == 0) ? 1 : (int)args[0],
-                    WearLocation = WearLocations.None,
-                    Count = 1,
-                    ShortDescription = objParent.ShortDescription,
-                    Description = parent.Description,
-                    Action = objParent.Action,
-                    ItemType = objParent.Type,
-                    ExtraFlags = objParent.ExtraFlags,
-                    Weight = objParent.Weight,
-                    Cost = objParent.Cost
-                };
+            ObjectInstance obj = ObjectInstance.Create(GetNextId, parent.Name, 99, 99);
+            obj.Parent = parent;
+            obj.Level = (args == null || args.Length == 0) ? 1 : (int)args[0];
+            obj.WearLocation = WearLocations.None;
+            obj.Count = 1;
+            obj.ShortDescription = objParent.ShortDescription;
+            obj.Description = parent.Description;
+            obj.Action = objParent.Action;
+            obj.ItemType = objParent.Type;
+            obj.ExtraFlags = objParent.ExtraFlags;
+            obj.Weight = objParent.Weight;
+            obj.Cost = objParent.Cost;
 
             foreach (var wearLoc in objParent.GetWearFlags())
                 obj.WearFlags += (int) wearLoc;

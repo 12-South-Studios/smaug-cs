@@ -3,8 +3,18 @@ namespace SmaugCS.Data
 {
     public class ExtraDescriptionData
     {
+        public static ExtraDescriptionData Create()
+        {
+            return new ExtraDescriptionData();
+        }
+
         public string Keyword { get; set; }
         public string Description { get; set; }
+
+        private ExtraDescriptionData()
+        {
+            
+        }
 
         /// <summary>
         /// 

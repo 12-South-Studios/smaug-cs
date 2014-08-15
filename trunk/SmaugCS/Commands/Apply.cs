@@ -17,7 +17,7 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You're too busy fighting...")) return;
             if (handler.ms_find_obj(ch)) return;
 
-            ObjectInstance salve = handler.get_obj_carry(ch, firstArg);
+            ObjectInstance salve = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, salve, "You do not have that.")) return;
 
             CharacterInstance victim;
@@ -26,8 +26,8 @@ namespace SmaugCS.Commands
             if (string.IsNullOrEmpty(secondArg))
                 victim = ch;
             else {
-                victim = handler.get_char_room(ch, secondArg);
-                obj = handler.get_obj_here(ch, secondArg);
+                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, secondArg);
+                obj = ch.GetObjectOnMeOrInRoom(secondArg);
 
                 if (CheckFunctions.CheckIfTrue(ch, victim == null && obj == null, "Apply it to what or whom?")) return;
             }

@@ -14,7 +14,7 @@ namespace SmaugCS.Commands.Movement
 
             if (handler.ms_find_obj(ch)) return;
 
-            ObjectInstance obj = handler.get_obj_here(ch, firstArg);
+            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj == null)
             {
                 comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, obj, ToTypes.Character);
