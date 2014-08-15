@@ -9,6 +9,8 @@ namespace SmaugCS.Weather
 {
     public class WeatherCell : Cell
     {
+        public WeatherCell() { }
+
         public ClimateTypes Climate { get; set; }
         public HemisphereTypes Hemisphere { get; set; }
         public int XCoord { get; set; }

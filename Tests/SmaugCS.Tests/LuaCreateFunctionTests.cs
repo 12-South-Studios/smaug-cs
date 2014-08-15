@@ -35,7 +35,7 @@ namespace SmaugCS.Tests
             LuaGetFunctions.InitializeReferences(LuaMgr, dbMgr, dataPath);
             LuaCreateFunctions.InitializeReferences(LuaMgr, dbMgr, mockLogManager.Object);
 
-			var luaProxy = new LuaInterfaceProxy();
+			var luaProxy = LuaInterfaceProxy.Create();
 
 			var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaCreateFunctions));
 			luaProxy.RegisterFunctions(luaFuncRepo);

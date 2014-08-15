@@ -8,9 +8,14 @@ namespace Realm.Library.Lua
 {
     public class LuaInterfaceProxy
     {
+        public static LuaInterfaceProxy Create()
+        {
+            return new LuaInterfaceProxy();
+        }
+
         private readonly LuaInterface.Lua _lua;
 
-        public LuaInterfaceProxy()
+        private LuaInterfaceProxy()
         {
             _lua = new LuaInterface.Lua();
             if (_lua.IsNull())

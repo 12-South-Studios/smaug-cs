@@ -37,6 +37,16 @@ namespace SmaugCS.Data
             _values = new Dictionary<DeityFieldTypes, int>();
         }
 
+        public void SetRaceType(string field, string value)
+        {
+            RaceTypes type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(value);
+
+            if (field.EqualsIgnoreCase("npcfoe"))
+                NPCFoe = type;
+            if (field.EqualsIgnoreCase("npcrace"))
+                NPCRace = type;
+        }
+
         public void AddFieldValue(string field, int value)
         {
             DeityFieldTypes fieldType = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DeityFieldTypes>(field);

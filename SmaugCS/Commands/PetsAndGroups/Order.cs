@@ -28,7 +28,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 all = true;
             else
             {
-                victim = handler.get_char_room(ch, secondArg);
+                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, secondArg);
                 if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
                 if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Aye aye, right away!")) return;
                 if (CheckFunctions.CheckIfTrue(ch, !victim.IsAffected(AffectedByTypes.Charm) || victim.Master != ch,

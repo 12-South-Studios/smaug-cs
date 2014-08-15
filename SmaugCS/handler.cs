@@ -438,7 +438,7 @@ namespace SmaugCS
 
                 location.ToRoom(ch);
 
-                CharacterInstance wch = get_char_room(ch, "healer");
+                CharacterInstance wch = CharacterInstanceExtensions.GetCharacterInRoom(ch, "healer");
                 if (wch != null)
                 {
                     comm.act(ATTypes.AT_MAGIC, "$n mutters a few incantations, waves $s hands and points $s finger.",
@@ -488,334 +488,6 @@ namespace SmaugCS
                     ch.Descriptor = null;
                 }
             }
-        }
-
-        public static CharacterInstance get_char_room(CharacterInstance ch, string argument)
-        {
-            Tuple<int, string> tuple = argument.NumberArgument();
-            int result = tuple.Item1;
-            string arg = tuple.Item2;
-
-            if (arg.Equals("self"))
-                return ch;
-
-            int vnum;
-            if (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumeric())
-                vnum = Convert.ToInt32(arg);
-            else
-                vnum = -1;
-
-            int count = 0;
-
-            foreach (CharacterInstance rch in ch.CurrentRoom.Persons
-                                            .Where(rch => ch.CanSee(rch) && (arg.IsAnyEqual(rch.Name)
-                                                                               ||
-                                                                               (rch.IsNpc() && vnum == rch.MobIndex.Vnum)))
-                )
-            {
-                if (result == 0 && !rch.IsNpc())
-                    return rch;
-                if (++count == result)
-                    return rch;
-            }
-
-            if (vnum != -1)
-                return null;
-
-            count = 0;
-            foreach (CharacterInstance rch in ch.CurrentRoom.Persons
-                                            .Where(rch => ch.CanSee(rch) && arg.IsAnyEqualPrefix(rch.Name)))
-            {
-                if (result == 0 && !rch.IsNpc())
-                    return rch;
-                if (++count == result)
-                    return rch;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Find a character anywhere in the world
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        public static CharacterInstance get_char_world(CharacterInstance ch, string argument)
-        {
-            Tuple<int, string> result = argument.NumberArgument();
-            int number = result.Item1;
-            string arg = result.Item2;
-
-            if (arg.EqualsIgnoreCase("self"))
-                return ch;
-
-            // Allow reference by vnum
-            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
-
-            int count = 0;
-
-            // Check the room for an exact match
-            foreach (CharacterInstance wch in ch.CurrentRoom.Persons
-                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqual(wch.Name)
-                                                          || (wch.IsNpc() && vnum == wch.MobIndex.Vnum)))
-            {
-                if (number == 0 && !wch.IsNpc())
-                    return wch;
-                if (++count == number)
-                    return wch;
-            }
-
-            // Check the world for an exact match
-            count = 0;
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
-                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqual(wch.Name)
-                                                          || (wch.IsNpc() && vnum == wch.MobIndex.Vnum)))
-            {
-                if (number == 0 && !wch.IsNpc())
-                    return wch;
-                if (++count == number)
-                    return wch;
-            }
-
-            // Bail if looking for an exact vnum match
-            if (vnum != -1)
-                return null;
-
-            // If no exact match was found, check the room for a prefix match 
-            // i.e. gu == guard
-            count = 0;
-            foreach (CharacterInstance wch in ch.CurrentRoom.Persons
-                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqualPrefix(wch.Name)))
-            {
-                if (number == 0 && !wch.IsNpc())
-                    return wch;
-                if (++count == number)
-                    return wch;
-            }
-
-            // If no prefix match was found in room, check the world
-            count = 0;
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
-                                            .Where(wch => ch.CanSee(wch) && arg.IsAnyEqualPrefix(wch.Name)))
-            {
-                if (number == 0 && !wch.IsNpc())
-                    return wch;
-                if (++count == number)
-                    return wch;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Find an object in the given list
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="argumnet"></param>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static ObjectInstance get_obj_list(CharacterInstance ch, string argumnet, List<ObjectInstance> list)
-        {
-            Tuple<int, string> tuple = argumnet.NumberArgument();
-            int number = tuple.Item1;
-            string arg = tuple.Item2;
-
-            int count = 0;
-            foreach (ObjectInstance obj in list
-                .Where(obj => ch.CanSee(obj)
-                              && arg.IsAnyEqual(obj.Name)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            // No exact match was found, look through the list again looking for prefix matching
-            // i.e. swo == sword
-            count = 0;
-            foreach (ObjectInstance obj in list
-                .Where(obj => ch.CanSee(obj)
-                              && arg.IsAnyEqualPrefix(obj.Name)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Find an object in the given list, traversing it backwards
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="argument"></param>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static ObjectInstance get_obj_list_rev(CharacterInstance ch, string argument, IEnumerable<ObjectInstance> list)
-        {
-            List<ObjectInstance> reversedList = new List<ObjectInstance>();
-            reversedList.AddRange(list);
-            reversedList.Reverse();
-
-            return get_obj_list(ch, argument, reversedList);
-        }
-
-        /// <summary>
-        /// Find an object in player's inventory or wearing via a vnum
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="vnum"></param>
-        /// <returns></returns>
-        public static ObjectInstance get_obj_vnum(CharacterInstance ch, int vnum)
-        {
-            return ch.Carrying.FirstOrDefault(obj => ch.CanSee(obj)
-                                                     && obj.ObjectIndex.Vnum == vnum);
-        }
-
-        public static ObjectInstance get_obj_carry(CharacterInstance ch, string argument)
-        {
-            Tuple<int, string> tuple = argument.NumberArgument();
-            int number = tuple.Item1;
-            string arg = tuple.Item2;
-
-            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
-
-            int count = 0;
-            foreach (ObjectInstance obj in ch.Carrying
-                                         .Where(obj => obj.WearLocation == WearLocations.None
-                                                       && ch.CanSee(obj) && (arg.IsAnyEqual(obj.Name)
-                                                                                   || obj.ObjectIndex.Vnum == vnum)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            if (vnum != -1)
-                return null;
-
-            // if we didn't find an exact match, run through the list again for a partial match
-            // i.e. swo == sword
-            count = 0;
-            foreach (ObjectInstance obj in ch.Carrying
-                                         .Where(obj => obj.WearLocation == WearLocations.None
-                                                       && ch.CanSee(obj) && arg.IsAnyEqualPrefix(obj.Name)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Find an object in player's equipment
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        public static ObjectInstance get_obj_wear(CharacterInstance ch, string argument)
-        {
-            Tuple<int, string> tuple = argument.NumberArgument();
-            int number = tuple.Item1;
-            string arg = tuple.Item2;
-
-            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
-
-            int count = 0;
-            foreach (ObjectInstance obj in ch.Carrying
-                                         .Where(obj => obj.WearLocation != WearLocations.None
-                                                       && ch.CanSee(obj) && (arg.IsAnyEqual(obj.Name)
-                                                                                   || obj.ObjectIndex.Vnum == vnum)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            if (vnum != -1)
-                return null;
-
-            // if we didn't find an exact match, run through the list again for a partial match
-            // i.e. swo == sword
-            count = 0;
-            foreach (ObjectInstance obj in ch.Carrying
-                                         .Where(obj => obj.WearLocation != WearLocations.None
-                                                       && ch.CanSee(obj) && arg.IsAnyEqualPrefix(obj.Name)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Find an object in the room or in inventory
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        public static ObjectInstance get_obj_here(CharacterInstance ch, string argument)
-        {
-            ObjectInstance obj = get_obj_list_rev(ch, argument, ch.CurrentRoom.Contents);
-            if (obj != null)
-                return obj;
-
-            obj = get_obj_carry(ch, argument);
-            if (obj != null)
-                return obj;
-
-            obj = get_obj_wear(ch, argument);
-            if (obj != null)
-                return obj;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Find an object in the world
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        public static ObjectInstance get_obj_world(CharacterInstance ch, string argument)
-        {
-            Tuple<int, string> tuple = argument.NumberArgument();
-            int number = tuple.Item1;
-            string arg = tuple.Item2;
-
-            int vnum = (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
-
-            int count = 0;
-            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values
-                                         .Where(obj => ch.CanSee(obj) && (arg.IsAnyEqual(obj.Name)
-                                                                                || obj.ObjectIndex.Vnum == vnum)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            if (vnum != -1)
-                return null;
-
-            // if we didn't find an exact match, run through the list again for a partial match
-            // i.e. swo == sword
-            count = 0;
-            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values
-                                         .Where(obj => ch.CanSee(obj) && arg.IsAnyEqualPrefix(obj.Name)))
-            {
-                count += obj.Count;
-                if (count >= number)
-                    return obj;
-            }
-
-            return null;
         }
 
         private static readonly Dictionary<int, string> ObjectMessageLargeMap = new Dictionary<int, string>()
@@ -876,7 +548,7 @@ namespace SmaugCS
 
             if (string.IsNullOrEmpty(arg2))
             {
-                ObjectInstance obj = carryonly ? get_obj_carry(ch, arg1) : get_obj_here(ch, arg1);
+                ObjectInstance obj = carryonly ? ch.GetCarriedObject(arg1) : ch.GetObjectOnMeOrInRoom(arg1);
                 if (obj == null && carryonly)
                 {
                     color.send_to_char("You do not have that item.\r\n", ch);
@@ -891,12 +563,12 @@ namespace SmaugCS
                 return obj;
             }
 
-            if (carryonly && get_obj_carry(ch, arg2) == null && get_obj_wear(ch, arg2) == null)
+            if (carryonly && ch.GetCarriedObject(arg2) == null && ch.GetWornObject(arg2) == null)
             {
                 color.send_to_char("You do not have that item.\r\n", ch);
                 return null;
             }
-            if (!carryonly && get_obj_here(ch, arg2) == null)
+            if (!carryonly && ch.GetObjectOnMeOrInRoom(arg2) == null)
             {
                 comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, arg2, ToTypes.Character);
                 return null;
@@ -905,12 +577,6 @@ namespace SmaugCS
             // TODO
             return null;
         }
-
-
-
-
-
-
 
         public static string affect_loc_name(int location)
         {

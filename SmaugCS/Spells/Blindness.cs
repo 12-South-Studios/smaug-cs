@@ -27,14 +27,11 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            AffectData af = new AffectData
-                {
-                    SkillNumber = sn,
-                    Location = ApplyTypes.HitRoll,
-                    Modifier = -4,
-                    Duration = (1 + (level / 3)) * GameConstants.GetConstant<int>("AffectDurationConversionValue"),
-                    //BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Blind)
-                };
+            AffectData af = AffectData.Create();
+            af.SkillNumber = sn;
+            af.Location = ApplyTypes.HitRoll;
+            af.Modifier = -4;
+            af.Duration = (1 + (level / 3)) * GameConstants.GetConstant<int>("AffectDurationConversionValue");
 
             victim.AddAffect(af);
             color.set_char_color(ATTypes.AT_MAGIC, victim);

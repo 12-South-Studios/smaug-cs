@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -12,13 +13,14 @@ namespace SmaugCS.Skills
 {
     public static class Ability
     {
-        public static bool CheckAbility(CharacterInstance ch, string command, string argument)
+        public static bool CheckAbility(CharacterInstance ch, string command, string argument, 
+            IDatabaseManager databaseManager = null)
         {
             int sn = magic.ch_slookup(ch, command);
             if (sn == -1)
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            SkillData skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>(sn);
             if (skill.SkillFunction == null || skill.SpellFunction == null
                 || ch.CanUseSkill(0, sn))
                 return false;
@@ -83,7 +85,7 @@ namespace SmaugCS.Skills
                             return true;
                         }
 
-                        victim = handler.get_char_room(ch, argument);
+                        victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
                         if (!argument.IsNullOrEmpty() && victim == null)
                         {
                             color.send_to_char("They aren't here.\r\n", ch);
@@ -133,7 +135,7 @@ namespace SmaugCS.Skills
                         vo = victim;
                         break;
                     case TargetTypes.DefensiveCharacter:
-                        victim = handler.get_char_room(ch, argument);
+                        victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
                         if (!argument.IsNullOrEmpty() && victim == null)
                         {
                             color.send_to_char("They aren't here.\r\n", ch);
@@ -153,7 +155,7 @@ namespace SmaugCS.Skills
                         vo = ch;
                         break;
                     case TargetTypes.InventoryObject:
-                        obj = handler.get_obj_carry(ch, argument);
+                        obj = ch.GetCarriedObject(argument);
                         if (obj == null)
                         {
                             color.send_to_char("You can't find that.\r\n", ch);

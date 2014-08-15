@@ -13,16 +13,12 @@ namespace SmaugCS.Tests
         [TestCase(3, 5, false)]
         public void HasSufficientBloodPower(int currentBlood, int useBlood, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc")
+            var actor = CharacterInstance.Create(1, "TestNpc");
+            actor.CurrentRace = RaceTypes.Vampire;
+            actor.PlayerData = PlayerData.Create(1, 1);
+            actor.PlayerData.ConditionTable = new Dictionary<ConditionTypes, int>()
             {
-                CurrentRace = RaceTypes.Vampire,
-                PlayerData = new PlayerData(1, 1)
-                {
-                    ConditionTable = new Dictionary<ConditionTypes, int>()
-                    {
-                        {ConditionTypes.Bloodthirsty, currentBlood}
-                    }
-                }
+                {ConditionTypes.Bloodthirsty, currentBlood}
             };
 
             var list = new List<object> {actor, useBlood};
@@ -34,10 +30,8 @@ namespace SmaugCS.Tests
         [TestCase(3, 5, false)]
         public void HasSufficientMana(int currentMana, int useMana, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc")
-            {
-                CurrentMana = currentMana
-            };
+            var actor = CharacterInstance.Create(1, "TestNpc");
+            actor.CurrentMana = currentMana;
 
             var list = new List<object> { actor, useMana };
 
@@ -49,7 +43,7 @@ namespace SmaugCS.Tests
         [TestCase(AffectedByTypes.Curse, false)]
         public void IsCharmedOrPossessed(AffectedByTypes affectedBy, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc");
+            var actor = CharacterInstance.Create(1, "TestNpc");
             actor.Act = actor.Act.SetBit(ActFlags.IsNpc);
             actor.AffectedBy = actor.AffectedBy.SetBit(affectedBy);
 
@@ -61,14 +55,12 @@ namespace SmaugCS.Tests
         [Test]
         public void IsFighting()
         {
-            var defender = new CharacterInstance(2, "TestNpc");
+            var defender = CharacterInstance.Create(2, "TestNpc");
 
-            var actor = new CharacterInstance(1, "TestNpc")
+            var actor = CharacterInstance.Create(1, "TestNpc");
+            actor.CurrentFighting = new FightingData
             {
-                CurrentFighting = new FightingData
-                {
-                    Who = defender
-                }
+                Who = defender
             };
 
             var list = new List<object> {actor};
@@ -84,10 +76,8 @@ namespace SmaugCS.Tests
         [TestCase(PositionTypes.Dead, false)]
         public void IsInFightingPosition(PositionTypes position, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc")
-            {
-                CurrentPosition = position
-            };
+            var actor = CharacterInstance.Create(1, "TestNpc");
+            actor.CurrentPosition = position;
 
             var list = new List<object> {actor};
 

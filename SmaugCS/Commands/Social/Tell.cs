@@ -44,7 +44,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            CharacterInstance victim = handler.get_char_world(ch, firstArgument);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, firstArgument);
             if (victim == null ||
                 (victim.IsNpc() && victim.CurrentRoom != ch.CurrentRoom)
                 || (!ch.IsNotAuthorized() && victim.IsNotAuthorized() && !ch.IsImmortal()))

@@ -83,11 +83,11 @@ namespace SmaugCS
             if (arg.Equals("pk"))
                 return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
 
-            CharacterInstance victim = handler.get_char_world(ch, arg);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, arg);
             if (victim != null)
                 return victim.CurrentRoom;
 
-            ObjectInstance obj = handler.get_obj_world(ch, arg);
+            ObjectInstance obj = ch.GetObjectInWorld(arg);
             if (obj != null)
                 return obj.InRoom;
 

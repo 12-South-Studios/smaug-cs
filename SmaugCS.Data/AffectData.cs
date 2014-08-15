@@ -7,6 +7,11 @@ namespace SmaugCS.Data
     [XmlRoot("Affect")]
     public class AffectData
     {
+        public static AffectData Create()
+        {
+            return new AffectData();
+        }
+
         [XmlElement("AffectedBy")]
         public AffectedByTypes Type { get; set; }
 
@@ -24,6 +29,11 @@ namespace SmaugCS.Data
 
         [XmlElement]
         public int SkillNumber { get; set; }
+
+        private AffectData()
+        {
+            
+        }
         /*public void SaveFUSS(TextWriterProxy proxy)
         {
             if ((int)Type < 0 && (int)Type >= db.SKILLS.Count)

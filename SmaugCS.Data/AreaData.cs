@@ -153,5 +153,11 @@ namespace SmaugCS.Data
         }*/
 
 
+
+        public void FireStartupResets()
+        {
+            foreach (RoomTemplate room in Rooms)
+                room.ProcessResets();
+        }
     }
 }

@@ -10,7 +10,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void TemperatueChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell {Temperature = startValue};
+            var cell = new WeatherCell();
+            cell.Temperature = startValue;
 
             cell.ChangeTemperature(changeValue);
 
@@ -21,7 +22,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void PrecipChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { Precipitation = startValue };
+            var cell = new WeatherCell();
+            cell.Precipitation = startValue;
 
             cell.ChangePrecip(changeValue);
 
@@ -32,7 +34,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void PressureChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { Pressure = startValue };
+            var cell = new WeatherCell();
+            cell.Pressure = startValue;
 
             cell.ChangePressure(changeValue);
 
@@ -43,7 +46,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void EnergyChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { Energy = startValue };
+            var cell = new WeatherCell();
+            cell.Energy = startValue;
 
             cell.ChangeEnergy(changeValue);
 
@@ -54,7 +58,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void CloudCoverChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { CloudCover = startValue };
+            var cell = new WeatherCell();
+            cell.CloudCover = startValue;
 
             cell.ChangeCloudCover(changeValue);
 
@@ -65,7 +70,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void HumidityChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { Humidity = startValue };
+            var cell = new WeatherCell();
+            cell.Humidity = startValue;
 
             cell.ChangeHumidity(changeValue);
 
@@ -76,7 +82,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void WindSpeedXChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { WindSpeedX = startValue };
+            var cell = new WeatherCell();
+            cell.WindSpeedX = startValue;
 
             cell.ChangeWindSpeedX(changeValue);
 
@@ -87,7 +94,8 @@ namespace SmaugCS.Weather.Tests
         [TestCase(25, -5, 20)]
         public void WindSpeedYChangeTest(int startValue, int changeValue, int expectedValue)
         {
-            var cell = new WeatherCell { WindSpeedY = startValue };
+            var cell = new WeatherCell();
+            cell.WindSpeedY = startValue;
 
             cell.ChangeWindSpeedY(changeValue);
 

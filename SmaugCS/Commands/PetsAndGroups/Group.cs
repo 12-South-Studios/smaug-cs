@@ -103,50 +103,13 @@ namespace SmaugCS.Commands.PetsAndGroups
 
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
                 color.ch_printf(ch, "%5d ", gch.CurrentMovement);
-                color.ch_printf(ch, "%6s ", GetRaceShortName(gch.CurrentRace));
+                color.ch_printf(ch, "%6s ", gch.CurrentRace.GetName());
                 color.set_char_color(ATTypes.AT_GREEN, ch);
 
                 if (gch.Level < LevelConstants.AvatarLevel)
                     color.ch_printf(ch, "%8d ", gch.GetExperienceLevel(gch.Level + 1) - gch.Experience);
 
                 color.send_to_char("\r\n", ch);
-            }
-        }
-
-        private static string GetRaceShortName(RaceTypes race)
-        {
-            switch (race)
-            {
-                case RaceTypes.Human:
-                    return "human";
-                case RaceTypes.Elf:
-                    return "elf";
-                case RaceTypes.Dwarf:
-                    return "Dwarf";
-                case RaceTypes.Halfling:
-                    return "hlflng";
-                case RaceTypes.Pixie:
-                    return "pixie";
-                case RaceTypes.HalfOgre:
-                    return "h-ogre";
-                case RaceTypes.HalfOrc:
-                    return "h-orc";
-                case RaceTypes.HalfTroll:
-                    return "h-trol";
-                case RaceTypes.HalfElf:
-                    return "h-elf";
-                case RaceTypes.Gith:
-                    return "gith";
-                case RaceTypes.Drow:
-                    return "drow";
-                case RaceTypes.SeaElf:
-                    return "seaelf";
-                case RaceTypes.Lizardman:
-                    return "lizard";
-                case RaceTypes.Gnome:
-                    return "gnome";
-                default:
-                    return string.Empty;
             }
         }
 
@@ -217,7 +180,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 
         private static void group_player(CharacterInstance ch, string argument)
         {
-            CharacterInstance victim = handler.get_char_room(ch, argument);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
             if (victim == null)
             {
                 color.send_to_char("They aren't here.\r\n", ch);

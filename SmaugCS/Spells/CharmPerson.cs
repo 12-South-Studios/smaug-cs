@@ -48,12 +48,10 @@ namespace SmaugCS.Spells
                 victim.StopFollower();
             victim.AddFollower(ch);
 
-            AffectData af = new AffectData
-            {
-                SkillNumber = sn,
-                Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
-                           GameConstants.GetConstant<int>("AffectDurationConversionValue")
-            };
+            AffectData af = AffectData.Create();
+            af.SkillNumber = sn;
+            af.Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
+                          GameConstants.GetConstant<int>("AffectDurationConversionValue");
             // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);
             

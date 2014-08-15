@@ -22,7 +22,7 @@ namespace SmaugCS.Commands
 
         private static void ViewIndividualPlayer(CharacterInstance ch, string firstArg)
         {
-            CharacterInstance victim = handler.get_char_world(ch, firstArg);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, firstArg);
             if (victim != null)
             {
                 if (victim.CurrentRoom != null

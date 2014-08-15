@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Liquids
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Empty what?")) return;
             if (handler.ms_find_obj(ch)) return;
 
-            ObjectInstance obj = handler.get_obj_carry(ch, firstArg);
+            ObjectInstance obj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You aren't carrying that.")) return;
 
             if (obj.Count > 1)
@@ -60,7 +60,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static void EmptyIntoObject(CharacterInstance ch, ObjectInstance obj, string arg)
         {
-            ObjectInstance destObj = handler.get_obj_here(ch, arg);
+            ObjectInstance destObj = ch.GetObjectOnMeOrInRoom(arg);
             if (CheckFunctions.CheckIfNullObject(ch, destObj, "You can't find it.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, destObj, obj, "You can't empty something into itself!")) return;
             if (CheckFunctions.CheckIfTrue(ch,

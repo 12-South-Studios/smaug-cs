@@ -55,6 +55,37 @@ namespace SmaugCS.Common
             return new Tuple<int, string>(1, value);
         }
 
+        public static bool IsNumberArgument(this string value)
+        {
+            string[] words = value.Split('.');
+            return (words.Length >= 2 && words[0].IsNumber());
+        }
+
+        public static int GetNumberArgument(this string value)
+        {
+            string[] words = value.Split('.');
+
+            if (words.Length >= 2 && words[0].IsNumber())
+            {
+                int val;
+                Int32.TryParse(words[0], out val);
+                return val;
+            }
+            return 0;
+        }
+
+        public static string StripNumberArgument(this string value)
+        {
+            if (!value.IsNumberArgument())
+                return value;
+
+            string[] words = value.Split('.');
+            string outVal = string.Empty;
+            for (int i = 1; i < words.Length; i++)
+                outVal += words[i];
+            return outVal;
+        }
+
         /// <summary>
         /// Pick off one argument from a string and return a tuple
         /// </summary>

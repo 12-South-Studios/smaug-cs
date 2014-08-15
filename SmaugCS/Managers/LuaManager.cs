@@ -32,7 +32,7 @@ namespace SmaugCS.Managers
         /// <param name="proxy"></param>
         public void InitializeLuaProxy(LuaInterfaceProxy proxy)
         {
-            Proxy = proxy ?? new LuaInterfaceProxy();
+            Proxy = proxy ?? LuaInterfaceProxy.Create();
             var luaFuncRepo = LuaHelper.RegisterFunctionTypes(null, typeof(LuaManager));
             Proxy.RegisterFunctions(luaFuncRepo);
         }

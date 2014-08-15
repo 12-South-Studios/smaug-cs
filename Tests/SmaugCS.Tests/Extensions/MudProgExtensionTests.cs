@@ -25,10 +25,11 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void Execute_IsCharmed_Test()
         {
-            var actor = new CharacterInstance(1, "TestChar");
+            var actor = CharacterInstance.Create(1, "TestChar");
             actor.AffectedBy = actor.AffectedBy.SetBit(AffectedByTypes.Charm);
 
-            var mprog = new MudProgData {Type = MudProgTypes.Act};
+            var mprog = MudProgData.Create();
+            mprog.Type = MudProgTypes.Act;
 
             Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.False);
         }
@@ -36,9 +37,11 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void Execute_IsFileProg_Test()
         {
-            var actor = new CharacterInstance(1, "TestChar");
+            var actor = CharacterInstance.Create(1, "TestChar");
 
-            var mprog = new MudProgData { Type = MudProgTypes.Act, IsFileProg = true };
+            var mprog = MudProgData.Create();
+            mprog.Type = MudProgTypes.Act;
+            mprog.IsFileProg = true;
 
             Assert.Throws<NotImplementedException>(
                 () => mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object),
@@ -50,9 +53,10 @@ namespace SmaugCS.Tests.Extensions
         {
             bool callback = false;
 
-            var actor = new CharacterInstance(1, "TestChar");
+            var actor = CharacterInstance.Create(1, "TestChar");
 
-            var mprog = new MudProgData { Type = MudProgTypes.Act };
+            var mprog = MudProgData.Create();
+            mprog.Type = MudProgTypes.Act;
 
             _mockedLuaManager.Setup(x => x.DoLuaScript(It.IsAny<string>())).Throws(new Exception("Test Exception"));
 
@@ -65,9 +69,10 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void Execute_Successful_Test()
         {
-            var actor = new CharacterInstance(1, "TestChar");
+            var actor = CharacterInstance.Create(1, "TestChar");
 
-            var mprog = new MudProgData { Type = MudProgTypes.Act };
+            var mprog = MudProgData.Create();
+            mprog.Type = MudProgTypes.Act;
 
             Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.True);
         }

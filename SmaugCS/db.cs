@@ -431,7 +431,9 @@ namespace SmaugCS
             ch.CurrentClass = ClassTypes.None;
             ch.Speaking = (int)LanguageTypes.Common;
             ch.Speaks = (int)LanguageTypes.Common;
-            ch.BareDice = new DiceData() { NumberOf = 1, SizeOf = 4 };
+            ch.BareDice = DiceData.Create();
+            ch.BareDice.NumberOf = 1;
+            ch.BareDice.SizeOf = 4;
             ch.SubState = (int)CharacterSubStates.None;
             ch.tempnum = 0;
             ch.PermanentStrength = 13;
@@ -712,13 +714,11 @@ namespace SmaugCS
                         continue;
                     }
 
-                    MudProgData prog = new MudProgData
-                                           {
-                                               Type = type,
-                                               ArgList = proxy.ReadString(),
-                                               Script = proxy.ReadString(),
-                                               IsFileProg = true
-                                           };
+                    MudProgData prog = MudProgData.Create();
+                    prog.Type = type;
+                    prog.ArgList = proxy.ReadString();
+                    prog.Script = proxy.ReadString();
+                    prog.IsFileProg = true;
 
                     //index.ProgTypes.SetBit((int)prog.Type);
                     index.MudProgs.Add(prog);
@@ -741,7 +741,7 @@ namespace SmaugCS
                     throw new Exception();
                 }
 
-                MudProgData prog = new MudProgData();
+                MudProgData prog = MudProgData.Create();
                 index.MudProgs.Add(prog);
 
                 MudProgTypes type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
@@ -864,14 +864,12 @@ namespace SmaugCS
 
         public static ExitData make_exit(RoomTemplate room, RoomTemplate to_room, int door)
         {
-            ExitData newExit = new ExitData(door, "An exit")
-                {
-                    Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door),
-                    Room_vnum = room.Vnum,
-                    Destination = to_room.ID,
-                    Distance = 1,
-                    Key = -1
-                };
+            ExitData newExit = ExitData.Create(door, "An exit");
+            newExit.Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door);
+            newExit.Room_vnum = room.Vnum;
+            newExit.Destination = to_room.ID;
+            newExit.Distance = 1;
+            newExit.Key = -1;
 
             ExitData reverseExit = to_room.GetExitTo(GameConstants.rev_dir[door], room.Vnum);
             if (reverseExit != null)

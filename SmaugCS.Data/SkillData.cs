@@ -7,6 +7,11 @@ namespace SmaugCS.Data
 {
     public class SkillData : Entity
     {
+        public static SkillData Create(long id, string name)
+        {
+            return new SkillData(id, name);
+        }
+
         public SkillTypes Type { get; set; }
         public int Info { get; set; }
         public int Flags { get; set; }
@@ -66,7 +71,7 @@ namespace SmaugCS.Data
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
 
-        public SkillData(long id, string name) : base(id, name)
+        protected SkillData(long id, string name) : base(id, name)
         {
             Affects = new List<SmaugAffect>();
             Components = new List<SpellComponent>();

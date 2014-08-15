@@ -465,7 +465,7 @@ namespace SmaugCS
             }
             else
             {
-                victim = handler.get_char_room(ch, arg);
+                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
                 if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "They aren't here." : "")) return null;
             }
 
@@ -526,7 +526,7 @@ namespace SmaugCS
                 victim = ch;
             else
             {
-                victim = handler.get_char_room(ch, arg);
+                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
                 if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "They aren't here." : "")) return null;
             }
 
@@ -555,7 +555,7 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfEmptyString(ch, arg, !silence ? "What should the spell be cast upon?" : ""))
                 return null;
 
-            ObjectInstance obj = handler.get_obj_carry(ch, arg);
+            ObjectInstance obj = ch.GetCarriedObject(arg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, !silence ? "You are not carrying that." : "")) return null;
 
             return obj;

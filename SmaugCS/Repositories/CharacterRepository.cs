@@ -17,22 +17,20 @@ namespace SmaugCS.Repositories
             Validation.Validate(parent is MobTemplate, "Invalid Template Type");
 
             MobTemplate mobParent = parent.CastAs<MobTemplate>();
-            CharacterInstance mob = new CharacterInstance(GetNextId, parent.Name)
-                {
-                    Parent = parent,
-                    ShortDescription = mobParent.ShortDescription,
-                    LongDescription = mobParent.LongDescription,
-                    Description = parent.Description,
-                    SpecialFunction = mobParent.SpecialFunction,
-                    Level = SmaugRandom.Fuzzy(mobParent.Level),
-                    Act = mobParent.GetActFlags(),
-                    HomeVNum = -1,
-                    ResetVnum = -1,
-                    ResetNum = -1,
-                    AffectedBy = mobParent.GetAffected(),
-                    CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment),
-                    Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
-                };
+            CharacterInstance mob = CharacterInstance.Create(GetNextId, parent.Name);
+            mob.Parent = parent;
+            mob.ShortDescription = mobParent.ShortDescription;
+            mob.LongDescription = mobParent.LongDescription;
+            mob.Description = parent.Description;
+            mob.SpecialFunction = mobParent.SpecialFunction;
+            mob.Level = SmaugRandom.Fuzzy(mobParent.Level);
+            mob.Act = mobParent.GetActFlags();
+            mob.HomeVNum = -1;
+            mob.ResetVnum = -1;
+            mob.ResetNum = -1;
+            mob.AffectedBy = mobParent.GetAffected();
+            mob.CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment);
+            mob.Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender);
 
             if (!string.IsNullOrEmpty(mobParent.SpecFun))
                 mob.SpecialFunctionName = mobParent.SpecFun;
@@ -53,10 +51,14 @@ namespace SmaugCS.Repositories
             mob.Experience = mobParent.Experience;
             mob.CurrentPosition = mobParent.GetPosition();
             mob.CurrentDefensivePosition = mobParent.GetDefensivePosition();
-            mob.BareDice = new DiceData { NumberOf = mobParent.DamageDice.NumberOf, SizeOf = mobParent.DamageDice.SizeOf };
+            mob.BareDice = DiceData.Create();
+            mob.BareDice.NumberOf = mobParent.DamageDice.NumberOf;
+            mob.BareDice.SizeOf = mobParent.DamageDice.SizeOf;
             mob.ToHitArmorClass0 = mobParent.GetStatistic(StatisticTypes.ToHitArmorClass0);
-            mob.HitRoll = new DiceData { Bonus = mobParent.HitDice.Bonus };
-            mob.DamageRoll = new DiceData { Bonus = mobParent.DamageDice.Bonus };
+            mob.HitRoll = DiceData.Create();
+            mob.HitRoll.Bonus = mobParent.HitDice.Bonus;
+            mob.DamageRoll = DiceData.Create();
+            mob.DamageRoll.Bonus = mobParent.DamageDice.Bonus;
             mob.PermanentStrength = mobParent.GetStatistic(StatisticTypes.Strength);
             mob.PermanentDexterity = mobParent.GetStatistic(StatisticTypes.Dexterity);
             mob.PermanentWisdom = mobParent.GetStatistic(StatisticTypes.Wisdom);
@@ -67,7 +69,7 @@ namespace SmaugCS.Repositories
             mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
             mob.CurrentClass = Realm.Library.Common.EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;
-            mob.SavingThrows = new SavingThrowData(mobParent.SavingThrows);
+            mob.SavingThrows = SavingThrowData.Clone(mobParent.SavingThrows);
             mob.Height = mobParent.Height;
             mob.Weight = mobParent.Weight;
             mob.Resistance = mobParent.GetResistance();

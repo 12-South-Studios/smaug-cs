@@ -50,7 +50,7 @@ namespace SmaugCS.Commands.Liquids
             }
             else
             {
-                obj = handler.get_obj_here(ch, arg);
+                obj = ch.GetObjectOnMeOrInRoom(arg);
                 if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't find it.")) return obj;
             }
             return obj;
@@ -189,12 +189,10 @@ namespace SmaugCS.Commands.Liquids
             comm.act(ATTypes.AT_POISON, "You sputter and gag.", ch, null, null, ToTypes.Character);
             ch.MentalState = 20.GetNumberThatIsBetween(ch.MentalState + 5, 100);
 
-            AffectData af = new AffectData
-            {
-                Type = AffectedByTypes.Poison,
-                Duration = obj.Value[3],
-                Location = ApplyTypes.None
-            };
+            AffectData af = AffectData.Create();
+            af.Type = AffectedByTypes.Poison;
+            af.Duration = obj.Value[3];
+            af.Location = ApplyTypes.None;
             ch.AddAffect(af);
         }
 

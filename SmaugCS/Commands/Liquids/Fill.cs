@@ -17,7 +17,7 @@ namespace SmaugCS.Commands.Liquids
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Fill what?")) return;
             if (handler.ms_find_obj(ch)) return;
 
-            ObjectInstance obj = handler.get_obj_carry(ch, firstArg);
+            ObjectInstance obj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You do not have that item.")) return;
 
             if (obj.ItemType == ItemTypes.Container)
@@ -56,7 +56,7 @@ namespace SmaugCS.Commands.Liquids
                     all = true;
                 else if (obj.ItemType == ItemTypes.Pipe)
                 {
-                    source = handler.get_obj_carry(ch, secondArg);
+                    source =ch.GetCarriedObject(secondArg);
                     if (CheckFunctions.CheckIfNullObject(ch, source, "You don't have that item.")) return;
                     if (sourceItemTypes.All(x => x != source.ItemType))
                     {
@@ -66,7 +66,7 @@ namespace SmaugCS.Commands.Liquids
                 }
                 else
                 {
-                    source = handler.get_obj_here(ch, secondArg);
+                    source = ch.GetObjectOnMeOrInRoom(secondArg);
                     if (CheckFunctions.CheckIfNullObject(ch, source, "You cannot find that item.")) return;
                 }
 

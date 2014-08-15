@@ -15,10 +15,10 @@ namespace SmaugCS.Commands.Liquids
             string secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "What would you like to mix together?")) return;
 
-            ObjectInstance firstObj = handler.get_obj_carry(ch, firstArg);
+            ObjectInstance firstObj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, firstObj, "You aren't carrying that.")) return;
 
-            ObjectInstance secondObj = handler.get_obj_carry(ch, secondArg);
+            ObjectInstance secondObj = ch.GetCarriedObject(secondArg);
             if (CheckFunctions.CheckIfNullObject(ch, secondObj, "You aren't carrying that.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch,

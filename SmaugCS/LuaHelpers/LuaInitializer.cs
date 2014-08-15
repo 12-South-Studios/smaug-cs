@@ -36,7 +36,7 @@ namespace SmaugCS.LuaHelpers
 
         public void InitializeLuaFunctions()
         {
-            var proxy = new LuaInterfaceProxy();
+            var proxy = LuaInterfaceProxy.Create();
             var luaFuncRepo = new LuaFunctionRepository();
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaAreaFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));

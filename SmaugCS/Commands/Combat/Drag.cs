@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Combat
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Drag whom?")) return;
 
-            CharacterInstance victim = handler.get_char_room(ch, firstArg);
+            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim,
                 "You take yourself by the scruff of your neck, but go nowhere.")) return;
