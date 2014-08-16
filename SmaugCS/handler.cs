@@ -251,7 +251,7 @@ namespace SmaugCS
 
             ObjectInstance wield = ch.GetEquippedItem(WearLocations.Wield);
             if (!ch.IsNpc() && SavingCharacter != ch
-                && wield != null && wield.GetObjectWeight() > GameConstants.str_app[ch.GetCurrentStrength()].Wield)
+                && wield != null && wield.GetObjectWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
             {
                 if (depth == 0)
                 {

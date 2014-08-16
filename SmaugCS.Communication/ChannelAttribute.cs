@@ -1,10 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+﻿using SmaugCS.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Communication
 {

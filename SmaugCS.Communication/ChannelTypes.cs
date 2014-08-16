@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SmaugCS.Communication;
 using SmaugCS.Data.Organizations;
 
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Communication
 {
     [Flags]
     public enum ChannelTypes

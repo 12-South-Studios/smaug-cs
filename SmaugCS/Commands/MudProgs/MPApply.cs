@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;

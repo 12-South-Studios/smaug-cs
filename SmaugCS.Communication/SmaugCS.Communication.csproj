@@ -50,11 +50,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChannelAttribute.cs" />
@@ -72,14 +67,6 @@
     <ProjectReference Include="..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
-      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
-      <Name>SmaugCS.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
-      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
-      <Name>SmaugCS.Constants</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
       <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -89,7 +90,7 @@ namespace SmaugCS.Repositories
                 obj.Value[2] = SmaugRandom.Fuzzy(3 * obj.Level / 4 + 6);
             }
             if (obj.Value[0] == 0)
-                obj.Value[0] = Program.INIT_WEAPON_CONDITION;
+                obj.Value[0] = GameConstants.GetConstant<int>("InitWeaponCondition");
         }
         private static void UpdateArmor(ObjectInstance obj)
         {

@@ -89,8 +89,8 @@ namespace SmaugCS
                             char c =
                                 WeatherManager.Instance.Weather.StarMap[line].ToCharArray()[
                                     (Program.MAP_WIDTH + 1 - starpos) % Program.MAP_WIDTH];
-                            sb.Append(GameConstants.StarCharacterMap.ContainsKey(c)
-                                          ? GameConstants.StarCharacterMap[c]
+                            sb.Append(LookupConstants.StarCharacterMap.ContainsKey(c)
+                                          ? LookupConstants.StarCharacterMap[c]
                                           : " ");
                         }
                     }

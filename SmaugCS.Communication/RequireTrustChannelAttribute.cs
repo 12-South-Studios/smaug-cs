@@ -1,19 +1,12 @@
-﻿using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SmaugCS.Data;
 
 namespace SmaugCS.Communication
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class RequireTrustChannelAttribute : ChannelAttribute
+    public abstract class RequireTrustChannelAttribute : ChannelAttribute
     {
         public string TrustType { get; set; }
 
-        public RequireTrustChannelAttribute(string TrustType = "")
+        protected RequireTrustChannelAttribute(string TrustType = "")
         {
             this.TrustType = TrustType;
         }

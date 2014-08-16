@@ -1,6 +1,7 @@
 ﻿using System;
 using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;

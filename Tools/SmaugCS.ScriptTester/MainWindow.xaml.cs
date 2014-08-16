@@ -27,7 +27,7 @@ namespace SmaugCS.ScriptTester
         {
             InitializeComponent();
 
-            _proxy = new LuaInterfaceProxy();
+            //_proxy = new LuaInterfaceProxy();
 
             // TODO: Initialize functions
         }

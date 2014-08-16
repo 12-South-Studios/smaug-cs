@@ -87,9 +87,9 @@ namespace SmaugCS.Commands.Liquids
             }
 
             if (fight.who_fighting(ch) != null && ch.IsPKill())
-                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
+                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond") / 5);
             else
-                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
+                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond") / 3);
 
             update.gain_condition(ch, ConditionTypes.Thirsty, 1);
 

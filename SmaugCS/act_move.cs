@@ -6,6 +6,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
+using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -41,7 +42,7 @@ namespace SmaugCS
                 pre = result == 3 ? "You see " : "You notice ";
             }
 
-            return string.Format("{0}{1}{2}", pre, GameConstants.RoomSents[(int)sector][x], post);
+            return string.Format("{0}{1}{2}", pre, LookupConstants.RoomSents[(int)sector][x], post);
         }
         private static string GetDecorateRoom_PreAndPost_2(SectorTypes sector, int x)
         {
@@ -58,13 +59,13 @@ namespace SmaugCS
                 pre = random == 1 ? "you see " : "over yonder ";
             }
 
-            return string.Format("{0}{1}{2}", pre, GameConstants.RoomSents[(int)sector][x], post);
+            return string.Format("{0}{1}{2}", pre, LookupConstants.RoomSents[(int)sector][x], post);
         }
         private static string GetDecorateRoom_PreAndPost_3(SectorTypes sector, int x)
         {
             string[] outputArray = { ".", " not too far away.", ", and ", " nearby." };
 
-            return string.Format("{0}{1}{2}", string.Empty, GameConstants.RoomSents[(int)sector][x], outputArray[SmaugRandom.Between(0, 3)]);
+            return string.Format("{0}{1}{2}", string.Empty, LookupConstants.RoomSents[(int)sector][x], outputArray[SmaugRandom.Between(0, 3)]);
         }
 
         public static void decorate_room(RoomTemplate room)
@@ -78,7 +79,7 @@ namespace SmaugCS
 
             SectorTypes sector = room.SectorType;
             //room.Name = GameConstants.SectorNames[(int)sector].Key;
-            int nRand = SmaugRandom.Between(1, 8.GetLowestOfTwoNumbers(GameConstants.SentTotals[(int)sector]));
+            int nRand = SmaugRandom.Between(1, 8.GetLowestOfTwoNumbers(LookupConstants.SentTotals[(int)sector]));
 
             for (int iRand = 0; iRand < nRand; iRand++)
                 previous[iRand] = -1;
@@ -87,7 +88,7 @@ namespace SmaugCS
             {
                 while (previous[iRand] == -1)
                 {
-                    int x = SmaugRandom.Between(0, GameConstants.SentTotals[(int)sector] - 1);
+                    int x = SmaugRandom.Between(0, LookupConstants.SentTotals[(int)sector] - 1);
 
                     int z;
                     for (z = 0; z < iRand; z++)
@@ -106,7 +107,7 @@ namespace SmaugCS
                             ? GetDecorateRoom_PreAndPost_2(sector, x)
                             : GetDecorateRoom_PreAndPost_3(sector, x);
                     else
-                        buf2 = string.Format("{0}.", GameConstants.RoomSents[(int)sector][x]);
+                        buf2 = string.Format("{0}.", LookupConstants.RoomSents[(int)sector][x]);
 
                     if (len > 5 && buf2.EndsWith("."))
                     {
@@ -380,7 +381,7 @@ namespace SmaugCS
 
             if (pull < 0)
             {
-                xit = ch.CurrentRoom.GetExit(GameConstants.rev_dir[(int)xit.Direction]);
+                xit = ch.CurrentRoom.GetExit(LookupConstants.rev_dir[(int)xit.Direction]);
                 if (xit == null)
                     return ReturnTypes.None;
             }

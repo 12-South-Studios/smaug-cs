@@ -373,7 +373,6 @@ namespace SmaugCS
         public static int MAX_NUISANCE_STAGE = 10;
 
 
-        public static int INIT_WEAPON_CONDITION = 12;
         public static int MAX_ITEM_IMPACT = 30;
         public static int MAX_TRADE = 5;
         public static int MAX_FIX = 3;
