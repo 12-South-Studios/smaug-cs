@@ -813,7 +813,7 @@ namespace SmaugCS
                         return;
 
                     if ((obj.GetObjectWeight() + tobj.GetObjectWeight()) >
-                        GameConstants.str_app[ch.GetCurrentStrength()].Wield)
+                        LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
                     {
                         color.send_to_char("It is too heavy for you to wield.\r\n", ch);
                         return;
@@ -851,7 +851,7 @@ namespace SmaugCS
                     }
 
                     if ((obj.GetObjectWeight() + mw.GetObjectWeight()) >
-                        GameConstants.str_app[ch.GetCurrentStrength()].Wield)
+                        LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
                     {
                         color.send_to_char("It is too heavy for you to wield.\r\n", ch);
                         return;
@@ -881,7 +881,7 @@ namespace SmaugCS
                 }
             }
 
-            if (obj.GetObjectWeight() > GameConstants.str_app[ch.GetCurrentStrength()].Wield)
+            if (obj.GetObjectWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
             {
                 color.send_to_char("It is too heavy for you to wield.\r\n", ch);
                 return;

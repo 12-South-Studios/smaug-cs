@@ -22,8 +22,8 @@ namespace SmaugCS.Skills
                 comm.act(ATTypes.AT_SKILL, "You trip $N and $N goes down!", ch, null, victim, ToTypes.Character);
                 comm.act(ATTypes.AT_SKILL, "$n trips $N and $N goes down!", ch, null, victim, ToTypes.Room);
 
-                Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
-                Macros.WAIT_STATE(victim, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
+                Macros.WAIT_STATE(ch, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));
+                Macros.WAIT_STATE(victim, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));
                 victim.CurrentPosition = PositionTypes.Resting;
             }
         }

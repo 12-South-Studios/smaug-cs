@@ -12,10 +12,14 @@ namespace SmaugCS.Constants.Enums
         Scroll,
 
         [CharacterColor(ATTypes.AT_MAGIC)]
+        [Valued]
         Wand,
 
         [CharacterColor(ATTypes.AT_MAGIC)]
+        [Valued]
         Staff,
+
+        [Valued]
         Weapon,
 
         [Name("_fireweapon")]
@@ -26,6 +30,8 @@ namespace SmaugCS.Constants.Enums
 
         [CharacterColor(ATTypes.AT_YELLOW)]
         Treasure,
+
+        [Valued]
         Armor,
         Potion,
 

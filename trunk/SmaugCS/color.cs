@@ -55,7 +55,7 @@ namespace SmaugCS
                     send_to_pager("\r\n", ch);
 
                 ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
-                pager_printf(ch, "%s%-10s", color_str(atType, ch), GameConstants.pc_displays[count]);
+                pager_printf(ch, "%s%-10s", color_str(atType, ch), LookupConstants.pc_displays[count]);
             }
 
             send_to_pager("\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n",
@@ -67,7 +67,7 @@ namespace SmaugCS
                     send_to_pager("\r\n", ch);
 
                 ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
-                pager_printf(ch, "%s%-10s%s", color_str(atType, ch), GameConstants.pc_displays[count], AnsiCodes.Reset);
+                pager_printf(ch, "%s%-10s%s", color_str(atType, ch), LookupConstants.pc_displays[count], AnsiCodes.Reset);
             }
 
             send_to_pager("\r\n\r\n", ch);

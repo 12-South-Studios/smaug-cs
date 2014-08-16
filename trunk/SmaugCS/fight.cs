@@ -1419,7 +1419,7 @@ namespace SmaugCS
                     if (ch.HasBodyPart(cindex))
                     {
                         msg = LookupManager.Instance.GetLookup("PartMessages", shift);
-                        vnum = GameConstants.PartVnums[shift];
+                        vnum = LookupConstants.PartVnums[shift];
                         break;
                     }
                     shift = SmaugRandom.Between(0, 31);

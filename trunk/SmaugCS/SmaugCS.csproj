@@ -109,6 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\TypeMapAttribute.cs" />
+    <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
+    <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
+    <Compile Include="Behavior\Shopkeeper\Interact.cs" />
+    <Compile Include="Behavior\Shopkeeper\RepairObject.cs" />
     <Compile Include="Commands\Ban\Ban.cs" />
     <Compile Include="Commands\Movement\PullOrPush.cs" />
     <Compile Include="Commands\Player\Title.cs" />
@@ -117,7 +121,6 @@
     <Compile Include="Extensions\SkillDataExtensions.cs" />
     <Compile Include="Helpers\CastingFunctionType.cs" />
     <Compile Include="Helpers\CheckFunctions.cs" />
-    <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="Exceptions\CharacterDiedException.cs" />
     <Compile Include="Commands\Player\Affected.cs" />
     <Compile Include="Commands\Player\Equipment.cs" />
@@ -213,8 +216,7 @@
     <Compile Include="Commands\Pipe\Tamp.cs" />
     <Compile Include="Extensions\SavingThrowDataExtensions.cs" />
     <Compile Include="Extensions\WeatherManagerExtensions.cs" />
-    <Compile Include="Constants\GameConstants.cs" />
-    <Compile Include="Constants\LevelConstants.cs" />
+    <Compile Include="Constants\LookupConstants.cs" />
     <Compile Include="Helpers\HelperFunctions.cs" />
     <Compile Include="Interfaces\IInitializer.cs" />
     <Compile Include="LoaderInitializer.cs" />
@@ -821,7 +823,6 @@
     <Compile Include="renumber.cs" />
     <Compile Include="reset.cs" />
     <Compile Include="save.cs" />
-    <Compile Include="shops.cs" />
     <Compile Include="skills.cs" />
     <Compile Include="SpecFuns\SpecFunHandler.cs" />
     <Compile Include="tables.cs" />
@@ -955,6 +956,10 @@
     <ProjectReference Include="..\SmaugCS.Communication\SmaugCS.Communication.csproj">
       <Project>{f9affbf0-166c-4672-80ba-faba59ef9e07}</Project>
       <Name>SmaugCS.Communication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Config\SmaugCS.Config.csproj">
+      <Project>{1841b62b-c81e-4e08-962f-62cdb15a248d}</Project>
+      <Name>SmaugCS.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>

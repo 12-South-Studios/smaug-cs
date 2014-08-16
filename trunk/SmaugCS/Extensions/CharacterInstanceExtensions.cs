@@ -641,17 +641,17 @@ namespace SmaugCS
         public static int GetArmorClass(this CharacterInstance ch)
         {
             return ch.ArmorClass + (ch.IsAwake()
-                                   ? GameConstants.dex_app[ch.GetCurrentDexterity()].defensive
+                                   ? LookupConstants.dex_app[ch.GetCurrentDexterity()].defensive
                                    : 0) + ch.GetVampArmorClass();
         }
         public static int GetHitroll(this CharacterInstance ch)
         {
-            return ch.HitRoll.SizeOf + GameConstants.str_app[ch.GetCurrentStrength()].tohit
+            return ch.HitRoll.SizeOf + LookupConstants.str_app[ch.GetCurrentStrength()].tohit
                    + (2 - (Math.Abs(ch.MentalState) / 10));
         }
         public static int GetDamroll(this CharacterInstance ch)
         {
-            return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + GameConstants.str_app[ch.GetCurrentStrength()].todam +
+            return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + LookupConstants.str_app[ch.GetCurrentStrength()].todam +
                    ((ch.MentalState > 5 && ch.MentalState < 15) ? 1 : 0);
         }
 
@@ -987,7 +987,7 @@ namespace SmaugCS
                 return 1000000;
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return 1000000;
-            return GameConstants.str_app[ch.GetCurrentStrength()].Carry;
+            return LookupConstants.str_app[ch.GetCurrentStrength()].Carry;
         }
 
         #endregion
@@ -1036,13 +1036,13 @@ namespace SmaugCS
 
             ClassData myClass = (databaseManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
 
-            int add_hp = GameConstants.con_app[ch.GetCurrentConstitution()].hitp +
+            int add_hp = LookupConstants.con_app[ch.GetCurrentConstitution()].hitp +
                          SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
             int add_mana = myClass.UseMana
                                ? SmaugRandom.Between(2, (2 * ch.GetCurrentIntelligence() + ch.GetCurrentWisdom()) / 8)
                                : 0;
             int add_move = SmaugRandom.Between(5, (ch.GetCurrentConstitution() + ch.GetCurrentDexterity()) / 4);
-            int add_prac = GameConstants.wis_app[ch.GetCurrentWisdom()].practice;
+            int add_prac = LookupConstants.wis_app[ch.GetCurrentWisdom()].practice;
 
             add_hp = 1.GetHighestOfTwoNumbers(add_hp);
             add_mana = 0.GetHighestOfTwoNumbers(add_mana);

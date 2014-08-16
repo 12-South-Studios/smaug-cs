@@ -206,7 +206,7 @@ namespace SmaugCS
                 {
                     if (exit.Destination <= 0 && exit.GetReverseExit() == null)
                     {
-                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[(int)exit.Direction], room.ID);
+                        ExitData reverseExit = exit.GetDestination().GetExitTo(LookupConstants.rev_dir[(int)exit.Direction], room.ID);
                         if (reverseExit != null)
                         {
                             exit.Reverse = reverseExit.ID;
@@ -871,7 +871,7 @@ namespace SmaugCS
             newExit.Distance = 1;
             newExit.Key = -1;
 
-            ExitData reverseExit = to_room.GetExitTo(GameConstants.rev_dir[door], room.Vnum);
+            ExitData reverseExit = to_room.GetExitTo(LookupConstants.rev_dir[door], room.Vnum);
             if (reverseExit != null)
             {
                 reverseExit.Reverse = newExit.ID;

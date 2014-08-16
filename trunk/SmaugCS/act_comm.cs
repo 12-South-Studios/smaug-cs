@@ -8,44 +8,34 @@ namespace SmaugCS
 {
     public static class act_comm
     {
-        public static void send_rip_screen(CharacterInstance ch)
+        private static void SendFileToBuffer(CharacterInstance ch, SystemFileTypes fileType)
         {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.RIPScreen);
+            string path = SystemConstants.GetSystemFile(fileType);
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 string buffer = proxy.ReadToEnd();
                 comm.write_to_buffer(ch.Descriptor, buffer, buffer.Length);
-            }
+            } 
+        }
+
+        public static void send_rip_screen(CharacterInstance ch)
+        {
+            SendFileToBuffer(ch, SystemFileTypes.RIPScreen);
         }
 
         public static void send_rip_title(CharacterInstance ch)
         {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.RIPTitle);
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                string buffer = proxy.ReadToEnd();
-                comm.write_to_buffer(ch.Descriptor, buffer, buffer.Length);
-            }
+            SendFileToBuffer(ch, SystemFileTypes.RIPTitle);
         }
 
         public static void send_ansi_title(CharacterInstance ch)
         {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.ANSITitle);
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                string buffer = proxy.ReadToEnd();
-                comm.write_to_buffer(ch.Descriptor, buffer, buffer.Length);
-            }
+            SendFileToBuffer(ch, SystemFileTypes.ANSITitle);
         }
 
         public static void send_ascii_title(CharacterInstance ch)
         {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.ASCTitle);
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                string buffer = proxy.ReadToEnd();
-                comm.write_to_buffer(ch.Descriptor, buffer, buffer.Length);
-            }
+            SendFileToBuffer(ch, SystemFileTypes.ASCTitle);
         }
     }
 }

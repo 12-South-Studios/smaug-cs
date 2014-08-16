@@ -62,12 +62,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ValuedAttribute.cs" />
     <Compile Include="CommandAttribute.cs" />
-    <Compile Include="Config\StaticStringConfigurationSection.cs" />
-    <Compile Include="Config\MayorTextStringsElementCollection.cs" />
-    <Compile Include="Config\MayorTextStringElement.cs" />
-    <Compile Include="Config\SystemValueElementCollection.cs" />
-    <Compile Include="Config\SystemValueElement.cs" />
+    <Compile Include="Constants\GameConstants.cs" />
+    <Compile Include="Constants\LevelConstants.cs" />
+    <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="DamageResistanceAttribute.cs" />
     <Compile Include="DescriptorAttribute.cs" />
     <Compile Include="Enums\DeityFieldTypes.cs" />
@@ -75,19 +74,6 @@
     <Compile Include="LookupSkillAttribute.cs" />
     <Compile Include="ArmorClassAttribute.cs" />
     <Compile Include="CharacterColorAttribute.cs" />
-    <Compile Include="ConfigurationManagerFunctions.cs" />
-    <Compile Include="ConfigurationSectionNotFoundException.cs" />
-    <Compile Include="Config\ConstantElement.cs" />
-    <Compile Include="Config\ConstantElementCollection.cs" />
-    <Compile Include="Config\ConstantConfigurationSection.cs" />
-    <Compile Include="Config\SystemDataConfigurationSection.cs" />
-    <Compile Include="Config\SystemDirectoryElement.cs" />
-    <Compile Include="Config\SystemDirectoryElementCollection.cs" />
-    <Compile Include="Config\SystemFileElement.cs" />
-    <Compile Include="Config\SystemFileElementCollection.cs" />
-    <Compile Include="Config\VnumElement.cs" />
-    <Compile Include="Config\VnumElementCollection.cs" />
-    <Compile Include="Config\VnumConfigurationSection.cs" />
     <Compile Include="Constants\BuilderConstants.cs" />
     <Compile Include="Constants\SystemConstants.cs" />
     <Compile Include="Enums\ActFlags.cs" />
@@ -179,6 +165,10 @@
     <ProjectReference Include="..\Libraries\Realm.Library.Common\Realm.Library.Common.csproj">
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Config\SmaugCS.Config.csproj">
+      <Project>{1841b62b-c81e-4e08-962f-62cdb15a248d}</Project>
+      <Name>SmaugCS.Config</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

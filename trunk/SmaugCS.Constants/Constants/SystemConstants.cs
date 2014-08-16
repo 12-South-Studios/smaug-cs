@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using Realm.Library.Common;
-using SmaugCS.Constants.Config;
+using SmaugCS.Config;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants.Constants
