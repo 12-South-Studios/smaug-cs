@@ -21,12 +21,19 @@ namespace Realm.Library.Common.Test
             Test2
         };
 
-        [Test]
-        public void SetProperty_StringName_NoOptions_Test()
+        private static PropertyContext GetContext()
         {
             var fake = new FakeEntity(1, "Test");
 
             var ctx = new PropertyContext(fake);
+
+            return ctx;
+        }
+
+        [Test]
+        public void SetProperty_StringName_NoOptions_Test()
+        {
+            var ctx = GetContext();
             ctx.SetProperty("NullProperty", "Nothing");
 
             Assert.That(ctx.GetProperty<string>("NullProperty"), Is.EqualTo("Nothing"));
@@ -35,9 +42,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void SetProperty_StringName_Volatile_SetExisting_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty("NullProperty", "Nothing", PropertyTypeOptions.Volatile);
 
             Assert.That(ctx.GetProperty<string>("NullProperty"), Is.EqualTo("Nothing"));
@@ -50,9 +55,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void SetProperty_Enum_NoOptions_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing");
 
             Assert.That(ctx.GetProperty<string>("Test1"), Is.EqualTo("Nothing"));
@@ -61,9 +64,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void HasProperty_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing");
 
             Assert.That(ctx.HasProperty("Test1"), Is.True);
@@ -72,9 +73,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void IsPersistable_True_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing", PropertyTypeOptions.Persistable);
 
             Assert.That(ctx.IsPersistable("Test1"), Is.True);
@@ -83,9 +82,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void IsPersistable_False_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing");
 
             Assert.That(ctx.IsPersistable("Test1"), Is.False);
@@ -94,9 +91,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void IsVisible_True_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing", PropertyTypeOptions.Visible);
 
             Assert.That(ctx.IsVisible("Test1"), Is.True);
@@ -105,9 +100,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void IsVisible_False_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing");
 
             Assert.That(ctx.IsVisible("Test1"), Is.False);
@@ -116,9 +109,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void IsVolatile_True_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing", PropertyTypeOptions.Volatile);
 
             Assert.That(ctx.IsVolatile("Test1"), Is.True);
@@ -127,9 +118,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void IsVolatile_False_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing");
 
             Assert.That(ctx.IsVolatile("Test1"), Is.False);
@@ -138,9 +127,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void RemoveProperty_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing");
 
             Assert.That(ctx.HasProperty("Test1"), Is.True);
@@ -156,9 +143,7 @@ namespace Realm.Library.Common.Test
         [TestCase(PropertyTypeOptions.Persistable | PropertyTypeOptions.Visible | PropertyTypeOptions.Volatile, "pvi")]
         public void GetPropertyBits_Test(PropertyTypeOptions options, string expectedValue)
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Nothing", options);
 
             Assert.That(ctx.GetPropertyBits("Test1"), Is.EqualTo(expectedValue));
@@ -167,9 +152,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void Count_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Test #1");
             ctx.SetProperty(TestEnum.Test2, "Test #2");
             
@@ -179,13 +162,11 @@ namespace Realm.Library.Common.Test
         [Test]
         public void PropertyKeys_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new PropertyContext(fake);
+            var ctx = GetContext();
             ctx.SetProperty(TestEnum.Test1, "Test #1");
             ctx.SetProperty(TestEnum.Test2, "Test #2");
 
-            var keys = ctx.PropertyKeys;
+            var keys = ctx.PropertyKeys.ToList();
 
             Assert.That(keys, Is.Not.Null);
             Assert.That(keys.Count(), Is.EqualTo(2));

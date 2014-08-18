@@ -1,0 +1,6 @@
+-- Unit Tests for module_base.lua
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
+
+function test_SetContains_IsTrue()
+	assert("test")
+end

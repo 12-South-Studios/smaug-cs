@@ -23,13 +23,20 @@ namespace Realm.Library.Common.Test
             Test2 = 2
         };
 
+        private static FakeEntity GetFakeEntity()
+        {
+            return new FakeEntity(1, "Test");
+        }
+
+        private static BitContext GetContext()
+        {
+            return new BitContext(GetFakeEntity());
+        }
+
         [Test]
         public void HasBitTest()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
+            var ctx = GetContext();
             ctx.SetBit(1);
 
             Assert.That(ctx.HasBit(1), Is.True);
@@ -38,10 +45,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void HasBit_SetByEnum_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
+            var ctx = GetContext();
             ctx.SetBit(TestEnum.Test2);
 
             Assert.That(ctx.HasBit(2), Is.True);
@@ -50,10 +54,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void HasBit_Enum_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
+            var ctx = GetContext();
             ctx.SetBit(TestEnum.Test2);
 
             Assert.That(ctx.HasBit(TestEnum.Test2), Is.True);
@@ -62,10 +63,7 @@ namespace Realm.Library.Common.Test
         [Test]
         public void GetBits_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
+            var ctx = GetContext();
             ctx.SetBit(TestEnum.Test1);
             ctx.SetBit(TestEnum.Test2);
 
@@ -75,12 +73,9 @@ namespace Realm.Library.Common.Test
         [Test]
         public void SetBits_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
             const int val = (int)(TestEnum.Test1 | TestEnum.Test2);
 
+            var ctx = GetContext();
             ctx.SetBits(val);
 
             Assert.That(ctx.GetBits, Is.EqualTo(val));
@@ -89,15 +84,9 @@ namespace Realm.Library.Common.Test
         [Test]
         public void UnsetBit_Integer_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
+            var ctx = GetContext();
             ctx.SetBit(4);
             ctx.SetBit(2);
-
-            Assert.That(ctx.HasBit(4), Is.True);
-
             ctx.UnsetBit(2);
 
             Assert.That(ctx.HasBit(4), Is.True);
@@ -107,15 +96,9 @@ namespace Realm.Library.Common.Test
         [Test]
         public void UnsetBit_Enum_Test()
         {
-            var fake = new FakeEntity(1, "Test");
-
-            var ctx = new BitContext(fake);
-
+            var ctx = GetContext();
             ctx.SetBit(TestEnum.Test1);
             ctx.SetBit(TestEnum.Test2);
-
-            Assert.That(ctx.HasBit(TestEnum.Test2), Is.True);
-
             ctx.UnsetBit(TestEnum.Test1);
 
             Assert.That(ctx.HasBit(TestEnum.Test2), Is.True);

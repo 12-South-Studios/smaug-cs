@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Realm.Library.Common.Collections;
 
@@ -11,14 +10,14 @@ namespace Realm.Library.Common.Test
         private static BidirectionalDictionary<string, string> _dictionary;
             
         [SetUp]
-        private void OnSetup()
+        public void OnSetup()
         {
             _dictionary = new BidirectionalDictionary<string, string>();
-            _dictionary.Add("FirstValue", "FirstLookupValue"); 
+            _dictionary.Add("FirstValue", "FirstLookupValue");
         }
 
         [TearDown]
-        private void OnTeardown()
+        public void OnTeardown()
         {
             _dictionary = null;
         }
@@ -32,8 +31,8 @@ namespace Realm.Library.Common.Test
             Assert.That(results.ToList().Contains(secondValue), Is.EqualTo(expectedResult));
         }
 
-        [TestCase("SecondValue", "FirstLookupValue", true)]
-        [TestCase("SecondLookupValue", "FirstLookupValue", false)]
+        [TestCase("FirstLookupValue", "FirstValue", true)]
+        [TestCase("SecondLookupValue", "FirstValue", false)]
         public void GetBySecondTest(string secondValue, string firstValue, bool expectedResult)
         {
             var results = _dictionary.GetBySecond(secondValue);
@@ -42,16 +41,20 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
-        public void Remove_Test()
+        public void Remove_RemovesFirstValue_Test()
         {
             _dictionary.Remove("FirstValue", "FirstLookupValue");
 
             var results = _dictionary.GetByFirst("FirstValue");
-
             Assert.That(results.ToList().Contains("FirstValue"), Is.False);
+        }
 
-            results = _dictionary.GetBySecond("FirstLookupValue");
+        [Test]
+        public void Remove_RemovesSecondValue_Test()
+        {
+            _dictionary.Remove("FirstValue", "FirstLookupValue");
 
+            var results = _dictionary.GetBySecond("FirstLookupValue");
             Assert.That(results.ToList().Contains("FirstLookupValue"), Is.False);
         }
     }
