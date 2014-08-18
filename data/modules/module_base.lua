@@ -2,8 +2,6 @@
 -- This is the Base Module for the MUD
 -- Revised: 2013.11.09
 -- Author: Jason Murdick
-f = loadfile(LDataPath() .. "\\modules\\types.lua")();
-
 
 -- Does the table contain the value
 function SetContains(set, key)
