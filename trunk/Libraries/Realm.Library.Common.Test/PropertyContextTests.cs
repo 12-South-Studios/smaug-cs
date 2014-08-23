@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test
 {
     [TestFixture]
     public class PropertyContextTests
     {
-        private class FakeEntity : Entity
-        {
-            public FakeEntity(long id, string name) : base(id, name)
-            {
-            }
-        }
-
         [Flags]
         private enum TestEnum
         {
@@ -31,6 +25,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void SetProperty_StringName_NoOptions_Test()
         {
             var ctx = GetContext();
@@ -40,6 +35,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void SetProperty_StringName_Volatile_SetExisting_Test()
         {
             var ctx = GetContext();
@@ -53,6 +49,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void SetProperty_Enum_NoOptions_Test()
         {
             var ctx = GetContext();
@@ -62,6 +59,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void HasProperty_Test()
         {
             var ctx = GetContext();
@@ -71,6 +69,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void IsPersistable_True_Test()
         {
             var ctx = GetContext();
@@ -80,6 +79,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void IsPersistable_False_Test()
         {
             var ctx = GetContext();
@@ -89,6 +89,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void IsVisible_True_Test()
         {
             var ctx = GetContext();
@@ -98,6 +99,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void IsVisible_False_Test()
         {
             var ctx = GetContext();
@@ -107,6 +109,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void IsVolatile_True_Test()
         {
             var ctx = GetContext();
@@ -116,6 +119,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void IsVolatile_False_Test()
         {
             var ctx = GetContext();
@@ -125,6 +129,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void RemoveProperty_Test()
         {
             var ctx = GetContext();
@@ -141,6 +146,7 @@ namespace Realm.Library.Common.Test
         [TestCase(PropertyTypeOptions.Persistable, "p")]
         [TestCase(PropertyTypeOptions.Persistable | PropertyTypeOptions.Visible, "pi")]
         [TestCase(PropertyTypeOptions.Persistable | PropertyTypeOptions.Visible | PropertyTypeOptions.Volatile, "pvi")]
+        [Category("Context Tests")]
         public void GetPropertyBits_Test(PropertyTypeOptions options, string expectedValue)
         {
             var ctx = GetContext();
@@ -150,6 +156,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void Count_Test()
         {
             var ctx = GetContext();
@@ -160,6 +167,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void PropertyKeys_Test()
         {
             var ctx = GetContext();

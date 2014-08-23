@@ -1,25 +1,14 @@
 ﻿using System;
 using NUnit.Framework;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public static class TypeExtensionsTest
     {
-        private class HelperObject
-        {
-            public HelperObject() { }
-
-            public HelperObject(string arg1)
-            {
-                Arg1 = arg1;
-            }
-
-            public string Arg1 { get; set; }
-        }
-
         [Test]
+        [Category("Extension Tests")]
         public static void InstantiateNullTest()
         {
             Assert.Throws<ArgumentNullException>(() => TypeExtensions.Instantiate<HelperObject>(null, null),
@@ -27,6 +16,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public static void InstantiateTest()
         {
             var type = typeof(HelperObject);
@@ -38,6 +28,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public static void InstantiateWithArgumentsTest()
         {
             var type = typeof(HelperObject);

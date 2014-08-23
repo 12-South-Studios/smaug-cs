@@ -8,6 +8,7 @@ namespace Realm.Library.Common.Test
     public class TextReaderProxyTests
     {
         [Test]
+        [Category("Object Tests")]
         public void ReadNextLetter_ReturnsValidChar()
         {
             TextReaderProxy proxy = new TextReaderProxy(new StringReader("a word"));
@@ -16,6 +17,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadNextLetter_ThrowsExceptionAtEndOfStream()
         {
             TextReaderProxy proxy = new TextReaderProxy(new StringReader(""));
@@ -25,6 +27,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadNextWord_ReturnsValidString()
         {
             TextReaderProxy proxy = new TextReaderProxy(new StringReader("first word"));
@@ -33,6 +36,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadNumber_ReturnsValidValue()
         {
             TextReaderProxy proxy = new TextReaderProxy(new StringReader("100 words"));
@@ -41,6 +45,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadIntoList_ReturnsValidList()
         {
             TextReaderProxy proxy =
@@ -55,6 +60,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadSections_HasInvalidSectionParameters()
         {
             TextReaderProxy proxy =
@@ -67,6 +73,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadSections_HasFooter()
         {
             TextReaderProxy proxy =
@@ -80,6 +87,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadSections_ReturnsValidList()
         {
             TextReaderProxy proxy =
@@ -94,6 +102,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReadEndOfLine_DoesntReadNextLine()
         {
             TextReaderProxy proxy =

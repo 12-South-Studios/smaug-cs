@@ -1,4 +1,7 @@
-﻿using SmaugCS.Data;
+﻿using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
 {
@@ -6,7 +9,31 @@ namespace SmaugCS.Commands.Combat
     {
         public static void do_wimpy(CharacterInstance ch, string argument)
         {
-            // TODO
+            color.set_char_color(ATTypes.AT_YELLOW, ch);
+
+            string firstArg = argument.FirstWord();
+
+            int wimpy;
+            if (firstArg.IsNullOrEmpty())
+                wimpy = ch.MaximumHealth/5;
+            else if (firstArg.EqualsIgnoreCase("max"))
+            {
+                if (ch.IsPKill())
+                    wimpy = (int) (ch.MaximumHealth/2.25f);
+                else
+                    wimpy = (int) (ch.MaximumHealth/1.2f);
+            }
+            else
+                wimpy = firstArg.ToInt32();
+
+            if (CheckFunctions.CheckIfTrue(ch, wimpy < 0, "Your courage exceeds your wisdom.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsPKill() && wimpy > (int) (ch.MaximumHealth/2.25f),
+                "Such cowardice ill becomes you.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, wimpy > (int) (ch.MaximumHealth/1.2f), "Such cowardice ill becomes you."))
+                return;
+
+            ch.wimpy = wimpy;
+            color.ch_printf(ch, "Wimpy set to %d hit points.", wimpy);
         }
     }
 }

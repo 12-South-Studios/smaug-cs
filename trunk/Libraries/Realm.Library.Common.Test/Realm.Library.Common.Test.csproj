@@ -139,6 +139,15 @@
     <Compile Include="Extensions\EnumerableExtensionTests.cs" />
     <Compile Include="Extensions\TaskExtensionTests.cs" />
     <Compile Include="Extensions\FuncExtensionsTests.cs" />
+    <Compile Include="Fakes\BuggyFakeEvent.cs" />
+    <Compile Include="Fakes\FakeCell.cs" />
+    <Compile Include="Fakes\FakeContext.cs" />
+    <Compile Include="Fakes\FakeEntity.cs" />
+    <Compile Include="Fakes\FakeEvent.cs" />
+    <Compile Include="Fakes\FakeException.cs" />
+    <Compile Include="Fakes\FakeSingleton.cs" />
+    <Compile Include="Fakes\HelperObject.cs" />
+    <Compile Include="Fakes\SerializableObjectFake.cs" />
     <Compile Include="GenericEqualityComparerTests.cs" />
     <Compile Include="SingleLinkedListTests.cs" />
     <Compile Include="PasswordTest.cs" />

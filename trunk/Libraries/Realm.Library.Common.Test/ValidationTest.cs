@@ -11,6 +11,7 @@ namespace Realm.Library.Common.Test
     {
         [TestCase(null, "null", ExpectedException = typeof(ArgumentNullException))]
         [TestCase(25, "number")]
+        [Category("Validation Tests")]
         public void IsNotNullTest(object obj, string param)
         {
             Validation.IsNotNull(obj, param);
@@ -21,6 +22,7 @@ namespace Realm.Library.Common.Test
         [TestCase(null, typeof(int), ExpectedException = typeof(ArgumentNullException))]
         [TestCase("test", (Type)null, ExpectedException = typeof(ArgumentNullException))]
         [TestCase(25, typeof(bool), ExpectedException = typeof(ArgumentException))]
+        [Category("Validation Tests")]
         public void IsInstanceOfTest(object obj, Type type)
         {
             Validation.IsInstanceOfType(obj, type);
@@ -28,6 +30,7 @@ namespace Realm.Library.Common.Test
 
         [TestCase("", "null", ExpectedException = typeof(ArgumentNullException))]
         [TestCase("test", "number")]
+        [Category("Validation Tests")]
         public void IsNotNullOrEmptyTest(string obj, string param)
         {
             Validation.IsNotNullOrEmpty(obj, param);
@@ -36,12 +39,14 @@ namespace Realm.Library.Common.Test
         [TestCase(null, "null", ExpectedException = typeof(ArgumentNullException))]
         [TestCase(new object[] { }, "object", ExpectedException = typeof(ArgumentException))]
         [TestCase(new object[] { 25, 15 }, "value")]
+        [Category("Validation Tests")]
         public void IsNotEmpty(ICollection value, string param)
         {
             Validation.IsNotEmpty(value, param);
         }
 
         [Test]
+        [Category("Validation Tests")]
         public void IsNotEmptyByTypeTest()
         {
             ICollection<string> list = new Collection<string>();
@@ -53,6 +58,7 @@ namespace Realm.Library.Common.Test
 
         [TestCase(true, "test")]
         [TestCase(false, "test", ExpectedException = typeof(ArgumentException))]
+        [Category("Validation Tests")]
         public void Validate(bool test, string message)
         {
             Validation.Validate(test, message);
@@ -60,12 +66,14 @@ namespace Realm.Library.Common.Test
 
         [TestCase(true, "test")]
         [TestCase(false, "test", ExpectedException = typeof(InconclusiveException))]
+        [Category("Validation Tests")]
         public void ValidateCustomException(bool test, string message)
         {
             Validation.Validate<InconclusiveException>(test, message);
         }
 
         [Test]
+        [Category("Validation Tests")]
         public void ValidateAction()
         {
             var callback = false;

@@ -12,6 +12,7 @@ namespace Realm.Library.Common.Test
 
         [TestCase("12south", true)]
         [TestCase("tester", false)]
+        [Category("Password Tests")]
         public void ComputeHashV1Test(string password, bool expected)
         {
             var actual = Password.ComputeHashV1(new PasswordRequestv1
@@ -26,6 +27,7 @@ namespace Realm.Library.Common.Test
 
         [TestCase("12south", true)]
         [TestCase("tester", false)]
+        [Category("Password Tests")]
         public void ValidatePasswordHashV1Test(string password, bool expected)
         {
             var actual = Password.ValidatePasswordHashV1(new PasswordRequestv1

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class EnumerableExtensionTests
     {
         private static IEnumerable<int> GetEnumerableIntegerList()
@@ -12,48 +12,18 @@ namespace Realm.Library.Common.Test.Extensions
             return new List<int> { 5, 10, 15, 20, 25 };
         }
 
-        private class Fake
+        private static IEnumerable<FakeEntity> GetEnumerableFakeEntityList()
         {
-            private string Name { get; set; }
-
-            public Fake(string name)
-            {
-                Name = name;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(this, obj))
-                    return true;
-
-                Fake fake = obj as Fake;
-                return fake != null && fake.Name == Name;
-            }
-
-            public override int GetHashCode()
-            {
-                int hash = 13;
-                hash = (hash * 7) + Name.GetHashCode();
-                return hash;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("{0}", Name);
-            }
-        }
-
-        private static IEnumerable<Fake> GetEnumerableFakeList()
-        {
-            return new List<Fake>()
+            return new List<FakeEntity>
                        {
-                           new Fake("Test1"),
-                           new Fake("Test2"),
-                           new Fake("Test3")
+                           new FakeEntity(1, "Test1"),
+                           new FakeEntity(2, "Test2"),
+                           new FakeEntity(3, "Test3")
                        };
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void IndexOfTest()
         {
             const int expected = 2;
@@ -62,17 +32,20 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void IndexOfWithComparerTest()
         {
             const int expected = 1;
-            var comparer = new GenericEqualityComparer<Fake>(Equals);
+            var comparer = new GenericEqualityComparer<FakeEntity>(Equals);
 
-            Assert.That(GetEnumerableFakeList().IndexOf(new Fake("Test2"), comparer), Is.EqualTo(expected));
+            Assert.That(GetEnumerableFakeEntityList().IndexOf(new FakeEntity(2, "Test2"), comparer),
+                Is.EqualTo(expected));
         }
 
         [TestCase(10, 15)]
         [TestCase(50, 5)]
         [TestCase(25, 25)]
+        [Category("Extension Tests")]
         public void PeekWithValidValueTest(int peekValue, int expectedValue)
         {
             Assert.That(GetEnumerableIntegerList().Peek(peekValue), Is.EqualTo(expectedValue));

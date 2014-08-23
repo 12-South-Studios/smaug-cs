@@ -5,72 +5,33 @@ using System.Linq;
 
 namespace Realm.Library.Common.Data
 {
-    /// <summary>
-    /// Defines extension functions for Atoms
-    /// </summary>
     public static class AtomExtensions
     {
-        /// <summary>
-        /// Converts to 32-bit integer to an atom
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static T ToAtom<T>(this Int32 value) where T : Atom
         {
             return (T)Activator.CreateInstance(typeof(T), new object[] { value });
         }
 
-        /// <summary>
-        /// Converts the boolean value to an atom
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static T ToAtom<T>(this Boolean value) where T : Atom
         {
             return (T)Activator.CreateInstance(typeof(T), new object[] { value });
         }
 
-        /// <summary>
-        /// Converts the 64-bit integer to an atom
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static T ToAtom<T>(this Int64 value) where T : Atom
         {
             return (T)Activator.CreateInstance(typeof(T), new object[] { value });
         }
 
-        /// <summary>
-        /// Converts the single value to an atom
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static T ToAtom<T>(this Single value) where T : Atom
         {
             return (T)Activator.CreateInstance(typeof(T), new object[] { value });
         }
 
-        /// <summary>
-        /// Converts the double value to an atom
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static T ToAtom<T>(this Double value) where T : Atom
         {
             return (T)Activator.CreateInstance(typeof(T), new object[] { value });
         }
 
-        /// <summary>
-        /// Converts the string value to an atom
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static T ToAtom<T>(this string value) where T : Atom
         {
             Validation.IsNotNullOrEmpty(value, "value");
@@ -101,9 +62,6 @@ namespace Realm.Library.Common.Data
             return null;
         }
 
-        /// <summary>
-        /// Converts a collection into a ListAtom
-        /// </summary>
         public static ListAtom ToAtom(this ICollection list)
         {
             Validation.IsNotNull(list, "list");
@@ -131,20 +89,12 @@ namespace Realm.Library.Common.Data
             return atom;
         }
 
-        /// <summary>
-        /// Converts a dictionary atom into a dictionary of string-object pairs
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static Dictionary<string, object> ToDictionary(this DictionaryAtom source)
         {
             return source.Keys.Select(keyAtom => keyAtom.CastAs<StringAtom>())
                 .ToDictionary(key => key.Value, key => source.GetObject(key.Value));
         }
 
-        /// <summary>
-        /// Converts an object and its field values into a DictionaryAtom
-        /// </summary>
         public static DictionaryAtom ToDictionaryAtom(this object obj)
         {
             var type = obj.GetType();

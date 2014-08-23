@@ -157,5 +157,13 @@ namespace SmaugCS.Common.Tests
         {
             Assert.That(value.GetNumberThatIsBetween(lowValue, hiValue), Is.EqualTo(expectedValue));
         }
+
+        [TestCase(1, 5, 4)]
+        [TestCase(5, 1, 4)]
+        [TestCase(5, -5, 10)]
+        public void GetAbsoluteDifference(int value1, int value2, int expected)
+        {
+            Assert.That(value1.GetAbsoluteDifference(value2), Is.EqualTo(expected));
+        }
     }
 }

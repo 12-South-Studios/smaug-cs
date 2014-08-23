@@ -24,6 +24,7 @@ namespace Realm.Library.Common.Test
 
         [TestCase("FirstValue", "FirstLookupValue", true)]
         [TestCase("SecondValue", "FirstLookupValue", false)]
+        [Category("Dictionary Tests")]
         public void GetByFirstTest(string firstValue, string secondValue, bool expectedResult)
         {
             var results = _dictionary.GetByFirst(firstValue);
@@ -33,6 +34,7 @@ namespace Realm.Library.Common.Test
 
         [TestCase("FirstLookupValue", "FirstValue", true)]
         [TestCase("SecondLookupValue", "FirstValue", false)]
+        [Category("Dictionary Tests")]
         public void GetBySecondTest(string secondValue, string firstValue, bool expectedResult)
         {
             var results = _dictionary.GetBySecond(secondValue);
@@ -41,6 +43,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Dictionary Tests")]
         public void Remove_RemovesFirstValue_Test()
         {
             _dictionary.Remove("FirstValue", "FirstLookupValue");
@@ -50,6 +53,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Dictionary Tests")]
         public void Remove_RemovesSecondValue_Test()
         {
             _dictionary.Remove("FirstValue", "FirstLookupValue");

@@ -7,10 +7,10 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [Category("Data")]
     public class ListAtomTest
     {
         [Test]
+        [Category("Object Tests")]
         public void ListAtomConstructorTest()
         {
             var atom = new ListAtom();
@@ -20,6 +20,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomCountTest()
         {
             var atom = new ListAtom { 15, 25 };
@@ -28,6 +29,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomClearTest()
         {
             var atom = new ListAtom { 15, 25 };
@@ -40,6 +42,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomDumpNullParameterTest()
         {
             var atom = new ListAtom();
@@ -50,6 +53,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomDumpTest()
         {
             var callback = false;
@@ -67,6 +71,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetEnumeratorTest()
         {
             var listAtom = new ListAtom { 15, 25, 35 };
@@ -85,6 +90,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetAtomTest()
         {
             var atom1 = new IntAtom(15);
@@ -100,6 +106,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetStringTest()
         {
             var listAtom = new ListAtom { "test1", "test2", "test3" };
@@ -109,6 +116,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetStringInvalidTest()
         {
             var listAtom = new ListAtom { "test1", 25, "test3" };
@@ -118,6 +126,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetIntTest()
         {
             var listAtom = new ListAtom { 15, 25, 35 };
@@ -127,6 +136,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomSetLongTest()
         {
             const long value = 2500;
@@ -136,6 +146,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetIntInvalidTest()
         {
             var listAtom = new ListAtom { 15, "test", 35 };
@@ -144,6 +155,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetObjectTest()
         {
             var obj1 = new object();
@@ -155,6 +167,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetObjectInvalidTest()
         {
             var obj1 = new object();
@@ -165,6 +178,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetBoolTest()
         {
             var listAtom = new ListAtom { false, true, false };
@@ -173,6 +187,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetBoolInvalidTest()
         {
             var listAtom = new ListAtom { false, "test", false };
@@ -181,6 +196,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetRealTest()
         {
             var listAtom = new ListAtom { 12.5f, 25.0f, 37.5f };
@@ -189,6 +205,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomSetDoubleTest()
         {
             const double value = 250.52D;
@@ -198,6 +215,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetRealInvalidTest()
         {
             var listAtom = new ListAtom { 12.5f, "test", 37.5f };
@@ -206,6 +224,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetDictionaryTest()
         {
             var atom1 = new DictionaryAtom();
@@ -220,6 +239,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetDictionaryInvalidTest()
         {
             var atom1 = new DictionaryAtom();
@@ -231,6 +251,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetListTest()
         {
             var atom1 = new ListAtom { "Tester tester 1 2 3" };
@@ -241,6 +262,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ListAtomGetListInvalidTest()
         {
             var atom1 = new ListAtom { "Tester tester 1 2 3" };

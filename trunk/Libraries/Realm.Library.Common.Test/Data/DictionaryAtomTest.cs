@@ -5,10 +5,10 @@ using Realm.Library.Common.Data;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [Category("Data")]
     public class DictionaryAtomTest
     {
         [Test]
+        [Category("Object Tests")]
         public void ConstructorTest()
         {
             var atom = new DictionaryAtom();
@@ -18,6 +18,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void CopyConstructorNullParameterTest()
         {
             Assert.Throws<ArgumentNullException>(() => new DictionaryAtom(null),
@@ -25,6 +26,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void CopyConstructorTest()
         {
             const string key = "test";
@@ -40,6 +42,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void IsEmptyTest()
         {
             var atom = new DictionaryAtom();
@@ -48,6 +51,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void CountTest()
         {
             const string key = "test";
@@ -60,6 +64,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ContainsKeyTest()
         {
             const string key = "test";
@@ -72,6 +77,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void GetValueTest()
         {
             const string key = "test";
@@ -92,6 +98,7 @@ namespace Realm.Library.Common.Test.Data
         [TestCase("StringKey", "Testing 1 2 3")]
         [TestCase("LongKey", 9223372036854775806)]
         [TestCase("FloatKey", 25.05f)]
+        [Category("Object Tests")]
         public void SetTest<T>(string key, T value)
         {
             var atom = new DictionaryAtom();
@@ -101,6 +108,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void SetDictionaryAtom()
         {
             var setAtom = new DictionaryAtom();
@@ -119,6 +127,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void SetListAtom()
         {
             var listAtom = new ListAtom {"1 2 3 4 5"};

@@ -1,11 +1,9 @@
-﻿// ReSharper disable CheckNamespace
+﻿
+// ReSharper disable once CheckNamespace
 namespace Realm.Library.Common
-// ReSharper restore CheckNamespace
 {
-    /// <summary>
-    ///
-    /// </summary>
     public interface IContext
     {
+        IEntity Owner { get; }
     }
 }

@@ -3,7 +3,6 @@
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class CharExtensionsTests
     {
         [TestCase('a', true)]
@@ -12,6 +11,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase('o', true)]
         [TestCase('u', true)]
         [TestCase('g', false)]
+        [Category("Extension Tests")]
         public void IsVowelTest(char letter, bool expected)
         {
             Assert.That(letter.IsVowel(), Is.EqualTo(expected));
@@ -19,6 +19,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase('a', false)]
         [TestCase('1', true)]
+        [Category("Extension Tests")]
         public void IsDigitTest(char value, bool expected)
         {
             Assert.That(value.IsDigit(), Is.EqualTo(expected));
@@ -26,6 +27,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase('\0', true)]
         [TestCase('a', false)]
+        [Category("Extension Tests")]
         public void IsSpaceTest(char value, bool expected)
         {
             Assert.That(value.IsSpace(), Is.EqualTo(expected));

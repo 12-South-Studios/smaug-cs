@@ -7,11 +7,11 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [Category("Data")]
     public class RealAtomTest
     {
         [TestCase(5.5D)]
         [TestCase(5.5f)]
+        [Category("Object Tests")]
         public void RealAtomConstructorTest(double value)
         {
             var atom = new RealAtom(value);
@@ -22,6 +22,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void RealAtomDumpNullParameterTest()
         {
             const double value = 5.5D;
@@ -34,6 +35,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void RealAtomDumpTest()
         {
             var callback = false;

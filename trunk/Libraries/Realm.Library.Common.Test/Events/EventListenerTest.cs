@@ -4,7 +4,6 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Events
 {
     [TestFixture]
-    [Category("Events")]
     public class EventListenerTest
     {
         private EventCallback<RealmEventArgs> _eventCallback;
@@ -16,6 +15,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void ToStringTest()
         {
             var listener = new EventListener("tester", "testee", typeof(String), _eventCallback);

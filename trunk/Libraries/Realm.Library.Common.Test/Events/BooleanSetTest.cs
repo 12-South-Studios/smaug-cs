@@ -5,7 +5,6 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Events
 {
     [TestFixture]
-    [Category("Events")]
     public class BooleanSetTest
     {
         private EventCallback<RealmEventArgs> _eventCallback;
@@ -17,6 +16,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void ConstructorTest()
         {
             var set = new BooleanSet(new EventTable(), _eventCallback);
@@ -25,6 +25,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void AddHasTest()
         {
             var set = new BooleanSet("Test", _eventCallback);
@@ -36,6 +37,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void CompleteItemInvalidItemTest()
         {
             var set = new BooleanSet("Test", _eventCallback);
@@ -45,6 +47,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void CompleteItemInvalidCallbackTest()
         {
             var set = new BooleanSet("Test", null);
@@ -56,6 +59,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void CompleteItemCountGreaterThan1Test()
         {
             var set = new BooleanSet("Test", _eventCallback);
@@ -69,6 +73,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void CompleteItemCountIs0Test()
         {
             var callback = false;

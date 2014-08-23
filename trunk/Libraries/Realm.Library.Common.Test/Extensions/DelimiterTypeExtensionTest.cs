@@ -3,7 +3,6 @@
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class DelimiterTypeExtensionTest
     {
         [TestCase(DelimiterType.Backslash, "/")]
@@ -13,6 +12,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase(DelimiterType.Period, ".")]
         [TestCase(DelimiterType.Punctuation, ",:.=")]
         [TestCase(DelimiterType.Whitespace, "\t\n\r ")]
+        [Category("Extension Tests")]
         public void ValueOfTest(DelimiterType type, string expected)
         {
             Assert.That(type.ValueOf(), Is.EqualTo(expected));

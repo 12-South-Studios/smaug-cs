@@ -5,10 +5,10 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class FuncExtensionsTests
     {
         [Test]
+        [Category("Extension Tests")]
         public void TryCatch_NoReturnValue_NoException_Test()
         {
             var callback = false;
@@ -21,6 +21,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void TryCatch_NoReturnValue_WithException_Test()
         {
             var callback = false;
@@ -35,6 +36,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void TryCatch_NoException_NoFinally_Test()
         {
             var callback = false;
@@ -53,6 +55,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void TryCatch_WithException_Test()
         {
             var callback = false;
@@ -72,6 +75,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void TryCatch_DifferentType_Test()
         {
             var callback = false;

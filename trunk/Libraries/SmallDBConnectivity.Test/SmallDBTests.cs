@@ -17,23 +17,19 @@ namespace SmallDBConnectivity.Test
         }  
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ValidateArguments_TakesNullConnection_ThrowsException()
         {
-            SmallDb.ValidateArguments(null, "TestProcedure");
-
-            Assert.Fail("Unit test expected an ArgumentNullException to be thrown!");
+            Assert.Throws<ArgumentNullException>(() => SmallDb.ValidateArguments(null, "TestProcedure"), 
+                "Unit test expected an ArgumentNullException to be thrown!");
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
         public void ValidateArguments_TakesEmptyStoredProcedureName_ThrowsException()
         {
             var mockConnection = new Mock<IDbConnection>();
 
-            SmallDb.ValidateArguments(mockConnection.Object, string.Empty);
-
-            Assert.Fail("Unit test expected an ArgumentNullException to be thrown!");
+            Assert.Throws<ArgumentNullException>(() => SmallDb.ValidateArguments(mockConnection.Object, string.Empty),
+                "Unit test expected an ArgumentNullException to be thrown!");
         }
 
         [Test]

@@ -11,7 +11,7 @@ namespace SmaugCS.Commands
             string arg = argument.FirstWord();
             if (Helpers.CheckFunctions.CheckIfEmptyString(ch, arg, "Consider killing whom?")) return;
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
+            CharacterInstance victim = ch.GetCharacterInRoom(arg);
             if (Helpers.CheckFunctions.CheckIfNullObject(ch, victim, "They're not here.")) return;
             if (Helpers.CheckFunctions.CheckIfEquivalent(ch, ch, victim,
                 "You decide you're pretty sure you could take yourself in a fight.")) return;

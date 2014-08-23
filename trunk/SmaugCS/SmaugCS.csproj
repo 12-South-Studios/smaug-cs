@@ -469,9 +469,6 @@
     <Compile Include="Commands\Deity\Supplicate.cs" />
     <Compile Include="Commands\Deity\Deities.cs" />
     <Compile Include="Commands\Deity\Devote.cs" />
-    <Compile Include="Commands\Deity\MakeDeity.cs" />
-    <Compile Include="Commands\Deity\ShowDeity.cs" />
-    <Compile Include="Commands\Deity\SetDeity.cs" />
     <Compile Include="Commands\Examine.cs" />
     <Compile Include="Commands\Exits.cs" />
     <Compile Include="Commands\Holidays.cs" />

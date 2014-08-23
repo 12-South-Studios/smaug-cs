@@ -41,6 +41,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void ThrowLoggingEvent_NotSubscribed_Test()
         {
             _wrapper.OnLoggingEvent -= WrapperOnOnLoggingEvent;
@@ -56,6 +57,7 @@ namespace Realm.Library.Common.Test
         [TestCase(LogLevel.Error, true)]
         [TestCase(LogLevel.Fatal, true)]
         [TestCase(LogLevel.None, false)]
+        [Category("Logging Tests")]
         public void LogThisTest(LogLevel level, bool expectedValue)
         {
             Assert.That(_wrapper.LogThis(level), Is.EqualTo(expectedValue));
@@ -67,6 +69,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Debug_Valid_Test()
         {
             _wrapper.Debug("This is a test");
@@ -77,6 +80,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Debug_Exception_Test()
         {
             _wrapper.Debug(new Exception("Test Exception"));
@@ -87,6 +91,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Debug_1Arg_Test()
         {
             _wrapper.DebugFormat("This is a {0}", "test");
@@ -97,6 +102,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Info_Valid_Test()
         {
             _wrapper.Info("This is a test");
@@ -107,6 +113,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Info_Exception_Test()
         {
             _wrapper.Info(new Exception("Test Exception"));
@@ -117,6 +124,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Warn_Valid_Test()
         {
             _wrapper.Warn("This is a test");
@@ -127,6 +135,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Warn_Exception_Test()
         {
             _wrapper.Warn(new Exception("Test Exception"));
@@ -135,7 +144,9 @@ namespace Realm.Library.Common.Test
             Assert.That(_eventArgs.Name, Is.EqualTo("Test Exception"));
             Assert.That(_eventArgs.Level, Is.EqualTo(LogLevel.Warn));
         }
+
         [Test]
+        [Category("Logging Tests")]
         public void Error_Valid_Test()
         {
             _wrapper.Error("This is a test");
@@ -146,6 +157,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Error_Exception_Test()
         {
             _wrapper.Error(new Exception("Test Exception"));
@@ -156,6 +168,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Fatal_Valid_Test()
         {
             _wrapper.Fatal("This is a test");
@@ -166,6 +179,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Logging Tests")]
         public void Fatal_Exception_Test()
         {
             _wrapper.Fatal(new Exception("Test Exception"));
