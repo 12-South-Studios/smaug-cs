@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using NUnit.Framework;
 
 namespace Realm.Library.Common.Test
@@ -8,6 +7,7 @@ namespace Realm.Library.Common.Test
     public class TextWriterProxyTests
     {
         [Test]
+        [Category("Object Tests")]
         public void WriteTest()
         {
             TextWriterProxy proxy = new TextWriterProxy(new StringWriter());
@@ -16,6 +16,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void Write_1Arg_Test()
         {
             TextWriterProxy proxy = new TextWriterProxy(new StringWriter());
@@ -24,6 +25,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void Write_2Args_Test()
         {
             TextWriterProxy proxy = new TextWriterProxy(new StringWriter());
@@ -32,6 +34,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void Write_3Args_Test()
         {
             TextWriterProxy proxy = new TextWriterProxy(new StringWriter());
@@ -40,6 +43,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void Write_ArrayArgs_Test()
         {
             TextWriterProxy proxy = new TextWriterProxy(new StringWriter());

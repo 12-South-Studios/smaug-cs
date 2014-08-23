@@ -7,7 +7,6 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [NUnit.Framework.Category("Extensions")]
     public class EnumerationExtensionsTest
     {
         public enum EnumTest
@@ -43,6 +42,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetValueInRangeMatchTest()
         {
             var value = EnumerationExtensions.GetValueInRange(18, RangeTest.Test2);
@@ -50,6 +50,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetValueInRangeNoMatchTest()
         {
             var value = EnumerationExtensions.GetValueInRange(-2, RangeTest.Test2);
@@ -57,6 +58,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetMinimumRangeTest()
         {
             var value = RangeTest.Test1.GetMinimum();
@@ -64,6 +66,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetMaximumRangeTest()
         {
             var value = RangeTest.Test1.GetMaximum();
@@ -71,6 +74,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetMinimumRangeWhenNotSpecifiedTest()
         {
             var value = RangeTest.Test2.GetMinimum();
@@ -78,6 +82,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumIgnoreCaseTest()
         {
             var value = EnumerationExtensions.GetEnumIgnoreCase<EnumTest>("test");
@@ -86,6 +91,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumIgnoreCaseInvalidTest()
         {
             Assert.Throws<InvalidEnumArgumentException>(
@@ -94,6 +100,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumTest()
         {
             Assert.That(EnumerationExtensions.GetEnum<EnumTest>("Test"), Is.EqualTo(EnumTest.Test));
@@ -105,18 +112,21 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase(EnumTest.Test, 2, false)]
         [TestCase(EnumTest.Test, 3, true)]
+        [NUnit.Framework.Category("Extension Tests")]
         public void HasBitTest(EnumTest value, int bit, bool expected)
         {
             Assert.That(value.HasBit(bit), Is.EqualTo(expected));
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetExtraDataTest()
         {
             Assert.That(EnumTest.Test.GetExtraData(), Is.EqualTo("Extra,Data"));
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void ParseExtraDataTest()
         {
             var list = EnumTest.Test.ParseExtraData(",").ToList();
@@ -127,12 +137,14 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumIntTest()
         {
             Assert.That(EnumerationExtensions.GetEnum<EnumTest>(1024), Is.EqualTo(EnumTest.Test1));
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumIntInvalidTest()
         {
             Assert.Throws<ArgumentException>(() => EnumerationExtensions.GetEnum<EnumTest>(111),
@@ -140,12 +152,14 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumStringTest()
         {
             Assert.That(EnumerationExtensions.GetEnum<EnumTest>("Test1"), Is.EqualTo(EnumTest.Test1));
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumStringInvalidTest()
         {
             Assert.Throws<ArgumentException>(() => EnumerationExtensions.GetEnum<EnumTest>("Blah"),
@@ -154,12 +168,14 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase(1024, true)]
         [TestCase(111, false)]
+        [NUnit.Framework.Category("Extension Tests")]
         public void HasBitsTest(int bit, bool expected)
         {
             Assert.That(EnumTest.All.HasBit(bit), Is.EqualTo(expected));
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetValuesTest()
         {
             var expectedList = new List<EnumTest> { EnumTest.All, EnumTest.Test, EnumTest.Test1, EnumTest.Test2 };
@@ -171,6 +187,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumByNameTest()
         {
             var value = EnumerationExtensions.GetEnumByName<EnumTest>("Test Two");
@@ -179,6 +196,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [NUnit.Framework.Category("Extension Tests")]
         public void GetEnumByNameInvalidTest()
         {
             Assert.Throws<InvalidEnumArgumentException>(

@@ -6,11 +6,11 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class StringExtensionsTest
     {
         #region ToByteArray
         [Test]
+        [Category("Extension Tests")]
         public void ToByteArrayValidTest()
         {
             const string value = "test";
@@ -27,12 +27,14 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("testing 1 2 3", "tester", false)]
         [TestCase("testing 1 2 3", "test", true)]
         [TestCase("testing 1 2 3", "TEST", true)]
+        [Category("Extension Tests")]
         public void ContainsTest(string source, string target, bool expected)
         {
             Assert.That(source.Contains(target, StringComparison.OrdinalIgnoreCase), Is.EqualTo(expected));
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ContainsNullValueTest()
         {
             const string target = "TEST";
@@ -43,6 +45,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ContainsNullToCheckTest()
         {
             const string source = "TEST";
@@ -55,6 +58,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region ReplaceFirst
         [Test]
+        [Category("Extension Tests")]
         public void ReplaceFirstTest()
         {
             const string str = "This is a test";
@@ -66,6 +70,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ReplaceFirstNullValueTest()
         {
             const string target = "TEST";
@@ -76,6 +81,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ReplaceFirstNullSearchTest()
         {
             const string source = "TEST";
@@ -86,6 +92,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ReplaceFirstNullReplaceTest()
         {
             const string source = "TEST";
@@ -98,6 +105,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region CapitalizeFirst
         [Test]
+        [Category("Extension Tests")]
         public void CapitalizeFirstTest()
         {
             const string str = "test";
@@ -107,6 +115,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void CapitalizeFirstNullValueTest()
         {
             Assert.Throws<ArgumentNullException>(() => StringExtensions.CapitalizeFirst(string.Empty),
@@ -116,6 +125,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region ParseWord
         [Test]
+        [Category("Extension Tests")]
         public void ParseWordTest()
         {
             const string str = "This is a test";
@@ -127,6 +137,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ParseWordNullValueTest()
         {
             const int wordNbr = 1;
@@ -137,6 +148,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ParseWordNullDelimiterTest()
         {
             const string value = "Test";
@@ -149,6 +161,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region PadString
         [Test]
+        [Category("Extension Tests")]
         public void PadStringToFrontTest()
         {
             const string str = "Test";
@@ -160,6 +173,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void PadStringToBackTest()
         {
             const string str = "Test";
@@ -171,6 +185,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void PadStringInvalidLengthTest()
         {
             const string str = "Test";
@@ -181,6 +196,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void PadStringNullValueTest()
         {
             const string padChar = "*";
@@ -194,12 +210,14 @@ namespace Realm.Library.Common.Test.Extensions
         #region RemoveWord
         [TestCase("This is a test", 2, "This a test")]
         [TestCase("Testing", 1, "")]
+        [Category("Extension Tests")]
         public void RemoveWordTest(string inputString, int wordNumber, string expectedValue)
         {
             Assert.That(inputString.RemoveWord(wordNumber), Is.EqualTo(expectedValue));
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void RemoveWordNullValueTest()
         {
             const int wordNumber = 2;
@@ -211,6 +229,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region Trim
         [Test]
+        [Category("Extension Tests")]
         public void TrimTest()
         {
             const string str = "    Test    ";
@@ -221,6 +240,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void TrimNullValueTest()
         {
             const string delimiter = "a";
@@ -230,6 +250,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void TrimNullDelimiterTest()
         {
             const string value = "test";
@@ -241,6 +262,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region Split
         [Test]
+        [Category("Extension Tests")]
         public void SplitNullValueTest()
         {
             var delims = new[] { 'a', 'b', 'c' };
@@ -250,6 +272,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void SplitTest()
         {
             var delims = new[] { ',', ':', ';' };
@@ -264,6 +287,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region ParseQuantity
         [Test]
+        [Category("Extension Tests")]
         public void ParseQuantityNullValueTest()
         {
             Assert.Throws<ArgumentNullException>(() => StringExtensions.ParseQuantity(string.Empty),
@@ -273,6 +297,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("test", 0)]
         [TestCase("a#test", 0)]
         [TestCase("5#test", 5)]
+        [Category("Extension Tests")]
         public void ParseQuantityTest(string value, int expected)
         {
             Assert.That(value.ParseQuantity(), Is.EqualTo(expected));
@@ -281,6 +306,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         #region ReplaceAll
         [Test]
+        [Category("Extension Tests")]
         public void ReplaceAllNullValueTest()
         {
             var chars = new[] { 'a', 'b', 'c' };
@@ -291,6 +317,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ReplaceAllValidTest()
         {
             const string value = "A big bear clapped and clawed the ant hill.";
@@ -306,6 +333,7 @@ namespace Realm.Library.Common.Test.Extensions
         #region RemoveAll
 
         [TestCase("A big bear clapped and clawed the ant hill.", "A ig er lpped nd lwed the nt hill.")]
+        [Category("Extension Tests")]
         public void RemoveAllTest(string value, string expected)
         {
             Assert.That(value.RemoveAll(new List<char> { 'a', 'b', 'c' }), Is.EqualTo(expected));
@@ -322,6 +350,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("first test", "\r\na first test", true, false, false)]
         [TestCase("big sword", "the big sword", false, true, false)]
         [TestCase("big sword", "A big sword", false, false, true)]
+        [Category("Extension Tests")]
         public void AddArticleTest(string value, string expected, bool appendNewLine, bool appendThe, bool capitalizeFirst)
         {
             var options = ArticleAppendOptions.None;
@@ -343,6 +372,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("testing", "TESTING", CaseCompareResult.Equal)]
         [TestCase("test", "testing", CaseCompareResult.LessThan)]
         [TestCase("testing", "Test", CaseCompareResult.GreaterThan)]
+        [Category("Extension Tests")]
         public void CaseCompareTest(string value, string compare, CaseCompareResult expected)
         {
             Assert.That(value.CaseCompare(compare), Is.EqualTo(expected));
@@ -350,6 +380,7 @@ namespace Realm.Library.Common.Test.Extensions
         #endregion
 
         [Test]
+        [Category("Extension Tests")]
         public void FirstWordTest()
         {
             const string str = "This is a test";
@@ -357,6 +388,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void SecondWordTest()
         {
             const string str = "This is a test";
@@ -364,6 +396,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ThirdWordTest()
         {
             const string str = "This is a test";
@@ -373,6 +406,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("25", true)]
         [TestCase("abc", false)]
         [TestCase("1b", false)]
+        [Category("Extension Tests")]
         public void IsNumber(string value, bool expected)
         {
             Assert.That(value.IsNumber(), Is.EqualTo(expected));
@@ -380,6 +414,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("test", "a test")]
         [TestCase("answer", "an answer")]
+        [Category("Extension Tests")]
         public void AOrAn(string value, string expected)
         {
             Assert.That(value.AOrAn(), Is.EqualTo(expected));
@@ -390,6 +425,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("abc123", true)]
         [TestCase("abc#123", false)]
         [TestCase("#$&", false)]
+        [Category("Extension Tests")]
         public void IsAlphaNum(string value, bool expected)
         {
             Assert.That(value.IsAlphaNum(), Is.EqualTo(expected));
@@ -399,6 +435,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("TeStInG", "TESTING", true)]
         [TestCase("1234test", "1234TEST", true)]
         [TestCase("TESTING", "BOB", false)]
+        [Category("Extension Tests")]
         public void EqualsIgnoreCase(string value, string compareTo, bool expected)
         {
             Assert.That(value.EqualsIgnoreCase(compareTo), Is.EqualTo(expected));
@@ -407,6 +444,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("TESTING", "test", true)]
         [TestCase("1234testing", "1234", true)]
         [TestCase("TESTING", "BOB", false)]
+        [Category("Extension Tests")]
         public void StartsWithIgnoreCase(string value, string startsWith, bool expected)
         {
             Assert.That(value.StartsWithIgnoreCase(startsWith), Is.EqualTo(expected));
@@ -415,6 +453,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("TESTING", "test", true)]
         [TestCase("Testing", "Bob", false)]
         [TestCase("TESTING", "TEST", true)]
+        [Category("Extension Tests")]
         public void ContainsIgnoreCase(string value, string contains, bool expected)
         {
             Assert.That(value.ContainsIgnoreCase(contains), Is.EqualTo(expected));
@@ -422,6 +461,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("123", 123)]
         [TestCase("abc", 0)]
+        [Category("Extension Tests")]
         public void ToInt32(string value, int expected)
         {
             Assert.That(value.ToInt32(), Is.EqualTo(expected));
@@ -432,6 +472,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("0", false)]
         [TestCase("false", false)]
         [TestCase("whatever", false)]
+        [Category("Extension Tests")]
         public void ToBoolean(string value, bool expected)
         {
             Assert.That(value.ToBoolean(), Is.EqualTo(expected));
@@ -439,6 +480,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("Bob", "Jane Bob Joe Mary", true)]
         [TestCase("Bob", "Jane Joe Mary", false)]
+        [Category("Extension Tests")]
         public void IsEqualTest(string value, string wordList, bool expectedValue)
         {
             Assert.That(value.IsEqual(wordList), Is.EqualTo(expectedValue));
@@ -446,6 +488,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("Bo", "Jane Bob Joe Mary", true)]
         [TestCase("ane", "Jane Bob Joe Mary", false)]
+        [Category("Extension Tests")]
         public void IsEqualPrefix(string value, string wordList, bool expectedValue)
         {
             Assert.That(value.IsEqualPrefix(wordList), Is.EqualTo(expectedValue));
@@ -453,6 +496,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("Who Bob", "Jane Bob Joe Mary", true)]
         [TestCase("Who Is", "Jane Bob Joe Mary", false)]
+        [Category("Extension Tests")]
         public void IsAnyEqual(string value, string wordList, bool expectedValue)
         {
             Assert.That(value.IsAnyEqual(wordList), Is.EqualTo(expectedValue));
@@ -460,6 +504,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("Who Bo", "Jane Bob Joe Mary", true)]
         [TestCase("Who ob", "Jane Bob Joe Mary", false)]
+        [Category("Extension Tests")]
         public void IsAnyEqualPrefix(string value, string wordList, bool expectedValue)
         {
             Assert.That(value.IsAnyEqualPrefix(wordList), Is.EqualTo(expectedValue));
@@ -467,6 +512,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase('a', 10, "aaaaaaaaaa")]
         [TestCase('b', 1, "b")]
+        [Category("Extension Tests")]
         public void RepeatCharacter(char c, int times, string expected)
         {
             Assert.That(c.Repeat(times), Is.EqualTo(expected));
@@ -474,6 +520,7 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("test", 1, "test")]
         [TestCase("is", 5, "isisisisis")]
+        [Category("Extension Tests")]
         public void RepeatSring(string str, int times, string expected)
         {
             Assert.That(str.Repeat(times), Is.EqualTo(expected));
@@ -482,6 +529,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("This is a test", false)]
         [TestCase("", true)]
         [TestCase(null, true)]
+        [Category("Extension Tests")]
         public void IsNullOrEmptyTest(string value, bool expectedValue)
         {
             Assert.That(value.IsNullOrEmpty(), Is.EqualTo(expectedValue));
@@ -491,6 +539,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase("", true)]
         [TestCase("     ", true)]
         [TestCase(null, true)]
+        [Category("Extension Tests")]
         public void IsNullOrWhitespaceTest(string value, bool expectedValue)
         {
             Assert.That(value.IsNullOrWhitespace(), Is.EqualTo(expectedValue));
@@ -498,18 +547,21 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("Testing", "Testing", false)]
         [TestCase("Testing", "Test", true)]
+        [Category("Extension Tests")]
         public void NotEqualsTest(string value, string compareTo, bool expectedValue)
         {
             Assert.That(value.NotEquals(compareTo), Is.EqualTo(expectedValue));
         }
 
         [TestCase("Test", 'x', 2, "Text")]
+        [Category("Extension Tests")]
         public void ThisTest(string value, char charToSet, int index, string expected)
         {
             Assert.That(value.SetChar(index, charToSet), Is.EqualTo(expected));
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ToWordsTest()
         {
             const string value = "This is a test";

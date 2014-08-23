@@ -62,6 +62,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShoveValueAttribute.cs" />
+    <Compile Include="DragValueAttribute.cs" />
     <Compile Include="ValuedAttribute.cs" />
     <Compile Include="CommandAttribute.cs" />
     <Compile Include="Constants\GameConstants.cs" />

@@ -5,10 +5,10 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class ObjectExtensionTest
     {
         [Test]
+        [Category("Extension Tests")]
         public void CastAsTest()
         {
             const string value = "1";
@@ -18,12 +18,14 @@ namespace Realm.Library.Common.Test.Extensions
 
         [TestCase("1", 1)]
         [TestCase("one", 5)]
+        [Category("Extension Tests")]
         public void TryCastAsTest(string value, int expected)
         {
             Assert.That(value.TryCastAs(expected), Is.EqualTo(expected));
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void ToNullableTest()
         {
             const int intValue = 5;
@@ -37,6 +39,7 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void OrElseTest()
         {
             var obj = new object();
@@ -47,18 +50,21 @@ namespace Realm.Library.Common.Test.Extensions
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void IsNullOrDbNull_IsNull_Test()
         {
             Assert.That(ObjectExtensions.IsNullOrDBNull<object>(null), Is.True);
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void IsNullOrDbNull_IsDbNull_Test()
         {
             Assert.That(ObjectExtensions.IsNullOrDBNull<object>(DBNull.Value), Is.True);
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void IsEmptyTest()
         {
             var list = new List<int>();

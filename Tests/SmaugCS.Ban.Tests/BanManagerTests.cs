@@ -122,7 +122,13 @@ namespace SmaugCS.Ban.Tests
         public void CheckTotalBans_PrefixAndSuffixHostMatch_Test()
         {
             BanManager mgr = (BanManager)_banManager;
-            mgr.AddBan(new BanData(1, BanTypes.Site) { Prefix = true, Suffix = true, Name = "test.whatever.com", Level = 50 });
+            mgr.AddBan(new BanData(1, BanTypes.Site)
+            {
+                Prefix = true,
+                Suffix = true,
+                Name = "test.whatever.com",
+                Level = 50
+            });
 
             Assert.That(mgr.CheckTotalBans("test.whatever.com", 50), Is.True);
         }

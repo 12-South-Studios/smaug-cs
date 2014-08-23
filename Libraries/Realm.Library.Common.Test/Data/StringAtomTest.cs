@@ -7,10 +7,10 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [Category("Data")]
     public class StringAtomTest
     {
         [Test]
+        [Category("Object Tests")]
         public void StringAtomConstructorTest()
         {
             const string value = "Test";
@@ -23,6 +23,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void StringAtomDumpNullParameterTest()
         {
             const string value = "test";
@@ -34,6 +35,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void StringAtomDumpTest()
         {
             var callback = false;
@@ -53,6 +55,7 @@ namespace Realm.Library.Common.Test.Data
 
         [TestCase("Test", "Tester", false)]
         [TestCase("Test", "Test", true)]
+        [Category("Object Tests")]
         public void StringAtomEqualsTest(string firstValue, string secondValue, bool expected)
         {
             var atom = new StringAtom(firstValue);
@@ -62,6 +65,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void StringAtomEqualsNullParameterTest()
         {
             const string value = "test";
@@ -71,6 +75,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void StringAtomGetHashCodeTest()
         {
             const string value = "test";

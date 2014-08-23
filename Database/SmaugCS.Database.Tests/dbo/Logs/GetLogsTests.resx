@@ -118,8 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="GetLogs_RowCount_Test_TestAction.SqlScript" xml:space="preserve">
-    <value>-- database unit test for dbo.cp_GetLogs
-DECLARE @RC AS INT, @logType AS TINYINT, @fromDate AS DATETIME, @toDate AS DATETIME;
+    <value>DECLARE @RC AS INT, @logType AS TINYINT, @fromDate AS DATETIME, @toDate AS DATETIME;
 
 SELECT @RC = 0,
        @logType = 1,
@@ -131,9 +130,6 @@ EXECUTE @RC = [dbo].[cp_GetLogs] @logType, @fromDate, @toDate;
 SELECT @RC AS RC;
 
 </value>
-  </data>
-  <data name="GetLogs_RowCount_Test_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM [dbo].[Logs] WHERE Text LIKE 'This is a%';</value>
   </data>
   <data name="GetLogs_RowCount_Test_PretestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @Source TABLE (
@@ -167,6 +163,9 @@ INSERT INTO [dbo].[Logs] (LogTypeId, LoggedOn, Text) VALUES(3, GetDate(), N'This
 INSERT INTO [dbo].[Logs] (LogTypeId, LoggedOn, Text) VALUES(4, GetDate(), N'This is a test debug log');
 INSERT INTO [dbo].[Logs] (LogTypeId, LoggedOn, Text) VALUES(5, GetDate(), N'This is a test fatal log');
 </value>
+  </data>
+  <data name="GetLogs_RowCount_Test_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DELETE FROM [dbo].[Logs] WHERE Text LIKE 'This is a%';</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

@@ -4,10 +4,10 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Events
 {
     [TestFixture]
-    [Category("Events")]
     public class RealmEventArgsTest
     {
         [Test]
+        [Category("Event Tests")]
         public void RealmEventArgsConstructorTest()
         {
             var result = new RealmEventArgs();
@@ -18,6 +18,7 @@ namespace Realm.Library.Common.Test.Events
 
         [TestCase(false, ExpectedException = typeof(ArgumentNullException))]
         [TestCase(true)]
+        [Category("Event Tests")]
         public void RealmEventArgsOverloadConstructor1Test(bool createEventTable)
         {
             var result = new RealmEventArgs(createEventTable ? new EventTable() : null);
@@ -28,6 +29,7 @@ namespace Realm.Library.Common.Test.Events
 
         [TestCase("", ExpectedException = typeof(ArgumentNullException))]
         [TestCase("test")]
+        [Category("Event Tests")]
         public void RealmEventArgsOverloadConstructor2Test(string arg)
         {
             var result = new RealmEventArgs(arg);
@@ -37,6 +39,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void GetValueEmptyKeyTest()
         {
             var args = new RealmEventArgs();
@@ -46,6 +49,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void GetValueNullTableTest()
         {
             var args = new RealmEventArgs("test");
@@ -54,6 +58,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void GetValueNoKeyTest()
         {
             var table = new EventTable { { "key", 25 } };
@@ -64,6 +69,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void GetValueSuccessTest()
         {
             const int value = 25;
@@ -75,6 +81,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void HasValueNullTableTest()
         {
             var args = new RealmEventArgs("test");
@@ -83,6 +90,7 @@ namespace Realm.Library.Common.Test.Events
         }
 
         [Test]
+        [Category("Event Tests")]
         public void HasValueSuccessTest()
         {
             const int value = 25;

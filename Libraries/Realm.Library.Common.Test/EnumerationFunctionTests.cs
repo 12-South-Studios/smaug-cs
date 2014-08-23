@@ -19,12 +19,14 @@ namespace Realm.Library.Common.Test
 
         [TestCase("Test One", Test.Test1)]
         [TestCase("Test Two", Test.Test2)]
+        [Category("Enumeration Tests")]
         public void GetEnumByNameTest(string name, Enum expectedVal)
         {
             Assert.That(EnumerationFunctions.GetEnumByName<Test>(name), Is.EqualTo(expectedVal));
         }
 
         [Test]
+        [Category("Enumeration Tests")]
         public void GetValuesTest()
         {
             IEnumerable<Test> list = EnumerationFunctions.GetAllEnumValues<Test>();
@@ -37,12 +39,14 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Enumeration Tests")]
         public void MaxTest()
         {
             Assert.That(EnumerationFunctions.MaximumEnumValue<Test>(), Is.EqualTo(2));
         }
 
         [Test]
+        [Category("Enumeration Tests")]
         public void MinTest()
         {
             Assert.That(EnumerationFunctions.MinimumEnumValue<Test>(), Is.EqualTo(1));

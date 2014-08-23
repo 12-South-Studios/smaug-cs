@@ -1,33 +1,20 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test
 {
     [TestFixture]
     public class EntityContextTests
     {
-        private class FakeObject : Entity 
+        private static FakeEntity GetParent()
         {
-            public FakeObject(long id, string name) : base(id, name)
-            {
-            }
+            return new FakeEntity(1, "Parent");
         }
 
-        private class FakeContext : EntityContext<FakeObject>
+        private static FakeEntity GetChild()
         {
-            public FakeContext(FakeObject parent) : base(parent)
-            {
-            }
-        }
-
-        private static FakeObject GetParent()
-        {
-            return new FakeObject(1, "Parent");
-        }
-
-        private static FakeObject GetChild()
-        {
-            return new FakeObject(2, "Child");
+            return new FakeEntity(2, "Child");
         }
 
         private static FakeContext GetContext()
@@ -36,6 +23,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void Contains_Object_Test()
         {
             var ctx = GetContext();
@@ -46,6 +34,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void Contains_Id_Test()
         {
             var ctx = GetContext();
@@ -56,6 +45,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void Remove_Object_Test()
         {
             var ctx = GetContext();
@@ -67,6 +57,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void GetEntity_Test()
         {
             var ctx = GetContext();
@@ -79,6 +70,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void Count_Test()
         {
             var ctx = GetContext();
@@ -89,13 +81,14 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void AddEntities_Test()
         {
             var child1 = GetChild();
-            var child2 = new FakeObject(3, "Child2");
-            var child3 = new FakeObject(4, "Child3");
+            var child2 = new FakeEntity(3, "Child2");
+            var child3 = new FakeEntity(4, "Child3");
 
-            var list = new List<FakeObject> {child1, child2, child3};
+            var list = new List<FakeEntity> {child1, child2, child3};
 
             var ctx = GetContext();
             ctx.AddEntities(list);
@@ -104,13 +97,14 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void Entities_Test()
         {
             var child1 = GetChild();
-            var child2 = new FakeObject(3, "Child2");
-            var child3 = new FakeObject(4, "Child3");
+            var child2 = new FakeEntity(3, "Child2");
+            var child3 = new FakeEntity(4, "Child3");
 
-            var list = new List<FakeObject> { child1, child2, child3 };
+            var list = new List<FakeEntity> { child1, child2, child3 };
 
             var ctx = GetContext();
             ctx.AddEntities(list);

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Realm.Library.Common.Data;
 using Realm.Library.Common.Logging;
 using log4net;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test
 {
@@ -11,10 +12,6 @@ namespace Realm.Library.Common.Test
     {
         private static bool _callback;
 
-        private class FakeSingleton : GameSingleton
-        {
-        }
-
         [SetUp]
         public void OnSetup()
         {
@@ -22,6 +19,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void OnGameInitialize_Test()
         {
             var mockLogger = new Mock<LogWrapper>(new object[] {new Mock<ILog>().Object, LogLevel.Info});

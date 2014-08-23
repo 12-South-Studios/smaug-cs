@@ -7,10 +7,10 @@ using Realm.Library.Common.Logging;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [Category("Data")]
     public class ObjectAtomTest
     {
         [Test]
+        [Category("Object Tests")]
         public void ObjectAtomDumpNullParameterTest()
         {
             const int value = 5;
@@ -23,6 +23,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ObjectAtomDumpTest()
         {
             var callback = false;

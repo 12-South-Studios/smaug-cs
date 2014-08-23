@@ -8,6 +8,7 @@ namespace Realm.Library.Common.Test
     public class SingleLinkedListTests
     {
         [Test]
+        [Category("Object Tests")]
         public void PushTest()
         {
             const int value = 1;
@@ -19,6 +20,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void CountTest()
         {
             var list = new SingleLinkedList<int>();
@@ -30,6 +32,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void FirstTest()
         {
             var list = new SingleLinkedList<int>();
@@ -43,6 +46,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void NextTest()
         {
             var list = new SingleLinkedList<int>();
@@ -56,6 +60,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void LastTest()
         {
             var list = new SingleLinkedList<int>();
@@ -69,6 +74,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void IsEmptyTest()
         {
             var list = new SingleLinkedList<int>();
@@ -77,6 +83,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void PopTest()
         {
             var list = new SingleLinkedList<int>();
@@ -92,6 +99,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReverseTest()
         {
             var list = new SingleLinkedList<int>();
@@ -107,6 +115,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ToEnumerableTest()
         {
             var list = new SingleLinkedList<int>();
@@ -123,6 +132,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReverseEnumeratorWithLinqTest()
         {
             var list = new SingleLinkedList<int>();
@@ -141,6 +151,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Object Tests")]
         public void ReverseUsingHeadWithLinqTest()
         {
             var list = new SingleLinkedList<int>();

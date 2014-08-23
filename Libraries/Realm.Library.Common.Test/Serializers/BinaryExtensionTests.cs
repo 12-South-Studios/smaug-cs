@@ -1,30 +1,25 @@
 ﻿using System;
 using NUnit.Framework;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test.Serializers
 {
     [TestFixture]
-    [Category("Serializers")]
     public class BinaryExtensionTests
     {
-        [Serializable]
-        private class SerializableObjectFake
-        {
-            public int IntegerProp { get; set; }
-            public string StringProp { get; set; }
-        }
-
         [Test]
+        [Category("Serializer Tests")]
         public void ToBinaryNullObjectTest()
         {
-            Assert.Throws<ArgumentNullException>(() => BinaryExtensions.ToBinary<SerializableObjectFake>(null),
+            Assert.Throws<ArgumentNullException>(() => BinaryExtensions.ToBinary<SerializableFakeObject>(null),
                                                  "Unit test expected an ArgumentNullException to be thrown");
         }
 
         [Test]
+        [Category("Serializer Tests")]
         public void ToBinaryTest()
         {
-            var obj = new SerializableObjectFake
+            var obj = new SerializableFakeObject
                           {
                               IntegerProp = 5,
                               StringProp = "Test"
@@ -34,16 +29,18 @@ namespace Realm.Library.Common.Test.Serializers
         }
 
         [Test]
+        [Category("Serializer Tests")]
         public void FromBinaryNullStringTest()
         {
-            Assert.Throws<ArgumentNullException>(() => BinaryExtensions.FromBinary<SerializableObjectFake>(null),
+            Assert.Throws<ArgumentNullException>(() => BinaryExtensions.FromBinary<SerializableFakeObject>(null),
                                                  "Unit test expected an ArgumentNullException to be thrown");
         }
 
         [Test]
+        [Category("Serializer Tests")]
         public void FromBinaryTest()
         {
-            var obj = new SerializableObjectFake
+            var obj = new SerializableFakeObject
                           {
                               IntegerProp = 5,
                               StringProp = "Test"
@@ -51,7 +48,7 @@ namespace Realm.Library.Common.Test.Serializers
 
             var encoded = obj.ToBinary();
 
-            var result = encoded.FromBinary<SerializableObjectFake>();
+            var result = encoded.FromBinary<SerializableFakeObject>();
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.IntegerProp, Is.EqualTo(obj.IntegerProp));

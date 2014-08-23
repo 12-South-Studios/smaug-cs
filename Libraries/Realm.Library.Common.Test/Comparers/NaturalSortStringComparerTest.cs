@@ -4,7 +4,6 @@ using NUnit.Framework;
 namespace Realm.Library.Common.Test.Comparers
 {
     [TestFixture]
-    [Category("Comparers")]
     public class NaturalSortStringComparerTest
     {
         [TestCase(new object[] { "Test", "Test" }, new object[] { "Test", "Test" }, true)]
@@ -14,6 +13,7 @@ namespace Realm.Library.Common.Test.Comparers
         [TestCase(new object[] { "Tester", "Test", "Testing" }, new object[] { "Testing", "Tester", "Test" }, false)]
         [TestCase(new object[] { "25", "05", "15" }, new object[] { "25", "15", "05" }, false)]
         [TestCase(new object[] { "Test", "5", "Tester15", "Tester25", "04", "15Test" }, new object[] { "Tester25", "Tester15", "Test", "15Test", "5", "04" }, false)]
+        [Category("Comparer Tests")]
         public void NaturalSortStringComparerStandardTest(object[] values, object[] expectedList, bool ascending)
         {
             var sortedList =

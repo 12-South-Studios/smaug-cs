@@ -2,23 +2,19 @@
 using Moq;
 using NUnit.Framework;
 using Realm.Library.Common.Logging;
+using Realm.Library.Common.Test.Fakes;
 
 namespace Realm.Library.Common.Test.Extensions
 {
     [TestFixture]
-    [Category("Extensions")]
     public class ExceptionExtensionTests
     {
-        private class TestException : Exception
-        {
-            public TestException(string msg, Exception innerException) : base(msg, innerException) { }
-        }
-
-        [TestCase(ExceptionHandlingOptions.RecordAndThrow, "Test", false, ExpectedException = typeof(TestException))]
+        [TestCase(ExceptionHandlingOptions.RecordAndThrow, "Test", false, ExpectedException = typeof(FakeException))]
         [TestCase(ExceptionHandlingOptions.RecordOnly, "Test", false)]
         [TestCase(ExceptionHandlingOptions.RecordOnly, "", false)]
-        [TestCase(ExceptionHandlingOptions.ThrowOnly, "Test", true, ExpectedException = typeof(TestException))]
+        [TestCase(ExceptionHandlingOptions.ThrowOnly, "Test", true, ExpectedException = typeof(FakeException))]
         [TestCase(ExceptionHandlingOptions.Suppress, "Test", true)]
+        [Category("Extension Tests")]
         public void HandleGenericTest(ExceptionHandlingOptions options, string msg, bool throwLoggingException)
         {
             var mockLog = new Mock<ILogWrapper>();
@@ -34,7 +30,7 @@ namespace Realm.Library.Common.Test.Extensions
             }
             catch (Exception ex)
             {
-                ex.Handle<TestException>(options, mockLog.Object, msg);
+                ex.Handle<FakeException>(options, mockLog.Object, msg);
             }
         }
 
@@ -43,6 +39,7 @@ namespace Realm.Library.Common.Test.Extensions
         [TestCase(ExceptionHandlingOptions.RecordOnly, "", false)]
         [TestCase(ExceptionHandlingOptions.ThrowOnly, "Test", true, ExpectedException = typeof(Exception))]
         [TestCase(ExceptionHandlingOptions.Suppress, "Test", true)]
+        [Category("Extension Tests")]
         public void HandleTest(ExceptionHandlingOptions options, string msg, bool throwLoggingException)
         {
             var mockLog = new Mock<ILogWrapper>();

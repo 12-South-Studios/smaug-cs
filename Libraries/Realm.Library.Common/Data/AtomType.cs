@@ -1,11 +1,7 @@
 ﻿namespace Realm.Library.Common.Data
 {
-    /// <summary>
-    /// Enumeration of atom types
-    /// </summary>
     public enum AtomType
     {
-#pragma warning disable 1591
         String,
         Integer,
         Boolean,
@@ -14,6 +10,5 @@
         Dictionary,
         Object,
         Nil
-#pragma warning restore 1591
     }
 }

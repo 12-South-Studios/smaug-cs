@@ -34,6 +34,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void HasBitTest()
         {
             var ctx = GetContext();
@@ -43,6 +44,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void HasBit_SetByEnum_Test()
         {
             var ctx = GetContext();
@@ -52,6 +54,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void HasBit_Enum_Test()
         {
             var ctx = GetContext();
@@ -61,6 +64,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void GetBits_Test()
         {
             var ctx = GetContext();
@@ -71,6 +75,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void SetBits_Test()
         {
             const int val = (int)(TestEnum.Test1 | TestEnum.Test2);
@@ -82,6 +87,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void UnsetBit_Integer_Test()
         {
             var ctx = GetContext();
@@ -94,6 +100,7 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
+        [Category("Context Tests")]
         public void UnsetBit_Enum_Test()
         {
             var ctx = GetContext();

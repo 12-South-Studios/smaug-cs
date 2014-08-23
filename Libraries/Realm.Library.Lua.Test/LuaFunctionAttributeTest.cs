@@ -6,6 +6,7 @@ namespace Realm.Library.Lua.Test
     public class LuaFunctionAttributeTest
     {
         [Test]
+        [Category("Lua Tests")]
         public void LuaFunctionAttribute_Constructor1_Test()
         {
             const string name = "test";
@@ -19,11 +20,12 @@ namespace Realm.Library.Lua.Test
         }
 
         [Test]
+        [Category("Lua Tests")]
         public void LuaFunctionAttribute_Constructor2_Test()
         {
             const string name = "test";
             const string desc = "description";
-            string[] parameters = new[] {"test1", "test2", "test3"};
+            string[] parameters = {"test1", "test2", "test3"};
 
             var actual = new LuaFunctionAttribute(name, desc, parameters);
 

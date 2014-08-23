@@ -5,10 +5,10 @@ using Realm.Library.Common.Data;
 namespace Realm.Library.Common.Test.Data
 {
     [TestFixture]
-    [Category("Data")]
     public class AtomExtensionsTest
     {
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToBoolAtomTest()
         {
             const bool value = true;
@@ -20,6 +20,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToIntAtomTest()
         {
             const int value = 5;
@@ -31,6 +32,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToRealAtomInt64Test()
         {
             const long value = 50;
@@ -42,6 +44,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToRealAtomDoubleTest()
         {
             const double value = 5.5D;
@@ -53,6 +56,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToRealAtomSingleTest()
         {
             const float value = 5.5f;
@@ -64,6 +68,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomNullStringTest()
         {
             Assert.Throws<ArgumentNullException>(() => AtomExtensions.ToAtom<IntAtom>(string.Empty),
@@ -72,6 +77,7 @@ namespace Realm.Library.Common.Test.Data
 
         [TestCase("true", true)]
         [TestCase("blah", false)]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomStringBoolAtomTest(string value, bool expected)
         {
             var actual = value.ToAtom<BoolAtom>();
@@ -82,6 +88,7 @@ namespace Realm.Library.Common.Test.Data
 
         [TestCase("5", 5)]
         [TestCase("ten", -1)]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomStringIntAtomTest(string value, int expected)
         {
             var actual = value.ToAtom<IntAtom>();
@@ -92,6 +99,7 @@ namespace Realm.Library.Common.Test.Data
 
         [TestCase("25.5", 25.5f)]
         [TestCase("twenty", 0.0f)]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomStringRealAtomTest(string value, double expected)
         {
             var actual = value.ToAtom<RealAtom>();
@@ -101,6 +109,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomStringStringAtomTest()
         {
             const string value = "test";
@@ -112,6 +121,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomStringObjectAtomTest()
         {
             const String value = "test";
@@ -123,6 +133,7 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomStringInvalidTypeTest()
         {
             const String value = "test";
@@ -133,12 +144,11 @@ namespace Realm.Library.Common.Test.Data
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Category("Extension Tests")]
         public void AtomExtensionToAtomListNullTest()
         {
-            AtomExtensions.ToAtom(null);
-
-            Assert.Fail("Unit test expected an ArgumentNullException to be thrown");
+            Assert.Throws<ArgumentNullException>(() => AtomExtensions.ToAtom(null), 
+                "Unit test expected an ArgumentNullException to be thrown");
         }
 
         /*[Test]

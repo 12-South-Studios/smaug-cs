@@ -33,13 +33,15 @@ namespace Realm.Library.Common.Test
         [TestCase(8, 2)]
         [TestCase(6, 2)]
         [TestCase(4, 2)]
-        public void RollTimesTest(int size, int times)
+        [Category("Random Tests")]
+        public void RollTimes_TakesTimesAndSize_ReturnsValueBetweenValueRange(int size, int times)
         {
             AssertBetween(RollTimes(size, times), times, size * times);
         }
 
         [Test]
-        public void BetweenTest()
+        [Category("Random Tests")]
+        public void Between_TakesMinAndMax_ReturnsResultBetweenValues()
         {
             const int minimum = 1;
             const int maximum = 4;
@@ -48,7 +50,8 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
-        public void RollTest()
+        [Category("Random Tests")]
+        public void Roll_TakesTimesAndSize_ReturnsResultBetweenValueRange()
         {
             const int times = 2;
             const int size = 5;
@@ -57,17 +60,19 @@ namespace Realm.Library.Common.Test
         }
 
         [Test]
-        public void RollSeriesCountTest()
+        [Category("Random Tests")]
+        public void RollSeries_TakesTimesAndSize_ReturnsListWithRowCountEqualToTimes()
         {
             const int times = 3;
             const int size = 5;
 
             var seriesList = Random.RollSeries(size, times);
-            Assert.That(seriesList.Count, Is.EqualTo(3));
+            Assert.That(seriesList.Count, Is.EqualTo(times));
         }
 
         [Test]
-        public void RollSeriesTotalTest()
+        [Category("Random Tests")]
+        public void RollSeries_TakesTimesAndSize_ReturnsListWithSumBetweenValueRange()
         {
             const int times = 3;
             const int size = 5;

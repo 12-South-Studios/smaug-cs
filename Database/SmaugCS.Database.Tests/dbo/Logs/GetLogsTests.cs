@@ -1,32 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.Data.Tools.Schema.Sql.UnitTesting;
 using Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SmaugCS.Database.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class GetLogsTests : SqlDatabaseTestClass
     {
+        private SqlDatabaseTestActions GetLogs_RowCount_TestData;
 
         public GetLogsTests()
         {
             InitializeComponent();
         }
 
-        [TestInitialize()]
+        [TestInitialize]
         public void TestInitialize()
         {
-            base.InitializeTest();
+            InitializeTest();
         }
-        [TestCleanup()]
+
+        [TestCleanup]
         public void TestCleanup()
         {
-            base.CleanupTest();
+            CleanupTest();
         }
 
         #region Designer support code
@@ -37,27 +36,28 @@ namespace SmaugCS.Database.Tests
         /// </summary>
         private void InitializeComponent()
         {
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction GetLogs_RowCount_Test_TestAction;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GetLogsTests));
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction GetLogs_RowCount_Test_PretestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction GetLogs_RowCount_Test_PosttestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition1;
-            this.GetLogs_RowCount_TestData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
-            GetLogs_RowCount_Test_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            GetLogs_RowCount_Test_PretestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            GetLogs_RowCount_Test_PosttestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            rowCountCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            SqlDatabaseTestAction GetLogs_RowCount_Test_TestAction;
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(GetLogsTests));
+            RowCountCondition rowCountCondition1;
+            SqlDatabaseTestAction GetLogs_RowCount_Test_PretestAction;
+            SqlDatabaseTestAction GetLogs_RowCount_Test_PosttestAction;
+            GetLogs_RowCount_TestData = new SqlDatabaseTestActions();
+            GetLogs_RowCount_Test_TestAction = new SqlDatabaseTestAction();
+            rowCountCondition1 = new RowCountCondition();
+            GetLogs_RowCount_Test_PretestAction = new SqlDatabaseTestAction();
+            GetLogs_RowCount_Test_PosttestAction = new SqlDatabaseTestAction();
             // 
             // GetLogs_RowCount_Test_TestAction
             // 
             GetLogs_RowCount_Test_TestAction.Conditions.Add(rowCountCondition1);
             resources.ApplyResources(GetLogs_RowCount_Test_TestAction, "GetLogs_RowCount_Test_TestAction");
             // 
-            // GetLogs_RowCount_TestData
+            // rowCountCondition1
             // 
-            this.GetLogs_RowCount_TestData.PosttestAction = GetLogs_RowCount_Test_PosttestAction;
-            this.GetLogs_RowCount_TestData.PretestAction = GetLogs_RowCount_Test_PretestAction;
-            this.GetLogs_RowCount_TestData.TestAction = GetLogs_RowCount_Test_TestAction;
+            rowCountCondition1.Enabled = true;
+            rowCountCondition1.Name = "rowCountCondition1";
+            rowCountCondition1.ResultSet = 1;
+            rowCountCondition1.RowCount = 2;
             // 
             // GetLogs_RowCount_Test_PretestAction
             // 
@@ -67,55 +67,35 @@ namespace SmaugCS.Database.Tests
             // 
             resources.ApplyResources(GetLogs_RowCount_Test_PosttestAction, "GetLogs_RowCount_Test_PosttestAction");
             // 
-            // rowCountCondition1
+            // GetLogs_RowCount_TestData
             // 
-            rowCountCondition1.Enabled = true;
-            rowCountCondition1.Name = "rowCountCondition1";
-            rowCountCondition1.ResultSet = 1;
-            rowCountCondition1.RowCount = 2;
+            GetLogs_RowCount_TestData.PosttestAction = GetLogs_RowCount_Test_PosttestAction;
+            GetLogs_RowCount_TestData.PretestAction = GetLogs_RowCount_Test_PretestAction;
+            GetLogs_RowCount_TestData.TestAction = GetLogs_RowCount_Test_TestAction;
         }
 
         #endregion
 
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        #endregion
-
-
-        [TestMethod()]
+        [TestMethod]
         public void GetLogs_RowCount_Test()
         {
-            SqlDatabaseTestActions testActions = this.GetLogs_RowCount_TestData;
-            // Execute the pre-test script
-            // 
-            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
-            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            SqlDatabaseTestActions testActions = GetLogs_RowCount_TestData;
+
+            Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(PrivilegedContext, PrivilegedContext,
+                testActions.PretestAction);
             try
             {
-                // Execute the test script
-                // 
-                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
-                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+                Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(ExecutionContext, PrivilegedContext,
+                    testActions.TestAction);
             }
             finally
             {
-                // Execute the post-test script
-                // 
-                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
-                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+                Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(PrivilegedContext, PrivilegedContext,
+                    testActions.PosttestAction);
             }
         }
-        private SqlDatabaseTestActions GetLogs_RowCount_TestData;
     }
 }
