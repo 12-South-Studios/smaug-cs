@@ -20,9 +20,14 @@ namespace SmaugCS.Repositories
             Validation.Validate(parent is ObjectTemplate, "Invalid Template Type");
 
             ObjectTemplate objParent = parent.CastAs<ObjectTemplate>();
-            ObjectInstance obj = ObjectInstance.Create(GetNextId, parent.Name, 99, 99);
+
+            string name = parent.Name;
+            if (args != null && args.Length > 1)
+                name = args[1].ToString();
+
+            ObjectInstance obj = ObjectInstance.Create(GetNextId, name, 99, 99);
             obj.Parent = parent;
-            obj.Level = (args == null || args.Length == 0) ? 1 : (int)args[0];
+            obj.Level = args == null || args.Length == 0 ? 1 : (int)args[0];
             obj.WearLocation = WearLocations.None;
             obj.Count = 1;
             obj.ShortDescription = objParent.ShortDescription;

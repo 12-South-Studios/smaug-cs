@@ -28,7 +28,6 @@ namespace SmaugCS.Commands.Combat
             CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Suicide is a mortal sin.")) return;
-
             if (CheckFunctions.CheckIfTrue(ch, !victim.IsNpc() && victim.Trust >= ch.Trust, "You failed.")) return;
 
             string secondArg = argument.SecondWord();
