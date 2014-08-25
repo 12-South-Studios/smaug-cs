@@ -14,9 +14,8 @@ namespace SmaugCS.Commands.Combat
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || !ch.PlayerData.Flags.IsSet(PCFlags.Deadly),
                 "Only deadly characters can shove.")) return;
-
-            TimerData timer = ch.GetTimer(TimerTypes.PKilled);
-            if (CheckFunctions.CheckIfNotNullObject(ch, timer, "You can't shove a player right now.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.PKilled), "You can't shove a player right now."))
+                return;
 
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Shove whom?")) return;
@@ -28,9 +27,8 @@ namespace SmaugCS.Commands.Combat
                 "You can only shove deadly characters.")) return;
             if (CheckFunctions.CheckIfTrue(ch, ch.Level.GetAbsoluteDifference(victim.Level) > 5,
                 "There is too great an experience difference for you to even bother.")) return;
-
-            timer = victim.GetTimer(TimerTypes.PKilled);
-            if (CheckFunctions.CheckIfNullObject(ch, timer, "You can't shove that player right now.")) return;
+            if (CheckFunctions.CheckIfNullObject(ch, victim.HasTimer(TimerTypes.PKilled),
+                "You can't shove that player right now.")) return;
 
             if (victim.CurrentPosition != PositionTypes.Standing)
             {
@@ -40,11 +38,9 @@ namespace SmaugCS.Commands.Combat
 
             string secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Shove them in which direction?")) return;
-
-            timer = victim.GetTimer(TimerTypes.ShoveDrag);
-            if (CheckFunctions.CheckIfTrue(ch, victim.CurrentRoom.Flags.IsSet(RoomFlags.Safe) && timer == null,
-                "That character cannot be shoved right now."))
-                return;
+            if (CheckFunctions.CheckIfTrue(ch,
+                victim.CurrentRoom.Flags.IsSet(RoomFlags.Safe) && !ch.HasTimer(TimerTypes.ShoveDrag),
+                "That character cannot be shoved right now.")) return;
 
             victim.CurrentPosition = PositionTypes.Shove;
             
@@ -99,9 +95,7 @@ namespace SmaugCS.Commands.Combat
 
             Macros.WAIT_STATE(ch, 12);
 
-            timer = ch.GetTimer(TimerTypes.ShoveDrag);
-            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
-                && timer == null)
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe) && !ch.HasTimer(TimerTypes.ShoveDrag))
                 ch.AddTimer(TimerTypes.ShoveDrag, 10, null, 0);
         }
 

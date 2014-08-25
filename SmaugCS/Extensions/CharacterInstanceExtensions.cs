@@ -1743,6 +1743,11 @@ namespace SmaugCS
         {
             return ch.Timers.Any(x => x == timer) && ch.Timers.Remove(timer);
         }
+
+        public static bool HasTimer(this CharacterInstance ch, TimerTypes type)
+        {
+            return ch.Timers.Any(x => x.Type == type);
+        }
         #endregion
 
         #region Object Locator Functions

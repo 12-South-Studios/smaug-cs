@@ -38,13 +38,97 @@ namespace SmaugCS.Commands.Deity
 
         private static void SupplicateForCorpse(CharacterInstance ch, string argument)
         {
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SCorpse,
+                "You are not favored enough for a corpse retrieval.")) return;
+            if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.ClanStoreroom,
+                "You cannot supplicate in a storage room.")) return;
+
+            ObjectInstance corpse =
+                ch.CurrentRoom.Contents.FirstOrDefault(
+                    x => x.ShortDescription.Equals(string.Format("the corpse of {0}", ch.Name)));
+            if (CheckFunctions.CheckIfNullObject(ch, corpse, "No corpse of yours litters the world...")) return;
+            if (CheckFunctions.CheckIfSet(ch, corpse.InRoom.Flags, RoomFlags.NoSupplicate,
+                "The image of your corpse appears, but suddenly fades away.")) return;
+
+            comm.act(ATTypes.AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, null, null, ToTypes.Character);
+
+        }
+
+        private static void SupplicateForAvatar(CharacterInstance ch, string argument)
+        {
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SAvatar,
+                "You are not favored enough for that.")) return;
+
+            MobTemplate template = DatabaseManager.Instance.MOBILE_INDEXES.Get(VnumConstants.MOB_VNUM_DEITY);
+            CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template);
+
+            ch.CurrentRoom.ToRoom(mob);
+
+            comm.act(ATTypes.AT_MAGIC, "$n summons a powerful avatar!", ch, null, null, ToTypes.Room);
+            comm.act(ATTypes.AT_MAGIC, "You summon a powerful avatar!", ch, null, null, ToTypes.Character);
+            mob.AddFollower(ch);
+            mob.AffectedBy.SetBit(AffectedByTypes.Charm);
+            mob.Level = 10;
+            mob.MaximumHealth = ch.MaximumHealth*6 + ch.PlayerData.Favor;
+            mob.CurrentAlignment = ch.PlayerData.CurrentDeity.Alignment;
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SAvatar;
+
+            // TODO Do suscept, element and affects
+        }
+
+        private static void SupplicateForObject(CharacterInstance ch, string argument)
+        {
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SDeityObject,
+                "You are not favored enough for that.")) return;
+
+            ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(VnumConstants.OBJ_VNUM_DEITY);
+            ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(template, ch.Level,
+                string.Format("sigil {0}", ch.PlayerData.CurrentDeity.Name));
+            obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.ToCharacter(ch) : ch.CurrentRoom.ToRoom(obj);
+
+            comm.act(ATTypes.AT_MAGIC, "$n weaves $p from divine matter!", ch, obj, null, ToTypes.Room);
+            comm.act(ATTypes.AT_MAGIC, "You weave $p from divine matter!", ch, obj, null, ToTypes.Character);
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SDeityObject;
+
+            // TODO Do suscept, element and affects
+
+            AffectData af = AffectData.Create();
+            af.Type = AffectedByTypes.None;
+            af.Duration = -1;
+            af.Location = GetApplyTypeForDeity(ch.PlayerData.CurrentDeity);
+            af.Modifier = 1;
+            obj.Affects.Add(af);
+        }
+
+        private static ApplyTypes GetApplyTypeForDeity(DeityData deityData)
+        {
+            switch (deityData.ObjStat)
+            {
+                case 0:
+                    return ApplyTypes.Strength;
+                case 1:
+                    return ApplyTypes.Intelligence;
+                case 2:
+                    return ApplyTypes.Wisdom;
+                case 3:
+                    return ApplyTypes.Constitution;
+                case 4:
+                    return ApplyTypes.Dexterity;
+                case 5:
+                    return ApplyTypes.Charisma;
+                case 6:
+                    return ApplyTypes.Luck;
+            }
+            return ApplyTypes.None;
+        }
+
+        private static void SupplicateForRecall(CharacterInstance ch, string argument)
+        {
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SRecall,
-                "Your favor is inadequate for such a supplication.")) return;
+                   "Your favor is inadequate for such a supplication.")) return;
             if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.NoSupplicate, "You have been forsaken!"))
                 return;
-
-            TimerData timer = ch.GetTimer(TimerTypes.RecentFight);
-            if (CheckFunctions.CheckIfTrue(ch, timer != null && !ch.IsImmortal(),
+            if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.RecentFight) && !ch.IsImmortal(),
                 "You cannot supplicate recall under adrenaline!")) return;
 
             RoomTemplate location = null;
@@ -55,26 +139,35 @@ namespace SmaugCS.Commands.Deity
             if (!ch.IsNpc() && location == null && ch.Level >= 5 && ch.PlayerData.Flags.IsSet(PCFlags.Deadly))
                 location = DatabaseManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_DEADLY);
 
-            // TODO Race Recall Room
+            if (location == null)
+            {
+                int raceRecallRoom = DatabaseManager.Instance.RACES.Get(ch.CurrentRace.GetValue()).RaceRecallRoom;
+                location = DatabaseManager.Instance.ROOMS.Get(raceRecallRoom);
+            }
 
             if (location == null)
                 location = DatabaseManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
 
             if (CheckFunctions.CheckIfNullObject(ch, location, "You are completely lost.")) return;
 
-            // TODO More
-        }
-        private static void SupplicateForAvatar(CharacterInstance ch, string argument)
-        {
+            comm.act(ATTypes.AT_MAGIC, "$n disappears in a column of divine power.", ch, null, null, ToTypes.Room);
 
-        }
-        private static void SupplicateForObject(CharacterInstance ch, string argument)
-        {
+            RoomTemplate oldRoom = ch.CurrentRoom;
+            oldRoom.FromRoom(ch);
+            location.ToRoom(ch);
 
-        }
-        private static void SupplicateForRecall(CharacterInstance ch, string argument)
-        {
+            if (ch.CurrentMount != null)
+            {
+                oldRoom.FromRoom(ch.CurrentMount);
+                location.ToRoom(ch.CurrentMount);
+            }
 
+            comm.act(ATTypes.AT_MAGIC, "$n appears in the room from a column of divine power.", ch, null, null, ToTypes.Room);
+
+            Look.do_look(ch, "auto");
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SRecall;
+
+            // TODO Do suscept, element and affects
         }
     }
 }
