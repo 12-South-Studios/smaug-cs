@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
+using SmaugCS.Auction;
 using SmaugCS.Board;
 using SmaugCS.Common;
 using SmaugCS.Constants;

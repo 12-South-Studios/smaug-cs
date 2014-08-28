@@ -1,4 +1,6 @@
-﻿using SmaugCS.Attributes;
+﻿using System;
+using SmaugCS.Attributes;
+using SmaugCS.Auction;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;

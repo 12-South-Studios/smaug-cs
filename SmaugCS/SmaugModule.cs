@@ -4,6 +4,7 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmallDBConnectivity;
+using SmaugCS.Auction;
 using SmaugCS.Ban;
 using SmaugCS.Board;
 using SmaugCS.Constants;
@@ -27,6 +28,8 @@ namespace SmaugCS
                 .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("LogDumpFrequencyMS"));
             Kernel.Bind<ITimer>().To<CommonTimer>().Named("BanExpireTimer")
                 .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("BanExpireFrequencyMS"));
+            Kernel.Bind<ITimer>().To<CommonTimer>().Named("AuctionPulseTimer")
+                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("AuctionPulseSeconds"));
 
             Kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope()
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
@@ -88,6 +91,13 @@ namespace SmaugCS
                 .OnActivation(x => x.InitializeLuaFunctions());
 
             Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope();
+
+            Kernel.Bind<IAuctionManager>().To<AuctionManager>().InSingletonScope()
+                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
+                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
+                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
+                .WithConstructorArgument("timer", Kernel.Get<ITimer>("AuctionPulseTimer"))
+                .OnActivation(x => x.Initialize());
         }
     }
 }

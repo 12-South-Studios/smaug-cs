@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Movement
             if (CheckFunctions.CheckIf(ch, args => !((CharacterInstance) args[0]).IsAwake(), "You are asleep yourself!",
                 new List<object> {ch})) return;
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArg);
+            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (victim.IsAwake())

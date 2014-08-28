@@ -68,7 +68,6 @@
     <Compile Include="AffectData.cs" />
     <Compile Include="afswap_data.cs" />
     <Compile Include="AreaData.cs" />
-    <Compile Include="AuctionData.cs" />
     <Compile Include="CharacterMorph.cs" />
     <Compile Include="ClassData.cs" />
     <Compile Include="ClassSkillAdeptData.cs" />

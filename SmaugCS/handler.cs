@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
+using SmaugCS.Auction;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
@@ -288,7 +289,7 @@ namespace SmaugCS
                 if (auction.Buyer != null
                     && auction.Buyer != auction.Seller)
                 {
-                    auction.Buyer.CurrentCoin += auction.CoinAmount;
+                    auction.Buyer.CurrentCoin += auction.BidAmount;
                     color.send_to_char("Your money has been returned.\r\n", auction.Buyer);
                 }
             }

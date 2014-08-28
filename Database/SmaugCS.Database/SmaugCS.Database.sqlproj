@@ -86,6 +86,7 @@
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Logs" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\News" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Weather" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Settings\Work.publish.xml" />
@@ -134,6 +135,9 @@
     <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.HemisphereTypes.sql" />
     <None Include="Scripts\Post-Deployment\POPULATE_RefData_dbo.ClimateTypes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Weather\cp_GetWeatherCells.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Auctions.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions\cp_GetAuctions.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions\cp_AddAuction.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

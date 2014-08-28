@@ -11,10 +11,10 @@ namespace SmaugCS.Data
         public string Description { get; set; }
         public int Alignment { get; set; }
         public int Worshippers { get; set; }
-        public int SCorpse { get; set; }
-        public int SDeityObject { get; set; }
-        public int SAvatar { get; set; }
-        public int SRecall { get; set; }
+        public int SupplicateCorpseCost { get; set; }
+        public int SupplicateDeityObjectCost { get; set; }
+        public int SupplicateAvatarCost { get; set; }
+        public int SupplicateRecallCost { get; set; }
         public int SpellAid { get; set; }
         public int Race { get; set; }
         public int Race2 { get; set; }
