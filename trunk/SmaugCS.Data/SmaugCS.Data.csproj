@@ -77,6 +77,11 @@
     <Compile Include="DiceData.cs" />
     <Compile Include="DoFunction.cs" />
     <Compile Include="EditorData.cs" />
+    <Compile Include="Exceptions\CharacterDiedException.cs" />
+    <Compile Include="Exceptions\DuplicateEntryException.cs" />
+    <Compile Include="Exceptions\DuplicateIndexException.cs" />
+    <Compile Include="Exceptions\EntryNotFoundException.cs" />
+    <Compile Include="Exceptions\ObjectNotFoundException.cs" />
     <Compile Include="ExitData.cs" />
     <Compile Include="ExtraDescriptionData.cs" />
     <Compile Include="FightingData.cs" />

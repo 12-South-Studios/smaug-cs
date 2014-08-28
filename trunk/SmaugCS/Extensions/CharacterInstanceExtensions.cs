@@ -10,6 +10,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
@@ -22,6 +23,12 @@ namespace SmaugCS
 {
     public static class CharacterInstanceExtensions
     {
+        public static bool Chance(this CharacterInstance ch, int percent)
+        {
+            return (SmaugRandom.Percent() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
+                   (ch.IsDevoted() ? ch.PlayerData.Favor / -500 : 0) <= percent;
+        }
+
         public static int GetVampArmorClass(this CharacterInstance ch, IGameManager gameManager = null)
         {
             if (!ch.IsVampire() || !ch.IsOutside()) return 0;

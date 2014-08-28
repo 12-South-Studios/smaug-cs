@@ -2,63 +2,34 @@
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace Realm.Library.Common
-// ReSharper restore CheckNamespace
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [Serializable]
     public abstract class BaseException : Exception
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ResourceReferenceProperty { get; set; }
+        private string ResourceReferenceProperty { get; set; }
  
-        /// <summary>
-        /// 
-        /// </summary>
         protected BaseException()
         {
         }
- 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
+
         protected BaseException(string message)
             : base(message)
         {
         }
  
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
         protected BaseException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
         protected BaseException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             ResourceReferenceProperty = info.GetString("ResourceReferenceProperty");
         }
  
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

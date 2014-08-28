@@ -13,7 +13,7 @@ namespace SmaugCS.Commands.Liquids
         {
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Quaff what?")) return;
 
-            ObjectInstance obj = handler.find_obj(ch, argument, true);
+            ObjectInstance obj = handler.FindObject(ch, argument, true);
             if (CheckFunctions.CheckIfNullObject(ch, obj)) return;
 
             if (!ch.IsNpc() && ch.IsAffected(AffectedByTypes.Charm))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -86,7 +87,7 @@ namespace SmaugCS.Commands.Player
             buffer = "|Glory: {0} |Weight: {1} |Style: {2} |Gold: {3} |\r\n";
             buffer = string.Format(buffer, ch.PlayerData.quest_curr.ToString(CultureInfo.InvariantCulture).PadLeft(4),
                                    ch.CarryWeight.ToString(CultureInfo.InvariantCulture).PadLeft(9),
-                                   ch.CurrentStyle.GetName().PadLeft(13), act_info.num_punct(ch.CurrentCoin).PadLeft(14));
+                                   ch.CurrentStyle.GetName().PadLeft(13), ch.CurrentCoin.ToPunctuation().PadLeft(14));
             color.pager_printf(ch, buffer);
             color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
 

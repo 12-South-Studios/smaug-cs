@@ -1,37 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
-using SmallDBConnectivity;
+using SmaugCS.Constants;
 using SmaugCS.Data;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Auction
 {
     public sealed class AuctionManager : IAuctionManager
     {
-        private readonly AuctionData _auction;
-        private readonly AuctionHistoryRepository _repository;
-        private readonly ILogManager _logManager;
-        private readonly ISmallDb _smallDb;
-        private readonly IDbConnection _connection;
         private static IKernel _kernel;
         private static ITimer _timer;
 
         public AuctionData Auction { get; set; }
 
-        public AuctionManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IKernel kernel,
-            ITimer timer)
+        public IAuctionRepository Repository { get; private set; }
+
+        public AuctionManager(IKernel kernel, ITimer timer, IAuctionRepository repository)
         {
-            _logManager = logManager;
-            _smallDb = smallDb;
-            _connection = connection;
             _kernel = kernel;
+            Repository = repository;
 
             _timer = timer;
 
@@ -40,8 +29,6 @@ namespace SmaugCS.Auction
 
             _timer.Elapsed += TimerOnElapsed;
             _timer.Start();
-
-            _repository = new AuctionHistoryRepository(_logManager, _smallDb, _connection);
         }
 
         ~AuctionManager()
@@ -51,8 +38,6 @@ namespace SmaugCS.Auction
                 _timer.Stop();
                 _timer.Dispose();
             }
-            if (_connection != null)
-                _connection.Dispose();
         }
 
         public static IAuctionManager Instance
@@ -67,12 +52,62 @@ namespace SmaugCS.Auction
 
         public void Initialize()
         {
-            _repository.Load();
+            Repository.Load();
         }
 
         public void Save()
         {
-            _repository.Save();
+            Repository.Save();
+        }
+
+        public void StartAuction(CharacterInstance seller, ObjectInstance item, int startingPrice)
+        {
+            if (Auction != null)
+                throw new AuctionAlreadyStartedException(
+                    "New auction by Character {0} for Item {1} cannot be started as an auction is already in progress.",
+                    seller.ID, item.ID);
+
+            AuctionData auction = new AuctionData
+            {
+                ItemForSale = item,
+                StartingBid = startingPrice,
+                Buyer = seller,
+                Seller = seller,
+                PulseFrequency = GameConstants.GetSystemValue<int>("PulseAuction")
+            };
+
+            Auction = auction;
+            Repository.Add(auction);
+        }
+
+        public void PlaceBid(CharacterInstance bidder, int bidAmount)
+        {
+            if (Auction == null)
+                throw new NoAuctionStartedException("Bidder {0} attempted to bid on an auction that doesn't exist",
+                    bidder.ID);
+            if (Auction.BidAmount > bidAmount)
+                throw new InvalidBidException(
+                    "Bidder {0} attempted to place a bid of {1} on Auction {2} (Current Bid {3})",
+                    bidder.ID, bidAmount, Auction.ItemForSale.ID, Auction.BidAmount);
+
+            Auction.Buyer = bidder;
+            Auction.BidAmount = bidAmount;
+            Auction.GoingCounter = 0;
+            Auction.PulseFrequency = GameConstants.GetSystemValue<int>("PulseAuction");
+        }
+
+        public void StopAuction()
+        {
+            if (Auction == null)
+                throw new NoAuctionStartedException("An attempt was made to stop an auction, but one doesn't exist");
+
+            AuctionHistory history =
+                Repository.History.ToList()
+                    .FirstOrDefault(x => x.ItemForSale == Auction.ItemForSale.ID && x.SellerName == Auction.Seller.Name);
+            if (history != null)
+                Repository.History.ToList().Remove(history);
+
+            Auction = null;
         }
     }
 }

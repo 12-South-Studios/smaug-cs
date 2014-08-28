@@ -5,15 +5,8 @@ using SmaugCS.Managers;
 
 namespace SmaugCS
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ExpressionTableInitializer
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public static ExpressionTable GetExpressionTable()
         {
             ExpressionTable table = new ExpressionTable();

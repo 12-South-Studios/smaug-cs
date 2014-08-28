@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +10,11 @@ namespace SmaugCS.Common
 {
     public static class NumberExtensions
     {
+        public static string ToPunctuation(this int value)
+        {
+            return value.ToString("#,#", CultureInfo.InvariantCulture);
+        }
+
         public static string ToPercent(this int value, int total)
         {
             return ((double)value).ToPercent(total);

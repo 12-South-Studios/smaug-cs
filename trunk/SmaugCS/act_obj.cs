@@ -1113,5 +1113,10 @@ namespace SmaugCS
 
             return string.Empty;
         }
+
+        internal static void save_clan_storeroom(CharacterInstance ch, ClanData clan)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

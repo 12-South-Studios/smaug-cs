@@ -155,7 +155,7 @@ namespace SmaugCS.Spells.Smaug
         {
             int percent = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 20;
             if (CheckFunctions.CheckIfTrueCasting(
-                    obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || handler.chance(ch, percent), skill, ch))
+                    obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || ch.Chance(percent), skill, ch))
                 return ReturnTypes.SpellFailed;
 
             magic.successful_casting(skill, ch, null, obj);

@@ -465,7 +465,7 @@ namespace SmaugCS
             }
             else
             {
-                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
+                victim = ch.GetCharacterInRoom(arg);
                 if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "They aren't here." : "")) return null;
             }
 
@@ -526,7 +526,7 @@ namespace SmaugCS
                 victim = ch;
             else
             {
-                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
+                victim = ch.GetCharacterInRoom(arg);
                 if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "They aren't here." : "")) return null;
             }
 
@@ -583,7 +583,7 @@ namespace SmaugCS
             int levelDiff = ch.Level - level;
             if ((skill.Target == TargetTypes.OffensiveCharacter || SmaugRandom.Bits(7) == 1)
                 && skill.Type != SkillTypes.Herb
-                && handler.chance(ch, 95 + levelDiff))
+                && ch.Chance(95 + levelDiff))
             {
                 switch (SmaugRandom.Bits(2))
                 {

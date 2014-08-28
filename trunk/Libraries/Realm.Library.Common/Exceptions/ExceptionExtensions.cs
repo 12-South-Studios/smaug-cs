@@ -4,11 +4,7 @@ using log4net;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Properties;
 
-#pragma warning disable 1591
-
-// ReSharper disable CheckNamespace
 namespace Realm.Library.Common
-// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Class that handles extension functions to Exception objects
@@ -78,5 +74,3 @@ namespace Realm.Library.Common
         }
     }
 }
-
-#pragma warning restore 1591

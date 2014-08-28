@@ -116,12 +116,10 @@
     <Compile Include="Commands\Ban\Ban.cs" />
     <Compile Include="Commands\Movement\PullOrPush.cs" />
     <Compile Include="Commands\Player\Title.cs" />
-    <Compile Include="Exceptions\ObjectNotFoundException.cs" />
     <Compile Include="Extensions\MudProgExtensions.cs" />
     <Compile Include="Extensions\SkillDataExtensions.cs" />
     <Compile Include="Helpers\CastingFunctionType.cs" />
     <Compile Include="Helpers\CheckFunctions.cs" />
-    <Compile Include="Exceptions\CharacterDiedException.cs" />
     <Compile Include="Commands\Player\Affected.cs" />
     <Compile Include="Commands\Player\Equipment.cs" />
     <Compile Include="Commands\Player\Gold.cs" />
@@ -635,9 +633,6 @@
     <Compile Include="Repositories\ObjectRepository.cs" />
     <Compile Include="Repositories\ObjInstanceRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
-    <Compile Include="Exceptions\DuplicateIndexException.cs" />
-    <Compile Include="Exceptions\DuplicateEntryException.cs" />
-    <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
     <Compile Include="Loaders\Incomplete\CommentLoader.cs" />

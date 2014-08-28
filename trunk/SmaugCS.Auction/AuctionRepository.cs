@@ -9,14 +9,14 @@ using SmaugCS.Logging;
 
 namespace SmaugCS.Auction
 {
-    public class AuctionHistoryRepository
+    public class AuctionRepository : IAuctionRepository
     {
         public IEnumerable<AuctionHistory> History { get; private set; }
         private readonly ILogManager _logManager;
         private readonly ISmallDb _smallDb;
         private readonly IDbConnection _connection;
 
-        public AuctionHistoryRepository(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
+        public AuctionRepository(ILogManager logManager, ISmallDb smallDb, IDbConnection connection)
         {
             History = new List<AuctionHistory>();
             _logManager = logManager;

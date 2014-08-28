@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common;
 
-namespace SmaugCS.Exceptions
+namespace SmaugCS.Data.Exceptions
 {
-    public class CharacterDiedException : Exception
+    public class CharacterDiedException : BaseException
     {
         public CharacterDiedException() { }
 

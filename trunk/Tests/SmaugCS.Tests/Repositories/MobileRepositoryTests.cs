@@ -11,6 +11,7 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmallDBConnectivity;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data;
 using SmaugCS.Logging;
