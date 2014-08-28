@@ -938,6 +938,10 @@
       <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
       <Name>SmallDBConnectivity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Auction\SmaugCS.Auction.csproj">
+      <Project>{101243bd-e350-43ff-944f-1a5a01d5b0d3}</Project>
+      <Name>SmaugCS.Auction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Ban\SmaugCS.Ban.csproj">
       <Project>{ada623a7-32ef-402d-9a12-db64077ed303}</Project>
       <Name>SmaugCS.Ban</Name>

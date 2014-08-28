@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using Realm.Library.Common;
-using Realm.Library.Common.Logging;
 using SmaugCS.Attributes;
+using SmaugCS.Auction;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Interfaces;
@@ -192,7 +192,10 @@ namespace SmaugCS.Managers
         public GenericRepository<HintData> HINTS
         {
             get { return GetRepository<HintData>(RepositoryTypes.Hints); }
-        } 
+        }
+
+        public AuctionData AUCTION { get; private set; }
+
         #endregion
 
         #region Get Methods

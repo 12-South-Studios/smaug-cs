@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -38,7 +37,7 @@ namespace SmaugCS.Commands.Deity
 
         private static void SupplicateForCorpse(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SCorpse,
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateCorpseCost,
                 "You are not favored enough for a corpse retrieval.")) return;
             if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.ClanStoreroom,
                 "You cannot supplicate in a storage room.")) return;
@@ -51,12 +50,19 @@ namespace SmaugCS.Commands.Deity
                 "The image of your corpse appears, but suddenly fades away.")) return;
 
             comm.act(ATTypes.AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, null, null, ToTypes.Character);
+            comm.act(ATTypes.AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, null, null, ToTypes.Room);
+            corpse.InRoom.FromRoom(corpse);
+            ch.CurrentRoom.ToRoom(corpse);
+            corpse.ExtraFlags.RemoveBit(ItemExtraFlags.Buried);
 
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateCorpseCost;
+
+            // TODO Do suscept, element and affects
         }
 
         private static void SupplicateForAvatar(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SAvatar,
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateAvatarCost,
                 "You are not favored enough for that.")) return;
 
             MobTemplate template = DatabaseManager.Instance.MOBILE_INDEXES.Get(VnumConstants.MOB_VNUM_DEITY);
@@ -71,14 +77,14 @@ namespace SmaugCS.Commands.Deity
             mob.Level = 10;
             mob.MaximumHealth = ch.MaximumHealth*6 + ch.PlayerData.Favor;
             mob.CurrentAlignment = ch.PlayerData.CurrentDeity.Alignment;
-            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SAvatar;
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateAvatarCost;
 
             // TODO Do suscept, element and affects
         }
 
         private static void SupplicateForObject(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SDeityObject,
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost,
                 "You are not favored enough for that.")) return;
 
             ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(VnumConstants.OBJ_VNUM_DEITY);
@@ -88,7 +94,7 @@ namespace SmaugCS.Commands.Deity
 
             comm.act(ATTypes.AT_MAGIC, "$n weaves $p from divine matter!", ch, obj, null, ToTypes.Room);
             comm.act(ATTypes.AT_MAGIC, "You weave $p from divine matter!", ch, obj, null, ToTypes.Character);
-            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SDeityObject;
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost;
 
             // TODO Do suscept, element and affects
 
@@ -124,7 +130,7 @@ namespace SmaugCS.Commands.Deity
 
         private static void SupplicateForRecall(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SRecall,
+            if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateRecallCost,
                    "Your favor is inadequate for such a supplication.")) return;
             if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.NoSupplicate, "You have been forsaken!"))
                 return;
@@ -165,7 +171,7 @@ namespace SmaugCS.Commands.Deity
             comm.act(ATTypes.AT_MAGIC, "$n appears in the room from a column of divine power.", ch, null, null, ToTypes.Room);
 
             Look.do_look(ch, "auto");
-            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SRecall;
+            ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateRecallCost;
 
             // TODO Do suscept, element and affects
         }

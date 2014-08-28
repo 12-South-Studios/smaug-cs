@@ -55,10 +55,47 @@ namespace SmaugCS.Commands.Liquids
             }
             else
             {
-                
+                if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+                {
+                    if (!ch.CanPKill() || obj.InObject == null)
+                    {
+                        comm.act(ATTypes.AT_ACTION, "$n quaffs $p.", ch, obj, null, ToTypes.Room);
+                        if (!hgFlag)
+                            comm.act(ATTypes.AT_MAGIC, "You quaff $p.", ch, obj, null, ToTypes.Character);
+                    }
+                    else if (obj.InObject != null)
+                    {
+                        comm.act(ATTypes.AT_ACTION, "$n quaffs $p from $P.", ch, obj, obj.InObject, ToTypes.Room);
+                        if (!hgFlag)
+                            comm.act(ATTypes.AT_MAGIC, "You quaff $p from $P.", ch, obj, obj.InObject, ToTypes.Character);
+                    }
+                }
+
+                if (fight.who_fighting(ch) != null && ch.IsPKill())
+                    Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
+                else 
+                    Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
+
+                update.gain_condition(ch, ConditionTypes.Thirsty, 1);
+
+                if (!ch.IsNpc() && ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
+                    comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null, ToTypes.Character);
+
+                ReturnTypes retcode = magic.obj_cast_spell(obj.Value[1], obj.Value[0], ch, ch, null);
+                if (retcode == ReturnTypes.None)
+                    retcode = magic.obj_cast_spell(obj.Value[2], obj.Value[0], ch, ch, null);
+                if (retcode == ReturnTypes.None)
+                    retcode = magic.obj_cast_spell(obj.Value[3], obj.Value[0], ch, ch, null);
             }
 
+            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_FLASK_BREWING)
+                GameManager.Instance.SystemData.brewed_used++;
+            else
+                GameManager.Instance.SystemData.upotion_val += obj.Cost/100;
 
+            // TODO global_objcode?
+
+            handler.extract_obj(obj);
         }
 
         private static void QuaffNonPotion(CharacterInstance ch, ObjectInstance obj)
@@ -70,31 +107,6 @@ namespace SmaugCS.Commands.Liquids
                 comm.act(ATTypes.AT_ACTION, "$n lifts $p up to $s mouth and tries to drink from it...", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You lift $p up to your mouth and try to drink from it...", ch, obj, null, ToTypes.Character);
             }
-        }
-
-        private static ReturnTypes QuaffPotion(CharacterInstance ch, ObjectInstance obj)
-        {
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
-            {
-                if (!ch.CanPKill() || obj.InObject == null)
-                {
-                    
-                }
-                else if (obj.InObject != null)
-                {
-                    
-                }
-            }
-
-            if (fight.who_fighting(ch) != null && ch.IsPKill())
-                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond") / 5);
-            else
-                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond") / 3);
-
-            update.gain_condition(ch, ConditionTypes.Thirsty, 1);
-
-
-            return ReturnTypes.None;
         }
     }
 }

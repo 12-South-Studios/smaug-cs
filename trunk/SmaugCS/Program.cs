@@ -7,6 +7,7 @@ using System.Text;
 using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
+using SmaugCS.Auction;
 using SmaugCS.Ban;
 using SmaugCS.Board;
 using SmaugCS.Constants;
@@ -40,6 +41,7 @@ namespace SmaugCS
         public static ICalendarManager CalendarManager { get; private set; }
         public static IWeatherManager WeatherManager { get; private set; }
         public static INewsManager NewsManager { get; private set; }
+        public static IAuctionManager AuctionManager { get; private set; }
 
         static void Main()
         {
@@ -127,7 +129,9 @@ namespace SmaugCS
             WeatherManager = Kernel.Get<IWeatherManager>();
 
             //NewsManager = Kernel.Get<INewsManager>();
-            
+
+            AuctionManager = Kernel.Get<IAuctionManager>();
+
             InitializeGameData();           
         }
 

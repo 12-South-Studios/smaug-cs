@@ -1,9 +1,9 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Auction;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.Repositories;
 
 namespace SmaugCS.Interfaces

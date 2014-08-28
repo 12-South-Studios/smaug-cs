@@ -1,5 +1,5 @@
-﻿using SmaugCS.Data;
-using SmaugCS.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Data
 {
@@ -8,16 +8,27 @@ namespace SmaugCS.Data
         public ObjectInstance ItemForSale { get; set; }
         public CharacterInstance Seller { get; set; }
         public CharacterInstance Buyer { get; set; }
-        public int CoinAmount { get; set; }
-        public short going { get; set; }
-        public short pulse { get; set; }
-        public int starting { get; set; }
-        public ObjectTemplate[] history { get; set; }
+        public int BidAmount { get; set; }
+        public int GoingCounter { get; set; }
+        public float PulseFrequency { get; set; }
+        public int StartingBid { get; set; }
+
+        public IEnumerable<ObjectTemplate> History { get; private set; }
         public short hist_timer { get; set; }
 
         public AuctionData(int auctionMem)
         {
-            history = new ObjectTemplate[auctionMem];
+            History = new List<ObjectTemplate>();
+        }
+
+        public void AddToHistory(ObjectTemplate template)
+        {
+            History.ToList().Add(template);
+        }
+
+        public void AddToHistory(ObjectInstance instance)
+        {
+            AddToHistory(instance.ObjectIndex);
         }
     }
 }
