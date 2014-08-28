@@ -92,11 +92,15 @@ namespace SmaugCS
 
             Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope();
 
-            Kernel.Bind<IAuctionManager>().To<AuctionManager>().InSingletonScope()
+            Kernel.Bind<IAuctionRepository>().To<AuctionRepository>()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
+                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection());
+
+            Kernel.Bind<IAuctionManager>().To<AuctionManager>().InSingletonScope()
+                .WithConstructorArgument("kernel", Kernel)
                 .WithConstructorArgument("timer", Kernel.Get<ITimer>("AuctionPulseTimer"))
+                .WithConstructorArgument("repository", Kernel.Get<IAuctionRepository>())
                 .OnActivation(x => x.Initialize());
         }
     }

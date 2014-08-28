@@ -10,7 +10,7 @@ namespace SmaugCS.Spells
         {
             CharacterInstance victim = (CharacterInstance) vo;
 
-            if (handler.chance(ch, 2*level) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
+            if (ch.Chance(2*level) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
             {
                 foreach (ObjectInstance obj in victim.Carrying)
                 {

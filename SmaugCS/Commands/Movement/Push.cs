@@ -12,7 +12,7 @@ namespace SmaugCS.Commands.Movement
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Push what?")) return;
 
-            if (handler.ms_find_obj(ch)) return;
+            if (handler.FindObject_CheckMentalState(ch)) return;
 
             ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj == null)

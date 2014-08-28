@@ -165,5 +165,13 @@ namespace SmaugCS.Common.Tests
         {
             Assert.That(value1.GetAbsoluteDifference(value2), Is.EqualTo(expected));
         }
+
+        [TestCase(1, "1")]
+        [TestCase(1001, "1,001")]
+        [TestCase(1001001, "1,001,001")]
+        public void ToPunctuation(int value, string expected)
+        {
+            Assert.That(value.ToPunctuation(), Is.EqualTo(expected));
+        }
     }
 }

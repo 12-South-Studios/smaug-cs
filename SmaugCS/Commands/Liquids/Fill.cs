@@ -15,7 +15,7 @@ namespace SmaugCS.Commands.Liquids
         {
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Fill what?")) return;
-            if (handler.ms_find_obj(ch)) return;
+            if (handler.FindObject_CheckMentalState(ch)) return;
 
             ObjectInstance obj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You do not have that item.")) return;

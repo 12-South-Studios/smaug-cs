@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Lookup;
 using SmaugCS.Managers;
 

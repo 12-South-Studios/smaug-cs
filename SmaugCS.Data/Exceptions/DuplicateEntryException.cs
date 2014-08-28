@@ -1,11 +1,10 @@
 ﻿using System;
+using Realm.Library.Common;
 
-// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+namespace SmaugCS.Data.Exceptions
 {
     [Serializable]
-    public class DuplicateEntryException : Exception
+    public class DuplicateEntryException : BaseException
     {
         public DuplicateEntryException() { }
 

@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Exceptions;
 
 namespace SmaugCS.Repositories
 {

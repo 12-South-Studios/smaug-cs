@@ -6,8 +6,8 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Exceptions;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
@@ -197,28 +197,6 @@ namespace SmaugCS
                        : LookupManager.Instance.GetLookup("HallucinatedLongNames",
                                                           (SmaugRandom.Between(
                                                               6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1));
-        }
-
-        public static string num_punct(int foo)
-        {
-            string buffer = foo.ToString();
-            int rest = buffer.Length % 3;
-            char[] newBuffer = new char[buffer.Length];
-
-            for (int nindex = 0, index_new = 0; nindex < buffer.Length; nindex++, index_new++)
-            {
-                int x = nindex - rest;
-                if (nindex != 0 && (x % 3) == 0)
-                {
-                    newBuffer[index_new] = ',';
-                    index_new++;
-                    newBuffer[index_new] = buffer[nindex];
-                }
-                else
-                    newBuffer[index_new] = buffer[nindex];
-            }
-
-            return new string(newBuffer);
         }
 
         public static void show_list_to_char(List<ObjectInstance> list, CharacterInstance ch, bool fShort, bool fShowNothing)

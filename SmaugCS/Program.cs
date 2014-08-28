@@ -14,7 +14,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Exceptions;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.News;

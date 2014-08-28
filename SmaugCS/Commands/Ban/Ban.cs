@@ -15,12 +15,6 @@ namespace SmaugCS.Commands.Admin
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc(), "Monsters are too dumb to do that!")) return;
 
-            if (ch.Descriptor == null)
-            {
-                LogManager.Instance.Bug("No descriptor for Character {0}", ch.Name);
-                return;
-            }
-
             color.set_char_color(ATTypes.AT_IMMORT, ch);
             string[] args = new string[4];
             args[0] = argument.ParseWord(1, " ");

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Exceptions;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands
@@ -15,7 +15,7 @@ namespace SmaugCS.Commands
             string secondArg = Realm.Library.Common.StringExtensions.SecondWord(argument);
 
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You're too busy fighting...")) return;
-            if (handler.ms_find_obj(ch)) return;
+            if (handler.FindObject_CheckMentalState(ch)) return;
 
             ObjectInstance salve = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, salve, "You do not have that.")) return;

@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="ShoveValueAttribute.cs" />
     <Compile Include="DragValueAttribute.cs" />
+    <Compile Include="AuctionableAttribute.cs" />
     <Compile Include="ValuedAttribute.cs" />
     <Compile Include="CommandAttribute.cs" />
     <Compile Include="Constants\GameConstants.cs" />

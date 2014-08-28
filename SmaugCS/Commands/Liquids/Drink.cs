@@ -4,13 +4,13 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Exceptions;
+using SmaugCS.Data.Exceptions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Liquids
 {
-    public class Drink
+    public static class Drink
     {
         private static int GetMaximumCondition()
         {
@@ -127,11 +127,8 @@ namespace SmaugCS.Commands.Liquids
             }
 
             obj.Value[1]--;
-            if (obj.Value[1] <= 0)
-            {
+            if (CheckFunctions.CheckIfTrue(ch, obj.Value[1] <= 0, "You drink the last drop from your container."))
                 obj.Value[1] = 0;
-                color.send_to_char("You drink the last drop from your container.", ch);
-            }
         }
 
         private static void EvaluateBloodthirstCondition(CharacterInstance ch)

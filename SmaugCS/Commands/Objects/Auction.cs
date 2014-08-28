@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Auction;
 using SmaugCS.Common;
@@ -46,11 +44,45 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfSet(ch, obj.ExtraFlags, ItemExtraFlags.Personal,
                 "Personal items may not be auctioned.")) return;
 
+            if (CheckFunctions.CheckIfTrue(ch,
+                AuctionManager.Instance.Repository.History.Any(x => x.ItemForSale == obj.ObjectIndex.ID),
+                "Such an item has been auctioned recently, try again later.")) return;
+
+            string secondArg = argument.SecondWord();
+            if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Auction it for what?")) return;
+            if (CheckFunctions.CheckIfTrue(ch, !secondArg.IsNumber(),
+                "You must input a number at which to start the auction.")) return;
+
+            int startingBid = secondArg.ToInt32();
+            if (CheckFunctions.CheckIfTrue(ch, startingBid <= 0, "You can't auction something for nothing!")) return;
+
+            if (AuctionManager.Instance.Auction != null)
+            {
+                comm.act(ATTypes.AT_TELL, "Try again later - $p is being auctioned right now!", ch, AuctionManager.Instance.Auction.ItemForSale, null, ToTypes.Character);
+                if (!ch.IsImmortal())
+                    Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulseViolence"));
+                return;
+            }
+
+            if (!obj.HasAttribute<AuctionableAttribute>())
+            {
+                comm.act(ATTypes.AT_TELL, "You cannot auction $Ts.", ch, null, obj.GetItemTypeName(), ToTypes.Character);
+                return;
+            }
+
+            handler.separate_obj(obj);
+            obj.FromCharacter();
+            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
+                save.save_char_obj(ch);
+
+            AuctionManager.Instance.StartAuction(ch, obj, startingBid);
+            ChatManager.talk_auction(string.Format("A new item is being auctioned: {0} at {1} coin.",
+                obj.ShortDescription, startingBid));
         }
 
         private static void PlaceBid(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, AuctionManager.Instance.Auction == null,
+            if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
                 "There isn't anything being auctioned right now.")) return;
 
             AuctionData auction = AuctionManager.Instance.Auction;
@@ -62,13 +94,13 @@ namespace SmaugCS.Commands.Objects
             string secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Bid how much?")) return;
 
-            int newbet = Program.parsebet(auction.BidAmount, secondArg);
-            if (CheckFunctions.CheckIfTrue(ch, newbet < auction.StartingBid,
+            int bid = Program.parsebet(auction.BidAmount, secondArg);
+            if (CheckFunctions.CheckIfTrue(ch, bid < auction.StartingBid,
                 "You must place a bid that is higher than the starting bet.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, newbet < (auction.BidAmount + 10000),
+            if (CheckFunctions.CheckIfTrue(ch, bid < (auction.BidAmount + 10000),
                 "You must bid at least 10,000 coins over the current bid.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, newbet < ch.CurrentCoin, "You don't have that much money!")) return;
-            if (CheckFunctions.CheckIfTrue(ch, newbet > 2000000000, "You can't bid over 2 billion coins.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, bid < ch.CurrentCoin, "You don't have that much money!")) return;
+            if (CheckFunctions.CheckIfTrue(ch, bid > 2000000000, "You can't bid over 2 billion coins.")) return;
 
             string thirdArg = argument.ThirdWord();
             if (CheckFunctions.CheckIfTrue(ch, thirdArg.IsNullOrEmpty() || auction.ItemForSale.Name.IsAnyEqual(thirdArg),
@@ -77,22 +109,20 @@ namespace SmaugCS.Commands.Objects
             if (auction.Buyer != null && auction.Buyer != auction.Seller)
                 auction.Buyer.CurrentCoin += auction.BidAmount;
 
-            ch.CurrentCoin -= newbet;
+            ch.CurrentCoin -= bid;
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
 
-            auction.Buyer = ch;
-            auction.BidAmount = newbet;
-            auction.GoingCounter = 0;
-            auction.PulseFrequency = GameConstants.GetSystemValue<int>("PulseAuction");
-            ChatManager.talk_auction(string.Format("A bid of {0} coin has been received on {1}.", newbet,
+            AuctionManager.Instance.PlaceBid(ch, bid);
+
+            ChatManager.talk_auction(string.Format("A bid of {0} coin has been received on {1}.", bid,
                 auction.ItemForSale.ShortDescription));
         }
 
         private static void StopAuction(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, AuctionManager.Instance.Auction == null,
-                "There is no auction to stop.")) return;
+            if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction, "There is no auction to stop."))
+                return;
 
             color.set_char_color(ATTypes.AT_LBLUE, ch);
 
@@ -105,27 +135,24 @@ namespace SmaugCS.Commands.Objects
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(auction.Seller);
 
-            AuctionManager.Instance.Auction = null;
             if (auction.Buyer != null && auction.Buyer != auction.Seller)
             {
                 auction.Buyer.CurrentCoin += auction.BidAmount;
                 color.send_to_char("Your money has been returned.", auction.Buyer);
             }
+
+            AuctionManager.Instance.StopAuction();
         }
 
         private static void ReviewAuction(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, AuctionManager.Instance.Auction == null,
+            if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
                 "There is nothing being auctioned right now.  What would you like to auction?")) return;
 
             color.set_char_color(ATTypes.AT_BLUE, ch);
             color.send_to_char("Auctions:", ch);
 
-            DisplayAuctionDetails(ch, AuctionManager.Instance.Auction);
-        }
-
-        private static void DisplayAuctionDetails(CharacterInstance ch, AuctionData auction)
-        {
+            AuctionData auction = AuctionManager.Instance.Auction;
             if (auction.BidAmount > 0)
                 color.ch_printf(ch, "Current bid on this item is %s coin.", auction.BidAmount);
             else 
@@ -142,7 +169,8 @@ namespace SmaugCS.Commands.Objects
 
             color.set_char_color(ATTypes.AT_BLUE, ch);
 
-            DisplaySpecificItemTypeDetails(ch, auction.ItemForSale);
+            if (DisplayTable.ContainsKey(auction.ItemForSale.ItemType))
+                DisplayTable[auction.ItemForSale.ItemType].Invoke(ch, auction.ItemForSale);
 
             foreach (AffectData af in auction.ItemForSale.ObjectIndex.Affects)
                 handler.showaffect(ch, af);
@@ -168,33 +196,21 @@ namespace SmaugCS.Commands.Objects
             }
         }
 
-        private static void DisplaySpecificItemTypeDetails(CharacterInstance ch, ObjectInstance obj)
+        private static readonly Dictionary<ItemTypes, Action<CharacterInstance, ObjectInstance>> DisplayTable = new Dictionary
+            <ItemTypes, Action<CharacterInstance, ObjectInstance>>
         {
-            switch (obj.ItemType)
-            {
-                case ItemTypes.Container:
-                case ItemTypes.KeyRing:
-                case ItemTypes.Quiver:
-                    DisplayContainerDetails(ch, obj);
-                    break;
-                case ItemTypes.Pill:
-                case ItemTypes.Scroll: 
-                case ItemTypes.Potion:
-                    DisplayConsumableDetails(ch, obj);
-                    break;
-                case ItemTypes.Staff:
-                case ItemTypes.Wand:
-                    DisplayMagicImplementDetails(ch, obj);
-                    break;
-                case ItemTypes.MissileWeapon:
-                case ItemTypes.Weapon:
-                    DisplayWeaponDetails(ch, obj);
-                    break;
-                case ItemTypes.Armor:
-                    DisplayArmorDetails(ch, obj);
-                    break;
-            }
-        }
+            {ItemTypes.Container, DisplayContainerDetails},
+            {ItemTypes.KeyRing, DisplayContainerDetails},
+            {ItemTypes.Quiver, DisplayContainerDetails},
+            {ItemTypes.Pill, DisplayConsumableDetails},
+            {ItemTypes.Scroll, DisplayConsumableDetails},
+            {ItemTypes.Potion, DisplayConsumableDetails},
+            {ItemTypes.Staff, DisplayMagicImplementDetails},
+            {ItemTypes.Wand, DisplayMagicImplementDetails},
+            {ItemTypes.MissileWeapon, DisplayWeaponDetails},
+            {ItemTypes.Weapon, DisplayWeaponDetails},
+            {ItemTypes.Armor, DisplayArmorDetails}
+        };
 
         private static void DisplayContainerDetails(CharacterInstance ch, ObjectInstance obj)
         {

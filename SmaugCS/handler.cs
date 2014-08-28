@@ -513,7 +513,7 @@ namespace SmaugCS
         /// </summary>
         /// <param name="ch"></param>
         /// <returns></returns>
-        public static bool ms_find_obj(CharacterInstance ch)
+        public static bool FindObject_CheckMentalState(CharacterInstance ch)
         {
             int ms = ch.MentalState;
 
@@ -532,7 +532,7 @@ namespace SmaugCS
             return true;
         }
 
-        public static ObjectInstance find_obj(CharacterInstance ch, string argument, bool carryonly)
+        public static ObjectInstance FindObject(CharacterInstance ch, string argument, bool carryonly)
         {
             Tuple<string, string> tuple = argument.FirstArgument();
             string arg1 = tuple.Item1;
@@ -797,12 +797,6 @@ namespace SmaugCS
         public static void clean_char_queue()
         {
             // TODO
-        }
-
-        public static bool chance(CharacterInstance ch, int percent)
-        {
-            return (SmaugRandom.Percent() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
-                   (ch.IsDevoted() ? ch.PlayerData.Favor/-500 : 0) <= percent;
         }
 
         public static bool chance_attrib(CharacterInstance ch, short percent, short attrib)
