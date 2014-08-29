@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -19,7 +20,7 @@ namespace SmaugCS.Spells
 
             if (victim.IsImmune(ResistanceTypes.Magic) || victim.IsImmune(ResistanceTypes.Charm))
             {
-                magic.immune_casting(skill, ch, victim, null);
+                ch.ImmuneCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
@@ -30,7 +31,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            int schance = magic.ris_save(victim, level, (int)ResistanceTypes.Charm);
+            int schance = victim.ModifySavingThrowWithResistance(level, ResistanceTypes.Charm);
 
             if (victim.IsAffected(AffectedByTypes.Charm)
                 || schance == 1000
@@ -40,7 +41,7 @@ namespace SmaugCS.Spells
                 || !ch.CanCharm()
                 || victim.SavingThrows.CheckSaveVsSpellStaff(schance, victim))
             {
-                magic.failed_casting(skill, ch, victim, null);
+                ch.FailedCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
@@ -55,7 +56,7 @@ namespace SmaugCS.Spells
             // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);
             
-            magic.successful_casting(skill, ch, victim, null);
+            ch.SuccessfulCast(skill, victim);
             //TODO log_printf_plus( LOG_NORMAL, ch->level, "%s has charmed %s.", ch->name, victim->name );
 
             if (!ch.IsNpc())

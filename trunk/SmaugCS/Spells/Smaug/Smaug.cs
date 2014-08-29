@@ -1,7 +1,9 @@
-﻿using SmaugCS.Common;
+﻿using SmaugCS.Commands;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -52,7 +54,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (skill.Flags.IsSet(SkillFlags.Distant))
             {
-                CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, string.Empty);    // TODO Get TargetName from where?
+                CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
                 if (victim != null && !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral)
                     && skill.Flags.IsSet(SkillFlags.Character))
                     return Affect.spell_affect((int) skill.ID, level, ch, victim);
@@ -60,7 +62,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (skill.Flags.IsSet(SkillFlags.Character))
             {
-                CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, string.Empty);    // TODO Get TargetName from where?
+                CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
                 if (victim != null)
                     return Affect.spell_affect((int) skill.ID, level, ch, victim);
             }
@@ -70,7 +72,7 @@ namespace SmaugCS.Spells.Smaug
                      && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Life)
                     || (Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Create
                         && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Death)))
-                return skills.ranged_attack(ch, "", null, null, (int)skill.ID, skill.range); // TODO Get RangedTargetName from where?
+                return skills.ranged_attack(ch, Cast.RangedTargetName, null, null, (int)skill.ID, skill.range);
 
             return Affect.spell_affect((int) skill.ID, level, ch, vo);
         }

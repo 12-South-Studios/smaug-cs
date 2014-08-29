@@ -27,7 +27,7 @@ namespace SmaugCS.SpecFuns
                     break;
 
                 if (vch.CurrentFighting != null 
-                    && fight.who_fighting(vch) != ch
+                    && fight.GetMyTarget(vch) != ch
                     && vch.CurrentAlignment < maxEvil)
                 {
                     maxEvil = vch.CurrentAlignment;

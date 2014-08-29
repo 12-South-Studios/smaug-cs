@@ -1,7 +1,9 @@
-﻿using SmaugCS.Common;
+﻿using SmaugCS.Commands;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -13,7 +15,7 @@ namespace SmaugCS.Spells.Smaug
         {
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
-            string targetName = string.Empty; // TODO Get this from do_cast somehow!
+            string targetName = Cast.TargetName;
 
             int lvl = GetMobLevel(skill, level);
             int id = skill.value;
@@ -32,13 +34,13 @@ namespace SmaugCS.Spells.Smaug
             CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(mi);
             if (CheckFunctions.CheckIfNullObjectCasting(mob, skill, ch)) return ReturnTypes.None;
 
-            mob.Level = lvl.GetLowestOfTwoNumbers(!string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : mob.Level);
+            mob.Level = lvl.GetLowestOfTwoNumbers(!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : mob.Level);
             mob.ArmorClass = mob.Level.Interpolate(100, -100);
             mob.MaximumHealth = mob.Level*8 + SmaugRandom.Between(mob.Level*mob.Level/4, mob.Level*mob.Level);
             mob.CurrentHealth = mob.MaximumHealth;
             mob.CurrentCoin = 0;
 
-            magic.successful_casting(skill, ch, mob, null);
+            ch.SuccessfulCast(skill, mob);
             ch.CurrentRoom.ToRoom(mob);
             mob.AddFollower(ch);
 

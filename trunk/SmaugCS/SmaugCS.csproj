@@ -108,7 +108,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\TypeMapAttribute.cs" />
+    <Compile Include="Extensions\Character\Affect.cs" />
+    <Compile Include="Extensions\Character\Damage.cs" />
+    <Compile Include="Extensions\Character\Deity.cs" />
+    <Compile Include="Extensions\Character\Experience.cs" />
+    <Compile Include="Extensions\Character\ObjectLocator.cs" />
+    <Compile Include="Extensions\Character\Statistics.cs" />
+    <Compile Include="Extensions\Character\Timer.cs" />
+    <Compile Include="Repositories\TypeMapAttribute.cs" />
     <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
     <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
     <Compile Include="Behavior\Shopkeeper\Interact.cs" />
@@ -138,7 +145,7 @@
     <Compile Include="Commands\Polymorph\Revert.cs" />
     <Compile Include="ExpressionTableInitializer.cs" />
     <Compile Include="Extensions\AreaExtensions.cs" />
-    <Compile Include="Extensions\CharacterInstanceExtensions.cs" />
+    <Compile Include="Extensions\Character\CharacterInstanceExtensions.cs" />
     <Compile Include="Extensions\DatabaseManagerExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />
     <Compile Include="Extensions\LogManagerExtensions.cs" />

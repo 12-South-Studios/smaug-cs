@@ -575,7 +575,7 @@ namespace SmaugCS
             if (victim.CurrentFighting != null)
                 return attrib.Messages.First();
 
-            if (fight.who_fighting(victim) == ch)
+            if (fight.GetMyTarget(victim) == ch)
                 return attrib.Messages[1];
 
             if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)
@@ -719,7 +719,7 @@ namespace SmaugCS
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'peek' not found");
 
-            if (SmaugRandom.Percent() < Macros.LEARNED(ch, (int) skill.ID))
+            if (SmaugRandom.D100() < Macros.LEARNED(ch, (int) skill.ID))
             {
                 color.ch_printf(ch, "\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
                 show_list_to_char(victim.Carrying, ch, true, true);

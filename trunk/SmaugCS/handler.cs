@@ -11,6 +11,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -439,7 +440,7 @@ namespace SmaugCS
 
                 location.ToRoom(ch);
 
-                CharacterInstance wch = CharacterInstanceExtensions.GetCharacterInRoom(ch, "healer");
+                CharacterInstance wch = ch.GetCharacterInRoom("healer");
                 if (wch != null)
                 {
                     comm.act(ATTypes.AT_MAGIC, "$n mutters a few incantations, waves $s hands and points $s finger.",
@@ -521,7 +522,7 @@ namespace SmaugCS
             int drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ch.PlayerData.ConditionTable[ConditionTypes.Drunk]);
             if (Math.Abs(ms) + (drunk / 3) < 30)
                 return false;
-            if ((SmaugRandom.Percent() + (ms < 0 ? 15 : 5)) > Math.Abs(ms) / 2 + drunk / 4)
+            if ((SmaugRandom.D100() + (ms < 0 ? 15 : 5)) > Math.Abs(ms) / 2 + drunk / 4)
                 return false;
 
             string output = (ms > 15)
@@ -656,17 +657,17 @@ namespace SmaugCS
             if (attrib != null && !string.IsNullOrEmpty(attrib.Messages[1]))
             {
                 SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(attrib.Messages[1]);
-                returnCode = magic.obj_cast_spell((int)skill.ID, level, ch, ch, null);
+                returnCode = ch.ObjectCastSpell((int)skill.ID, level, ch);
             }
 
             if (trapType == TrapTypes.Blade || trapType == TrapTypes.ElectricShock)
-                returnCode = fight.damage(ch, ch, dam, Program.TYPE_UNDEFINED);
+                returnCode = ch.CauseDamageTo(ch, dam, Program.TYPE_UNDEFINED);
             if ((trapType == TrapTypes.PoisonArrow
                            || trapType == TrapTypes.PoisonDagger
                            || trapType == TrapTypes.PoisonDart
                            || trapType == TrapTypes.PoisonNeedle)
                 && returnCode == ReturnTypes.None)
-                returnCode = fight.damage(ch, ch, dam, Program.TYPE_UNDEFINED);
+                returnCode = ch.CauseDamageTo(ch, dam, Program.TYPE_UNDEFINED);
 
             return returnCode;
         }
@@ -801,7 +802,7 @@ namespace SmaugCS
 
         public static bool chance_attrib(CharacterInstance ch, short percent, short attrib)
         {
-            return (SmaugRandom.Percent() - ch.GetCurrentLuck() + 13 - attrib + 13 +
+            return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - attrib + 13 +
                     (ch.IsDevoted() ? ch.PlayerData.Favor/-500 : 0) <= percent);
         }
 

@@ -1,5 +1,6 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands
 {

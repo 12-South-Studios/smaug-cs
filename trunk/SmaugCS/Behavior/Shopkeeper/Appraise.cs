@@ -5,6 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Shops;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {

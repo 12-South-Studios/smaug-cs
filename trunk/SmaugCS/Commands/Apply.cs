@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Data;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands
@@ -26,7 +27,7 @@ namespace SmaugCS.Commands
             if (string.IsNullOrEmpty(secondArg))
                 victim = ch;
             else {
-                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, secondArg);
+                victim = ch.GetCharacterInRoom(secondArg);
                 obj = ch.GetObjectOnMeOrInRoom(secondArg);
 
                 if (CheckFunctions.CheckIfTrue(ch, victim == null && obj == null, "Apply it to what or whom?")) return;
@@ -49,9 +50,9 @@ namespace SmaugCS.Commands
                 UseSalve(salve, ch, victim);
 
             Macros.WAIT_STATE(ch, salve.Value[3]);
-            ReturnTypes retcode = magic.obj_cast_spell(salve.Value[4], salve.Value[0], ch, victim, null);
+            ReturnTypes retcode = ch.ObjectCastSpell(salve.Value[4], salve.Value[0], victim);
             if (retcode == ReturnTypes.None)
-                retcode = magic.obj_cast_spell(salve.Value[5], salve.Value[0], ch, victim, null);
+                retcode = ch.ObjectCastSpell(salve.Value[5], salve.Value[0], victim);
             if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.BothDied)
                 throw new CharacterDiedException("Salve {0}, Actor {1}, Victim {2}", salve.ID, ch.ID, victim.ID);
 

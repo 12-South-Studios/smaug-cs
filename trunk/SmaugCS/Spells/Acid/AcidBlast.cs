@@ -1,6 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
@@ -10,12 +11,12 @@ namespace SmaugCS.Spells
         {
             CharacterInstance victim = vo.CastAs<CharacterInstance>();
 
-            int damage = Common.SmaugRandom.RollDice(level, 6);
+            int damage = Common.SmaugRandom.D6(level);
 
             if (victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
                 damage /= 2;
 
-            return fight.damage(ch, victim, damage, sn);
+            return ch.CauseDamageTo(victim, damage, sn);
         }
     }
 }

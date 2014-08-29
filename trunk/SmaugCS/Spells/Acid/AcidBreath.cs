@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
@@ -28,7 +29,7 @@ namespace SmaugCS.Spells
 
             if (victim.SavingThrows.CheckSaveVsBreath(level, victim))
                 damage /= 2;
-            return fight.damage(ch, victim, damage, sn);
+            return ch.CauseDamageTo(victim, damage, sn);
         }
 
         private static void CheckDamageContainer(ObjectInstance obj, CharacterInstance victim)

@@ -73,7 +73,7 @@ namespace SmaugCS.Commands.Objects
                             skill.Target, skill.ID, obj.ID));
                 }
 
-                ReturnTypes retcode = magic.obj_cast_spell((int)skill.ID, obj.Value[0], ch, vch, null);
+                ReturnTypes retcode = ch.ObjectCastSpell((int)skill.ID, obj.Value[0], vch);
                 if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.BothDied)
                     throw new InvalidDataException(string.Format("Character {0} died using Skill {1} from Object {2}",
                         ch.ID, skill.ID, obj.ID));

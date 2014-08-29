@@ -15,7 +15,7 @@ namespace SmaugCS.Commands
         public static string TargetName;
         public static string RangedTargetName;
 
-        private static SkillData _skill = null;
+        private static SkillData _skill;
         private static bool _dontWait = false;
         private static int _blood = 0;
         private static int _mana = 0;
@@ -52,7 +52,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            if (!ch.IsNpc() && (SmaugRandom.Percent() + _skill.difficulty*5) > ch.PlayerData.Learned[_skill.ID])
+            if (!ch.IsNpc() && (SmaugRandom.D100() + _skill.difficulty*5) > ch.PlayerData.Learned[_skill.ID])
             {
 
             }

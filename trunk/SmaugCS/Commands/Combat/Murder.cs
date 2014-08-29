@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
@@ -48,7 +49,7 @@ namespace SmaugCS.Commands.Combat
                 Yell.do_yell(victim, buf);
 
             fight.check_illegal_pk(ch, victim);
-            fight.check_attacker(ch, victim);
+            fight.CheckAttackForAttackerFlag(ch, victim);
             fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
         }
     }

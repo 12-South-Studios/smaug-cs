@@ -5,11 +5,9 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Data;
 using SmaugCS.Objects;
 
 // ReSharper disable CheckNamespace

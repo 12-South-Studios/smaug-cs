@@ -526,6 +526,7 @@ namespace SmaugCS
         public static int TYPE_UNDEFINED = -1;
         public static int TYPE_LOCAL = 1;
         public static int TYPE_IMC = 2;
+        public static int TYPE_HIT = 1000;
         #endregion
 
         #region Calendar

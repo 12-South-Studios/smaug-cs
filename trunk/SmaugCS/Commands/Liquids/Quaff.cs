@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -43,10 +44,10 @@ namespace SmaugCS.Commands.Liquids
             }
 
             bool hgFlag = !(!ch.IsNpc() &&
-                           (!ch.IsPKill() || (ch.IsPKill() && !ch.PlayerData.Flags.IsSet((int)PCFlags.HighGag))));
+                           (!ch.IsPKill() || (ch.IsPKill() && !ch.PlayerData.Flags.IsSet(PCFlags.HighGag))));
 
             if (ch.CurrentFighting != null
-                && SmaugRandom.Percent() > (ch.GetCurrentDexterity()*2 + 48))
+                && SmaugRandom.D100() > (ch.GetCurrentDexterity()*2 + 48))
             {
                 comm.act(ATTypes.AT_MAGIC, "$n fumbles $p and it shatters into fragments.", ch, obj, null, ToTypes.Room);
                 if (!hgFlag)
@@ -71,7 +72,7 @@ namespace SmaugCS.Commands.Liquids
                     }
                 }
 
-                if (fight.who_fighting(ch) != null && ch.IsPKill())
+                if (fight.GetMyTarget(ch) != null && ch.IsPKill())
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
                 else 
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
@@ -81,11 +82,11 @@ namespace SmaugCS.Commands.Liquids
                 if (!ch.IsNpc() && ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
                     comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null, ToTypes.Character);
 
-                ReturnTypes retcode = magic.obj_cast_spell(obj.Value[1], obj.Value[0], ch, ch, null);
+                ReturnTypes retcode = ch.ObjectCastSpell(obj.Value[1], obj.Value[0], ch);
                 if (retcode == ReturnTypes.None)
-                    retcode = magic.obj_cast_spell(obj.Value[2], obj.Value[0], ch, ch, null);
+                    retcode = ch.ObjectCastSpell(obj.Value[2], obj.Value[0], ch);
                 if (retcode == ReturnTypes.None)
-                    retcode = magic.obj_cast_spell(obj.Value[3], obj.Value[0], ch, ch, null);
+                    retcode = ch.ObjectCastSpell(obj.Value[3], obj.Value[0], ch);
             }
 
             if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_FLASK_BREWING)

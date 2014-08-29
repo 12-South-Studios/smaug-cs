@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Social
 {
@@ -45,7 +46,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, firstArgument);
+            CharacterInstance victim = ch.GetCharacterInWorld(firstArgument);
             if (victim == null ||
                 (victim.IsNpc() && victim.CurrentRoom != ch.CurrentRoom)
                 || (!ch.IsNotAuthorized() && victim.IsNotAuthorized() && !ch.IsImmortal()))

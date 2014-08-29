@@ -47,7 +47,7 @@ namespace SmaugCS.Spells.Smaug
                 }
             }
 
-            ReturnTypes retcode = fight.damage(ch, vch, damage, sn);
+            ReturnTypes retcode = ch.CauseDamageTo(vch, damage, sn);
             if (retcode == ReturnTypes.None
                 && !ch.CharDied() && !vch.CharDied()
                 &&
@@ -108,7 +108,7 @@ namespace SmaugCS.Spells.Smaug
         private static int GetBaseDamage(int level, CharacterInstance ch, SkillData skill)
         {
             return !string.IsNullOrEmpty(skill.Dice)
-                ? magic.dice_parse(ch, level, skill.die_char)
+                ? magic.ParseDiceExpression(ch, skill.DieCharacterMessage)
                 : SmaugRandom.Between(1, level/2);
         }
     }

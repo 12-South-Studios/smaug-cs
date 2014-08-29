@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using NCalc;
 using Realm.Library.NCalcExt;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS

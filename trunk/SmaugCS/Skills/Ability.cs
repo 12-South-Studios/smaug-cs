@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -16,7 +17,7 @@ namespace SmaugCS.Skills
         public static bool CheckAbility(CharacterInstance ch, string command, string argument, 
             IDatabaseManager databaseManager = null)
         {
-            int sn = magic.ch_slookup(ch, command);
+            int sn = magic.GetIDOfSkillCharacterKnows(ch, command);
             if (sn == -1)
                 return false;
 
@@ -28,7 +29,7 @@ namespace SmaugCS.Skills
             if (!interp.check_pos(ch, skill.MinimumPosition))
                 return true;
 
-            if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.IsCharmedOrPossessed,
+            if (CheckFunctions.CheckIf(ch, HelperFunctions.IsCharmedOrPossessed,
                 "For some reason, you seem unable to perform that...",
                 new List<object> { ch }))
             {
@@ -44,12 +45,12 @@ namespace SmaugCS.Skills
                 mana = ch.IsNpc() ? 0 : skill.MinimumMana
                         .GetHighestOfTwoNumbers(100 / (2 + ch.Level - skill.RaceLevel[(int)ch.CurrentRace]));
 
-                if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.HasSufficientBloodPower,
+                if (CheckFunctions.CheckIf(ch, HelperFunctions.HasSufficientBloodPower,
                     "You don't have enough blood power.",
                     new List<object> { ch, blood }))
                     return true;
 
-                if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.HasSufficientMana, "You don't have enough mana.",
+                if (CheckFunctions.CheckIf(ch, HelperFunctions.HasSufficientMana, "You don't have enough mana.",
                     new List<object> { ch, mana }))
                     return true;
             }
@@ -73,11 +74,11 @@ namespace SmaugCS.Skills
 
                     case TargetTypes.Ignore:
                         vo = null;
-                        victim = fight.who_fighting(ch);
+                        victim = fight.GetMyTarget(ch);
                         targetName = (argument.IsNullOrEmpty() && victim != null) ? victim.Name : argument;
                         break;
                     case TargetTypes.OffensiveCharacter:
-                        victim = fight.who_fighting(ch);
+                        victim = fight.GetMyTarget(ch);
 
                         if (argument.IsNullOrEmpty() && victim == null)
                         {
@@ -85,68 +86,45 @@ namespace SmaugCS.Skills
                             return true;
                         }
 
-                        victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
-                        if (!argument.IsNullOrEmpty() && victim == null)
-                        {
-                            color.send_to_char("They aren't here.\r\n", ch);
-                            return true;
-                        }
+                        victim = ch.GetCharacterInRoom(argument);
+                        if (CheckFunctions.CheckIfTrue(ch, !argument.IsNullOrEmpty() && victim == null,
+                            "They aren't here.")) return true;
 
                         if (fight.is_safe(ch, victim, true))
                             return true;
 
-                        if (ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf))
-                        {
-                            color.send_to_char("You can't target yourself!\r\n", ch);
-                            return true;
-                        }
+                        if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
+                            "You can't target yourself!")) return true;
 
                         if (!ch.IsNpc())
                         {
                             if (!victim.IsNpc())
                             {
-                                if (ch.GetTimer(TimerTypes.PKilled) != null)
-                                {
-                                    color.send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
-                                    return true;
-                                }
-                                if (victim.GetTimer(TimerTypes.PKilled) != null)
-                                {
-                                    color.send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
-                                    return true;
-                                }
-                                if (victim != ch)
-                                    color.send_to_char("You really shouldn't do this to another player...\r\n", ch);
+                                if (CheckFunctions.CheckIfNotNullObject(ch, ch.GetTimer(TimerTypes.PKilled),
+                                    "You have been killed in the last five minutes.")) return true;
+                                if (CheckFunctions.CheckIfNotNullObject(ch, victim.GetTimer(TimerTypes.PKilled),
+                                    "This player has been killed in the last five minutes.")) return true;
+                                if (CheckFunctions.CheckIfEquivalent(ch, ch, victim,
+                                    "You really shouldn't do this to another player...")) return true;
                             }
 
-                            if (ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim)
-                            {
-                                color.send_to_char("You can't do that on your own follower.\r\n", ch);
-                                return true;
-                            }
+                            if (CheckFunctions.CheckIfTrue(ch,
+                                ch.IsAffected(AffectedByTypes.Charm) && ch.Master == victim,
+                                "You can't do that on your own follower.")) return true;
                         }
 
-                        if (fight.check_illegal_pk(ch, victim))
-                        {
-                            color.send_to_char("You can't do that to another player!\r\n", ch);
-                            return true;
-                        }
+                        if (CheckFunctions.CheckIfTrue(ch, fight.check_illegal_pk(ch, victim),
+                            "You can't do that to another player!")) return true;
 
                         vo = victim;
                         break;
                     case TargetTypes.DefensiveCharacter:
-                        victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
-                        if (!argument.IsNullOrEmpty() && victim == null)
-                        {
-                            color.send_to_char("They aren't here.\r\n", ch);
-                            return true;
-                        }
+                        victim = ch.GetCharacterInRoom(argument);
+                        if (CheckFunctions.CheckIfTrue(ch, !argument.IsNullOrEmpty() && victim == null,
+                            "They aren't here.")) return true;
 
-                        if (ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf))
-                        {
-                            color.send_to_char("You can't target yourself!\r\n", ch);
-                            return true;
-                        }
+                        if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
+                            "You can't target yourself!")) return true;
 
                         vo = victim;
                         break;
@@ -156,11 +134,7 @@ namespace SmaugCS.Skills
                         break;
                     case TargetTypes.InventoryObject:
                         obj = ch.GetCarriedObject(argument);
-                        if (obj == null)
-                        {
-                            color.send_to_char("You can't find that.\r\n", ch);
-                            return true;
-                        }
+                        if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't find that.")) return true;
 
                         vo = obj;
                         break;
@@ -169,9 +143,9 @@ namespace SmaugCS.Skills
                 Macros.WAIT_STATE(ch, skill.Rounds);
 
                 //// Check for failure
-                if ((SmaugRandom.Percent() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, (int)skill.ID)))
+                if ((SmaugRandom.D100() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, (int)skill.ID)))
                 {
-                    magic.failed_casting(skill, ch, victim, obj);
+                    ch.FailedCast(skill, victim, obj);
                     skill.LearnFromFailure(ch);
                     if (mana > 0)
                     {

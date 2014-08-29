@@ -1,8 +1,7 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 using SmaugCS.Common;
 
@@ -17,13 +16,13 @@ namespace SmaugCS.Spells
 
             if (victim.IsImmune(ResistanceTypes.Magic))
             {
-                magic.immune_casting(skill, ch, victim, null);
+                ch.ImmuneCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
             if (victim.IsAffectedBy(sn))
             {
-                magic.failed_casting(skill, ch, victim, null);
+                ch.FailedCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
@@ -40,7 +39,7 @@ namespace SmaugCS.Spells
             //af.BitVector.ClearBits();
 
             victim.AddAffect(af);
-            magic.successful_casting(skill, ch, victim, null);
+            ch.SuccessfulCast(skill, victim);
 
             return ReturnTypes.None;
         }

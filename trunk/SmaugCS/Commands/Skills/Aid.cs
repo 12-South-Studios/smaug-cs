@@ -19,7 +19,7 @@ namespace SmaugCS.Commands.Skills
             string arg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, arg, "Aid whom?")) return;
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, arg);
+            CharacterInstance victim = ch.GetCharacterInRoom(arg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "Not on mobs.")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentMount, "You can't do that while mounted.")) return;
@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Skills
                 return;
             }
 
-            int percent = SmaugRandom.Percent() - ch.GetCurrentLuck() - 13;
+            int percent = SmaugRandom.D100() - ch.GetCurrentLuck() - 13;
 
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("aid");
             if (skill == null)

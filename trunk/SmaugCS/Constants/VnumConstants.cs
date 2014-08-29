@@ -55,5 +55,7 @@
         public static int MOB_VNUM_SUPERMOB { get { return 3; } }
         public static long MOB_VNUM_DEITY { get { return 17; } }
         #endregion
+
+        public static long MOB_VNUM_ANIMATED_CORPSE { get; set; }
     }
 }

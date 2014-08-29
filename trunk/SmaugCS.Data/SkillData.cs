@@ -54,9 +54,9 @@ namespace SmaugCS.Data
         public string MissCharacterMessage { get; set; }
         public string MissVictimMessage { get; set; }
         public string MissRoomMessage { get; set; }
-        public string die_char { get; set; }
-        public string die_vict { get; set; }
-        public string die_room { get; set; }
+        public string DieCharacterMessage { get; set; }
+        public string DieVictimMessage { get; set; }
+        public string DieRoomMessage { get; set; }
         public string ImmuneCharacterMessage { get; set; }
         public string ImmuneVictimMessage { get; set; }
         public string ImmuneRoomMessage { get; set; }

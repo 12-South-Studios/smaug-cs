@@ -353,7 +353,7 @@ namespace SmaugCS.Weather
 
             int rand = SmaugRandom.Between(-10, 10);
 
-            switch (SmaugRandom.RollDice(1, 8))
+            switch (SmaugRandom.D8())
             {
                 case 1:
                     cell.ChangeCloudCover(rand);

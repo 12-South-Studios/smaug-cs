@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using Realm.Library.Common;
-using SmaugCS.Attributes;
 using SmaugCS.Auction;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;

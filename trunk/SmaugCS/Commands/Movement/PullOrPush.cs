@@ -236,16 +236,16 @@ namespace SmaugCS.Commands.Movement
                     return true;
                 }
 
-                if (obj.Value[3].IsSet((int) ContainerFlags.Closeable))
-                    container.Value[1].ToggleBit((int) ContainerFlags.Closeable);
-                if (obj.Value[3].IsSet((int)ContainerFlags.PickProof))
-                    container.Value[1].ToggleBit((int)ContainerFlags.PickProof);
-                if (obj.Value[3].IsSet((int)ContainerFlags.Closed))
-                    container.Value[1].ToggleBit((int)ContainerFlags.Closed);
-                if (obj.Value[3].IsSet((int)ContainerFlags.Locked))
-                    container.Value[1].ToggleBit((int)ContainerFlags.Locked);
-                if (obj.Value[3].IsSet((int)ContainerFlags.EatKey))
-                    container.Value[1].ToggleBit((int)ContainerFlags.EatKey);
+                if (obj.Value[3].IsSet( ContainerFlags.Closeable))
+                    container.Value[1].ToggleBit( ContainerFlags.Closeable);
+                if (obj.Value[3].IsSet(ContainerFlags.PickProof))
+                    container.Value[1].ToggleBit(ContainerFlags.PickProof);
+                if (obj.Value[3].IsSet(ContainerFlags.Closed))
+                    container.Value[1].ToggleBit(ContainerFlags.Closed);
+                if (obj.Value[3].IsSet(ContainerFlags.Locked))
+                    container.Value[1].ToggleBit(ContainerFlags.Locked);
+                if (obj.Value[3].IsSet(ContainerFlags.EatKey))
+                    container.Value[1].ToggleBit(ContainerFlags.EatKey);
 
                 return true;
             }
@@ -254,7 +254,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireSpell(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.Cast))
+            if (obj.Value[0].IsSet(TriggerFlags.Cast))
             {
                 if (obj.Value[1] <= 0 || !Macros.IS_VALID_SN(obj.Value[1]))
                 {
@@ -263,8 +263,7 @@ namespace SmaugCS.Commands.Movement
                 }
 
                 int minLevel = obj.Value[2] > 0 ? obj.Value[2] : ch.Level;
-                magic.obj_cast_spell(obj.Value[1],
-                    1.GetNumberThatIsBetween(minLevel, LevelConstants.MaxLevel), ch, ch, null);
+                ch.ObjectCastSpell(obj.Value[1], 1.GetNumberThatIsBetween(minLevel, LevelConstants.MaxLevel), ch);
                 return true;
             }
             return false;
@@ -272,7 +271,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireMobLoading(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.MobileLoad))
+            if (obj.Value[0].IsSet(TriggerFlags.MobileLoad))
             {
                 MobTemplate template = DatabaseManager.Instance.MOBILE_INDEXES.Get(obj.Value[1]);
                 if (template == null)

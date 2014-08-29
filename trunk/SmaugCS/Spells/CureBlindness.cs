@@ -16,7 +16,7 @@ namespace SmaugCS.Spells
 
             if (victim.IsImmune(ResistanceTypes.Magic))
             {
-                magic.immune_casting(skill, ch, victim, null);
+                ch.ImmuneCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 

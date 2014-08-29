@@ -5,6 +5,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -180,7 +181,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 
         private static void group_player(CharacterInstance ch, string argument)
         {
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
+            CharacterInstance victim = ch.GetCharacterInRoom(argument);
             if (victim == null)
             {
                 color.send_to_char("They aren't here.\r\n", ch);
