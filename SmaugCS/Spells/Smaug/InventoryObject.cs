@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
@@ -58,10 +59,10 @@ namespace SmaugCS.Spells.Smaug
                 case ItemTypes.DrinkContainer:
                     handler.separate_obj(obj);
                     obj.Value[3] = 0;
-                    magic.successful_casting(skill, ch, null, obj);
+                    ch.SuccessfulCast(skill, null, obj);
                     break;
                 default:
-                    magic.failed_casting(skill, ch, null, obj);
+                    ch.FailedCast(skill, null, obj);
                     break;
             }
             return ReturnTypes.None;
@@ -87,9 +88,9 @@ namespace SmaugCS.Spells.Smaug
                         skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
 
                     ObjectInstance clonedObj = null;    // TODO Clone ObjectInstance
-                    clonedObj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 0;
+                    clonedObj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 0;
                     clonedObj.ToCharacter(ch);
-                    magic.successful_casting(skill, ch, null, obj);
+                    ch.SuccessfulCast(skill, null, obj);
                     break;
                 default:
                     if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 10) ||
@@ -110,10 +111,10 @@ namespace SmaugCS.Spells.Smaug
                 case ItemTypes.DrinkContainer:
                     handler.separate_obj(obj);
                     obj.Value[3] = 1;
-                    magic.successful_casting(skill, ch, null, obj);
+                    ch.SuccessfulCast(skill, null, obj);
                     break;
                 default:
-                    magic.failed_casting(skill, ch, null, obj);
+                    ch.FailedCast(skill, null, obj);
                     break;
             }
             return ReturnTypes.None;
@@ -132,7 +133,7 @@ namespace SmaugCS.Spells.Smaug
             if (CheckFunctions.CheckIfTrue(ch, obj.Value[2] != 0 && obj.Value[1] != 0, "It contains some other liquid."))
                 return ReturnTypes.SpellFailed;
 
-            int minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : level)*
+            int minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : level)*
                          (cell.Precipitation >= 0 ? 2 : 1);
             int water = minVal.GetLowestOfTwoNumbers(obj.Value[0] - obj.Value[1]);
 
@@ -147,18 +148,18 @@ namespace SmaugCS.Spells.Smaug
                 }
             }
 
-            magic.successful_casting(skill, ch, null, obj);
+            ch.SuccessfulCast(skill, null, obj);
             return ReturnTypes.None;
         }
 
         private static ReturnTypes ObscureSpellAction(SkillData skill, int level, CharacterInstance ch, ObjectInstance obj)
         {
-            int percent = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 20;
+            int percent = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 20;
             if (CheckFunctions.CheckIfTrueCasting(
                     obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || ch.Chance(percent), skill, ch))
                 return ReturnTypes.SpellFailed;
 
-            magic.successful_casting(skill, ch, null, obj);
+            ch.SuccessfulCast(skill, null, obj);
             obj.ExtraFlags.SetBit(ItemExtraFlags.Invisible);
             return ReturnTypes.None;
         }

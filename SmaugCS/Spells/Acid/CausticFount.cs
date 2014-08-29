@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
@@ -12,12 +13,12 @@ namespace SmaugCS.Spells
 
             int lvl = 0.GetHighestOfTwoNumbers(level);
             lvl = 42.GetLowestOfTwoNumbers(lvl);
-            int damage = (int) (1.3f*(2*lvl*SmaugRandom.Between(1, 6) - 31));
+            int damage = (int) (1.3f*(2*lvl*SmaugRandom.D6() - 31));
             damage = 0.GetHighestOfTwoNumbers(damage);
 
             if (victim.SavingThrows.CheckSaveVsSpellStaff(lvl, victim))
                 damage = damage*1/2;
-            return fight.damage(ch, victim, damage, sn);
+            return ch.CauseDamageTo(victim, damage, sn);
         }
     }
 }

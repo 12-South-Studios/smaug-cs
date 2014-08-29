@@ -47,13 +47,14 @@ namespace SmaugCS.Data
         public string Class { get; set; }
         public SavingThrowData SavingThrows { get; set; }
         public Dictionary<StatisticTypes, int> Statistics { get; set; }
+        public string PlayerName { get; set; }
 
         private MobTemplate(long id, string name)
             : base(id, name)
         {
             SavingThrows = SavingThrowData.Create();
-            HitDice = DiceData.Create();
-            DamageDice = DiceData.Create();
+            HitDice = new DiceData();
+            DamageDice = new DiceData();
             Statistics = new Dictionary<StatisticTypes, int>();
 
             ShortDescription = string.Format("A newly created {0}", name);
@@ -83,18 +84,22 @@ namespace SmaugCS.Data
 
         public void SetStats2(int numberHitDice, int sizeHitDice, int bonusHitDice)
         {
-            HitDice = DiceData.Create();
-            HitDice.NumberOf = numberHitDice;
-            HitDice.SizeOf = sizeHitDice;
-            HitDice.Bonus = bonusHitDice;
+            HitDice = new DiceData
+            {
+                NumberOf = numberHitDice, 
+                SizeOf = sizeHitDice,
+                Bonus = bonusHitDice
+            };
         }
 
         public void SetStats3(int numberDmgDice, int sizeDmgDice, int bonusDmgDice)
         {
-            DamageDice = DiceData.Create();
-            DamageDice.NumberOf = numberDmgDice;
-            DamageDice.SizeOf = sizeDmgDice;
-            DamageDice.Bonus = bonusDmgDice;
+            DamageDice = new DiceData
+            {
+                NumberOf = numberDmgDice, 
+                SizeOf = sizeDmgDice,
+                Bonus = bonusDmgDice
+            };
         }
 
         public void SetStats4(int height, int weight, int numberAttacks, int hitRoll, int dmgRoll)

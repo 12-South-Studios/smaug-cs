@@ -30,7 +30,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (IsVisibleToKeeper(keeper, ch)) return null;
 
             int speakswell = keeper.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, keeper));
-            if ((SmaugRandom.Percent() % 65) > speakswell)
+            if ((SmaugRandom.D100() % 65) > speakswell)
             {
                 string buffer;
                 if (speakswell > 60)
@@ -73,7 +73,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool DoesKeeperHateFighting(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (fight.who_fighting(ch) != null)
+            if (fight.GetMyTarget(ch) != null)
             {
                 color.ch_printf(ch, "%s doesn't seem to wnat to get involved.\r\n", Macros.PERS(keeper, ch));
                 return true;
@@ -83,7 +83,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool IsKeeperFighting(CharacterInstance keeper, CharacterInstance ch)
         {
-            CharacterInstance whof = fight.who_fighting(keeper);
+            CharacterInstance whof = fight.GetMyTarget(keeper);
             if (whof != null)
             {
                 if (!CheckFunctions.CheckIfEquivalent(ch, whof, ch, "I don't think that's a good idea..."))

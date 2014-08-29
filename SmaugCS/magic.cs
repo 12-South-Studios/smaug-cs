@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -12,11 +14,13 @@ namespace SmaugCS
 {
     public static class magic
     {
-        public static int ch_slookup(CharacterInstance ch, string name)
+        /// <summary>
+        /// Was ch_slookup
+        /// </summary>
+        public static int GetIDOfSkillCharacterKnows(this CharacterInstance ch, string name)
         {
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(name);
-            if (skill == null)
-                return -1;
+            if (skill == null) return 0;
 
             if (ch.IsNpc())
                 return (int)skill.ID;
@@ -24,7 +28,7 @@ namespace SmaugCS
                 && (ch.Level >= skill.SkillLevels.ToList()[(int)ch.CurrentClass]
                     || ch.Level >= skill.RaceLevel[(int)ch.CurrentRace]))
                 return (int)skill.ID;
-            return -1;
+            return 0;
         }
 
         public static int personal_lookup(CharacterInstance ch, string name)
@@ -39,43 +43,43 @@ namespace SmaugCS
             return -1;
         }
 
-        public static int find_skill_of_type(CharacterInstance ch, string name, bool know, int expectedType)
+        public static int FindSkillOfType(CharacterInstance ch, string skillName, bool shouldCharacterKnowSkill,
+            SkillTypes expectedType)
         {
-            SkillData skill = null;
+            SkillData skill;
 
-            if (ch == null || ch.IsNpc() || !know)
-                skill = DatabaseManager.Instance.GetEntity<SkillData>(name);
+            if (ch == null || ch.IsNpc() || !shouldCharacterKnowSkill)
+                skill = DatabaseManager.Instance.GetEntity<SkillData>(skillName);
             else
-                skill = DatabaseManager.Instance.GetEntity<SkillData>(ch_slookup(ch, name));
+                skill = DatabaseManager.Instance.GetEntity<SkillData>(ch.GetIDOfSkillCharacterKnows(skillName));
 
-            if (skill == null)
-                return -1;
-            return (int)skill.Type == expectedType ? (int)skill.ID : -1;
+            if (skill == null) return 0;
+            return skill.Type == expectedType ? (int) skill.ID : 0;
         }
 
         public static int find_spell(CharacterInstance ch, string name, bool know)
         {
-            return find_skill_of_type(ch, name, know, (int)SkillTypes.Spell);
+            return FindSkillOfType(ch, name, know, SkillTypes.Spell);
         }
 
         public static int find_skill(CharacterInstance ch, string name, bool know)
         {
-            return find_skill_of_type(ch, name, know, (int)SkillTypes.Skill);
+            return FindSkillOfType(ch, name, know, SkillTypes.Skill);
         }
 
         public static int find_ability(CharacterInstance ch, string name, bool know)
         {
-            return find_skill_of_type(ch, name, know, (int)SkillTypes.Racial);
+            return FindSkillOfType(ch, name, know, SkillTypes.Racial);
         }
 
         public static int find_weapon(CharacterInstance ch, string name, bool know)
         {
-            return find_skill_of_type(ch, name, know, (int)SkillTypes.Weapon);
+            return FindSkillOfType(ch, name, know, SkillTypes.Weapon);
         }
 
         public static int find_tongue(CharacterInstance ch, string name, bool know)
         {
-            return find_skill_of_type(ch, name, know, (int)SkillTypes.Tongue);
+            return FindSkillOfType(ch, name, know, SkillTypes.Tongue);
         }
 
         public static int slot_lookup(int slot)
@@ -148,15 +152,14 @@ namespace SmaugCS
             return 1;
         }
 
-        public static void successful_casting(SkillData skill, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
+        public static void SuccessfulCast(this CharacterInstance ch, SkillData skill, CharacterInstance victim = null,
+            ObjectInstance obj = null)
         {
             ATTypes chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
             ATTypes chIt = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HIT;
 
             if (skill.Target != TargetTypes.OffensiveCharacter)
-            {
                 chIt = chItRoom;
-            }
 
             if (ch != null && ch != victim)
             {
@@ -192,15 +195,14 @@ namespace SmaugCS
             }
         }
 
-        public static void failed_casting(SkillData skill, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
+        public static void FailedCast(this CharacterInstance ch, SkillData skill, CharacterInstance victim = null,
+            ObjectInstance obj = null)
         {
             ATTypes chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
             ATTypes chItMe = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HITME;
 
             if (skill.Target != TargetTypes.OffensiveCharacter)
-            {
                 chItMe = chItRoom;
-            }
 
             if (ch != null && ch != victim)
             {
@@ -238,15 +240,14 @@ namespace SmaugCS
             }
         }
 
-        public static void immune_casting(SkillData skill, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
+        public static void ImmuneCast(this CharacterInstance ch, SkillData skill, CharacterInstance victim = null,
+            ObjectInstance obj = null)
         {
             ATTypes chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
             ATTypes chIt = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HIT;
 
             if (skill.Target != TargetTypes.OffensiveCharacter)
-            {
                 chIt = chItRoom;
-            }
 
             if (ch != null && ch != victim)
             {
@@ -326,11 +327,7 @@ namespace SmaugCS
         /// <summary>
         /// Make adjustments to saving throw based on RIS (resistance)
         /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="schance"></param>
-        /// <param name="ris"></param>
-        /// <returns></returns>
-        public static int ris_save(CharacterInstance ch, int schance, int ris)
+        public static int ModifySavingThrowWithResistance(this CharacterInstance ch, int chance, ResistanceTypes ris)
         {
             int modifier = 10;
             if (ch.Immunity.IsSet(ris))
@@ -347,8 +344,8 @@ namespace SmaugCS
             if (modifier <= 0)
                 return 1000;
             if (modifier == 10)
-                return schance;
-            return (schance * modifier) / 10;
+                return chance;
+            return (chance * modifier) / 10;
         }
 
         /// <summary>
@@ -369,11 +366,7 @@ namespace SmaugCS
         /// 
         /// Used for spell dice parsing, i.e. 3d8+L-6
         /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="level"></param>
-        /// <param name="texp"></param>
-        /// <returns></returns>
-        public static int rd_parse(CharacterInstance ch, int level, string expression)
+        public static int rd_parse(CharacterInstance ch, string expression)
         {
             if (expression.IsNullOrWhitespace())
                 return 0;
@@ -382,9 +375,9 @@ namespace SmaugCS
             return GameManager.Instance.ExpParser.Execute(expression);
         }
 
-        public static int dice_parse(CharacterInstance ch, int level, string texp)
+        public static int ParseDiceExpression(CharacterInstance ch, string expression)
         {
-            return rd_parse(ch, level, texp);
+            return rd_parse(ch, expression);
         }
 
         /// <summary>
@@ -460,7 +453,7 @@ namespace SmaugCS
 
             if (arg.IsNullOrEmpty())
             {
-                victim = fight.who_fighting(ch);
+                victim = ch.GetMyTarget();
                 if (CheckFunctions.CheckIfNullObject(ch, victim, !silence ? "Cast the spell on whom?" : "")) return null;
             }
             else
@@ -472,8 +465,8 @@ namespace SmaugCS
             // Nuisance flag will pick who you are fighting for offensive spells up to 92% of the time
             if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
                 && ch.PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
-                victim = fight.who_fighting(ch);
+                SmaugRandom.D100() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
+                victim = ch.GetMyTarget();
 
             if (fight.is_safe(ch, victim, true))
                 return null;
@@ -504,7 +497,7 @@ namespace SmaugCS
                     {
                         if (!silence)
                             color.send_to_char("You really shouldn't do this to another player...", ch);
-                        else if (fight.who_fighting(victim) != ch)
+                        else if (fight.GetMyTarget(victim) != ch)
                             return null;
                     }
                 }
@@ -533,8 +526,8 @@ namespace SmaugCS
             // Nuisance flag will pick who you are fighting for defensive spells up to 36% of the time
             if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
                 && ch.PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.Percent() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
-                victim = fight.who_fighting(ch);
+                SmaugRandom.D100() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
+                victim = fight.GetMyTarget(ch);
 
             if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
                 !silence ? "You can't cast this on yourself!" : "")) return null;
@@ -561,18 +554,16 @@ namespace SmaugCS
             return obj;
         }
 
-        public static ReturnTypes obj_cast_spell(int sn, int level, CharacterInstance ch, CharacterInstance victim, ObjectInstance obj)
+        public static ReturnTypes ObjectCastSpell(this CharacterInstance ch, int sn, int level,
+            CharacterInstance victim = null, ObjectInstance obj = null)
         {
-            if (sn == -1)
-                return (int)ReturnTypes.None;
-
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             if (skill == null || skill.SpellFunction == null)
                 return ReturnTypes.Error;
 
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.NoMagic)
-                || (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe)
-                && skill.Target == TargetTypes.OffensiveCharacter))
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoMagic)
+                || (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
+                    && skill.Target == TargetTypes.OffensiveCharacter))
             {
                 color.set_char_color(ATTypes.AT_MAGIC, ch);
                 color.send_to_char("Nothing seems to happen...\r\n", ch);
@@ -589,22 +580,22 @@ namespace SmaugCS
                 {
                     case 0:
                     case 2:
-                        failed_casting(skill, ch, victim, null);
+                        ch.FailedCast(skill, victim);
                         break;
                     case 1:
                     case 3:
                         comm.act(ATTypes.AT_MAGIC, "The $t spell backfires!", ch, skill.Name, victim, ToTypes.Character);
                         if (victim != null)
-                            comm.act(ATTypes.AT_MAGIC, "$n's $t spell backfires!", ch, skill.Name, victim, ToTypes.Victim);
+                            comm.act(ATTypes.AT_MAGIC, "$n's $t spell backfires!", ch, skill.Name, victim,
+                                ToTypes.Victim);
                         comm.act(ATTypes.AT_MAGIC, "$n's $t spell backfires!", ch, skill.Name, victim, ToTypes.Room);
-                        return fight.damage(ch, ch, SmaugRandom.Between(1, level), Program.TYPE_UNDEFINED);
+                        return ch.CauseDamageTo(ch, SmaugRandom.Between(1, level), Program.TYPE_UNDEFINED);
                 }
 
                 return ReturnTypes.None;
             }
 
-            object vo = null;
-            string targetName = string.Empty;
+            object vo;
 
             switch (skill.Target)
             {
@@ -615,15 +606,15 @@ namespace SmaugCS
                 case TargetTypes.Ignore:
                     vo = null;
                     if (victim != null)
-                        targetName = victim.Name;
+                        Cast.TargetName = victim.Name;
                     else if (obj != null)
-                        targetName = obj.Name;
+                        Cast.TargetName = obj.Name;
                     break;
                 case TargetTypes.OffensiveCharacter:
                     if (victim != ch)
                     {
                         if (victim == null)
-                            victim = fight.who_fighting(ch);
+                            victim = fight.GetMyTarget(ch);
                         if (CheckFunctions.CheckIfTrue(ch, victim == null || (!victim.IsNpc() && !victim.IsInArena()),
                             "You can't do that.")) return ReturnTypes.None;
                     }
@@ -642,8 +633,8 @@ namespace SmaugCS
                 case TargetTypes.Self:
                     vo = ch;
                     if (CheckFunctions.CheckIfTrueCasting(
-                            skill.Type != SkillTypes.Herb && ch.Immunity.IsSet(ResistanceTypes.Magic),
-                            skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.None;
+                        skill.Type != SkillTypes.Herb && ch.Immunity.IsSet(ResistanceTypes.Magic),
+                        skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.None;
                     break;
                 case TargetTypes.InventoryObject:
                     if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't do that!")) return ReturnTypes.None;

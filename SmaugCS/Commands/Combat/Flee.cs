@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -12,7 +13,7 @@ namespace SmaugCS.Commands.Combat
     {
         public static void do_flee(CharacterInstance ch, string argument)
         {
-            if (fight.who_fighting(ch) == null)
+            if (fight.GetMyTarget(ch) == null)
             {
                 if (ch.IsInCombatPosition())
                     ch.CurrentPosition = ch.CurrentMount != null ? PositionTypes.Mounted : PositionTypes.Standing;
@@ -93,7 +94,7 @@ namespace SmaugCS.Commands.Combat
 
             if (!ch.IsNpc())
             {
-                CharacterInstance wf = fight.who_fighting(ch);
+                CharacterInstance wf = fight.GetMyTarget(ch);
                 comm.act(ATTypes.AT_FLEE, "You flee head over heels from combat!", ch, null, null, ToTypes.Character);
 
                 if (ch.Level < LevelConstants.AvatarLevel)

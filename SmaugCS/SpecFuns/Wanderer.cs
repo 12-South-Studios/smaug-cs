@@ -22,7 +22,7 @@ namespace SmaugCS.SpecFuns
             if (exit != null)
                 noExit = false;
 
-            if (SmaugRandom.Percent() <= 50)
+            if (SmaugRandom.D100() <= 50)
                 return false;
 
             foreach (ObjectInstance obj in ch.CurrentRoom.Contents)

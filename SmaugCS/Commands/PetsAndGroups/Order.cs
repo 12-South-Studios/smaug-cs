@@ -3,6 +3,7 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 
@@ -28,7 +29,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 all = true;
             else
             {
-                victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, secondArg);
+                victim = ch.GetCharacterInRoom(secondArg);
                 if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
                 if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Aye aye, right away!")) return;
                 if (CheckFunctions.CheckIfTrue(ch, !victim.IsAffected(AffectedByTypes.Charm) || victim.Master != ch,

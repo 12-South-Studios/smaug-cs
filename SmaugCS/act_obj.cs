@@ -8,6 +8,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -996,7 +997,7 @@ namespace SmaugCS
                     int dam = fall_count * obj.Weight / 2;
 
                     // Damage players in room
-                    if (obj.InRoom.Persons.Any() && SmaugCS.Common.SmaugRandom.Percent() > 15)
+                    if (obj.InRoom.Persons.Any() && SmaugRandom.D100() > 15)
                     {
                         foreach (CharacterInstance rch in obj.InRoom.Persons)
                         {
@@ -1007,7 +1008,7 @@ namespace SmaugCS
                                 comm.act(ATTypes.AT_WHITE, "$p bounces harmlessly off your head!", rch, obj, null,
                                          ToTypes.Character);
                             else
-                                fight.damage(rch, rch, dam * rch.Level, -1);
+                                rch.CauseDamageTo(rch, dam * rch.Level, -1);
                         }
                     }
 

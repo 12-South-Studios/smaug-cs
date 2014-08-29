@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 

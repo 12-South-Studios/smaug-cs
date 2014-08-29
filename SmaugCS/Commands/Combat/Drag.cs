@@ -7,6 +7,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
@@ -74,7 +75,7 @@ namespace SmaugCS.Commands.Combat
             chance += (ch.Level - victim.Level);
             chance += GetBonusByCharacterRace(ch);
 
-            if (CheckFunctions.CheckIfTrue(ch, chance < SmaugRandom.Percent(), "You failed."))
+            if (CheckFunctions.CheckIfTrue(ch, chance < SmaugRandom.D100(), "You failed."))
             {
                 victim.CurrentPosition = PositionTypes.Standing;
                 return;

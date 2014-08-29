@@ -5,6 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -37,7 +38,7 @@ namespace SmaugCS.Commands.Liquids
             DrinkFrom(ch, obj);
 
             int pulsesPerSecond = GameConstants.GetSystemValue<int>("PulsesPerSecond");
-            Macros.WAIT_STATE(ch, fight.who_fighting(ch) != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
+            Macros.WAIT_STATE(ch, fight.GetMyTarget(ch) != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
         }
 
         private static ObjectInstance GetDrinkSource(CharacterInstance ch, string arg)

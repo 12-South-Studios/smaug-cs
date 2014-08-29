@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Spells
 {
-    class BlackHand
+    public static class BlackHand
     {
-        public static int spell_black_hand(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes spell_black_hand(int sn, int level, CharacterInstance ch, object vo)
         {
-            // TODO
-            return 0;
+            int lvl = 0.GetHighestOfTwoNumbers(level);
+            lvl = 5.GetLowestOfTwoNumbers(lvl);
+
+            int dam = (int)(1.3f * (lvl * SmaugRandom.D6() + 3));
+
+            CharacterInstance victim = (CharacterInstance)vo;
+            if (victim.SavingThrows.CheckSaveVsSpellStaff(lvl, victim))
+                dam /= 4;
+
+            return ch.CauseDamageTo(victim, dam, sn);
         }
     }
 }

@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
@@ -37,7 +38,7 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, ch.IsInCombatPosition(), "You do the best you can!")) return;
 
             Macros.WAIT_STATE(ch, 1 * GameConstants.GetSystemValue<int>("PulseViolence"));
-            fight.check_attacker(ch, victim);
+            fight.CheckAttackForAttackerFlag(ch, victim);
             fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
         }
     }

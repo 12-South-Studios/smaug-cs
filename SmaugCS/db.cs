@@ -12,6 +12,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Shops;
+using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -432,7 +433,7 @@ namespace SmaugCS
             ch.CurrentClass = ClassTypes.None;
             ch.Speaking = (int)LanguageTypes.Common;
             ch.Speaks = (int)LanguageTypes.Common;
-            ch.BareDice = DiceData.Create();
+            ch.BareDice = new DiceData();
             ch.BareDice.NumberOf = 1;
             ch.BareDice.SizeOf = 4;
             ch.SubState = (int)CharacterSubStates.None;

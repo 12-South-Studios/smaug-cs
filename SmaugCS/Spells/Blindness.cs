@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 using SmaugCS.Common;
 
@@ -17,13 +18,13 @@ namespace SmaugCS.Spells
 
             if (victim.IsImmune(ResistanceTypes.Magic))
             {
-                magic.immune_casting(skill, ch, victim, null);
+                ch.ImmuneCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
             if (ch.IsAffected(AffectedByTypes.Blind) || ch.SavingThrows.CheckSaveVsSpellStaff(tmp, victim))
             {
-                magic.failed_casting(skill, ch, victim, null);
+                ch.FailedCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 

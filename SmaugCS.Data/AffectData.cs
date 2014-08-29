@@ -30,7 +30,7 @@ namespace SmaugCS.Data
         [XmlElement]
         public int SkillNumber { get; set; }
 
-        private AffectData()
+        public AffectData()
         {
             
         }

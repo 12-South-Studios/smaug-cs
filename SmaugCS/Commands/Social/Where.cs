@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands
 {
@@ -22,7 +23,7 @@ namespace SmaugCS.Commands
 
         private static void ViewIndividualPlayer(CharacterInstance ch, string firstArg)
         {
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, firstArg);
+            CharacterInstance victim = ch.GetCharacterInWorld(firstArg);
             if (victim != null)
             {
                 if (victim.CurrentRoom != null

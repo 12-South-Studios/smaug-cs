@@ -14,7 +14,7 @@ namespace SmaugCS.SpecFuns
 
             CharacterInstance victim =
                 ch.CurrentRoom.Persons.Where(v => v != ch)
-                  .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && fight.who_fighting(vch) == ch);
+                  .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && fight.GetMyTarget(vch) == ch);
 
             if (victim == null)
                 return false;

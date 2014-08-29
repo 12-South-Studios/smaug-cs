@@ -338,7 +338,7 @@ namespace SmaugCS
                     return;
                 }
 
-                if (mprog.Type != type || SmaugRandom.Percent() > chance) continue;
+                if (mprog.Type != type || SmaugRandom.D100() > chance) continue;
 
                 mprog.Execute(mob);
 

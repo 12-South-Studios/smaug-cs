@@ -5,6 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Social
 {
@@ -31,7 +32,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArgument);
+            CharacterInstance victim = ch.GetCharacterInRoom(firstArgument);
             if (victim == null)
             {
                 color.send_to_char("They aren't here.\r\n", ch);

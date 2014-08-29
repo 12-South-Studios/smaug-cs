@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
@@ -15,13 +16,13 @@ namespace SmaugCS.Spells
 
             if (victim.Immunity.IsSet(ResistanceTypes.Magic))
             {
-                magic.immune_casting(skill, ch, victim, null);
+                ch.ImmuneCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
             if (victim.IsAffected(AffectedByTypes.Curse) || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
             {
-                magic.failed_casting(skill, ch, victim, null);
+                ch.FailedCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 
@@ -30,7 +31,6 @@ namespace SmaugCS.Spells
             af.Duration = ((4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue"));
             af.Location = ApplyTypes.HitRoll;
             af.Modifier = -1;
-            //af.BitVector = meb(AFF_CURSE);
             victim.AddAffect(af);
             
             af = AffectData.Create();

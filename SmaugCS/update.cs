@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -60,7 +61,7 @@ namespace SmaugCS
                     {
                         if (!ch.IsPKill() || SmaugRandom.Bits(1) == 0)
                             ch.WorsenMentalState(1);
-                        retcode = fight.damage(ch, ch, 2, (int)SkillNumberTypes.Undefined);
+                        retcode = ch.CauseDamageTo(ch, 2, (int)SkillNumberTypes.Undefined);
                     }
                     else
                     {
@@ -88,7 +89,7 @@ namespace SmaugCS
                     if (conditionValue == 0)
                     {
                         ch.WorsenMentalState(ch.IsPKill() ? 1 : 2);
-                        retcode = fight.damage(ch, ch, 2, (int)SkillNumberTypes.Undefined);
+                        retcode = ch.CauseDamageTo(ch, 2, (int)SkillNumberTypes.Undefined);
                     }
                     else
                         ch.WorsenMentalState(1);
@@ -113,7 +114,7 @@ namespace SmaugCS
                     if (conditionValue == 0)
                     {
                         ch.WorsenMentalState(2);
-                        retcode = fight.damage(ch, ch, ch.MaximumHealth / 20, (int)SkillNumberTypes.Undefined);
+                        retcode = ch.CauseDamageTo(ch, ch.MaximumHealth / 20, (int)SkillNumberTypes.Undefined);
                     }
                     else
                         ch.WorsenMentalState(1);

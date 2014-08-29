@@ -139,13 +139,13 @@ namespace SmaugCS.Helpers
             switch (castingType)
             {
                 case CastingFunctionType.Success:
-                    magic.successful_casting(skill, ch, victim, obj);
+                    ch.SuccessfulCast(skill, victim, obj);
                     break;
                 case CastingFunctionType.Immune:
-                    magic.immune_casting(skill, ch, victim, obj);
+                    ch.ImmuneCast(skill, victim, obj);
                     break;
                 default:
-                    magic.failed_casting(skill, ch, victim, obj);
+                    ch.FailedCast(skill, victim, obj);
                     break;
             }
         }

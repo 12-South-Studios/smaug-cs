@@ -73,7 +73,7 @@ namespace SmaugCS.Extensions
         private static void GainLearningInSkill(SkillData skill, CharacterInstance ch, int mastery)
         {
             int chance = ch.PlayerData.Learned[(int) skill.ID] + (5*skill.difficulty);
-            int percent = SmaugRandom.Percent();
+            int percent = SmaugRandom.D100();
             int learn;
 
             if (percent >= chance)
@@ -96,7 +96,7 @@ namespace SmaugCS.Extensions
                 return;
 
             int chance = ch.PlayerData.Learned[(int) skill.ID] + (5*skill.difficulty);
-            if ((chance - SmaugRandom.Percent()) > 25)
+            if ((chance - SmaugRandom.D100()) > 25)
                 return;
 
             int mastery = skill.GetMasteryLevel(ch);
@@ -159,7 +159,7 @@ namespace SmaugCS.Extensions
             if (ch.PlayerData.Learned[sn] < adept)
             {
                 int schance = ch.PlayerData.Learned[sn] + (5 * skill.difficulty);
-                int percent = SmaugRandom.Percent();
+                int percent = SmaugRandom.D100();
 
                 int learn = 1;
                 if (percent >= schance)

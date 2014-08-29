@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Commands;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
@@ -10,13 +11,13 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInWorld(ch, Cast.TargetName);
+            CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
 
             if (victim == null
                 || !ch.CanAstral(victim)
                 || !victim.CurrentRoom.Area.InHardRange(ch))
             {
-                magic.failed_casting(skill, ch, victim, null);
+                ch.FailedCast(skill, victim);
                 return ReturnTypes.SpellFailed;
             }
 

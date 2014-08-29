@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Social
@@ -26,7 +27,7 @@ namespace SmaugCS.Commands.Social
                return;
            }
 
-           CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstWord);
+           CharacterInstance victim = ch.GetCharacterInRoom(firstWord);
            if (CheckFunctions.CheckIfNullObject(ch, victim, "They're not here.")) return;
 
            if (victim.CanSee(ch))

@@ -3,6 +3,7 @@ using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -17,7 +18,7 @@ namespace SmaugCS.Commands.MudProgs
 
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Mpapply - bad syntax")) return;
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, argument);
+            CharacterInstance victim = ch.GetCharacterInRoom(argument);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "Mpapply - no such player in room.")) return;
 
             if (CheckFunctions.CheckIfNullObject(ch, victim.Descriptor, "Not on link-dead players")) return;

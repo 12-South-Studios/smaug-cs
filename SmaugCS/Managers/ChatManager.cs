@@ -266,12 +266,12 @@ namespace SmaugCS.Managers
                     if (!ch.IsNpc()
                         && ch.PlayerData.Nuisance != null
                         && ch.PlayerData.Nuisance.Flags > 7
-                        && (SmaugCS.Common.SmaugRandom.Percent() < ((ch.PlayerData.Nuisance.Flags - 7) * 10 * ch.PlayerData.Nuisance.Power)))
+                        && (SmaugCS.Common.SmaugRandom.D100() < ((ch.PlayerData.Nuisance.Flags - 7) * 10 * ch.PlayerData.Nuisance.Power)))
                         sbuf = argument.Scramble(SmaugCS.Common.SmaugRandom.Between(1, 10));
 
                     if (!vch.IsNpc() && vch.PlayerData.Nuisance != null
                         && vch.PlayerData.Nuisance.Flags > 7
-                        && (SmaugCS.Common.SmaugRandom.Percent() < ((vch.PlayerData.Nuisance.Flags - 7) * 10 * vch.PlayerData.Nuisance.Power)))
+                        && (SmaugCS.Common.SmaugRandom.D100() < ((vch.PlayerData.Nuisance.Flags - 7) * 10 * vch.PlayerData.Nuisance.Power)))
                         sbuf = argument.Scramble(SmaugCS.Common.SmaugRandom.Between(1, 10));
 
                     // TODO Toggle global mobtrigger flag

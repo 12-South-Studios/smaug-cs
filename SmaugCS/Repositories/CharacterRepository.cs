@@ -35,7 +35,7 @@ namespace SmaugCS.Repositories
             if (!string.IsNullOrEmpty(mobParent.SpecFun))
                 mob.SpecialFunctionName = mobParent.SpecFun;
 
-            if (mob.Act.IsSet((int)ActFlags.MobInvisibility))
+            if (mob.Act.IsSet(ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;
 
             mob.ArmorClass = mobParent.GetStatistic(StatisticTypes.ArmorClass) > 0
@@ -51,14 +51,20 @@ namespace SmaugCS.Repositories
             mob.Experience = mobParent.Experience;
             mob.CurrentPosition = mobParent.GetPosition();
             mob.CurrentDefensivePosition = mobParent.GetDefensivePosition();
-            mob.BareDice = DiceData.Create();
-            mob.BareDice.NumberOf = mobParent.DamageDice.NumberOf;
-            mob.BareDice.SizeOf = mobParent.DamageDice.SizeOf;
+            mob.BareDice = new DiceData
+            {
+                NumberOf = mobParent.DamageDice.NumberOf, 
+                SizeOf = mobParent.DamageDice.SizeOf
+            };
             mob.ToHitArmorClass0 = mobParent.GetStatistic(StatisticTypes.ToHitArmorClass0);
-            mob.HitRoll = DiceData.Create();
-            mob.HitRoll.Bonus = mobParent.HitDice.Bonus;
-            mob.DamageRoll = DiceData.Create();
-            mob.DamageRoll.Bonus = mobParent.DamageDice.Bonus;
+            mob.HitRoll = new DiceData
+            {
+                Bonus = mobParent.HitDice.Bonus
+            };
+            mob.DamageRoll = new DiceData
+            {
+                Bonus = mobParent.DamageDice.Bonus
+            };
             mob.PermanentStrength = mobParent.GetStatistic(StatisticTypes.Strength);
             mob.PermanentDexterity = mobParent.GetStatistic(StatisticTypes.Dexterity);
             mob.PermanentWisdom = mobParent.GetStatistic(StatisticTypes.Wisdom);

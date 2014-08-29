@@ -107,9 +107,9 @@ namespace SmaugCS.Spells.Smaug
             if (!targetValues.GroupSpell && !targetValues.AreaSpell)
             {
                 if (retCode == ReturnTypes.VictimImmune)
-                    magic.immune_casting(skill, ch, victim, null);
+                    ch.ImmuneCast(skill, victim);
                 else
-                    magic.successful_casting(skill, ch, victim, null);
+                    ch.SuccessfulCast(skill, victim);
             }
         }
 
@@ -131,7 +131,7 @@ namespace SmaugCS.Spells.Smaug
 
             SmaugAffect saf = skill.Affects.FirstOrDefault();
             if (CheckFunctions.CheckIfTrueCasting(saf != null && saf.Location == (int) ApplyTypes.StripSN
-                                                  && !victim.IsAffectedBy(magic.dice_parse(ch, level, saf.Modifier)),
+                                                  && !victim.IsAffectedBy(magic.ParseDiceExpression(ch, saf.Modifier)),
                 skill, ch, CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
             if (CheckFunctions.CheckIfTrueCasting(skill.CheckSave(level, ch, victim), skill, ch,

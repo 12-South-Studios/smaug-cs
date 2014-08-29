@@ -12,8 +12,8 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsInCombatPosition())
                 return false;
 
-            CharacterInstance victim = fight.who_fighting(ch);
-            if (victim == null || (SmaugRandom.Percent() > (2*ch.Level)))
+            CharacterInstance victim = fight.GetMyTarget(ch);
+            if (victim == null || (SmaugRandom.D100() > (2*ch.Level)))
                 return false;
 
             comm.act(ATTypes.AT_HIT, "You bite $N!", ch, null, victim, ToTypes.Character);

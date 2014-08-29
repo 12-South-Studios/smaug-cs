@@ -1,6 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -12,7 +13,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Dismiss whom?")) return;
 
-            CharacterInstance victim = CharacterInstanceExtensions.GetCharacterInRoom(ch, firstArg);
+            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (victim.IsAffected(AffectedByTypes.Charm)

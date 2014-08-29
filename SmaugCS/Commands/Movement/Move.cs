@@ -24,7 +24,7 @@ namespace SmaugCS.Commands.Movement
                     && ch.PlayerData.Nuisance.Flags > 8
                     && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag
-                    && SmaugCS.Common.SmaugRandom.Percent() > (ch.PlayerData.Nuisance.Flags * ch.PlayerData.Nuisance.Power))
+                    && SmaugCS.Common.SmaugRandom.D100() > (ch.PlayerData.Nuisance.Flags * ch.PlayerData.Nuisance.Power))
                     nuisance = true;
             }
 

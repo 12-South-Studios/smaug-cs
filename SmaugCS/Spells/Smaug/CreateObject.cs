@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using SmaugCS.Commands;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -13,7 +14,7 @@ namespace SmaugCS.Spells.Smaug
         {
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
-            string targetName = string.Empty; // TODO Get this from do_cast somehow!
+            string targetName = Cast.TargetName;
 
             int lvl = GetObjectLevel(skill, level);
             int id = skill.value;
@@ -30,10 +31,10 @@ namespace SmaugCS.Spells.Smaug
             if (CheckFunctions.CheckIfNullObjectCasting(oi, skill, ch)) return ReturnTypes.None;
 
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(oi);
-            obj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.dice_parse(ch, level, skill.Dice) : 0;
+            obj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 0;
             obj.Level = lvl;
 
-            magic.successful_casting(skill, ch, null, obj);
+            ch.SuccessfulCast(skill, null, obj);
 
             if (obj.WearFlags.IsSet(ItemWearFlags.Take))
                 obj.ToCharacter(ch);
