@@ -4,7 +4,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -29,13 +29,16 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            if (ch.Act.IsSet((int)PlayerFlags.NoTell))
+            if (ch.Act.IsSet((int) PlayerFlags.NoTell))
             {
                 color.send_to_char("Your message didn't get through!\r\n", ch);
                 return;
             }
 
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch)))
+            foreach (
+                CharacterInstance gch in
+                    DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
+                        .Values.Where(x => x.IsSameGroup(ch)))
             {
                 color.set_char_color(ATTypes.AT_GTELL, gch);
 

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Commands.Admin;
 using SmaugCS.Common;
-using SmaugCS.Config;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -135,7 +130,7 @@ namespace SmaugCS.Commands.Objects
                 if ((all || obj.Name.IsAnyEqual(arg)) && ch.CanSee(obj) && obj.WearLocation == WearLocations.None &&
                     ch.CanDrop(obj))
                 {
-                    
+                    // TODO
                 }
             }
 

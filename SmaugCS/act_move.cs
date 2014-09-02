@@ -180,7 +180,7 @@ namespace SmaugCS
             RoomTemplate newRoom = null;
             if (!found)
             {
-                newRoom = RoomTemplate.Create(serial, "New room");
+                newRoom = new RoomTemplate(serial, "New room");
                 newRoom.Area = room.Area;
                 newRoom.TeleportToVnum = roomnum;
                 newRoom.SectorType = room.SectorType;

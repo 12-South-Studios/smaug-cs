@@ -49,7 +49,7 @@ namespace SmaugCS.Commands.Combat
                 Yell.do_yell(victim, buf);
 
             fight.check_illegal_pk(ch, victim);
-            fight.CheckAttackForAttackerFlag(ch, victim);
+            ch.CheckAttackForAttackerFlag(victim);
             fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
         }
     }

@@ -44,7 +44,7 @@ namespace SmaugCS.Spells.Smaug
                 // TODO Something with smaug bitvectors
             }
 
-            fight.update_pos(victim);
+            victim.UpdatePositionByCurrentHealth();
             return ReturnTypes.None;
         }
     }

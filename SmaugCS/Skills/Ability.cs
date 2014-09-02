@@ -17,7 +17,7 @@ namespace SmaugCS.Skills
         public static bool CheckAbility(CharacterInstance ch, string command, string argument, 
             IDatabaseManager databaseManager = null)
         {
-            int sn = magic.GetIDOfSkillCharacterKnows(ch, command);
+            int sn = ch.GetIDOfSkillCharacterKnows(command);
             if (sn == -1)
                 return false;
 
@@ -74,11 +74,11 @@ namespace SmaugCS.Skills
 
                     case TargetTypes.Ignore:
                         vo = null;
-                        victim = fight.GetMyTarget(ch);
+                        victim = ch.GetMyTarget();
                         targetName = (argument.IsNullOrEmpty() && victim != null) ? victim.Name : argument;
                         break;
                     case TargetTypes.OffensiveCharacter:
-                        victim = fight.GetMyTarget(ch);
+                        victim = ch.GetMyTarget();
 
                         if (argument.IsNullOrEmpty() && victim == null)
                         {
@@ -150,7 +150,7 @@ namespace SmaugCS.Skills
                     if (mana > 0)
                     {
                         if (ch.IsVampire())
-                            update.gain_condition(ch, ConditionTypes.Bloodthirsty, -blood / 2);
+                            ch.GainCondition(ConditionTypes.Bloodthirsty, -blood / 2);
                         else
                             ch.CurrentMana -= mana / 2;
                     }
@@ -159,7 +159,7 @@ namespace SmaugCS.Skills
                 if (mana > 0)
                 {
                     if (ch.IsVampire())
-                        update.gain_condition(ch, ConditionTypes.Bloodthirsty, -blood);
+                        ch.GainCondition(ConditionTypes.Bloodthirsty, -blood);
                     else
                         ch.CurrentMana -= mana;
                 }
@@ -200,7 +200,7 @@ namespace SmaugCS.Skills
             if (mana > 0)
             {
                 if (ch.IsVampire())
-                    update.gain_condition(ch, ConditionTypes.Bloodthirsty, -blood);
+                    ch.GainCondition(ConditionTypes.Bloodthirsty, -blood);
                 else
                     ch.CurrentMana -= mana;
             }

@@ -575,7 +575,7 @@ namespace SmaugCS
             if (victim.CurrentFighting != null)
                 return attrib.Messages.First();
 
-            if (fight.GetMyTarget(victim) == ch)
+            if (victim.GetMyTarget() == ch)
                 return attrib.Messages[1];
 
             if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)

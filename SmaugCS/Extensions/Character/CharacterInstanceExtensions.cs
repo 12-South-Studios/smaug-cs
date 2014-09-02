@@ -75,11 +75,6 @@ namespace SmaugCS
             return check;
         }
 
-        public static int GetCondition(this CharacterInstance ch, ConditionTypes condition)
-        {
-            return ch.PlayerData != null ? ch.PlayerData.ConditionTable[condition] : 0;
-        }
-
         public static void AddKill(this CharacterInstance ch, CharacterInstance mob)
         {
             if (ch.IsNpc() || !mob.IsNpc())
@@ -608,11 +603,13 @@ namespace SmaugCS
                                    ? LookupConstants.dex_app[ch.GetCurrentDexterity()].defensive
                                    : 0) + ch.GetVampArmorClass();
         }
+
         public static int GetHitroll(this CharacterInstance ch)
         {
             return ch.HitRoll.SizeOf + LookupConstants.str_app[ch.GetCurrentStrength()].tohit
                    + (2 - (Math.Abs(ch.MentalState) / 10));
         }
+
         public static int GetDamroll(this CharacterInstance ch)
         {
             return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + LookupConstants.str_app[ch.GetCurrentStrength()].todam +
@@ -626,18 +623,21 @@ namespace SmaugCS
                 ch.PlayerData.Clan.ClanType != ClanTypes.Order &&
                 ch.PlayerData.Clan.ClanType != ClanTypes.Guild;
         }
+
         public static bool IsOrdered(this CharacterInstance ch)
         {
             return !ch.IsNpc() &&
                    ch.PlayerData.Clan != null &&
                    ch.PlayerData.Clan.ClanType == ClanTypes.Order;
         }
+
         public static bool IsGuilded(this CharacterInstance ch)
         {
             return !ch.IsNpc() &&
                    ch.PlayerData.Clan != null &&
                    ch.PlayerData.Clan.ClanType == ClanTypes.Guild;
         }
+
         public static bool IsDeadlyClan(this CharacterInstance ch)
         {
             return !ch.IsNpc() &&
@@ -646,8 +646,6 @@ namespace SmaugCS
                    ch.PlayerData.Clan.ClanType != ClanTypes.Order &&
                    ch.PlayerData.Clan.ClanType != ClanTypes.Guild;
         }
-
- 
 
         public static bool CanTakePrototype(this CharacterInstance ch)
         {
@@ -671,13 +669,8 @@ namespace SmaugCS
 
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, WearLocations location)
         {
-            return ch.GetEquippedItem((int)location);
-        }
-        public static ObjectInstance GetEquippedItem(this CharacterInstance ch, int location)
-        {
             ObjectInstance maxObj = null;
-            WearLocations wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(location);
-            foreach (ObjectInstance obj in ch.Carrying.Where(x => x.WearLocation == wearLoc))
+            foreach (ObjectInstance obj in ch.Carrying.Where(x => x.WearLocation == location))
             {
                 if (obj.ObjectIndex.Layers == 0)
                     return obj;
@@ -686,6 +679,12 @@ namespace SmaugCS
             }
 
             return maxObj;
+        }
+
+        public static ObjectInstance GetEquippedItem(this CharacterInstance ch, int location)
+        {
+            WearLocations wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(location);
+            return GetEquippedItem(ch, wearLoc);
         }
 
         public static int GetEncumberedMove(this CharacterInstance ch, int movement)
@@ -1013,7 +1012,7 @@ namespace SmaugCS
 
         public static bool WillFall(this CharacterInstance ch, int fall)
         {
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.NoFloor)
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoFloor)
                 && ch.CanGo(DirectionTypes.Down)
                 && (!ch.IsAffected(AffectedByTypes.Flying)
                     || (ch.CurrentMount != null && !ch.CurrentMount.IsAffected(AffectedByTypes.Flying))))
@@ -1028,251 +1027,11 @@ namespace SmaugCS
 
                 color.set_char_color(ATTypes.AT_FALLING, ch);
                 color.send_to_char("You're falling down...\r\n", ch);
-                Move.move_char(ch, ch.CurrentRoom.GetExit((int)DirectionTypes.Down), ++fall);
+                Move.move_char(ch, ch.CurrentRoom.GetExit(DirectionTypes.Down), ++fall);
                 return true;
             }
             return false;
         }
-
-        #region Followers
-        public static void AddFollower(this CharacterInstance ch, CharacterInstance master)
-        {
-            if (ch.Master != null)
-            {
-                LogManager.Instance.Bug("non-null master");
-                return;
-            }
-
-            ch.Master = master;
-            ch.Leader = null;
-
-            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Pet)
-                && !master.IsNpc())
-                master.PlayerData.Pet = ch;
-
-            if (master.CanSee(ch))
-                comm.act(ATTypes.AT_ACTION, "$n now follows you.", ch, null, master, ToTypes.Victim);
-
-            comm.act(ATTypes.AT_ACTION, "You now follow $N.", ch, null, master, ToTypes.Character);
-        }
-
-        public static void StopFollower(this CharacterInstance ch)
-        {
-            if (ch.Master == null)
-            {
-                LogManager.Instance.Bug("null master");
-                return;
-            }
-
-            if (ch.IsNpc() && !ch.Master.IsNpc()
-                && ch.Master.PlayerData.Pet == ch)
-                ch.Master.PlayerData.Pet = null;
-
-            if (ch.IsAffected(AffectedByTypes.Charm))
-            {
-                ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
-                //ch.RemoveAffect(gsn_charm_person);    TODO Fix this!
-                if (!ch.Master.IsNpc())
-                    ch.Master.PlayerData.NumberOfCharmies--;
-            }
-
-            if (ch.Master.CanSee(ch))
-            {
-                if (!(!ch.Master.IsNpc() && ch.IsImmortal()
-                      && !ch.Master.IsImmortal()))
-                    comm.act(ATTypes.AT_ACTION, "$n stops following you.", ch, null, ch.Master, ToTypes.Victim);
-            }
-
-            comm.act(ATTypes.AT_ACTION, "You stop following $N.", ch, null, ch.Master, ToTypes.Character);
-
-            ch.Master = null;
-            ch.Leader = null;
-        }
-
-        public static void DieFollower(this CharacterInstance ch)
-        {
-            if (ch.Master != null)
-                ch.StopFollower();
-
-            ch.Leader = null;
-
-            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
-            {
-                if (fch.Master == ch)
-                    ch.StopFollower();
-                if (fch.Leader == ch)
-                    fch.Leader = fch;
-            }
-        }
-
-        public static bool IsSameGroup(this CharacterInstance ch, CharacterInstance victim)
-        {
-            return ch.Leader == victim.Leader;
-        }
-        #endregion
-
-        #region Languages
-        public static int KnowsLanguage(this CharacterInstance ch, int language, CharacterInstance cch)
-        {
-            if (!ch.IsNpc() && ch.IsImmortal())
-                return 100;
-            if (ch.IsNpc() && (ch.Speaks == 0
-                || ch.Speaks.IsSet((language & ~(int)LanguageTypes.Clan))))
-                return 100;
-            if (language.IsSet((int)LanguageTypes.Common))
-                return 100;
-
-            if ((language & (int)LanguageTypes.Clan) > 0)
-            {
-                if (ch.IsNpc() || cch.IsNpc())
-                    return 100;
-                if (ch.PlayerData.Clan == cch.PlayerData.Clan
-                    && ch.PlayerData.Clan != null)
-                    return 100;
-            }
-
-            if (!ch.IsNpc())
-            {
-                if (DatabaseManager.Instance.GetRace(ch.CurrentRace).Language.IsSet(language))
-                    return 100;
-
-                /*for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
-                {
-                    if (i == (int)LanguageTypes.Unknown)
-                        break;
-
-                    if (language.IsSet(i) && ch.Speaks.IsSet(i))
-                    {
-                        SkillData skill = DatabaseManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
-                        if (skill.Slot != -1)
-                            return ch.PlayerData.Learned[skill.Slot];
-                    }
-                }*/
-            }
-
-            return 0;
-        }
-
-        public static bool CanLearnLanguage(this CharacterInstance ch, int language)
-        {
-            if ((language & (int)LanguageTypes.Clan) > 0)
-                return false;
-            if (ch.IsNpc() || ch.IsImmortal())
-                return false;
-            if ((DatabaseManager.Instance.GetRace(ch.CurrentRace).Language & language) > 0)
-                return false;
-
-            if ((ch.Speaks & language) > 0)
-            {
-                /*for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
-                {
-                    if (i == (int)LanguageTypes.Unknown)
-                        break;
-
-                    if ((language & i) > 0)
-                    {
-                        if (((int)LanguageTypes.ValidLanguages & i) == 0)
-                            return false;
-
-                        SkillData skill = DatabaseManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
-                        if (skill == null)
-                        {
-                            LogManager.Instance.Bug("can_learn_lang: valid language without sn: %d", i);
-                            continue;
-                        }
-                    }
-
-                    if (ch.PlayerData.Learned[i] >= 99)
-                        return false;
-                }*/
-            }
-
-            return ((int)LanguageTypes.ValidLanguages & language) > 0;
-        }
-        #endregion
-
-        #region Hunt-Hate-Fear
-        public static bool IsHunting(this CharacterInstance ch, CharacterInstance victim)
-        {
-            return ch.CurrentHunting != null
-                && ch.CurrentHunting.Who == victim;
-        }
-
-        public static bool IsHating(this CharacterInstance ch, CharacterInstance victim)
-        {
-            return ch.CurrentHating != null
-                && ch.CurrentHating.Who == victim;
-        }
-
-        public static bool IsFearing(this CharacterInstance ch, CharacterInstance victim)
-        {
-            return ch.CurrentFearing != null
-                   && ch.CurrentFearing.Who == victim;
-        }
-
-        public static bool IsBlind(this CharacterInstance ch)
-        {
-            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
-                return true;
-            if (ch.IsAffected(AffectedByTypes.TrueSight))
-                return true;
-            if (!ch.IsAffected(AffectedByTypes.Blind))
-                return true;
-
-            return false;
-        }
-
-        public static void StopHunting(this CharacterInstance ch)
-        {
-            ch.CurrentHunting = null;
-        }
-
-        public static void StopHating(this CharacterInstance ch)
-        {
-            ch.CurrentHating = null;
-        }
-
-        public static void StopFearing(this CharacterInstance ch)
-        {
-            ch.CurrentFearing = null;
-        }
-
-        public static void StartHunting(this CharacterInstance ch, CharacterInstance victim)
-        {
-            if (ch.CurrentHunting != null)
-                ch.StopHunting();
-
-            ch.CurrentHunting = new HuntHateFearData
-            {
-                Name = victim.Name,
-                Who = victim
-            };
-        }
-
-        public static void StartFearing(this CharacterInstance ch, CharacterInstance victim)
-        {
-            if (ch.CurrentFearing != null)
-                ch.StopFearing();
-
-            ch.CurrentFearing = new HuntHateFearData
-            {
-                Name = victim.Name,
-                Who = victim
-            };
-        }
-
-        public static void StartHating(this CharacterInstance ch, CharacterInstance victim)
-        {
-            if (ch.CurrentHating != null)
-                ch.StopHating();
-
-            ch.CurrentHating = new HuntHateFearData
-            {
-                Name = victim.Name,
-                Who = victim
-            };
-        }
-        #endregion
 
         public static void Equip(this CharacterInstance ch, ObjectInstance obj, int iWear)
         {

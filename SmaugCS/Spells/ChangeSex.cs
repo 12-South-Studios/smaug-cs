@@ -26,7 +26,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            AffectData af = AffectData.Create();
+            AffectData af = new AffectData();
             af.SkillNumber = sn;
             af.Duration = (10 * level * GameConstants.GetConstant<int>("AffectDurationConversionValue"));
             af.Location = ApplyTypes.Gender;

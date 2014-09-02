@@ -25,7 +25,7 @@ namespace SmaugCS.Data
         public CharacterMorph()
         {
             Statistics = new Dictionary<StatisticTypes, int>();
-            SavingThrows = SavingThrowData.Create();
+            SavingThrows = new SavingThrowData();
         }
     }
 }

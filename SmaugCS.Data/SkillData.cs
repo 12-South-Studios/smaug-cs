@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
@@ -7,11 +6,6 @@ namespace SmaugCS.Data
 {
     public class SkillData : Entity
     {
-        public static SkillData Create(long id, string name)
-        {
-            return new SkillData(id, name);
-        }
-
         public SkillTypes Type { get; set; }
         public int Info { get; set; }
         public int Flags { get; set; }
@@ -70,8 +64,9 @@ namespace SmaugCS.Data
         public List<string> Teachers { get; set; } 
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
+        public string NounDamage { get; set; }
 
-        protected SkillData(long id, string name) : base(id, name)
+        public SkillData(long id, string name) : base(id, name)
         {
             Affects = new List<SmaugAffect>();
             Components = new List<SpellComponent>();

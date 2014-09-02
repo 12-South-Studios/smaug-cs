@@ -17,7 +17,12 @@ namespace SmaugCS.Repositories
             Validation.Validate(parent is MobTemplate, "Invalid Template Type");
 
             MobTemplate mobParent = parent.CastAs<MobTemplate>();
-            CharacterInstance mob = CharacterInstance.Create(GetNextId, parent.Name);
+
+            string name = parent.Name;
+            if (args != null && args.Length > 1)
+                name = args[1].ToString();
+
+            CharacterInstance mob = new CharacterInstance(GetNextId, name);
             mob.Parent = parent;
             mob.ShortDescription = mobParent.ShortDescription;
             mob.LongDescription = mobParent.LongDescription;
@@ -75,7 +80,7 @@ namespace SmaugCS.Repositories
             mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
             mob.CurrentClass = Realm.Library.Common.EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;
-            mob.SavingThrows = SavingThrowData.Clone(mobParent.SavingThrows);
+            mob.SavingThrows = new SavingThrowData(mobParent.SavingThrows);
             mob.Height = mobParent.Height;
             mob.Weight = mobParent.Weight;
             mob.Resistance = mobParent.GetResistance();

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 
 namespace SmaugCS.Data
 {

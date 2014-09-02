@@ -2,7 +2,6 @@
 {
     public static class VnumConstants
     {
-        #region Well-known object vnums
         public static int OBJ_VNUM_MONEY_ONE { get { return GameConstants.GetVnum("ObjectMoneySingle"); } }
         public static int OBJ_VNUM_MONEY_SOME { get { return GameConstants.GetVnum("ObjectMoneyMulti"); } }
         public static int OBJ_VNUM_CORPSE_NPC { get { return GameConstants.GetVnum("ObjectCorpseNPC"); } }
@@ -36,9 +35,7 @@
         public static int OBJ_VNUM_SCHOOL_DAGGER = 10312;
         public static int OBJ_VNUM_SCHOOL_SWORD = 10313;
         public static int OBJ_VNUM_SCHOOL_MACE = 10315;
-        #endregion
 
-        #region Room virtual numbers
         public static int ROOM_VNUM_LIMBO { get { return GameConstants.GetVnum("RoomLimbo"); } }
         public static int ROOM_VNUM_POLY = 3;
         public static int ROOM_VNUM_CHAT = 1200;
@@ -49,13 +46,9 @@
         public static int ROOM_VNUM_HALLOFFALLEN = 21195;
         public static int ROOM_VNUM_DEADLY = 3009;
         public static int ROOM_VNUM_HELL = 6;
-        #endregion
 
-        #region Mobile Vnums
         public static int MOB_VNUM_SUPERMOB { get { return 3; } }
         public static long MOB_VNUM_DEITY { get { return 17; } }
-        #endregion
-
-        public static long MOB_VNUM_ANIMATED_CORPSE { get; set; }
+        public static long MOB_VNUM_ANIMATED_CORPSE { get { return 5; } }
     }
 }

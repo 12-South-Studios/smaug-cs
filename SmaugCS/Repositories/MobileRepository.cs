@@ -76,7 +76,7 @@ namespace SmaugCS.Repositories
                         throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
                 });
 
-            MobTemplate newMob = MobTemplate.Create(vnum, name);
+            MobTemplate newMob = new MobTemplate(vnum, name);
             newMob.Statistics[StatisticTypes.Strength] = 13;
             newMob.Statistics[StatisticTypes.Dexterity] = 13;
             newMob.Statistics[StatisticTypes.Intelligence] = 13;

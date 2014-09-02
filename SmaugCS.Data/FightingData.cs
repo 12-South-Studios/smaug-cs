@@ -1,6 +1,4 @@
-﻿using SmaugCS.Data;
-
-namespace SmaugCS.Data
+﻿namespace SmaugCS.Data
 {
     public class FightingData
     {

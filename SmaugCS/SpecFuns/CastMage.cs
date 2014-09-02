@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -19,7 +20,7 @@ namespace SmaugCS.SpecFuns
 
             CharacterInstance victim =
                 ch.CurrentRoom.Persons.Where(v => v != ch)
-                  .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && fight.GetMyTarget(vch) == ch);
+                  .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && vch.GetMyTarget() == ch);
 
             if (victim == null || victim == ch)
                 return false;

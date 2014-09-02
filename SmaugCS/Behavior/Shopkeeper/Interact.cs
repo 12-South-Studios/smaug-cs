@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Shops;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
@@ -73,7 +74,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool DoesKeeperHateFighting(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (fight.GetMyTarget(ch) != null)
+            if (ch.GetMyTarget() != null)
             {
                 color.ch_printf(ch, "%s doesn't seem to wnat to get involved.\r\n", Macros.PERS(keeper, ch));
                 return true;
@@ -83,7 +84,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool IsKeeperFighting(CharacterInstance keeper, CharacterInstance ch)
         {
-            CharacterInstance whof = fight.GetMyTarget(keeper);
+            CharacterInstance whof = keeper.GetMyTarget();
             if (whof != null)
             {
                 if (!CheckFunctions.CheckIfEquivalent(ch, whof, ch, "I don't think that's a good idea..."))

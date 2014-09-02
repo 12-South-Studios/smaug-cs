@@ -94,8 +94,6 @@ namespace SmaugCS
         public static List<ObjectInstance> ExtractedObjectQueue = new List<ObjectInstance>();
         public static List<ExtracedCharacterData> ExtractedCharQueue = new List<ExtracedCharacterData>();
 
-        public static List<AuctionData> AUCTIONS = new List<AuctionData>();
-
         public static List<map_index_data> MAP = new List<map_index_data>();
 
 
@@ -139,13 +137,6 @@ namespace SmaugCS
             }
 
             return " ";
-        }
-
-
-        public static List<MixtureData> MIXTURES = new List<MixtureData>();
-        public static MixtureData GetMixture(string str)
-        {
-            return MIXTURES.FirstOrDefault(x => x.Name.EqualsIgnoreCase(str));
         }
 
         public static List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
@@ -474,7 +465,7 @@ namespace SmaugCS
             ch.StopHunting();
             ch.StopHating();
             ch.StopFearing();
-            fight.free_fight(ch);
+            ch.StopFighting(false);
 
             //ch.NoteList.Clear();
 
@@ -716,11 +707,13 @@ namespace SmaugCS
                         continue;
                     }
 
-                    MudProgData prog = MudProgData.Create();
-                    prog.Type = type;
-                    prog.ArgList = proxy.ReadString();
-                    prog.Script = proxy.ReadString();
-                    prog.IsFileProg = true;
+                    MudProgData prog = new MudProgData
+                    {
+                        Type = type,
+                        ArgList = proxy.ReadString(),
+                        Script = proxy.ReadString(),
+                        IsFileProg = true
+                    };
 
                     //index.ProgTypes.SetBit((int)prog.Type);
                     index.MudProgs.Add(prog);
@@ -743,7 +736,7 @@ namespace SmaugCS
                     throw new Exception();
                 }
 
-                MudProgData prog = MudProgData.Create();
+                MudProgData prog = new MudProgData();
                 index.MudProgs.Add(prog);
 
                 MudProgTypes type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
@@ -866,12 +859,14 @@ namespace SmaugCS
 
         public static ExitData make_exit(RoomTemplate room, RoomTemplate to_room, int door)
         {
-            ExitData newExit = ExitData.Create(door, "An exit");
-            newExit.Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door);
-            newExit.Room_vnum = room.Vnum;
-            newExit.Destination = to_room.ID;
-            newExit.Distance = 1;
-            newExit.Key = -1;
+            ExitData newExit = new ExitData(door, "An exit")
+            {
+                Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door),
+                Room_vnum = room.Vnum,
+                Destination = to_room.ID,
+                Distance = 1,
+                Key = -1
+            };
 
             ExitData reverseExit = to_room.GetExitTo(LookupConstants.rev_dir[door], room.Vnum);
             if (reverseExit != null)

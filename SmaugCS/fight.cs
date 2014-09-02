@@ -42,7 +42,7 @@ namespace SmaugCS
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n gets $p from $P", ch, content, corpse, ToTypes.Room);
                 content.InObject.FromObject(content);
-                handler.check_for_trap(ch, content, TrapTriggerTypes.Get);
+                ch.CheckObjectForTrap(content, TrapTriggerTypes.Get);
                 if (ch.CharDied())
                     return false;
 
@@ -62,9 +62,6 @@ namespace SmaugCS
 
         private static int Pulse { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public static void violence_update()
         {
             Pulse = (Pulse + 1)%100;
@@ -134,20 +131,20 @@ namespace SmaugCS
                     continue;
 
                 //// Let the battle begin
-                CharacterInstance victim = GetMyTarget(ch);
+                CharacterInstance victim = ch.GetMyTarget();
                 if (victim == null || ch.IsAffected(AffectedByTypes.Paralysis))
                     continue;
 
                 retCode = ReturnTypes.None;
-                if (ch.CurrentRoom.Flags.IsSet((int) RoomFlags.Safe))
+                if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
                 {
                     LogManager.Instance.Info("{0} fighting {1} in a SAFE room.", ch.Name, victim.Name);
-                    stop_fighting(ch, true);
+                    ch.StopFighting(true);
                 }
                 else if (ch.IsAwake() && ch.CurrentRoom == victim.CurrentRoom)
                     retCode = multi_hit(ch, victim, Program.TYPE_UNDEFINED);
                 else
-                    stop_fighting(ch, false);
+                    ch.StopFighting(false);
 
                 if (ch.CharDied())
                     continue;
@@ -155,7 +152,7 @@ namespace SmaugCS
                 if (retCode == ReturnTypes.CharacterDied)
                     continue;
 
-                victim = GetMyTarget(ch);
+                victim = ch.GetMyTarget();
                 if (victim == null)
                     continue;
 
@@ -248,13 +245,6 @@ namespace SmaugCS
             ch.RemoveTimer(timer);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="victim"></param>
-        /// <param name="dt"></param>
-        /// <returns></returns>
         public static ReturnTypes multi_hit(CharacterInstance ch, CharacterInstance victim, int dt)
         {
             //// Add a timer to pkillers
@@ -271,11 +261,133 @@ namespace SmaugCS
                 return ReturnTypes.None;
 
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.NoAttack))
-                return 0;
+                return ReturnTypes.None;
 
-            // TODO finish this
+            ReturnTypes retcode = one_hit(ch, victim, dt);
+            if (retcode != ReturnTypes.None)
+                return retcode;
 
-            return 0;
+            SkillData backstab = DatabaseManager.Instance.GetEntity<SkillData>("backstab");
+            SkillData circle = DatabaseManager.Instance.GetEntity<SkillData>("circle");
+
+            if (ch.GetMyTarget() != victim || dt == backstab.ID || dt == circle.ID)
+                return ReturnTypes.None;
+
+            SkillData berserk = DatabaseManager.Instance.GetEntity<SkillData>("berserk");
+            int chance = ch.IsNpc() ? 100 : (Macros.LEARNED(ch, (int) berserk.ID)*5/2);
+            if (ch.IsAffected(AffectedByTypes.Berserk) && SmaugRandom.D100() < chance)
+            {
+                retcode = one_hit(ch, victim, dt);
+                if (retcode != ReturnTypes.None || ch.GetMyTarget() != victim)
+                    return retcode;
+            }
+
+            int dualBonus = 0;
+            if (ch.GetEquippedItem(WearLocations.DualWield) != null)
+            {
+                SkillData dualWield = DatabaseManager.Instance.GetEntity<SkillData>("dual wield");
+                dualBonus = ch.IsNpc() ? ch.Level/10 : Macros.LEARNED(ch, (int) dualWield.ID)/10;
+                chance = ch.IsNpc() ? ch.Level : Macros.LEARNED(ch, (int) dualWield.ID);
+
+                if (SmaugRandom.D100() < chance)
+                {
+                    dualWield.LearnFromSuccess(ch);
+                    retcode = one_hit(ch, victim, dt);
+                    if (retcode != ReturnTypes.None || ch.GetMyTarget() != victim)
+                        return retcode;
+                }
+                else
+                    dualWield.LearnFromFailure(ch);
+            }
+
+            if (ch.CurrentMovement < 10)
+                dualBonus = -20;
+
+            if (ch.IsNpc() && ch.NumberOfAttacks > 0)
+            {
+                for (int i = 0; i < ch.NumberOfAttacks; i++)
+                {
+                    retcode = one_hit(ch, victim, dt);
+                    if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
+                        return retcode;
+                }
+                return retcode;
+            }
+
+            SkillData secondAttack = DatabaseManager.Instance.GetEntity<SkillData>("second attack");
+            chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int) secondAttack.ID) + dualBonus)/1.5f);
+            if (SmaugRandom.D100() < chance)
+            {
+                secondAttack.LearnFromSuccess(ch);
+                retcode = one_hit(ch, victim, dt);
+                if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
+                    return retcode;
+            } 
+            else 
+                secondAttack.LearnFromFailure(ch);
+
+            SkillData thirdAttack = DatabaseManager.Instance.GetEntity<SkillData>("third attack");
+            chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int)thirdAttack.ID) + (dualBonus*1.5f)) / 2);
+            if (SmaugRandom.D100() < chance)
+            {
+                thirdAttack.LearnFromSuccess(ch);
+                retcode = one_hit(ch, victim, dt);
+                if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
+                    return retcode;
+            }
+            else
+                thirdAttack.LearnFromFailure(ch);
+
+            SkillData fourthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fourth attack");
+            chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fourthAttack.ID) + (dualBonus*2)) / 3;
+            if (SmaugRandom.D100() < chance)
+            {
+                fourthAttack.LearnFromSuccess(ch);
+                retcode = one_hit(ch, victim, dt);
+                if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
+                    return retcode;
+            }
+            else
+                fourthAttack.LearnFromFailure(ch);
+
+            SkillData fifthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fifth attack");
+            chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fifthAttack.ID) + (dualBonus*3)) / 4;
+            if (SmaugRandom.D100() < chance)
+            {
+                fifthAttack.LearnFromSuccess(ch);
+                retcode = one_hit(ch, victim, dt);
+                if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
+                    return retcode;
+            }
+            else
+                fifthAttack.LearnFromFailure(ch);
+
+            retcode = ReturnTypes.None;
+
+            chance = ch.IsNpc() ? ch.Level/2 : 0;
+            if (SmaugRandom.D100() < chance)
+                retcode = one_hit(ch, victim, dt);
+
+            if (retcode == ReturnTypes.None)
+            {
+                int move;
+                if (!ch.IsAffected(AffectedByTypes.Flying)
+                    && !ch.IsAffected(AffectedByTypes.Floating))
+                {
+                    int sectorCount = SectorTypes.Air.GetMaximum() - 1;
+                    move =
+                        ch.GetEncumberedMove(
+                            LookupConstants.movement_loss[
+                                sectorCount.GetLowestOfTwoNumbers(ch.CurrentRoom.SectorType.GetValue())]);
+                }
+                else
+                    move = ch.GetEncumberedMove(1);
+
+                if (ch.CurrentMovement > 0)
+                    ch.CurrentMovement = 0.GetHighestOfTwoNumbers(ch.CurrentMovement - move);
+            }
+
+            return retcode;
         }
 
         public static Tuple<int, int> weapon_prof_bonus_check(CharacterInstance ch, ObjectInstance wield)
@@ -514,14 +626,14 @@ namespace SmaugCS
             if (wield != null)
             {
                 damage = wield.ExtraFlags.IsSet(ItemExtraFlags.Magical)
-                    ? ModifyDamageWithResistance(victim, damage, ResistanceTypes.Magic)
-                    : ModifyDamageWithResistance(victim, damage, ResistanceTypes.NonMagic);
+                    ? victim.ModifyDamageWithResistance(damage, ResistanceTypes.Magic)
+                    : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
 
                 // Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
                 plusRIS = wield.GetHitRoll();
             }
             else
-                damage = ModifyDamageWithResistance(victim, damage, ResistanceTypes.NonMagic);
+                damage = victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
 
             // Check for RIS_PLUS
             if (damage > 0)
@@ -559,10 +671,11 @@ namespace SmaugCS
 
             if (sn != -1)
             {
-                //if (damage > 0)
-                //    skills.learn_from_success(ch, sn);
-                //else
-                //    skills.learn_from_failure(ch, sn);
+                SkillData sk = DatabaseManager.Instance.SKILLS.Get(sn);
+                if (damage > 0)
+                    sk.LearnFromSuccess(ch);
+                else 
+                    sk.LearnFromFailure(ch);
             }
 
             // immune to damage
@@ -706,8 +819,8 @@ namespace SmaugCS
 
             int diceroll = SmaugRandom.D20();
             if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_0 - victimArmorClass))
-                return ProjectileMissed(ch, profBonus.Item2, projectile, victim, dt);
-            return ProjectileHit(ch, victim, projectile, wield, bonus, dt);
+                return ProjectileMissed(ch, profBonus.Item2, projectile, victim, dt, profBonus.Item1);
+            return ProjectileHit(ch, victim, projectile, wield, bonus, dt, profBonus.Item1);
         }
 
         private static Tuple<int, int> CalculateProjectileBonus(ObjectInstance projectile)
@@ -762,7 +875,7 @@ namespace SmaugCS
         }
 
         private static ReturnTypes ProjectileMissed(CharacterInstance ch, int proficiencySkillNumber,
-            ObjectInstance projectile, CharacterInstance victim, int dt)
+            ObjectInstance projectile, CharacterInstance victim, int dt, int sn)
         {
             // if (proficiencySkillNumber != -1)
             //skills.learn_from_failure(ch, proficiencySkillNumber);
@@ -784,7 +897,7 @@ namespace SmaugCS
         }
 
         private static ReturnTypes ProjectileHit(CharacterInstance ch, CharacterInstance victim,
-            ObjectInstance projectile, ObjectInstance wield, int bonus, int dt)
+            ObjectInstance projectile, ObjectInstance wield, int bonus, int dt, int sn)
         {
             int damage = wield == null ? bonus : SmaugRandom.Between(wield.Value[1], wield.Value[2]) + (bonus/10);
             damage += ch.GetDamroll();
@@ -794,11 +907,11 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("Enhanced Damage");
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
                 if (ch.PlayerData.Learned[skill.ID] > 0)
                 {
                     damage += damage*Macros.LEARNED(ch, (int) skill.ID);
-                    // skills.learn_from_success(ch, (int)skill.ID);
+                    skill.LearnFromSuccess(ch);
                 }
             }
 
@@ -808,8 +921,8 @@ namespace SmaugCS
                 damage = 1;
 
             damage = projectile.ExtraFlags.IsSet(ItemExtraFlags.Magical)
-                ? ModifyDamageWithResistance(victim, damage, ResistanceTypes.Magic)
-                : ModifyDamageWithResistance(victim, damage, ResistanceTypes.NonMagic);
+                ? victim.ModifyDamageWithResistance(damage, ResistanceTypes.Magic)
+                : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
 
             int plusris = 0;
 
@@ -817,7 +930,17 @@ namespace SmaugCS
             if (wield != null)
                 plusris = wield.GetHitRoll();
 
-            // TODO Finish this
+            int imm, res, sus;
+            if (damage > 0)
+            {
+                if (plusris > 0)
+                    plusris = (int) ResistanceTypes.Plus1 << plusris.GetLowestOfTwoNumbers(7);
+
+                imm = res = -1;
+                sus = 1;
+
+
+            }
 
             return ReturnTypes.None;
         }
@@ -835,34 +958,12 @@ namespace SmaugCS
             return damage;
         }
 
-        public static int ModifyDamageWithResistance(this CharacterInstance ch, int dam, ResistanceTypes ris)
-        {
-            int modifier = 10;
-            if (ch.Immunity.IsSet(ris) && !ch.NoImmunity.IsSet(ris))
-                modifier -= 10;
-            if (ch.Resistance.IsSet(ris) && !ch.NoResistance.IsSet(ris))
-                modifier -= 2;
-            if (ch.Susceptibility.IsSet(ris) && !ch.NoSusceptibility.IsSet(ris))
-            {
-                if (ch.IsNpc() && ch.Immunity.IsSet(ris))
-                    modifier += 0;
-                else
-                    modifier += 2;
-            }
-            if (modifier <= 0)
-                return -1;
-            if (modifier == 10)
-                return dam;
-            return (dam*modifier)/10;
-        }
-
-        
         public static bool is_safe(CharacterInstance ch, CharacterInstance victim, bool show_messg)
         {
-            if (GetMyTarget(ch) == ch)
+            if (ch.GetMyTarget() == ch)
                 return false;
 
-            if (victim.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe))
+            if (victim.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
             {
                 if (show_messg)
                 {
@@ -1032,8 +1133,7 @@ namespace SmaugCS
             }
 
             // killers and thieves are okay to kill 
-            if (victim.Act.IsSet((int)PlayerFlags.Killer)
-                || victim.Act.IsSet((int)PlayerFlags.Thief))
+            if (victim.Act.IsSet(PlayerFlags.Killer) || victim.Act.IsSet(PlayerFlags.Thief))
             {
                 if (!ch.IsNpc())
                 {
@@ -1063,8 +1163,8 @@ namespace SmaugCS
 
             // Clan checks
             if (!ch.IsNpc() && !victim.IsNpc()
-                && ch.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
-                && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly))
+                && ch.PlayerData.Flags.IsSet(PCFlags.Deadly)
+                && victim.PlayerData.Flags.IsSet(PCFlags.Deadly))
             {
                 if (ch.PlayerData.Clan == null
                     || victim.PlayerData.Clan == null
@@ -1096,7 +1196,7 @@ namespace SmaugCS
                     ch.CurrentMovement = ch.MaximumMovement;
                     if (ch.PlayerData != null)
                         ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = (10 + ch.Level);
-                    update_pos(victim);
+                    victim.UpdatePositionByCurrentHealth();
                     if (victim != ch)
                     {
                         comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into $n.", ch, victim.Name, null, ToTypes.Room);
@@ -1136,7 +1236,7 @@ namespace SmaugCS
                 {
                     LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
                     // TODO: affect_strip
-                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
+                    ch.AffectedBy.RemoveBit(AffectedByTypes.Charm);
                     return;
                 }
 
@@ -1208,89 +1308,10 @@ namespace SmaugCS
             color.send_to_char("A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'\r\n", ch);
             color.set_char_color(ATTypes.AT_WHITE, ch);
             color.send_to_char("You feel as if your soul has been revealed for all to see.\r\n", ch);
-            ch.Act.SetBit((int)PlayerFlags.Killer);
-            if (ch.Act.IsSet((int)PlayerFlags.Attacker))
-                ch.Act.RemoveBit((int)PlayerFlags.Attacker);
+            ch.Act.SetBit(PlayerFlags.Killer);
+            if (ch.Act.IsSet(PlayerFlags.Attacker))
+                ch.Act.RemoveBit(PlayerFlags.Attacker);
             save.save_char_obj(ch);
-        }
-
-        /// <summary>
-        /// See if an attack justifies an ATTACKER flag
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="victim"></param>
-        public static void CheckAttackForAttackerFlag(this CharacterInstance ch, CharacterInstance victim)
-        {
-            // NPCs, killers and theives are fair game
-            if (victim.IsNpc() || victim.Act.IsSet(PlayerFlags.Killer) || victim.Act.IsSet(PlayerFlags.Thief))
-                return;
-
-            if (!ch.IsNpc() && !victim.IsNpc() && ch.CanPKill() && victim.CanPKill())
-                return;
-
-            if (ch.IsAffected(AffectedByTypes.Charm))
-            {
-                if (ch.Master == null)
-                {
-                    LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
-                    // TODO affect_strip
-                    ch.AffectedBy.RemoveBit(AffectedByTypes.Charm);
-                    return;
-                }
-
-                return;
-            }
-
-            if (ch.IsNpc() || ch == victim || ch.Level >= LevelConstants.ImmortalLevel ||
-                ch.Act.IsSet(PlayerFlags.Attacker) || ch.Act.IsSet(PlayerFlags.Killer))
-                return;
-
-            ch.Act.SetBit(PlayerFlags.Attacker);
-            save.save_char_obj(ch);
-        }
-
-        public static void update_pos(CharacterInstance victim)
-        {
-            if (victim.CurrentHealth > 0)
-            {
-                if (victim.CurrentPosition <= PositionTypes.Stunned)
-                    victim.CurrentPosition = PositionTypes.Standing;
-                if (victim.IsAffected(AffectedByTypes.Paralysis))
-                    victim.CurrentPosition = PositionTypes.Stunned;
-                return;
-            }
-
-            // You're dead
-            if (victim.IsNpc() || victim.CurrentHealth <= -11)
-            {
-                if (victim.CurrentMount != null)
-                {
-                    comm.act(ATTypes.AT_ACTION, "$n falls from $N.", victim, null, victim.CurrentMount, ToTypes.Room);
-                    victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
-                    victim.CurrentMount = null;
-                }
-
-                victim.CurrentPosition = PositionTypes.Dead;
-                return;
-            }
-
-            if (victim.CurrentHealth <= -6)
-                victim.CurrentPosition = PositionTypes.Mortal;
-            else if (victim.CurrentHealth <= -3)
-                victim.CurrentPosition = PositionTypes.Incapacitated;
-            else
-                victim.CurrentPosition = PositionTypes.Stunned;
-
-            if (victim.CurrentPosition > PositionTypes.Stunned
-                && victim.IsAffected(AffectedByTypes.Paralysis))
-                victim.CurrentPosition = PositionTypes.Stunned;
-
-            if (victim.CurrentMount != null)
-            {
-                comm.act(ATTypes.AT_ACTION, "$n falls unconcious from $N.", victim, null, victim.CurrentMount, ToTypes.Room);
-                victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
-                victim.CurrentMount = null;
-            }
         }
 
         public static void set_fighting(CharacterInstance ch, CharacterInstance victim)
@@ -1315,8 +1336,8 @@ namespace SmaugCS
             FightingData fight = new FightingData
                                      {
                                          Who = victim,
-                                         Experience = (int)(xp_compute(ch, victim) * 0.85),
-                                         Alignment = align_compute(ch, victim)
+                                         Experience = (int)(ch.ComputeExperienceGain(victim) * 0.85),
+                                         Alignment = ch.ComputeAlignmentChange(victim)
                                      };
             if (!ch.IsNpc() && victim.IsNpc())
                 fight.TimesKilled = ch.TimesKilled( victim);
@@ -1353,49 +1374,6 @@ namespace SmaugCS
             {
                 color.send_to_char("You are disturbed!\r\n", victim.Switched);
                 Return.do_return(victim.Switched, "");
-            }
-        }
-
-        public static CharacterInstance GetMyTarget(this CharacterInstance ch)
-        {
-            return ch == null || ch.CurrentFighting == null ? null : ch.CurrentFighting.Who;
-        }
-
-        public static void free_fight(CharacterInstance ch)
-        {
-            if (ch.CurrentFighting != null)
-            {
-                if (ch.CurrentFighting.Who.CharDied())
-                    --ch.CurrentFighting.Who.NumberFighting;
-            }
-
-            ch.CurrentFighting = null;
-            ch.CurrentPosition = ch.CurrentMount != null
-                ? PositionTypes.Mounted
-                : PositionTypes.Standing;
-
-            // Berserk wears off after combat
-            if (ch.IsAffected(AffectedByTypes.Berserk))
-            {
-                // TODO affect_strip
-                color.set_char_color(ATTypes.AT_WEAROFF, ch);
-                color.send_to_char(DatabaseManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage, ch);
-                color.send_to_char("\r\n", ch);
-            }
-        }
-
-        public static void stop_fighting(CharacterInstance ch, bool both)
-        {
-            free_fight(ch);
-            update_pos(ch);
-
-            if (!both)
-                return;
-
-            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(fch => GetMyTarget(fch) == ch))
-            {
-                free_fight(fch);
-                update_pos(fch);
             }
         }
 
@@ -1446,7 +1424,7 @@ namespace SmaugCS
 
             if (vnum > 0)
             {
-                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum);
+                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum);
                 if (template == null)
                 {
                     LogManager.Instance.Bug("Invalid vnum");
@@ -1486,7 +1464,7 @@ namespace SmaugCS
                 return null;
             }
 
-            stop_fighting(victim, true);
+            victim.StopFighting(true);
 
             if (victim.CurrentMorph != null)
             {
@@ -1561,11 +1539,11 @@ namespace SmaugCS
                     continue;
                 }
 
-                int xp = (int)(xp_compute(gch, victim) * 0.1765) / members;
+                int xp = (int)(gch.ComputeExperienceGain(victim) * 0.1765) / members;
                 if (gch.CurrentFighting == null)
                     xp /= 2;
 
-                gch.CurrentAlignment = align_compute(gch, victim);
+                gch.CurrentAlignment = gch.ComputeAlignmentChange(victim);
                 if (xp > 0)
                 {
                     color.ch_printf(gch, "You receive {0} experience points.", xp);
@@ -1596,84 +1574,192 @@ namespace SmaugCS
             }
         }
 
-        public static int align_compute(CharacterInstance ch, CharacterInstance victim)
-        {
-            int align = ch.CurrentAlignment - victim.CurrentAlignment;
-            int divalign = (ch.CurrentAlignment > -350 && ch.CurrentAlignment < 350) ? 4 : 20;
-            int newAlign = 0;
-            
-            if (align > 500)
-                newAlign = (ch.CurrentAlignment + (align - 500) / divalign).GetLowestOfTwoNumbers(1000);
-            else if (align < -500)
-                newAlign = (ch.CurrentAlignment + (align + 500)/divalign).GetHighestOfTwoNumbers(-1000);
-            else
-                newAlign = ch.CurrentAlignment - ch.CurrentAlignment/divalign;
-
-            return newAlign;
-        }
-
-        public static int xp_compute(CharacterInstance ch, CharacterInstance victim)
-        {
-            int xp = (victim.GetExperienceWorth()*0.GetNumberThatIsBetween((victim.Level - ch.Level) + 10, 13))/10;
-            int align = ch.CurrentAlignment - victim.CurrentAlignment;
-
-            if (align > 990 || align < -990)
-                xp = (xp * 5) >> 2; //// bonus for attacking opposite alignment
-            else if (ch.CurrentAlignment > 300 && align < 250)
-                xp = (xp*3) >> 2;   //// penalty for good player attacking same alignment
-            
-            xp = SmaugRandom.Between((xp*3) >> 2, (xp*5) >> 2);
-
-            //// get 1/4 exp for players
-            if (!victim.IsNpc())
-                xp /= 4;
-            else
-            {
-                //// reduce xp for killing the same mob repeatedly
-                if (!ch.IsNpc())
-                {
-                    int times = ch.TimesKilled(victim);
-                    if (times >= 20)
-                        xp = 0;
-                    else if (times > 0)
-                    {
-                        xp = (xp*(20 - times))/20;
-                        if (times > 15)
-                            xp /= 3;
-                        else if (times > 10)
-                            xp >>= 1;
-                    }
-                }
-            }
-
-            //// semi-intelligent experienced player vs. novice player xp gain
-            //// "bell curve"ish xp mod based on time played vs. level
-            if (!ch.IsNpc() && ch.Level > 5)
-            {
-                int xpRatio = (int)ch.played / ch.Level;
-                if (xpRatio > 20000)
-                    xp = (xp * 5) >> 2;     //// 5/4
-                else if (xpRatio > 16000)
-                    xp = (xp * 3) >> 2;     //// 3/4
-                else if (xpRatio > 10000)  
-                    xp >>= 1;               //// 1/2
-                else if (xpRatio > 5000)
-                    xp >>= 2;               //// 1/4th
-                else if (xpRatio > 3500)
-                    xp >>= 3;               //// 1/8th
-                else if (xpRatio > 2000)
-                    xp >>= 4;               //// 1/16th
-            }
-
-            //// Level based experience gain cap.  Cannot get more experience for
-            //// a kill than the amount for your current experience level
-            return 0.GetNumberThatIsBetween(xp, ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level));
-        }
-
         public static void new_dam_message(CharacterInstance ch, CharacterInstance victim, int dam, int dt, ObjectInstance obj)
         {
-            // TODO
+            int dampc;
+
+            if (dam == 0)
+                dampc = 0;
+            else
+                dampc = ((dam*1000)/victim.MaximumHealth) + (50 - ((victim.CurrentHealth*50)/victim.MaximumHealth));
+
+            RoomTemplate wasInRoom = null;
+            if (ch.CurrentRoom != victim.CurrentRoom)
+            {
+                wasInRoom = ch.CurrentRoom;
+                ch.CurrentRoom.FromRoom(ch);
+                victim.CurrentRoom.ToRoom(ch);
+            }
+
+            int w_index = CalculateWeaponTypeIndex(dt);
+            int d_index = CalculateDamageTypeIndex(dam, dampc);
+
+            string vs = LookupManager.Instance.GetLookup(SlashMessageTable[w_index], d_index);
+            string vp = LookupManager.Instance.GetLookup(PierceMessageTable[w_index], d_index);
+
+            char punct = (dampc <= 30) ? '.' : '!';
+
+            bool gcflag = (dam == 0 && (!ch.IsNpc() && ch.PlayerData.Flags.IsSet(PCFlags.Gag)));
+            bool gvflag = (dam == 0 && (!victim.IsNpc() && victim.PlayerData.Flags.IsSet(PCFlags.Gag)));
+
+            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+
+            string roomMsg;
+            string youMsg;
+            string victMsg;
+            string attack;
+
+            if (dt == Program.TYPE_HIT)
+            {
+                roomMsg = string.Format("$n {0} $N{1}", vp, punct);
+                youMsg = string.Format("You {0} $N{1}", vs, punct);
+                victMsg = string.Format("$n {0} you{1}", vp, punct);
+            }
+            else if (dt > Program.TYPE_HIT && ch.IsWieldedWeaponPoisoned())
+            {
+                if (dt < Program.TYPE_HIT + LookupConstants.AttackTable.Count())
+                    attack = LookupConstants.AttackTable.ToList()[dt - Program.TYPE_HIT];
+                else
+                {
+                    dt = Program.TYPE_HIT;
+                    attack = LookupConstants.AttackTable.ToList()[0];
+                }
+
+                roomMsg = string.Format("$n's poisoned {0} {1} $N{2}", attack, vp, punct);
+                youMsg = string.Format("Your poisoned {0} {1} $N{2}", attack, vp, punct);
+                victMsg = string.Format("$n's poisoned {0} {1} you{2}", attack, vp, punct);
+            }
+            else
+            {
+                if (skill != null)
+                {
+                    attack = skill.NounDamage;
+                    if (dam == 0)
+                    {
+                        if (!skill.MissCharacterMessage.IsNullOrEmpty())
+                            comm.act(ATTypes.AT_HIT, skill.MissCharacterMessage, ch, null, victim, ToTypes.Character);
+                        if (!skill.MissVictimMessage.IsNullOrEmpty())
+                            comm.act(ATTypes.AT_HITME, skill.MissVictimMessage, ch, null, victim, ToTypes.Victim);
+                        if (!skill.MissRoomMessage.IsNullOrEmpty())
+                            comm.act(ATTypes.AT_ACTION, skill.MissRoomMessage, ch, null, victim, ToTypes.Room);
+
+                        if (!skill.MissCharacterMessage.IsNullOrEmpty()
+                            || !skill.MissVictimMessage.IsNullOrEmpty()
+                            || !skill.MissRoomMessage.IsNullOrEmpty())
+                        {
+                            if (wasInRoom != null)
+                            {
+                                ch.CurrentRoom.FromRoom(ch);
+                                wasInRoom.ToRoom(ch);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!skill.HitCharacterMessage.IsNullOrEmpty())
+                            comm.act(ATTypes.AT_HIT, skill.HitCharacterMessage, ch, null, victim, ToTypes.Character);
+                        if (!skill.HitVictimMessage.IsNullOrEmpty())
+                            comm.act(ATTypes.AT_HITME, skill.HitVictimMessage, ch, null, victim, ToTypes.Victim);
+                        if (!skill.HitRoomMessage.IsNullOrEmpty())
+                            comm.act(ATTypes.AT_ACTION, skill.HitRoomMessage, ch, null, victim, ToTypes.Room);
+                    }
+                }
+                else if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + LookupConstants.AttackTable.Count()))
+                {
+                    attack = obj != null
+                        ? obj.ShortDescription
+                        : LookupConstants.AttackTable.ToList()[dt - Program.TYPE_HIT];
+                }
+                else
+                {
+                    dt = Program.TYPE_HIT;
+                    attack = LookupConstants.AttackTable.ToList()[0];
+                }
+
+                roomMsg = string.Format("$n's {0} {1} $N{2}", attack, vp, punct);
+                youMsg = string.Format("Your {0} {1} $N{2}", attack, vp, punct);
+                victMsg = string.Format("$n's {0} {1} you{2}", attack, vp, punct);
+            }
+
+            comm.act(ATTypes.AT_ACTION, roomMsg, ch, null, victim, ToTypes.NotVictim);
+            if (!gcflag)
+                comm.act(ATTypes.AT_HIT, youMsg, ch, null, victim, ToTypes.Character);
+            if (!gvflag)
+                comm.act(ATTypes.AT_HITME, victMsg, ch, null, victim, ToTypes.Victim);
+
+            if (wasInRoom != null)
+            {
+                ch.CurrentRoom.FromRoom(ch);
+                wasInRoom.ToRoom(ch);
+            }
         }
+
+        private static int CalculateDamageTypeIndex(int dam, int dampc)
+        {
+            if (dam == 0)
+                return 0;
+            if (dampc < 0)
+                return 1;
+            if (dampc <= 100)
+                return 1 + dampc / 10;
+            if (dampc <= 200)
+                return 11 + (dampc - 100) / 20;
+            if (dampc <= 900)
+                return 16 + (dampc - 200) / 100;
+            return 23;
+        }
+
+        private static int CalculateWeaponTypeIndex(int dt)
+        {
+            if (dt > 0)
+                return 0;
+            if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + LookupConstants.AttackTable.Count()))
+                return dt - Program.TYPE_HIT;
+            return 0;
+        }
+
+        private static readonly List<string> SlashMessageTable = new List<string>()
+        {
+            "SlashGenericMessages", // hit
+            "SlashBladeMessages", // slice
+            "SlashBladeMessages", // stab
+            "SlashBladeMessages", // slash
+            "SlashBluntMessages", // whip
+            "SlashBladeMessages", // claw
+            "SlashGenericMessages", // blast
+            "SlashBluntMessages", // pound
+            "SlashBluntMessages", // crush
+            "SlashGenericMessages", // grep
+            "SlashBladeMessages", // bite
+            "SlashBladeMessages", // pierce
+            "SlashBluntMessages", // suction
+            "SlashGenericMessages", // bolt
+            "SlashGenericMessages", // arrow
+            "SlashGenericMessages", // dart
+            "SlashGenericMessages", // stone
+            "SlashGenericMessages", // pea
+        };
+        private static readonly List<string> PierceMessageTable = new List<string>()
+        {
+            "PierceGenericMessages", // hit
+            "PierceBladeMessages", // slice
+            "PierceBladeMessages", // stab
+            "PierceBladeMessages", // Pierce
+            "PierceBluntMessages", // whip
+            "PierceBladeMessages", // claw
+            "PierceGenericMessages", // blast
+            "PierceBluntMessages", // pound
+            "PierceBluntMessages", // crush
+            "PierceGenericMessages", // grep
+            "PierceBladeMessages", // bite
+            "PierceBladeMessages", // pierce
+            "PierceBluntMessages", // suction
+            "PierceGenericMessages", // bolt
+            "PierceGenericMessages", // arrow
+            "PierceGenericMessages", // dart
+            "PierceGenericMessages", // stone
+            "PierceGenericMessages", // pea
+        };
 
         public static void dam_message(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
         {

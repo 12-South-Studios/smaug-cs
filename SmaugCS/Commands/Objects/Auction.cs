@@ -29,7 +29,7 @@ namespace SmaugCS.Commands.Objects
             if (firstArg.IsNullOrEmpty())
                 ReviewAuction(ch, argument);
             if (ch.IsImmortal() && firstArg.EqualsIgnoreCase("stop"))
-                StopAuction(ch, argument);
+                StopAuction(ch, "Sale of {0} has been stopped by an Immortal.");
             if (firstArg.EqualsIgnoreCase("bid"))
                 PlaceBid(ch, argument);
             PlaceItemForAuction(ch, argument);
@@ -120,7 +120,7 @@ namespace SmaugCS.Commands.Objects
                 auction.ItemForSale.ShortDescription));
         }
 
-        private static void StopAuction(CharacterInstance ch, string argument)
+        public static void StopAuction(CharacterInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction, "There is no auction to stop."))
                 return;
@@ -129,8 +129,7 @@ namespace SmaugCS.Commands.Objects
 
             AuctionData auction = AuctionManager.Instance.Auction;
 
-            ChatManager.talk_auction(string.Format("Sale of {0} has been stopped by an Immortal.",
-                auction.ItemForSale.ShortDescription));
+            ChatManager.talk_auction(string.Format(argument, auction.ItemForSale.ShortDescription));
             auction.ItemForSale.ToCharacter(auction.Seller);
 
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))

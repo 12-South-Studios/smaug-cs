@@ -38,7 +38,7 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, ch.IsInCombatPosition(), "You do the best you can!")) return;
 
             Macros.WAIT_STATE(ch, 1 * GameConstants.GetSystemValue<int>("PulseViolence"));
-            fight.CheckAttackForAttackerFlag(ch, victim);
+            ch.CheckAttackForAttackerFlag(victim);
             fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
         }
     }

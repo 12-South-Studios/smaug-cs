@@ -99,7 +99,7 @@ namespace SmaugCS.Commands.Deity
 
             // TODO Do suscept, element and affects
 
-            AffectData af = AffectData.Create();
+            AffectData af = new AffectData();
             af.Type = AffectedByTypes.None;
             af.Duration = -1;
             af.Location = GetApplyTypeForDeity(ch.PlayerData.CurrentDeity);

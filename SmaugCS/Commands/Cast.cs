@@ -5,7 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
-
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands
@@ -45,7 +45,7 @@ namespace SmaugCS.Commands
             if (!magic.process_spell_components(ch, (int)_skill.ID))
             {
                 if (ch.IsVampire())
-                    update.gain_condition(ch, ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
+                    ch.GainCondition(ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
                 else if (ch.Level < LevelConstants.ImmortalLevel)
                     ch.CurrentMana -= _mana/2;
                 //skills.learn_from_failure(ch, (int)_skill.ID);

@@ -42,5 +42,6 @@ namespace SmaugCS.Interfaces
         GenericRepository<PlaneData> PLANES { get; }
         GenericRepository<MorphData> MORPHS { get; }
         GenericRepository<HintData> HINTS { get; }
+        GenericRepository<MixtureData> MIXTURES { get; }
     }
 }

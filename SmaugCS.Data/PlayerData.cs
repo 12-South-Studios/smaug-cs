@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 
 namespace SmaugCS.Data
 {
     public class PlayerData
     {
-        public static PlayerData Create(int maxSkills, int maxPersonal)
-        {
-            return new PlayerData(maxSkills, maxPersonal);
-        }
-
         public CharacterInstance Pet { get; set; }
         public ClanData Clan { get; set; }
         public CouncilData Council { get; set; }
@@ -78,7 +72,7 @@ namespace SmaugCS.Data
         public int Year { get; set; }
         public int timezone { get; set; }
 
-        private PlayerData(int maxSkills, int maxPersonal)
+        public PlayerData(int maxSkills, int maxPersonal)
         {
             Killed = new List<KilledData>();
             ConditionTable = new Dictionary<ConditionTypes, int>();

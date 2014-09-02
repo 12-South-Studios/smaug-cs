@@ -193,7 +193,10 @@ namespace SmaugCS.Managers
             get { return GetRepository<HintData>(RepositoryTypes.Hints); }
         }
 
-        public AuctionData AUCTION { get; private set; }
+        public GenericRepository<MixtureData> MIXTURES
+        {
+            get { return GetRepository<MixtureData>(RepositoryTypes.Mixtures); }
+        } 
 
         #endregion
 

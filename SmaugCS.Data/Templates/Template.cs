@@ -3,25 +3,15 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
-
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public abstract class Template : Entity, IHasMudProgs
     {
         public string Description { get; set; }
         public long Vnum { get { return ID; } }
         public List<MudProgData> MudProgs { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
         protected Template(long id, string name)
             : base(id, name)
         {

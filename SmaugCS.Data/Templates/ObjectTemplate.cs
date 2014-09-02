@@ -4,18 +4,11 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
-
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
-        public static ObjectTemplate Create(long id, string name)
-        {
-            return new ObjectTemplate(id, name);
-        }
-
         public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
         public List<AffectData> Affects { get; set; }
         public int ExtraFlags { get; set; }
@@ -36,7 +29,7 @@ namespace SmaugCS.Data
         public ItemTypes Type { get; set; }
         public List<string> Spells { get; set; }
 
-        private ObjectTemplate(long id, string name)
+        public ObjectTemplate(long id, string name)
             : base(id, name)
         {
             Value = new int[6];
@@ -68,7 +61,7 @@ namespace SmaugCS.Data
 
         public void AddAffect(int type, int duration, int modifier, int location, string bitvector)
         {
-            AffectData newAffect = AffectData.Create();
+            AffectData newAffect = new AffectData();
             newAffect.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type);
             newAffect.Duration = duration;
             newAffect.Modifier = modifier;
@@ -87,11 +80,6 @@ namespace SmaugCS.Data
         }
 
         #region IHasExtraDescriptions Implementation
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keywords"></param>
-        /// <param name="description"></param>
         public void AddExtraDescription(string keywords, string description)
         {
             string[] words = keywords.Split(new[] { ' ' });
@@ -100,19 +88,16 @@ namespace SmaugCS.Data
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
                 if (foundEd == null)
                 {
-                    foundEd = ExtraDescriptionData.Create();
-                    foundEd.Keyword = word;
-                    foundEd.Description = description;
+                    foundEd = new ExtraDescriptionData
+                    {
+                        Keyword = word, 
+                        Description = description
+                    };
                     ExtraDescriptions.Add(foundEd);
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
         public bool DeleteExtraDescription(string keyword)
         {
             ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
@@ -123,11 +108,6 @@ namespace SmaugCS.Data
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
         public ExtraDescriptionData GetExtraDescription(string keyword)
         {
             return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));

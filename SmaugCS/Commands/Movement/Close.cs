@@ -55,7 +55,7 @@ namespace SmaugCS.Commands.Movement
             obj.Value[1].SetBit(ContainerFlags.Closed);
             comm.act(ATTypes.AT_ACTION, "You close $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n closes $p.", ch, obj, null, ToTypes.Room);
-            handler.check_for_trap(ch, obj, TrapTriggerTypes.Close);
+            ch.CheckObjectForTrap(obj, TrapTriggerTypes.Close);
         }
 
         private static void CloseDoor(CharacterInstance ch, ExitData exit, string firstArg)
