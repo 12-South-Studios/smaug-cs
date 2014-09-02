@@ -72,12 +72,12 @@ namespace SmaugCS.Commands.Liquids
                     }
                 }
 
-                if (fight.GetMyTarget(ch) != null && ch.IsPKill())
+                if (ch.GetMyTarget() != null && ch.IsPKill())
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
                 else 
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
 
-                update.gain_condition(ch, ConditionTypes.Thirsty, 1);
+                ch.GainCondition(ConditionTypes.Thirsty, 1);
 
                 if (!ch.IsNpc() && ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
                     comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null, ToTypes.Character);

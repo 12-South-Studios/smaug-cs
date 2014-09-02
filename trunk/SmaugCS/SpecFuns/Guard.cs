@@ -3,6 +3,7 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
@@ -27,7 +28,7 @@ namespace SmaugCS.SpecFuns
                     break;
 
                 if (vch.CurrentFighting != null 
-                    && fight.GetMyTarget(vch) != ch
+                    && vch.GetMyTarget() != ch
                     && vch.CurrentAlignment < maxEvil)
                 {
                     maxEvil = vch.CurrentAlignment;

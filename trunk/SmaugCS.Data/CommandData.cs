@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections.Generic;
 using Realm.Library.Common;
 
 namespace SmaugCS.Data
@@ -18,38 +18,21 @@ namespace SmaugCS.Data
         public UseHistory userec { get; set; }
         public int lag_count { get; set; }
 
-
+        private static readonly Dictionary<int, int> ModifiedPositionTable = new Dictionary<int, int>
+        {
+            {5, 6},
+            {6, 8},
+            {7, 9},
+            {8, 12},
+            {9, 13},
+            {10, 14},
+            {11, 15}
+        };
         public int GetModifiedPosition()
         {
             int originalPosition = Position;
-            if (originalPosition < 100)
-            {
-                switch (originalPosition)
-                {
-                    case 5:
-                        originalPosition = 6;
-                        break;
-                    case 6:
-                        originalPosition = 8;
-                        break;
-                    case 7:
-                        originalPosition = 9;
-                        break;
-                    case 8:
-                        originalPosition = 12;
-                        break;
-                    case 9:
-                        originalPosition = 13;
-                        break;
-                    case 10:
-                        originalPosition = 14;
-                        break;
-                    case 11:
-                        originalPosition = 15;
-                        break;
-                } 
-            }
-
+            if (originalPosition < 100 && ModifiedPositionTable.ContainsKey(originalPosition))
+                originalPosition = ModifiedPositionTable[originalPosition];
             return originalPosition >= 100 ? originalPosition - 100 : originalPosition;
         }
     }

@@ -302,8 +302,7 @@ namespace SmaugCS
                 to = ch.CurrentRoom.Persons.First();
             #endregion
 
-            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Secretive)
-                && type != ToTypes.Character)
+            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Secretive) && type != ToTypes.Character)
                 return;
 
             if (type == ToTypes.Victim)
@@ -361,7 +360,7 @@ namespace SmaugCS
             CharacterInstance och = (d.Original ?? d.Character);
             string buffer = string.Empty;
 
-            bool ansi = (!och.IsNpc() && och.Act.IsSet((int)PlayerFlags.Ansi));
+            bool ansi = (!och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi));
 
             const string helpstart = "<Type HELP START>";
 
@@ -372,7 +371,7 @@ namespace SmaugCS
             }
 
             string prompt;
-            if (!ch.IsNpc() && !ch.PlayerData.Flags.IsSet((int)PCFlags.HelpStart))
+            if (!ch.IsNpc() && !ch.PlayerData.Flags.IsSet(PCFlags.HelpStart))
                 prompt = helpstart;
             else if (!ch.IsNpc() && ch.SubState != CharacterSubStates.None
                      && !ch.PlayerData.SubPrompt.IsNullOrEmpty())

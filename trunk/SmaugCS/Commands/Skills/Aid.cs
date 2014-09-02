@@ -59,7 +59,7 @@ namespace SmaugCS.Commands.Skills
             if (victim.CurrentHealth < 1)
                 victim.CurrentHealth = 1;
 
-            fight.update_pos(victim);
+            victim.UpdatePositionByCurrentHealth();
             comm.act(ATTypes.AT_SKILL, "$n aids you!", ch, null, victim, ToTypes.Victim);
         }
     }

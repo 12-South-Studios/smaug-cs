@@ -94,7 +94,7 @@ namespace SmaugCS.Commands.Deity
             // TODO Remove deity resistances from player
             // TODO Remove deity susceptibles from player
 
-            AffectData af = AffectData.Create();
+            AffectData af = new AffectData();
             af.Type = AffectedByTypes.Blind;
             af.Location = ApplyTypes.HitRoll;
             af.Modifier = -4;

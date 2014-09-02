@@ -18,7 +18,7 @@ namespace SmaugCS.Loaders
 
         public override void Save()
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
+            /*using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
                 foreach (MixtureData mixture in db.MIXTURES)
                 {
@@ -31,12 +31,12 @@ namespace SmaugCS.Loaders
                 }
 
                 proxy.Write("#END\n");
-            }
+            }*/
         }
 
         public override void Load()
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
+            /*using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
                 string word = string.Empty;
 
@@ -60,7 +60,7 @@ namespace SmaugCS.Loaders
                         db.MIXTURES.Add(mix);
                     }
                 } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("#end"));
-            }
+            }*/
         }
 
         private static MixtureData ReadMixture(TextReaderProxy proxy)

@@ -2,17 +2,11 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
     public class MobTemplate : Template
     {
-        public static MobTemplate Create(long id, string name)
-        {
-            return new MobTemplate(id, name);
-        }
-
         public SpecialFunction SpecialFunction { get; set; }
         public ShopData Shop { get; set; }
         public RepairShopData RepairShop { get; set; }
@@ -49,10 +43,10 @@ namespace SmaugCS.Data
         public Dictionary<StatisticTypes, int> Statistics { get; set; }
         public string PlayerName { get; set; }
 
-        private MobTemplate(long id, string name)
+        public MobTemplate(long id, string name)
             : base(id, name)
         {
-            SavingThrows = SavingThrowData.Create();
+            SavingThrows = new SavingThrowData();
             HitDice = new DiceData();
             DamageDice = new DiceData();
             Statistics = new Dictionary<StatisticTypes, int>();
@@ -125,12 +119,14 @@ namespace SmaugCS.Data
 
         public void SetSaves(int saveVsDeath, int saveVsWand, int saveVsParalysis, int saveVsBreath, int saveVsSpell)
         {
-            SavingThrows = SavingThrowData.Create();
-            SavingThrows.SaveVsPoisonDeath = saveVsDeath;
-            SavingThrows.SaveVsWandRod = saveVsWand;
-            SavingThrows.SaveVsParalysisPetrify = saveVsParalysis;
-            SavingThrows.SaveVsBreath = saveVsBreath;
-            SavingThrows.SaveVsSpellStaff = saveVsSpell;
+            SavingThrows = new SavingThrowData
+            {
+                SaveVsPoisonDeath = saveVsDeath,
+                SaveVsWandRod = saveVsWand,
+                SaveVsParalysisPetrify = saveVsParalysis,
+                SaveVsBreath = saveVsBreath,
+                SaveVsSpellStaff = saveVsSpell
+            };
         }
 
         public void AddShop(ShopData shop)
@@ -143,10 +139,12 @@ namespace SmaugCS.Data
             if (string.IsNullOrEmpty(keyword) || string.IsNullOrEmpty(text))
                 return;
 
-            MudProgData mp = MudProgData.Create();
-            mp.Type = MudProgTypes.Speech;
-            mp.ArgList = keyword;
-            mp.Script = string.Format("LMobEmote(\"{0}\");", text);
+            MudProgData mp = new MudProgData
+            {
+                Type = MudProgTypes.Speech,
+                ArgList = keyword,
+                Script = string.Format("LMobEmote(\"{0}\");", text)
+            };
 
             AddMudProg(mp);
         }

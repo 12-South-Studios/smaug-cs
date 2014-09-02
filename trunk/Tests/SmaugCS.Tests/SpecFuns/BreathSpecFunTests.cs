@@ -13,7 +13,7 @@ namespace SmaugCS.Tests.SpecFuns
         [SetUp]
         public void OnSetup()
         {
-            _character = CharacterInstance.Create(1, "Tester");
+            _character = new CharacterInstance(1, "Tester");
         }
 
         [Test]

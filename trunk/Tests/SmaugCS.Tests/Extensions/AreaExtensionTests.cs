@@ -23,7 +23,7 @@ namespace SmaugCS.Tests.Extensions
                     LowHardRange = 20,
                     HighHardRange = 30
                 };
-            _ch = CharacterInstance.Create(1, "Tester");
+            _ch = new CharacterInstance(1, "Tester");
         }
 
         [TestCase(55, 55, ActFlags.NoWander, true)]

@@ -24,7 +24,7 @@ namespace SmaugCS.Repositories
                 });
 
 
-            ObjectTemplate newObject = ObjectTemplate.Create(vnum, name);
+            ObjectTemplate newObject = new ObjectTemplate(vnum, name);
             newObject.ExtraFlags.SetBit(ItemExtraFlags.Prototype);
 
             Add(vnum, newObject);

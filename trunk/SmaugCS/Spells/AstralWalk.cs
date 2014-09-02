@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
@@ -13,13 +14,11 @@ namespace SmaugCS.Spells
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
 
-            if (victim == null
-                || !ch.CanAstral(victim)
-                || !victim.CurrentRoom.Area.InHardRange(ch))
-            {
-                ch.FailedCast(skill, victim);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(victim == null
+                                                  || !ch.CanAstral(victim)
+                                                  || !victim.CurrentRoom.Area.InHardRange(ch), skill, ch,
+                CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
+            
 
             if (!string.IsNullOrEmpty(skill.HitCharacterMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitCharacterMessage, ch, null, victim, ToTypes.Character);

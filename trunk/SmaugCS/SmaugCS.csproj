@@ -109,12 +109,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\Character\Affect.cs" />
+    <Compile Include="Extensions\Character\Condition.cs" />
     <Compile Include="Extensions\Character\Damage.cs" />
     <Compile Include="Extensions\Character\Deity.cs" />
     <Compile Include="Extensions\Character\Experience.cs" />
+    <Compile Include="Extensions\Character\Fighting.cs" />
+    <Compile Include="Extensions\Character\Followers.cs" />
+    <Compile Include="Extensions\Character\HuntHateFear.cs" />
+    <Compile Include="Extensions\Character\Languages.cs" />
     <Compile Include="Extensions\Character\ObjectLocator.cs" />
     <Compile Include="Extensions\Character\Statistics.cs" />
     <Compile Include="Extensions\Character\Timer.cs" />
+    <Compile Include="Extensions\Character\Traps.cs" />
+    <Compile Include="ObjectAlreadyExtractedException.cs" />
     <Compile Include="Repositories\TypeMapAttribute.cs" />
     <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
     <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
@@ -774,7 +781,7 @@
     <Compile Include="handler.cs" />
     <Compile Include="hotboot.cs" />
     <Compile Include="interp.cs" />
-    <Compile Include="liquids.cs" />
+    <Compile Include="Liquids.cs" />
     <Compile Include="Macros.cs" />
     <Compile Include="magic.cs" />
     <Compile Include="ObjectFactory.cs" />

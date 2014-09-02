@@ -28,7 +28,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            AffectData af = AffectData.Create();
+            AffectData af = new AffectData();
             af.SkillNumber = sn;
             af.Location = ApplyTypes.HitRoll;
             af.Modifier = -4;

@@ -56,7 +56,7 @@ namespace SmaugCS
                 return -1;
 
             long newId = dbManager.GenerateNewId<SkillData>();
-            dbManager.AddToRepository(SkillData.Create(newId, name));
+            dbManager.AddToRepository(new SkillData(newId, name));
             return (int)newId;
         }
 

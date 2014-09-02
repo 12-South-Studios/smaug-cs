@@ -4,22 +4,15 @@ using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using Realm.Library.Lua;
 using SmaugCS.Data.Interfaces;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
     [XmlRoot("Character")]
     public class CharacterInstance : Instance, IVerifiable
     {
-        public static CharacterInstance Create(int id, string name)
-        {
-            return new CharacterInstance(id, name);
-        }
-
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
         public FightingData CurrentFighting { get; set; }
@@ -129,11 +122,11 @@ namespace SmaugCS.Data
         public int ResetNum { get; set; }
         public LuaInterfaceProxy LuaVM { get; set; }
 
-        private CharacterInstance(int id, string name)
+        public CharacterInstance(int id, string name)
             : base(id, name)
         {
             Colors = new Dictionary<ATTypes, char>();
-            SavingThrows = SavingThrowData.Create();
+            SavingThrows = new SavingThrowData();
             LuaVM = LuaInterfaceProxy.Create();
             Timers = new List<TimerData>();
         }

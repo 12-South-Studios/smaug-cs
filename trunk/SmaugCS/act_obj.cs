@@ -137,7 +137,7 @@ namespace SmaugCS
             }
 
             if (obj.ItemType != ItemTypes.Container)
-                handler.check_for_trap(ch, obj, TrapTriggerTypes.Get);
+                ch.CheckObjectForTrap(obj, TrapTriggerTypes.Get);
             if (ch.CharDied())
                 return;
 

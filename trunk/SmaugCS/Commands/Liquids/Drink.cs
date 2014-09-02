@@ -38,7 +38,7 @@ namespace SmaugCS.Commands.Liquids
             DrinkFrom(ch, obj);
 
             int pulsesPerSecond = GameConstants.GetSystemValue<int>("PulsesPerSecond");
-            Macros.WAIT_STATE(ch, fight.GetMyTarget(ch) != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
+            Macros.WAIT_STATE(ch, ch.GetMyTarget() != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
         }
 
         private static ObjectInstance GetDrinkSource(CharacterInstance ch, string arg)
@@ -106,12 +106,12 @@ namespace SmaugCS.Commands.Liquids
                 comm.act(ATTypes.AT_ACTION, "You drink $T from $p.", ch, obj, liquid.ShortDescription, ToTypes.Character);
             }
 
-            update.gain_condition(ch, ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
-            update.gain_condition(ch, ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
-            update.gain_condition(ch, ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
+            ch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
+            ch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
+            ch.GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
 
             if (ch.IsVampire())
-                update.gain_condition(ch, ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
+                ch.GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
 
             if (liquid.Type == LiquidTypes.Poison)
                 DrinkPoison(ch, obj);
@@ -187,7 +187,7 @@ namespace SmaugCS.Commands.Liquids
             comm.act(ATTypes.AT_POISON, "You sputter and gag.", ch, null, null, ToTypes.Character);
             ch.MentalState = 20.GetNumberThatIsBetween(ch.MentalState + 5, 100);
 
-            AffectData af = AffectData.Create();
+            AffectData af = new AffectData();
             af.Type = AffectedByTypes.Poison;
             af.Duration = obj.Value[3];
             af.Location = ApplyTypes.None;
@@ -208,12 +208,12 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc() && obj.Value[2] != 0)
             {
-                update.gain_condition(ch, ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
-                update.gain_condition(ch, ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
-                update.gain_condition(ch, ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
+                ch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
+                ch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
+                ch.GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
 
                 if (ch.IsVampire())
-                    update.gain_condition(ch, ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
+                    ch.GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
             }
             else if (!ch.IsNpc() && obj.Value[2] == 0)
                 ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = GetMaximumCondition();
@@ -267,9 +267,9 @@ namespace SmaugCS.Commands.Liquids
                 }
             }
 
-            update.gain_condition(ch, ConditionTypes.Bloodthirsty, 1);
-            update.gain_condition(ch, ConditionTypes.Full, 1);
-            update.gain_condition(ch, ConditionTypes.Thirsty, 1);
+            ch.GainCondition(ConditionTypes.Bloodthirsty, 1);
+            ch.GainCondition(ConditionTypes.Full, 1);
+            ch.GainCondition(ConditionTypes.Thirsty, 1);
 
             if (--obj.Value[1] <= 0)
             {

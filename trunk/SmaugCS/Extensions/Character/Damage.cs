@@ -122,7 +122,7 @@ namespace SmaugCS.Extensions
                 ch.Trust >= LevelConstants.ImmortalLevel && victim.CurrentHealth < 1)
                 victim.CurrentHealth = 1;
 
-            fight.update_pos(victim);
+            victim.UpdatePositionByCurrentHealth();
 
             if (PositionDamageTable.ContainsKey(victim.CurrentPosition))
                 PositionDamageTable[victim.CurrentPosition].Invoke(ch, victim, modifiedDamage, dt);
@@ -139,7 +139,7 @@ namespace SmaugCS.Extensions
                     && victim.CurrentFighting.Who.CurrentHating.Who == victim)
                     victim.CurrentFighting.Who.StopHating();
 
-                fight.stop_fighting(victim, (!victim.IsNpc() && ch.IsNpc()));
+                victim.StopFighting((!victim.IsNpc() && ch.IsNpc()));
             }
 
             // TODO Payoff for killing things
@@ -245,11 +245,11 @@ namespace SmaugCS.Extensions
         private static void PreserveVampireFromDamage(CharacterInstance victim, int dam)
         {
             if (dam >= (victim.MaximumHealth / 10))
-                update.gain_condition(victim, ConditionTypes.Bloodthirsty, -1 - (victim.Level / 20));
+                victim.GainCondition(ConditionTypes.Bloodthirsty, -1 - (victim.Level / 20));
             if (victim.CurrentHealth <= (victim.MaximumHealth / 8) &&
                 victim.PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) > 5)
             {
-                update.gain_condition(victim, ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
+                victim.GainCondition(ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
                 victim.CurrentHealth += 4.GetNumberThatIsBetween(victim.CurrentHealth / 30, 15);
                 color.set_char_color(ATTypes.AT_BLOOD, victim);
                 color.send_to_char("You howl with rage as the beast within stirs!", victim);
@@ -265,7 +265,7 @@ namespace SmaugCS.Extensions
             if (ch.CurrentFighting.Who == victim)
                 xpGain = (ch.CurrentFighting.Experience * dam) / victim.MaximumHealth;
             else
-                xpGain = (int)(fight.xp_compute(ch, victim) * 0.85f * dam) / victim.MaximumHealth;
+                xpGain = (int)(ch.ComputeExperienceGain(victim) * 0.85f * dam) / victim.MaximumHealth;
 
             if (dt == DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID
                 || dt == DatabaseManager.Instance.GetEntity<SkillData>("circle").ID)

@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -12,7 +13,7 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsInCombatPosition())
                 return false;
 
-            CharacterInstance victim = fight.GetMyTarget(ch);
+            CharacterInstance victim = ch.GetMyTarget();
             if (victim == null || (SmaugRandom.D100() > (2*ch.Level)))
                 return false;
 

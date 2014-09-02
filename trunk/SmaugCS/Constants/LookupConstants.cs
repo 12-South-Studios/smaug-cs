@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Commands.Shop;
 using SmaugCS.Config;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Managers;
@@ -871,6 +872,28 @@ namespace SmaugCS.Constants
                                                                 "*** ANNIHILATES ***",
                                                                 "**** SMITES ****"
                                                             };
+
+        public static IEnumerable<string> AttackTable = new List<string>()
+        {
+            "hit",
+            "slice",
+            "stab",
+            "slash",
+            "whip",
+            "claw",
+            "blast",
+            "pound",
+            "crush",
+            "grep",
+            "bite",
+            "pierce",
+            "suction",
+            "bolt",
+            "arrow",
+            "dart",
+            "stone",
+            "pea"
+        };
 
         public static IEnumerable<string> s_message_table(string type)
         {

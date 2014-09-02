@@ -6,17 +6,8 @@ using SmaugCS.Data;
 
 namespace SmaugCS
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class StringExt
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="argument"></param>
-        /// <param name="modifier"></param>
-        /// <returns></returns>
         public static string Scramble(this string argument, int modifier)
         {
             StringBuilder arg = new StringBuilder(argument);
@@ -67,12 +58,6 @@ namespace SmaugCS
             return arg.ToString();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="argument"></param>
-        /// <param name="ch"></param>
-        /// <returns></returns>
         public static string Drunkify(this string argument, CharacterInstance ch)
         {
             if (ch.IsNpc() || ch.PlayerData == null)

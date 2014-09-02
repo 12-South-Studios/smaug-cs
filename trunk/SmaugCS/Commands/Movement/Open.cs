@@ -62,7 +62,7 @@ namespace SmaugCS.Commands.Movement
             obj.Value[1].RemoveBit((int) ContainerFlags.Closed);
             comm.act(ATTypes.AT_ACTION, "You open $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n opens $p.", ch, obj, null, ToTypes.Room);
-            handler.check_for_trap(ch, obj, TrapTriggerTypes.Open);
+            ch.CheckObjectForTrap(obj, TrapTriggerTypes.Open);
         }
 
         private static void OpenDoor(CharacterInstance ch, ExitData exit, string arg)

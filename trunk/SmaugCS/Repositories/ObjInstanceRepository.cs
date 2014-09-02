@@ -25,7 +25,7 @@ namespace SmaugCS.Repositories
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            ObjectInstance obj = ObjectInstance.Create(GetNextId, name, 99, 99);
+            ObjectInstance obj = new ObjectInstance(GetNextId, name, 99, 99);
             obj.Parent = parent;
             obj.Level = args == null || args.Length == 0 ? 1 : (int)args[0];
             obj.WearLocation = WearLocations.None;

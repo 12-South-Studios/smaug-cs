@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common;
-using SmaugCS.Data;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
     public abstract class Instance : Entity
     {

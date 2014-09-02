@@ -497,7 +497,7 @@ namespace SmaugCS
                     {
                         if (!silence)
                             color.send_to_char("You really shouldn't do this to another player...", ch);
-                        else if (fight.GetMyTarget(victim) != ch)
+                        else if (victim.GetMyTarget() != ch)
                             return null;
                     }
                 }
@@ -527,7 +527,7 @@ namespace SmaugCS
             if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
                 && ch.PlayerData.Nuisance.Flags > 5 &&
                 SmaugRandom.D100() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
-                victim = fight.GetMyTarget(ch);
+                victim = ch.GetMyTarget();
 
             if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
                 !silence ? "You can't cast this on yourself!" : "")) return null;
@@ -614,7 +614,7 @@ namespace SmaugCS
                     if (victim != ch)
                     {
                         if (victim == null)
-                            victim = fight.GetMyTarget(ch);
+                            victim = ch.GetMyTarget();
                         if (CheckFunctions.CheckIfTrue(ch, victim == null || (!victim.IsNpc() && !victim.IsInArena()),
                             "You can't do that.")) return ReturnTypes.None;
                     }

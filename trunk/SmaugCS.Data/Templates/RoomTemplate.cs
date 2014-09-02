@@ -4,18 +4,11 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
-
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
     public class RoomTemplate : Template, IHasExtraDescriptions
     {
-        public static RoomTemplate Create(long id, string name)
-        {
-            return new RoomTemplate(id, name);
-        }
-
         public List<ResetData> Resets { get; set; }
         public ResetData LastMobReset { get; set; }
         public ResetData LastObjectReset { get; set; }
@@ -39,7 +32,7 @@ namespace SmaugCS.Data
         public int TeleportDelay { get; set; }
         public int Tunnel { get; set; }
 
-        private RoomTemplate(long id, string name)
+        public RoomTemplate(long id, string name)
             : base(id, name)
         {
             Resets = new List<ResetData>();
@@ -99,11 +92,13 @@ namespace SmaugCS.Data
             if (Exits.Any(x => x.Direction == dir))
                 return;
 
-            ExitData newExit = ExitData.Create((int)dir, direction);
-            newExit.Destination = destination;
-            newExit.Description = description;
-            newExit.Direction = dir;
-            newExit.Keywords = direction;
+            ExitData newExit = new ExitData((int)dir, direction)
+            {
+                Destination = destination,
+                Description = description,
+                Direction = dir,
+                Keywords = direction
+            };
             Exits.Add(newExit);
         }
         public void AddExitObject(ExitData exit)
@@ -124,11 +119,6 @@ namespace SmaugCS.Data
         }
 
         #region IHasExtraDescriptions Implementation
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keywords"></param>
-        /// <param name="description"></param>
         public void AddExtraDescription(string keywords, string description)
         {
             string[] words = keywords.Split(new[] { ' ' });
@@ -137,19 +127,16 @@ namespace SmaugCS.Data
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
                 if (foundEd == null)
                 {
-                    foundEd = ExtraDescriptionData.Create();
-                    foundEd.Keyword = keywords;
-                    foundEd.Description = description;
+                    foundEd = new ExtraDescriptionData
+                    {
+                        Keyword = keywords, 
+                        Description = description
+                    };
                     ExtraDescriptions.Add(foundEd);
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
         public bool DeleteExtraDescription(string keyword)
         {
             ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
@@ -160,11 +147,6 @@ namespace SmaugCS.Data
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
         public ExtraDescriptionData GetExtraDescription(string keyword)
         {
             return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
@@ -180,10 +162,12 @@ namespace SmaugCS.Data
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
         {
             ResetTypes resetType = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type);
-            ResetData newReset = ResetData.Create();
-            newReset.Type = resetType;
-            newReset.Extra = extra;
-            newReset.Command = type[0].ToString();
+            ResetData newReset = new ResetData
+            {
+                Type = resetType,
+                Extra = extra,
+                Command = type[0].ToString()
+            };
             newReset.Args[0] = arg1;
             newReset.Args[1] = arg2;
             newReset.Args[2] = arg3;

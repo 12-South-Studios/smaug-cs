@@ -6,11 +6,6 @@ namespace SmaugCS.Data
 {
     public class ResetData
     {
-        public static ResetData Create()
-        {
-            return new ResetData();
-        }
-
         public ResetTypes Type { get; set; }
         public string Command { get; set; }
         public int Extra { get; set; }
@@ -18,7 +13,7 @@ namespace SmaugCS.Data
         public bool sreset { get; set; }
         public List<ResetData> Resets { get; set; }
 
-        private ResetData()
+        public ResetData()
         {
             Args = new int[3];
             Resets = new List<ResetData>();
@@ -33,9 +28,11 @@ namespace SmaugCS.Data
 
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
         {
-            ResetData newReset = Create();
-            newReset.Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type);
-            newReset.Extra = extra;
+            ResetData newReset = new ResetData
+            {
+                Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
+                Extra = extra
+            };
             newReset.SetArgs(arg1, arg2, arg3);
             Resets.Add(newReset);
         }

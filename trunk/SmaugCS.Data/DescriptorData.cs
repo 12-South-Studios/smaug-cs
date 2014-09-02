@@ -1,6 +1,5 @@
 ﻿using Realm.Library.Network;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 
 namespace SmaugCS.Data
 {

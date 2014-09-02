@@ -34,7 +34,7 @@ namespace SmaugCS.Extensions
                 return;
             }
 
-            AffectData newAffect = AffectData.Create();
+            AffectData newAffect = new AffectData();
             newAffect.Type = affect.Type;
             newAffect.Duration = affect.Duration;
             newAffect.Location = affect.Location;

@@ -1,11 +1,7 @@
 ﻿using System;
-using SmaugCS.Data;
 
 namespace SmaugCS.Data
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class UseHistory
     {
         public int TimesUsed { get; private set; }
@@ -15,11 +11,6 @@ namespace SmaugCS.Data
         public DateTime LastUsed { get; private set; }
         public string LastUsedBy { get; private set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="time"></param>
         public void Use(CharacterInstance ch, TimeSpan time)
         {
             TimesUsed++;

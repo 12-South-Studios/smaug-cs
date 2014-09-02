@@ -272,28 +272,14 @@ namespace SmaugCS
         public static void extract_obj(ObjectInstance obj)
         {
             if (obj_extracted(obj))
-            {
-                LogManager.Instance.Bug("Object {0} already extracted", obj.ObjectIndex.Vnum);
-                return;
-            }
+                throw new ObjectAlreadyExtractedException("Object {0}", obj.ObjectIndex.ID);
 
             if (obj.ItemType == ItemTypes.Portal)
                 update.remove_portal(obj);
 
-            AuctionData auction = db.AUCTIONS.FirstOrDefault(a => a.ItemForSale == obj);
-            if (auction != null)
-            {
-                ChatManager.talk_auction(string.Format("Sale of {0} has been stopped by a system action.",
-                                                       obj.ShortDescription));
-
-                auction.ItemForSale = null;
-                if (auction.Buyer != null
-                    && auction.Buyer != auction.Seller)
-                {
-                    auction.Buyer.CurrentCoin += auction.BidAmount;
-                    color.send_to_char("Your money has been returned.\r\n", auction.Buyer);
-                }
-            }
+            if (AuctionManager.Instance.Auction.ItemForSale == obj)
+                Commands.Objects.Auction.StopAuction(AuctionManager.Instance.Auction.Seller,
+                    "Sale of {0} has been stopped by a system action.");
 
             if (obj.CarriedBy != null)
                 obj.FromCharacter();
@@ -339,29 +325,10 @@ namespace SmaugCS
 
         public static void extract_char(CharacterInstance ch, bool fPull)
         {
-            if (ch == null)
-            {
-                LogManager.Instance.Bug("null ch");
-                return;
-            }
-
-            if (ch.CurrentRoom == null)
-            {
-                LogManager.Instance.Bug("{0} in null room", !string.IsNullOrEmpty(ch.Name) ? ch.Name : "???");
-                return;
-            }
-
-            if (ch == db.Supermob)
-            {
-                LogManager.Instance.Bug("ch == supermob");
-                return;
-            }
-
-            if (ch.CharDied())
-            {
-                LogManager.Instance.Bug("{0} already died!", ch.Name);
-                return;
-            }
+            if (ch == null) return;
+            if (ch.CurrentRoom == null) return;
+            if (ch == db.Supermob) return;
+            if (ch.CharDied()) return;
 
             if (ch == db.CurrentChar)
                 db.CurrentCharDied = true;
@@ -384,38 +351,41 @@ namespace SmaugCS
             if (fPull)
                 ch.DieFollower();
 
-            fight.stop_fighting(ch, true);
+            ch.StopFighting(true);
 
             if (ch.CurrentMount != null)
             {
                 reset.update_room_reset(ch, true);
-                ch.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
+                ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
                 ch.CurrentMount = null;
                 ch.CurrentPosition = PositionTypes.Standing;
             }
 
             if (ch.IsNpc())
             {
-                ch.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
-                foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(wch => wch.CurrentMount == ch))
+                ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
+                foreach (
+                    CharacterInstance wch in
+                        DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
+                            .Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
                     wch.CurrentPosition = PositionTypes.Standing;
                     if (wch.CurrentRoom == ch.CurrentRoom)
                     {
                         comm.act(ATTypes.AT_SOCIAL, "Your faithful mount collapses beneath you...", wch, null, ch,
-                                 ToTypes.Character);
+                            ToTypes.Character);
                         comm.act(ATTypes.AT_SOCIAL, "Sadly you dismount $M for the last time.", wch, null, ch,
-                                 ToTypes.Character);
+                            ToTypes.Character);
                         comm.act(ATTypes.AT_PLAIN, "$n sadly dismounts $N for the last time.", wch, null, ch,
-                                 ToTypes.Room);
+                            ToTypes.Room);
                     }
                     if (wch.PlayerData != null && wch.PlayerData.Pet == ch)
                     {
                         wch.PlayerData.Pet = null;
                         if (wch.CurrentRoom == ch.CurrentRoom)
                             comm.act(ATTypes.AT_SOCIAL, "You mourn for the loss of $N.", wch, null, ch,
-                                     ToTypes.Character);
+                                ToTypes.Character);
                     }
                 }
             }
@@ -481,9 +451,7 @@ namespace SmaugCS
 
             if (ch.Descriptor != null)
             {
-                if (ch.Descriptor.Character != ch)
-                    LogManager.Instance.Bug("Char's descriptor points to another char");
-                else
+                if (ch.Descriptor.Character == ch)
                 {
                     ch.Descriptor.Character = null;
                     // TODO Close the socket
@@ -623,89 +591,6 @@ namespace SmaugCS
                     return type.GetName();
             }
             return "ERROR";
-        }
-
-        private const string TrapTypeLookupDefault = "hit by a trap";
-
-        public static ReturnTypes spring_trap(CharacterInstance ch, ObjectInstance obj)
-        {
-            int level = obj.Value[2];
-            string txt = string.Empty;
-            TrapTypes trapType = TrapTypes.None;
-            DescriptorAttribute attrib = null;
-            try
-            {
-                trapType = Realm.Library.Common.EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
-                attrib = trapType.GetAttribute<DescriptorAttribute>();
-                txt = attrib.Messages[0];
-            }
-            catch (ArgumentException)
-            {
-                txt = TrapTypeLookupDefault;
-            }
-
-            int dam = SmaugRandom.Between(obj.Value[2], obj.Value[2]*2);
-            
-            comm.act(ATTypes.AT_HITME, string.Format("You are {0}!", txt), ch, null, null, ToTypes.Character);
-            comm.act(ATTypes.AT_ACTION, string.Format("$n is {0}.", txt), ch, null, null, ToTypes.Room);
-
-            --obj.Value[0];
-            if (obj.Value[0] <= 0)
-                extract_obj(obj);
-
-            ReturnTypes returnCode = ReturnTypes.None;
-            if (attrib != null && !string.IsNullOrEmpty(attrib.Messages[1]))
-            {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(attrib.Messages[1]);
-                returnCode = ch.ObjectCastSpell((int)skill.ID, level, ch);
-            }
-
-            if (trapType == TrapTypes.Blade || trapType == TrapTypes.ElectricShock)
-                returnCode = ch.CauseDamageTo(ch, dam, Program.TYPE_UNDEFINED);
-            if ((trapType == TrapTypes.PoisonArrow
-                           || trapType == TrapTypes.PoisonDagger
-                           || trapType == TrapTypes.PoisonDart
-                           || trapType == TrapTypes.PoisonNeedle)
-                && returnCode == ReturnTypes.None)
-                returnCode = ch.CauseDamageTo(ch, dam, Program.TYPE_UNDEFINED);
-
-            return returnCode;
-        }
-
-        public static ReturnTypes check_for_trap(CharacterInstance ch, ObjectInstance obj, TrapTriggerTypes flag)
-        {
-            if (!obj.Contents.Any())
-                return ReturnTypes.None;
-
-            ReturnTypes returnCode = ReturnTypes.None;
-
-            foreach (ObjectInstance check in obj.Contents.Where(check => check.ItemType == ItemTypes.Trap
-                                                                         && check.Value[3].IsSet((int)flag)))
-            {
-                returnCode = spring_trap(ch, check);
-                if (returnCode != ReturnTypes.None)
-                    return returnCode;
-            }
-
-            return returnCode;
-        }
-
-        public static ReturnTypes check_room_for_traps(CharacterInstance ch, int flag)
-        {
-            if (!ch.CurrentRoom.Contents.Any())
-                return ReturnTypes.None;
-
-            ReturnTypes returnCode = ReturnTypes.None;
-
-            foreach (ObjectInstance check in ch.CurrentRoom.Contents.Where(check => check.ItemType == ItemTypes.Trap
-                                                                         && check.Value[3].IsSet(flag)))
-            {
-                returnCode = spring_trap(ch, check);
-                if (returnCode != ReturnTypes.None)
-                    return returnCode;
-            }
-
-            return returnCode;
         }
 
         public static ObjectInstance get_trap(ObjectInstance obj)

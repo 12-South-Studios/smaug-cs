@@ -12,7 +12,7 @@ namespace SmaugCS.Data
         public string Name { get; set; }
         public string Announce { get; set; }
 
-        public void Load(Realm.Library.Common.TextSection section)
+        public void Load(TextSection section)
         {
             foreach (string line in section.Lines.Where(x => !x.StartsWith("*")))
             {

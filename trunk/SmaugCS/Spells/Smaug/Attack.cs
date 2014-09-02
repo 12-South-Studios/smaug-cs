@@ -68,7 +68,7 @@ namespace SmaugCS.Spells.Smaug
                 ToTypes.NotVictim);
 
             vch.CurrentHealth = 0.GetNumberThatIsBetween(vch.CurrentHealth + damage, vch.MaximumHealth);
-            fight.update_pos(vch);
+            vch.UpdatePositionByCurrentHealth();
 
             if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who == vch)
                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))

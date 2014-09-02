@@ -4,10 +4,7 @@ using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-
-
-
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -32,14 +29,9 @@ namespace SmaugCS
 
         public static bool CHECK_SUBRESTRICTED(CharacterInstance ch)
         {
-            if (ch.SubState == CharacterSubStates.Restricted)
-            {
-                color.send_to_char("You cannot use this command from within another command.\n\r", ch);
-                return false;
-            }
-            return true;
+            return !CheckFunctions.CheckIfTrue(ch, ch.SubState == CharacterSubStates.Restricted,
+                "You cannot use this command from within another command.");
         }
-
 
         public static long GET_TIME_PLAYED(CharacterInstance ch)
         {
@@ -74,7 +66,7 @@ namespace SmaugCS
         }
         public static bool IS_PACIFIST(CharacterInstance ch)
         {
-            return ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Pacifist);
+            return ch.IsNpc() && ch.Act.IsSet(ActFlags.Pacifist);
         }
 
         public static int SPELL_DAMAGE(SkillData skill)

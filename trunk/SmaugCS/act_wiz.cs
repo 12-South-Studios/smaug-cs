@@ -137,7 +137,7 @@ namespace SmaugCS
                 return;
 
             if (victim.CurrentFighting != null)
-                fight.stop_fighting(victim, true);
+                victim.StopFighting(true);
 
             if (!ch.IsNpc())
             {

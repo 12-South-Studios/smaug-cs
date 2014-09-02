@@ -40,7 +40,7 @@ namespace SmaugCS.Spells
                         (ch.PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) - (template.Level/3)) < 0,
                         "You don't have the power to reanimate this corpse.")) return ReturnTypes.SpellFailed;
 
-                    update.gain_condition(ch, ConditionTypes.Bloodthirsty, template.Level/3);
+                    ch.GainCondition(ConditionTypes.Bloodthirsty, template.Level/3);
                 }
                 else if ((ch.CurrentMana - (template.Level/4)) < 0)
                 {
@@ -53,7 +53,9 @@ namespace SmaugCS.Spells
 
             if (ch.IsImmortal() || (ch.Chance(75) && template.Level - ch.Level < 10))
             {
-                CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template);
+                CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
+                    string.Format("animated corpse {0}", template.PlayerName));
+
                 ch.CurrentRoom.ToRoom(mob);
                 mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
                 mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
@@ -71,7 +73,6 @@ namespace SmaugCS.Spells
                 comm.act(ATTypes.AT_MAGIC, "$n makes $T rise from the grave!", ch, null, template.ShortDescription, ToTypes.Room);
                 comm.act(ATTypes.AT_MAGIC, "You make $T rise from the grave!", ch, null, template.ShortDescription, ToTypes.Character);
 
-                //mob.Name = string.Format("animated corpse {0}", template.PlayerName);
                 mob.ShortDescription = string.Format("The animated corpse of {0}", template.ShortDescription);
                 mob.LongDescription =
                     string.Format("An animated corpse of {0} struggles with the horror of its undeath.",
@@ -79,7 +80,7 @@ namespace SmaugCS.Spells
 
                 mob.AddFollower(ch);
 
-                AffectData af = AffectData.Create();
+                AffectData af = new AffectData();
                 af.Type = AffectedByTypes.Charm;
                 af.Duration =
                     (SmaugRandom.Fuzzy((level + 1)/4) + 1)*

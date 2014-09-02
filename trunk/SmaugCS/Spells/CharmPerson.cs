@@ -49,7 +49,7 @@ namespace SmaugCS.Spells
                 victim.StopFollower();
             victim.AddFollower(ch);
 
-            AffectData af = AffectData.Create();
+            AffectData af = new AffectData();
             af.SkillNumber = sn;
             af.Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
                           GameConstants.GetConstant<int>("AffectDurationConversionValue");
