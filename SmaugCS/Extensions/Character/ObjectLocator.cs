@@ -107,6 +107,19 @@ namespace SmaugCS.Extensions
                 .Where(obj => argument.IsAnyEqual(obj.Name) || argument.IsAnyEqualPrefix(obj.Name)), 1);
         }
 
+        public static ObjectInstance GetObjectInList(this CharacterInstance ch, IEnumerable<ObjectInstance> objects,
+            string argument)
+        {
+            int number = argument.IsNumberArgument() ? argument.GetNumberArgument() : 1;
+            string arg = argument.IsNumberArgument() ? argument.StripNumberArgument() : argument;
+
+            int vnum = GetVnumFromArgumentIfImmortal(ch, arg);
+            return vnum > 0
+                ? GetObjectInList(objects.Where(obj => obj.ObjectIndex.ID == vnum), number)
+                : GetObjectInList(objects.Where(obj => arg.IsAnyEqual(obj.Name) || arg.IsAnyEqualPrefix(obj.Name)),
+                    number);
+        }
+
         private static T GetObjectInList<T>(IEnumerable<T> objects, int number) where T : Cell
         {
             int count = 0;

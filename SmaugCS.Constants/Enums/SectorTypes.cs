@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -17,13 +14,21 @@ namespace SmaugCS.Constants.Enums
         ShallowWater        = 1 << 6, 
         DeepWater           = 1 << 7, 
         Underwater          = 1 << 8,
+
+        [Thirst(ModValue = -2)]
         Air                 = 1 << 9, 
+        
+        [Thirst(ModValue = -3)]
         Desert              = 1 << 10,
         Unknown             = 1 << 11, 
         OceanFloor          = 1 << 12,
         Underground         = 1 << 13,
+
+        [Thirst(ModValue = -5)]
         Lava                = 1 << 14, 
         Swamp               = 1 << 15, 
+
+        [Thirst(ModValue = -2)]
         Ice                 = 1 << 16
     }
 }

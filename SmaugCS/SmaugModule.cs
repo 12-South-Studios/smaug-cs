@@ -14,6 +14,7 @@ using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.News;
+using SmaugCS.Repositories;
 using SmaugCS.Weather;
 
 namespace SmaugCS
@@ -102,6 +103,13 @@ namespace SmaugCS
                 .WithConstructorArgument("timer", Kernel.Get<ITimer>("AuctionPulseTimer"))
                 .WithConstructorArgument("repository", Kernel.Get<IAuctionRepository>())
                 .OnActivation(x => x.Initialize());
+
+            Kernel.Bind<IInstanceRepository<ObjectInstance>>().To<ObjInstanceRepository>();
+            Kernel.Bind<IInstanceRepository<CharacterInstance>>().To<CharacterRepository>();
+            Kernel.Bind<ITemplateRepository<MobTemplate>>().To<MobileRepository>();
+            Kernel.Bind<ITemplateRepository<ObjectTemplate>>().To<ObjectRepository>();
+            Kernel.Bind<ITemplateRepository<RoomTemplate>>().To<RoomRepository>();
+
         }
     }
 }

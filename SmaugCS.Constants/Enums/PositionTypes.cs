@@ -17,6 +17,8 @@ namespace SmaugCS.Constants.Enums
         [Descriptor(new [] {" is laying here stunned."})]
         Stunned         = 1 << 3,
 
+        [MentalState(ModValue = 5, Condition = ConditionTypes.Thirsty)]
+        [MentalState(ModValue = 4, Condition = ConditionTypes.Full)]
         [Descriptor(new[] { " is sleeping nearby.", " is deep in slumber here."})]
         Sleeping,
 
@@ -28,6 +30,8 @@ namespace SmaugCS.Constants.Enums
             " is here, fighting someone who left?"
         })]
         Berserk         = 1 << 5,
+
+        [MentalState(ModValue = 3, Condition = ConditionTypes.Full | ConditionTypes.Thirsty)]
         Resting         = 1 << 6,
 
         [Descriptor(new[]
@@ -39,6 +43,7 @@ namespace SmaugCS.Constants.Enums
         })]
         Aggressive      = 1 << 7,
 
+        [MentalState(ModValue = 2, Condition = ConditionTypes.Full | ConditionTypes.Thirsty)]
         [Descriptor(new[]
         {
             " sits here with you.",
@@ -84,6 +89,7 @@ namespace SmaugCS.Constants.Enums
         })]
         Standing = 1 << 12,
 
+        [MentalState(ModValue = 2, Condition = ConditionTypes.Full | ConditionTypes.Thirsty)]
         [Descriptor(new[]
         {
             " is here, upon thin air???", 

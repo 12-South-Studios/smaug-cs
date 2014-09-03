@@ -51,7 +51,7 @@ namespace SmaugCS.Skills
 
             if (!victim.IsNpc() && victim.CanPKill() && !obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal))
             {
-                obj.magic_flags.SetBit(ItemMagicFlags.PKDisarmed);
+                obj.MagicFlags.SetBit(ItemMagicFlags.PKDisarmed);
                 obj.Value[5] = victim.Level;
             }
 

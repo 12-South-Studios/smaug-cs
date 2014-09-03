@@ -53,8 +53,9 @@ namespace SmaugCS.Data
         public RaceTypes CurrentRace { get; set; }
         public int Level { get; set; }
         public int Trust { get; set; }
-        public int played { get; set; }
-        public DateTime logon { get; set; }
+        public int PlayedDuration { get { return (int)(DateTime.Now.ToFileTimeUtc() - LoggedOn.ToFileTimeUtc())/3600; } }
+        public DateTime LoggedOn { get { return Descriptor.User.ConnectedOn; } }
+        public int TotalPlayedTime { get; set; }
         public DateTime save_time { get; set; }
         public int wait { get; set; }
         public int CurrentHealth { get; set; }

@@ -35,11 +35,11 @@ namespace SmaugCS
         {
             if (ch.PlayerData == null)
                 return -1;
-            foreach (SkillData skill in ch.PlayerData.special_skills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
-                                                                                    && name.StartsWithIgnoreCase(skill.Name)))
-            {
-                return (int)skill.ID;
-            }
+            foreach (
+                SkillData skill in
+                    ch.PlayerData.special_skills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
+                                                                && name.StartsWithIgnoreCase(skill.Name)))
+                return (int) skill.ID;
             return -1;
         }
 
@@ -87,24 +87,15 @@ namespace SmaugCS
             if (slot <= 0)
                 return -1;
             foreach (SkillData skill in DatabaseManager.Instance.SKILLS.Values.Where(skill => skill.Slot == slot))
-            {
-                return (int)skill.ID;
-            }
+                return (int) skill.ID;
             return -1;
         }
 
         /// <summary>
         /// Handlers to tell the victim which spell is being effected
         /// </summary>
-        /// <param name="paf"></param>
-        /// <param name="ch"></param>
-        /// <param name="victim"></param>
-        /// <param name="affect"></param>
-        /// <param name="dispel"></param>
-        /// <returns></returns>
         public static int dispel_casting(AffectData paf, CharacterInstance ch, CharacterInstance victim, int affect, bool dispel)
         {
-            //ExtendedBitvector ext_bv = ExtendedBitvector.Meb(affect);
             bool isMage = false;
             bool hasDetect = false;
 
@@ -116,13 +107,13 @@ namespace SmaugCS
             string spell;
             if (paf != null)
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>((int)paf.Type);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>((int) paf.Type);
                 if (skill == null)
                     return 0;
                 spell = skill.Name;
             }
-           // else
-               // spell = handler.affect_bit_name(ext_bv);
+            else
+                spell = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(affect).GetName().ToLower();
 
             color.set_char_color(ATTypes.AT_MAGIC, ch);
             color.set_char_color(ATTypes.AT_HITME, victim);
@@ -135,17 +126,17 @@ namespace SmaugCS
 
             if (dispel)
             {
-                //color.ch_printf(victim, "Your %s vanishes.\r\n", spell);
-                //if (isMage && hasDetect)
-                //    color.ch_printf(ch, "%s's %s vanishes.\r\n", buffer, spell);
-                //else
+                color.ch_printf(victim, "Your %s vanishes.", spell);
+                if (isMage && hasDetect)
+                   color.ch_printf(ch, "%s's %s vanishes.", buffer, spell);
+                else
                     return 0;
             }
             else
             {
-                //if (isMage && hasDetect)
-               //     color.ch_printf(ch, "%s's %s wavers but holds.\r\n", buffer, spell);
-               // else
+                if (isMage && hasDetect)
+                    color.ch_printf(ch, "%s's %s wavers but holds.", buffer, spell);
+                else
                     return 0;
             }
 
@@ -383,9 +374,6 @@ namespace SmaugCS
         /// <summary>
         /// Process the spell's required components, if any
         /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="sn"></param>
-        /// <returns></returns>
         /// <remarks>
         /// T###		check for item of type ###
         /// V#####	check for item of vnum #####
@@ -410,9 +398,160 @@ namespace SmaugCS
             if (skill == null || skill.Components.Count == 0)
                 return true;
 
-            // TODO: how to handle this?
+            ObjectInstance obj = null;
+            int val = -1;
 
-            return false;
+            foreach (SpellComponent component in skill.Components)
+            {
+                bool found = false;
+                bool fail = false;
+                bool consume = true;
+
+                switch (component.OperatorType)
+                {
+                    case ComponentOperatorTypes.FailIfPresent:
+                        fail = true;
+                        break;
+                    case ComponentOperatorTypes.DoNotConsume:
+                        consume = false;
+                        break;
+                    case ComponentOperatorTypes.DecreaseValue0:
+                        val = 0;
+                        break;
+                    case ComponentOperatorTypes.DecreaseValue1:
+                        val = 1;
+                        break;
+                    case ComponentOperatorTypes.DecreaseValue2:
+                        val = 2;
+                        break;
+                    case ComponentOperatorTypes.DecreaseValue3:
+                        val = 3;
+                        break;
+                    case ComponentOperatorTypes.DecreaseValue4:
+                        val = 4;
+                        break;
+                    case ComponentOperatorTypes.DecreaseValue5:
+                        val = 5;
+                        break;
+                }
+
+                switch (component.RequiredType)
+                {
+                    case ComponentRequiredTypes.ItemType:
+                        foreach (ObjectInstance vobj in ch.Carrying)
+                        {
+                            if (vobj.ItemType ==
+                                Realm.Library.Common.EnumerationExtensions.GetEnumByName<ItemTypes>(
+                                    component.RequiredData))
+                            {
+                                if (CheckFunctions.CheckIfTrue(ch, fail,
+                                    "Something disrupts the casting of this spell...")) return false;
+                                found = true;
+                                obj = vobj;
+                                break;
+                            }
+                        }
+                        break;
+                    case ComponentRequiredTypes.ItemVnum:
+                        foreach (ObjectInstance vobj in ch.Carrying)
+                        {
+                            if (vobj.ID == component.RequiredData.ToInt32())
+                            {
+                                if (CheckFunctions.CheckIfTrue(ch, fail,
+                                    "Something disrupts the casting of this spell...")) return false;
+                                found = true;
+                                obj = vobj;
+                                break;
+                            }
+                        }
+                        break;
+                    case ComponentRequiredTypes.ItemKeyword:
+                        foreach (ObjectInstance vobj in ch.Carrying)
+                        {
+                            if (vobj.Name.IsAnyEqual(component.RequiredData))
+                            {
+                                if (CheckFunctions.CheckIfTrue(ch, fail,
+                                    "Something disrupts the casting of this spell...")) return false;
+                                found = true;
+                                obj = vobj;
+                                break;
+                            }
+                        }
+                        break;
+                    case ComponentRequiredTypes.PlayerCoin:
+                        if (ch.CurrentCoin >= component.RequiredData.ToInt32())
+                        {
+                            if (CheckFunctions.CheckIfTrue(ch, fail,
+                                    "Something disrupts the casting of this spell...")) return false;
+                            if (consume)
+                            {
+                                color.set_char_color(ATTypes.AT_GOLD, ch);
+                                color.send_to_char("You feel a little lighter...", ch);
+                                ch.CurrentCoin -= component.RequiredData.ToInt32();
+                            }
+                            continue;
+                        }
+                        break;
+                    case ComponentRequiredTypes.PlayerHealth:
+                        if (ch.CurrentHealth >= component.RequiredData.ToInt32())
+                        {
+                            if (CheckFunctions.CheckIfTrue(ch, fail,
+                                    "Something disrupts the casting of this spell...")) return false;
+                            if (consume)
+                            {
+                                color.set_char_color(ATTypes.AT_BLOOD, ch);
+                                color.send_to_char("You feel a little weaker...", ch);
+                                ch.CurrentHealth -= component.RequiredData.ToInt32();
+                                ch.UpdatePositionByCurrentHealth();
+                            }
+                            continue;
+                        }
+                        break;
+                }
+
+                if (fail) continue;
+                if (CheckFunctions.CheckIfTrue(ch, !found, "Something is missing...")) return false;
+                if (obj != null)
+                {
+                    if (val >= 0 && val < 6)
+                    {
+                        handler.separate_obj(obj);
+                        if (obj.Value[val] <= 0)
+                        {
+                            comm.act(ATTypes.AT_MAGIC, "$p dispapears in a puff of smoke!", ch, obj, null, ToTypes.Character);
+                            comm.act(ATTypes.AT_MAGIC, "$p disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
+                            handler.extract_obj(obj);
+                            return false;
+                        }
+
+                        if (--obj.Value[val] == 0)
+                        {
+                            comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Character);
+                            comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
+                            handler.extract_obj(obj);
+                        }
+                        else
+                            comm.act(ATTypes.AT_MAGIC, "$p glows briefly and a whisp of smoke rises from it.", ch, obj,
+                                null, ToTypes.Room);
+                    }
+                    else if (consume)
+                    {
+                        handler.separate_obj(obj);
+                        comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Character);
+                        comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
+                        handler.extract_obj(obj);
+                    }
+                    else
+                    {
+                        int count = obj.Count;
+                        obj.Count = 1;
+                        comm.act(ATTypes.AT_MAGIC, "$p glows briefly.", ch, obj, null, ToTypes.Character);
+                        obj.Count = count;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public static object locate_targets(CharacterInstance ch, string arg, int sn, CharacterInstance victim, ObjectInstance obj)

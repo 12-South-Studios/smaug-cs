@@ -47,17 +47,12 @@ namespace SmaugCS
         #region Objects
         public static int NumberOfObjectsLoaded { get; set; }
         public static int PhysicalObjects { get; set; }
-        public static int CurrentObject { get; set; }
-        public static bool CurrentObjectExtracted { get; set; }
-        public static ReturnTypes GlobalObjectCode { get; set; }
         public static ObjectInstance SupermobObject { get; set; }
         #endregion
 
         #region Mobiles/Characters
         public static int NumberOfMobsLoaded { get; set; }
         public static CharacterInstance Supermob { get; set; }
-        public static CharacterInstance CurrentChar { get; set; }
-        public static bool CurrentCharDied { get; set; }
         #endregion
 
 
@@ -90,9 +85,6 @@ namespace SmaugCS
         public static List<ShopData> SHOP = new List<ShopData>();
         public static List<RepairShopData> REPAIR = new List<RepairShopData>();
         public static List<TeleportData> TELEPORT = new List<TeleportData>();
-
-        public static List<ObjectInstance> ExtractedObjectQueue = new List<ObjectInstance>();
-        public static List<ExtracedCharacterData> ExtractedCharQueue = new List<ExtracedCharacterData>();
 
         public static List<map_index_data> MAP = new List<map_index_data>();
 
@@ -409,8 +401,6 @@ namespace SmaugCS
             ch.DestinationBuffer = null;
             ch.CurrentMount = null;
             ch.CurrentMorph = null;
-            //ch.AffectedBy.ClearBits();
-            ch.logon = DateTime.Now;
             ch.ArmorClass = 100;
             ch.CurrentPosition = PositionTypes.Standing;
             ch.Practice = 0;

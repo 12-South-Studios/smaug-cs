@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Lua;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
@@ -504,7 +505,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
 			Assert.That(result, Is.Not.Null);
-			Assert.That(result.AffectedBy.IsSet((int)AffectedByTypes.Infrared), Is.True);
+			Assert.That(result.AffectedBy.IsSet(AffectedByTypes.Infrared), Is.True);
 		}
 		#endregion
 
