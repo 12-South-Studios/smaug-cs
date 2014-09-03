@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common;
+using Realm.Library.Patterns.Command;
 
 namespace SmaugCS.Data
 {
@@ -14,7 +15,7 @@ namespace SmaugCS.Data
         public int Flags { get; set; }
         public int Position { get; set; }
         public int Level { get; set; }
-        public int Log { get; set; }
+        public LogAction Log { get; set; }
         public UseHistory userec { get; set; }
         public int lag_count { get; set; }
 

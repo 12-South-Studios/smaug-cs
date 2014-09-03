@@ -16,7 +16,6 @@ namespace SmaugCS.Data
         public string SkillFunctionName { get; set; }
         public SpellFunction SpellFunction { get; set; }
 
-
         public IEnumerable<int> SkillLevels { get; set; }
         public IEnumerable<SkillMasteryData> SkillMasteries { get; set; }
         public int[] RaceLevel { get; set; }

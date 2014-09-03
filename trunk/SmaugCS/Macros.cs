@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Linq;
+﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -11,15 +9,6 @@ namespace SmaugCS
 {
     public static class Macros
     {
-        public static int ASSIGN_GSN(string value)
-        {
-           /* int retVal = DatabaseManager.Instance.SKILLS.Add(value);
-            if (retVal == -1)
-                throw new DuplicateEntryException("{0} already exists", value);
-            return retVal;*/
-            throw new NotImplementedException();
-        }
-
         public static string PERS(CharacterInstance ch, CharacterInstance looker)
         {
             return ch.CanSee(looker)
@@ -31,12 +20,6 @@ namespace SmaugCS
         {
             return !CheckFunctions.CheckIfTrue(ch, ch.SubState == CharacterSubStates.Restricted,
                 "You cannot use this command from within another command.");
-        }
-
-        public static long GET_TIME_PLAYED(CharacterInstance ch)
-        {
-            // TODO return (ch.played + (current_time - ch.logon)) / 3600;
-            return 0;
         }
 
         public static bool NO_WEATHER_SECT(SectorTypes sect)

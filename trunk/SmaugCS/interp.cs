@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Patterns.Command;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -62,14 +67,102 @@ namespace SmaugCS
             return true;
         }
 
-        public static void write_watch_files(CharacterInstance ch, CommandData cmd, string logline)
-        {
-            // TODO
-        }
-
         public static void interpret(CharacterInstance ch, string argument)
         {
-            // TODO
+            Validation.IsNotNull(ch, "ch");
+            if (ch.CurrentRoom == null)
+                throw new NullReferenceException("Null room reference");
+
+            string logLine = string.Empty;
+            CommandData foundCmd = null;
+
+            if (ch.SubState == CharacterSubStates.RepeatCommand)
+            {
+                DoFunction fun = ch.LastCommand;
+                if (fun == null)
+                {
+                    ch.SubState = CharacterSubStates.None;
+                    throw new InvalidDataException("CharacterSubStates.RepeatCommand with null LastCommand");
+                }
+
+                foreach (CommandData cmd in DatabaseManager.Instance.COMMANDS.Values)
+                {
+                    if (cmd.DoFunction == fun)
+                    {
+                        foundCmd = cmd;
+                        break;
+                    }
+                }
+
+                if (foundCmd == null)
+                    throw new InvalidDataException("CharacterSubStates.RepeatCommand: LastCommand was invalid");
+
+                logLine = string.Format("({0}) {1}", foundCmd.Name, argument);
+            }
+
+            if (foundCmd == null)
+            {
+                // TODO 
+            }
+
+            string lastPlayerCmd = string.Format("{0} used {1}", ch.Name, logLine);
+            if (foundCmd != null && foundCmd.Log == LogAction.Never)
+                logLine = "XXXXXXXX XXXXXXXX XXXXXXXX";
+
+            if (!ch.IsNpc() && ch.Descriptor != null && valid_watch(logLine))
+            {
+                if (foundCmd != null && foundCmd.Flags.IsSet(CommandFlags.Watch))
+                {
+                    // TODO Write the watch
+                }
+                else if (ch.PlayerData.Flags.IsSet(PCFlags.Watch))
+                {
+                    // TODO Write the watch
+                }
+            }
+
+            // TODO Some more logging/snooping stuff
+
+            TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
+            if (timer != null)
+            {
+                CharacterSubStates substate = ch.SubState;
+                ch.SubState = CharacterSubStates.TimerDoAbort;
+                timer.Action.Value.Invoke(ch, string.Empty);
+                if (ch.CharDied())
+                    return;
+                if (ch.SubState != CharacterSubStates.TimerDoAbort)
+                {
+                    ch.SubState = substate;
+                    // TODO Extract timer
+                }
+                else
+                {
+                    ch.SubState = substate;
+                    return;
+                }
+            }
+
+            // TODO Look for command in skill/social table
+
+            if (!check_pos(ch, foundCmd.Position))
+                return;
+
+            string buf = check_cmd_flags(ch, foundCmd);
+            if (!buf.IsNullOrEmpty())
+            {
+                color.send_to_char_color(buf, ch);
+                return;
+            }
+
+            // TODO Nuisance
+
+            ch.PreviousCommand = ch.LastCommand;
+            ch.LastCommand = foundCmd.DoFunction;
+            
+            // TODO Timer
+
+            // tail_chain();
         }
 
         public static bool check_social(CharacterInstance ch, string command, string argument)
@@ -77,28 +170,26 @@ namespace SmaugCS
             SocialData social = DatabaseManager.Instance.GetEntity<SocialData>(command);
             if (social == null)
                 return false;
-            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.NoEmote))
-            {
-                color.send_to_char("You are anti-social!\r\n", ch);
+
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.NoEmote), "You are anti-social!"))
                 return true;
-            }
 
             switch (ch.CurrentPosition)
             {
                 case PositionTypes.Dead:
-                    color.send_to_char("Lie still; you are DEAD.\r\n", ch);
+                    color.send_to_char("Lie still; you are DEAD.", ch);
                     return true;
                 case PositionTypes.Incapacitated:
                 case PositionTypes.Mortal:
-                    color.send_to_char("You are hurt far too badly for that.\r\n", ch);
+                    color.send_to_char("You are hurt far too badly for that.", ch);
                     return true;
                 case PositionTypes.Stunned:
-                    color.send_to_char("You are too stunned to do that.\r\n", ch);
+                    color.send_to_char("You are too stunned to do that.", ch);
                     return true;
                 case PositionTypes.Sleeping:
                     if (social.Name.EqualsIgnoreCase("snore"))
                         break;
-                    color.send_to_char("In your dreams, or what?\r\n", ch);
+                    color.send_to_char("In your dreams, or what?", ch);
                     return true;
             }
 
@@ -134,8 +225,12 @@ namespace SmaugCS
 
         public static string check_cmd_flags(CharacterInstance ch, CommandData cmd)
         {
-            // TODO
-            return string.Empty;
+            string buf = string.Empty;
+            if (ch.IsAffected(AffectedByTypes.Possess) && cmd.Flags.IsSet(CommandFlags.Possess))
+                buf = string.Format("You can't {0} while you are possessing someone!", cmd.Name);
+            else if (ch.CurrentMorph != null && cmd.Flags.IsSet(CommandFlags.Polymorphed))
+                buf = string.Format("You can't {0} while you are polymorphed!", cmd.Name);
+            return buf;
         }
     }
 }

@@ -25,18 +25,20 @@ namespace SmaugCS.Repositories
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            ObjectInstance obj = new ObjectInstance(GetNextId, name, 99, 99);
-            obj.Parent = parent;
-            obj.Level = args == null || args.Length == 0 ? 1 : (int)args[0];
-            obj.WearLocation = WearLocations.None;
-            obj.Count = 1;
-            obj.ShortDescription = objParent.ShortDescription;
-            obj.Description = parent.Description;
-            obj.Action = objParent.Action;
-            obj.ItemType = objParent.Type;
-            obj.ExtraFlags = objParent.ExtraFlags;
-            obj.Weight = objParent.Weight;
-            obj.Cost = objParent.Cost;
+            ObjectInstance obj = new ObjectInstance(GetNextId, name, 99, 99)
+            {
+                Parent = parent,
+                Level = args == null || args.Length == 0 ? 1 : (int) args[0],
+                WearLocation = WearLocations.None,
+                Count = 1,
+                ShortDescription = objParent.ShortDescription,
+                Description = parent.Description,
+                Action = objParent.Action,
+                ItemType = objParent.Type,
+                ExtraFlags = objParent.ExtraFlags,
+                Weight = objParent.Weight,
+                Cost = objParent.Cost
+            };
 
             foreach (var wearLoc in objParent.GetWearFlags())
                 obj.WearFlags += (int) wearLoc;
@@ -50,22 +52,55 @@ namespace SmaugCS.Repositories
             return obj;
         }
 
-        private static readonly Dictionary<ItemTypes, Action<ObjectInstance>> ObjectActionTable = new Dictionary<ItemTypes, Action<ObjectInstance>>
+        public ObjectInstance Clone(ObjectInstance source, params object[] args)
+        {
+            Validation.IsNotNull(source, "source");
+
+            ObjectInstance obj = new ObjectInstance(GetNextId, source.Name, 99, 99)
             {
-                {ItemTypes.Food, UpdateFood},
-                {ItemTypes.Cook, UpdateFood},
-                {ItemTypes.Salve, UpdateSalve},
-                {ItemTypes.Scroll, UpdateScroll},
-                {ItemTypes.Wand, UpdateMagicalImplement},
-                {ItemTypes.Staff, UpdateMagicalImplement},
-                {ItemTypes.Weapon, UpdateWeapon},
-                {ItemTypes.MissileWeapon, UpdateWeapon},
-                {ItemTypes.Projectile, UpdateWeapon},
-                {ItemTypes.Armor, UpdateArmor},
-                {ItemTypes.Potion, UpdatePotion},
-                {ItemTypes.Pill, UpdatePotion},
-                {ItemTypes.Money, UpdateMoney}
+                Parent = source.Parent,
+                Level = source.Level,
+                WearLocation = source.WearLocation,
+                Count = source.Count,
+                ShortDescription = source.ShortDescription,
+                Description = source.Description,
+                Action = source.Action,
+                ItemType = source.ItemType,
+                ExtraFlags = source.ExtraFlags,
+                Weight = source.Weight,
+                Cost = source.Cost,
+                WearFlags = source.WearFlags,
+                Owner = source.Owner,
+                MagicFlags = source.MagicFlags,
+                Timer = source.Timer
             };
+
+            Array.Copy(source.Value, obj.Value, 5);
+
+            if (ObjectActionTable.ContainsKey(obj.ItemType))
+                ObjectActionTable[obj.ItemType].Invoke(obj);
+
+            Add(obj.ID, obj);
+            return obj;
+        }
+
+        private static readonly Dictionary<ItemTypes, Action<ObjectInstance>> ObjectActionTable = new Dictionary
+            <ItemTypes, Action<ObjectInstance>>
+        {
+            {ItemTypes.Food, UpdateFood},
+            {ItemTypes.Cook, UpdateFood},
+            {ItemTypes.Salve, UpdateSalve},
+            {ItemTypes.Scroll, UpdateScroll},
+            {ItemTypes.Wand, UpdateMagicalImplement},
+            {ItemTypes.Staff, UpdateMagicalImplement},
+            {ItemTypes.Weapon, UpdateWeapon},
+            {ItemTypes.MissileWeapon, UpdateWeapon},
+            {ItemTypes.Projectile, UpdateWeapon},
+            {ItemTypes.Armor, UpdateArmor},
+            {ItemTypes.Potion, UpdatePotion},
+            {ItemTypes.Pill, UpdatePotion},
+            {ItemTypes.Money, UpdateMoney}
+        };
 
         private static void UpdateFood(ObjectInstance obj)
         {

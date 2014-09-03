@@ -636,6 +636,15 @@ function LoadLoginMessages()
 end
 LoadLoginMessages();
 
+function LoadCorpseDescriptions()
+	LAddLookup("CorpseDescs", "The corpse of {0} is in the last stages of decay.");
+	LAddLookup("CorpseDescs", "The corpse of {0} is crawling with vermin.");
+	LAddLookup("CorpseDescs", "The corpse of {0} fills the air with a foul stench.");
+	LAddLookup("CorpseDescs", "The corpse of {0} is buzzing with flies.");
+	LAddLookup("CorpseDescs", "The corpse of {0} lies here.");
+end
+LoadCorpseDescriptions();
+
 --"\r\n&GYou have successfully received your new residence.\r\n",
 --"\r\n&GYou have successfully sold your residence.\r\n",
 --"\r\n&RYou have been outcast from your clan/order/guild.  Contact a leader\r\nof that organization if you have any questions.\r\n",

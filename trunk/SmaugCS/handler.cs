@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Auction;
@@ -9,264 +10,34 @@ using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
-using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Repositories;
 
 namespace SmaugCS
 {
     public static class handler
     {
         public static ReturnTypes GlobalReturnCode { get; set; }
+        public static ReturnTypes GlobalObjectCode { get; set; }
 
         public static CharacterInstance SavingCharacter { get; set; }
         public static CharacterInstance LoadingCharacter { get; set; }
 
         public static CharacterInstance CurrentCharacter { get; set; }
         public static CharacterInstance CurrentDeadCharacter { get; set; }
+        public static bool CurrentCharacterDied { get; set; }
+        public static RoomTemplate CurrentRoom { get; set; }
+        public static ObjectInstance CurrentObject { get; set; }
+        public static bool CurrentObjectExtracted { get; set; }
 
-        // Private static used by affect_modify
-        private static int depth = 0;
-
-        public static void affect_modify(CharacterInstance ch, AffectData affect, bool add)
-        {
-            int mod = affect.Modifier;
-            if (add)
-            {
-                //ch.AffectedBy.SetBits(affect.BitVector);
-                if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
-                {
-                    mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
-
-                    if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
-                        ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
-                    else
-                        LogManager.Instance.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
-                }
-            }
-            else
-            {
-                //ch.AffectedBy.RemoveBits(affect.BitVector);
-
-                if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
-                {
-                    mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
-
-                    if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
-                        LogManager.Instance.Bug("%s: ApplyTypes.RecurringSpell with bad SN %d", ch.Name, mod);
-                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.RecurringSpell);
-                    return;
-                }
-
-                switch ((int)affect.Location % Program.REVERSE_APPLY)
-                {
-                    case (int)ApplyTypes.Affect:
-                        //ch.AffectedBy.Bits[0].RemoveBit(mod);
-                        return;
-                    case (int)ApplyTypes.ExtendedAffect:
-                        ch.AffectedBy.RemoveBit(mod);
-                        return;
-                    case (int)ApplyTypes.Resistance:
-                        ch.Resistance.RemoveBit(mod);
-                        return;
-                    case (int)ApplyTypes.Immunity:
-                        ch.Immunity.RemoveBit(mod);
-                        return;
-                    case (int)ApplyTypes.Susceptibility:
-                        ch.Susceptibility.RemoveBit(mod);
-                        return;
-                    case (int)ApplyTypes.Remove:
-                       // ch.AffectedBy.Bits[0].RemoveBit(mod);
-                        return;
-                }
-                mod = 0 - mod;
-            }
-
-            switch ((int)affect.Location % Program.REVERSE_APPLY)
-            {
-                case (int)ApplyTypes.Strength:
-                    ch.ModStrength += mod;
-                    break;
-                case (int)ApplyTypes.Dexterity:
-                    ch.ModDexterity += mod;
-                    break;
-                case (int)ApplyTypes.Intelligence:
-                    ch.ModIntelligence += mod;
-                    break;
-                case (int)ApplyTypes.Wisdom:
-                    ch.ModWisdom += mod;
-                    break;
-                case (int)ApplyTypes.Constitution:
-                    ch.ModConstitution += mod;
-                    break;
-                case (int)ApplyTypes.Charisma:
-                    ch.ModCharisma += mod;
-                    break;
-                case (int)ApplyTypes.Luck:
-                    ch.ModLuck += mod;
-                    break;
-                case (int)ApplyTypes.Gender:
-                    //ch.Gender = (ch.Gender + mod) % 3;
-                    // TODO Fix this
-                    //if (ch.Gender < 0)
-                    //    ch.Gender += 2;
-                    //ch.Gender = Check.Range(0, ch.Gender, 2);
-                    break;
-
-                case (int)ApplyTypes.Height:
-                    ch.Height += mod;
-                    break;
-                case (int)ApplyTypes.Weight:
-                    ch.Weight += mod;
-                    break;
-                case (int)ApplyTypes.Mana:
-                    ch.MaximumMana += mod;
-                    break;
-                case (int)ApplyTypes.Hit:
-                    ch.MaximumHealth += mod;
-                    break;
-                case (int)ApplyTypes.Movement:
-                    ch.MaximumMovement += mod;
-                    break;
-                case (int)ApplyTypes.ArmorClass:
-                    ch.ArmorClass += mod;
-                    break;
-                case (int)ApplyTypes.HitRoll:
-                    ch.HitRoll.SizeOf += mod;
-                    break;
-                case (int)ApplyTypes.DamageRoll:
-                    ch.DamageRoll.SizeOf += mod;
-                    break;
-
-                case (int)ApplyTypes.SaveVsPoison:
-                    ch.SavingThrows.SaveVsPoisonDeath += mod;
-                    break;
-                case (int)ApplyTypes.SaveVsRod:
-                    ch.SavingThrows.SaveVsWandRod += mod;
-                    break;
-                case (int)ApplyTypes.SaveVsParalysis:
-                    ch.SavingThrows.SaveVsParalysisPetrify += mod;
-                    break;
-                case (int)ApplyTypes.SaveVsBreath:
-                    ch.SavingThrows.SaveVsBreath += mod;
-                    break;
-                case (int)ApplyTypes.SaveVsSpell:
-                    ch.SavingThrows.SaveVsSpellStaff += mod;
-                    break;
-
-                case (int)ApplyTypes.Affect:
-                    //ch.AffectedBy.Bits[0].SetBit(mod);
-                    break;
-                case (int)ApplyTypes.ExtendedAffect:
-                    ch.AffectedBy.SetBit(mod);
-                    break;
-                case (int)ApplyTypes.Resistance:
-                    ch.Resistance.SetBit(mod);
-                    break;
-                case (int)ApplyTypes.Immunity:
-                    ch.Immunity.SetBit(mod);
-                    break;
-                case (int)ApplyTypes.Susceptibility:
-                    ch.Susceptibility.SetBit(mod);
-                    break;
-                case (int)ApplyTypes.Remove:
-                    //ch.AffectedBy.Bits[0].RemoveBit(mod);
-                    break;
-
-                case (int)ApplyTypes.Full:
-                    if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Full] = 
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Full] + mod).GetNumberThatIsBetween(0, 48);
-                    break;
-                case (int)ApplyTypes.Thirst:
-                    if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = 
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] + mod).GetNumberThatIsBetween(0, 48);
-                    break;
-                case (int)ApplyTypes.Drunk:
-                    if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Drunk] = 
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Drunk] + mod).GetNumberThatIsBetween(0, 48);
-                    break;
-                case (int)ApplyTypes.Blood:
-                    if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = 
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] + mod).GetNumberThatIsBetween(0, ch.Level + 10);
-                    break;
-
-                case (int)ApplyTypes.MentalState:
-                    ch.MentalState = (ch.MentalState + mod).GetNumberThatIsBetween(-100, 100);
-                    break;
-                case (int)ApplyTypes.Emotion:
-                    ch.EmotionalState = (ch.EmotionalState).GetNumberThatIsBetween(-100, 100);
-                    break;
-
-                case (int)ApplyTypes.StripSN:
-                    if (Macros.IS_VALID_SN(mod))
-                        ch.StripAffects(mod);
-                    else
-                        LogManager.Instance.Bug("apply_modify: ApplyTypes.StripSN invalid SN %d", mod);
-                    break;
-
-                case (int)ApplyTypes.WearSpell:
-                case (int)ApplyTypes.RemoveSpell:
-                    if ((ch.CurrentRoom.Flags.IsSet((int)RoomFlags.NoMagic)
-                         || ch.Immunity.IsSet((int)ResistanceTypes.Magic))
-                        || (((int)affect.Location % Program.REVERSE_APPLY) == (int)ApplyTypes.WearSpell && !add)
-                        || (((int)affect.Location % Program.REVERSE_APPLY) == (int)ApplyTypes.RemoveSpell && add)
-                        || SavingCharacter == ch
-                        || LoadingCharacter == ch)
-                        return;
-
-                    mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
-
-                    if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
-                    {
-                        if (skill.Target == TargetTypes.Ignore ||
-                            skill.Target == TargetTypes.InventoryObject)
-                        {
-                            LogManager.Instance.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
-                            return;
-                        }
-                        ReturnTypes retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
-                        if (retcode == ReturnTypes.CharacterDied || ch.CharDied())
-                            return;
-                    }
-                    break;
-
-                case (int)ApplyTypes.Track:
-                    ch.ModifySkill((int)DatabaseManager.Instance.GetEntity<SkillData>("track").Type, mod, add);
-                    break;
-
-                // TODO Add the rest
-
-                default:
-                    LogManager.Instance.Bug("affect_modify: unknown location %d", affect.Location);
-                    return;
-            }
-
-            ObjectInstance wield = ch.GetEquippedItem(WearLocations.Wield);
-            if (!ch.IsNpc() && SavingCharacter != ch
-                && wield != null && wield.GetObjectWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
-            {
-                if (depth == 0)
-                {
-                    depth++;
-                    comm.act(ATTypes.AT_ACTION, "You are too weak to wield $p any longer.", ch, wield, null,
-                             ToTypes.Character);
-                    comm.act(ATTypes.AT_ACTION, "$n stops wielding $p.", ch, wield, null, ToTypes.Room);
-                    ch.Unequip(wield);
-                    depth--;
-                }
-            }
-        }
-
+        public static Queue<ObjectInstance> ExtractedObjectQueue { get; set; }
+        public static Queue<ExtracedCharacterData> ExtractedCharacterQueue { get; set; }
+ 
         public static int falling = 0;
 
         public static void extract_obj(ObjectInstance obj)
@@ -315,11 +86,11 @@ namespace SmaugCS
             db.NumberOfObjectsLoaded -= obj.Count;
             --db.PhysicalObjects;
 
-            if (obj.ID == db.CurrentObject)
+            if (obj == CurrentObject)
             {
-                db.CurrentObjectExtracted = true;
-                if (db.GlobalObjectCode == ReturnTypes.None)
-                    db.GlobalObjectCode = ReturnTypes.ObjectExtracted;
+                CurrentObjectExtracted = true;
+                if (GlobalObjectCode == ReturnTypes.None)
+                    GlobalObjectCode = ReturnTypes.ObjectExtracted;
             }
         }
 
@@ -330,8 +101,8 @@ namespace SmaugCS
             if (ch == db.Supermob) return;
             if (ch.CharDied()) return;
 
-            if (ch == db.CurrentChar)
-                db.CurrentCharDied = true;
+            if (ch == CurrentCharacter)
+                CurrentCharacterDied = true;
 
             queue_extracted_char(ch, fPull);
 
@@ -516,9 +287,10 @@ namespace SmaugCS
                 remainder = tuple.Item2;
             }
 
+            ObjectInstance obj;
             if (string.IsNullOrEmpty(arg2))
             {
-                ObjectInstance obj = carryonly ? ch.GetCarriedObject(arg1) : ch.GetObjectOnMeOrInRoom(arg1);
+                obj = carryonly ? ch.GetCarriedObject(arg1) : ch.GetObjectOnMeOrInRoom(arg1);
                 if (obj == null && carryonly)
                 {
                     color.send_to_char("You do not have that item.\r\n", ch);
@@ -533,19 +305,31 @@ namespace SmaugCS
                 return obj;
             }
 
-            if (carryonly && ch.GetCarriedObject(arg2) == null && ch.GetWornObject(arg2) == null)
+            ObjectInstance container = null;
+            if (carryonly &&  (container = ch.GetCarriedObject(arg2)) == null && (container = ch.GetWornObject(arg2)) == null)
             {
                 color.send_to_char("You do not have that item.\r\n", ch);
                 return null;
             }
-            if (!carryonly && ch.GetObjectOnMeOrInRoom(arg2) == null)
+            if (!carryonly && (container = ch.GetObjectOnMeOrInRoom(arg2)) == null)
             {
                 comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, arg2, ToTypes.Character);
                 return null;
             }
 
-            // TODO
-            return null;
+            if (!container.ExtraFlags.IsSet(ItemExtraFlags.Covering) && container.Value[1].IsSet(ContainerFlags.Closed))
+            {
+                comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, container.Name, ToTypes.Character);
+                return null;
+            }
+
+            obj = ch.GetObjectInList(container.Contents, arg1);
+            if (obj == null)
+                comm.act(ATTypes.AT_PLAIN, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
+                    ? "I see nothing like that beneath $p."
+                    : "I see nothing like that in $p.", ch, container, null, ToTypes.Character);
+            
+            return obj;
         }
 
         public static string affect_loc_name(int location)
@@ -605,84 +389,264 @@ namespace SmaugCS
             return ch.Carrying.FirstOrDefault(obj => (int) obj.ItemType == type);
         }
 
-
-
         public static void extract_exit(RoomTemplate room, ExitData pexit)
         {
-            // TODO
+            room.Exits.Remove(pexit);
+            ExitData rexit = pexit.GetReverseExit();
+            rexit.Reverse = 0;
         }
-
-        public static void clean_room(RoomTemplate room)
-        {
-            // TODO
-        }
-
-        public static void clean_obj(ObjectTemplate obj)
-        {
-            // TODO
-        }
-
-        public static void clean_mob(MobTemplate mob)
-        {
-            // TODO
-        }
-
-        public static void clean_resets(RoomTemplate room)
-        {
-            // TODO
-        }
-
-
 
         public static void name_stamp_stats(CharacterInstance ch)
         {
-            // TODO
+            ch.PermanentStrength = 18.GetLowestOfTwoNumbers(ch.PermanentStrength);
+            ch.PermanentWisdom = 18.GetLowestOfTwoNumbers(ch.PermanentWisdom);
+            ch.PermanentDexterity = 18.GetLowestOfTwoNumbers(ch.PermanentDexterity);
+            ch.PermanentIntelligence = 18.GetLowestOfTwoNumbers(ch.PermanentIntelligence);
+            ch.PermanentConstitution = 18.GetLowestOfTwoNumbers(ch.PermanentConstitution);
+            ch.PermanentCharisma = 18.GetLowestOfTwoNumbers(ch.PermanentCharisma);
+            ch.PermanentLuck = 18.GetLowestOfTwoNumbers(ch.PermanentLuck);
+            ch.PermanentStrength = 9.GetHighestOfTwoNumbers(ch.PermanentStrength);
+            ch.PermanentWisdom = 9.GetHighestOfTwoNumbers(ch.PermanentWisdom);
+            ch.PermanentDexterity = 9.GetHighestOfTwoNumbers(ch.PermanentDexterity);
+            ch.PermanentIntelligence = 9.GetHighestOfTwoNumbers(ch.PermanentIntelligence);
+            ch.PermanentConstitution = 9.GetHighestOfTwoNumbers(ch.PermanentConstitution);
+            ch.PermanentCharisma = 9.GetHighestOfTwoNumbers(ch.PermanentCharisma);
+            ch.PermanentLuck = 9.GetHighestOfTwoNumbers(ch.PermanentLuck);
+
+            foreach (var c in ch.Name)
+            {
+                int b = c%14;
+                int a = (c%1) + 1;
+
+                switch (b)
+                {
+                    case 0:
+                        ch.PermanentStrength = 18.GetLowestOfTwoNumbers(ch.PermanentStrength + a);
+                        break;
+                    case 1:
+                        ch.PermanentDexterity = 18.GetLowestOfTwoNumbers(ch.PermanentDexterity + a);
+                        break;
+                    case 2:
+                        ch.PermanentWisdom = 18.GetLowestOfTwoNumbers(ch.PermanentWisdom + a);
+                        break;
+                    case 3:
+                        ch.PermanentIntelligence = 18.GetLowestOfTwoNumbers(ch.PermanentIntelligence + a);
+                        break;
+                    case 4:
+                        ch.PermanentConstitution = 18.GetLowestOfTwoNumbers(ch.PermanentConstitution + a);
+                        break;
+                    case 5:
+                        ch.PermanentCharisma = 18.GetLowestOfTwoNumbers(ch.PermanentCharisma + a);
+                        break;
+                    case 6:
+                        ch.PermanentLuck = 9.GetLowestOfTwoNumbers(ch.PermanentLuck + a);
+                        break;
+                    case 7:
+                        ch.PermanentStrength = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                    case 8:
+                        ch.PermanentDexterity = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                    case 9:
+                        ch.PermanentWisdom = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                    case 10:
+                        ch.PermanentIntelligence = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                    case 11:
+                        ch.PermanentConstitution = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                    case 12:
+                        ch.PermanentCharisma = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                    case 13:
+                        ch.PermanentLuck = 9.GetHighestOfTwoNumbers(ch.PermanentStrength - a);
+                        break;
+                }
+            }
         }
 
         public static void fix_char(CharacterInstance ch)
         {
-            // TODO
+            save.de_equip_char(ch);
+
+            foreach(AffectData af in ch.Affects)
+                ch.ModifyAffect(af, false);
+
+            if (ch.CurrentRoom != null)
+            {
+                foreach (AffectData af in ch.CurrentRoom.Affects)
+                {
+                    if (af.Location != ApplyTypes.WearSpell
+                        && af.Location != ApplyTypes.RemoveSpell
+                        && af.Location != ApplyTypes.StripSN)
+                        ch.ModifyAffect(af, false);
+                }
+
+                foreach (AffectData af in ch.CurrentRoom.PermanentAffects)
+                {
+                    if (af.Location != ApplyTypes.WearSpell
+                        && af.Location != ApplyTypes.RemoveSpell
+                        && af.Location != ApplyTypes.StripSN)
+                        ch.ModifyAffect(af, false);
+                }
+            }
+
+            ch.AffectedBy = 0;
+
+            RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+            ch.AffectedBy.SetBit(race.AffectedBy);
+            ch.MentalState = -10;
+            ch.CurrentHealth = 1.GetHighestOfTwoNumbers(ch.CurrentHealth);
+            ch.CurrentMana = 1.GetHighestOfTwoNumbers(ch.CurrentMana);
+            ch.CurrentMovement = 1.GetHighestOfTwoNumbers(ch.CurrentMovement);
+            ch.ArmorClass = 100;
+            ch.ModStrength =
+                ch.ModDexterity =
+                    ch.ModWisdom = ch.ModIntelligence = ch.ModConstitution = ch.ModCharisma = ch.ModLuck = 0;
+            ch.DamageRoll = new DiceData();
+            ch.HitRoll = new DiceData();
+            ch.CurrentAlignment = -1000.GetNumberThatIsBetween(ch.CurrentAlignment, 1000);
+            ch.SavingThrows = new SavingThrowData();
+
+            foreach (AffectData af in ch.Affects)
+                ch.ModifyAffect(af, true);
+
+            if (ch.CurrentRoom != null)
+            {
+                foreach (AffectData af in ch.CurrentRoom.Affects)
+                {
+                    if (af.Location != ApplyTypes.WearSpell
+                        && af.Location != ApplyTypes.RemoveSpell
+                        && af.Location != ApplyTypes.StripSN)
+                        ch.ModifyAffect(af, true);
+                }
+
+                foreach (AffectData af in ch.CurrentRoom.PermanentAffects)
+                {
+                    if (af.Location != ApplyTypes.WearSpell
+                        && af.Location != ApplyTypes.RemoveSpell
+                        && af.Location != ApplyTypes.StripSN)
+                        ch.ModifyAffect(af, true);
+                }
+            }
+
+            ch.CarryWeight = ch.CarryNumber = 0;
+
+            foreach (ObjectInstance obj in ch.Carrying)
+            {
+                if (obj.WearLocation == WearLocations.None)
+                    ch.CarryNumber += obj.GetObjectNumber();
+                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+                    ch.CarryWeight += obj.GetObjectWeight();
+            }
+
+            save.re_equip_char(ch);
         }
 
         public static void showaffect(CharacterInstance ch, AffectData paf)
         {
-            // TODO
+            Validation.IsNotNull(paf, "paf");
+
+            string buf = string.Empty;
+
+            if (paf.Location == ApplyTypes.None || paf.Modifier == 0)
+                return;
+
+            switch (paf.Location)
+            {
+                default:
+                    buf = string.Format("Affects {0} by {1}.", affect_loc_name((int)paf.Location), paf.Modifier);
+                    break;
+                case ApplyTypes.Affect:
+                    buf = string.Format("Affects {0} by", affect_loc_name((int)paf.Location), paf.Modifier);
+
+                    for (int i = 0; i < 32; i++)
+                    {
+                        if (paf.Modifier.IsSet(1 << i))
+                            buf += " " + BuilderConstants.a_flags[i];
+                    }
+                    break;
+                case ApplyTypes.WeaponSpell:
+                case ApplyTypes.WearSpell:
+                case ApplyTypes.RemoveSpell:
+                    string name = "unknown";
+                    if (Macros.IS_VALID_SN(paf.Modifier))
+                    {
+                        SkillData skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
+                        name = skill.Name;
+                    }
+                    buf = string.Format("Casts spell '{0}'", name);
+                    break;
+                case ApplyTypes.Resistance:
+                case ApplyTypes.Immunity:
+                case ApplyTypes.Susceptibility:
+                    buf = string.Format("Affects {0} by", affect_loc_name((int)paf.Location), paf.Modifier);
+
+                    for (int i = 0; i < 32; i++)
+                    {
+                        if (paf.Modifier.IsSet(1 << i))
+                            buf += " " + BuilderConstants.ris_flags[i];
+                    }
+                    
+                    break;
+            }
+
+            color.send_to_char(buf, ch);            
         }
 
         public static void set_cur_obj(ObjectInstance obj)
         {
-            // TODO
+            CurrentObject = obj;
+            CurrentObjectExtracted = false;
+            GlobalObjectCode = ReturnTypes.None;
         }
 
         public static bool obj_extracted(ObjectInstance obj)
         {
-            // TODO
-            return false;
+            if (obj == CurrentObject && CurrentObjectExtracted)
+                return true;
+
+            return ExtractedObjectQueue.Any(extractObj => obj == extractObj);
         }
 
         public static void queue_extracted_obj(ObjectInstance obj)
         {
-            // TODO
+            ExtractedObjectQueue.Enqueue(obj);
         }
 
         public static void clean_obj_queue()
         {
-            // TODO
+            ExtractedObjectQueue.Clear();
         }
 
         public static void set_cur_char(CharacterInstance ch)
         {
-            // TODO
+            CurrentCharacter = ch;
+            CurrentCharacterDied = false;
+            CurrentRoom = ch.CurrentRoom;
+            GlobalReturnCode = ReturnTypes.None;
         }
 
         public static void queue_extracted_char(CharacterInstance ch, bool extract)
         {
-            // TODO
+            if (ch == null)
+                throw new ArgumentNullException("ch");
+
+            ExtracedCharacterData ecd = new ExtracedCharacterData
+            {
+                Character = ch,
+                Room = ch.CurrentRoom,
+                Extract = extract,
+                ReturnCode = ch == CurrentCharacter ? GlobalReturnCode : ReturnTypes.CharacterDied
+            };
+
+            ExtractedCharacterQueue.Enqueue(ecd);
         }
 
         public static void clean_char_queue()
         {
-            // TODO
+            ExtractedCharacterQueue.Clear();
         }
 
         public static bool chance_attrib(CharacterInstance ch, short percent, short attrib)
@@ -693,8 +657,8 @@ namespace SmaugCS
 
         public static ObjectInstance clone_object(ObjectInstance obj)
         {
-            // TODO
-            return null;
+            ObjInstanceRepository repo = (ObjInstanceRepository)Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
+            return repo.Clone(obj);
         }
 
         public static ObjectInstance group_object(ObjectInstance obj1, ObjectInstance obj2)
@@ -711,7 +675,7 @@ namespace SmaugCS
                 && obj1.Owner.EqualsIgnoreCase(obj2.Owner)
                 && obj1.ItemType == obj2.ItemType
                 //&& obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
-                && obj1.magic_flags == obj2.magic_flags
+                && obj1.MagicFlags == obj2.MagicFlags
                 && obj1.WearFlags == obj2.WearFlags
                 && obj1.WearLocation == obj2.WearLocation
                 && obj1.Weight == obj2.Weight
@@ -778,11 +742,82 @@ namespace SmaugCS
 
         public static bool empty_obj(ObjectInstance obj, ObjectInstance destobj, RoomTemplate destroom)
         {
-            // TODO
-            return false;
+            Validation.IsNotNull(obj, "obj");
+
+            CharacterInstance ch = obj.CarriedBy;
+
+            if (destobj != null)
+                return EmptyIntoObject(ch, obj, destobj);
+
+            if (destroom != null)
+                return EmptyIntoRoom(ch, obj, destroom);
+
+            if (obj.InObject != null)
+                return EmptyIntoObject(ch, obj, obj.InObject);
+
+            if (ch != null)
+            {
+                bool retVal = false;
+                foreach (ObjectInstance cobj in obj.Contents)
+                {
+                    cobj.FromObject(cobj);
+                    cobj.ToCharacter(ch);
+                    retVal = true;
+                }
+                return retVal;
+            }
+
+            throw new InvalidOperationException(
+                string.Format("Nothing specified to empty the contents of object {0} into", obj.ID));
         }
 
+        private static bool EmptyIntoObject(CharacterInstance ch, ObjectInstance obj, ObjectInstance destobj)
+        {
+            bool retVal = false;
+            foreach (ObjectInstance cobj in obj.Contents)
+            {
+                if (destobj.ItemType == ItemTypes.KeyRing && cobj.ItemType != ItemTypes.Key)
+                    continue;
+                if (destobj.ItemType == ItemTypes.Quiver && cobj.ItemType != ItemTypes.Projectile)
+                    continue;
+                if ((destobj.ItemType == ItemTypes.Container
+                     || destobj.ItemType == ItemTypes.KeyRing
+                     || destobj.ItemType == ItemTypes.Quiver)
+                    && (cobj.GetRealObjectWeight() + destobj.GetRealObjectWeight() > destobj.Value[0]))
+                    continue;
 
+                cobj.FromObject(cobj);
+                destobj.ToObject(cobj);
+                retVal = true;
+            }
+            return retVal;
+        }
+
+        private static bool EmptyIntoRoom(CharacterInstance ch, ObjectInstance obj, RoomTemplate destroom)
+        {
+            bool retVal = false;
+            foreach (ObjectInstance cobj in obj.Contents)
+            {
+                if (ch != null && cobj.ObjectIndex.HasProg(MudProgTypes.Drop) && cobj.Count > 1)
+                {
+                    separate_obj(cobj);
+                    cobj.FromObject(cobj);
+                }
+                else 
+                    cobj.FromObject(cobj);
+
+                ObjectInstance tObj = destroom.ToRoom(cobj);
+
+                if (ch != null)
+                {
+                    mud_prog.oprog_drop_trigger(ch, tObj);
+                    if (ch.CharDied())
+                        ch = null;
+                }
+                retVal = true;
+            }
+            return retVal;
+        }
 
         public static void economize_mobgold(CharacterInstance mob)
         {
@@ -804,7 +839,39 @@ namespace SmaugCS
 
         public static void check_switch(CharacterInstance ch, bool possess)
         {
-            // TODO
+            if (ch.Switched == null) return;
+            if (!possess)
+            {
+                foreach (AffectData af in ch.Switched.Affects)
+                {
+                    if (af.Duration == -1)
+                        continue;
+
+                    SkillData skill = DatabaseManager.Instance.SKILLS.Get((int) af.Type);
+                    if (af.Type != AffectedByTypes.None && skill != null &&
+                        skill.SpellFunction.Value == Spells.Possess.spell_possess)
+                        return;
+                }
+            }
+
+            foreach (CommandData cmd in DatabaseManager.Instance.COMMANDS.Values)
+            {
+                if (cmd.DoFunction.Value != Switch.do_switch)
+                    continue;
+                if (cmd.Level <= ch.Trust)
+                    return;
+                if (!ch.IsNpc() && cmd.Name.IsAnyEqual(ch.PlayerData.bestowments)
+                    && cmd.Level <= ch.Trust + GameManager.Instance.SystemData.BestowDifference)
+                    return;
+            }
+
+            if (!possess)
+            {
+                color.set_char_color(ATTypes.AT_BLUE, ch.Switched);
+                color.send_to_char("You suddenly forfeit the power to switch!", ch.Switched);
+            }
+
+            Return.do_return(ch.Switched, string.Empty);
         }
     }
 }

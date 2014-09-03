@@ -22,20 +22,22 @@ namespace SmaugCS.Repositories
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            CharacterInstance mob = new CharacterInstance(GetNextId, name);
-            mob.Parent = parent;
-            mob.ShortDescription = mobParent.ShortDescription;
-            mob.LongDescription = mobParent.LongDescription;
-            mob.Description = parent.Description;
-            mob.SpecialFunction = mobParent.SpecialFunction;
-            mob.Level = SmaugRandom.Fuzzy(mobParent.Level);
-            mob.Act = mobParent.GetActFlags();
-            mob.HomeVNum = -1;
-            mob.ResetVnum = -1;
-            mob.ResetNum = -1;
-            mob.AffectedBy = mobParent.GetAffected();
-            mob.CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment);
-            mob.Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender);
+            CharacterInstance mob = new CharacterInstance(GetNextId, name)
+            {
+                Parent = parent,
+                ShortDescription = mobParent.ShortDescription,
+                LongDescription = mobParent.LongDescription,
+                Description = parent.Description,
+                SpecialFunction = mobParent.SpecialFunction,
+                Level = SmaugRandom.Fuzzy(mobParent.Level),
+                Act = mobParent.GetActFlags(),
+                HomeVNum = -1,
+                ResetVnum = -1,
+                ResetNum = -1,
+                AffectedBy = mobParent.GetAffected(),
+                CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment),
+                Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
+            };
 
             if (!string.IsNullOrEmpty(mobParent.SpecFun))
                 mob.SpecialFunctionName = mobParent.SpecFun;
@@ -95,6 +97,11 @@ namespace SmaugCS.Repositories
             Add(mob.ID, mob);
 
             return mob;
+        }
+
+        public CharacterInstance Clone(CharacterInstance source, params object[] args)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

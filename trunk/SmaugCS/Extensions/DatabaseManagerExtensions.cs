@@ -30,7 +30,7 @@ namespace SmaugCS
             return dbManager.SKILLS.Values.Where(x => x.Type == type);
         }
 
-        public static int LookupSkill(this DatabaseManager dbManager, string name)
+        public static int LookupSkill(this IDatabaseManager dbManager, string name)
         {
             // Try to find an exact match for this skill
             SkillData skill = dbManager.GetEntity<SkillData>(name);

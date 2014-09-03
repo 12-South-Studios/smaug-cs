@@ -25,7 +25,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (obj.magic_flags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
+            if (obj.MagicFlags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
             {
                 TimerData timer = ch.GetTimer(TimerTypes.PKilled);
                 if (ch.CanPKill() && timer == null)
@@ -36,7 +36,7 @@ namespace SmaugCS
                         return;
                     }
 
-                    obj.magic_flags.RemoveBit(ItemMagicFlags.PKDisarmed);
+                    obj.MagicFlags.RemoveBit(ItemMagicFlags.PKDisarmed);
                     obj.Value[5] = 0;
                 }
             }
@@ -183,7 +183,7 @@ namespace SmaugCS
                 mud_prog.oprog_damage_trigger(ch, obj);
 
             if (handler.obj_extracted(obj))
-                return db.GlobalObjectCode;
+                return handler.GlobalObjectCode;
 
             ReturnTypes returnVal = ReturnTypes.None;
 

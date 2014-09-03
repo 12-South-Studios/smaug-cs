@@ -796,7 +796,7 @@
     <Compile Include="Objects\coordinate.cs" />
     <Compile Include="Objects\dex_app_type.cs" />
     <Compile Include="Objects\dns_data.cs" />
-    <Compile Include="Objects\ExtracedCharacterDAta.cs" />
+    <Compile Include="Objects\ExtractedCharacterData.cs" />
     <Compile Include="Objects\game_board_data.cs" />
     <Compile Include="Objects\godlist_data.cs" />
     <Compile Include="Objects\hour_min_sec.cs" />
@@ -934,6 +934,10 @@
     <ProjectReference Include="..\Libraries\Realm.Library.Network\Realm.Library.Network.csproj">
       <Project>{551f2b16-cec5-4e16-8f30-290005c04e16}</Project>
       <Name>Realm.Library.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Command\Realm.Library.Patterns.Command.csproj">
+      <Project>{dd42338b-fe18-406e-8084-f606825771f6}</Project>
+      <Name>Realm.Library.Patterns.Command</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>

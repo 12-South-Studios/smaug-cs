@@ -14,6 +14,10 @@ namespace SmaugCS
     {
         public static ExitData GetReverseExit(this ExitData exit)
         {
+            if (exit.Reverse == 0)
+                return null;
+            if (exit.GetDestination() == null)
+                return null;
             return exit.GetDestination().GetExit((int)exit.Reverse);
         }
 

@@ -193,7 +193,7 @@ namespace SmaugCS.Extensions
         private static int ModifyXPForExperiencedVsNovicePlayer(CharacterInstance ch, int xp)
         {
             int modXp = xp;
-            int xpRatio = ch.played/ch.Level;
+            int xpRatio = ch.PlayedDuration/ch.Level;
 
             if (xpRatio > 20000)
                 modXp = (modXp*5)/4; //// 5/4

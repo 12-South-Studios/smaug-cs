@@ -160,6 +160,10 @@
       <Project>{551f2b16-cec5-4e16-8f30-290005c04e16}</Project>
       <Name>Realm.Library.Network</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.Patterns.Command\Realm.Library.Patterns.Command.csproj">
+      <Project>{dd42338b-fe18-406e-8084-f606825771f6}</Project>
+      <Name>Realm.Library.Patterns.Command</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>

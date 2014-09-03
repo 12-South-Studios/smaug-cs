@@ -1,9 +1,10 @@
-﻿// ReSharper disable CheckNamespace
+﻿
+// ReSharper disable once CheckNamespace
 namespace SmaugCS.Data
-// ReSharper restore CheckNamespace
 {
-    public interface IInstanceRepository<out T> where T : Instance
+    public interface IInstanceRepository<T> where T : Instance
     {
         T Create(Template parent, params object[] args);
+        T Clone(T source, params object[] args);
     }
 }

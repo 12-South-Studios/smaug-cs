@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Realm.Library.Common;
 using Realm.Library.Lua;
+using Realm.Library.Patterns.Command;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
@@ -197,7 +198,7 @@ namespace SmaugCS.LuaHelpers
                     Flags = flags,
                     Position = position,
                     Level = level,
-                    Log = log,
+                    Log = EnumerationExtensions.GetEnum<LogAction>(log),
                     FunctionName = function
                 };
             newCommand.Position = newCommand.GetModifiedPosition();

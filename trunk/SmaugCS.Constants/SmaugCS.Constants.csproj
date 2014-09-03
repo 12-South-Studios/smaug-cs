@@ -62,6 +62,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MentalStateAttribute.cs" />
+    <Compile Include="ThirstAttribute.cs" />
     <Compile Include="ShoveValueAttribute.cs" />
     <Compile Include="DragValueAttribute.cs" />
     <Compile Include="AuctionableAttribute.cs" />

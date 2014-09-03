@@ -1144,7 +1144,7 @@ namespace SmaugCS
             if (ch == handler.CurrentCharacter && handler.CurrentDeadCharacter != null)
                 return true;
 
-            return db.ExtractedCharQueue.Any(ccd => ccd.Character == ch);
+            return handler.ExtractedCharacterQueue.Any(ccd => ccd.Character == ch);
         }
     }
 }

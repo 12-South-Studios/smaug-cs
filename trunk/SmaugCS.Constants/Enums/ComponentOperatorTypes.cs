@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -30,6 +26,6 @@ namespace SmaugCS.Constants.Enums
         DecreaseValue4,
 
         [Name("&")]
-        DecreaesValue5
+        DecreaseValue5
     }
 }
