@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Managers;
 
 namespace SmaugCS
 {
@@ -97,39 +97,26 @@ namespace SmaugCS
 
         public static string get_class(CharacterInstance ch)
         {
-            // TODO
-            return string.Empty;
+            if (ch.IsNpc())
+                return ch.CurrentClass.ToString();
+            if (!ch.IsNpc())
+            {
+                ClassData cls = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+                return cls.Name;
+            }
+            return "Unknown";
         }
 
         public static string get_race(CharacterInstance ch)
         {
-            // TODO
-            return string.Empty;
-        }
-
-        public static void do_level(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_remains(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_affected(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_inventory(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_equipment(CharacterInstance ch, string argument)
-        {
-            // TODO
+            if (ch.IsNpc())
+                return ch.CurrentRace.ToString();
+            if (!ch.IsNpc())
+            {
+                RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                return race.Name;
+            }
+            return "Unknown";
         }
 
         public static void set_title(CharacterInstance ch, string title)
@@ -141,46 +128,6 @@ namespace SmaugCS
             }
 
             ch.PlayerData.Title = Char.IsLetterOrDigit(title[0]) ? title.Substring(1) : title;
-        }
-
-        public static void do_homepage(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_description(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_bio(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_statreport(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_stat(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_report(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_fprompt(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
-        public static void do_prompt(CharacterInstance ch, string argument)
-        {
-            // TODO
         }
     }
 }

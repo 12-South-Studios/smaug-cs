@@ -2,6 +2,8 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Commands.Movement
@@ -223,18 +225,13 @@ namespace SmaugCS.Commands.Movement
 
                 if (inRoom.SectorType == SectorTypes.Air
                     || toRoom.SectorType == SectorTypes.Air
-                    || exit.Flags.IsSet((int)ExitFlags.Fly))
+                    || exit.Flags.IsSet(ExitFlags.Fly))
                 {
-                    if (ch.CurrentMount != null && !ch.CurrentMount.IsAffected(AffectedByTypes.Flying))
-                    {
-                        color.send_to_char("Your mount can't fly.\r\n", ch);
-                        return ReturnTypes.None;
-                    }
-                    if (ch.CurrentMount == null && !ch.IsAffected(AffectedByTypes.Flying))
-                    {
-                        color.send_to_char("You'd need to fly to go there.\r\n", ch);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrue(ch,
+                        ch.CurrentMount != null && !ch.CurrentMount.IsAffected(AffectedByTypes.Flying),
+                        "Your mount can't fly.")) return ReturnTypes.None;
+                    if (CheckFunctions.CheckIfTrue(ch, ch.CurrentMount == null && !ch.IsAffected(AffectedByTypes.Flying),
+                        "You'd need to fly to go there.")) return ReturnTypes.None;
                 }
 
                 if (inRoom.SectorType == SectorTypes.DeepWater
@@ -244,7 +241,7 @@ namespace SmaugCS.Commands.Movement
                         || !ch.IsFloating())
                     {
                         // Look for a boat. We can use the boat obj for a more detailed description.
-                        ObjectInstance boat = handler.get_objtype(ch, (int)ItemTypes.Boat);
+                        ObjectInstance boat = ch.GetObjectOfType(ItemTypes.Boat);
                         if (boat != null)
                             txt = drunk ? "paddles unevenly" : "paddles";
                         else

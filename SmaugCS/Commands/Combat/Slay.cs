@@ -38,7 +38,7 @@ namespace SmaugCS.Commands.Combat
                 Default(ch, victim);
 
             handler.set_cur_char(victim);
-            fight.raw_kill(ch, victim);
+            ch.RawKill(victim);
         }
 
         private static void Immolate(CharacterInstance ch, CharacterInstance victim)

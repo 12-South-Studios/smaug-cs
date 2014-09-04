@@ -53,7 +53,7 @@ namespace SmaugCS.Commands
             if (GameManager.Instance.SystemData.SavePets && ch.PlayerData.Pet != null)
             {
                 comm.act(ATTypes.AT_BYE, "$N follows $S master into the Void.", ch, null, ch.PlayerData.Pet, ToTypes.Room);
-                handler.extract_char(ch.PlayerData.Pet, true);
+                CharacterInstanceExtensions.Extract(ch.PlayerData.Pet, true);
             }
 
             //if (ch.PlayerData.Clan != null)
@@ -73,7 +73,7 @@ namespace SmaugCS.Commands
                 string.Format("{0} has quit (Room {1}).", ch.Name, ch.CurrentRoom != null ? ch.CurrentRoom.Vnum : -1),
                 LogTypes.Info, ch.Trust);
 
-            handler.extract_char(ch, true);
+            CharacterInstanceExtensions.Extract(ch, true);
         }
     }
 }

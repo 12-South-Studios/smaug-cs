@@ -6,22 +6,14 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class ObjectFactory
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inRoom"></param>
-        /// <param name="duration"></param>
-        /// <param name="dbManager"></param>
         public static void CreateFire(RoomTemplate inRoom, int duration, IDatabaseManager dbManager = null)
         {
             ObjectInstance fire =
@@ -32,12 +24,6 @@ namespace SmaugCS
             inRoom.ToRoom(fire);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="values"></param>
-        /// <param name="dbManager"></param>
-        /// <returns></returns>
         public static ObjectInstance CreateTrap(IEnumerable<int> values, IDatabaseManager dbManager = null)
         {
             ObjectInstance trap = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
@@ -48,14 +34,9 @@ namespace SmaugCS
             return trap;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="dbManager"></param>
         public static void CreateScraps(ObjectInstance obj, IDatabaseManager dbManager = null)
         {
-            handler.separate_obj(obj);
+            obj.Split();
             ObjectInstance scraps =
                 (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
                     (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
@@ -63,7 +44,6 @@ namespace SmaugCS
 
             scraps.Timer = SmaugRandom.Between(5, 15);
 
-            // Don't make scraps of scraps of...
             scraps.ShortDescription = (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_SCRAPS)
                                           ? "some debris"
                                           : obj.ShortDescription;
@@ -107,23 +87,16 @@ namespace SmaugCS
                 }
 
                 if (obj.CarriedBy != null)
-                    handler.empty_obj(obj, null, obj.CarriedBy.CurrentRoom);
+                    obj.Empty(null, obj.CarriedBy.CurrentRoom);
                 else if (obj.InRoom != null)
-                    handler.empty_obj(obj, null, obj.InRoom);
+                    obj.Empty(null, obj.InRoom);
                 else if (obj.InObject != null)
-                    handler.empty_obj(obj, obj.InObject, null);
+                    obj.Empty(obj.InObject);
             }
 
-            handler.extract_obj(obj);
+            obj.Extract();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="killer"></param>
-        /// <param name="dbManager"></param>
-        /// <returns></returns>
         public static ObjectInstance CreateCorpse(CharacterInstance ch, CharacterInstance killer, IDatabaseManager dbManager = null)
         {
             string name;
@@ -168,15 +141,13 @@ namespace SmaugCS
                 if (ch.CanPKill() && GameManager.Instance.SystemData.PlayerKillLoot > 0)
                     corpse.ExtraFlags.SetBit((int)ItemExtraFlags.ClanCorpse);
 
-                // Pkill corpses get save timers in tickets (approx 70 seconds)
                 corpse.Value[3] = (!ch.IsNpc() && !killer.IsNpc()) ? 1 : 0;
             }
 
             if (ch.CanPKill() && killer.CanPKill() && ch != killer)
                 corpse.Action = killer.Name;
 
-            // Added corpse name, makes locate easier
-            //corpse.Name = string.Format("corpse {0}", name);
+            corpse.Name = string.Format("corpse {0}", name);
             corpse.ShortDescription = name;
             corpse.Description = name;
 
@@ -185,7 +156,7 @@ namespace SmaugCS
                 obj.FromCharacter();
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory)
                     || obj.ExtraFlags.IsSet(ItemExtraFlags.DeathRot))
-                    handler.extract_obj(obj);
+                    obj.Extract();
                 else
                     obj.ToObject(corpse);
             }
@@ -193,11 +164,6 @@ namespace SmaugCS
             return ch.CurrentRoom.ToRoom(corpse);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="dbManager"></param>
         public static void CreateBlood(CharacterInstance ch, IDatabaseManager dbManager = null)
         {
             ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
@@ -209,11 +175,6 @@ namespace SmaugCS
             ch.CurrentRoom.ToRoom(obj);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="dbManager"></param>
         public static void CreateBloodstain(CharacterInstance ch, IDatabaseManager dbManager = null)
         {
             ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
@@ -224,12 +185,6 @@ namespace SmaugCS
             ch.CurrentRoom.ToRoom(obj);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="amount"></param>
-        /// <param name="dbManager"></param>
-        /// <returns></returns>
         public static ObjectInstance CreateMoney(int amount, IDatabaseManager dbManager = null)
         {
             int coinAmt = amount <= 0 ? 1 : amount;

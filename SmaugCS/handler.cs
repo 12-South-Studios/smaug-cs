@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ninject;
 using Realm.Library.Common;
-using Realm.Library.Patterns.Repository;
-using SmaugCS.Auction;
 using SmaugCS.Commands.Admin;
-using SmaugCS.Commands.Social;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
-using SmaugCS.Repositories;
 
 namespace SmaugCS
 {
@@ -39,197 +34,6 @@ namespace SmaugCS
         public static Queue<ExtracedCharacterData> ExtractedCharacterQueue { get; set; }
  
         public static int falling = 0;
-
-        public static void extract_obj(ObjectInstance obj)
-        {
-            if (obj_extracted(obj))
-                throw new ObjectAlreadyExtractedException("Object {0}", obj.ObjectIndex.ID);
-
-            if (obj.ItemType == ItemTypes.Portal)
-                update.remove_portal(obj);
-
-            if (AuctionManager.Instance.Auction.ItemForSale == obj)
-                Commands.Objects.Auction.StopAuction(AuctionManager.Instance.Auction.Seller,
-                    "Sale of {0} has been stopped by a system action.");
-
-            if (obj.CarriedBy != null)
-                obj.FromCharacter();
-            else if (obj.InRoom != null)
-                obj.InRoom.FromRoom(obj);
-            else if (obj.InObject != null)
-                obj.InObject.FromObject(obj);
-
-            ObjectInstance objContent = obj.Contents.Last();
-            if (objContent != null)
-                extract_obj(objContent);
-
-            obj.Affects.Clear();
-            obj.ExtraDescriptions.Clear();
-
-            //trworld_obj_check(obj);
-
-            foreach (RelationData relation in db.RELATIONS
-                                                .Where(relation => relation.Types == RelationTypes.OSet_On))
-            {
-                if (obj == relation.Subject)
-                    relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
-                else
-                    continue;
-                db.RELATIONS.Remove(relation);
-            }
-
-            DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
-
-            queue_extracted_obj(obj);
-
-            obj.ObjectIndex.count -= obj.Count;
-            db.NumberOfObjectsLoaded -= obj.Count;
-            --db.PhysicalObjects;
-
-            if (obj == CurrentObject)
-            {
-                CurrentObjectExtracted = true;
-                if (GlobalObjectCode == ReturnTypes.None)
-                    GlobalObjectCode = ReturnTypes.ObjectExtracted;
-            }
-        }
-
-        public static void extract_char(CharacterInstance ch, bool fPull)
-        {
-            if (ch == null) return;
-            if (ch.CurrentRoom == null) return;
-            if (ch == db.Supermob) return;
-            if (ch.CharDied()) return;
-
-            if (ch == CurrentCharacter)
-                CurrentCharacterDied = true;
-
-            queue_extracted_char(ch, fPull);
-
-            foreach (RelationData relation in db.RELATIONS
-                                                .Where(relation => fPull && relation.Types == RelationTypes.MSet_On))
-            {
-                if (ch == relation.Subject)
-                    relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
-                else if (ch != relation.Actor)
-                    continue;
-
-                db.RELATIONS.Remove(relation);
-            }
-
-            //trworld_char_check(ch);
-
-            if (fPull)
-                ch.DieFollower();
-
-            ch.StopFighting(true);
-
-            if (ch.CurrentMount != null)
-            {
-                reset.update_room_reset(ch, true);
-                ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
-                ch.CurrentMount = null;
-                ch.CurrentPosition = PositionTypes.Standing;
-            }
-
-            if (ch.IsNpc())
-            {
-                ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
-                foreach (
-                    CharacterInstance wch in
-                        DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
-                            .Values.Where(wch => wch.CurrentMount == ch))
-                {
-                    wch.CurrentMount = null;
-                    wch.CurrentPosition = PositionTypes.Standing;
-                    if (wch.CurrentRoom == ch.CurrentRoom)
-                    {
-                        comm.act(ATTypes.AT_SOCIAL, "Your faithful mount collapses beneath you...", wch, null, ch,
-                            ToTypes.Character);
-                        comm.act(ATTypes.AT_SOCIAL, "Sadly you dismount $M for the last time.", wch, null, ch,
-                            ToTypes.Character);
-                        comm.act(ATTypes.AT_PLAIN, "$n sadly dismounts $N for the last time.", wch, null, ch,
-                            ToTypes.Room);
-                    }
-                    if (wch.PlayerData != null && wch.PlayerData.Pet == ch)
-                    {
-                        wch.PlayerData.Pet = null;
-                        if (wch.CurrentRoom == ch.CurrentRoom)
-                            comm.act(ATTypes.AT_SOCIAL, "You mourn for the loss of $N.", wch, null, ch,
-                                ToTypes.Character);
-                    }
-                }
-            }
-
-            ObjectInstance lastObj = ch.Carrying.Last();
-            if (lastObj != null)
-                extract_obj(lastObj);
-
-            ch.CurrentRoom.FromRoom(ch);
-
-            if (!fPull)
-            {
-                RoomTemplate location = null;
-                if (!ch.IsNpc() && ch.PlayerData.Clan != null)
-                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(ch.PlayerData.Clan.RecallRoom);
-
-                if (location == null)
-                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_ALTAR);
-
-                if (location == null)
-                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(1);
-
-                location.ToRoom(ch);
-
-                CharacterInstance wch = ch.GetCharacterInRoom("healer");
-                if (wch != null)
-                {
-                    comm.act(ATTypes.AT_MAGIC, "$n mutters a few incantations, waves $s hands and points $s finger.",
-                             wch, null, null, ToTypes.Room);
-                    comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swilring mists!", ch, null, null,
-                             ToTypes.Room);
-                    Say.do_say(wch,
-                               string.Format("Welcome back to the land of the living, {0}", ch.Name.CapitalizeFirst()));
-                }
-                else
-                    comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swirling mists!", ch, null, null,
-                             ToTypes.Room);
-
-                ch.CurrentPosition = PositionTypes.Resting;
-            }
-
-            if (ch.IsNpc())
-            {
-                --ch.MobIndex.Count;
-                --db.NumberOfMobsLoaded;
-            }
-
-            if (ch.Descriptor != null && ch.Descriptor.Original != null)
-                Return.do_return(ch, "");
-
-            if (ch.Switched != null && ch.Switched.Descriptor != null)
-                Return.do_return(ch.Switched, "");
-
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
-            {
-                if (wch.ReplyTo == ch)
-                    wch.ReplyTo = null;
-                if (wch.RetellTo == ch)
-                    wch.RetellTo = null;
-            }
-
-            DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
-
-            if (ch.Descriptor != null)
-            {
-                if (ch.Descriptor.Character == ch)
-                {
-                    ch.Descriptor.Character = null;
-                    // TODO Close the socket
-                    ch.Descriptor = null;
-                }
-            }
-        }
 
         private static readonly Dictionary<int, string> ObjectMessageLargeMap = new Dictionary<int, string>()
             {
@@ -291,11 +95,8 @@ namespace SmaugCS
             if (string.IsNullOrEmpty(arg2))
             {
                 obj = carryonly ? ch.GetCarriedObject(arg1) : ch.GetObjectOnMeOrInRoom(arg1);
-                if (obj == null && carryonly)
-                {
-                    color.send_to_char("You do not have that item.\r\n", ch);
-                    return null;
-                }
+                if (CheckFunctions.CheckIfTrue(ch, obj == null && carryonly, "You do not have that item.")) return null;
+
                 if (obj == null)
                 {
                     comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, arg1, ToTypes.Character);
@@ -306,11 +107,10 @@ namespace SmaugCS
             }
 
             ObjectInstance container = null;
-            if (carryonly &&  (container = ch.GetCarriedObject(arg2)) == null && (container = ch.GetWornObject(arg2)) == null)
-            {
-                color.send_to_char("You do not have that item.\r\n", ch);
-                return null;
-            }
+            if (CheckFunctions.CheckIfTrue(ch,
+                carryonly && (container = ch.GetCarriedObject(arg2)) == null &&
+                (container = ch.GetWornObject(arg2)) == null, "You do not have that item.")) return null;
+
             if (!carryonly && (container = ch.GetObjectOnMeOrInRoom(arg2)) == null)
             {
                 comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, arg2, ToTypes.Character);
@@ -382,18 +182,6 @@ namespace SmaugCS
             if (!obj.IsTrapped())
                 return null;
             return obj.Contents.FirstOrDefault(check => check.ItemType == ItemTypes.Trap);
-        }
-
-        public static ObjectInstance get_objtype(CharacterInstance ch, int type)
-        {
-            return ch.Carrying.FirstOrDefault(obj => (int) obj.ItemType == type);
-        }
-
-        public static void extract_exit(RoomTemplate room, ExitData pexit)
-        {
-            room.Exits.Remove(pexit);
-            ExitData rexit = pexit.GetReverseExit();
-            rexit.Reverse = 0;
         }
 
         public static void name_stamp_stats(CharacterInstance ch)
@@ -653,170 +441,6 @@ namespace SmaugCS
         {
             return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - attrib + 13 +
                     (ch.IsDevoted() ? ch.PlayerData.Favor/-500 : 0) <= percent);
-        }
-
-        public static ObjectInstance clone_object(ObjectInstance obj)
-        {
-            ObjInstanceRepository repo = (ObjInstanceRepository)Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
-            return repo.Clone(obj);
-        }
-
-        public static ObjectInstance group_object(ObjectInstance obj1, ObjectInstance obj2)
-        {
-            if (obj1 == null || obj2 == null)
-                return null;
-            if (obj1 == obj2)
-                return obj1;
-
-            if (obj1.ObjectIndex == obj2.ObjectIndex
-                && obj1.Name.EqualsIgnoreCase(obj2.Name)
-                && obj1.ShortDescription.EqualsIgnoreCase(obj2.ShortDescription)
-                && obj1.Description.EqualsIgnoreCase(obj2.Description)
-                && obj1.Owner.EqualsIgnoreCase(obj2.Owner)
-                && obj1.ItemType == obj2.ItemType
-                //&& obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
-                && obj1.MagicFlags == obj2.MagicFlags
-                && obj1.WearFlags == obj2.WearFlags
-                && obj1.WearLocation == obj2.WearLocation
-                && obj1.Weight == obj2.Weight
-                && obj1.Cost == obj2.Cost
-                && obj1.Level == obj2.Level
-                && obj1.Timer == obj2.Timer
-                && obj1.Value[0] == obj2.Value[0]
-                && obj1.Value[1] == obj2.Value[1]
-                && obj1.Value[2] == obj2.Value[2]
-                && obj1.Value[3] == obj2.Value[3]
-                && obj1.Value[4] == obj2.Value[4]
-                && obj1.Value[5] == obj2.Value[5]
-                && obj1.ExtraDescriptions.SequenceEqual(obj2.ExtraDescriptions)
-                && obj1.Affects.SequenceEqual(obj2.Affects)
-                && obj1.Contents.SequenceEqual(obj2.Contents)
-                && obj1.Count + obj2.Count > 0)
-            {
-                obj1.Count += obj2.Count;
-                obj1.ObjectIndex.count += obj2.Count;
-                extract_obj(obj2);
-                return obj1;
-            }
-            return obj2;
-        }
-
-        public static void split_obj(ObjectInstance obj, int num)
-        {
-            int count = obj.Count;
-            if (count <= num || num == 0)
-                return;
-
-            ObjectInstance rest = clone_object(obj);
-            --obj.ObjectIndex.count;
-            rest.Count = obj.Count - num;
-            obj.Count = num;
-
-            if (obj.CarriedBy != null)
-            {
-                obj.CarriedBy.Carrying.Add(rest);
-                rest.CarriedBy = obj.CarriedBy;
-                rest.InRoom = null;
-                rest.InObject = null;
-            }
-            else if (obj.InRoom != null)
-            {
-                obj.InRoom.Contents.Add(rest);
-                rest.CarriedBy = null;
-                rest.InRoom = obj.InRoom;
-                rest.InObject = null;
-            }
-            else if (obj.InObject != null)
-            {
-                obj.InObject.Contents.Add(rest);
-                rest.InObject = obj.InObject;
-                rest.InRoom = null;
-                rest.CarriedBy = null;
-            }
-        }
-
-        public static void separate_obj(ObjectInstance obj)
-        {
-            split_obj(obj, 1);
-        }
-
-        public static bool empty_obj(ObjectInstance obj, ObjectInstance destobj, RoomTemplate destroom)
-        {
-            Validation.IsNotNull(obj, "obj");
-
-            CharacterInstance ch = obj.CarriedBy;
-
-            if (destobj != null)
-                return EmptyIntoObject(ch, obj, destobj);
-
-            if (destroom != null)
-                return EmptyIntoRoom(ch, obj, destroom);
-
-            if (obj.InObject != null)
-                return EmptyIntoObject(ch, obj, obj.InObject);
-
-            if (ch != null)
-            {
-                bool retVal = false;
-                foreach (ObjectInstance cobj in obj.Contents)
-                {
-                    cobj.FromObject(cobj);
-                    cobj.ToCharacter(ch);
-                    retVal = true;
-                }
-                return retVal;
-            }
-
-            throw new InvalidOperationException(
-                string.Format("Nothing specified to empty the contents of object {0} into", obj.ID));
-        }
-
-        private static bool EmptyIntoObject(CharacterInstance ch, ObjectInstance obj, ObjectInstance destobj)
-        {
-            bool retVal = false;
-            foreach (ObjectInstance cobj in obj.Contents)
-            {
-                if (destobj.ItemType == ItemTypes.KeyRing && cobj.ItemType != ItemTypes.Key)
-                    continue;
-                if (destobj.ItemType == ItemTypes.Quiver && cobj.ItemType != ItemTypes.Projectile)
-                    continue;
-                if ((destobj.ItemType == ItemTypes.Container
-                     || destobj.ItemType == ItemTypes.KeyRing
-                     || destobj.ItemType == ItemTypes.Quiver)
-                    && (cobj.GetRealObjectWeight() + destobj.GetRealObjectWeight() > destobj.Value[0]))
-                    continue;
-
-                cobj.FromObject(cobj);
-                destobj.ToObject(cobj);
-                retVal = true;
-            }
-            return retVal;
-        }
-
-        private static bool EmptyIntoRoom(CharacterInstance ch, ObjectInstance obj, RoomTemplate destroom)
-        {
-            bool retVal = false;
-            foreach (ObjectInstance cobj in obj.Contents)
-            {
-                if (ch != null && cobj.ObjectIndex.HasProg(MudProgTypes.Drop) && cobj.Count > 1)
-                {
-                    separate_obj(cobj);
-                    cobj.FromObject(cobj);
-                }
-                else 
-                    cobj.FromObject(cobj);
-
-                ObjectInstance tObj = destroom.ToRoom(cobj);
-
-                if (ch != null)
-                {
-                    mud_prog.oprog_drop_trigger(ch, tObj);
-                    if (ch.CharDied())
-                        ch = null;
-                }
-                retVal = true;
-            }
-            return retVal;
         }
 
         public static void economize_mobgold(CharacterInstance mob)

@@ -232,30 +232,32 @@ namespace SmaugCS
             OBJ = 1 << 2
         }
 
-        public static void act(ATTypes attype, string format, CharacterInstance ch, object arg1, object arg2, ToTypes type)
+        public static void act(ATTypes attype, string format, CharacterInstance ch, object arg1, object arg2,
+            ToTypes type)
         {
             if (string.IsNullOrEmpty(format) || ch == null)
                 return;
 
-            int flags1 = (int)ActFFlags.None;
-            int flags2 = (int)ActFFlags.None;
+            int flags1 = (int) ActFFlags.None;
+            int flags2 = (int) ActFFlags.None;
             ObjectInstance obj1 = arg1.CastAs<ObjectInstance>();
             ObjectInstance obj2 = arg2.CastAs<ObjectInstance>();
             CharacterInstance vch = arg2.CastAs<CharacterInstance>();
             CharacterInstance to;
 
             #region Nasty type checking
+
             // Do some proper type checking here..  Sort of.  We base it on the $* params.
             // This is kinda lame really, but I suppose in some weird sense it beats having
             // to pass like 8 different NULL parameters every time we need to call act()..
             if (format.Contains("$t"))
             {
-                flags1 |= (int)ActFFlags.Text;
+                flags1 |= (int) ActFFlags.Text;
                 obj1 = null;
             }
             if (format.Contains("$T") || format.Contains("$d"))
             {
-                flags2 |= (int)ActFFlags.Text;
+                flags2 |= (int) ActFFlags.Text;
                 vch = null;
                 obj2 = null;
             }
@@ -266,28 +268,28 @@ namespace SmaugCS
                 || format.Contains("$S")
                 || format.Contains("$Q"))
             {
-                flags2 |= (int)ActFFlags.CH;
+                flags2 |= (int) ActFFlags.CH;
                 obj2 = null;
             }
 
             if (format.Contains("$p"))
-                flags1 |= (int)ActFFlags.OBJ;
+                flags1 |= (int) ActFFlags.OBJ;
 
             if (format.Contains("$P"))
             {
-                flags2 |= (int)ActFFlags.OBJ;
+                flags2 |= (int) ActFFlags.OBJ;
                 vch = null;
             }
 
-            if (flags1 != (int)ActFFlags.None && flags1 != (int)ActFFlags.Text
-                && flags1 != (int)ActFFlags.CH && flags1 != (int)ActFFlags.OBJ)
+            if (flags1 != (int) ActFFlags.None && flags1 != (int) ActFFlags.Text
+                && flags1 != (int) ActFFlags.CH && flags1 != (int) ActFFlags.OBJ)
             {
                 LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags1);
                 obj1 = null;
             }
 
-            if (flags2 != (int)ActFFlags.None && flags2 != (int)ActFFlags.Text
-                && flags2 != (int)ActFFlags.CH && flags2 != (int)ActFFlags.OBJ)
+            if (flags2 != (int) ActFFlags.None && flags2 != (int) ActFFlags.Text
+                && flags2 != (int) ActFFlags.CH && flags2 != (int) ActFFlags.OBJ)
             {
                 LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags2);
                 vch = null;
@@ -300,6 +302,7 @@ namespace SmaugCS
                 to = ch;
             else
                 to = ch.CurrentRoom.Persons.First();
+
             #endregion
 
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Secretive) && type != ToTypes.Character)
@@ -314,14 +317,55 @@ namespace SmaugCS
                 to = vch;
             }
 
-            // TODO 
-        }
+            string txt = string.Empty;
+            if (to != null && type != ToTypes.Character && type != ToTypes.Victim)
+            {
+                txt = act_string(format, null, ch, arg1, arg2, Program.STRING_IMM);
+                if (to.CurrentRoom.HasProg(MudProgTypes.Act))
+                    mud_prog.rprog_act_trigger(txt, to.CurrentRoom, ch, (ObjectInstance) arg1, arg2);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <returns></returns>
+                foreach (ObjectInstance toObj in to.CurrentRoom.Contents
+                    .Where(toObj => to.CurrentRoom.HasProg(MudProgTypes.Act)))
+                {
+                    mud_prog.oprog_act_trigger(txt, toObj, ch, (ObjectInstance) arg1, arg2);
+                }
+            }
+
+            if (type == ToTypes.Character || type == ToTypes.Victim)
+                return;
+
+            foreach(CharacterInstance rch in ch.CurrentRoom.Persons)
+            {
+                if ((to.Descriptor == null && (to.IsNpc() && !to.MobIndex.HasProg(MudProgTypes.Act))) || !to.IsAwake())
+                    continue;
+
+                if (type == ToTypes.Character && to != ch)
+                    continue;
+                if (type == ToTypes.Victim && (to != vch || to == ch))
+                    continue;
+                if (type == ToTypes.Room && to == ch)
+                    continue;
+                if (type == ToTypes.NotVictim && (to == ch || to == vch))
+                    continue;
+                if (type == ToTypes.CanSee &&
+                    (to == ch ||
+                     (!to.IsImmortal() && !ch.IsNpc() &&
+                      (ch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
+                       to.Trust < (ch.PlayerData != null ? ch.PlayerData.WizardInvisible : 0)))))
+                    continue;
+
+                txt = act_string(format, to, ch, arg1, arg2, to.IsImmortal() ? Program.STRING_IMM : Program.STRING_NONE);
+
+                if (to.Descriptor != null)
+                {
+                    color.set_char_color(attype, to);
+                    color.send_to_char(txt, to);
+                }
+
+                mud_prog.mprog_act_trigger(txt, to, ch, (ObjectInstance)arg1, arg2);
+            }
+        }
+    
         public static string default_fprompt(CharacterInstance ch)
         {
             StringBuilder sb = new StringBuilder("&w<&Y%hhp ");
@@ -334,11 +378,6 @@ namespace SmaugCS
             return sb.ToString();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <returns></returns>
         /// <remarks>Not sure why this exists since its a perfect copy of default_fprompt</remarks>
         public static string default_prompt(CharacterInstance ch)
         {
@@ -414,7 +453,24 @@ namespace SmaugCS
 
         public static void write_to_buffer(DescriptorData d, string txt, int length)
         {
-            // TODO
+            if (d == null)
+                throw new ArgumentNullException("d");
+
+            if (d.outbuf.IsNullOrEmpty())
+                return;
+
+            int len = length;
+            if (len <= 0)
+                len = txt.Length;
+
+            if (d.outtop == 0 && !d.fcommand)
+            {
+                d.outbuf = "\r\n" + d.outbuf;
+                d.outtop = 2;
+            }
+
+            d.outtop += len;
+            d.outbuf = txt;
         }
 
         public static void bailout()

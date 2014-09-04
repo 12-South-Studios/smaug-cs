@@ -43,7 +43,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            handler.separate_obj(salve);
+           salve.Split();
             --salve.Value[1];
 
             if (!mud_prog.oprog_use_trigger(ch, salve, null, null))
@@ -57,7 +57,7 @@ namespace SmaugCS.Commands
                 throw new CharacterDiedException("Salve {0}, Actor {1}, Victim {2}", salve.ID, ch.ID, victim.ID);
 
             if (!handler.obj_extracted(salve) && salve.Value[1] <= 0)
-                handler.extract_obj(salve);
+                ObjectInstanceExtensions.Extract(salve);
         }
 
         private static void ApplyNonSalve(ObjectInstance salve, CharacterInstance actor, CharacterInstance victim)

@@ -36,25 +36,25 @@ namespace SmaugCS.Commands.Movement
         {
             if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).ItemType != ItemTypes.Container,
                 "That's not a container.", new List<object> {obj})) return;
-            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], (int) ContainerFlags.Closed, "It's not closed.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ContainerFlags.Closed, "It's not closed.")) return;
             if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).Value[2] < 0, "It can't be unlocked.",
                 new List<object> {obj})) return;
 
             ObjectInstance key = ch.HasKey(obj.Value[2]);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], (int)ExitFlags.Locked, "It's already unlocked.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ExitFlags.Locked, "It's already unlocked.")) return;
 
-            obj.Value[1].RemoveBit((int) ContainerFlags.Locked);
+            obj.Value[1].RemoveBit(ContainerFlags.Locked);
             color.send_to_char("*Click*", ch);
             int count = key.Count;
             key.Count = 1;
             comm.act(ATTypes.AT_ACTION, "$n unlocks $p with $P.", ch, obj, key, ToTypes.Room);
             key.Count = count;
 
-            if (obj.Value[1].IsSet((int)ContainerFlags.EatKey))
+            if (obj.Value[1].IsSet(ContainerFlags.EatKey))
             {
-                handler.separate_obj(key);
-                handler.extract_obj(key);
+                key.Split();
+                key.Extract();
             }
         }
 
@@ -66,20 +66,15 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, (int) ExitFlags.IsDoor, "You can't do that.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, (int) ExitFlags.Closed, "It's not closed.")) return;
-
-            if (exit.Key < 0)
-            {
-                color.send_to_char("It can't be unlocked.", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.IsDoor, "You can't do that.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.Closed, "It's not closed.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, exit.Key < 0, "It can't be unlocked.")) return;
 
             ObjectInstance key = ch.HasKey(exit.Key);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, (int) ExitFlags.Locked, "It's already unlocked.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.Locked, "It's already unlocked.")) return;
 
-            if (!exit.Flags.IsSet((int) ExitFlags.Secret) || exit.Keywords.IsAnyEqual(firstArg))
+            if (!exit.Flags.IsSet(ExitFlags.Secret) || exit.Keywords.IsAnyEqual(firstArg))
             {
                 color.send_to_char("*Click*", ch);
                 int count = key.Count;
@@ -87,10 +82,10 @@ namespace SmaugCS.Commands.Movement
                 comm.act(ATTypes.AT_ACTION, "$n unlocks the $d with $p.", ch, key, exit.Keywords, ToTypes.Room);
                 key.Count = count;
 
-                if (exit.Flags.IsSet((int) ExitFlags.EatKey))
+                if (exit.Flags.IsSet(ExitFlags.EatKey))
                 {
-                    handler.separate_obj(key);
-                    handler.extract_obj(key);
+                    key.Split();
+                    key.Extract();
                 }
 
                 exit.RemoveFlagFromSelfAndReverseExit(ExitFlags.Locked);

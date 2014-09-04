@@ -96,8 +96,8 @@ namespace SmaugCS.Spells
                     }
                 }
 
-                handler.separate_obj(corpse);
-                handler.extract_obj(corpse);
+                corpse.Split();
+                corpse.Extract();
                 return ReturnTypes.None;
             }
 

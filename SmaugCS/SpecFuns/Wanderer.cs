@@ -4,6 +4,7 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -36,7 +37,7 @@ namespace SmaugCS.SpecFuns
                     && obj.ItemType != ItemTypes.Light)
                     continue;
 
-                handler.separate_obj(obj);
+                obj.Split();
                 comm.act(ATTypes.AT_ACTION, "$n leans over and gets $p.", ch, obj, null, ToTypes.Room);
                 ch.CurrentRoom.FromRoom(obj);
 
@@ -87,7 +88,7 @@ namespace SmaugCS.SpecFuns
                     handler.set_cur_obj(trash);
                     if (act_obj.damage_obj(trash) != ReturnTypes.ObjectScrapped)
                     {
-                        handler.separate_obj(trash);
+                        trash.Split();
                         comm.act(ATTypes.AT_ACTION, "$n growls and throws $p $T.", ch, trash, exit.Direction.GetName(),
                             ToTypes.Room);
                         trash.FromCharacter();

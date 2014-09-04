@@ -29,7 +29,7 @@ namespace SmaugCS.Commands.Liquids
                 throw new ObjectNotFoundException(string.Format("Object {0} was not found.", arg));
 
             if (obj.Count > 1 && obj.ItemType != ItemTypes.Fountain)
-                handler.separate_obj(obj);
+                obj.Split();
 
             if (CheckFunctions.CheckIfTrue(ch,
                 !ch.IsNpc() && ch.GetCondition(ConditionTypes.Drunk) > (GetMaximumCondition() - 8),
@@ -275,7 +275,7 @@ namespace SmaugCS.Commands.Liquids
             {
                 //if (obj.Serial == cur_obj)
                 //  global_objcode = rOBJ_DRUNK;
-                handler.extract_obj(obj);
+                ObjectInstanceExtensions.Extract(obj);
                 ObjectFactory.CreateBloodstain(ch, DatabaseManager.Instance);
             }
         }

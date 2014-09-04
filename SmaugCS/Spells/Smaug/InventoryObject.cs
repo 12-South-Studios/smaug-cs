@@ -57,7 +57,7 @@ namespace SmaugCS.Spells.Smaug
                 case ItemTypes.Cook:
                 case ItemTypes.Food:
                 case ItemTypes.DrinkContainer:
-                    handler.separate_obj(obj);
+                    obj.Split();
                     obj.Value[3] = 0;
                     ch.SuccessfulCast(skill, null, obj);
                     break;
@@ -109,7 +109,7 @@ namespace SmaugCS.Spells.Smaug
                 case ItemTypes.Cook:
                 case ItemTypes.Food:
                 case ItemTypes.DrinkContainer:
-                    handler.separate_obj(obj);
+                    obj.Split();
                     obj.Value[3] = 1;
                     ch.SuccessfulCast(skill, null, obj);
                     break;
@@ -139,7 +139,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (water > 0)
             {
-                handler.separate_obj(obj);
+                obj.Split();
                 obj.Value[2] = 0;
                 obj.Value[1] += water;
                 if (obj.Name.EqualsIgnoreCase("water"))

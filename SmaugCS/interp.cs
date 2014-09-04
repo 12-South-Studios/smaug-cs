@@ -15,7 +15,8 @@ namespace SmaugCS
 {
     public static class interp
     {
-        private static readonly List<KeyValuePair<PositionTypes, string>> PositionMap = new List<KeyValuePair<PositionTypes, string>>()
+        private static readonly List<KeyValuePair<PositionTypes, string>> PositionMap 
+            = new List<KeyValuePair<PositionTypes, string>>
             {
                 new KeyValuePair<PositionTypes, string>(PositionTypes.Dead, "A little difficult to do when you are DEAD...\r\n"),
                 new KeyValuePair<PositionTypes, string>(PositionTypes.Mortal, "You are hurt far too badly for that.\r\n"),
@@ -40,12 +41,8 @@ namespace SmaugCS
             if ((int)ch.CurrentPosition < position)
             {
                 KeyValuePair<PositionTypes, string> kvp = PositionMap.FirstOrDefault(x => x.Key == ch.CurrentPosition);
-                bool fighting = (ch.CurrentPosition == PositionTypes.Fighting
-                                 || ch.CurrentPosition == PositionTypes.Defensive
-                                 || ch.CurrentPosition == PositionTypes.Aggressive
-                                 || ch.CurrentPosition == PositionTypes.Berserk);
 
-                if (fighting && position <= (int)PositionTypes.Evasive)
+                if (ch.IsInCombatPosition() && position <= (int)PositionTypes.Evasive)
                     color.send_to_char(FightingMessage, ch);
                 else
                     color.send_to_char(kvp.Value, ch);

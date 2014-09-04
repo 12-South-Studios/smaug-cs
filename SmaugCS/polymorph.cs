@@ -26,27 +26,6 @@ namespace SmaugCS
             return null;
         }
 
-        public static void do_morph(CharacterInstance ch, MorphData morph)
-        {
-
-        }
-
-        public static int do_morph_char(CharacterInstance ch, MorphData morph)
-        {
-            // TODO
-            return 0;
-        }
-
-        public static void do_unmorph(CharacterInstance ch)
-        {
-            // TODO
-        }
-
-        public static void do_unmorph_char(CharacterInstance ch)
-        {
-            // TODO
-        }
-
         public static void setup_morph_vnum()
         {
             // TODO

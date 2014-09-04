@@ -12,6 +12,14 @@ namespace SmaugCS
 {
     public static class ExitDataExtensions
     {
+        public static void Extract(this ExitData exit)
+        {
+            RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(exit.Room_vnum);
+            room.Exits.Remove(exit);
+            ExitData rexit = exit.GetReverseExit();
+            rexit.Reverse = 0;
+        }
+
         public static ExitData GetReverseExit(this ExitData exit)
         {
             if (exit.Reverse == 0)

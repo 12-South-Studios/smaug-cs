@@ -36,7 +36,7 @@ namespace SmaugCS.Extensions
 
             --obj.Value[0];
             if (obj.Value[0] <= 0)
-                handler.extract_obj(obj);
+                ObjectInstanceExtensions.Extract(obj);
 
             ReturnTypes returnCode = ReturnTypes.None;
             if (attrib != null && !string.IsNullOrEmpty(attrib.Messages[1]))

@@ -108,6 +108,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Player\Prompt.cs" />
+    <Compile Include="Commands\Player\FPrompt.cs" />
+    <Compile Include="Commands\Player\Report.cs" />
+    <Compile Include="Commands\Player\Stat.cs" />
+    <Compile Include="Commands\Player\StatReport.cs" />
+    <Compile Include="Commands\Player\Bio.cs" />
+    <Compile Include="Commands\Player\Description.cs" />
+    <Compile Include="Commands\Player\Homepage.cs" />
+    <Compile Include="Commands\Polymorph\UnmorphChar.cs" />
+    <Compile Include="Commands\Polymorph\MorphChar.cs" />
+    <Compile Include="Commands\Polymorph\Unmorph.cs" />
+    <Compile Include="Commands\Polymorph\Morph.cs" />
+    <Compile Include="Commands\Track.cs" />
     <Compile Include="Extensions\Character\Affect.cs" />
     <Compile Include="Extensions\Character\Condition.cs" />
     <Compile Include="Extensions\Character\Damage.cs" />

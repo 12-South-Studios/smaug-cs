@@ -20,7 +20,7 @@ namespace SmaugCS.Commands.Objects
             ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't find it.")) return;
 
-            handler.separate_obj(obj);
+            obj.Split();
             if (!obj.WearFlags.IsSet(ItemWearFlags.Take))
             {
                 if (!obj.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse) || ch.IsNpc() ||

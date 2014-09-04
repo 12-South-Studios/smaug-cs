@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Liquids
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You aren't carrying that.")) return;
 
             if (obj.Count > 1)
-                handler.separate_obj(obj);
+                obj.Split();
 
             string secondArg = argument.SecondWord();
             if (secondArg.EqualsIgnoreCase("into"))
@@ -74,9 +74,9 @@ namespace SmaugCS.Commands.Liquids
                 return;
             }
 
-            handler.separate_obj(destObj);
+            destObj.Split();
 
-            if (handler.empty_obj(obj, destObj, null))
+            if (obj.Empty(destObj))
             {
                 comm.act(ATTypes.AT_ACTION, "You empty $p into $P.", ch, obj, destObj, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n empties $p into $P.", ch, obj, destObj, ToTypes.Room);
@@ -106,7 +106,7 @@ namespace SmaugCS.Commands.Liquids
                 ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDropAll) || ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom),
                 "You can't seem to do that here...")) return;
 
-            if (handler.empty_obj(obj, null, ch.CurrentRoom))
+            if (obj.Empty(null, ch.CurrentRoom))
             {
                 comm.act(ATTypes.AT_ACTION, "You empty $p.", ch, obj, null, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n empties $p.", ch, obj, null, ToTypes.Room);

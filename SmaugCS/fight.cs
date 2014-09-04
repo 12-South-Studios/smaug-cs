@@ -51,7 +51,7 @@ namespace SmaugCS
                     return false;
 
                 ch.CurrentCoin += content.Value[0]*content.Count;
-                handler.extract_obj(content);
+                content.Extract();
             }
 
             if (ch.CurrentCoin - oldgold > 1 && ch.CurrentPosition > PositionTypes.Sleeping)
@@ -796,7 +796,7 @@ namespace SmaugCS
             if (victim.CurrentPosition == PositionTypes.Dead
                 || victim.CharDied())
             {
-                handler.extract_obj(projectile);
+                projectile.Extract();
                 return ReturnTypes.CharacterDied;
             }
 
@@ -881,7 +881,7 @@ namespace SmaugCS
             //skills.learn_from_failure(ch, proficiencySkillNumber);
 
             if (SmaugRandom.D100() < 50)
-                handler.extract_obj(projectile);
+                projectile.Extract();
             else
             {
                 if (projectile.InObject != null)
@@ -1454,63 +1454,6 @@ namespace SmaugCS
             }
 
             ch.CurrentRoom = prevRoom;
-        }
-
-        public static ObjectInstance raw_kill(CharacterInstance ch, CharacterInstance victim)
-        {
-            if (victim.IsNotAuthorized())
-            {
-                LogManager.Instance.Bug("Killing unauthorized");
-                return null;
-            }
-
-            victim.StopFighting(true);
-
-            if (victim.CurrentMorph != null)
-            {
-                polymorph.do_unmorph_char(victim);
-                return raw_kill(ch, victim);
-            }
-
-            DeathProg.Execute(ch, victim);
-            if (victim.CharDied())
-                return null;
-
-            mud_prog.rprog_death_trigger(victim);
-            if (victim.CharDied())
-                return null;
-
-            ObjectInstance corpse = ObjectFactory.CreateCorpse(victim, ch);
-            if (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor
-                || victim.CurrentRoom.SectorType == SectorTypes.Underwater
-                || victim.CurrentRoom.SectorType == SectorTypes.ShallowWater
-                || victim.CurrentRoom.SectorType == SectorTypes.DeepWater)
-                comm.act(ATTypes.AT_BLOOD, "$n's blood slowly clouds the surrounding water.", victim, null, null, ToTypes.Room);
-            else if (victim.CurrentRoom.SectorType == SectorTypes.Air)
-                comm.act(ATTypes.AT_BLOOD, "$n's blood sprays wildly through the air.", victim, null, null, ToTypes.Room);
-            else
-                ObjectFactory.CreateBlood(victim);
-
-            if (victim.IsNpc())
-            {
-                victim.MobIndex.TimesKilled++;
-                handler.extract_char(victim, true);
-                victim = null;
-                return corpse;
-            }
-
-            color.set_char_color(ATTypes.AT_DIEMSG, victim);
-            Help.do_help(victim,
-                         victim.PlayerData.PvEDeaths + victim.PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
-
-            handler.extract_char(victim, false);
-
-            while (victim.Affects.Count > 0)
-                victim.RemoveAffect(victim.Affects.First());
-
-            // TODO: Finish reset of victim
-
-            return null;
         }
 
         public static void group_gain(CharacterInstance ch, CharacterInstance victim)

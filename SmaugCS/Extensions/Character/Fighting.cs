@@ -1,15 +1,75 @@
 ﻿using System.Linq;
+using SmaugCS.Commands;
+using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs.MobileProgs;
 
 namespace SmaugCS.Extensions
 {
     public static class Fighting
     {
+        public static ObjectInstance RawKill(this CharacterInstance ch, CharacterInstance victim)
+        {
+            if (victim.IsNotAuthorized())
+            {
+                LogManager.Instance.Bug("Killing unauthorized");
+                return null;
+            }
+
+            victim.StopFighting(true);
+
+            if (victim.CurrentMorph != null)
+            {
+                UnmorphChar.do_unmorph_char(victim, string.Empty);
+                return ch.RawKill(victim);
+            }
+
+            DeathProg.Execute(ch, victim);
+            if (victim.CharDied())
+                return null;
+
+            mud_prog.rprog_death_trigger(victim);
+            if (victim.CharDied())
+                return null;
+
+            ObjectInstance corpse = ObjectFactory.CreateCorpse(victim, ch);
+            if (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor
+                || victim.CurrentRoom.SectorType == SectorTypes.Underwater
+                || victim.CurrentRoom.SectorType == SectorTypes.ShallowWater
+                || victim.CurrentRoom.SectorType == SectorTypes.DeepWater)
+                comm.act(ATTypes.AT_BLOOD, "$n's blood slowly clouds the surrounding water.", victim, null, null, ToTypes.Room);
+            else if (victim.CurrentRoom.SectorType == SectorTypes.Air)
+                comm.act(ATTypes.AT_BLOOD, "$n's blood sprays wildly through the air.", victim, null, null, ToTypes.Room);
+            else
+                ObjectFactory.CreateBlood(victim);
+
+            if (victim.IsNpc())
+            {
+                victim.MobIndex.TimesKilled++;
+                victim.Extract(true);
+                victim = null;
+                return corpse;
+            }
+
+            color.set_char_color(ATTypes.AT_DIEMSG, victim);
+            Help.do_help(victim,
+                         victim.PlayerData.PvEDeaths + victim.PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
+
+            victim.Extract(false);
+
+            while (victim.Affects.Count > 0)
+                victim.RemoveAffect(victim.Affects.First());
+
+            // TODO: Finish reset of victim
+
+            return null;
+
+        }
         public static CharacterInstance GetMyTarget(this CharacterInstance ch)
         {
             return ch == null || ch.CurrentFighting == null ? null : ch.CurrentFighting.Who;

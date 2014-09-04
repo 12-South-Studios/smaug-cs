@@ -515,12 +515,12 @@ namespace SmaugCS
                 {
                     if (val >= 0 && val < 6)
                     {
-                        handler.separate_obj(obj);
+                        obj.Split();
                         if (obj.Value[val] <= 0)
                         {
                             comm.act(ATTypes.AT_MAGIC, "$p dispapears in a puff of smoke!", ch, obj, null, ToTypes.Character);
                             comm.act(ATTypes.AT_MAGIC, "$p disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
-                            handler.extract_obj(obj);
+                            obj.Extract();
                             return false;
                         }
 
@@ -528,7 +528,7 @@ namespace SmaugCS
                         {
                             comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Character);
                             comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
-                            handler.extract_obj(obj);
+                            obj.Extract();
                         }
                         else
                             comm.act(ATTypes.AT_MAGIC, "$p glows briefly and a whisp of smoke rises from it.", ch, obj,
@@ -536,10 +536,10 @@ namespace SmaugCS
                     }
                     else if (consume)
                     {
-                        handler.separate_obj(obj);
+                        obj.Split();
                         comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Character);
                         comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
-                        handler.extract_obj(obj);
+                        obj.Extract();
                     }
                     else
                     {
