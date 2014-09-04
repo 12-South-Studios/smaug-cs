@@ -8,6 +8,7 @@ using Realm.Library.Common;
 using Realm.Library.Patterns.Command;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
+using SmaugCS.Commands.Polymorph;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -46,7 +47,7 @@ namespace SmaugCS
                         comm.act(ATTypes.AT_MAGIC, "$n returns to the dust from whence $e came.", ch, null, null, ToTypes.Room);
 
                     if (ch.IsNpc())
-                        handler.extract_char(ch, true);
+                        CharacterInstanceExtensions.Extract(ch, true);
                     continue;
                 }
 
@@ -304,7 +305,7 @@ namespace SmaugCS
                     {
                         --ch.CurrentMorph.timer;
                         if (ch.CurrentMorph.timer == 0)
-                            polymorph.do_unmorph_char(ch);
+                            UnmorphChar.do_unmorph_char(ch, string.Empty);
                     }
                 }
 
@@ -547,7 +548,7 @@ namespace SmaugCS
 
                 if (obj == handler.CurrentObject)
                     handler.GlobalObjectCode = ReturnTypes.ObjectExpired;
-                handler.extract_obj(obj);
+                obj.Extract();
             }
         }
 
@@ -613,13 +614,13 @@ namespace SmaugCS
 
                 if (obj == handler.CurrentObject)
                     handler.GlobalObjectCode = ReturnTypes.ObjectExpired;
-                handler.extract_obj(obj);
+                obj.Extract();
             }
 
             //trworld_dispose
         }
 
-        private static Dictionary<ItemTypes, KeyValuePair<string, ATTypes>> ObjectExpireTable =
+        private static readonly Dictionary<ItemTypes, KeyValuePair<string, ATTypes>> ObjectExpireTable =
             new Dictionary<ItemTypes, KeyValuePair<string, ATTypes>>
         {
             {ItemTypes.Container, new KeyValuePair<string, ATTypes>("$p falls apart, tattered from age.", ATTypes.AT_OBJECT)},
@@ -643,7 +644,7 @@ namespace SmaugCS
 
             if (obj.Timer > 0 && obj.Value[2] > timer)
             {
-                handler.separate_obj(obj);
+                obj.Split();
                 obj.Value[2] = timer;
 
                 string buf =
@@ -825,7 +826,7 @@ namespace SmaugCS
                 // TODO Exception, log it
             }
 
-            handler.extract_exit(fromRoom, exit);
+            exit.Extract();
         }
 
         public static void reboot_check(DateTime reset)

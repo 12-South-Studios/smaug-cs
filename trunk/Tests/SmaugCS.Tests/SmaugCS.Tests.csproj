@@ -111,6 +111,10 @@
       <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
       <Name>Realm.Library.Lua</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Realm.Library.Patterns.Command\Realm.Library.Patterns.Command.csproj">
+      <Project>{dd42338b-fe18-406e-8084-f606825771f6}</Project>
+      <Name>Realm.Library.Patterns.Command</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Realm.Library.Patterns.Repository\Realm.Library.Patterns.Repository.csproj">
       <Project>{222cce38-b286-44f0-b7f1-6af8ba525fb6}</Project>
       <Name>Realm.Library.Patterns.Repository</Name>

@@ -1,15 +1,117 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Ninject;
+using Realm.Library.Common;
+using Realm.Library.Patterns.Repository;
+using SmaugCS.Auction;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Logging;
-using Realm.Library.Common;
+using SmaugCS.Managers;
+using SmaugCS.Objects;
+using SmaugCS.Repositories;
 
-namespace SmaugCS
+namespace SmaugCS.Extensions
 {
     public static class ObjectInstanceExtensions
     {
+        public static ObjectInstance GroupWith(this ObjectInstance obj1, ObjectInstance obj2)
+        {
+            if (obj1 == null || obj2 == null)
+                return null;
+            if (obj1 == obj2)
+                return obj1;
+
+            if (obj1.ObjectIndex == obj2.ObjectIndex
+                && obj1.Name.EqualsIgnoreCase(obj2.Name)
+                && obj1.ShortDescription.EqualsIgnoreCase(obj2.ShortDescription)
+                && obj1.Description.EqualsIgnoreCase(obj2.Description)
+                && obj1.Owner.EqualsIgnoreCase(obj2.Owner)
+                && obj1.ItemType == obj2.ItemType
+                //&& obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
+                && obj1.MagicFlags == obj2.MagicFlags
+                && obj1.WearFlags == obj2.WearFlags
+                && obj1.WearLocation == obj2.WearLocation
+                && obj1.Weight == obj2.Weight
+                && obj1.Cost == obj2.Cost
+                && obj1.Level == obj2.Level
+                && obj1.Timer == obj2.Timer
+                && obj1.Value[0] == obj2.Value[0]
+                && obj1.Value[1] == obj2.Value[1]
+                && obj1.Value[2] == obj2.Value[2]
+                && obj1.Value[3] == obj2.Value[3]
+                && obj1.Value[4] == obj2.Value[4]
+                && obj1.Value[5] == obj2.Value[5]
+                && obj1.ExtraDescriptions.SequenceEqual(obj2.ExtraDescriptions)
+                && obj1.Affects.SequenceEqual(obj2.Affects)
+                && obj1.Contents.SequenceEqual(obj2.Contents)
+                && obj1.Count + obj2.Count > 0)
+            {
+                obj1.Count += obj2.Count;
+                obj1.ObjectIndex.count += obj2.Count;
+                obj2.Extract();
+                return obj1;
+            }
+            return obj2;
+
+        }
+        public static void Extract(this ObjectInstance obj)
+        {
+            if (handler.obj_extracted(obj))
+                throw new ObjectAlreadyExtractedException("Object {0}", obj.ObjectIndex.ID);
+
+            if (obj.ItemType == ItemTypes.Portal)
+                update.remove_portal(obj);
+
+            if (AuctionManager.Instance.Auction.ItemForSale == obj)
+                Commands.Objects.Auction.StopAuction(AuctionManager.Instance.Auction.Seller,
+                    "Sale of {0} has been stopped by a system action.");
+
+            if (obj.CarriedBy != null)
+                obj.FromCharacter();
+            else if (obj.InRoom != null)
+                obj.InRoom.FromRoom(obj);
+            else if (obj.InObject != null)
+                obj.InObject.FromObject(obj);
+
+            ObjectInstance objContent = obj.Contents.Last();
+            if (objContent != null)
+                objContent.Extract();
+
+            obj.Affects.Clear();
+            obj.ExtraDescriptions.Clear();
+
+            //trworld_obj_check(obj);
+
+            foreach (RelationData relation in db.RELATIONS
+                                                .Where(relation => relation.Types == RelationTypes.OSet_On))
+            {
+                if (obj == relation.Subject)
+                    relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
+                else
+                    continue;
+                db.RELATIONS.Remove(relation);
+            }
+
+            DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
+
+            handler.queue_extracted_obj(obj);
+
+            obj.ObjectIndex.count -= obj.Count;
+            db.NumberOfObjectsLoaded -= obj.Count;
+            --db.PhysicalObjects;
+
+            if (obj == handler.CurrentObject)
+            {
+                handler.CurrentObjectExtracted = true;
+                if (handler.GlobalObjectCode == ReturnTypes.None)
+                    handler.GlobalObjectCode = ReturnTypes.ObjectExtracted;
+            }
+        }
+
         public static bool IsTrapped(this ObjectInstance obj)
         {
             return obj.Contents.Any(check => check.ItemType == ItemTypes.Trap);
@@ -120,7 +222,7 @@ namespace SmaugCS
             {
                 foreach (ObjectInstance carriedObj in ch.Carrying)
                 {
-                    groupObj = handler.group_object(carriedObj, obj);
+                    groupObj = carriedObj.GroupWith(obj);
                     if (groupObj == carriedObj)
                     {
                         grouped = true;
@@ -196,7 +298,7 @@ namespace SmaugCS
             ch.Carrying.Remove(obj);
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null && obj.Contents.Count > 0)
-                handler.empty_obj(obj, null, null);
+                obj.Empty();
 
             obj.InRoom = null;
             obj.CarriedBy = null;
@@ -220,7 +322,7 @@ namespace SmaugCS
 
             foreach (ObjectInstance otmp in o.Contents)
             {
-                ObjectInstance oret = handler.group_object(otmp, obj);
+                ObjectInstance oret = otmp.GroupWith(obj);
                 if (oret == otmp)
                     return oret;
             }
@@ -235,18 +337,14 @@ namespace SmaugCS
         public static void FromObject(this ObjectInstance o, ObjectInstance obj)
         {
             if (obj.InObject != o)
-            {
-                LogManager.Instance.Bug("null objectFrom");
-                return;
-            }
+                throw new InvalidDataException(string.Format("Object {0} is not in {1}", obj.ID, o.ID));
 
             bool magic = o.InMagicContainer();
 
             o.Contents.Remove(obj);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
-                && obj.Contents != null)
-                handler.empty_obj(obj, o, null);
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null)
+                obj.Empty(o);
 
             obj.InObject = null;
             obj.InRoom = null;
@@ -262,6 +360,124 @@ namespace SmaugCS
                         tmp.CarriedBy.CarryWeight -= obj.GetObjectWeight();
                 } while (tmp != null);
             }
+        }
+
+        public static ObjectInstance Clone(this ObjectInstance obj)
+        {
+            ObjInstanceRepository repo =
+                (ObjInstanceRepository) Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
+            return repo.Clone(obj);
+        }
+
+        public static void Split(this ObjectInstance obj, int number = 1)
+        {
+            int count = obj.Count;
+            if (count <= number || number == 0)
+                return;
+
+            ObjectInstance rest = obj.Clone();
+            --obj.ObjectIndex.count;
+            rest.Count = obj.Count - number;
+            obj.Count = number;
+
+            if (obj.CarriedBy != null)
+            {
+                obj.CarriedBy.Carrying.Add(rest);
+                rest.CarriedBy = obj.CarriedBy;
+                rest.InRoom = null;
+                rest.InObject = null;
+            }
+            else if (obj.InRoom != null)
+            {
+                obj.InRoom.Contents.Add(rest);
+                rest.CarriedBy = null;
+                rest.InRoom = obj.InRoom;
+                rest.InObject = null;
+            }
+            else if (obj.InObject != null)
+            {
+                obj.InObject.Contents.Add(rest);
+                rest.InObject = obj.InObject;
+                rest.InRoom = null;
+                rest.CarriedBy = null;
+            }
+        }
+
+        public static bool Empty(this ObjectInstance obj, ObjectInstance destobj = null, RoomTemplate destroom = null)
+        {
+            CharacterInstance ch = obj.CarriedBy;
+
+            if (destobj != null)
+                return EmptyIntoObject(obj, destobj);
+
+            if (destroom != null)
+                return EmptyIntoRoom(ch, obj, destroom);
+
+            if (obj.InObject != null)
+                return EmptyIntoObject(obj, obj.InObject);
+
+            if (ch != null)
+            {
+                bool retVal = false;
+                foreach (ObjectInstance cobj in obj.Contents)
+                {
+                    cobj.FromObject(cobj);
+                    cobj.ToCharacter(ch);
+                    retVal = true;
+                }
+                return retVal;
+            }
+
+            throw new InvalidOperationException(
+                string.Format("Nothing specified to empty the contents of object {0} into", obj.ID));
+        }
+
+        private static bool EmptyIntoObject(ObjectInstance obj, ObjectInstance destobj)
+        {
+            bool retVal = false;
+            foreach (ObjectInstance cobj in obj.Contents)
+            {
+                if (destobj.ItemType == ItemTypes.KeyRing && cobj.ItemType != ItemTypes.Key)
+                    continue;
+                if (destobj.ItemType == ItemTypes.Quiver && cobj.ItemType != ItemTypes.Projectile)
+                    continue;
+                if ((destobj.ItemType == ItemTypes.Container
+                     || destobj.ItemType == ItemTypes.KeyRing
+                     || destobj.ItemType == ItemTypes.Quiver)
+                    && (cobj.GetRealObjectWeight() + destobj.GetRealObjectWeight() > destobj.Value[0]))
+                    continue;
+
+                cobj.FromObject(cobj);
+                destobj.ToObject(cobj);
+                retVal = true;
+            }
+            return retVal;
+        }
+
+        private static bool EmptyIntoRoom(CharacterInstance ch, ObjectInstance obj, RoomTemplate destroom)
+        {
+            bool retVal = false;
+            foreach (ObjectInstance cobj in obj.Contents)
+            {
+                if (ch != null && cobj.ObjectIndex.HasProg(MudProgTypes.Drop) && cobj.Count > 1)
+                {
+                    cobj.Split();
+                    cobj.FromObject(cobj);
+                }
+                else
+                    cobj.FromObject(cobj);
+
+                ObjectInstance tObj = destroom.ToRoom(cobj);
+
+                if (ch != null)
+                {
+                    mud_prog.oprog_drop_trigger(ch, tObj);
+                    if (ch.CharDied())
+                        ch = null;
+                }
+                retVal = true;
+            }
+            return retVal;
         }
     }
 }

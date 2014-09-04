@@ -195,12 +195,12 @@ namespace SmaugCS.Data
                 Flags.RemoveBit((int)RoomFlags.Prototype);
                 foreach (CharacterInstance victim in Persons.Where(x => x.IsNpc()))
                 {
-                    handler.extract_char(victim, true);
+                    CharacterInstanceExtensions.Extract(victim, true);
                 }
 
                 foreach (ObjectInstance obj in Contents)
                 {
-                    handler.extract_obj(obj);
+                    ObjectInstanceExtensions.Extract(obj);
                 }
             }
 

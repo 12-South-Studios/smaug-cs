@@ -12,6 +12,11 @@ namespace SmaugCS.Extensions
 {
     public static class ObjectLocator
     {
+        public static ObjectInstance GetObjectOfType(this CharacterInstance ch, ItemTypes type)
+        {
+            return ch.Carrying.FirstOrDefault(obj => obj.ItemType == type);
+        }
+
         public static ObjectInstance GetCarriedObject(this CharacterInstance ch, string argument)
         {
             int number = argument.IsNumberArgument() ? argument.GetNumberArgument() : 1;

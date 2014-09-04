@@ -175,7 +175,7 @@ namespace SmaugCS
                         LogManager.Instance.Bug("Deleting %s exit in room %d",
                                                 LookupManager.Instance.GetLookup("DirectionNames", (int) exit.Direction),
                                                 room.Vnum);
-                        handler.extract_exit(room, exit);
+                        exit.Extract();
                     }
                     else
                         fexit = true;
@@ -441,7 +441,7 @@ namespace SmaugCS
 
             ObjectInstance obj;
             while ((obj = ch.Carrying.First()) != null)
-                handler.extract_obj(obj);
+                ObjectInstanceExtensions.Extract(obj);
 
             AffectData af;
             while ((af = ch.Affects.First()) != null)
@@ -466,7 +466,7 @@ namespace SmaugCS
             {
                 if (ch.PlayerData.Pet != null)
                 {
-                    handler.extract_char(ch.PlayerData.Pet, true);
+                    CharacterInstanceExtensions.Extract(ch.PlayerData.Pet, true);
                     ch.PlayerData.Pet = null;
                 }
 
@@ -766,7 +766,7 @@ namespace SmaugCS
                     limbo.ToRoom(ch);
                 }
                 else
-                    handler.extract_char(ch, true);
+                    CharacterInstanceExtensions.Extract(ch, true);
             }
 
             foreach (CharacterInstance och in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
@@ -823,7 +823,7 @@ namespace SmaugCS
             foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (ch.MobIndex == mob)
-                    handler.extract_char(ch, true);
+                    CharacterInstanceExtensions.Extract(ch, true);
                 else if (ch.SubState == CharacterSubStates.MProgEditing
                          && ch.DestinationBuffer != null)
                 {

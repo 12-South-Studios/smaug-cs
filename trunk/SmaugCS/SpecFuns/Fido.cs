@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
@@ -21,7 +22,7 @@ namespace SmaugCS.SpecFuns
                     ch.CurrentRoom.ToRoom(obj);
                 }
 
-                handler.extract_obj(corpse);
+                ObjectInstanceExtensions.Extract(corpse);
                 return true;
             }
 

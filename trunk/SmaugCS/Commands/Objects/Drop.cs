@@ -65,7 +65,7 @@ namespace SmaugCS.Commands.Objects
             if (obj != null)
             {
                 num += 1;
-                handler.extract_obj(obj);
+                ObjectInstanceExtensions.Extract(obj);
             }
             else
             {
@@ -73,7 +73,7 @@ namespace SmaugCS.Commands.Objects
                 if (obj != null)
                 {
                     num += obj.Value[0];
-                    handler.extract_obj(obj);
+                    ObjectInstanceExtensions.Extract(obj);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You do not have that item.")) return;
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanDrop(obj), "You can't let go of it.")) return;
 
-            handler.separate_obj(obj);
+            obj.Split();
             comm.act(ATTypes.AT_ACTION, "$n drops $p.", ch, obj, null, ToTypes.Room);
             comm.act(ATTypes.AT_ACTION, "You drop $p.", ch, obj, null, ToTypes.Character);
 

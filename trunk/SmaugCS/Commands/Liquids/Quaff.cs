@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using System.Security.AccessControl;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -36,7 +37,7 @@ namespace SmaugCS.Commands.Liquids
 
             // TODO People with nuisance flag fill up more quickly
 
-            handler.separate_obj(obj);
+            obj.Split();
             if (obj.InObject != null && !ch.CanPKill())
             {
                 comm.act(ATTypes.AT_PLAIN, "You take $p from $P.", ch, obj, obj.InObject, ToTypes.Character);
@@ -96,7 +97,7 @@ namespace SmaugCS.Commands.Liquids
 
             // TODO global_objcode?
 
-            handler.extract_obj(obj);
+            ObjectInstanceExtensions.Extract(obj);
         }
 
         private static void QuaffNonPotion(CharacterInstance ch, ObjectInstance obj)

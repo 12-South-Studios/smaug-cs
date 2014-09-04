@@ -145,7 +145,7 @@ namespace SmaugCS
             {
                 int amt = obj.Value[0] * obj.Count;
                 ch.CurrentCoin += amt;
-                handler.extract_obj(obj);
+                obj.Extract();
             }
             else
                 obj = obj.ToCharacter(ch);
@@ -165,9 +165,9 @@ namespace SmaugCS
         public static ReturnTypes damage_obj(ObjectInstance obj)
         {
             CharacterInstance ch = obj.CarriedBy;
-            handler.separate_obj(obj);
+            obj.Split();
 
-            if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !ch.PlayerData.Flags.IsSet((int)PCFlags.Gag))))
+            if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !ch.PlayerData.Flags.IsSet(PCFlags.Gag))))
                 comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
             else if (obj.InRoom != null && obj.InRoom.Persons.First() != null)
             {
@@ -305,7 +305,7 @@ namespace SmaugCS
         /// <param name="wear_bit"></param>
         public static void wear_obj(CharacterInstance ch, ObjectInstance obj, bool fReplace, short wear_bit)
         {
-            handler.separate_obj(obj);
+           obj.Split();
             if (ch.Trust < obj.Level)
             {
                 color.ch_printf(ch, "You must be level %d to use this object.\r\n", obj.Level);
@@ -951,7 +951,7 @@ namespace SmaugCS
             if (fall_count > 30)
             {
                 LogManager.Instance.Bug("Object falling in loop more than 30 times");
-                handler.extract_obj(obj);
+                obj.Extract();
                 fall_count = 0;
                 return;
             }
@@ -971,7 +971,7 @@ namespace SmaugCS
                 if (obj.InRoom == to_room)
                 {
                     LogManager.Instance.Bug("Object falling into same room {0}", to_room.Vnum);
-                    handler.extract_obj(obj);
+                    obj.Extract();
                     return;
                 }
 

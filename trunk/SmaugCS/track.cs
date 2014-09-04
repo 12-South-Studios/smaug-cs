@@ -131,11 +131,6 @@ namespace SmaugCS
             return BFS_NO_PATH;
         }
 
-        public static void do_track(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-
         public static void found_prey(CharacterInstance ch, CharacterInstance victim)
         {
             // TODO

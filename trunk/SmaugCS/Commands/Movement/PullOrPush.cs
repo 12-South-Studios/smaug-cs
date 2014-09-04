@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
@@ -376,7 +377,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireDeathTrigger(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.Death))
+            if (obj.Value[0].IsSet(TriggerFlags.Death))
             {
                 comm.act(ATTypes.AT_DEAD, "$n falls prey to a terrible death!", ch, null, null, ToTypes.Room);
                 comm.act(ATTypes.AT_DEAD, "Oopsie... you're dead!", ch, null, null, ToTypes.Character);
@@ -384,7 +385,7 @@ namespace SmaugCS.Commands.Movement
                 // TODO Log a death trigger to Monitor channel?
 
                 handler.set_cur_char(ch);
-                fight.raw_kill(ch, ch);
+                ch.RawKill(ch);
                 return true;
             }
             return false;
@@ -392,8 +393,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireRandom(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.Rand4)
-                || obj.Value[0].IsSet((int) TriggerFlags.Rand6))
+            if (obj.Value[0].IsSet(TriggerFlags.Rand4) || obj.Value[0].IsSet(TriggerFlags.Rand6))
             {
                 RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
                 if (room == null)
@@ -402,7 +402,7 @@ namespace SmaugCS.Commands.Movement
                     return true;
                 }
 
-                int maxd = obj.Value[0].IsSet((int) TriggerFlags.Rand4) ? 3 : 5;
+                int maxd = obj.Value[0].IsSet(TriggerFlags.Rand4) ? 3 : 5;
 
                 db.randomize_exits(room, maxd);
                 foreach (CharacterInstance rch in room.Persons)
@@ -417,8 +417,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireTeleportTrigger(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.Teleport)
-                || obj.Value[0].IsSet((int) TriggerFlags.TeleportAll))
+            if (obj.Value[0].IsSet(TriggerFlags.Teleport) || obj.Value[0].IsSet(TriggerFlags.TeleportAll))
             {
                 RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
                 if (room == null)
@@ -428,12 +427,12 @@ namespace SmaugCS.Commands.Movement
                 }
 
                 int flags = 0;
-                if (obj.Value[0].IsSet((int) TriggerFlags.ShowRoomDescription))
-                    flags.SetBit((int) TeleportTriggerFlags.ShowDescription);
-                if (obj.Value[0].IsSet((int) TriggerFlags.TeleportAll))
-                    flags.SetBit((int) TeleportTriggerFlags.TransportAll);
-                if (obj.Value[0].IsSet((int) TriggerFlags.TeleportPlus))
-                    flags.SetBit((int) TeleportTriggerFlags.TransportAllPlus);
+                if (obj.Value[0].IsSet(TriggerFlags.ShowRoomDescription))
+                    flags.SetBit(TeleportTriggerFlags.ShowDescription);
+                if (obj.Value[0].IsSet(TriggerFlags.TeleportAll))
+                    flags.SetBit(TeleportTriggerFlags.TransportAll);
+                if (obj.Value[0].IsSet(TriggerFlags.TeleportPlus))
+                    flags.SetBit(TeleportTriggerFlags.TransportAllPlus);
 
                act_move.teleport(ch, obj.Value[1], flags);
                 return true;
@@ -445,8 +444,8 @@ namespace SmaugCS.Commands.Movement
         {
             if (pull && obj.ObjectIndex.HasProg(MudProgTypes.Pull))
             {
-                if (obj.Value[0].IsSet((int) TriggerFlags.AutoReturn))
-                    obj.Value[0].RemoveBit((int) TriggerFlags.Up);
+                if (obj.Value[0].IsSet(TriggerFlags.AutoReturn))
+                    obj.Value[0].RemoveBit(TriggerFlags.Up);
                 mud_prog.oprog_pull_trigger(ch, obj);
                 return true;
             }
@@ -457,8 +456,8 @@ namespace SmaugCS.Commands.Movement
         {
             if (!push && obj.ObjectIndex.HasProg(MudProgTypes.Push))
             {
-                if (obj.Value[0].IsSet((int) TriggerFlags.AutoReturn))
-                    obj.Value[0].SetBit((int) TriggerFlags.Up);
+                if (obj.Value[0].IsSet(TriggerFlags.AutoReturn))
+                    obj.Value[0].SetBit(TriggerFlags.Up);
                 mud_prog.oprog_push_trigger(ch, obj);
                 return true;
             }

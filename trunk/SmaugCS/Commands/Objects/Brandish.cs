@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -33,7 +34,7 @@ namespace SmaugCS.Commands.Objects
                 //if(obj.Serial == cur_obj)
                 //    global_objcode = rOBJ_USED;
 
-                handler.extract_obj(obj);
+                obj.Extract();
             }
         }
 

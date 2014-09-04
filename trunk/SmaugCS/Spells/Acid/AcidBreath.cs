@@ -34,19 +34,19 @@ namespace SmaugCS.Spells
 
         private static void CheckDamageContainer(ObjectInstance obj, CharacterInstance victim)
         {
-            handler.separate_obj(obj);
+            obj.Split();
             comm.act(ATTypes.AT_DAMAGE, "$p fumes and dissolves!", victim, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_OBJECT, "The contents of $p held by $N spill onto the ground.", victim, obj, victim, ToTypes.Room);
             comm.act(ATTypes.AT_OBJECT, "The contents of $p spill out onto the ground!", victim, obj, null, ToTypes.Character);
-            handler.empty_obj(obj, null, victim.CurrentRoom);
-            handler.extract_obj(obj);
+            obj.Empty(null, victim.CurrentRoom);
+            obj.Extract();
         }
 
         private static void CheckDamageArmor(ObjectInstance obj, CharacterInstance victim)
         {
             if (obj.Value[0] <= 0) return;
             
-            handler.separate_obj(obj);
+            obj.Split();
             comm.act(ATTypes.AT_DAMAGE, "$p is pitted and etched!", victim, obj, null, ToTypes.Character);
 
             WearLocations wearLoc = obj.WearLocation;

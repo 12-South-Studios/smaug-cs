@@ -6,11 +6,6 @@ namespace SmaugCS
 {
     public static class misc
     {
-        /// <summary>
-        /// Generates an action description message
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="object"></param>
         public static void actiondesc(CharacterInstance ch, ObjectInstance obj)
         {
             string charbuf = obj.Action;

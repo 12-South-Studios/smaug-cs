@@ -4,7 +4,9 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Commands;
+using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Movement;
+using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -14,14 +16,151 @@ using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
-using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Objects;
 
 namespace SmaugCS
 {
     public static class CharacterInstanceExtensions
     {
+        public static void Extract(this CharacterInstance ch, bool fPull)
+        {
+            if (ch == null) return;
+            if (ch.CurrentRoom == null) return;
+            if (ch == db.Supermob) return;
+            if (ch.CharDied()) return;
+
+            if (ch == handler.CurrentCharacter)
+                handler.CurrentCharacterDied = true;
+
+            handler.queue_extracted_char(ch, fPull);
+
+            foreach (RelationData relation in db.RELATIONS
+                                                .Where(relation => fPull && relation.Types == RelationTypes.MSet_On))
+            {
+                if (ch == relation.Subject)
+                    relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
+                else if (ch != relation.Actor)
+                    continue;
+
+                db.RELATIONS.Remove(relation);
+            }
+
+            //trworld_char_check(ch);
+
+            if (fPull)
+                ch.DieFollower();
+
+            ch.StopFighting(true);
+
+            if (ch.CurrentMount != null)
+            {
+                reset.update_room_reset(ch, true);
+                ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
+                ch.CurrentMount = null;
+                ch.CurrentPosition = PositionTypes.Standing;
+            }
+
+            if (ch.IsNpc())
+            {
+                ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
+                foreach (
+                    CharacterInstance wch in
+                        DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
+                            .Values.Where(wch => wch.CurrentMount == ch))
+                {
+                    wch.CurrentMount = null;
+                    wch.CurrentPosition = PositionTypes.Standing;
+                    if (wch.CurrentRoom == ch.CurrentRoom)
+                    {
+                        comm.act(ATTypes.AT_SOCIAL, "Your faithful mount collapses beneath you...", wch, null, ch,
+                            ToTypes.Character);
+                        comm.act(ATTypes.AT_SOCIAL, "Sadly you dismount $M for the last time.", wch, null, ch,
+                            ToTypes.Character);
+                        comm.act(ATTypes.AT_PLAIN, "$n sadly dismounts $N for the last time.", wch, null, ch,
+                            ToTypes.Room);
+                    }
+                    if (wch.PlayerData != null && wch.PlayerData.Pet == ch)
+                    {
+                        wch.PlayerData.Pet = null;
+                        if (wch.CurrentRoom == ch.CurrentRoom)
+                            comm.act(ATTypes.AT_SOCIAL, "You mourn for the loss of $N.", wch, null, ch,
+                                ToTypes.Character);
+                    }
+                }
+            }
+
+            ObjectInstance lastObj = ch.Carrying.Last();
+            if (lastObj != null)
+                lastObj.Extract();
+
+            ch.CurrentRoom.FromRoom(ch);
+
+            if (!fPull)
+            {
+                RoomTemplate location = null;
+                if (!ch.IsNpc() && ch.PlayerData.Clan != null)
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(ch.PlayerData.Clan.RecallRoom);
+
+                if (location == null)
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_ALTAR);
+
+                if (location == null)
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(1);
+
+                location.ToRoom(ch);
+
+                CharacterInstance wch = ch.GetCharacterInRoom("healer");
+                if (wch != null)
+                {
+                    comm.act(ATTypes.AT_MAGIC, "$n mutters a few incantations, waves $s hands and points $s finger.",
+                             wch, null, null, ToTypes.Room);
+                    comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swilring mists!", ch, null, null,
+                             ToTypes.Room);
+                    Say.do_say(wch,
+                               string.Format("Welcome back to the land of the living, {0}", ch.Name.CapitalizeFirst()));
+                }
+                else
+                    comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swirling mists!", ch, null, null,
+                             ToTypes.Room);
+
+                ch.CurrentPosition = PositionTypes.Resting;
+            }
+
+            if (ch.IsNpc())
+            {
+                --ch.MobIndex.Count;
+                --db.NumberOfMobsLoaded;
+            }
+
+            if (ch.Descriptor != null && ch.Descriptor.Original != null)
+                Return.do_return(ch, "");
+
+            if (ch.Switched != null && ch.Switched.Descriptor != null)
+                Return.do_return(ch.Switched, "");
+
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+            {
+                if (wch.ReplyTo == ch)
+                    wch.ReplyTo = null;
+                if (wch.RetellTo == ch)
+                    wch.RetellTo = null;
+            }
+
+            DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
+
+            if (ch.Descriptor != null)
+            {
+                if (ch.Descriptor.Character == ch)
+                {
+                    ch.Descriptor.Character = null;
+                    // TODO Close the socket
+                    ch.Descriptor = null;
+                }
+            }
+        }
+
         public static bool Chance(this CharacterInstance ch, int percent)
         {
             return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
@@ -1048,7 +1187,7 @@ namespace SmaugCS
                 return;
             }
 
-            handler.separate_obj(obj);
+            obj.Split();
             if ((obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
                  && ch.IsEvil())
                 || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood)

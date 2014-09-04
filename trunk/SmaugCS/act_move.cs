@@ -10,6 +10,7 @@ using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -180,11 +181,13 @@ namespace SmaugCS
             RoomTemplate newRoom = null;
             if (!found)
             {
-                newRoom = new RoomTemplate(serial, "New room");
-                newRoom.Area = room.Area;
-                newRoom.TeleportToVnum = roomnum;
-                newRoom.SectorType = room.SectorType;
-                newRoom.Flags = room.Flags;
+                newRoom = new RoomTemplate(serial, "New room")
+                {
+                    Area = room.Area,
+                    TeleportToVnum = roomnum,
+                    SectorType = room.SectorType,
+                    Flags = room.Flags
+                };
                 decorate_room(newRoom);
                 DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
             }
@@ -261,13 +264,13 @@ namespace SmaugCS
             if (quiet)
                 return exit;
 
-            if (exit.Flags.IsSet((int)ExitFlags.Secret))
+            if (exit.Flags.IsSet(ExitFlags.Secret))
             {
                 comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
                 return null;
             }
 
-            if (!exit.Flags.IsSet((int)ExitFlags.IsDoor))
+            if (!exit.Flags.IsSet(ExitFlags.IsDoor))
             {
                 color.send_to_char("You can't do that.\r\n", ch);
                 return null;
@@ -289,7 +292,7 @@ namespace SmaugCS
             if (show)
                 Look.do_look(ch, "auto");
 
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Death)
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Death)
                 && !ch.IsImmortal())
             {
                 comm.act(ATTypes.AT_DEAD, "$n falls prey to a terrible death!", ch, null, null, ToTypes.Room);
@@ -299,7 +302,7 @@ namespace SmaugCS
                 string buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
                 //log_string(buffer);
                 ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
-                handler.extract_char(ch, false);
+                ch.Extract(false);
             }
         }
 
@@ -312,9 +315,9 @@ namespace SmaugCS
                 return;
             }
 
-            bool show = flags.IsSet((int)TeleportTriggerFlags.ShowDescription);
+            bool show = flags.IsSet(TeleportTriggerFlags.ShowDescription);
 
-            if (!flags.IsSet((int)TeleportTriggerFlags.TransportAll))
+            if (!flags.IsSet(TeleportTriggerFlags.TransportAll))
             {
                 teleportch(ch, dest, show);
                 return;
@@ -324,7 +327,7 @@ namespace SmaugCS
             foreach (CharacterInstance nch in start.Persons)
                 teleportch(nch, dest, show);
 
-            if (flags.IsSet((int)TeleportTriggerFlags.TransportAllPlus))
+            if (flags.IsSet(TeleportTriggerFlags.TransportAllPlus))
             {
                 foreach (ObjectInstance obj in start.Contents)
                 {
@@ -368,7 +371,7 @@ namespace SmaugCS
                 }
             }
 
-            if (xit.Flags.IsSet((int)ExitFlags.Closed))
+            if (xit.Flags.IsSet(ExitFlags.Closed))
                 return ReturnTypes.None;
 
             if (xit.GetDestination().Tunnel > 0)

@@ -10,6 +10,7 @@ namespace SmaugCS.Data
     [XmlRoot("Object")]
     public class ObjectInstance : Instance, IHasExtraFlags, IHasExtraDescriptions
     {
+        public new string Name { get; set; }
         public List<ObjectInstance> Contents { get; set; }
         public ObjectInstance InObject { get; set; }
         public CharacterInstance CarriedBy { get; set; }

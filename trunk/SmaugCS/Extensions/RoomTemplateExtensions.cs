@@ -145,7 +145,7 @@ namespace SmaugCS
             room.Contents.Remove(obj);
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null)
-                handler.empty_obj(obj, null, room);
+                obj.Empty(null, room);
 
             if (obj.ItemType == ItemTypes.Fire)
                 obj.InRoom.Light -= obj.Count;
@@ -170,7 +170,7 @@ namespace SmaugCS
 
             foreach (ObjectInstance otmp in room.Contents)
             {
-                ObjectInstance oret = handler.group_object(otmp, obj);
+                ObjectInstance oret = otmp.GroupWith(obj);
                 if (oret == otmp)
                 {
                     if (itemType == ItemTypes.Fire)

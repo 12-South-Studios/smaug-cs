@@ -71,7 +71,7 @@ namespace SmaugCS.Commands.Objects
                 return;
             }
 
-            handler.separate_obj(obj);
+            obj.Split();
             obj.FromCharacter();
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
