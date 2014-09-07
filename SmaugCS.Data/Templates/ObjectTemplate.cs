@@ -17,6 +17,7 @@ namespace SmaugCS.Data
         public string LongDescription { get; set; }
         public string Action { get; set; }
         public int[] Value { get; set; }
+        public dynamic Values { get; set; }
         public int serial { get; set; }
         public int Cost { get; set; }
         public int Rent { get; set; }
@@ -32,6 +33,7 @@ namespace SmaugCS.Data
         public ObjectTemplate(long id, string name)
             : base(id, name)
         {
+            Values = new object();
             Value = new int[6];
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Affects = new List<AffectData>();
@@ -45,12 +47,48 @@ namespace SmaugCS.Data
 
         public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
         {
+            if (Type == ItemTypes.Armor)
+            {
+                Values.CurrentAC = v1;
+                Values.OriginalAC = v2;
+            }
+
             Value[0] = v1;
             Value[1] = v2;
             Value[2] = v3;
             Value[3] = v4;
             Value[4] = v5;
             Value[5] = v6;
+
+            /*Abacus		None
+Armor		V0=Current AC, V1=Original AC
+Container	V0=Capacity, V1=Flags, V2=Key Vnum, V3=Condition
+DrinkCont	V0=Capacity, V1=Quantity, V2=Liquid #, V3=Poison
+Food		V0=Food Value, V1=Condition, V3=Poison
+Herb		V1=Charges, V2=Herb #
+Key			V0=Lock #
+KeyRing		V0=Capacity
+Lever		V0=LeverFlags, V1=Vnum/SN, V2=Vnum, V3=Vnum/Val
+Light		V0=Current AC, V1=Lightable?, V2=Hours Left, V3=Flags**
+Missiles	V0=Condition, V2=Damage Bonus, V3=WeaponTYpe, V4=Range
+Money		V0=# of Coins, V1=Coin Type
+Piece		V0=Prev Vnum, V1=Next Vnum, V2=Final Vnum
+Pill		V0=Spell Level, V1=SN #1, V2=SN #2, V3=SN #3, V4=Food Value
+Pipe		V0=Capacity, V1=# of Draws, V2=Herb SN, V3=Flags**
+Potion		V0=Spell Level, V1=SN #1, V2=SN #2, V3=SN #3
+Projectile	None
+Puddle		V0=Capacity, V1=Quantity, V2=Liquid #, V3=Poison
+Quiver		V0=Capacity, V1=Flgas, V2=Key Vnum, V3=Condition
+Salve		V0=Spell Level, V1=Charges, V2=Max Charges, V3=Delay, V4=SN, V5=SN
+Scroll		V0=Spell Level, V1=SN #1, V2=SN #2, V3=SN #3
+Staff		V0=Spell Level, V1=Max Charges, V2=Charges, V3=SN
+Switch		V0=Lever Flags, V1=Vnum/SN, V2=Vnum, V3=Vnum/Val
+Trap		V0=Charges, V1=Type, V3=Level, V4=Flags
+Treasure	V0=Type, V1=Condition
+Wand		V0=Level, V1=Max Charges, V2=Charges, V3=SN
+Weapon		V0=Condition, V1=Num Dice, V2=Size Dice, V3=Weapon Type
+Furniture	V2=FurniturePositionFlags, V3=Max People, V4=Max Weight*/
+
         }
 
         public void AddSpell(string spell)

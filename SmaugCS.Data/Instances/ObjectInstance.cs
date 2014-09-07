@@ -30,6 +30,7 @@ namespace SmaugCS.Data
         public int Cost { get; set; }
         public int Level { get; set; }
         public int[] Value { get; set; }
+        public dynamic Values { get; set; }
         public int Count { get; set; }
         public long room_vnum { get; set; }
 
@@ -40,6 +41,7 @@ namespace SmaugCS.Data
             : base(id, name)
         {
             Value = new int[6];
+            Values = new object();
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Contents = new List<ObjectInstance>();
 
