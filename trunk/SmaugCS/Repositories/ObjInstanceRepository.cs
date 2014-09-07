@@ -37,7 +37,8 @@ namespace SmaugCS.Repositories
                 ItemType = objParent.Type,
                 ExtraFlags = objParent.ExtraFlags,
                 Weight = objParent.Weight,
-                Cost = objParent.Cost
+                Cost = objParent.Cost,
+                Values = objParent.Values
             };
 
             foreach (var wearLoc in objParent.GetWearFlags())
@@ -72,7 +73,8 @@ namespace SmaugCS.Repositories
                 WearFlags = source.WearFlags,
                 Owner = source.Owner,
                 MagicFlags = source.MagicFlags,
-                Timer = source.Timer
+                Timer = source.Timer,
+                Values = source.Values
             };
 
             Array.Copy(source.Value, obj.Value, 5);

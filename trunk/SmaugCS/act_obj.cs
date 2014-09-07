@@ -220,9 +220,9 @@ namespace SmaugCS
                     }
                     break;
                 case ItemTypes.Armor:
-                    if (ch != null && obj.Value[0] >= 1)
+                    if (ch != null && obj.Values.CurrentAC >= 1)
                         ch.ArmorClass += obj.ApplyArmorClass;
-                    if (--obj.Value[0] <= 0)
+                    if (--obj.Values.CurrentAC <= 0)
                     {
                         if (!ch.IsPKill() && !ch.IsInArena())
                         {
@@ -231,11 +231,11 @@ namespace SmaugCS
                         }
                         else
                         {
-                            obj.Value[0] = 1;
+                            obj.Values.CurrentAC = 1;
                             ch.ArmorClass -= obj.ApplyArmorClass;
                         }
                     }
-                    else if (ch != null && obj.Value[0] >= 1)
+                    else if (ch != null && obj.Values.CurrentAC >= 1)
                         ch.ArmorClass -= obj.ApplyArmorClass;
                     break;
                 case ItemTypes.Weapon:
