@@ -44,7 +44,7 @@ namespace SmaugCS.Repositories
             foreach (var wearLoc in objParent.GetWearFlags())
                 obj.WearFlags += (int) wearLoc;
 
-            Array.Copy(objParent.Value, obj.Value, 5);
+            //Array.Copy(objParent.Value, obj.Value, 5);
 
             if (ObjectActionTable.ContainsKey(obj.ItemType))
                 ObjectActionTable[obj.ItemType].Invoke(obj);

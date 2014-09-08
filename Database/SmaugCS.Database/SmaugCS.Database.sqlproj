@@ -138,6 +138,9 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\Auctions.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions\cp_GetAuctions.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions\cp_AddAuction.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Organizations.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\OrganizationTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_live.OrganizationTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

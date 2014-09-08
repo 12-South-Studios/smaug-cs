@@ -37,16 +37,15 @@ namespace SmaugCS.Commands.Movement
         {
             if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).ItemType != ItemTypes.Container,
                 "That's not a container.", new List<object> {obj})) return;
-            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], (int) ContainerFlags.Closed, "It's not closed.")) return;
-            if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).Value[2] < 0, "It can't be locked.",
-                new List<object> {obj})) return;
+            if (CheckFunctions.CheckIfNotSet(ch, obj.Values.Flags, ContainerFlags.Closed, "It's not closed.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Values.KeyID <= 0, "It can't be locked.")) return;
 
-            ObjectInstance key = ch.HasKey(obj.Value[2]);
+            ObjectInstance key = ch.HasKey((int)obj.Values.KeyID);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
-            if (CheckFunctions.CheckIfSet(ch, obj.Value[1], (int) ContainerFlags.Locked, "It's already locked."))
+            if (CheckFunctions.CheckIfSet(ch, obj.Values.Flags, ContainerFlags.Locked, "It's already locked."))
                 return;
 
-            obj.Value[1].SetBit((int) ContainerFlags.Locked);
+            obj.Values.Flags = obj.Values.Flags.SetBit(ContainerFlags.Locked);
             color.send_to_char("*Click*", ch);
             int count = key.Count;
             key.Count = 1;
@@ -56,23 +55,21 @@ namespace SmaugCS.Commands.Movement
 
         private static void LockDoor(CharacterInstance ch, ExitData exit, string arg)
         {
-            if (exit.Flags.IsSet((int) ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(arg))
+            if (exit.Flags.IsSet(ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(arg))
             {
                 color.ch_printf(ch, "You see no %s here.", arg);
                 return;
             }
 
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, (int) ExitFlags.IsDoor, "You can't do that.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, (int) ExitFlags.Closed, "It's not closed.")) return;
-            if (CheckFunctions.CheckIf(ch, args => ((ExitData) args[0]).Key <= 0,
-                "It can't be locked.", new List<object> {exit})) return;
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.IsDoor, "You can't do that.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.Closed, "It's not closed.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, exit.Key <= 0, "It can't be locked.")) return;
 
             ObjectInstance key = ch.HasKey(exit.Key);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, (int) ExitFlags.Locked, "It's already locked.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.Locked, "It's already locked.")) return;
 
-            if (!exit.Flags.IsSet((int) ExitFlags.Secret)
-                || exit.Keywords.IsAnyEqual(arg))
+            if (!exit.Flags.IsSet(ExitFlags.Secret) || exit.Keywords.IsAnyEqual(arg))
             {
                 color.send_to_char("*Click*", ch);
                 int count = key.Count;
@@ -81,7 +78,6 @@ namespace SmaugCS.Commands.Movement
                 key.Count = count;
                 exit.SetFlagOnSelfAndReverseExit(ExitFlags.Locked);
             }
-
         }
     }
 }

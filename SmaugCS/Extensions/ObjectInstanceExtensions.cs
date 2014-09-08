@@ -18,6 +18,34 @@ namespace SmaugCS.Extensions
 {
     public static class ObjectInstanceExtensions
     {
+        public static int GetArmorRepairCost(this ObjectInstance obj, int baseCost)
+        {
+            int cost = baseCost;
+            if (obj.Values.CurrentAC >= obj.Values.OriginalAC)
+                cost = -2;
+            else
+                cost *= (obj.Values.OriginalAC - obj.Values.CurrentAC);
+            return cost;
+        }
+        public static int GetWeaponRepairCost(this ObjectInstance obj, int baseCost, int weaponCondition)
+        {
+            int cost = baseCost;
+            if (weaponCondition == obj.Values.Condition)
+                cost = -2;
+            else
+                cost *= (weaponCondition - obj.Values.Condition);
+            return cost;
+        }
+        public static int GetImplementRepairCost(this ObjectInstance obj, int baseCost)
+        {
+            int cost = baseCost;
+            if (obj.Value[2] >= obj.Value[1])
+                cost = -2;
+            else
+                cost *= (obj.Value[1] - obj.Value[2]);
+            return cost;
+        }
+
         public static ObjectInstance GroupWith(this ObjectInstance obj1, ObjectInstance obj2)
         {
             if (obj1 == null || obj2 == null)

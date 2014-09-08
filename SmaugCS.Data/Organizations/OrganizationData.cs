@@ -9,9 +9,6 @@ namespace SmaugCS.Data.Organizations
         {
         }
 
-        [XmlIgnore]
-        public string Filename { get; set; }
-
         [XmlElement]
         public string Description { get; set; }
 

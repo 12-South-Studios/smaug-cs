@@ -43,18 +43,12 @@ namespace SmaugCS.Commands.Liquids
 
         private static ObjectInstance GetDrinkSource(CharacterInstance ch, string arg)
         {
-            ObjectInstance obj;
-            if (string.IsNullOrEmpty(arg))
-            {
-                obj = ch.CurrentRoom.Contents.FirstOrDefault(x => x.ItemType == ItemTypes.Fountain);
-                if (CheckFunctions.CheckIfNullObject(ch, obj, "Drink what?")) return obj;
-            }
-            else
-            {
-                obj = ch.GetObjectOnMeOrInRoom(arg);
-                if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't find it.")) return obj;
-            }
-            return obj;
+            ObjectInstance obj = string.IsNullOrEmpty(arg)
+                ? ch.CurrentRoom.Contents.FirstOrDefault(x => x.ItemType == ItemTypes.Fountain)
+                : ch.GetObjectOnMeOrInRoom(arg);
+
+            return CheckFunctions.CheckIfNullObject(ch, obj,
+                string.IsNullOrEmpty(arg) ? "Drink what?" : "You can't find it.") ? obj : obj;
         }
 
         private static void DrinkFrom(CharacterInstance ch, ObjectInstance obj)
@@ -86,19 +80,15 @@ namespace SmaugCS.Commands.Liquids
 
         private static void DrinkFromContainer(CharacterInstance ch, ObjectInstance obj)
         {
-            if (CheckFunctions.CheckIfTrue(ch, obj.Value[1] <= 0, "It is already empty.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Values.Quantity <= 0, "It is already empty.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch,
                 !ch.IsNpc() && (ch.GetCondition(ConditionTypes.Full) == GetMaximumCondition()
                                 || ch.GetCondition(ConditionTypes.Thirsty) == GetMaximumCondition()),
                 "Your stomach is too full to drink more!")) return;
 
-            LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Value[2]);
-            if (liquid == null)
-            {
-                // TODO Exception, log it
-                liquid = DatabaseManager.Instance.LIQUIDS.Get(0);
-            }
+            LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
+                                DatabaseManager.Instance.LIQUIDS.Get(0);
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
             {
@@ -127,9 +117,9 @@ namespace SmaugCS.Commands.Liquids
                     ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = GetMaximumCondition();
             }
 
-            obj.Value[1]--;
-            if (CheckFunctions.CheckIfTrue(ch, obj.Value[1] <= 0, "You drink the last drop from your container."))
-                obj.Value[1] = 0;
+            obj.Values.Quantity -= 1;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Values.Quantity <= 0, "You drink the last drop from your container."))
+                obj.Values.Quantity = 0;
         }
 
         private static void EvaluateBloodthirstCondition(CharacterInstance ch)
@@ -187,26 +177,24 @@ namespace SmaugCS.Commands.Liquids
             comm.act(ATTypes.AT_POISON, "You sputter and gag.", ch, null, null, ToTypes.Character);
             ch.MentalState = 20.GetNumberThatIsBetween(ch.MentalState + 5, 100);
 
-            AffectData af = new AffectData();
-            af.Type = AffectedByTypes.Poison;
-            af.Duration = obj.Value[3];
-            af.Location = ApplyTypes.None;
+            AffectData af = new AffectData
+            {
+                Type = AffectedByTypes.Poison,
+                Duration = obj.Values.Poison,
+                Location = ApplyTypes.None
+            };
             ch.AddAffect(af);
         }
 
         private static void DrinkFromFountain(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[1] <= 0)
-                obj.Value[1] = GetMaximumCondition();
+            if (obj.Values.Quantity <= 0)
+                obj.Values.QUantity = GetMaximumCondition();
 
-            LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Value[2]);
-            if (liquid == null)
-            {
-                // TODO Exception, log it
-                liquid = DatabaseManager.Instance.LIQUIDS.Get(0);
-            }
+            LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
+                                DatabaseManager.Instance.LIQUIDS.Get(0);
 
-            if (!ch.IsNpc() && obj.Value[2] != 0)
+            if (!ch.IsNpc() && obj.Values.LiquidID != 0)
             {
                 ch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
                 ch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
@@ -215,7 +203,7 @@ namespace SmaugCS.Commands.Liquids
                 if (ch.IsVampire())
                     ch.GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
             }
-            else if (!ch.IsNpc() && obj.Value[2] == 0)
+            else if (!ch.IsNpc() && obj.Values.LiquidID == 0)
                 ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = GetMaximumCondition();
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -258,7 +246,7 @@ namespace SmaugCS.Commands.Liquids
                 color.set_char_color(ATTypes.AT_BLOOD, ch);
                 color.send_to_char("You relish in the replenishment of this vital fluid...", ch);
 
-                if (obj.Value[1] <= 1)
+                if (obj.Values.Quantity <= 1)
                 {
                     color.set_char_color(ATTypes.AT_BLOOD, ch);
                     color.send_to_char("You drink the last drop of blood from the spill", ch);
@@ -271,11 +259,11 @@ namespace SmaugCS.Commands.Liquids
             ch.GainCondition(ConditionTypes.Full, 1);
             ch.GainCondition(ConditionTypes.Thirsty, 1);
 
-            if (--obj.Value[1] <= 0)
+            if ((obj.Values.Quantity - 1) <= 0)
             {
                 //if (obj.Serial == cur_obj)
                 //  global_objcode = rOBJ_DRUNK;
-                ObjectInstanceExtensions.Extract(obj);
+                obj.Extract();
                 ObjectFactory.CreateBloodstain(ch, DatabaseManager.Instance);
             }
         }

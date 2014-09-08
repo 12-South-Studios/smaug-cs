@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
@@ -40,8 +41,7 @@ namespace SmaugCS.Data
         public ObjectInstance(long id, string name, int maxWear, int maxLayers)
             : base(id, name)
         {
-            Value = new int[6];
-            Values = new object();
+            Values = new ExpandoObject();
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Contents = new List<ObjectInstance>();
 
@@ -64,13 +64,13 @@ namespace SmaugCS.Data
                 switch (WearLocation)
                 {
                     case WearLocations.Body:
-                        return 3 * Value[0];
+                        return 3 * Values.CurrentAC;
                     case WearLocations.Head:
                     case WearLocations.Legs:
                     case WearLocations.About:
-                        return 2 * Value[0];
+                        return 2 * Values.CurrentAC;
                     default:
-                        return Value[0];
+                        return Values.CurrentAC;
                 }
             }
         }

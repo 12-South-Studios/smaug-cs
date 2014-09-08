@@ -277,7 +277,7 @@ namespace SmaugCS.Extensions
                 Duration = affect.Duration,
                 Location = affect.Location,
                 Modifier = affect.Modifier,
-                BitVector = affect.BitVector
+                Flags = affect.Flags
             };
 
             ch.Affects.Add(newAffect);
