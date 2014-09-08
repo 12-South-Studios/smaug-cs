@@ -27,12 +27,12 @@ namespace SmaugCS.Commands.Liquids
                 return;
             }
 
-            if (CheckFunctions.CheckIfTrue(ch, obj.Value[1] == -1 && obj.Value[2] == -1
-                                               && obj.Value[3] == -1, "You suck in nothing but air.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Values.Quantity == -1 && obj.Values.LiquidID == -1
+                                               && obj.Values.Poison == -1, "You suck in nothing but air.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc()
-                                               && (ch.PlayerData.ConditionTable[ConditionTypes.Full] >= 48
-                                                   || ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] >= 48),
+                                               && (ch.PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
+                                                   || ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48),
                 "Your stomach cannot contain any more.")) return;
 
             // TODO People with nuisance flag fill up more quickly
@@ -83,11 +83,11 @@ namespace SmaugCS.Commands.Liquids
                 if (!ch.IsNpc() && ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
                     comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null, ToTypes.Character);
 
-                ReturnTypes retcode = ch.ObjectCastSpell(obj.Value[1], obj.Value[0], ch);
+                ReturnTypes retcode = ch.ObjectCastSpell((int)obj.Values.Skill1ID, (int)obj.Values.SpellLevel, ch);
                 if (retcode == ReturnTypes.None)
-                    retcode = ch.ObjectCastSpell(obj.Value[2], obj.Value[0], ch);
+                    retcode = ch.ObjectCastSpell((int)obj.Values.Skill2ID, (int)obj.Values.SpellLevel, ch);
                 if (retcode == ReturnTypes.None)
-                    retcode = ch.ObjectCastSpell(obj.Value[3], obj.Value[0], ch);
+                    retcode = ch.ObjectCastSpell((int)obj.Values.Skill3ID, (int)obj.Values.SpellLevel, ch);
             }
 
             if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_FLASK_BREWING)
@@ -97,7 +97,7 @@ namespace SmaugCS.Commands.Liquids
 
             // TODO global_objcode?
 
-            ObjectInstanceExtensions.Extract(obj);
+            obj.Extract();
         }
 
         private static void QuaffNonPotion(CharacterInstance ch, ObjectInstance obj)

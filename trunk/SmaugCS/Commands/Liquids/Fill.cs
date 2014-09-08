@@ -23,21 +23,23 @@ namespace SmaugCS.Commands.Liquids
 
             if (obj.ItemType == ItemTypes.Container)
             {
-                if (obj.Value[1].IsSet((int) ContainerFlags.Closed))
+                if (obj.Values.Flags.IsSet(ContainerFlags.Closed))
                 {
                     comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, obj.Name, ToTypes.Character);
                     return;
                 }
-                if (CheckFunctions.CheckIfTrue(ch, (obj.GetRealObjectWeight()/obj.Count) >= obj.Value[0],
+                if (CheckFunctions.CheckIfTrue(ch, (obj.GetRealObjectWeight()/obj.Count) >= obj.Values.Capacity,
                     "It's already full as it can be.")) return;
             }
             else
             {
-                if (CheckFunctions.CheckIfTrue(ch, (GetMaximumCondition() < 1) || (obj.Value[1] >= obj.Value[0]),
+                if (CheckFunctions.CheckIfTrue(ch,
+                    (GetMaximumCondition() < 1) || (obj.Values.Quantity >= obj.Values.Capacity),
                     "It's already full as it can be.")) return;
             }
 
-            if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.Pipe && obj.Value[3].IsSet(PipeFlags.FullOfAsh),
+            if (CheckFunctions.CheckIfTrue(ch,
+                obj.ItemType == ItemTypes.Pipe && obj.Values.Flags.IsSet(PipeFlags.FullOfAsh),
                 "It's full of ashes, and needs to be emptied first.")) return;
 
             IEnumerable<ItemTypes> sourceItemTypes = ChooseSourceItemTypes(ch, obj);

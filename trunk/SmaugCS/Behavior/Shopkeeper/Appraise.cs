@@ -46,7 +46,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             int cost = buy ? GetCostIfBuying(ch, keeper, obj) : GetCostIfSelling(ch, keeper, obj);
 
             if (obj.ItemType == ItemTypes.Staff || obj.ItemType == ItemTypes.Wand)
-                cost = cost * obj.Value[2] / obj.Value[1];
+                cost = cost * (obj.Values.Charges / obj.Values.MaxCharges);
 
             return cost;
         }
@@ -68,45 +68,17 @@ namespace SmaugCS.Behavior.Shopkeeper
             switch (obj.ItemType)
             {
                 case ItemTypes.Armor:
-                    cost = GetArmorRepairCost(obj, cost);
+                    cost = obj.GetArmorRepairCost(cost);
                     break;
                 case ItemTypes.Weapon:
-                    cost = GetWeaponRepairCost(obj, cost, GameConstants.GetConstant<int>("InitWeaponCondition"));
+                    cost = obj.GetWeaponRepairCost(cost, GameConstants.GetConstant<int>("InitWeaponCondition"));
                     break;
                 case ItemTypes.Wand:
                 case ItemTypes.Staff:
-                    cost = GetImplementRepairCost(obj, cost);
+                    cost = obj.GetImplementRepairCost(cost);
                     break;
             }
 
-            return cost;
-        }
-
-        private static int GetArmorRepairCost(ObjectInstance obj, int baseCost)
-        {
-            int cost = baseCost;
-            if (obj.Value[0] >= obj.Value[1])
-                cost = -2;
-            else
-                cost *= (obj.Value[1] - obj.Value[0]);
-            return cost;
-        }
-        private static int GetWeaponRepairCost(ObjectInstance obj, int baseCost, int weaponCondition)
-        {
-            int cost = baseCost;
-            if (weaponCondition == obj.Value[0])
-                cost = -2;
-            else
-                cost *= (weaponCondition - obj.Value[0]);
-            return cost;
-        }
-        private static int GetImplementRepairCost(ObjectInstance obj, int baseCost)
-        {
-            int cost = baseCost;
-            if (obj.Value[2] >= obj.Value[1])
-                cost = -2;
-            else
-                cost *= (obj.Value[1] - obj.Value[2]);
             return cost;
         }
     }

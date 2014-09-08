@@ -13,19 +13,18 @@ namespace SmaugCS.Commands.Movement
     {
         public static void pullorpush(CharacterInstance ch, ObjectInstance obj, bool pull)
         {
-            bool isUp = obj.Value[0].IsSet((int)TriggerFlags.Up);
+            bool isUp = obj.Values.Flags.IsSet(TriggerFlags.Up);
             if (CheckForValidObjectState(ch, obj, pull, isUp)) return;
 
             if (CheckAndFirePullProg(pull, obj, ch)) return;
             if (CheckAndFirePushProg(pull, obj, ch)) return;
             if (CheckAndFireOProgUseTrigger(pull, ch, obj)) return;
 
-            if (!obj.Value[0].IsSet((int) TriggerFlags.AutoReturn))
+            if (!obj.Values.Flags.IsSet(TriggerFlags.AutoReturn))
             {
-                if (pull)
-                    obj.Value[0].RemoveBit((int) TriggerFlags.Up);
-                else
-                    obj.Value[0].SetBit((int) TriggerFlags.Up);
+                obj.Values.Flags = pull
+                    ? obj.Values.Flags.RemoveBit(TriggerFlags.Up)
+                    : obj.Values.Flags.SetBit(TriggerFlags.Up);
             }
 
             if (CheckAndFireTeleportTrigger(ch, obj)) return;
@@ -40,9 +39,9 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireDoor(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.Door))
+            if (obj.Values.Flags.IsSet(TriggerFlags.Door))
             {
-                RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]) ?? obj.InRoom;
+                RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Values.Val1) ?? obj.InRoom;
                 if (room == null)
                 {
                     // TODO Exception, log it!
@@ -58,29 +57,25 @@ namespace SmaugCS.Commands.Movement
                     return true;
                 }
 
-                if (obj.Value[0].IsSet((int) TriggerFlags.Unlock)
-                    && exit.Flags.IsSet((int) ExitFlags.Locked))
+                if (obj.Values.Flags.IsSet(TriggerFlags.Unlock) && exit.Flags.IsSet(ExitFlags.Locked))
                 {
                     UnlockExit(ch, exit, exitDir.Item2);
                     return true;
                 }
 
-                if (obj.Value[0].IsSet((int) TriggerFlags.Lock)
-                    && !exit.Flags.IsSet((int) ExitFlags.Locked))
+                if (obj.Values.Flags.IsSet(TriggerFlags.Lock) && !exit.Flags.IsSet(ExitFlags.Locked))
                 {
                     LockExit(ch, exit, exitDir.Item2);
                     return true;
                 }
 
-                if (obj.Value[0].IsSet((int) TriggerFlags.Open)
-                    && exit.Flags.IsSet((int) ExitFlags.Closed))
+                if (obj.Values.Flags.IsSet(TriggerFlags.Open) && exit.Flags.IsSet(ExitFlags.Closed))
                 {
                     OpenExit(ch, obj, exit, exitDir.Item2);
                     return true;
                 }
 
-                if (obj.Value[0].IsSet((int) TriggerFlags.Close)
-                    && !exit.Flags.IsSet((int) ExitFlags.Closed))
+                if (obj.Values.Flags.IsSet(TriggerFlags.Close) && !exit.Flags.IsSet(ExitFlags.Closed))
                 {
                     CloseExit(ch, obj, exit, exitDir.Item2);
                     return true;
@@ -91,22 +86,22 @@ namespace SmaugCS.Commands.Movement
 
         private static Tuple<DirectionTypes, string> GetExitDirectionAndText(ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int)TriggerFlags.D_North))
+            if (obj.Values.Flags.IsSet(TriggerFlags.D_North))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.North, "to the north");
             
-            if (obj.Value[0].IsSet((int)TriggerFlags.D_South))
+            if (obj.Values.Flags.IsSet(TriggerFlags.D_South))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.South, "to the south");
             
-            if (obj.Value[0].IsSet((int)TriggerFlags.D_East))
+            if (obj.Values.Flags.IsSet(TriggerFlags.D_East))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.East, "to the east");
             
-            if (obj.Value[0].IsSet((int)TriggerFlags.D_West))
+            if (obj.Values.Flags.IsSet(TriggerFlags.D_West))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.West, "to the west");
             
-            if (obj.Value[0].IsSet((int)TriggerFlags.D_Up))
+            if (obj.Values.Flags.IsSet(TriggerFlags.D_Up))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.Up, "from above");
             
-            if (obj.Value[0].IsSet((int)TriggerFlags.D_Down))
+            if (obj.Values.Flags.IsSet(TriggerFlags.D_Down))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.Down, "from below");
             
             // TODO Exception, log it!
@@ -115,7 +110,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void CreateNewPassage(CharacterInstance ch, ObjectInstance obj, DirectionTypes exitDir)
         {
-            if (!obj.Value[0].IsSet((int) TriggerFlags.Passage))
+            if (!obj.Values.Flags.IsSet(TriggerFlags.Passage))
             {
                 // TODO Exception, log it!
                 return;
@@ -143,7 +138,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void UnlockExit(CharacterInstance ch, ExitData exit, string txt)
         {
-            exit.Flags.RemoveBit((int) ExitFlags.Locked);
+            exit.Flags = exit.Flags.RemoveBit(ExitFlags.Locked);
             comm.act(ATTypes.AT_PLAIN, "You hear a faint click $T.", ch, null, txt, ToTypes.Character);
             comm.act(ATTypes.AT_PLAIN, "You hear a faint click $T.", ch, null, txt, ToTypes.Room);
             exit.RemoveFlagFromSelfAndReverseExit(ExitFlags.Locked);
@@ -151,7 +146,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void LockExit(CharacterInstance ch, ExitData exit, string txt)
         {
-            exit.Flags.SetBit((int)ExitFlags.Locked);
+            exit.Flags = exit.Flags.SetBit(ExitFlags.Locked);
             comm.act(ATTypes.AT_PLAIN, "You hear a faint click $T.", ch, null, txt, ToTypes.Character);
             comm.act(ATTypes.AT_PLAIN, "You hear a faint click $T.", ch, null, txt, ToTypes.Room);
             exit.SetFlagOnSelfAndReverseExit(ExitFlags.Locked);
@@ -159,7 +154,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void OpenExit(CharacterInstance ch, ObjectInstance obj, ExitData exit, string txt)
         {
-            exit.Flags.RemoveBit((int) ExitFlags.Closed);
+            exit.Flags = exit.Flags.RemoveBit(ExitFlags.Closed);
 
             RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
             if (room == null)
@@ -174,7 +169,7 @@ namespace SmaugCS.Commands.Movement
             ExitData reverseExit = exit.GetReverseExit();
             if (reverseExit != null && reverseExit.Destination == exit.Destination)
             {
-                reverseExit.Flags.RemoveBit((int) ExitFlags.Closed);
+                reverseExit.Flags = reverseExit.Flags.RemoveBit(ExitFlags.Closed);
 
                 RoomTemplate destRoom = exit.GetDestination(DatabaseManager.Instance);
                 foreach(CharacterInstance rch in destRoom.Persons)
@@ -186,7 +181,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void CloseExit(CharacterInstance ch, ObjectInstance obj, ExitData exit, string txt)
         {
-            exit.Flags.SetBit((int) ExitFlags.Closed);
+            exit.Flags = exit.Flags.SetBit(ExitFlags.Closed);
 
             RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
             if (room == null)
@@ -201,7 +196,7 @@ namespace SmaugCS.Commands.Movement
             ExitData reverseExit = exit.GetReverseExit();
             if (reverseExit != null && reverseExit.Destination == exit.Destination)
             {
-                reverseExit.Flags.SetBit((int)ExitFlags.Closed);
+                reverseExit.Flags = reverseExit.Flags.SetBit(ExitFlags.Closed);
 
                 RoomTemplate destRoom = exit.GetDestination(DatabaseManager.Instance);
                 foreach (CharacterInstance rch in destRoom.Persons)
@@ -213,7 +208,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireContainer(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.Container))
+            if (obj.Values.Flags.IsSet(TriggerFlags.Container))
             {
                 RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]) ?? obj.InRoom;
                 if (room == null)

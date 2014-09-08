@@ -28,14 +28,14 @@ namespace SmaugCS.Tests.Repositories
             var sb = new StringBuilder();
             sb.Append("newObject = LCreateObject(800, \"pearl wand\");");
             sb.Append("object.this = newObject;");
-            sb.Append("object.this.Type = \"weapon\";");
+            sb.Append("object.this:SetType(\"weapon\");");
             sb.Append("object.this.ShortDescription = \"a pearl wand\";");
             sb.Append("object.this.LongDescription = \"The ground seems to cradle a pearl wand here.\";");
             sb.Append("object.this.Action = \"blast\";");
             sb.Append("object.this.Flags = \"magic antigood antievil\";");
             sb.Append("object.this.WearFlags = \"take wield\";");
             sb.Append("object.this:SetValues(12, 4, 8, 6, 0, 0);");
-            sb.Append("object.this:AddAffect(-1, -1, 60, 14, 0)");
+            sb.Append("object.this:AddAffect(-1, -1, 60, 14, 32)");
             sb.Append("object.this:AddSpell(\"armor\");");
             sb.Append("object.this:SetStats(1, 2500, 250, 0, 0);");
             sb.Append(
@@ -110,12 +110,11 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value[0], Is.EqualTo(12));
-            Assert.That(result.Value[1], Is.EqualTo(4));
-            Assert.That(result.Value[2], Is.EqualTo(8));
-            Assert.That(result.Value[3], Is.EqualTo(6));
-            Assert.That(result.Value[4], Is.EqualTo(0));
-            Assert.That(result.Value[5], Is.EqualTo(0));
+            Assert.That(result.Values, Is.Not.Null);
+            Assert.That(result.Values.Condition, Is.EqualTo(12));
+            Assert.That(result.Values.NumberOfDice, Is.EqualTo(4));
+            Assert.That(result.Values.SizeOfDice, Is.EqualTo(8));
+            Assert.That(result.Values.WeaponType, Is.EqualTo(6));
         }
 
         [Test]
@@ -129,7 +128,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Affects[0].Duration, Is.EqualTo(-1));
             Assert.That(result.Affects[0].Modifier, Is.EqualTo(60));
             Assert.That(result.Affects[0].Location, Is.EqualTo(ApplyTypes.Hit));
-            Assert.That(result.Affects[0].BitVector.IsEmpty(), Is.True);
+            Assert.That(result.Affects[0].Flags, Is.EqualTo(32));
         }
 
         [Test]

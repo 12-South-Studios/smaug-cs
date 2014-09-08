@@ -43,21 +43,21 @@ namespace SmaugCS.Commands
                 return;
             }
 
-           salve.Split();
-            --salve.Value[1];
+            salve.Split();
+            salve.Values.Charges -= 1;
 
             if (!mud_prog.oprog_use_trigger(ch, salve, null, null))
                 UseSalve(salve, ch, victim);
 
-            Macros.WAIT_STATE(ch, salve.Value[3]);
-            ReturnTypes retcode = ch.ObjectCastSpell(salve.Value[4], salve.Value[0], victim);
+            Macros.WAIT_STATE(ch, salve.Values.Delay);
+            ReturnTypes retcode = ch.ObjectCastSpell((int)salve.Values.Skill1ID, (int)salve.Values.SpellLevel, victim);
             if (retcode == ReturnTypes.None)
-                retcode = ch.ObjectCastSpell(salve.Value[5], salve.Value[0], victim);
+                retcode = ch.ObjectCastSpell((int)salve.Values.Skill2ID, (int)salve.Values.SpellLevel, victim);
             if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.BothDied)
                 throw new CharacterDiedException("Salve {0}, Actor {1}, Victim {2}", salve.ID, ch.ID, victim.ID);
 
-            if (!handler.obj_extracted(salve) && salve.Value[1] <= 0)
-                ObjectInstanceExtensions.Extract(salve);
+            if (!handler.obj_extracted(salve) && salve.Values.Charges <= 0)
+                salve.Extract();
         }
 
         private static void ApplyNonSalve(ObjectInstance salve, CharacterInstance actor, CharacterInstance victim)
@@ -86,7 +86,7 @@ namespace SmaugCS.Commands
             string victMsg = string.Empty;
             string selfMsg = string.Empty;
             
-            if (salve.Value[1] < 1)
+            if (salve.Values.Charges < 1)
             {
                 notVictOrRoomMsg = victim != actor
                     ? "$n rubs the last of $p onto $N."

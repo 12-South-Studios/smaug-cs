@@ -27,7 +27,8 @@ namespace SmaugCS.Commands.Liquids
                 secondObj.ItemType != ItemTypes.DrinkContainer && secondObj.ItemType != ItemTypes.DrinkMixture,
                 "You can't mix that!")) return;
 
-            if (CheckFunctions.CheckIfTrue(ch, firstObj.Value[1] <= 0 || secondObj.Value[1] <= 0, "It's empty.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, firstObj.Values.Quantity <= 0 || secondObj.Values.Quantity <= 0,
+                "It's empty.")) return;
 
             bool success = CheckMixture(firstObj, secondObj);
             if (CheckFunctions.CheckIfTrue(ch, !success, "Those two don't mix well together.")) return;

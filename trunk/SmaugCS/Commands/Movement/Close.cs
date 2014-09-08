@@ -40,19 +40,19 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            if (obj.Value[1].IsSet(ContainerFlags.Closed))
+            if (obj.Values.Flags.IsSet(ContainerFlags.Closed))
             {
                 color.ch_printf(ch, "%s is already closed.", obj.ShortDescription.CapitalizeFirst());
                 return;
             }
 
-            if (!obj.Value[1].IsSet(ContainerFlags.Closeable))
+            if (!obj.Values.Flags.IsSet(ContainerFlags.Closeable))
             {
                 color.ch_printf(ch, "%s cannot be opened or closed.", obj.ShortDescription.CapitalizeFirst());
                 return;
             }
 
-            obj.Value[1].SetBit(ContainerFlags.Closed);
+            obj.Values.Flags = obj.Values.Flags.SetBit(ContainerFlags.Closed);
             comm.act(ATTypes.AT_ACTION, "You close $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n closes $p.", ch, obj, null, ToTypes.Room);
             ch.CheckObjectForTrap(obj, TrapTriggerTypes.Close);

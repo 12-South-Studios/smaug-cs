@@ -9,6 +9,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -18,12 +19,9 @@ namespace SmaugCS
     {
         public static void get_obj(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
         {
-            if (!obj.WearFlags.IsSet(ItemWearFlags.Take)
-                && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)))
-            {
-                color.send_to_char("You can't take that.\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, !obj.WearFlags.IsSet(ItemWearFlags.Take) 
+                && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)), 
+                "You can't take that.")) return;
 
             if (obj.MagicFlags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
             {
@@ -126,7 +124,7 @@ namespace SmaugCS
                 obj.InRoom.FromRoom(obj);
             }
 
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.ClanStoreroom)
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom)
                 && (container == null || container.CarriedBy == null))
             {
                 foreach (ClanData clan in DatabaseManager.Instance.CLANS.Values)
@@ -143,7 +141,7 @@ namespace SmaugCS
 
             if (obj.ItemType == ItemTypes.Money)
             {
-                int amt = obj.Value[0] * obj.Count;
+                int amt = obj.Values.NumberOfCoins * obj.Count;
                 ch.CurrentCoin += amt;
                 obj.Extract();
             }
@@ -196,7 +194,7 @@ namespace SmaugCS
                 case ItemTypes.Container:
                 case ItemTypes.KeyRing:
                 case ItemTypes.Quiver:
-                    if (--obj.Value[3] <= 0)
+                    if (--obj.Values.Condition <= 0)
                     {
                         if (!ch.IsInArena())
                         {
@@ -204,11 +202,11 @@ namespace SmaugCS
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
-                            obj.Value[3] = 1;
+                            obj.Values.Condition = 1;
                     }
                     break;
                 case ItemTypes.Light:
-                    if (--obj.Value[0] <= 0)
+                    if (--obj.Values.CurrentAC <= 0)
                     {
                         if (!ch.IsInArena())
                         {
@@ -216,7 +214,7 @@ namespace SmaugCS
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
-                            obj.Value[0] = 1;
+                            obj.Values.CurrentAC = 1;
                     }
                     break;
                 case ItemTypes.Armor:
@@ -239,7 +237,7 @@ namespace SmaugCS
                         ch.ArmorClass -= obj.ApplyArmorClass;
                     break;
                 case ItemTypes.Weapon:
-                    if (--obj.Value[0] <= 0)
+                    if (--obj.Values.Condition <= 0)
                     {
                         if (!ch.IsPKill() && !ch.IsInArena())
                         {
@@ -247,7 +245,7 @@ namespace SmaugCS
                             returnVal = ReturnTypes.ObjectScrapped;
                         }
                         else
-                            obj.Value[0] = 1;
+                            obj.Values.Condition = 1;
                     }
                     break;
             }
@@ -1017,7 +1015,7 @@ namespace SmaugCS
                     {
                         case ItemTypes.Weapon:
                         case ItemTypes.Armor:
-                            if ((obj.Value[0] - dam) <= 0)
+                            if ((obj.Values.CurrentAC - dam) <= 0)
                             {
                                 if (obj.InRoom.Persons.Any())
                                 {
@@ -1029,7 +1027,7 @@ namespace SmaugCS
                                 ObjectFactory.CreateScraps(obj);
                             }
                             else
-                                obj.Value[0] -= dam;
+                                obj.Values.CurrentAC -= dam;
                             break;
                         default:
                             if ((dam * 15) > obj.GetResistance())

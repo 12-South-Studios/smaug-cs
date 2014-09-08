@@ -62,7 +62,8 @@ namespace SmaugCS.Repositories
             newObject.ExtraFlags = cloneObject.ExtraFlags;
             newObject.Flags = cloneObject.Flags;
             newObject.WearFlags = cloneObject.WearFlags;
-            Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);
+            //Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);
+            newObject.Values = cloneObject.Values;
             newObject.Weight = cloneObject.Weight;
             newObject.Cost = cloneObject.Cost;
             newObject.ExtraDescriptions = new List<ExtraDescriptionData>(cloneObject.ExtraDescriptions);

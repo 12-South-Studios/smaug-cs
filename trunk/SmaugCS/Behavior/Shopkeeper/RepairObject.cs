@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SmaugCS.Constants;
+﻿using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
@@ -61,17 +56,17 @@ namespace SmaugCS.Behavior.Shopkeeper
                 switch (obj.ItemType)
                 {
                     default:
-                        color.send_to_char("For some reason, you think you got ripped off...\r\n", ch);
+                        color.send_to_char("For some reason, you think you got ripped off...", ch);
                         break;
                     case ItemTypes.Armor:
-                        obj.Value[0] = obj.Value[1];
+                        obj.Values.CurrentAC = obj.Values.OriginalAC;
                         break;
                     case ItemTypes.Weapon:
-                        obj.Value[0] = GameConstants.GetConstant<int>("InitWeaponCondition");
+                        obj.Values.Condition = GameConstants.GetConstant<int>("InitWeaponCondition");
                         break;
                     case ItemTypes.Wand:
                     case ItemTypes.Staff:
-                        obj.Value[2] = obj.Value[1];
+                        obj.Values.Charges = obj.Values.MaxCharges;
                         break;
                 }
 

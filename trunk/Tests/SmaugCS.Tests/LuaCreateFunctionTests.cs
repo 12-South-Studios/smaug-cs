@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Lua;
+using Realm.Library.Patterns.Command;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -303,7 +304,7 @@ namespace SmaugCS.Tests
 			Assert.That(result.FunctionName, Is.EqualTo("do_auction"));
 			Assert.That(result.Position, Is.EqualTo(4));
 			Assert.That(result.Level, Is.EqualTo(5));
-			Assert.That(result.Log, Is.EqualTo(1));
+			Assert.That(result.Log, Is.EqualTo(LogAction.Normal));
 			Assert.That(result.Flags, Is.EqualTo(1));
 		}
 		#endregion

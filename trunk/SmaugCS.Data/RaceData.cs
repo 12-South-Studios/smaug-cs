@@ -81,7 +81,7 @@ namespace SmaugCS.Data
         public void AddAffectedBy(string name)
         {
             AffectedByTypes type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<AffectedByTypes>(name);
-            AffectedBy.SetBit(type);
+            AffectedBy = AffectedBy.SetBit(type);
         }
     }
 }

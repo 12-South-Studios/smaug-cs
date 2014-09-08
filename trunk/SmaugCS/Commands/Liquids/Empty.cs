@@ -68,7 +68,7 @@ namespace SmaugCS.Commands.Liquids
                 destObj.ItemType != ItemTypes.Container && destObj.ItemType != ItemTypes.KeyRing
                 && destObj.ItemType != ItemTypes.Quiver, "That's not a container!")) return;
 
-            if (destObj.Value[1].IsSet(ContainerFlags.Closed))
+            if (((int)destObj.Values.Flags).IsSet(ContainerFlags.Closed))
             {
                 comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, destObj.Name, ToTypes.Character);
                 return;
@@ -106,39 +106,36 @@ namespace SmaugCS.Commands.Liquids
                 ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDropAll) || ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom),
                 "You can't seem to do that here...")) return;
 
-            if (obj.Empty(null, ch.CurrentRoom))
-            {
-                comm.act(ATTypes.AT_ACTION, "You empty $p.", ch, obj, null, ToTypes.Character);
-                comm.act(ATTypes.AT_ACTION, "$n empties $p.", ch, obj, null, ToTypes.Room);
+            if (CheckFunctions.CheckIfTrue(ch, !obj.Empty(null, ch.CurrentRoom), "Hmmm... didn't work.")) return;
+
+            comm.act(ATTypes.AT_ACTION, "You empty $p.", ch, obj, null, ToTypes.Character);
+            comm.act(ATTypes.AT_ACTION, "$n empties $p.", ch, obj, null, ToTypes.Room);
                 
-                if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Empty))
-                    save.save_char_obj(ch);
-            }
-            else
-                color.send_to_char("Hmmm... didn't work.", ch);
+            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Empty))
+                save.save_char_obj(ch);
         }
 
         private static void EmptyPipe(CharacterInstance ch, ObjectInstance obj)
         {
             comm.act(ATTypes.AT_ACTION, "You gently tap $p and empty it out.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n gently taps $p and empties it out.", ch, obj, null, ToTypes.Room);
-            obj.Value[3].RemoveBit(PipeFlags.FullOfAsh);
-            obj.Value[3].RemoveBit(PipeFlags.Lit);
-            obj.Value[1] = 0;
+            obj.Values.Flags = obj.Values.Flags.RemoveBit(PipeFlags.FullOfAsh);
+            obj.Values.Flags = obj.Values.Flags.RemoveBit(PipeFlags.Lit);
+            obj.Values.NumberOfDraws = 0;
         }
 
         private static void EmptyDrinkContainer(CharacterInstance ch, ObjectInstance obj)
         {
-            if (CheckFunctions.CheckIfTrue(ch, obj.Value[1] < 1, "It's already empty.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Values.Quantity < 1, "It's already empty.")) return;
 
             comm.act(ATTypes.AT_ACTION, "You empty $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n empties $p.", ch, obj, null, ToTypes.Room);
-            obj.Value[1] = 0;
+            obj.Values.Quantity = 0;
         }
 
         private static void EmptyContainerOrQuiver(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[1].IsSet(ContainerFlags.Closed))
+            if (obj.Values.Flags.IsSet(ContainerFlags.Closed))
                 comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, obj, ToTypes.Character);
         }
     }
