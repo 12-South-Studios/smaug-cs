@@ -1,10 +1,10 @@
-﻿using SmaugCS.Data;
-using System;
+﻿using System;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Communication
 {
     public abstract class ChannelAttribute : Attribute
     {
-        public abstract bool Verify(ChannelTypes channelType, CharacterInstance ch, int minTrust = 0);
+        public abstract bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0);
     }
 }

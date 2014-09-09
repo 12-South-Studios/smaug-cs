@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Communication;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -13,7 +14,7 @@ namespace SmaugCS.Commands.Social
             if (CheckFunctions.CheckIfTrue(ch,
                 ch.IsNpc() ||
                 (!ch.IsNotAuthorized() && !ch.IsImmortal() &&
-                 !(ch.PlayerData.Council != null && ch.PlayerData.Council.Name.Equals("Newbie Council"))), "Huh?"))
+                 !(((PlayerInstance)ch).PlayerData.Council != null && ((PlayerInstance)ch).PlayerData.Council.Name.Equals("Newbie Council"))), "Huh?"))
                 return;
 
             ChatManager.talk_channel(ch, argument, ChannelTypes.Newbie, "newbiechat");

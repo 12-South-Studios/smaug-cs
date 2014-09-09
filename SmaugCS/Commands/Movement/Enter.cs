@@ -2,6 +2,8 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement

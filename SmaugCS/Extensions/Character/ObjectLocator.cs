@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
@@ -78,7 +79,7 @@ namespace SmaugCS.Extensions
 
             int vnum = GetVnumFromArgumentIfImmortal(ch, arg);
             return vnum > 0
-                ? GetObjectInList(chars.Where(vch => vch.IsNpc() && vch.MobIndex.ID == vnum), number)
+                ? GetObjectInList(chars.Where(vch => vch.IsNpc() && ((MobileInstance)vch).MobIndex.ID == vnum), number)
                 : GetObjectInList(chars.Where(vch => arg.IsAnyEqual(vch.Name) || arg.IsAnyEqualPrefix(vch.Name)),
                     number);
         }
@@ -97,7 +98,7 @@ namespace SmaugCS.Extensions
 
             int vnum = GetVnumFromArgumentIfImmortal(ch, arg);
             return vnum > 0
-                ? GetObjectInList(chars.Where(vch => vch.IsNpc() && vch.MobIndex.ID == vnum), number)
+                ? GetObjectInList(chars.Where(vch => vch.IsNpc() && ((MobileInstance)vch).MobIndex.ID == vnum), number)
                 : GetObjectInList(chars.Where(vch => arg.IsAnyEqual(vch.Name) || arg.IsAnyEqualPrefix(vch.Name)),
                     number);
         }

@@ -8,6 +8,8 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -87,14 +89,8 @@ namespace SmaugCS
             show_colorthemes(ch);
         }
 
-        public static void reset_colors(CharacterInstance ch)
+        public static void reset_colors(PlayerInstance ch)
         {
-            if (ch.IsNpc())
-            {
-                // log_printf
-                return;
-            }
-
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color) + "default";
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
@@ -228,11 +224,15 @@ namespace SmaugCS
 
         public static void set_char_color(ATTypes attype, CharacterInstance ch)
         {
-            if (ch == null || ch.Descriptor == null || ch.IsNpc())
+            if (ch == null || ch.IsNpc())
                 return;
 
-            comm.write_to_buffer(ch.Descriptor, color_str(attype, ch), 0);
-            ch.Descriptor.PageColor = ch.Colors.ContainsKey(attype) ? ch.Colors[attype] : (char)0;
+            PlayerInstance pch = (PlayerInstance) ch;
+            if (pch.Descriptor == null)
+                return;
+
+            pch.Descriptor.WriteToBuffer(color_str(attype, ch), 0);
+            pch.Descriptor.PageColor = pch.Colors.ContainsKey(attype) ? pch.Colors[attype] : (char)0;
         }
 
         public static void write_to_pager(DescriptorData d, string txt, int length)
@@ -283,11 +283,15 @@ namespace SmaugCS
 
         public static void set_pager_color(ATTypes attype, CharacterInstance ch)
         {
-            if (ch == null || ch.Descriptor == null || ch.IsNpc())
+            if (ch == null || ch.IsNpc())
                 return;
 
-            write_to_pager(ch.Descriptor, color_str(attype, ch), 0);
-            ch.Descriptor.PageColor = ch.Colors.ContainsKey(attype) ? ch.Colors[attype] : (char)0;
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.Descriptor == null)
+                return;
+
+            write_to_pager(pch.Descriptor, color_str(attype, ch), 0);
+            pch.Descriptor.PageColor = pch.Colors.ContainsKey(attype) ? pch.Colors[attype] : (char)0;
         }
 
         public static void send_to_desc_color(string txt, DescriptorData d)
@@ -295,25 +299,33 @@ namespace SmaugCS
             if (d == null || string.IsNullOrEmpty(txt))
                 return;
 
-            comm.write_to_buffer(d, colorize(txt, d), 0);
+            d.WriteToBuffer(colorize(txt, d), 0);
         }
 
         public static void send_to_char(string txt, CharacterInstance ch)
         {
-            if (!string.IsNullOrEmpty(txt) && ch.Descriptor != null)
-                send_to_desc_color(txt, ch.Descriptor);
+            if (ch.IsNpc() || string.IsNullOrEmpty(txt))
+                return;
+
+            PlayerInstance pch = (PlayerInstance) ch;
+            if (pch.Descriptor != null)
+                send_to_desc_color(txt, pch.Descriptor);
         }
 
         public static void send_to_pager(string txt, CharacterInstance ch)
         {
-            if (string.IsNullOrEmpty(txt) || ch.Descriptor == null)
+            if (ch == null || ch.IsNpc() || string.IsNullOrEmpty(txt))
                 return;
 
-            CharacterInstance och = ch.Descriptor.Original ?? ch.Descriptor.Character;
-            if (och.IsNpc() || !och.PlayerData.Flags.IsSet((int)PCFlags.PagerOn))
-                send_to_desc_color(txt, ch.Descriptor);
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.Descriptor == null)
+                return;
+
+            PlayerInstance och = (PlayerInstance)pch.Descriptor.Original ?? (PlayerInstance)pch.Descriptor.Character;
+            if (och.IsNpc() || !och.PlayerData.Flags.IsSet(PCFlags.PagerOn))
+                send_to_desc_color(txt, pch.Descriptor);
             else
-                write_to_pager(ch.Descriptor, colorize(txt, ch.Descriptor), 0);
+                write_to_pager(pch.Descriptor, colorize(txt, pch.Descriptor), 0);
         }
 
         public static void ch_printf(CharacterInstance ch, string fmt, params object[] args)

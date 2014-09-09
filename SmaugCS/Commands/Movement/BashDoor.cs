@@ -3,6 +3,8 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -37,7 +39,7 @@ namespace SmaugCS.Commands.Movement
 
             int damage = (actor.MaximumHealth/20) + 10;
             actor.CauseDamageTo(actor, damage, (int)skill.ID);
-            skill.LearnFromFailure(actor);
+            skill.LearnFromFailure((PlayerInstance)actor);
         }
 
         private static void BashSomething(CharacterInstance actor, ExitData exit, SkillData skill, string arg)
@@ -68,7 +70,7 @@ namespace SmaugCS.Commands.Movement
 
             comm.act(ATTypes.AT_SKILL, "Crash! You bashed open the $d!", actor, null, keyword, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n bashes open the $d!", actor, null, keyword, ToTypes.Room);
-            skill.LearnFromSuccess(actor);
+            skill.LearnFromSuccess((PlayerInstance)actor);
 
             ExitData reverseExit = exit.GetReverseExit();
             BashExit(reverseExit);

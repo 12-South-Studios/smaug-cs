@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -37,17 +38,17 @@ namespace SmaugCS.Skills
 
             if (!victim.Chance(chances + victim.Level - ch.Level))
             {
-                skill.LearnFromFailure(victim);
+                skill.LearnFromFailure((PlayerInstance)victim);
                 return false;
             }
 
-            if (!victim.IsNpc() && !victim.PlayerData.Flags.IsSet(PCFlags.Gag))
+            if (!victim.IsNpc() && !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Gag))
                 comm.act(ATTypes.AT_SKILL, "You parry $n's attack.", ch, null, victim, ToTypes.Victim);
 
-            if (!ch.IsNpc() && !ch.PlayerData.Flags.IsSet(PCFlags.Gag))
+            if (!ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))
                 comm.act(ATTypes.AT_SKILL, "$N parries your attack.", ch, null, victim, ToTypes.Character);
 
-            skill.LearnFromSuccess(victim);
+            skill.LearnFromSuccess((PlayerInstance)victim);
             return true;
         }
     }

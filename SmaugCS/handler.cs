@@ -8,6 +8,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -62,7 +64,7 @@ namespace SmaugCS
             int ms = ch.MentalState;
 
             // We're going to be nice and let nothing weird happen unless you're a tad messed up
-            int drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ch.PlayerData.ConditionTable[ConditionTypes.Drunk]);
+            int drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]);
             if (Math.Abs(ms) + (drunk / 3) < 30)
                 return false;
             if ((SmaugRandom.D100() + (ms < 0 ? 15 : 5)) > Math.Abs(ms) / 2 + drunk / 4)
@@ -440,7 +442,7 @@ namespace SmaugCS
         public static bool chance_attrib(CharacterInstance ch, short percent, short attrib)
         {
             return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - attrib + 13 +
-                    (ch.IsDevoted() ? ch.PlayerData.Favor/-500 : 0) <= percent);
+                    (ch.IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent);
         }
 
         public static void economize_mobgold(CharacterInstance mob)
@@ -484,7 +486,7 @@ namespace SmaugCS
                     continue;
                 if (cmd.Level <= ch.Trust)
                     return;
-                if (!ch.IsNpc() && cmd.Name.IsAnyEqual(ch.PlayerData.bestowments)
+                if (!ch.IsNpc() && cmd.Name.IsAnyEqual(((PlayerInstance)ch).PlayerData.bestowments)
                     && cmd.Level <= ch.Trust + GameManager.Instance.SystemData.BestowDifference)
                     return;
             }

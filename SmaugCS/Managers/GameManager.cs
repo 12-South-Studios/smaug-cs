@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Realm.Library.NCalcExt;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 
 namespace SmaugCS.Managers

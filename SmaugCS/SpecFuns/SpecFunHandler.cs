@@ -3,29 +3,22 @@ using System.Collections.Generic;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
-using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public sealed class SpecFunHandler
     {
         private readonly IDatabaseManager _dbManager;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dbManager"></param>
         public SpecFunHandler(IDatabaseManager dbManager)
         {
             _dbManager = dbManager;
         }
 
-        private static readonly Dictionary<string, Func<CharacterInstance, bool>> SpecialFuncLookupTable =
-            new Dictionary<string, Func<CharacterInstance, bool>>
+        private static readonly Dictionary<string, Func<MobileInstance, bool>> SpecialFuncLookupTable =
+            new Dictionary<string, Func<MobileInstance, bool>>
                 {
                     {"spec_breath_any", BreathAny.DoSpecBreathAny},
                     {"spec_breath_acid", BreathAcid.DoSpecBreathAcid},
@@ -47,34 +40,19 @@ namespace SmaugCS.SpecFuns
                     {"spec_wanderer", Wanderer.DoSpecWanderer}
                 };
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Func<CharacterInstance, bool> GetSpecFunReference(string name)
+        public static Func<MobileInstance, bool> GetSpecFunReference(string name)
         {
             return SpecialFuncLookupTable.ContainsKey(name.ToLower())
                        ? SpecialFuncLookupTable[name.ToLower()]
                        : null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public bool IsValidSpecFun(string name)
         {
             return _dbManager.GetEntity<SpecialFunction>(name) != null &&
                    SpecialFuncLookupTable.ContainsKey(name.ToLower());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public SpecialFunction GetSpecFun(string name)
         {
             return IsValidSpecFun(name)
@@ -82,7 +60,7 @@ namespace SmaugCS.SpecFuns
                        : null;
         }
 
-        public void summon_if_hating(CharacterInstance ch)
+        public void summon_if_hating(MobileInstance ch)
         {
             if ((int) ch.CurrentPosition <= (int) PositionTypes.Sleeping 
                 || ch.CurrentFighting != null

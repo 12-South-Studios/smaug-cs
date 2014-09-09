@@ -1,5 +1,6 @@
 ﻿using Realm.Library.Network;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data
 {
@@ -7,8 +8,8 @@ namespace SmaugCS.Data
     {
         public ITcpUser User { get; set; }
 
-        public CharacterInstance Character { get; set; }
-        public CharacterInstance Original { get; set; }
+        public PlayerInstance Character { get; set; }
+        public PlayerInstance Original { get; set; }
         public mccp_data mccp { get; set; }
         public bool can_compress { get; set; }
         public string host { get; set; }

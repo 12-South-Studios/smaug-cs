@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
@@ -29,7 +30,7 @@ namespace SmaugCS.Extensions
                 return ch.RawKill(victim);
             }
 
-            DeathProg.Execute(ch, victim);
+            DeathProg.Execute(ch, (MobileInstance)victim);
             if (victim.CharDied())
                 return null;
 
@@ -50,7 +51,7 @@ namespace SmaugCS.Extensions
 
             if (victim.IsNpc())
             {
-                victim.MobIndex.TimesKilled++;
+                ((MobileInstance)victim).MobIndex.TimesKilled++;
                 victim.Extract(true);
                 victim = null;
                 return corpse;
@@ -58,7 +59,7 @@ namespace SmaugCS.Extensions
 
             color.set_char_color(ATTypes.AT_DIEMSG, victim);
             Help.do_help(victim,
-                         victim.PlayerData.PvEDeaths + victim.PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
+                         ((PlayerInstance)victim).PlayerData.PvEDeaths + ((PlayerInstance)victim).PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
 
             victim.Extract(false);
 
@@ -228,7 +229,7 @@ namespace SmaugCS.Extensions
             if (!victim.IsNpc())
                 xp /= 4;
             else if (!ch.IsNpc())
-                xp = ReduceXPForKillingSameMobRepeatedly(ch, victim, xp);
+                xp = ReduceXPForKillingSameMobRepeatedly(ch, (MobileInstance)victim, xp);
             
             if (!ch.IsNpc() && ch.Level > 5)
                 xp = ModifyXPForExperiencedVsNovicePlayer(ch, xp);
@@ -253,7 +254,7 @@ namespace SmaugCS.Extensions
         private static int ModifyXPForExperiencedVsNovicePlayer(CharacterInstance ch, int xp)
         {
             int modXp = xp;
-            int xpRatio = ch.PlayedDuration/ch.Level;
+            int xpRatio = ((PlayerInstance)ch).PlayedDuration / ch.Level;
 
             if (xpRatio > 20000)
                 modXp = (modXp*5)/4; //// 5/4
@@ -271,10 +272,10 @@ namespace SmaugCS.Extensions
             return modXp;
         }
 
-        private static int ReduceXPForKillingSameMobRepeatedly(CharacterInstance ch, CharacterInstance victim, int xp)
+        private static int ReduceXPForKillingSameMobRepeatedly(CharacterInstance ch, MobileInstance victim, int xp)
         {
             int modXp = xp;
-            int times = ch.TimesKilled(victim);
+            int times = ((PlayerInstance)ch).TimesKilled(victim);
 
             if (times > 0 && times < 20)
             {

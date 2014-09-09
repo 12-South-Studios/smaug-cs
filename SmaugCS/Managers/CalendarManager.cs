@@ -10,6 +10,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Objects;

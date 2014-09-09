@@ -1,4 +1,5 @@
 ﻿using System;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data
 {

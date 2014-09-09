@@ -1,5 +1,7 @@
 ﻿using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
 using SmaugCS.Language;
 
 namespace SmaugCS.Repositories

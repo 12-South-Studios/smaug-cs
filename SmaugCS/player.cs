@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -119,14 +120,8 @@ namespace SmaugCS
             return "Unknown";
         }
 
-        public static void set_title(CharacterInstance ch, string title)
+        public static void set_title(PlayerInstance ch, string title)
         {
-            if (ch.IsNpc())
-            {
-                // TODO Exception, log it
-                return;
-            }
-
             ch.PlayerData.Title = Char.IsLetterOrDigit(title[0]) ? title.Substring(1) : title;
         }
     }

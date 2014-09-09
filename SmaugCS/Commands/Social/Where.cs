@@ -5,7 +5,9 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands
@@ -56,10 +58,10 @@ namespace SmaugCS.Commands
                 color.pager_printf_color(ch, "&P{0}  ", victim.Name.PadRight(13, ' '));
                 if (victim.IsImmortal() && victim.Level > LevelConstants.AvatarLevel)
                     color.send_to_pager_color("&P(&WImmortal&P)\t", ch);
-                else if (victim.CanPKill() && victim.PlayerData.Clan != null
-                         && victim.PlayerData.Clan.ClanType != ClanTypes.Order
-                         && victim.PlayerData.Clan.ClanType != ClanTypes.Guild)
-                    color.pager_printf_color(ch, "{0}\t", victim.PlayerData.Clan.Badge.PadRight(18, ' '));
+                else if (victim.CanPKill() && ((PlayerInstance)victim).PlayerData.Clan != null
+                         && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Order
+                         && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Guild)
+                    color.pager_printf_color(ch, "{0}\t", ((PlayerInstance)victim).PlayerData.Clan.Badge.PadRight(18, ' '));
                 else if (victim.CanPKill())
                     color.send_to_pager_color("(&wUnclanned&P)\t", ch);
                 else 
@@ -76,13 +78,13 @@ namespace SmaugCS.Commands
             {
                 foreach (CharacterInstance victim in room.Persons.Where(x => !x.IsNpc()))
                 {
-                    if (victim.PlayerData != null && victim.PlayerData.Flags.IsSet((int)PCFlags.DoNotDisturb))
+                    if (((PlayerInstance)victim).PlayerData != null && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb))
                         continue;
                     if (ch.Trust < victim.Trust)
                         continue;
-                    if (victim.Descriptor == null ||
-                        (victim.Descriptor.ConnectionStatus != ConnectionTypes.Playing ||
-                         victim.Descriptor.ConnectionStatus != ConnectionTypes.Editing))
+                    if (((PlayerInstance)victim).Descriptor == null ||
+                        (((PlayerInstance)victim).Descriptor.ConnectionStatus != ConnectionTypes.Playing ||
+                         ((PlayerInstance)victim).Descriptor.ConnectionStatus != ConnectionTypes.Editing))
                         continue;
                     if (!ch.CanSee(victim))
                         continue;

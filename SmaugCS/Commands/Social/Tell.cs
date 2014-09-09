@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Social
@@ -79,13 +80,13 @@ namespace SmaugCS.Commands.Social
             if (!victim.IsNpc() && victim.Switched != null
                 && victim.Switched.IsAffected(AffectedByTypes.Possess))
                 switchedVictim = victim.Switched;
-            else if (!victim.IsNpc() && victim.Descriptor == null)
+            else if (!victim.IsNpc() && ((PlayerInstance)victim).Descriptor == null)
             {
                 color.send_to_char("That player is link-dead.\r\n", ch);
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.AwayFromKeyboard))
             {
                 color.send_to_char("That player is afk.\r\n", ch);
                 return;
@@ -113,8 +114,8 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (victim.Descriptor != null
-                && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing
+            if (((PlayerInstance)victim).Descriptor != null
+                && ((PlayerInstance)victim).Descriptor.ConnectionStatus == ConnectionTypes.Editing
                 && ch.Trust < LevelConstants.GetLevel(ImmortalTypes.God))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer. Please try again later.", ch, null, victim, ToTypes.Character);
@@ -134,10 +135,10 @@ namespace SmaugCS.Commands.Social
                 color.ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", ch.Name);
             }
 
-            ch.RetellTo = victim;
+            ((PlayerInstance)ch).RetellTo = victim;
 
             if (!victim.IsNpc() && victim.IsImmortal()
-                && victim.PlayerData.TellHistory != null
+                && ((PlayerInstance)victim).PlayerData.TellHistory != null
                 && Char.IsLetter(ch.IsNpc() ? ch.ShortDescription.ToCharArray()[0] : ch.Name.ToCharArray()[0]))
             {
                 string buffer = string.Format("{0} told you '{1}'\r\n",
@@ -145,7 +146,7 @@ namespace SmaugCS.Commands.Social
                                                   ? ch.ShortDescription.CapitalizeFirst()
                                                   : ch.Name.CapitalizeFirst(),
                                                   argumentString);
-                victim.PlayerData.TellHistory.Add(buffer);
+                ((PlayerInstance)victim).PlayerData.TellHistory.Add(buffer);
             }
 
             if (switchedVictim != null)
@@ -172,7 +173,7 @@ namespace SmaugCS.Commands.Social
             //MOBtrigger = true;
 
             victim.CurrentPosition = position;
-            victim.ReplyTo = ch;
+            ((PlayerInstance)victim).ReplyTo = ch;
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {

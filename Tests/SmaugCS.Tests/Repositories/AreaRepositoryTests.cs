@@ -9,6 +9,7 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmallDBConnectivity;
 using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;

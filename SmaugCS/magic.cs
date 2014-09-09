@@ -5,6 +5,7 @@ using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
@@ -24,14 +25,14 @@ namespace SmaugCS
 
             if (ch.IsNpc())
                 return (int)skill.ID;
-            if (ch.PlayerData.Learned[skill.ID] > 0
+            if (((PlayerInstance)ch).PlayerData.Learned[skill.ID] > 0
                 && (ch.Level >= skill.SkillLevels.ToList()[(int)ch.CurrentClass]
                     || ch.Level >= skill.RaceLevel[(int)ch.CurrentRace]))
                 return (int)skill.ID;
             return 0;
         }
 
-        public static int personal_lookup(CharacterInstance ch, string name)
+        public static int personal_lookup(PlayerInstance ch, string name)
         {
             if (ch.PlayerData == null)
                 return -1;
@@ -602,9 +603,9 @@ namespace SmaugCS
             }
 
             // Nuisance flag will pick who you are fighting for offensive spells up to 92% of the time
-            if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
-                && ch.PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.D100() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
+            if (!ch.IsNpc() && ch.CurrentFighting != null && ((PlayerInstance)ch).PlayerData.Nuisance != null
+                && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 5 &&
+                SmaugRandom.D100() < (((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8) + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
                 victim = ch.GetMyTarget();
 
             if (fight.is_safe(ch, victim, true))
@@ -663,9 +664,9 @@ namespace SmaugCS
             }
 
             // Nuisance flag will pick who you are fighting for defensive spells up to 36% of the time
-            if (!ch.IsNpc() && ch.CurrentFighting != null && ch.PlayerData.Nuisance != null
-                && ch.PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.D100() < (((ch.PlayerData.Nuisance.Flags - 5) * 8) + 6 * ch.PlayerData.Nuisance.Power))
+            if (!ch.IsNpc() && ch.CurrentFighting != null && ((PlayerInstance)ch).PlayerData.Nuisance != null
+                && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 5 &&
+                SmaugRandom.D100() < (((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8) + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
                 victim = ch.GetMyTarget();
 
             if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -10,7 +11,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class CastMage
     {
-        public static bool DoSpecCastMage(CharacterInstance ch)
+        public static bool DoSpecCastMage(MobileInstance ch)
         {
             SpecFunHandler handler = new SpecFunHandler(DatabaseManager.Instance);
             handler.summon_if_hating(ch);
@@ -33,7 +34,8 @@ namespace SmaugCS.SpecFuns
             return true;
         }
 
-        private static readonly Dictionary<int, Tuple<int, string>> SpellLevelLookupTable = new Dictionary<int, Tuple<int, string>>
+        private static readonly Dictionary<int, Tuple<int, string>> SpellLevelLookupTable 
+            = new Dictionary<int, Tuple<int, string>>
             {
                 {0, new Tuple<int, string>(0, "magic missile")},
                 {1, new Tuple<int, string>(3, "chill touch")},

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
     public static class Fido
     {
-        public static bool DoSpecFido(CharacterInstance ch)
+        public static bool DoSpecFido(MobileInstance ch)
         {
             if (!ch.IsAwake())
                 return false;
@@ -22,7 +22,7 @@ namespace SmaugCS.SpecFuns
                     ch.CurrentRoom.ToRoom(obj);
                 }
 
-                ObjectInstanceExtensions.Extract(corpse);
+                corpse.Extract();
                 return true;
             }
 

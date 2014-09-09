@@ -11,7 +11,9 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Language;
 using SmaugCS.Logging;
@@ -382,7 +384,7 @@ namespace SmaugCS
             }
         }
 
-        public static void clear_char(CharacterInstance ch)
+        /*public static void clear_char(CharacterInstance ch)
         {
             ch.CurrentEditor = null;
             ch.CurrentHunting = null;
@@ -433,15 +435,15 @@ namespace SmaugCS
             ch.ModConstitution = 0;
             ch.ModCharisma = 0;
             ch.ModLuck = 0;
-        }
+        }*/
 
-        public static void free_char(CharacterInstance ch)
+        /*public static void free_char(CharacterInstance ch)
         {
             ch.CurrentMorph = null;
 
             ObjectInstance obj;
             while ((obj = ch.Carrying.First()) != null)
-                ObjectInstanceExtensions.Extract(obj);
+                obj.Extract();
 
             AffectData af;
             while ((af = ch.Affects.First()) != null)
@@ -462,25 +464,25 @@ namespace SmaugCS
             foreach (VariableData vd in ch.Variables)
                 variables.delete_variable(vd);
 
-            if (ch.PlayerData != null)
+            if (ch is PlayerInstance && ((PlayerInstance)ch).PlayerData != null)
             {
-                if (ch.PlayerData.Pet != null)
+                if (((PlayerInstance)ch).PlayerData.Pet != null)
                 {
-                    CharacterInstanceExtensions.Extract(ch.PlayerData.Pet, true);
-                    ch.PlayerData.Pet = null;
+                    ((PlayerInstance)ch).PlayerData.Pet.Extract(true);
+                    ((PlayerInstance)ch).PlayerData.Pet = null;
                 }
 
-                ch.PlayerData.Ignored.Clear();
-                ch.PlayerData.TellHistory.Clear();
+                ((PlayerInstance)ch).PlayerData.Ignored.Clear();
+                ((PlayerInstance)ch).PlayerData.TellHistory.Clear();
 
                 // TODO IMC
 
-                ch.PlayerData = null;
+                ((PlayerInstance)ch).PlayerData = null;
             }
 
             //ch.Comments.Clear();
             DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
-        }
+        }*/
 
         public static string get_extra_descr(string name, IEnumerable<ExtraDescriptionData> extraDescriptions)
         {

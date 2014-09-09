@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Extensions;
 
@@ -11,7 +12,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 {
     public static class Appraise
     {
-        private static int GetCostIfBuying(CharacterInstance ch, CharacterInstance keeper, ObjectInstance obj)
+        private static int GetCostIfBuying(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj)
         {
             bool richCustomer = ch.CurrentCoin > (ch.Level * ch.Level * 100000);
             int profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0)
@@ -22,7 +23,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             return cost;
         }
 
-        private static int GetCostIfSelling(CharacterInstance ch, CharacterInstance keeper, ObjectInstance obj)
+        private static int GetCostIfSelling(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj)
         {
             bool richCustomer = ch.CurrentCoin > (ch.Level * ch.Level * 100000);
             int profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0);
@@ -38,7 +39,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             return cost;
         }
 
-        public static int GetAdjustedCost(CharacterInstance ch, CharacterInstance keeper, ObjectInstance obj, bool buy)
+        public static int GetAdjustedCost(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj, bool buy)
         {
             if (obj == null || keeper.MobIndex.Shop == null)
                 return 0;
@@ -51,7 +52,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             return cost;
         }
 
-        public static int GetAdjustedRepairCost(CharacterInstance keeper, ObjectInstance obj)
+        public static int GetAdjustedRepairCost(MobileInstance keeper, ObjectInstance obj)
         {
             if (obj == null || keeper.MobIndex.Shop == null)
                 return 0;

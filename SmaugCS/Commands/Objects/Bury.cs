@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
@@ -24,7 +25,7 @@ namespace SmaugCS.Commands.Objects
             if (!obj.WearFlags.IsSet(ItemWearFlags.Take))
             {
                 if (!obj.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse) || ch.IsNpc() ||
-                    !ch.PlayerData.Flags.IsSet(PCFlags.Deadly))
+                    !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly))
                 {
                     comm.act(ATTypes.AT_PLAIN, "You cannot bury $p.", ch, obj, null, ToTypes.Character);
                     return;
@@ -51,7 +52,7 @@ namespace SmaugCS.Commands.Objects
 
             ch.CurrentMovement -= move;
             if (obj.ItemType == ItemTypes.NpcCorpse || obj.ItemType == ItemTypes.PlayerCorpse)
-                ch.AdjustFavor(DeityFieldTypes.BuryCorpse, 1);
+                ((PlayerInstance)ch).AdjustFavor(DeityFieldTypes.BuryCorpse, 1);
 
             comm.act(ATTypes.AT_ACTION, "You solemnly bury $p...", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n solemnly buries $p...", ch, obj, null, ToTypes.Room);

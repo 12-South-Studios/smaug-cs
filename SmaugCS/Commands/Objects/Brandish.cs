@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -49,7 +50,7 @@ namespace SmaugCS.Commands.Objects
             foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
             {
                 if (!vch.IsNpc() && vch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
-                    vch.PlayerData.WizardInvisible >= LevelConstants.ImmortalLevel)
+                    ((PlayerInstance)vch).PlayerData.WizardInvisible >= LevelConstants.ImmortalLevel)
                     continue;
 
                 SkillData skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);

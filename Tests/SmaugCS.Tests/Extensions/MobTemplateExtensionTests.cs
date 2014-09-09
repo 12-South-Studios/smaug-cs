@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Tests.Extensions
 {

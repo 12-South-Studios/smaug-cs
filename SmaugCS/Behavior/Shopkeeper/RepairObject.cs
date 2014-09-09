@@ -1,12 +1,13 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
     public static class RepairObject
     {
-        public static void repair_one_obj(CharacterInstance ch, CharacterInstance keeper, ObjectInstance obj,
+        public static void repair_one_obj(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj,
                                   string arg, int maxgold, string fixstr, string fixstr2)
         {
             int cost;

@@ -14,6 +14,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -41,33 +43,33 @@ namespace SmaugCS
                     ch.IsAffected(AffectedByTypes.Paralysis))
                     continue;
 
-                if (ch.MobIndex.ID == VnumConstants.MOB_VNUM_ANIMATED_CORPSE && !ch.IsAffected(AffectedByTypes.Charm))
+                if (((MobileInstance)ch).MobIndex.ID == VnumConstants.MOB_VNUM_ANIMATED_CORPSE && !ch.IsAffected(AffectedByTypes.Charm))
                 {
                     if (ch.CurrentRoom.Persons.Any()) 
                         comm.act(ATTypes.AT_MAGIC, "$n returns to the dust from whence $e came.", ch, null, null, ToTypes.Room);
 
                     if (ch.IsNpc())
-                        CharacterInstanceExtensions.Extract(ch, true);
+                        ch.Extract(true);
                     continue;
                 }
 
                 if (!ch.Act.IsSet(ActFlags.Running) && !ch.Act.IsSet(ActFlags.Sentinel) && ch.CurrentFighting == null &&
-                    ch.CurrentHunting == null)
+                    ((MobileInstance)ch).CurrentHunting == null)
                 {
                     Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
                     track.hunt_victim(ch);
                     continue;
                 }
 
-                if (!ch.Act.IsSet(ActFlags.Running) && ch.SpecialFunction != null)
+                if (!ch.Act.IsSet(ActFlags.Running) && ((MobileInstance)ch).SpecialFunction != null)
                 {
-                    if (ch.SpecialFunction.Value.Invoke(ch))
+                    if (((MobileInstance)ch).SpecialFunction.Value.Invoke((MobileInstance)ch))
                         continue;
                     if (ch.CharDied())
                         continue;
                 }
 
-                if (ch.MobIndex.HasProg(MudProgTypes.Script))
+                if (((MobileInstance)ch).MobIndex.HasProg(MudProgTypes.Script))
                 {
                     mud_prog.mprog_script_trigger(ch);
                     continue;
@@ -173,7 +175,7 @@ namespace SmaugCS
                     bool found = false;
                     foreach (CharacterInstance rch in ch.CurrentRoom.Persons)
                     {
-                        if (ch.IsFearing(rch))
+                        if (((MobileInstance)ch).IsFearing(rch))
                         {
                             string buf = string.Empty;
                             switch (SmaugRandom.Bits(2))
@@ -240,17 +242,17 @@ namespace SmaugCS
                 if (ch.IsNpc() || ch.IsImmortal())
                     continue;
 
-                ch.GainCondition(ConditionTypes.Drunk, -1);
+                ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
                 if (ch.CurrentRoom != null && ch.Level > 3)
                 {
                     RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
-                    ch.GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     ThirstAttribute attrib = ch.CurrentRoom.SectorType.GetAttribute<ThirstAttribute>();
                     int modValue = (attrib == null ? -1 : attrib.ModValue) + race.ThirstMod;
 
-                    ch.GainCondition(ConditionTypes.Thirsty, modValue);
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, modValue);
                 }
             }
 
@@ -280,7 +282,7 @@ namespace SmaugCS
                     continue;
 
                 CharacterInstance ch_save = null;
-                if (!ch.IsNpc() && (ch.Descriptor == null || ch.Descriptor.ConnectionStatus == ConnectionTypes.Playing)
+                if (!ch.IsNpc() && (((PlayerInstance)ch).Descriptor == null || ((PlayerInstance)ch).Descriptor.ConnectionStatus == ConnectionTypes.Playing)
                     && ch.Level >= 2 && CheckSaveFrequency(ch))
                     ch_save = ch;
 
@@ -320,10 +322,10 @@ namespace SmaugCS
                     if (++ch.Timer >= 12)
                         ProcessIdle(ch);
 
-                    if (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk) > 8)
-                        ch.WorsenMentalState(ch.PlayerData.GetConditionValue(ConditionTypes.Drunk)/8);
+                    if (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Drunk) > 8)
+                        ((PlayerInstance)ch).WorsenMentalState(((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Drunk) / 8);
 
-                    if (ch.PlayerData.GetConditionValue(ConditionTypes.Full) > 1)
+                    if (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Full) > 1)
                     {
                         IEnumerable<MentalStateAttribute> attribs =
                             ch.CurrentPosition.GetAttributes<MentalStateAttribute>();
@@ -335,7 +337,7 @@ namespace SmaugCS
                         }
                     }
 
-                    if (ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 1)
+                    if (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 1)
                     {
                         IEnumerable<MentalStateAttribute> attribs =
                             ch.CurrentPosition.GetAttributes<MentalStateAttribute>();
@@ -348,29 +350,29 @@ namespace SmaugCS
                     }
 
                     ch.CheckAlignment();
-                    ch.GainCondition(ConditionTypes.Drunk, -1);
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
                     RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
-                    ch.GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     if (ch.IsVampire() && ch.Level >= 10)
                     {
                         if (GameManager.Instance.GameTime.Hour < 21 && GameManager.Instance.GameTime.Hour >= 10)
-                            ch.GainCondition(ConditionTypes.Bloodthirsty, -1);
+                            ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -1);
                     }
 
-                    if (ch.CanPKill() && ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) - 9 > 10)
-                        ch.GainCondition(ConditionTypes.Thirsty, -9);
+                    if (ch.CanPKill() && ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) - 9 > 10)
+                        ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, -9);
 
                     // TODO Nuisance
                 }
 
-                if (!ch.IsNpc() && !ch.IsImmortal() && ch.PlayerData.release_date > DateTime.MinValue &&
-                    ch.PlayerData.release_date <= DateTime.Now)
+                if (!ch.IsNpc() && !ch.IsImmortal() && ((PlayerInstance)ch).PlayerData.release_date > DateTime.MinValue &&
+                    ((PlayerInstance)ch).PlayerData.release_date <= DateTime.Now)
                 {
                     RoomTemplate location;
-                    if (ch.PlayerData.Clan != null)
-                        location = DatabaseManager.Instance.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
+                    if (((PlayerInstance)ch).PlayerData.Clan != null)
+                        location = DatabaseManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
                     else
                         location = DatabaseManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
 
@@ -381,8 +383,8 @@ namespace SmaugCS
                     location.ToRoom(ch);
                     color.send_to_char("The gods have released you from hell as your sentence is up!", ch);
                     Look.do_look(ch, "auto");
-                    ch.PlayerData.helled_by = string.Empty;
-                    ch.PlayerData.release_date = DateTime.MinValue;
+                    ((PlayerInstance)ch).PlayerData.helled_by = string.Empty;
+                    ((PlayerInstance)ch).PlayerData.release_date = DateTime.MinValue;
                     save.save_char_obj(ch);
                 }
 
@@ -527,7 +529,7 @@ namespace SmaugCS
                 if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Idle))
                     save.save_char_obj(ch);
 
-                ch.PlayerData.Flags.SetBit(PCFlags.Idle);
+                ((PlayerInstance)ch).PlayerData.Flags.SetBit(PCFlags.Idle);
                 ch.CurrentRoom.FromRoom(ch);
 
                 RoomTemplate room = DatabaseManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
@@ -554,7 +556,7 @@ namespace SmaugCS
 
         private static bool CheckSaveFrequency(CharacterInstance ch)
         {
-            return ch.PlayedDuration > GameManager.Instance.SystemData.SaveFrequency;
+            return ((PlayerInstance)ch).PlayedDuration > GameManager.Instance.SystemData.SaveFrequency;
         }
 
         public static void obj_update()
@@ -700,7 +702,7 @@ namespace SmaugCS
                     continue;
 
                 if (ch.IsNpc())
-                    CheckNpc(ch);
+                    CheckNpc((MobileInstance)ch);
                 else
                     CheckPlayer(ch);
             }
@@ -713,7 +715,7 @@ namespace SmaugCS
             throw new NotImplementedException();
         }
 
-        private static void CheckNpc(CharacterInstance ch)
+        private static void CheckNpc(MobileInstance ch)
         {
             if ((_charCounter & 1) > 0)
                 return;

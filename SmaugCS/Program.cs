@@ -15,6 +15,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.News;
@@ -153,7 +154,7 @@ namespace SmaugCS
 
         private static void DisconnectUser(ITcpClientWrapper user)
         {
-            CharacterInstance character = DatabaseManager.CHARACTERS.Values.FirstOrDefault(x => x.Descriptor.User == user);
+            PlayerInstance character = DatabaseManager.CHARACTERS.Values.OfType<PlayerInstance>().FirstOrDefault(x => x.Descriptor.User == user);
             if (character == null)
             {
                 DescriptorData descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);

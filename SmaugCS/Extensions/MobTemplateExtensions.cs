@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS

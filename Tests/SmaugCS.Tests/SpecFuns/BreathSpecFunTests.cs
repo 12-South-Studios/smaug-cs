@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS.Tests.SpecFuns
@@ -8,12 +8,12 @@ namespace SmaugCS.Tests.SpecFuns
     [TestFixture]
     public class BreathSpecFunTests
     {
-        private static CharacterInstance _character;
+        private static MobileInstance _character;
 
         [SetUp]
         public void OnSetup()
         {
-            _character = new CharacterInstance(1, "Tester");
+            _character = new MobileInstance(1, "Tester");
         }
 
         [Test]
@@ -23,7 +23,5 @@ namespace SmaugCS.Tests.SpecFuns
 
             Assert.That(BreathAny.DoSpecBreathAny(_character), Is.EqualTo(false));
         }
-
-
     }
 }

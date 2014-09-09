@@ -1,5 +1,6 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -11,7 +12,7 @@ namespace SmaugCS.Commands
         public static void do_track(CharacterInstance ch, string argument)
         {
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("track");
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.PlayerData.Learned[(int) skill.ID] <= 0,
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Learned[(int) skill.ID] <= 0,
                 "You do not know of this skill yet.")) return;
 
             string arg = argument.FirstWord();

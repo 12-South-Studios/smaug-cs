@@ -7,6 +7,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
@@ -20,25 +22,27 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.PKilled), "You can't drag a player right now."))
                 return;
 
-            string firstArg = argument.FirstWord();
-            if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Drag whom?")) return;
+            PlayerInstance pch = (PlayerInstance) ch;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
-            if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
-            if (CheckFunctions.CheckIfEquivalent(ch, ch, victim,
+            string firstArg = argument.FirstWord();
+            if (CheckFunctions.CheckIfEmptyString(pch, firstArg, "Drag whom?")) return;
+
+            CharacterInstance victim = pch.GetCharacterInRoom(firstArg);
+            if (CheckFunctions.CheckIfNullObject(pch, victim, "They aren't here.")) return;
+            if (CheckFunctions.CheckIfEquivalent(pch, pch, victim,
                 "You take yourself by the scruff of your neck, but go nowhere.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "You can only drag characters.")) return;
             if (CheckFunctions.CheckIfTrue(ch, !victim.Act.IsSet(PlayerFlags.ShoveDrag)
-                                               || !victim.PlayerData.Flags.IsSet(PCFlags.Deadly),
+                || (!victim.IsNpc() && !((PlayerInstance) victim).PlayerData.Flags.IsSet(PCFlags.Deadly)),
                 "That character doesn't seem to appreciate your attentions.")) return;
             if (CheckFunctions.CheckIfTrue(ch, victim.HasTimer(TimerTypes.PKilled),
                 "You can't drag that player right now.")) return;
             if (CheckFunctions.CheckIf(ch, HelperFunctions.IsFighting,
                 "You try, but can't get close enough.", new List<object> {ch})) return;
-            if (CheckFunctions.CheckIfTrue(ch, !ch.PlayerData.Flags.IsSet(PCFlags.Deadly)
-                                               && ch.PlayerData.Flags.IsSet(PCFlags.Deadly),
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly)
+                                               && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly),
                 "You can't drag a deadly character.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, !ch.PlayerData.Flags.IsSet(PCFlags.Deadly) 
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly) 
                 && (int)ch.CurrentPosition > 3, "They don't seem to need your assistance.")) return;
 
             string secondArg = argument.SecondWord();

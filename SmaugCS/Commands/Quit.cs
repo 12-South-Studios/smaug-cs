@@ -5,6 +5,7 @@ using SmaugCS.Commands.Skills;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -50,10 +51,10 @@ namespace SmaugCS.Commands
             // TODO quitting_char = ch;
             save.save_char_obj(ch);
 
-            if (GameManager.Instance.SystemData.SavePets && ch.PlayerData.Pet != null)
+            if (GameManager.Instance.SystemData.SavePets && ((PlayerInstance)ch).PlayerData.Pet != null)
             {
-                comm.act(ATTypes.AT_BYE, "$N follows $S master into the Void.", ch, null, ch.PlayerData.Pet, ToTypes.Room);
-                CharacterInstanceExtensions.Extract(ch.PlayerData.Pet, true);
+                comm.act(ATTypes.AT_BYE, "$N follows $S master into the Void.", ch, null, ((PlayerInstance)ch).PlayerData.Pet, ToTypes.Room);
+                ((PlayerInstance)ch).PlayerData.Pet.Extract(true);
             }
 
             //if (ch.PlayerData.Clan != null)

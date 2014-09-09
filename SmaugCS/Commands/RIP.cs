@@ -3,6 +3,8 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands
 {
@@ -14,21 +16,21 @@ namespace SmaugCS.Commands
             if (Helpers.CheckFunctions.CheckIfEmptyString(ch, firstArg, "Rip ON or OFF?")) return;
 
             if (firstArg.EqualsIgnoreCase("on"))
-                EnableRip(ch);
+                EnableRip(((PlayerInstance)ch));
             else if (firstArg.EqualsIgnoreCase("off"))
-                DisableRip(ch);
+                DisableRip(((PlayerInstance)ch));
             else 
                 color.send_to_char("Huh?!?", ch);
         }
 
-        private static void EnableRip(CharacterInstance ch)
+        private static void EnableRip(PlayerInstance ch)
         {
-            act_comm.send_rip_screen(ch);
+            ch.SendRIPScreen();
             ch.Act.IsSet(PlayerFlags.Rip);
             ch.Act.IsSet(PlayerFlags.Ansi); 
         }
 
-        private static void DisableRip(CharacterInstance ch)
+        private static void DisableRip(PlayerInstance ch)
         {
             ch.Act.RemoveBit(PlayerFlags.Rip);
             color.send_to_char("!|*\r\nRIP now off...", ch);

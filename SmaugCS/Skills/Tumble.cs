@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -18,7 +19,7 @@ namespace SmaugCS.Skills
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'tumble' not found");
 
-            if (!victim.IsNpc() && !(victim.PlayerData.Learned[(int) skill.ID] > 0))
+            if (!victim.IsNpc() && !(((PlayerInstance)victim).PlayerData.Learned[(int) skill.ID] > 0))
                 return false;
 
             int chances;
@@ -34,13 +35,13 @@ namespace SmaugCS.Skills
             if (!victim.Chance(chances + victim.Level - ch.Level))
                 return false;
 
-            if (!victim.IsNpc() && !victim.PlayerData.Flags.IsSet(PCFlags.Gag))
+            if (!victim.IsNpc() && !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Gag))
                 comm.act(ATTypes.AT_SKILL, "You tumble away from $n's attack.", ch, null, victim, ToTypes.Victim);
 
-            if (!ch.IsNpc() && !ch.PlayerData.Flags.IsSet(PCFlags.Gag))
+            if (!ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))
                 comm.act(ATTypes.AT_SKILL, "$N tumbles away from your attack.", ch, null, victim, ToTypes.Character);
 
-            skill.LearnFromSuccess(victim);
+            skill.LearnFromSuccess((PlayerInstance)victim);
             return true;
         }
     }

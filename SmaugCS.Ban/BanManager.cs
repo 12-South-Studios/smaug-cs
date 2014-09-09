@@ -8,7 +8,7 @@ using System.Timers;
 using Ninject;
 using Realm.Library.Common;
 using SmallDBConnectivity;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
@@ -267,7 +267,7 @@ namespace SmaugCS.Ban
             return true;
         }
 
-        public bool CheckBans(CharacterInstance ch, int type)
+        public bool CheckBans(PlayerInstance ch, int type)
         {
             switch (type)
             {

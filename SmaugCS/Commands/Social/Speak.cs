@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS;
+using SmaugCS.Data.Instances;
 using SmaugCS.Language;
 
 namespace SmaugCS.Commands.Social

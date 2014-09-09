@@ -7,6 +7,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -185,7 +186,7 @@ namespace SmaugCS.Commands.Objects
             {
                 color.set_char_color(ATTypes.AT_OBJECT, ch);
                 color.send_to_char("Contents:", ch);
-                act_info.show_list_to_char(auction.ItemForSale.Contents, ch, true, false);
+                act_info.show_list_to_char(auction.ItemForSale.Contents, (PlayerInstance)ch, true, false);
             }
 
             if (ch.IsImmortal())

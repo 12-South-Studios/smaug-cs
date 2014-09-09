@@ -1,6 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
@@ -20,9 +21,9 @@ namespace SmaugCS.Commands.PetsAndGroups
                 && victim.IsNpc() && victim.Master == ch)
             {
                 victim.StopFollower();
-                victim.StopHating();
-                victim.StopHunting();
-                victim.StopFearing();
+                ((MobileInstance)victim).StopHating();
+                ((MobileInstance)victim).StopHunting();
+                ((MobileInstance)victim).StopFearing();
                 comm.act(ATTypes.AT_ACTION, "$n dismisses $N.", ch, null, victim, ToTypes.NotVictim);
                 comm.act(ATTypes.AT_ACTION, "You dismiss $N.", ch, null, victim, ToTypes.Character);
                 return;

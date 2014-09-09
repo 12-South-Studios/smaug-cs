@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -78,7 +79,7 @@ namespace SmaugCS.Spells.Smaug
                     : vch.CurrentFighting.Experience;
                 int xpGain = xp*damage*2/vch.MaximumHealth;
 
-                ch.GainXP(0 - xpGain);
+                ((PlayerInstance)ch).GainXP(0 - xpGain);
             }
         }
 

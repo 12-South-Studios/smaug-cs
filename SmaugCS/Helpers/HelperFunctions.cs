@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Helpers
 {
@@ -13,7 +14,7 @@ namespace SmaugCS.Helpers
         {
             CharacterInstance actor = (CharacterInstance)args[0];
             int blood = (int)args[1];
-            return actor.IsVampire() && actor.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] >= blood;
+            return actor.IsVampire() && ((PlayerInstance)actor).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) >= blood;
         }
 
         public static bool HasSufficientMana(IList<object> args)

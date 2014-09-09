@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using NCalc;
 using Realm.Library.NCalcExt;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -190,7 +191,8 @@ namespace SmaugCS
         }
         private static int AgeFunction(FunctionArgs args)
         {
-            return GameManager.CurrentCharacter.CalculateAge();
+            var instance = GameManager.CurrentCharacter as PlayerInstance;
+            return instance != null ? instance.CalculateAge() : 0;
         }
         private static string ReplaceAgeCall(Match regexMatch)
         {

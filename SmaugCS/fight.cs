@@ -12,7 +12,9 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -77,7 +79,7 @@ namespace SmaugCS
                     ch.CurrentFighting.Experience = ((ch.CurrentFighting.Experience*9)/10);
 
                 foreach (TimerData timer in ch.Timers)
-                    DecreaseExperienceInBattle(timer, ch);
+                    DecreaseExperienceInBattle(timer, (PlayerInstance)ch);
 
                 if (ch.CharDied())
                     continue;
@@ -112,11 +114,12 @@ namespace SmaugCS
 
                         if ((int) paf.Type == (int) DatabaseManager.Instance.GetEntity<SkillData>("possess").ID)
                         {
-                            ch.Descriptor.Character = ch.Descriptor.Original;
-                            ch.Descriptor.Original = null;
-                            ch.Descriptor.Character.Descriptor = ch.Descriptor;
-                            ch.Descriptor.Character.Switched = null;
-                            ch.Descriptor = null;
+                            PlayerInstance pch = (PlayerInstance) ch;
+                            pch.Descriptor.Character = pch.Descriptor.Original;
+                            pch.Descriptor.Original = null;
+                            pch.Descriptor.Character.Descriptor = pch.Descriptor;
+                            pch.Descriptor.Character.Switched = null;
+                            pch.Descriptor = null;
                         }
                         ch.RemoveAffect(paf);
                     }
@@ -160,17 +163,18 @@ namespace SmaugCS
                 mud_prog.rprog_rfight_trigger(ch);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
-                HitPercentProg.Execute(ch, victim);
+                HitPercentProg.Execute((MobileInstance)ch, victim);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
-                FightProg.Execute(ch, victim);
+                FightProg.Execute((MobileInstance)ch, victim);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
 
                 //// NPC Special attack flags
                 if (ch.IsNpc())
                 {
-                    if (!ch.Attacks.IsEmpty())
+                    MobileInstance mch = (MobileInstance) ch;
+                    if (!mch.Attacks.IsEmpty())
                     {
                         int attacktype = -1;
                         if (30 + (ch.Level/4) >= SmaugRandom.D100())
@@ -185,7 +189,7 @@ namespace SmaugCS
                                 }
                                 attacktype = SmaugRandom.Between(7,
                                     EnumerationFunctions.MaximumEnumValue<AttackTypes>() - 1);
-                                if (ch.Attacks.IsSet(attacktype))
+                                if (mch.Attacks.IsSet(attacktype))
                                     break;
                             }
 
@@ -218,7 +222,7 @@ namespace SmaugCS
             }
         }
 
-        private static void DecreaseExperienceInBattle(TimerData timer, CharacterInstance ch)
+        private static void DecreaseExperienceInBattle(TimerData timer, PlayerInstance ch)
         {
             --timer.Count;
             if (timer.Count > 0)
@@ -291,13 +295,13 @@ namespace SmaugCS
 
                 if (SmaugRandom.D100() < chance)
                 {
-                    dualWield.LearnFromSuccess(ch);
+                    dualWield.LearnFromSuccess((PlayerInstance)ch);
                     retcode = one_hit(ch, victim, dt);
                     if (retcode != ReturnTypes.None || ch.GetMyTarget() != victim)
                         return retcode;
                 }
                 else
-                    dualWield.LearnFromFailure(ch);
+                    dualWield.LearnFromFailure((PlayerInstance)ch);
             }
 
             if (ch.CurrentMovement < 10)
@@ -318,49 +322,49 @@ namespace SmaugCS
             chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int) secondAttack.ID) + dualBonus)/1.5f);
             if (SmaugRandom.D100() < chance)
             {
-                secondAttack.LearnFromSuccess(ch);
+                secondAttack.LearnFromSuccess((PlayerInstance)ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             } 
             else 
-                secondAttack.LearnFromFailure(ch);
+                secondAttack.LearnFromFailure((PlayerInstance)ch);
 
             SkillData thirdAttack = DatabaseManager.Instance.GetEntity<SkillData>("third attack");
             chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int)thirdAttack.ID) + (dualBonus*1.5f)) / 2);
             if (SmaugRandom.D100() < chance)
             {
-                thirdAttack.LearnFromSuccess(ch);
+                thirdAttack.LearnFromSuccess((PlayerInstance)ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             }
             else
-                thirdAttack.LearnFromFailure(ch);
+                thirdAttack.LearnFromFailure((PlayerInstance)ch);
 
             SkillData fourthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fourth attack");
             chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fourthAttack.ID) + (dualBonus*2)) / 3;
             if (SmaugRandom.D100() < chance)
             {
-                fourthAttack.LearnFromSuccess(ch);
+                fourthAttack.LearnFromSuccess((PlayerInstance)ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             }
             else
-                fourthAttack.LearnFromFailure(ch);
+                fourthAttack.LearnFromFailure((PlayerInstance)ch);
 
             SkillData fifthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fifth attack");
             chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fifthAttack.ID) + (dualBonus*3)) / 4;
             if (SmaugRandom.D100() < chance)
             {
-                fifthAttack.LearnFromSuccess(ch);
+                fifthAttack.LearnFromSuccess((PlayerInstance)ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             }
             else
-                fifthAttack.LearnFromFailure(ch);
+                fifthAttack.LearnFromFailure((PlayerInstance)ch);
 
             retcode = ReturnTypes.None;
 
@@ -406,7 +410,7 @@ namespace SmaugCS
                 bonus = (Macros.LEARNED(ch, sn) - 50)/10;
 
             if (ch.IsDevoted())
-                bonus -= ch.PlayerData.Favor/-400;
+                bonus -= ((PlayerInstance)ch).PlayerData.Favor / -400;
 
             return new Tuple<int, int>(bonus, sn);
         }
@@ -468,14 +472,14 @@ namespace SmaugCS
             if (ch.CurrentFighting != null
                 && damageType == Program.TYPE_UNDEFINED
                 && ch.IsNpc()
-                && !ch.Attacks.IsEmpty())
+                && !((MobileInstance)ch).Attacks.IsEmpty())
             {
                 int cnt = 0;
                 int attacktype = 0;
                 for (;;)
                 {
                     attacktype = SmaugRandom.Between(0, 6);
-                    if (ch.Attacks.IsSet(attacktype))
+                    if (((MobileInstance)ch).Attacks.IsSet(attacktype))
                         break;
                     if (cnt++ > 16)
                     {
@@ -584,7 +588,7 @@ namespace SmaugCS
                     throw new ObjectNotFoundException("Skill 'poison' not found");
 
                 // TODO Do something with poison skill
-                skill.LearnFromFailure(ch);
+                skill.LearnFromFailure((PlayerInstance)ch);
                 ch.CauseDamageTo(victim, 0, damageType);
                 // TODO Tail_chain?
                 return ReturnTypes.None;
@@ -607,10 +611,10 @@ namespace SmaugCS
             if (dmgSkill == null)
                 throw new ObjectNotFoundException("Skill 'enhanced damage' not found");
 
-            if (!ch.IsNpc() && ch.PlayerData.Learned[(int) dmgSkill.ID] > 0)
+            if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Learned[(int)dmgSkill.ID] > 0)
             {
                 damage += damage*Macros.LEARNED(ch, (int) dmgSkill.ID);
-                dmgSkill.LearnFromSuccess(ch);
+                dmgSkill.LearnFromSuccess((PlayerInstance)ch);
             }
 
             if (!victim.IsAwake())
@@ -673,9 +677,9 @@ namespace SmaugCS
             {
                 SkillData sk = DatabaseManager.Instance.SKILLS.Get(sn);
                 if (damage > 0)
-                    sk.LearnFromSuccess(ch);
+                    sk.LearnFromSuccess((PlayerInstance)ch);
                 else 
-                    sk.LearnFromFailure(ch);
+                    sk.LearnFromFailure((PlayerInstance)ch);
             }
 
             // immune to damage
@@ -710,8 +714,8 @@ namespace SmaugCS
                 return retcode;
 
             // Weapon spell support
-            if (wield != null && !victim.Immunity.IsSet((int) ResistanceTypes.Magic)
-                && !victim.CurrentRoom.Flags.IsSet((int) RoomFlags.NoMagic))
+            if (wield != null && !victim.Immunity.IsSet(ResistanceTypes.Magic)
+                && !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoMagic))
             {
                 foreach (AffectData aff in wield.ObjectIndex.Affects)
                 {
@@ -908,10 +912,10 @@ namespace SmaugCS
             if (!ch.IsNpc())
             {
                 SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
-                if (ch.PlayerData.Learned[skill.ID] > 0)
+                if (((PlayerInstance)ch).PlayerData.Learned[skill.ID] > 0)
                 {
                     damage += damage*Macros.LEARNED(ch, (int) skill.ID);
-                    skill.LearnFromSuccess(ch);
+                    skill.LearnFromSuccess((PlayerInstance)ch);
                 }
             }
 
@@ -1010,7 +1014,7 @@ namespace SmaugCS
             if (ch.IsNpc() || victim.IsNpc())
                 return false;
 
-            if (ch.CalculateAge() < 18 || ch.Level < 5)
+            if (((PlayerInstance)ch).CalculateAge() < 18 || ch.Level < 5)
             {
                 if (show_messg)
                 {
@@ -1019,7 +1023,7 @@ namespace SmaugCS
                 }
                 return true;
             }
-            if (victim.CalculateAge() < 18 || victim.Level < 5)
+            if (((PlayerInstance)victim).CalculateAge() < 18 || victim.Level < 5)
             {
                 if (show_messg)
                 {
@@ -1074,8 +1078,8 @@ namespace SmaugCS
 
             // Members of diferent clans can loot too
             if (!ch.IsNpc() && !victim.IsNpc()
-                && ch.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
-                && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly))
+                && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly)
+                && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly))
                 return true;
 
             return false;
@@ -1086,7 +1090,7 @@ namespace SmaugCS
         /// </summary>
         /// <param name="ch"></param>
         /// <param name="victim"></param>
-        public static void check_killer(CharacterInstance ch, CharacterInstance victim)
+        public static void check_killer(PlayerInstance ch, CharacterInstance victim)
         {
             // NPCs are fair game
             if (victim.IsNpc())
@@ -1127,7 +1131,7 @@ namespace SmaugCS
                 if (!ch.IsNpc() && !victim.IsNpc())
                 {
                     ch.PlayerData.PvPKills++;
-                    victim.PlayerData.PvPDeaths++;
+                    ((PlayerInstance)victim).PlayerData.PvPDeaths++;
                 }
                 return;
             }
@@ -1164,13 +1168,13 @@ namespace SmaugCS
             // Clan checks
             if (!ch.IsNpc() && !victim.IsNpc()
                 && ch.PlayerData.Flags.IsSet(PCFlags.Deadly)
-                && victim.PlayerData.Flags.IsSet(PCFlags.Deadly))
+                && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly))
             {
                 if (ch.PlayerData.Clan == null
-                    || victim.PlayerData.Clan == null
+                    || ((PlayerInstance)victim).PlayerData.Clan == null
                     || (ch.PlayerData.Clan.ClanType != ClanTypes.NoKill
-                        && victim.PlayerData.Clan.ClanType != ClanTypes.NoKill
-                        && ch.PlayerData.Clan != victim.PlayerData.Clan))
+                        && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.NoKill
+                        && ch.PlayerData.Clan != ((PlayerInstance)victim).PlayerData.Clan))
                 {
                     if (ch.PlayerData.Clan != null)
                     {
@@ -1203,7 +1207,7 @@ namespace SmaugCS
                         comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into you.", ch, victim.Name, null, ToTypes.Character);
                     }
 
-                    if (victim.PlayerData.Clan != null)
+                    if (((PlayerInstance)victim).PlayerData.Clan != null)
                     {
                         if (victim.Level < 10)
                             ch.PlayerData.Clan.PvPDeathTable[0]++;
@@ -1221,8 +1225,8 @@ namespace SmaugCS
                             ch.PlayerData.Clan.PvPDeathTable[6]++;
                     }
 
-                    victim.PlayerData.PvPDeaths++;
-                    victim.AdjustFavor(DeityFieldTypes.Die, 1);
+                    ((PlayerInstance)victim).PlayerData.PvPDeaths++;
+                    ((PlayerInstance)victim).AdjustFavor(DeityFieldTypes.Die, 1);
                     ch.AdjustFavor(DeityFieldTypes.Kill, 1);
                     victim.AddTimer(TimerTypes.PKilled, 115, null, 0);
                     Macros.WAIT_STATE(victim, 3 * GameConstants.GetSystemValue<int>("PulseViolence"));
@@ -1240,7 +1244,7 @@ namespace SmaugCS
                     return;
                 }
 
-                check_killer(ch.Master, victim);
+                check_killer((PlayerInstance)ch.Master, victim);
                 return;
             }
 
@@ -1248,20 +1252,21 @@ namespace SmaugCS
             {
                 if (!victim.IsNpc())
                 {
-                    if (victim.PlayerData.Clan != null)
-                        victim.PlayerData.Clan.PvEDeaths++;
-                    victim.PlayerData.PvEDeaths++;
+                    PlayerInstance vch = (PlayerInstance) victim;
+                    if (vch.PlayerData.Clan != null)
+                        vch.PlayerData.Clan.PvEDeaths++;
+                    vch.PlayerData.PvEDeaths++;
                     victim.CurrentRoom.Area.PvEDeaths++;
 
                     int levelRatio = (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.AvatarLevel);
-                    if (victim.PlayerData.CurrentDeity != null)
+                    if (vch.PlayerData.CurrentDeity != null)
                     {
-                        if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCRace)
-                            victim.AdjustFavor(DeityFieldTypes.DieNPCRace, levelRatio);
-                        else if (ch.CurrentRace == victim.PlayerData.CurrentDeity.NPCFoe)
-                            victim.AdjustFavor(DeityFieldTypes.DieNPCFoe, levelRatio);
+                        if (ch.CurrentRace == vch.PlayerData.CurrentDeity.NPCRace)
+                            vch.AdjustFavor(DeityFieldTypes.DieNPCRace, levelRatio);
+                        else if (ch.CurrentRace == vch.PlayerData.CurrentDeity.NPCFoe)
+                            vch.AdjustFavor(DeityFieldTypes.DieNPCFoe, levelRatio);
                         else
-                            victim.AdjustFavor(DeityFieldTypes.Die, levelRatio);
+                            vch.AdjustFavor(DeityFieldTypes.Die, levelRatio);
                     }
                 }
                 return;
@@ -1277,7 +1282,7 @@ namespace SmaugCS
 
             if (!victim.IsNpc())
             {
-                if (victim.PlayerData.Clan != null)
+                if (((PlayerInstance)victim).PlayerData.Clan != null)
                 {
                     if (victim.Level < 10)
                         ch.PlayerData.Clan.PvPDeathTable[0]++;
@@ -1295,7 +1300,7 @@ namespace SmaugCS
                         ch.PlayerData.Clan.PvPDeathTable[6]++;
                 }
 
-                victim.PlayerData.PvPDeaths++;
+                ((PlayerInstance)victim).PlayerData.PvPDeaths++;
                 victim.CurrentRoom.Area.PvPDeaths++;
             }
 
@@ -1340,7 +1345,7 @@ namespace SmaugCS
                                          Alignment = ch.ComputeAlignmentChange(victim)
                                      };
             if (!ch.IsNpc() && victim.IsNpc())
-                fight.TimesKilled = ch.TimesKilled( victim);
+                fight.TimesKilled = ((PlayerInstance)ch).TimesKilled((MobileInstance)victim);
 
             ch.NumberFighting = 1;
             ch.CurrentFighting = fight;
@@ -1490,7 +1495,7 @@ namespace SmaugCS
                 if (xp > 0)
                 {
                     color.ch_printf(gch, "You receive {0} experience points.", xp);
-                    gch.GainXP(xp);
+                    ((PlayerInstance)gch).GainXP(xp);
                 }
 
                 EvaluateEquipmentAfterXPGain(gch);
@@ -1542,8 +1547,8 @@ namespace SmaugCS
 
             char punct = (dampc <= 30) ? '.' : '!';
 
-            bool gcflag = (dam == 0 && (!ch.IsNpc() && ch.PlayerData.Flags.IsSet(PCFlags.Gag)));
-            bool gvflag = (dam == 0 && (!victim.IsNpc() && victim.PlayerData.Flags.IsSet(PCFlags.Gag)));
+            bool gcflag = (dam == 0 && (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag)));
+            bool gvflag = (dam == 0 && (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Gag)));
 
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
 
@@ -1713,9 +1718,9 @@ namespace SmaugCS
         {
             if (!victim.IsNpc() && !ch.IsNpc())
             {
-                if ((victim.PlayerData.Flags.IsSet((int) PCFlags.Deadly)
+                if ((((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly)
                      || (ch.Level - victim.Level) > 10
-                     || ch.PlayerData.Flags.IsSet((int) PCFlags.Deadly))
+                     || ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly))
                     && !ch.IsInArena()
                     && ch != victim
                     && !(ch.IsImmortal() && victim.IsImmortal()))

@@ -1,5 +1,7 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using System.Linq;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.MudProgs.MobileProgs
 {
@@ -7,11 +9,11 @@ namespace SmaugCS.MudProgs.MobileProgs
     {
         public static void Execute(string txt, CharacterInstance actor)
         {
-            foreach (CharacterInstance mob in actor.CurrentRoom.Persons)
+            foreach (MobileInstance mob in actor.CurrentRoom.Persons.OfType<MobileInstance>().Where(x => x.IsNpc()))
             {
-                if (mob.IsNpc() && mob.MobIndex.HasProg(MudProgTypes.Speech))
+                if (mob.MobIndex.HasProg(MudProgTypes.Speech))
                 {
-                    if (actor.IsNpc() && actor.MobIndex == mob.MobIndex)
+                    if (actor.IsNpc() && ((MobileInstance)actor).MobIndex == mob.MobIndex)
                         continue;
 
                     // TODO: Trigger on words or phrases?

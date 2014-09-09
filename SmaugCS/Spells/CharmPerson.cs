@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -49,10 +50,12 @@ namespace SmaugCS.Spells
                 victim.StopFollower();
             victim.AddFollower(ch);
 
-            AffectData af = new AffectData();
-            af.SkillNumber = sn;
-            af.Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
-                          GameConstants.GetConstant<int>("AffectDurationConversionValue");
+            AffectData af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
+                           GameConstants.GetConstant<int>("AffectDurationConversionValue")
+            };
             // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);
             
@@ -60,11 +63,11 @@ namespace SmaugCS.Spells
             //TODO log_printf_plus( LOG_NORMAL, ch->level, "%s has charmed %s.", ch->name, victim->name );
 
             if (!ch.IsNpc())
-                ch.PlayerData.NumberOfCharmies++;
+                ((PlayerInstance)ch).PlayerData.NumberOfCharmies++;
             if (victim.IsNpc())
             {
-                victim.StartHating(ch);
-                victim.StartHunting(ch);
+                ((MobileInstance)victim).StartHating(ch);
+                ((MobileInstance)victim).StartHunting(ch);
             }
 
             return ReturnTypes.None;

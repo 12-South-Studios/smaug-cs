@@ -3,14 +3,15 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
     public static class Executioner
     {
-        public static bool DoSpecExecutioner(CharacterInstance ch)
+        public static bool DoSpecExecutioner(MobileInstance ch)
         {
             if (!ch.IsAwake() || ch.CurrentFighting != null)
                 return false;

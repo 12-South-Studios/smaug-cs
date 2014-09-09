@@ -1,10 +1,10 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Data.Instances;
 
 namespace SmaugCS.SpecFuns
 {
     public static class BreathAny
     {
-        public static bool DoSpecBreathAny(CharacterInstance ch)
+        public static bool DoSpecBreathAny(MobileInstance ch)
         {
             if (!ch.IsInCombatPosition())
                 return false;

@@ -7,7 +7,9 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
@@ -26,7 +28,7 @@ namespace SmaugCS
             if (obj.MagicFlags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
             {
                 TimerData timer = ch.GetTimer(TimerTypes.PKilled);
-                if (ch.CanPKill() && timer == null)
+                if (((PlayerInstance)ch).CanPKill() && timer == null)
                 {
                     if (ch.Level - obj.Value[5] > 5 || obj.Value[5] - ch.Level > 5)
                     {
@@ -165,7 +167,7 @@ namespace SmaugCS
             CharacterInstance ch = obj.CarriedBy;
             obj.Split();
 
-            if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !ch.PlayerData.Flags.IsSet(PCFlags.Gag))))
+            if (!ch.IsNpc() && (!((PlayerInstance)ch).IsPKill() || (((PlayerInstance)ch).IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))))
                 comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
             else if (obj.InRoom != null && obj.InRoom.Persons.First() != null)
             {

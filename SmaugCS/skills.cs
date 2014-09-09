@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -64,10 +65,11 @@ namespace SmaugCS
                 return true;
             if (!ch.IsPKill() || !vch.IsPKill())
                 return false;
-            return ch.PlayerData.Clan == null || ch.PlayerData.Clan != vch.PlayerData.Clan;
+            return ((PlayerInstance) ch).PlayerData.Clan == null ||
+                   ((PlayerInstance) ch).PlayerData.Clan != ((PlayerInstance) vch).PlayerData.Clan;
         }
 
- 
+
 
         public static bool check_illegal_psteal(CharacterInstance ch, CharacterInstance victim)
         {

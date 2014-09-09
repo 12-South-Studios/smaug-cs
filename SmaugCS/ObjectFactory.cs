@@ -6,6 +6,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
@@ -124,7 +126,7 @@ namespace SmaugCS
                     ch.CurrentCoin = 0;
                 }
 
-                corpse.Cost = -1 * (int)ch.MobIndex.Vnum;
+                corpse.Cost = -1 * (int)((MobileInstance)ch).MobIndex.Vnum;
                 corpse.Value[2] = corpse.Timer;
             }
             else
@@ -132,8 +134,7 @@ namespace SmaugCS
                 name = ch.Name;
                 corpse =
                     (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                        (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
-                                                               .Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
+                        (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
 
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value[2] = corpse.Timer / 8;

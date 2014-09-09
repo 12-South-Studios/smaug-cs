@@ -3,6 +3,8 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Repositories
 {
@@ -22,13 +24,16 @@ namespace SmaugCS.Repositories
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
+            bool isMobile = false;
+            if (args != null && args.Length > 2)
+                isMobile = (bool) args[2];
+
             CharacterInstance mob = new CharacterInstance(GetNextId, name)
             {
                 Parent = parent,
                 ShortDescription = mobParent.ShortDescription,
                 LongDescription = mobParent.LongDescription,
                 Description = parent.Description,
-                SpecialFunction = mobParent.SpecialFunction,
                 Level = SmaugRandom.Fuzzy(mobParent.Level),
                 Act = mobParent.GetActFlags(),
                 HomeVNum = -1,
@@ -39,8 +44,14 @@ namespace SmaugCS.Repositories
                 Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
             };
 
-            if (!string.IsNullOrEmpty(mobParent.SpecFun))
-                mob.SpecialFunctionName = mobParent.SpecFun;
+            if (isMobile)
+            {
+                MobileInstance mi = (MobileInstance) mob;
+                mi.SpecialFunction = mobParent.SpecialFunction;
+
+                if (!string.IsNullOrEmpty(mobParent.SpecFun))
+                    mi.SpecialFunctionName = mobParent.SpecFun;
+            }
 
             if (mob.Act.IsSet(ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;
@@ -88,7 +99,10 @@ namespace SmaugCS.Repositories
             mob.Resistance = mobParent.GetResistance();
             mob.Immunity = mobParent.GetImmunity();
             mob.Susceptibility = mobParent.GetSusceptibility();
-            mob.Attacks = new ExtendedBitvector(mobParent.GetAttacks());
+
+            if (isMobile)
+                ((MobileInstance)mob).Attacks = new ExtendedBitvector(mobParent.GetAttacks());
+
             mob.Defenses = mobParent.GetDefenses();
             mob.NumberOfAttacks = mobParent.NumberOfAttacks;
             //mob.Speaks = build.get_langflag(mobParent.Speaks);

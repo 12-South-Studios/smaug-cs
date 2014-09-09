@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Tests.Extensions
 {
@@ -26,7 +27,6 @@ namespace SmaugCS.Tests.Extensions
             _ch = new CharacterInstance(1, "Tester");
         }
 
-        [TestCase(55, 55, ActFlags.NoWander, true)]
         [TestCase(35, 35, ActFlags.IsNpc, true)]
         [TestCase(7, 7, ActFlags.NoWander, true)]
         [TestCase(1, 1, ActFlags.NoWander, false)]
@@ -39,7 +39,6 @@ namespace SmaugCS.Tests.Extensions
             Assert.That(_area.InSoftRange(_ch), Is.EqualTo(expectedValue));
         }
 
-        [TestCase(55, 55, ActFlags.NoWander, true)]
         [TestCase(35, 35, ActFlags.IsNpc, true)]
         [TestCase(27, 27, ActFlags.NoWander, true)]
         [TestCase(1, 1, ActFlags.NoWander, false)]

@@ -5,6 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.Commands.Social
@@ -52,19 +53,19 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Descriptor == null)
+            if (!victim.IsNpc() && ((PlayerInstance)victim).Descriptor == null)
             {
                 color.send_to_char("That player is link-dead.\r\n", ch);
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.AwayFromKeyboard))
             {
                 color.send_to_char("That player is afk.\r\n", ch);
                 return;
             }
 
-            if (victim.Deaf.IsSet((int)ChannelTypes.Whisper) &&
+            if (victim.Deaf.IsSet(ChannelTypes.Whisper) &&
                 (!ch.IsImmortal() || (ch.Trust < victim.Trust)))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E has $S whispers turned off.", ch, null, victim,
@@ -75,8 +76,8 @@ namespace SmaugCS.Commands.Social
             if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Silence))
                 color.send_to_char("That player is silenced.  They will receive your message but cannot respond.\r\n", ch);
 
-            if (victim.Descriptor != null
-                && (victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing)
+            if (((PlayerInstance)victim).Descriptor != null
+                && (((PlayerInstance)victim).Descriptor.ConnectionStatus == ConnectionTypes.Editing)
                 && (ch.Trust < LevelConstants.GetLevel(ImmortalTypes.God)))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer.  Please try again in a few minutes.",

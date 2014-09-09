@@ -4,6 +4,7 @@ using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -21,9 +22,9 @@ namespace SmaugCS.SpecFuns
                 {5, new Tuple<string, string>("gartla", "refresh")},
                 {6, new Tuple<string, string>("naimad", "cure serious")},
                 {7, new Tuple<string, string>("gorog", "remove curse")}
-            }; 
+            };
 
-        public static bool DoSpecCastAdept(CharacterInstance ch)
+        public static bool DoSpecCastAdept(MobileInstance ch)
         {
             if (!ch.IsAwake() || ch.CurrentFighting != null)
                 return false;
@@ -45,7 +46,7 @@ namespace SmaugCS.SpecFuns
             return CastSpell(ch, victim, bits, actLookupValue.Item2);
         }
 
-        private static bool CastSpell(CharacterInstance ch, CharacterInstance victim, int bitFlag, string spellName)
+        private static bool CastSpell(MobileInstance ch, CharacterInstance victim, int bitFlag, string spellName)
         {
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
             

@@ -1,5 +1,9 @@
-﻿
+﻿using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+
 // ReSharper disable once CheckNamespace
+
+
 namespace SmaugCS.Data
 {
     public interface IInstanceRepository<T> where T : Instance

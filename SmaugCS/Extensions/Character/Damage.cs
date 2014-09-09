@@ -7,6 +7,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
@@ -50,30 +51,31 @@ namespace SmaugCS.Extensions
 
             if (modifiedDamage > 0 && victim.IsNpc() && ch != victim)
             {
-                if (!victim.Act.IsSet(ActFlags.Sentinel))
+                MobileInstance vict = (MobileInstance) victim;
+                if (!vict.Act.IsSet(ActFlags.Sentinel))
                 {
-                    if (victim.CurrentHunting != null)
+                    if (vict.CurrentHunting != null)
                     {
-                        if (victim.CurrentHunting.Who != ch)
+                        if (vict.CurrentHunting.Who != ch)
                         {
-                            victim.CurrentHunting.Name = ch.Name;
-                            victim.CurrentHunting.Who = ch;
+                            vict.CurrentHunting.Name = ch.Name;
+                            vict.CurrentHunting.Who = ch;
                         }
                     }
-                    else if (!victim.Act.IsSet(ActFlags.Pacifist))
-                        victim.StartHunting(ch);
+                    else if (!vict.Act.IsSet(ActFlags.Pacifist))
+                        vict.StartHunting(ch);
                 }
 
-                if (victim.CurrentHating != null)
+                if (vict.CurrentHating != null)
                 {
-                    if (victim.CurrentHating.Who != ch)
+                    if (vict.CurrentHating.Who != ch)
                     {
-                        victim.CurrentHating.Name = ch.Name;
-                        victim.CurrentHating.Who = ch;
+                        vict.CurrentHating.Name = ch.Name;
+                        vict.CurrentHating.Who = ch;
                     }
                 }
-                else if (!victim.Act.IsSet(ActFlags.Pacifist))
-                    victim.StartHating(ch);
+                else if (!vict.Act.IsSet(ActFlags.Pacifist))
+                    vict.StartHating(ch);
             }
 
             int maxDamage = ch.Level * ((dt == DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID) ? 80 : 40);
@@ -110,7 +112,7 @@ namespace SmaugCS.Extensions
                         Modifier = -2
                     };
                     victim.AddAffect(af);
-                    victim.WorsenMentalState(20.GetNumberThatIsBetween(victim.MentalState + (victim.IsPKill() ? 1 : 2),
+                    ((PlayerInstance)victim).WorsenMentalState(20.GetNumberThatIsBetween(victim.MentalState + (victim.IsPKill() ? 1 : 2),
                         100));
                 }
             }
@@ -131,13 +133,13 @@ namespace SmaugCS.Extensions
 
             if (!victim.IsAwake() && !victim.IsAffected(AffectedByTypes.Paralysis))
             {
-                if (victim.CurrentFighting != null && victim.CurrentFighting.Who.CurrentHunting != null
-                    && victim.CurrentFighting.Who.CurrentHunting.Who == victim)
-                    victim.CurrentFighting.Who.StopHunting();
+                if (victim.CurrentFighting != null && ((MobileInstance)victim.CurrentFighting.Who).CurrentHunting != null
+                    && ((MobileInstance)victim.CurrentFighting.Who).CurrentHunting.Who == victim)
+                    ((MobileInstance)victim.CurrentFighting.Who).StopHunting();
 
-                if (victim.CurrentFighting != null && victim.CurrentFighting.Who.CurrentHating != null
-                    && victim.CurrentFighting.Who.CurrentHating.Who == victim)
-                    victim.CurrentFighting.Who.StopHating();
+                if (victim.CurrentFighting != null && ((MobileInstance)victim.CurrentFighting.Who).CurrentHating != null
+                    && ((MobileInstance)victim.CurrentFighting.Who).CurrentHating.Who == victim)
+                    ((MobileInstance)victim.CurrentFighting.Who).StopHating();
 
                 victim.StopFighting((!victim.IsNpc() && ch.IsNpc()));
             }
@@ -146,7 +148,7 @@ namespace SmaugCS.Extensions
 
             if (victim == ch) return ReturnTypes.None;
 
-            if (!victim.IsNpc() && victim.Descriptor == null && !victim.PlayerData.Flags.IsSet(PCFlags.NoRecall))
+            if (!victim.IsNpc() && ((PlayerInstance)victim).Descriptor == null && !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.NoRecall))
             {
                 if (SmaugRandom.Between(0, victim.wait) == 0)
                 {
@@ -163,8 +165,8 @@ namespace SmaugCS.Extensions
                     (victim.IsAffected(AffectedByTypes.Charm) && victim.Master != null &&
                      victim.Master.CurrentRoom != victim.CurrentRoom))
                 {
-                    victim.StartFearing(ch);
-                    victim.StopHunting();
+                    ((MobileInstance)victim).StartFearing(ch);
+                    ((MobileInstance)victim).StopHunting();
                     Flee.do_flee(victim, string.Empty);
                 }
             }
@@ -232,24 +234,24 @@ namespace SmaugCS.Extensions
             {
                 comm.act(ATTypes.AT_HURT, "That really did HURT!", victim, null, null, ToTypes.Character);
                 if (SmaugRandom.Bits(3) == 0)
-                    victim.WorsenMentalState(1);
+                    ((PlayerInstance)victim).WorsenMentalState(1);
             }
             if (victim.CurrentHealth < victim.MaximumHealth / 4)
             {
                 comm.act(ATTypes.AT_HURT, "You wish that your wounds would stop BLEEDING so much!", victim, null, null, ToTypes.Character);
                 if (SmaugRandom.Bits(2) == 0)
-                    victim.WorsenMentalState(1);
+                    ((PlayerInstance)victim).WorsenMentalState(1);
             }
         }
 
         private static void PreserveVampireFromDamage(CharacterInstance victim, int dam)
         {
             if (dam >= (victim.MaximumHealth / 10))
-                victim.GainCondition(ConditionTypes.Bloodthirsty, -1 - (victim.Level / 20));
+                ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -1 - (victim.Level / 20));
             if (victim.CurrentHealth <= (victim.MaximumHealth / 8) &&
-                victim.PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) > 5)
+                ((PlayerInstance)victim).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) > 5)
             {
-                victim.GainCondition(ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
+                ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
                 victim.CurrentHealth += 4.GetNumberThatIsBetween(victim.CurrentHealth / 30, 15);
                 color.set_char_color(ATTypes.AT_BLOOD, victim);
                 color.send_to_char("You howl with rage as the beast within stirs!", victim);
@@ -271,7 +273,7 @@ namespace SmaugCS.Extensions
                 || dt == DatabaseManager.Instance.GetEntity<SkillData>("circle").ID)
                 xpGain = 0;
 
-            ch.GainXP(xpGain);
+            ((PlayerInstance)ch).GainXP(xpGain);
         }
 
         private static int ModifyDamageForEquipment(CharacterInstance victim, int dam)
