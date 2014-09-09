@@ -7,6 +7,9 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
 
 namespace SmaugCS
@@ -21,24 +24,6 @@ namespace SmaugCS
             return db.WATCHES.Any(watch => (watch.TargetName.EqualsIgnoreCase(player_name)
                 || watch.PlayerSite.EqualsIgnoreCase(player_site))
                 && player_level < watch.ImmortalLevel);
-        }
-
-        public static void show_title(DescriptorData d)
-        {
-            CharacterInstance ch = d.Character;
-            if (ch.PlayerData.Flags.IsSet((int)PCFlags.NoIntro))
-                write_to_buffer(d, "Press enter...\r\n", 0);
-            else
-            {
-                if (ch.Act.IsSet((int)PlayerFlags.Rip))
-                    act_comm.send_rip_title(ch);
-                else if (ch.Act.IsSet((int)PlayerFlags.Ansi))
-                    act_comm.send_ansi_title(ch);
-                else
-                    act_comm.send_ascii_title(ch);
-            }
-
-            d.ConnectionStatus = ConnectionTypes.PressEnter;
         }
 
         /// <summary>
@@ -57,22 +42,6 @@ namespace SmaugCS
                 return false;
 
             return name.IsAlphaNum();
-        }
-
-        public static void stop_idling(CharacterInstance ch)
-        {
-            if (ch == null || ch.Descriptor == null
-                || ch.Descriptor.ConnectionStatus != ConnectionTypes.Playing)
-                return;
-
-            ch.Timer = 0;
-            RoomTemplate wasInRoom = ch.PreviousRoom;
-            ch.CurrentRoom.FromRoom(ch);
-            wasInRoom.ToRoom(ch);
-            ch.PreviousRoom = ch.CurrentRoom;
-
-            ch.PlayerData.Flags.RemoveBit((int)PCFlags.Idle);
-            act(ATTypes.AT_ACTION, "$n has returned from the world.", ch, null, null, ToTypes.Room);
         }
 
         /// <summary>
@@ -336,7 +305,15 @@ namespace SmaugCS
 
             foreach(CharacterInstance rch in ch.CurrentRoom.Persons)
             {
-                if ((to.Descriptor == null && (to.IsNpc() && !to.MobIndex.HasProg(MudProgTypes.Act))) || !to.IsAwake())
+                var playerInstance = to as PlayerInstance;
+                if (playerInstance != null && playerInstance.Descriptor == null)
+                    continue;
+                
+                var instance = to as MobileInstance;
+                if (instance != null && !instance.MobIndex.HasProg(MudProgTypes.Act))
+                    continue;
+
+                if (!to.IsAwake())
                     continue;
 
                 if (type == ToTypes.Character && to != ch)
@@ -351,12 +328,15 @@ namespace SmaugCS
                     (to == ch ||
                      (!to.IsImmortal() && !ch.IsNpc() &&
                       (ch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
-                       to.Trust < (ch.PlayerData != null ? ch.PlayerData.WizardInvisible : 0)))))
+                       to.Trust <
+                       (playerInstance != null
+                           ? (playerInstance.PlayerData != null ? playerInstance.PlayerData.WizardInvisible : 0)
+                           : 0)))))
                     continue;
 
                 txt = act_string(format, to, ch, arg1, arg2, to.IsImmortal() ? Program.STRING_IMM : Program.STRING_NONE);
 
-                if (to.Descriptor != null)
+                if (playerInstance != null)
                 {
                     color.set_char_color(attype, to);
                     color.send_to_char(txt, to);
@@ -395,8 +375,8 @@ namespace SmaugCS
 
         public static void display_prompt(DescriptorData d)
         {
-            CharacterInstance ch = d.Character;
-            CharacterInstance och = (d.Original ?? d.Character);
+            PlayerInstance ch = d.Character;
+            PlayerInstance och = (d.Original ?? d.Character);
             string buffer = string.Empty;
 
             bool ansi = (!och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi));
@@ -449,28 +429,6 @@ namespace SmaugCS
         {
             // TODO
             return false;
-        }
-
-        public static void write_to_buffer(DescriptorData d, string txt, int length)
-        {
-            if (d == null)
-                throw new ArgumentNullException("d");
-
-            if (d.outbuf.IsNullOrEmpty())
-                return;
-
-            int len = length;
-            if (len <= 0)
-                len = txt.Length;
-
-            if (d.outtop == 0 && !d.fcommand)
-            {
-                d.outbuf = "\r\n" + d.outbuf;
-                d.outtop = 2;
-            }
-
-            d.outtop += len;
-            d.outbuf = txt;
         }
 
         public static void bailout()

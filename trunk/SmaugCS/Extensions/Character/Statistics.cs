@@ -2,25 +2,13 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
 {
     public static class Statistics
     {
-        public static int CalculateAge(this CharacterInstance ch)
-        {
-            if (ch.IsNpc()) return -1;
-
-            int num_days = ((GameManager.Instance.GameTime.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) + GameManager.Instance.GameTime.Day;
-            int ch_days = ((ch.PlayerData.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) + ch.PlayerData.Day;
-            int age = GameManager.Instance.GameTime.Year - ch.PlayerData.Year;
-
-            if (ch_days - num_days > 0)
-                age -= 1;
-            return age;
-        }
-
         public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
             ClassData currentClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
@@ -38,32 +26,38 @@ namespace SmaugCS.Extensions
 
         public static int GetCurrentStrength(this CharacterInstance ch)
         {
-            return (ch.PermanentStrength + ch.ModStrength).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Strength));
+            return (ch.PermanentStrength + ch.ModStrength).GetNumberThatIsBetween(3,
+                ch.GetCurrentStat(StatisticTypes.Strength));
         }
 
         public static int GetCurrentIntelligence(this CharacterInstance ch)
         {
-            return (ch.PermanentIntelligence + ch.ModIntelligence).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Intelligence));
+            return (ch.PermanentIntelligence + ch.ModIntelligence).GetNumberThatIsBetween(3,
+                ch.GetCurrentStat(StatisticTypes.Intelligence));
         }
 
         public static int GetCurrentWisdom(this CharacterInstance ch)
         {
-            return (ch.PermanentWisdom + ch.ModWisdom).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Wisdom));
+            return (ch.PermanentWisdom + ch.ModWisdom).GetNumberThatIsBetween(3,
+                ch.GetCurrentStat(StatisticTypes.Wisdom));
         }
 
         public static int GetCurrentDexterity(this CharacterInstance ch)
         {
-            return (ch.PermanentDexterity + ch.ModDexterity).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Dexterity));
+            return (ch.PermanentDexterity + ch.ModDexterity).GetNumberThatIsBetween(3,
+                ch.GetCurrentStat(StatisticTypes.Dexterity));
         }
 
         public static int GetCurrentConstitution(this CharacterInstance ch)
         {
-            return (ch.PermanentConstitution + ch.ModConstitution).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Constitution));
+            return (ch.PermanentConstitution + ch.ModConstitution).GetNumberThatIsBetween(3,
+                ch.GetCurrentStat(StatisticTypes.Constitution));
         }
 
         public static int GetCurrentCharisma(this CharacterInstance ch)
         {
-            return (ch.PermanentCharisma + ch.ModCharisma).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Charisma));
+            return (ch.PermanentCharisma + ch.ModCharisma).GetNumberThatIsBetween(3,
+                ch.GetCurrentStat(StatisticTypes.Charisma));
         }
 
         public static int GetCurrentLuck(this CharacterInstance ch)
@@ -76,9 +70,9 @@ namespace SmaugCS.Extensions
             int penalty = 0;
 
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
-                return ch.Trust * 200;
+                return ch.Trust*200;
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
-                return ch.Level * 200;
+                return ch.Level*200;
             if (ch.GetEquippedItem(WearLocations.Wield) != null)
                 ++penalty;
             if (ch.GetEquippedItem(WearLocations.DualWield) != null)
@@ -89,7 +83,7 @@ namespace SmaugCS.Extensions
                 ++penalty;
             if (ch.GetEquippedItem(WearLocations.Shield) != null)
                 ++penalty;
-            return ((ch.Level + 15) / 5 + ch.GetCurrentDexterity() - 13 - penalty).GetNumberThatIsBetween(5, 20);
+            return ((ch.Level + 15)/5 + ch.GetCurrentDexterity() - 13 - penalty).GetNumberThatIsBetween(5, 20);
         }
 
         public static int CanCarryMaxWeight(this CharacterInstance ch)

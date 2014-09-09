@@ -3,8 +3,7 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Templates
 {
     public abstract class Template : Entity, IHasMudProgs
     {
@@ -20,30 +19,16 @@ namespace SmaugCS.Data
 
         #region Implementation of IHasMudProgs
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="prog"></param>
-        /// <returns></returns>
         public bool HasProg(int prog)
         {
             return MudProgs.Any(x => (int)x.Type == prog);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public bool HasProg(MudProgTypes type)
         {
             return HasProg((int)type);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mprog"></param>
         public void AddMudProg(MudProgData mprog)
         {
             if (!MudProgs.Contains(mprog))

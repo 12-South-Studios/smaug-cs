@@ -3,6 +3,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -37,11 +39,11 @@ namespace SmaugCS.Commands.Combat
             if (AttemptToFlee(ch, wasIn))
                 return;
 
-            if (ch.Level < LevelConstants.AvatarLevel && SmaugRandom.Bits(3) == 1)
-                LoseExperience(ch);
+            if (!ch.IsNpc() && ch.Level < LevelConstants.AvatarLevel && SmaugRandom.Bits(3) == 1)
+                LoseExperience((PlayerInstance)ch);
         }
 
-        private static void LoseExperience(CharacterInstance ch)
+        private static void LoseExperience(PlayerInstance ch)
         {
             int lostXp = (int) ((ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level))*0.1f);
             comm.act(ATTypes.AT_FLEE, string.Format("Curse the gods, you've lost {0} experience!", lostXp), ch, null,
@@ -77,7 +79,7 @@ namespace SmaugCS.Commands.Combat
             if (sneak == null) return false;
 
             ch.StripAffects((int)sneak.ID);
-            ch.AffectedBy.RemoveBit(AffectedByTypes.Sneak);
+            ch.AffectedBy = ch.AffectedBy.RemoveBit(AffectedByTypes.Sneak);
 
             if (ch.CurrentMount != null && ch.CurrentMount.CurrentFighting != null)
                 ch.CurrentMount.StopFighting(true);
@@ -95,20 +97,25 @@ namespace SmaugCS.Commands.Combat
             if (!ch.IsNpc())
             {
                 CharacterInstance wf = ch.GetMyTarget();
-                comm.act(ATTypes.AT_FLEE, "You flee head over heels from combat!", ch, null, null, ToTypes.Character);
+                PlayerInstance pch = (PlayerInstance)ch;
 
-                if (ch.Level < LevelConstants.AvatarLevel)
-                    LoseExperience(ch);
+                comm.act(ATTypes.AT_FLEE, "You flee head over heels from combat!", pch, null, null, ToTypes.Character);
 
-                if (wf != null && ch.PlayerData.CurrentDeity != null)
+                if (pch.Level < LevelConstants.AvatarLevel)
+                    LoseExperience(pch);
+
+                if (wf != null)
                 {
-                    int ratio = 1.GetNumberThatIsBetween(wf.Level/ch.Level, LevelConstants.MaxLevel);
-                    if (wf.CurrentRace == ch.PlayerData.CurrentDeity.NPCRace)
-                        ch.AdjustFavor(DeityFieldTypes.FleeNPCRace, ratio);
-                    else if (wf.CurrentRace == ch.PlayerData.CurrentDeity.NPCFoe)
-                        ch.AdjustFavor(DeityFieldTypes.FleeNPCFoe, ratio);
-                    else 
-                        ch.AdjustFavor(DeityFieldTypes.Flee, ratio);
+                    if (pch.PlayerData.CurrentDeity != null)
+                    {
+                        int ratio = 1.GetNumberThatIsBetween(wf.Level / pch.Level, LevelConstants.MaxLevel);
+                        if (wf.CurrentRace == pch.PlayerData.CurrentDeity.NPCRace)
+                            pch.AdjustFavor(DeityFieldTypes.FleeNPCRace, ratio);
+                        else if (wf.CurrentRace == pch.PlayerData.CurrentDeity.NPCFoe)
+                            pch.AdjustFavor(DeityFieldTypes.FleeNPCFoe, ratio);
+                        else
+                            pch.AdjustFavor(DeityFieldTypes.Flee, ratio);
+                    }
                 }
             }
 

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Tests
 {
@@ -13,12 +14,16 @@ namespace SmaugCS.Tests
         [TestCase(3, 5, false)]
         public void HasSufficientBloodPower(int currentBlood, int useBlood, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc");
-            actor.CurrentRace = RaceTypes.Vampire;
-            actor.PlayerData = new PlayerData(1, 1);
-            actor.PlayerData.ConditionTable = new Dictionary<ConditionTypes, int>()
+            var actor = new PlayerInstance(1, "TestNpc")
             {
-                {ConditionTypes.Bloodthirsty, currentBlood}
+                CurrentRace = RaceTypes.Vampire,
+                PlayerData = new PlayerData(1, 1)
+                {
+                    ConditionTable = new Dictionary<ConditionTypes, int>
+                    {
+                        {ConditionTypes.Bloodthirsty, currentBlood}
+                    }
+                }
             };
 
             var list = new List<object> {actor, useBlood};
@@ -30,8 +35,10 @@ namespace SmaugCS.Tests
         [TestCase(3, 5, false)]
         public void HasSufficientMana(int currentMana, int useMana, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc");
-            actor.CurrentMana = currentMana;
+            var actor = new CharacterInstance(1, "TestNpc")
+            {
+                CurrentMana = currentMana
+            };
 
             var list = new List<object> { actor, useMana };
 

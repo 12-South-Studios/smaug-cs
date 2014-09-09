@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -31,8 +32,8 @@ namespace SmaugCS.Commands.Liquids
                                                && obj.Values.Poison == -1, "You suck in nothing but air.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc()
-                                               && (ch.PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
-                                                   || ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48),
+                                               && (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
+                                                   || ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48),
                 "Your stomach cannot contain any more.")) return;
 
             // TODO People with nuisance flag fill up more quickly
@@ -45,7 +46,7 @@ namespace SmaugCS.Commands.Liquids
             }
 
             bool hgFlag = !(!ch.IsNpc() &&
-                           (!ch.IsPKill() || (ch.IsPKill() && !ch.PlayerData.Flags.IsSet(PCFlags.HighGag))));
+                           (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.HighGag))));
 
             if (ch.CurrentFighting != null
                 && SmaugRandom.D100() > (ch.GetCurrentDexterity()*2 + 48))
@@ -78,9 +79,9 @@ namespace SmaugCS.Commands.Liquids
                 else 
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
 
-                ch.GainCondition(ConditionTypes.Thirsty, 1);
+                ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, 1);
 
-                if (!ch.IsNpc() && ch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
+                if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
                     comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null, ToTypes.Character);
 
                 ReturnTypes retcode = ch.ObjectCastSpell((int)obj.Values.Skill1ID, (int)obj.Values.SpellLevel, ch);

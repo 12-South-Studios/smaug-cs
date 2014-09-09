@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
@@ -11,7 +12,7 @@ namespace SmaugCS.Commands.Social
     {
        public static void do_glance(CharacterInstance ch, string argument)
        {
-           if (CheckFunctions.CheckIfNullObject(ch, ch.Descriptor)) return;
+           if (CheckFunctions.CheckIfNullObject(ch, ((PlayerInstance)ch).Descriptor)) return;
            if (CheckFunctions.CheckIfTrue(ch, (int)ch.CurrentPosition < (int) PositionTypes.Sleeping,
                "You can't see anything but stars!")) return;
            if (CheckFunctions.CheckIfTrue(ch, ch.CurrentPosition == PositionTypes.Sleeping,
@@ -53,7 +54,7 @@ namespace SmaugCS.Commands.Social
        private static void GlanceFromImmortal(CharacterInstance ch, CharacterInstance victim)
        {
            if (victim.IsNpc())
-               color.ch_printf(ch, "Mobile #{0} '{1}'", victim.MobIndex.ID, victim.Name);
+               color.ch_printf(ch, "Mobile #{0} '{1}'", ((MobileInstance)victim).MobIndex.ID, victim.Name);
            else
            {
                color.ch_printf(ch, "{0}", victim.Name);

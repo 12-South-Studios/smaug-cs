@@ -14,6 +14,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;

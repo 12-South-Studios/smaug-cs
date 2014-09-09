@@ -4,6 +4,8 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -11,7 +13,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class Wanderer
     {
-        public static bool DoSpecWanderer(CharacterInstance ch)
+        public static bool DoSpecWanderer(MobileInstance ch)
         {
             if (!ch.IsAwake())
                 return false;
@@ -75,7 +77,7 @@ namespace SmaugCS.SpecFuns
                             if (destRoom != null && !exit.Flags.IsSet(ExitFlags.Closed)
                                 && !destRoom.Flags.IsSet(RoomFlags.NoDrop))
                             {
-                                if (destRoom.Persons.Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))
+                                if (destRoom.Persons.OfType<MobileInstance>().Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))
                                     return false;
                                 found = true;
                             }

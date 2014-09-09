@@ -1,62 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
-using Realm.Library.Common;
+using Realm.Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using Realm.Library.Lua;
 using SmaugCS.Data.Interfaces;
+using SmaugCS.Data.Templates;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Instances
 {
     [XmlRoot("Character")]
     public class CharacterInstance : Instance, IVerifiable
     {
+        public virtual int Trust { get; set; }
         public CharacterInstance Master { get; set; }
         public CharacterInstance Leader { get; set; }
         public FightingData CurrentFighting { get; set; }
         public int NumberFighting { get; set; }
-        public CharacterInstance ReplyTo { get; set; }
-        public CharacterInstance RetellTo { get; set; }
         public CharacterInstance Switched { get; set; }
         public CharacterInstance CurrentMount { get; set; }
-        public HuntHateFearData CurrentHunting { get; set; }
-        public HuntHateFearData CurrentFearing { get; set; }
-        public HuntHateFearData CurrentHating { get; set; }
+
         public List<VariableData> Variables { get; set; }
-        public SpecialFunction SpecialFunction { get; set; }
-        public string SpecialFunctionName { get; set; }
+
         public MudProgActData mpact { get; set; }
         public int mpactnum { get; set; }
         public uint mpscriptpos { get; set; }
-        public DescriptorData Descriptor { get; set; }
-        //public List<NoteData> NoteList { get; set; }
-        //public List<NoteData> Comments { get; set; }
+
         public List<ObjectInstance> Carrying { get; set; }
         public RoomTemplate CurrentRoom { get; set; }
         public RoomTemplate PreviousRoom { get; set; }
-        public PlayerData PlayerData { get; set; }
+        
         public DoFunction LastCommand { get; set; }
         public DoFunction PreviousCommand { get; set; }
         public object DestinationBuffer { get; set; }
-        public string alloc_ptr { get; set; }
-        public object spare_ptr { get; set; }
-        public int tempnum { get; set; }
-        public EditorData CurrentEditor { get; set; }
+
+        
         public List<TimerData> Timers { get; set; }
         public CharacterMorph CurrentMorph { get; set; }
         public string LongDescription { get; set; }
-        public CharacterSubStates SubState { get; set; }
+        
         public GenderTypes Gender { get; set; }
         public ClassTypes CurrentClass { get; set; }
         public RaceTypes CurrentRace { get; set; }
-        public int Level { get; set; }
-        public int Trust { get; set; }
-        public int PlayedDuration { get { return (int)(DateTime.Now.ToFileTimeUtc() - LoggedOn.ToFileTimeUtc())/3600; } }
-        public DateTime LoggedOn { get { return Descriptor.User.ConnectedOn; } }
-        public int TotalPlayedTime { get; set; }
-        public DateTime save_time { get; set; }
+
         public int wait { get; set; }
         public int CurrentHealth { get; set; }
         public int MaximumHealth { get; set; }
@@ -80,7 +65,7 @@ namespace SmaugCS.Data
         public int Immunity { get; set; }
         public int Resistance { get; set; }
         public int Susceptibility { get; set; }
-        public ExtendedBitvector Attacks { get; set; }
+        
         public int Defenses { get; set; }
         public int Speaks { get; set; }
         public int Speaking { get; set; }
@@ -117,7 +102,7 @@ namespace SmaugCS.Data
         public int retran { get; set; }
         public int regoto { get; set; }
         public int MobInvisible { get; set; }
-        public Dictionary<ATTypes, char> Colors { get; set; }
+        
         public long HomeVNum { get; set; }
         public long ResetVnum { get; set; }
         public int ResetNum { get; set; }
@@ -126,7 +111,6 @@ namespace SmaugCS.Data
         public CharacterInstance(int id, string name)
             : base(id, name)
         {
-            Colors = new Dictionary<ATTypes, char>();
             SavingThrows = new SavingThrowData();
             LuaVM = LuaInterfaceProxy.Create();
             Timers = new List<TimerData>();
@@ -153,16 +137,10 @@ namespace SmaugCS.Data
 
         #endregion
 
-
-        public MobTemplate MobIndex
-        {
-            get { return Parent.CastAs<MobTemplate>(); }
-        }
-
         #region IVerifiable
         public bool IsNpc()
         {
-            return Act.IsSet(ActFlags.IsNpc);
+            return Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
         }
 
         public bool IsAffected(AffectedByTypes affectedBy)
@@ -175,18 +153,15 @@ namespace SmaugCS.Data
             return IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
         }
 
-        //LevelConstants.ImmortalLevel
-        public bool IsImmortal(int level = 51)
+        public virtual bool IsImmortal(int level = 51)
         {
-            return Trust >= level;
+            return false;
         }
 
-        //LevelConstants.GetLevel("hero")
-        public bool IsHero(int hero = 50)
+        public virtual bool IsHero(int hero = 50)
         {
-            return Trust >= hero;
+            return false;
         }
         #endregion
-
     }
 }

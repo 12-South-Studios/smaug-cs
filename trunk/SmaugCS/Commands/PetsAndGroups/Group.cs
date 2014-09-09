@@ -5,6 +5,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -32,7 +33,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             color.ch_printf(ch, "\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                             Macros.PERS(leader, ch), ch.Level < LevelConstants.AvatarLevel ? " [to lvl]" : "");
 
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch)))
+            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
                 color.set_char_color(ATTypes.AT_DGREEN, ch);
                 string buffer = string.Empty;
@@ -78,8 +79,8 @@ namespace SmaugCS.Commands.PetsAndGroups
                 if (gch.CurrentClass != ClassTypes.Warrior)
                 {
                     color.ch_printf(ch, "%5d/%-5d ",
-                                    gch.IsVampire()
-                                        ? gch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty]
+                                    gch.IsVampire() && !gch.IsNpc()
+                                        ? ((PlayerInstance)gch).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty)
                                         : gch.CurrentMana,
                                     gch.IsVampire() ? 10 + gch.Level : gch.MaximumMana);
                 }

@@ -2,6 +2,7 @@
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -20,13 +21,13 @@ namespace SmaugCS.Commands.Deity
 
             if (firstArg.EqualsIgnoreCase("none"))
             {
-                RemoveDevotion(ch);
+                RemoveDevotion((PlayerInstance)ch);
                 return;
             }
 
             DeityData deity = DatabaseManager.Instance.GetEntity<DeityData>(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, deity, "No such deity holds weight on this world.")) return;
-            if (CheckFunctions.CheckIfNotNullObject(ch, ch.PlayerData.CurrentDeity,
+            if (CheckFunctions.CheckIfNotNullObject(ch, ((PlayerInstance)ch).PlayerData.CurrentDeity,
                 "You are already devoted to a deity.")) return;
             if (CheckFunctions.CheckIfTrue(ch, WillDeityDenyPlayerClass(ch, deity),
                 "That deity will not accept your worship due to your class.")) return;
@@ -35,17 +36,18 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, WillDeityDenyPlayerRace(ch, deity),
                 "That deity will not accept worshippers of your race.")) return;
 
-            ch.PlayerData.CurrentDeity = deity;
+            PlayerInstance pch = (PlayerInstance) ch;
+            pch.PlayerData.CurrentDeity = deity;
 
-            if (ch.PlayerData.Favor > deity.AffectedNum)
+            if (pch.PlayerData.Favor > deity.AffectedNum)
             {
                 // TODO Transfer Deity affecteds to player
             }
-            if (ch.PlayerData.Favor > deity.ElementNum)
+            if (pch.PlayerData.Favor > deity.ElementNum)
             {
                 // TODO Transfer Deity elements to player resistance
             }
-            if (ch.PlayerData.Favor > deity.SusceptNum)
+            if (pch.PlayerData.Favor > deity.SusceptNum)
             {
                 // TODO Transfer Deity suscept to player susceptible
             }
@@ -75,7 +77,7 @@ namespace SmaugCS.Commands.Deity
             return deity.Class != -1 && (EnumerationExtensions.GetEnum<ClassTypes>(deity.Class) != ch.CurrentClass);
         }
 
-        private static void RemoveDevotion(CharacterInstance ch)
+        private static void RemoveDevotion(PlayerInstance ch)
         {
             if (CheckFunctions.CheckIfNullObject(ch, ch.PlayerData.CurrentDeity,
                 "You have already chosen to worship no deities.")) return;

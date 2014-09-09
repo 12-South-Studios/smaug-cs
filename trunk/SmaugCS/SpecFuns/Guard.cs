@@ -2,14 +2,14 @@
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
     public static class Guard
     {
-        public static bool DoSpecGuard(CharacterInstance ch)
+        public static bool DoSpecGuard(MobileInstance ch)
         {
             if (!ch.IsAwake() || ch.CurrentFighting != null)
                 return false;

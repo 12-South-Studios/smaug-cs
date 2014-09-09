@@ -4,6 +4,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Commands.Social
 {
@@ -21,20 +22,20 @@ namespace SmaugCS.Commands.Social
             }*/
 #endif
 
-            ch.Deaf.RemoveBit((int)ChannelTypes.Tells);
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Silence))
+            ch.Deaf.RemoveBit(ChannelTypes.Tells);
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Silence))
             {
                 color.send_to_char("You can't do that here.\r\n", ch);
                 return;
             }
 
-            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Silence))
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Silence))
             {
                 color.send_to_char("Your message didn't get through.\r\n", ch);
                 return;
             }
 
-            CharacterInstance victim = ch.ReplyTo;
+            CharacterInstance victim = ((PlayerInstance)ch).ReplyTo;
             if (victim == null)
             {
                 color.send_to_char("They aren't here.\r\n", ch);
@@ -50,19 +51,19 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Descriptor == null)
+            if (!victim.IsNpc() && ((PlayerInstance)victim).Descriptor == null)
             {
                 color.send_to_char("That player is link-dead.\r\n", ch);
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.AwayFromKeyboard))
             {
                 color.send_to_char("That player is afk.\r\n", ch);
                 return;
             }
 
-            if (victim.Deaf.IsSet((int)ChannelTypes.Tells)
+            if (victim.Deaf.IsSet(ChannelTypes.Tells)
                 && (!ch.IsImmortal() || ch.Trust < victim.Trust))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E has $S tells turned off.", ch, null, victim, ToTypes.Character);
@@ -70,14 +71,14 @@ namespace SmaugCS.Commands.Social
             }
 
             if ((!ch.IsImmortal() && !victim.IsAwake())
-                || (!victim.IsNpc() && victim.CurrentRoom.Flags.IsSet((int)RoomFlags.Silence)))
+                || (!victim.IsNpc() && victim.CurrentRoom.Flags.IsSet(RoomFlags.Silence)))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E can't hear you.", ch, null, victim, ToTypes.Character);
                 return;
             }
 
-            if (victim.Descriptor != null
-                && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing
+            if (((PlayerInstance)victim).Descriptor != null
+                && ((PlayerInstance)victim).Descriptor.ConnectionStatus == ConnectionTypes.Editing
                 && ch.Trust < LevelConstants.GetLevel(ImmortalTypes.God))
             {
                 comm.act(ATTypes.AT_PLAIN, "$E is currently in a writing buffer. Please try again later.", ch, null, victim, ToTypes.Character);
@@ -127,8 +128,8 @@ namespace SmaugCS.Commands.Social
 #endif
 
             victim.CurrentPosition = position;
-            victim.ReplyTo = ch;
-            ch.RetellTo = victim;
+            ((PlayerInstance)victim).ReplyTo = ch;
+            ((PlayerInstance)ch).RetellTo = victim;
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {

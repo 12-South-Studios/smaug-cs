@@ -4,6 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
@@ -146,11 +147,11 @@ namespace SmaugCS.Skills
                 if ((SmaugRandom.D100() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, (int)skill.ID)))
                 {
                     ch.FailedCast(skill, victim, obj);
-                    skill.LearnFromFailure(ch);
+                    skill.LearnFromFailure((PlayerInstance)ch);
                     if (mana > 0)
                     {
                         if (ch.IsVampire())
-                            ch.GainCondition(ConditionTypes.Bloodthirsty, -blood / 2);
+                            ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -blood / 2);
                         else
                             ch.CurrentMana -= mana / 2;
                     }
@@ -159,7 +160,7 @@ namespace SmaugCS.Skills
                 if (mana > 0)
                 {
                     if (ch.IsVampire())
-                        ch.GainCondition(ConditionTypes.Bloodthirsty, -blood);
+                        ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -blood);
                     else
                         ch.CurrentMana -= mana;
                 }
@@ -174,11 +175,11 @@ namespace SmaugCS.Skills
 
                 if (retcode == ReturnTypes.SpellFailed)
                 {
-                    skill.LearnFromFailure(ch);
+                    skill.LearnFromFailure((PlayerInstance)ch);
                     retcode = ReturnTypes.None;
                 }
                 else
-                   skill.AbilityLearnFromSuccess(ch);
+                   skill.AbilityLearnFromSuccess((PlayerInstance)ch);
 
                 if (skill.Target == TargetTypes.OffensiveCharacter
                     && victim != ch
@@ -200,7 +201,7 @@ namespace SmaugCS.Skills
             if (mana > 0)
             {
                 if (ch.IsVampire())
-                    ch.GainCondition(ConditionTypes.Bloodthirsty, -blood);
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -blood);
                 else
                     ch.CurrentMana -= mana;
             }

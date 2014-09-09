@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -16,7 +17,7 @@ namespace SmaugCS
                        : "someone";
         }
 
-        public static bool CHECK_SUBRESTRICTED(CharacterInstance ch)
+        public static bool CHECK_SUBRESTRICTED(PlayerInstance ch)
         {
             return !CheckFunctions.CheckIfTrue(ch, ch.SubState == CharacterSubStates.Restricted,
                 "You cannot use this command from within another command.");
@@ -33,9 +34,9 @@ namespace SmaugCS
         public static void WAIT_STATE(CharacterInstance ch, int npulse)
         {
             ch.wait = (short)((!ch.IsNpc()
-                && ch.PlayerData.Nuisance != null
-                && (ch.PlayerData.Nuisance.Flags > 4))
-                ? ch.wait.GetHighestOfTwoNumbers((npulse + (ch.PlayerData.Nuisance.Flags - 4) + (short)ch.PlayerData.Nuisance.Power))
+                && ((PlayerInstance)ch).PlayerData.Nuisance != null
+                && (((PlayerInstance)ch).PlayerData.Nuisance.Flags > 4))
+                ? ch.wait.GetHighestOfTwoNumbers((npulse + (((PlayerInstance)ch).PlayerData.Nuisance.Flags - 4) + (short)((PlayerInstance)ch).PlayerData.Nuisance.Power))
                           : ch.wait.GetHighestOfTwoNumbers(npulse));
         }
 
@@ -139,7 +140,7 @@ namespace SmaugCS
 
         public static int LEARNED(CharacterInstance ch, int sn)
         {
-            return ch.IsNpc() ? 80 : ch.PlayerData.Learned[sn].GetNumberThatIsBetween(0, 101);
+            return ch.IsNpc() ? 80 : ((PlayerInstance)ch).PlayerData.Learned[sn].GetNumberThatIsBetween(0, 101);
         }
     }
 }

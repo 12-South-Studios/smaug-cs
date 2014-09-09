@@ -2,12 +2,14 @@
 using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Extensions
 {
     public static class Timer
     {
-        public static bool AddTimer(this CharacterInstance ch, TimerTypes type, int count, Action<CharacterInstance, string> fun, int value)
+        public static bool AddTimer(this CharacterInstance ch, TimerTypes type, int count,
+            Action<CharacterInstance, string> fun, int value)
         {
             if (ch.Timers.Any(x => x.Type == type))
                 return false;
@@ -17,7 +19,7 @@ namespace SmaugCS.Extensions
                 Count = count,
                 Type = type,
                 Value = value,
-                Action = new DoFunction { Value = fun }
+                Action = new DoFunction {Value = fun}
             };
             ch.Timers.Add(timer);
             return true;

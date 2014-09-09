@@ -4,6 +4,7 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 
 using SmaugCS.Data;
+using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;

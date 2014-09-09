@@ -5,6 +5,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -125,8 +127,8 @@ namespace SmaugCS
             if (room.Flags.IsSet(RoomFlags.DoNotDisturb))
                 return null;
 
-            return room.Persons.FirstOrDefault(rch => !rch.IsNpc() && rch.PlayerData != null && rch.IsImmortal() 
-                && rch.PlayerData.Flags.IsSet(PCFlags.DoNotDisturb) && ch.Trust < rch.Trust && ch.CanSee(rch));
+            return room.Persons.FirstOrDefault(rch => !rch.IsNpc() && ((PlayerInstance)rch).PlayerData != null && rch.IsImmortal()
+                && ((PlayerInstance)rch).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb) && ch.Trust < rch.Trust && ch.CanSee(rch));
         }
 
         public static void FromRoom(this RoomTemplate room, ObjectInstance obj)
@@ -183,7 +185,6 @@ namespace SmaugCS
             obj.InRoom = room;
             obj.CarriedBy = null;
             obj.InObject = null;
-            obj.room_vnum = room.ID;
             if (itemType == ItemTypes.Fire)
                 room.Light += count;
             handler.falling++;

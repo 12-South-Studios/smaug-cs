@@ -3,6 +3,7 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Social
@@ -13,29 +14,30 @@ namespace SmaugCS.Commands.Social
         {
             string arg = argument.FirstWord();
 
+            PlayerInstance pch = (PlayerInstance) ch;
             if (string.IsNullOrEmpty(arg))
             {
-                DisplayIgnoreList(ch);
+                DisplayIgnoreList(pch);
                 return;
             }
 
             if (arg.EqualsIgnoreCase("none"))
             {
-                ClearIgnoreList(ch);
+                ClearIgnoreList(pch);
                 return;
             }
 
-            if (arg.EqualsIgnoreCase("self") || ch.Name.IsAnyEqual(arg))
+            if (arg.EqualsIgnoreCase("self") || pch.Name.IsAnyEqual(arg))
             {
-                color.set_char_color(ATTypes.AT_IGNORE, ch);
-                color.ch_printf(ch, "Did you type something?");
+                color.set_char_color(ATTypes.AT_IGNORE, pch);
+                color.ch_printf(pch, "Did you type something?");
                 return;
             }
 
-            IgnoreCharacter(arg, ch);
+            IgnoreCharacter(arg, pch);
         }
 
-        private static void DisplayIgnoreList(CharacterInstance ch)
+        private static void DisplayIgnoreList(PlayerInstance ch)
         {
             color.set_char_color(ATTypes.AT_DIVIDER, ch);
             color.ch_printf(ch, "----------------------------------------");
@@ -51,14 +53,14 @@ namespace SmaugCS.Commands.Social
             }
         }
 
-        private static void ClearIgnoreList(CharacterInstance ch)
+        private static void ClearIgnoreList(PlayerInstance ch)
         {
             ch.PlayerData.Ignored.Clear();
             color.set_char_color(ATTypes.AT_IGNORE, ch);
             color.ch_printf(ch, "You now ignore no one.");
         }
 
-        private static void IgnoreCharacter(string arg, CharacterInstance ch)
+        private static void IgnoreCharacter(string arg, PlayerInstance ch)
         {
             string name = arg;
 
@@ -104,7 +106,7 @@ namespace SmaugCS.Commands.Social
             color.ch_printf(ch, "You now ignore %s.", name);
         }
 
-        private static void RemoveIgnoredPlayer(string name, CharacterInstance ch)
+        private static void RemoveIgnoredPlayer(string name, PlayerInstance ch)
         {
             IgnoreData ignore = ch.PlayerData.Ignored.First(x => x.Name.EqualsIgnoreCase(name));
             ch.PlayerData.Ignored.Remove(ignore);

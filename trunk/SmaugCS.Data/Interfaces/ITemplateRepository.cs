@@ -1,4 +1,7 @@
-﻿// ReSharper disable CheckNamespace
+﻿using SmaugCS.Data.Templates;
+// ReSharper disable CheckNamespace
+
+
 namespace SmaugCS.Data
 // ReSharper restore CheckNamespace
 {

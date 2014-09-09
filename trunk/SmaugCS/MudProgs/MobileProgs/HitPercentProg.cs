@@ -2,13 +2,14 @@
 using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.MudProgs.MobileProgs
 {
     public static class HitPercentProg
     {
-        public static void Execute(CharacterInstance mob, CharacterInstance ch)
+        public static void Execute(MobileInstance mob, CharacterInstance ch)
         {
             if (!mob.IsNpc() || !mob.MobIndex.HasProg(MudProgTypes.HitPercent)) return;
             

@@ -3,12 +3,13 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
     public static class AppraiseAll
     {
-        public static void appraise_all(CharacterInstance ch, CharacterInstance keeper, string fixstr)
+        public static void appraise_all(CharacterInstance ch, MobileInstance keeper, string fixstr)
         {
             int total = 0, cost = 0;
             string buffer;

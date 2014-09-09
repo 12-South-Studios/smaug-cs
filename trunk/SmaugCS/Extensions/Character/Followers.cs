@@ -3,6 +3,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
@@ -17,7 +18,7 @@ namespace SmaugCS.Extensions
             ch.Leader = null;
 
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Pet) && !master.IsNpc())
-                master.PlayerData.Pet = ch;
+                ((PlayerInstance)master).PlayerData.Pet = ch;
 
             if (master.CanSee(ch))
                 comm.act(ATTypes.AT_ACTION, "$n now follows you.", ch, null, master, ToTypes.Victim);
@@ -30,15 +31,15 @@ namespace SmaugCS.Extensions
             if (ch.Master == null) return;
 
             if (ch.IsNpc() && !ch.Master.IsNpc()
-                && ch.Master.PlayerData.Pet == ch)
-                ch.Master.PlayerData.Pet = null;
+                && ((PlayerInstance)ch.Master).PlayerData.Pet == ch)
+                ((PlayerInstance)ch.Master).PlayerData.Pet = null;
 
             if (ch.IsAffected(AffectedByTypes.Charm))
             {
                 ch.AffectedBy.RemoveBit(AffectedByTypes.Charm);
                 //ch.RemoveAffect(gsn_charm_person);    TODO Fix this!
                 if (!ch.Master.IsNpc())
-                    ch.Master.PlayerData.NumberOfCharmies--;
+                    ((PlayerInstance)ch.Master).PlayerData.NumberOfCharmies--;
             }
 
             if (ch.Master.CanSee(ch))

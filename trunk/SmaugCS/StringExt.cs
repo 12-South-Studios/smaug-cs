@@ -3,6 +3,7 @@ using System.Text;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS
 {
@@ -60,11 +61,11 @@ namespace SmaugCS
 
         public static string Drunkify(this string argument, CharacterInstance ch)
         {
-            if (ch.IsNpc() || ch.PlayerData == null)
+            if (ch.IsNpc() || ((PlayerInstance)ch).PlayerData == null)
                 return argument;
 
-            int drunk = ch.PlayerData.ConditionTable.ContainsKey(ConditionTypes.Drunk)
-                                   ? ch.PlayerData.ConditionTable[ConditionTypes.Drunk]
+            int drunk = ((PlayerInstance)ch).PlayerData.ConditionTable.ContainsKey(ConditionTypes.Drunk)
+                                   ? ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]
                                    : 0;
 
             if (drunk <= 0)

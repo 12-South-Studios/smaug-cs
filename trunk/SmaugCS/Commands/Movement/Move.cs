@@ -2,6 +2,8 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
@@ -22,11 +24,11 @@ namespace SmaugCS.Commands.Movement
                     && ch.CurrentPosition != PositionTypes.Drag)
                     drunk = true;
 
-                if (ch.PlayerData.Nuisance != null
-                    && ch.PlayerData.Nuisance.Flags > 8
+                if (((PlayerInstance)ch).PlayerData.Nuisance != null
+                    && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 8
                     && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag
-                    && SmaugCS.Common.SmaugRandom.D100() > (ch.PlayerData.Nuisance.Flags * ch.PlayerData.Nuisance.Power))
+                    && SmaugCS.Common.SmaugRandom.D100() > (((PlayerInstance)ch).PlayerData.Nuisance.Flags * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
                     nuisance = true;
             }
 

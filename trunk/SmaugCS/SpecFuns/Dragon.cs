@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -8,7 +9,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class Dragon
     {
-        public static bool DoSpecDragon(CharacterInstance ch, string spellName)
+        public static bool DoSpecDragon(MobileInstance ch, string spellName)
         {
             if (!ch.IsInCombatPosition())
                 return false;

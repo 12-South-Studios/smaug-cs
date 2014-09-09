@@ -7,6 +7,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
@@ -199,7 +200,7 @@ namespace SmaugCS
                                                               6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1));
         }
 
-        public static void show_list_to_char(List<ObjectInstance> list, CharacterInstance ch, bool fShort, bool fShowNothing)
+        public static void show_list_to_char(List<ObjectInstance> list, PlayerInstance ch, bool fShort, bool fShowNothing)
         {
             if (ch.Descriptor == null)
                 return;
@@ -208,22 +209,20 @@ namespace SmaugCS
             {
                 if (fShowNothing)
                 {
-                    if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Combine))
+                    if (ch.Act.IsSet(PlayerFlags.Combine))
                         color.send_to_char("     ", ch);
                     color.set_char_color(ATTypes.AT_OBJECT, ch);
-                    color.send_to_char("Nothing.\r\n", ch);
+                    color.send_to_char("Nothing.", ch);
                 }
                 return;
             }
 
             int count = list.Count;
 
-            int ms = (ch.MentalState > 0 ? ch.MentalState : 1) *
-                     (ch.IsNpc()
-                          ? 1
-                          : (ch.PlayerData.ConditionTable[ConditionTypes.Drunk] > 0
-                                 ? (ch.PlayerData.ConditionTable[ConditionTypes.Drunk] / 12)
-                                 : 1));
+            int ms = (ch.MentalState > 0 ? ch.MentalState : 1)*
+                     (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk) > 0
+                         ? (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk)/12)
+                         : 1);
 
             int offcount;
             if (Math.Abs(ms) > 40)
@@ -241,7 +240,7 @@ namespace SmaugCS
             {
                 if (fShowNothing)
                 {
-                    if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Combine))
+                    if (ch.Act.IsSet(PlayerFlags.Combine))
                         color.send_to_char("     ", ch);
                     color.set_char_color(ATTypes.AT_OBJECT, ch);
                     color.send_to_char("Nothing.\r\n", ch);
@@ -282,7 +281,7 @@ namespace SmaugCS
                     pstrShow = format_obj_to_char(obj, ch, fShort);
                     fCombine = false;
 
-                    if (ch.IsNpc() || ch.Act.IsSet(PlayerFlags.Combine))
+                    if (ch.Act.IsSet(PlayerFlags.Combine))
                     {
                         for (int i = nShow - 1; i >= 0; i--)
                         {
@@ -333,7 +332,7 @@ namespace SmaugCS
 
             if (fShowNothing && nShow == 0)
             {
-                if (ch.IsNpc() || ch.Act.IsSet(PlayerFlags.Combine))
+                if (ch.Act.IsSet(PlayerFlags.Combine))
                     color.send_to_char("     ", ch);
                 color.set_char_color(ATTypes.AT_OBJECT, ch);
                 color.send_to_char("Nothing.\r\n", ch);
@@ -349,58 +348,13 @@ namespace SmaugCS
             else
                 color.set_char_color(attrib.ATType, ch);
         }
-
-        private static readonly List<AffectedByTypes> AffectedByList = new List<AffectedByTypes> 
-        { 
-            AffectedByTypes.FireShield, AffectedByTypes.ShockShield, AffectedByTypes.AcidMist,
-            AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
-        };
-
-        public static void show_visible_affects_to_char(CharacterInstance victim, CharacterInstance ch)
-        {
-            ATTypes atType = ATTypes.AT_WHITE;
-            string description = string.Empty;
-            VisibleAffectAttribute attrib = null;
-
-            if (victim.IsAffected(AffectedByTypes.Sanctuary))
-            {
-                string name = (victim.IsNpc() ? victim.ShortDescription : victim.Name).CapitalizeFirst();
-
-                atType = ATTypes.AT_WHITE;
-                if (victim.IsGood())
-                    description = string.Format("{0} glows with an aura of divine radiance.\r\n", name);
-                else if (victim.IsEvil())
-                    description = string.Format("{0} shimmers beneath an aura of dark energy.\r\n", name);
-                else
-                    description = string.Format("{0} is shrouded in flowing shadow and light.\r\n", name);
-            }
-            if (!victim.IsNpc() && victim.Descriptor == null 
-                && victim.Switched.IsAffected(AffectedByTypes.Possess))
-                attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
-            else
-            {
-                AffectedByTypes affectedBy = AffectedByList.FirstOrDefault(victim.IsAffected);
-                if (affectedBy != AffectedByTypes.None)
-                    attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
-            }
-
-            if (attrib != null)
-            {
-                atType = attrib.ATType;
-                description = attrib.Description;
-            }
-
-            color.set_char_color(atType, ch);
-            color.ch_printf(ch, description);
-        }
-
         
-        public static void show_char_to_char_0(CharacterInstance victim, CharacterInstance ch)
+        public static void show_char_to_char_0(CharacterInstance victim, PlayerInstance ch)
         {
             string buffer = string.Empty;
 
             color.set_char_color(ATTypes.AT_PERSON, ch);
-            if (!victim.IsNpc() && victim.Descriptor == null)
+            if (!victim.IsNpc())
             {
                 if (victim.Switched == null)
                     color.send_to_char_color("&P[(Link Dead)]", ch);
@@ -410,10 +364,9 @@ namespace SmaugCS
 
             if (victim.IsNpc()
                 && victim.IsAffected(AffectedByTypes.Possess)
-                && ch.IsImmortal()
-                && victim.Descriptor != null)
+                && ch.IsImmortal() && ch.Switched != null)
             {
-                buffer += "(" + victim.Descriptor.Original.Name + ")";
+                buffer += "(" + victim.Switched.Name + ")";
             }
 
             if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
@@ -423,22 +376,23 @@ namespace SmaugCS
                 || (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)))
             {
                 if (!victim.IsNpc())
-                    buffer += string.Format("(Invis {0}) ", victim.PlayerData.WizardInvisible);
+                    buffer += string.Format("(Invis {0}) ", ((PlayerInstance)victim).PlayerData.WizardInvisible);
                 else
                     buffer += string.Format("(MobInvis {0}) ", victim.MobInvisible);
             }
 
             if (!victim.IsNpc())
             {
-                if (victim.IsImmortal() && victim.Level > LevelConstants.GetLevel(ImmortalTypes.Avatar))
+                PlayerInstance vict = (PlayerInstance) victim;
+                if (vict.IsImmortal() && vict.Level > LevelConstants.GetLevel(ImmortalTypes.Avatar))
                     color.send_to_char_color("&P(&WImmortal&P) ", ch);
-                if (victim.PlayerData.Clan != null
-                    && victim.PlayerData.Flags.IsSet((int)PCFlags.Deadly)
-                    && !string.IsNullOrEmpty(victim.PlayerData.Clan.Badge)
-                    && (victim.PlayerData.Clan.ClanType != ClanTypes.Order
-                    || victim.PlayerData.Clan.ClanType != ClanTypes.Guild))
-                    color.ch_printf_color(ch, "%s ", victim.PlayerData.Clan.Badge);
-                else if (victim.CanPKill() && victim.Level < LevelConstants.ImmortalLevel)
+                if (vict.PlayerData.Clan != null
+                    && vict.PlayerData.Flags.IsSet(PCFlags.Deadly)
+                    && !string.IsNullOrEmpty(vict.PlayerData.Clan.Badge)
+                    && (vict.PlayerData.Clan.ClanType != ClanTypes.Order
+                    || vict.PlayerData.Clan.ClanType != ClanTypes.Guild))
+                    color.ch_printf_color(ch, "%s ", vict.PlayerData.Clan.Badge);
+                else if (vict.CanPKill() && vict.Level < LevelConstants.ImmortalLevel)
                     color.send_to_char_color("&P(&wUnclanned&P) ", ch);
             }
 
@@ -463,15 +417,15 @@ namespace SmaugCS
                     else
                     {
                         buffer += Macros.PERS(victim, ch);
-                        if (!victim.IsNpc() && !ch.Act.IsSet((int)PlayerFlags.Brief))
-                            buffer += victim.PlayerData.Title;
+                        if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
+                            buffer += ((PlayerInstance)victim).PlayerData.Title;
                         buffer += ".\r\n";
                     }
                 }
                 else
                     buffer += victim.LongDescription;
                 color.send_to_char(buffer, ch);
-                show_visible_affects_to_char(victim, ch);
+                ch.ShowVisibleAffectsOn(victim);
                 return;
             }
 
@@ -482,7 +436,7 @@ namespace SmaugCS
                 buffer += Macros.PERS(victim, ch);
 
             if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
-                buffer += victim.PlayerData.Title;
+                buffer += ((PlayerInstance)victim).PlayerData.Title;
 
             TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
             if (timer != null)
@@ -500,10 +454,10 @@ namespace SmaugCS
             buffer += "\r\n";
             buffer = buffer.CapitalizeFirst();
             color.send_to_char(buffer, ch);
-            show_visible_affects_to_char(victim, ch);
+            ch.ShowVisibleAffectsOn(victim);
         }
 
-        private static string GenerateBufferForAffectedBy(CharacterInstance victim, CharacterInstance ch)
+        private static string GenerateBufferForAffectedBy(CharacterInstance victim, PlayerInstance ch)
         {
             if (victim.IsAffected(AffectedByTypes.Invisible))
                 return AffectedByTypes.Invisible.GetAttribute<DescriptorAttribute>().Messages[0];
@@ -536,7 +490,7 @@ namespace SmaugCS
             if (victim.IsNpc() && ch.CurrentMount != null
                 && ch.CurrentMount == victim && ch.CurrentRoom == ch.CurrentMount.CurrentRoom)
                 return "(Mount) ";
-            if (victim.Descriptor != null && victim.Descriptor.ConnectionStatus == ConnectionTypes.Editing)
+            if (victim.Switched != null && ((PlayerInstance)victim.Switched).Descriptor.ConnectionStatus == ConnectionTypes.Editing)
                 return ConnectionTypes.Editing.GetAttribute<DescriptorAttribute>().Messages[0];
             if (victim.CurrentMorph != null)
                 return "(Morphed) ";
@@ -640,10 +594,10 @@ namespace SmaugCS
             return attrib.Messages[1];
         }
 
-        public static void show_char_to_char_1(CharacterInstance victim, CharacterInstance ch)
+        public static void show_char_to_char_1(CharacterInstance victim, PlayerInstance ch)
         {
             if (victim.CanSee(ch) && !ch.IsNpc()
-                && !ch.Act.IsSet((int)PlayerFlags.WizardInvisibility))
+                && !ch.Act.IsSet(PlayerFlags.WizardInvisibility))
             {
                 comm.act(ATTypes.AT_ACTION, "$n looks at you.", ch, null, victim, ToTypes.Victim);
                 comm.act(ATTypes.AT_ACTION, victim != ch ? "$n looks at $N." : "$n looks at $mself.", ch, null, victim,
@@ -706,7 +660,7 @@ namespace SmaugCS
             if (ch.IsImmortal())
             {
                 if (victim.IsNpc())
-                    color.ch_printf(ch, "\r\nMobile #%d '%s' ", victim.MobIndex.Vnum, victim.Name);
+                    color.ch_printf(ch, "\r\nMobile #%d '%s' ", ((MobileInstance)victim).MobIndex.Vnum, victim.Name);
                 else
                     color.ch_printf(ch, "\r\n%s ", victim.Name);
 
@@ -729,7 +683,7 @@ namespace SmaugCS
                 skill.LearnFromFailure(ch);
         }
 
-        public static void show_char_to_char(IEnumerable<CharacterInstance> list, CharacterInstance ch)
+        public static void show_char_to_char(IEnumerable<CharacterInstance> list, PlayerInstance ch)
         {
             foreach (CharacterInstance rch in list.Where(x => x != ch))
             {

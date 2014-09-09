@@ -1,10 +1,10 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Data.Instances;
 
 namespace SmaugCS.SpecFuns
 {
-    class BreathLightning
+    public static class BreathLightning
     {
-        public static bool DoSpecBreathLightning(CharacterInstance ch)
+        public static bool DoSpecBreathLightning(MobileInstance ch)
         {
             return Dragon.DoSpecDragon(ch, "lightning breath");
         }

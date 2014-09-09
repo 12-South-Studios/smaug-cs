@@ -1,5 +1,6 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 
@@ -21,8 +22,8 @@ namespace SmaugCS.Extensions
             {
                 if (ch.IsNpc() || cch.IsNpc())
                     return 100;
-                if (ch.PlayerData.Clan == cch.PlayerData.Clan
-                    && ch.PlayerData.Clan != null)
+                if (((PlayerInstance)ch).PlayerData.Clan == ((PlayerInstance)cch).PlayerData.Clan
+                    && ((PlayerInstance)ch).PlayerData.Clan != null)
                     return 100;
             }
 

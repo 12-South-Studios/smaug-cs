@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using Ninject.Modules;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
@@ -15,8 +17,9 @@ namespace SmaugCS.Behavior.Shopkeeper
     {
         public static CharacterInstance GetShopkeep(CharacterInstance ch, IGameManager gameManager = null)
         {
-            CharacterInstance keeper =
-                ch.CurrentRoom.Persons.FirstOrDefault(mob => mob.IsNpc() && mob.MobIndex.Shop != null);
+            MobileInstance keeper =
+                ch.CurrentRoom.Persons.OfType<MobileInstance>()
+                    .FirstOrDefault(mob => mob.IsNpc() && mob.MobIndex.Shop != null);
 
             if (CheckFunctions.CheckIfNullObject(ch, keeper, "You can't do that here.")) return null;
             if (DoesKeeperHateKillers(keeper, ch)) return null;
@@ -95,7 +98,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             return false;
         }
 
-        private static bool IsShopClosed(CharacterInstance keeper, CharacterInstance ch, int gameHour)
+        private static bool IsShopClosed(MobileInstance keeper, CharacterInstance ch, int gameHour)
         {
             ShopData shop = keeper.MobIndex.Shop;
             if (gameHour < shop.OpenHour)

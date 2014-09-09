@@ -1,4 +1,4 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using System;
 
@@ -16,7 +16,7 @@ namespace SmaugCS.Communication
             this.ClanType = ClanType;
         }
 
-        public override bool Verify(ChannelTypes channelType, CharacterInstance ch, int minTrust = 0)
+        public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
         {
             if (ch.PlayerData.Clan == null)
                 return false;

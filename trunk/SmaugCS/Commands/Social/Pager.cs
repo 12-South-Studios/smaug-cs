@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Social
@@ -24,23 +25,23 @@ namespace SmaugCS.Commands.Social
 
             if (CheckFunctions.CheckIfTrue(ch, !firstArg.IsNumber(), "Set page pausing to how many lines?")) return;
 
-            ch.PlayerData.PagerLineCount = Convert.ToInt32(firstArg);
-            if (ch.PlayerData.PagerLineCount < 5)
-                ch.PlayerData.PagerLineCount = 5;
+            ((PlayerInstance)ch).PlayerData.PagerLineCount = Convert.ToInt32(firstArg);
+            if (((PlayerInstance)ch).PlayerData.PagerLineCount < 5)
+                ((PlayerInstance)ch).PlayerData.PagerLineCount = 5;
 
-            color.ch_printf(ch, "Page pausing set to {0} lines.", ch.PlayerData.PagerLineCount);
+            color.ch_printf(ch, "Page pausing set to {0} lines.", ((PlayerInstance)ch).PlayerData.PagerLineCount);
         }
 
         private static void TogglePager(CharacterInstance ch)
         {
-            if (ch.PlayerData.Flags.IsSet((int)PCFlags.PagerOn))
+            if (((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.PagerOn))
             {
                 color.send_to_char("Pager disabled.", ch);
                 Config.do_config(ch, "-pager");
             }
             else
             {
-                color.ch_printf(ch, "Pager is now enabled at {0} lines.", ch.PlayerData.PagerLineCount);
+                color.ch_printf(ch, "Pager is now enabled at {0} lines.", ((PlayerInstance)ch).PlayerData.PagerLineCount);
                 Config.do_config(ch, "+pager");
             }
         }

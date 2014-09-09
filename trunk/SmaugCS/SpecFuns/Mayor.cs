@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Commands.Movement;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -16,7 +16,7 @@ namespace SmaugCS.SpecFuns
         private const string openPath = "W3a3003b33000c111d0d111Oe333333Oe22c222112212111a1S.";
         private const string closePath = "W3a3003b33000c111d0d111CE333333CE22c222112212111a1S.";
         
-        public static bool DoSpecMayor(CharacterInstance ch)
+        public static bool DoSpecMayor(MobileInstance ch)
         {
             if (!_move)
             {
@@ -42,8 +42,8 @@ namespace SmaugCS.SpecFuns
             return true;
         }
 
-        private static readonly Dictionary<char, Action<CharacterInstance>> ActionLookupTable = new Dictionary
-            <char, Action<CharacterInstance>>
+        private static readonly Dictionary<char, Action<MobileInstance>> ActionLookupTable = new Dictionary
+            <char, Action<MobileInstance>>
             {
                 {'0', Move},
                 {'1', Move},
@@ -61,60 +61,60 @@ namespace SmaugCS.SpecFuns
                 {'.', Nothing}
             };
 
-        private static void Move(CharacterInstance ch)
+        private static void Move(MobileInstance ch)
         {
             Commands.Movement.Move.move_char(ch, ch.CurrentRoom.GetExit(_path[_index]), 0);
         }
 
-        private static void Wake(CharacterInstance ch)
+        private static void Wake(MobileInstance ch)
         {
             ch.CurrentPosition = PositionTypes.Standing;
             comm.act(ATTypes.AT_ACTION, "$n lies down and falls asleep.", ch, null, null, ToTypes.Room);
         }
 
-        private static void HelloHoney(CharacterInstance ch)
+        private static void HelloHoney(MobileInstance ch)
         {
             comm.act(ATTypes.AT_SAY, "$n says 'Hello Honey!'", ch, null, null, ToTypes.Room);
         }
 
-        private static void WhatAView(CharacterInstance ch)
+        private static void WhatAView(MobileInstance ch)
         {
             comm.act(ATTypes.AT_SAY, "$n says 'What a view!  I must do something about that dump!'", ch, null, null, ToTypes.Room);
         }
 
-        private static void Vandals(CharacterInstance ch)
+        private static void Vandals(MobileInstance ch)
         {
             comm.act(ATTypes.AT_SAY, "$n says 'Vandals!  Youngsters have no respect for anything!'", ch, null, null, ToTypes.Room);
         }
 
-        private static void GoodDay(CharacterInstance ch)
+        private static void GoodDay(MobileInstance ch)
         {
             comm.act(ATTypes.AT_SAY, "$n says 'Good day, citizens!'", ch, null, null, ToTypes.Room);
         }
 
-        private static void OpenGateText(CharacterInstance ch)
+        private static void OpenGateText(MobileInstance ch)
         {
             comm.act(ATTypes.AT_SAY, "$n says 'I hereby declare the town of Darkhaven open!'", ch, null, null, ToTypes.Room);
         }
 
-        private static void CloseGateText(CharacterInstance ch)
+        private static void CloseGateText(MobileInstance ch)
         {
             comm.act(ATTypes.AT_SAY, "$n says 'I hereby declare the town of Darkhaven closed!'", ch, null, null, ToTypes.Room);
         }
 
-        private static void OpenGate(CharacterInstance ch)
+        private static void OpenGate(MobileInstance ch)
         {
             Unlock.do_unlock(ch, "gate");
             Open.do_open(ch, "gate");
         }
 
-        private static void CloseGate(CharacterInstance ch)
+        private static void CloseGate(MobileInstance ch)
         {
             Close.do_close(ch, "gate");
             Lock.do_lock(ch, "gate");
         }
 
-        private static void Nothing(CharacterInstance ch)
+        private static void Nothing(MobileInstance ch)
         {
             _move = false;
         }

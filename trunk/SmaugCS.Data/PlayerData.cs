@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 
 namespace SmaugCS.Data
@@ -12,7 +13,6 @@ namespace SmaugCS.Data
         public CouncilData Council { get; set; }
         public AreaData BuilderArea { get; set; }
         public DeityData CurrentDeity { get; set; }
-        //public BoardData game_board { get; set; }
         public nuisance_data Nuisance { get; set; }
         public List<KilledData> Killed { get; private set; }
 

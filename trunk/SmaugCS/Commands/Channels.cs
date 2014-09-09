@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using Realm.Library.Common;
 using SmaugCS.Communication;
 using SmaugCS.Common;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Commands
 {
@@ -14,18 +15,20 @@ namespace SmaugCS.Commands
         [Command(NoNpc = true)]
         public static void do_channels(CharacterInstance ch, string argument)
         {
+            PlayerInstance pch = (PlayerInstance) ch;
+
             string firstWord = argument.FirstWord();
             if (firstWord.IsNullOrEmpty())
-                ListChannels(ch, argument);
+                ListChannels(pch, argument);
             else if (firstWord.StartsWith("+"))
-                ProcessChannelStatus(ch, firstWord.Remove(0, 1), SetChannel, SetChannel);
+                ProcessChannelStatus(pch, firstWord.Remove(0, 1), SetChannel, SetChannel);
             else if (firstWord.StartsWith("-"))
-                ProcessChannelStatus(ch, firstWord.Remove(0, 1), RemoveChannel, RemoveChannel);
+                ProcessChannelStatus(pch, firstWord.Remove(0, 1), RemoveChannel, RemoveChannel);
             else
                 color.send_to_char("Channels -channel or +channel?", ch);
         }
 
-        private static void ListChannels(CharacterInstance ch, string argument)
+        private static void ListChannels(PlayerInstance ch, string argument)
         {
             if (string.IsNullOrEmpty(argument) && ch.Act.IsSet(PlayerFlags.Silence))
             {
@@ -44,7 +47,7 @@ namespace SmaugCS.Commands
             }
         }
 
-        private static string GetChannelText(ChannelTypes channelType, CharacterInstance ch)
+        private static string GetChannelText(ChannelTypes channelType, PlayerInstance ch)
         {
             ChannelAttribute attrib = channelType.GetAttribute<ChannelAttribute>();
             if (attrib == null)
@@ -92,7 +95,7 @@ namespace SmaugCS.Commands
             ch.Deaf = ch.Deaf.RemoveBit(channelType);
         }
 
-        private static void ProcessChannelStatus(CharacterInstance ch, string argument,
+        private static void ProcessChannelStatus(PlayerInstance ch, string argument,
             Action<CharacterInstance, ChannelTypes> clearAction, Action<CharacterInstance, ChannelTypes> verifyAction)
         {
             if (argument.EqualsIgnoreCase("all"))

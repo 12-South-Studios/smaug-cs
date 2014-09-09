@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common;
+using SmaugCS.Data.Templates;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Instances
 {
     public abstract class Instance : Entity
     {
@@ -12,6 +12,7 @@ namespace SmaugCS.Data
         public Template Parent { get; set; }
         public List<AffectData> Affects { get; set; }
 
+        public int Level { get; set; }
         public int Timer { get; set; }
 
         protected Instance(long id, string name)

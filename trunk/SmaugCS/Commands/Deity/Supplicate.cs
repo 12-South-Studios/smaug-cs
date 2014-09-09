@@ -6,6 +6,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -14,7 +16,8 @@ namespace SmaugCS.Commands.Deity
 {
     public static class Supplicate
     {
-        private static readonly Dictionary<string, Action<CharacterInstance, string>> SupplicateTable = new Dictionary<string, Action<CharacterInstance, string>>
+        private static readonly Dictionary<string, Action<PlayerInstance, string>> SupplicateTable 
+            = new Dictionary<string, Action<PlayerInstance, string>>
         {
             {"corpse", SupplicateForCorpse},
             {"avatar", SupplicateForAvatar},
@@ -24,19 +27,19 @@ namespace SmaugCS.Commands.Deity
 
         public static void do_supplicate(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || ch.PlayerData.CurrentDeity == null,
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || ((PlayerInstance)ch).PlayerData.CurrentDeity == null,
                 "You have no deity to supplicate to.")) return;
 
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Supplicate for what?")) return;
 
             if (SupplicateTable.ContainsKey(firstArg.ToLower()))
-                SupplicateTable[firstArg.ToLower()].Invoke(ch, argument);
+                SupplicateTable[firstArg.ToLower()].Invoke((PlayerInstance)ch, argument);
             else 
                 color.send_to_char("You cannot supplicate for that.", ch);
         }
 
-        private static void SupplicateForCorpse(CharacterInstance ch, string argument)
+        private static void SupplicateForCorpse(PlayerInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateCorpseCost,
                 "You are not favored enough for a corpse retrieval.")) return;
@@ -61,7 +64,7 @@ namespace SmaugCS.Commands.Deity
             // TODO Do suscept, element and affects
         }
 
-        private static void SupplicateForAvatar(CharacterInstance ch, string argument)
+        private static void SupplicateForAvatar(PlayerInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateAvatarCost,
                 "You are not favored enough for that.")) return;
@@ -83,7 +86,7 @@ namespace SmaugCS.Commands.Deity
             // TODO Do suscept, element and affects
         }
 
-        private static void SupplicateForObject(CharacterInstance ch, string argument)
+        private static void SupplicateForObject(PlayerInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost,
                 "You are not favored enough for that.")) return;
@@ -99,11 +102,13 @@ namespace SmaugCS.Commands.Deity
 
             // TODO Do suscept, element and affects
 
-            AffectData af = new AffectData();
-            af.Type = AffectedByTypes.None;
-            af.Duration = -1;
-            af.Location = GetApplyTypeForDeity(ch.PlayerData.CurrentDeity);
-            af.Modifier = 1;
+            AffectData af = new AffectData
+            {
+                Type = AffectedByTypes.None,
+                Duration = -1,
+                Location = GetApplyTypeForDeity(ch.PlayerData.CurrentDeity),
+                Modifier = 1
+            };
             obj.Affects.Add(af);
         }
 
@@ -129,7 +134,7 @@ namespace SmaugCS.Commands.Deity
             return ApplyTypes.None;
         }
 
-        private static void SupplicateForRecall(CharacterInstance ch, string argument)
+        private static void SupplicateForRecall(PlayerInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateRecallCost,
                    "Your favor is inadequate for such a supplication.")) return;

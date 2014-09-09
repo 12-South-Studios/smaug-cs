@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
@@ -36,7 +37,7 @@ namespace SmaugCS.Extensions
 
             --obj.Value[0];
             if (obj.Value[0] <= 0)
-                ObjectInstanceExtensions.Extract(obj);
+                obj.Extract();
 
             ReturnTypes returnCode = ReturnTypes.None;
             if (attrib != null && !string.IsNullOrEmpty(attrib.Messages[1]))

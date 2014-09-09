@@ -5,6 +5,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -327,7 +329,7 @@ namespace SmaugCS
             return false;
         }*/
 
-        public static void CheckIfExecute(CharacterInstance mob, MudProgTypes type)
+        public static void CheckIfExecute(MobileInstance mob, MudProgTypes type)
         {
             foreach (MudProgData mprog in mob.MobIndex.MudProgs)
             {

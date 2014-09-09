@@ -1,6 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
@@ -34,8 +35,8 @@ namespace SmaugCS.Commands.PetsAndGroups
             if ((ch.Level - victim.Level < -10 ||
                  ch.Level - victim.Level > 10)
                 && !ch.IsHero() && !(ch.Level < 15 && !victim.IsNpc()
-                                            && victim.PlayerData.Council != null
-                                            && !victim.PlayerData.Council.Name.Equals("Newbie Council")))
+                                            && ((PlayerInstance)victim).PlayerData.Council != null
+                                            && !((PlayerInstance)victim).PlayerData.Council.Name.Equals("Newbie Council")))
             {
                 color.send_to_char("You are not of the right caliber to follow.\r\n", ch);
                 return;

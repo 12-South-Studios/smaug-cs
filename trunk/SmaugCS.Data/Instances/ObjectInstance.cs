@@ -4,9 +4,9 @@ using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Templates;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Instances
 {
     [XmlRoot("Object")]
     public class ObjectInstance : Instance, IHasExtraFlags, IHasExtraDescriptions
@@ -29,11 +29,9 @@ namespace SmaugCS.Data
         public WearLocations WearLocation { get; set; }
         public int Weight { get; set; }
         public int Cost { get; set; }
-        public int Level { get; set; }
         public int[] Value { get; set; }
         public dynamic Values { get; set; }
         public int Count { get; set; }
-        public long room_vnum { get; set; }
 
         public ObjectInstance[,] PlayerEq { get; set; }
         public ObjectInstance[,] MobEq { get; set; }

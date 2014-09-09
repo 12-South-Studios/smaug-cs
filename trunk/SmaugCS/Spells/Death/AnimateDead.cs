@@ -4,6 +4,8 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -37,10 +39,10 @@ namespace SmaugCS.Spells
                 {
                     if (CheckFunctions.CheckIfTrue(ch,
                         !ch.IsImmortal() &&
-                        (ch.PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) - (template.Level/3)) < 0,
+                        (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) - (template.Level / 3)) < 0,
                         "You don't have the power to reanimate this corpse.")) return ReturnTypes.SpellFailed;
 
-                    ch.GainCondition(ConditionTypes.Bloodthirsty, template.Level/3);
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, template.Level / 3);
                 }
                 else if ((ch.CurrentMana - (template.Level/4)) < 0)
                 {

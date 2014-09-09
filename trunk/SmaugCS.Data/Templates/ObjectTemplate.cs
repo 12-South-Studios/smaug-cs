@@ -3,11 +3,9 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Templates
 {
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
@@ -19,12 +17,11 @@ namespace SmaugCS.Data
         public string LongDescription { get; set; }
         public string Action { get; set; }
         public dynamic Values { get; set; }
-        public int serial { get; set; }
         public int Cost { get; set; }
         public int Rent { get; set; }
-        public int magic_flags { get; set; }
+        public int MagicFlags { get; set; }
         public string WearFlags { get; set; }
-        public int count { get; set; }
+        public int Count { get; set; }
         public int Weight { get; set; }
         public int Layers { get; set; }
         public int Level { get; set; }
@@ -49,6 +46,7 @@ namespace SmaugCS.Data
         {
             Type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ItemTypes>(type);
         }
+
         public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
         {
             Values.Val0 = v1;

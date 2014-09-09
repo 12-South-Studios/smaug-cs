@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -31,13 +32,13 @@ namespace SmaugCS.Skills
 
             if (SmaugRandom.D100() >= (chance + victim.Level - ch.Level))
             {
-                skill.LearnFromFailure(victim);
+                skill.LearnFromFailure((PlayerInstance)victim);
                 return false;
             }
 
             comm.act(ATTypes.AT_SKILL, "You evade $n's attempt to disarm you.", ch, null, victim, ToTypes.Victim);
             comm.act(ATTypes.AT_SKILL, "$N holds $S weapon strongly, and is not disarmed.", ch, null, victim, ToTypes.Character);
-            skill.LearnFromSuccess(victim);
+            skill.LearnFromSuccess((PlayerInstance)victim);
             return true;
         }
     }

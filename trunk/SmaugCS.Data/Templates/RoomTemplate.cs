@@ -3,9 +3,9 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Templates
 {
     public class RoomTemplate : Template, IHasExtraDescriptions
     {

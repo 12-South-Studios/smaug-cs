@@ -92,6 +92,8 @@
     <Compile Include="HolidayData.cs" />
     <Compile Include="HuntHateFearData.cs" />
     <Compile Include="IgnoreData.cs" />
+    <Compile Include="Instances\MobileInstance.cs" />
+    <Compile Include="Instances\PlayerInstance.cs" />
     <Compile Include="Interfaces\IInstanceRepository.cs" />
     <Compile Include="Instances\CharacterInstance.cs" />
     <Compile Include="Instances\Instance.cs" />

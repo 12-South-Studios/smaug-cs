@@ -2,13 +2,13 @@
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.SpecFuns
 {
     public static class Thief
     {
-        public static bool DoSpecThief(CharacterInstance ch)
+        public static bool DoSpecThief(MobileInstance ch)
         {
             if (ch.CurrentPosition != PositionTypes.Standing)
                 return false;

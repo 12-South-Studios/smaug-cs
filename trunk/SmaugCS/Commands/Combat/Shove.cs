@@ -4,6 +4,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
@@ -13,7 +15,7 @@ namespace SmaugCS.Commands.Combat
     {
         public static void do_shove(CharacterInstance ch, string argument)
         {
-            if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || !ch.PlayerData.Flags.IsSet(PCFlags.Deadly),
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly),
                 "Only deadly characters can shove.")) return;
             if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.PKilled), "You can't shove a player right now."))
                 return;
@@ -24,7 +26,7 @@ namespace SmaugCS.Commands.Combat
             CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You shove yourself around, to no avail.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, victim.IsNpc() || !victim.PlayerData.Flags.IsSet(PCFlags.Deadly),
+            if (CheckFunctions.CheckIfTrue(ch, victim.IsNpc() || !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly),
                 "You can only shove deadly characters.")) return;
             if (CheckFunctions.CheckIfTrue(ch, ch.Level.GetAbsoluteDifference(victim.Level) > 5,
                 "There is too great an experience difference for you to even bother.")) return;

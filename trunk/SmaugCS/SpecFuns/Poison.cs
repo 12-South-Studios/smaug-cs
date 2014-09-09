@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -8,7 +9,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class Poison
     {
-        public static bool DoSpecPoison(CharacterInstance ch)
+        public static bool DoSpecPoison(MobileInstance ch)
         {
             if (!ch.IsInCombatPosition())
                 return false;

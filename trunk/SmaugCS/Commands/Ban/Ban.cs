@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Ban;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -14,6 +15,8 @@ namespace SmaugCS.Commands.Admin
         public static void do_ban(CharacterInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc(), "Monsters are too dumb to do that!")) return;
+
+            PlayerInstance pch = (PlayerInstance) ch;
 
             color.set_char_color(ATTypes.AT_IMMORT, ch);
             string[] args = new string[4];
@@ -29,19 +32,19 @@ namespace SmaugCS.Commands.Admin
             // Convert the value from DAYS to SECONDS
             int duration = tempTime > 0 ? (tempTime * 86400) : tempTime;
 
-            if (CheckFunctions.CheckIfTrue(ch, ch.SubState == CharacterSubStates.Restricted,
+            if (CheckFunctions.CheckIfTrue(pch, pch.SubState == CharacterSubStates.Restricted,
                 "You cannot use this command from within another command.")) return;
 
-            if (ch.SubState == CharacterSubStates.None)
-                ch.tempnum = (int) CharacterSubStates.None;
-            else if (ch.SubState == CharacterSubStates.BanDescription)
+            if (pch.SubState == CharacterSubStates.None)
+                pch.tempnum = (int) CharacterSubStates.None;
+            else if (pch.SubState == CharacterSubStates.BanDescription)
             {
                 // TODO: add_ban(ch, "", "", 0, 0);
                 return;
             }
             else
             {
-                LogManager.Instance.Bug("Illegal Characer Substate (Name={0}, SubState={1}", ch.Name, ch.SubState);
+                LogManager.Instance.Bug("Illegal Characer Substate (Name={0}, SubState={1}", pch.Name, pch.SubState);
                 return;
             }
 
@@ -120,7 +123,7 @@ namespace SmaugCS.Commands.Admin
             
         }
 
-        public static int AddBan(CharacterInstance ch, string arg1, string arg2, int duration, BanTypes type)
+        public static int AddBan(PlayerInstance ch, string arg1, string arg2, int duration, BanTypes type)
         {
             if (ch.SubState == CharacterSubStates.Restricted)
             {
@@ -135,7 +138,7 @@ namespace SmaugCS.Commands.Admin
             return 0;
         }
 
-        private static int AddBanDescription(CharacterInstance ch, string arg1, string arg2, int duration, BanTypes type)
+        private static int AddBanDescription(PlayerInstance ch, string arg1, string arg2, int duration, BanTypes type)
         {
             BanData ban = ch.DestinationBuffer.CastAs<BanData>();
             if (ban == null)

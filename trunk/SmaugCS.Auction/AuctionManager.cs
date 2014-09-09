@@ -5,6 +5,7 @@ using Ninject;
 using Realm.Library.Common;
 using SmaugCS.Constants;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Auction
 {

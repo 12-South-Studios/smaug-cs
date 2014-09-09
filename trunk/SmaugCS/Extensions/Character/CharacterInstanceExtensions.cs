@@ -12,7 +12,9 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
@@ -24,6 +26,18 @@ namespace SmaugCS
 {
     public static class CharacterInstanceExtensions
     {
+        public static bool IsBlind(this CharacterInstance ch)
+        {
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
+                return true;
+            if (ch.IsAffected(AffectedByTypes.TrueSight))
+                return true;
+            if (!ch.IsAffected(AffectedByTypes.Blind))
+                return true;
+
+            return false;
+        }
+
         public static void Extract(this CharacterInstance ch, bool fPull)
         {
             if (ch == null) return;
@@ -67,8 +81,7 @@ namespace SmaugCS
                 ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
                 foreach (
                     CharacterInstance wch in
-                        DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
-                            .Values.Where(wch => wch.CurrentMount == ch))
+                        DatabaseManager.Instance.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
                     wch.CurrentPosition = PositionTypes.Standing;
@@ -81,9 +94,9 @@ namespace SmaugCS
                         comm.act(ATTypes.AT_PLAIN, "$n sadly dismounts $N for the last time.", wch, null, ch,
                             ToTypes.Room);
                     }
-                    if (wch.PlayerData != null && wch.PlayerData.Pet == ch)
+                    if (!wch.IsNpc() && ((PlayerInstance)wch).PlayerData != null && ((PlayerInstance)wch).PlayerData.Pet == ch)
                     {
-                        wch.PlayerData.Pet = null;
+                        ((PlayerInstance)wch).PlayerData.Pet = null;
                         if (wch.CurrentRoom == ch.CurrentRoom)
                             comm.act(ATTypes.AT_SOCIAL, "You mourn for the loss of $N.", wch, null, ch,
                                 ToTypes.Character);
@@ -100,8 +113,8 @@ namespace SmaugCS
             if (!fPull)
             {
                 RoomTemplate location = null;
-                if (!ch.IsNpc() && ch.PlayerData.Clan != null)
-                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(ch.PlayerData.Clan.RecallRoom);
+                if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Clan != null)
+                    location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
 
                 if (location == null)
                     location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_ALTAR);
@@ -130,33 +143,33 @@ namespace SmaugCS
 
             if (ch.IsNpc())
             {
-                --ch.MobIndex.Count;
+                --((MobileInstance)ch).MobIndex.Count;
                 --db.NumberOfMobsLoaded;
             }
 
-            if (ch.Descriptor != null && ch.Descriptor.Original != null)
+            if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor != null && ((PlayerInstance)ch).Descriptor.Original != null)
                 Return.do_return(ch, "");
 
-            if (ch.Switched != null && ch.Switched.Descriptor != null)
+            if (ch.Switched != null && ((PlayerInstance)ch.Switched).Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values)
             {
-                if (wch.ReplyTo == ch)
-                    wch.ReplyTo = null;
-                if (wch.RetellTo == ch)
-                    wch.RetellTo = null;
+                if (((PlayerInstance)wch).ReplyTo == ch)
+                    ((PlayerInstance)wch).ReplyTo = null;
+                if (((PlayerInstance)wch).RetellTo == ch)
+                    ((PlayerInstance)wch).RetellTo = null;
             }
 
             DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
 
-            if (ch.Descriptor != null)
+            if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor != null)
             {
-                if (ch.Descriptor.Character == ch)
+                if (((PlayerInstance)ch).Descriptor.Character == ch)
                 {
-                    ch.Descriptor.Character = null;
+                    ((PlayerInstance)ch).Descriptor.Character = null;
                     // TODO Close the socket
-                    ch.Descriptor = null;
+                    ((PlayerInstance)ch).Descriptor = null;
                 }
             }
         }
@@ -164,7 +177,7 @@ namespace SmaugCS
         public static bool Chance(this CharacterInstance ch, int percent)
         {
             return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
-                   (ch.IsDevoted() ? ch.PlayerData.Favor / -500 : 0) <= percent;
+                   (((PlayerInstance)ch).IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent;
         }
 
         public static int GetVampArmorClass(this CharacterInstance ch, IGameManager gameManager = null)
@@ -214,7 +227,7 @@ namespace SmaugCS
             return check;
         }
 
-        public static void AddKill(this CharacterInstance ch, CharacterInstance mob)
+        public static void AddKill(this PlayerInstance ch, MobileInstance mob)
         {
             if (ch.IsNpc() || !mob.IsNpc())
                 return;
@@ -250,9 +263,9 @@ namespace SmaugCS
                 killed.Increment(1);
         }
 
-        public static int TimesKilled(this CharacterInstance ch, CharacterInstance mob)
+        public static int TimesKilled(this PlayerInstance ch, MobileInstance mob)
         {
-            if (ch.IsNpc() || !mob.IsNpc())
+            if (ch.IsNpc() || mob == null || !mob.IsNpc())
                 return 0;
 
             return ch.PlayerData.Killed.Any(x => x.ID == mob.MobIndex.ID)
@@ -298,7 +311,7 @@ namespace SmaugCS
                 ch.MentalState = 0.GetNumberThatIsBetween(ch.MentalState - c, 100);
         }
 
-        public static void WorsenMentalState(this CharacterInstance ch, int mod)
+        public static void WorsenMentalState(this PlayerInstance ch, int mod)
         {
             int c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
             int con = ch.GetCurrentConstitution();
@@ -327,10 +340,10 @@ namespace SmaugCS
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral) &&
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.Death) &&
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.Prototype) && victim.Level < (ch.Level + 15) &&
-                   (!victim.CanPKill() || ch.IsNpc() || ch.CanPKill()) &&
+                   (!((PlayerInstance)victim).CanPKill() || ch.IsNpc() || ((PlayerInstance)ch).CanPKill()) &&
                    (!victim.IsNpc() || !victim.Act.IsSet(ActFlags.Prototype)) &&
                    (!victim.IsNpc() || !victim.SavingThrows.CheckSaveVsSpellStaff(ch.Level, victim)) &&
-                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) || !ch.IsPKill());
+                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) || !((PlayerInstance)ch).IsPKill());
         }
 
         public static bool CanDrop(this CharacterInstance ch, ObjectInstance obj)
@@ -339,7 +352,7 @@ namespace SmaugCS
                 return true;
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return true;
-            if (ch.IsNpc() && ch.MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
+            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
                 return true;
             return false;
         }
@@ -348,7 +361,7 @@ namespace SmaugCS
         {
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
                 return true;
-            if (ch.IsNpc() && ch.MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
+            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
                 return true;
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                 return false;
@@ -391,11 +404,11 @@ namespace SmaugCS
                 return true;
 
             if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.WizardInvisibility)
-                && ch.Trust < victim.PlayerData.WizardInvisible)
+                && ch.Trust < ((PlayerInstance)victim).PlayerData.WizardInvisible)
                 return false;
 
             if (victim.IsNpc() && victim.Act.IsSet(ActFlags.MobInvisibility)
-                && victim.IsPKill() && victim.Timer > 1 && victim.Descriptor == null)
+                && ((PlayerInstance)victim).IsPKill() && victim.Timer > 1 && ((PlayerInstance)victim).Descriptor == null)
                 return false;
 
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
@@ -415,11 +428,11 @@ namespace SmaugCS
                     return false;
             }
 
-            if (victim.IsNotAuthorized())
+            if (((PlayerInstance)victim).IsNotAuthorized())
             {
-                if (ch.IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
+                if (((PlayerInstance)ch).IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
                     return true;
-                if (ch.PlayerData.Council != null && ch.PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council"))
+                if (((PlayerInstance)ch).PlayerData.Council != null && ((PlayerInstance)ch).PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council"))
                     return true;
                 return false;
             }
@@ -487,7 +500,7 @@ namespace SmaugCS
 
         public static bool CouldDualWield(this CharacterInstance ch)
         {
-            return ch.IsNpc() || ch.PlayerData.Learned[DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID] > 0;
+            return ch.IsNpc() || ((PlayerInstance)ch).PlayerData.Learned[DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID] > 0;
         }
 
         public static bool CanDualWield(this CharacterInstance ch)
@@ -538,9 +551,9 @@ namespace SmaugCS
                 return false;
             if (ch.Level < morph.level)
                 return false;
-            if (morph.pkill == Program.ONLY_PKILL && !ch.IsPKill())
+            if (morph.pkill == Program.ONLY_PKILL && !((PlayerInstance)ch).IsPKill())
                 return false;
-            if (morph.pkill == Program.ONLY_PEACEFULL && ch.IsPKill())
+            if (morph.pkill == Program.ONLY_PEACEFULL && ((PlayerInstance)ch).IsPKill())
                 return false;
             if (morph.sex != -1 && morph.sex != (int) ch.Gender)
                 return false;
@@ -549,7 +562,7 @@ namespace SmaugCS
             if (morph.race != 0 && morph.race.IsSet(1 << (int) ch.CurrentRace))
                 return false;
             if (!string.IsNullOrWhiteSpace(morph.deity) &&
-                (ch.PlayerData.CurrentDeity != null || DatabaseManager.Instance.GetEntity<DeityData>(morph.deity) == null))
+                (((PlayerInstance)ch).PlayerData.CurrentDeity != null || DatabaseManager.Instance.GetEntity<DeityData>(morph.deity) == null))
                 return false;
             if (morph.timeto != -1 && morph.timefrom != -1)
             {
@@ -583,7 +596,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc() || ch.IsImmortal())
                 return true;
-            if (((ch.GetCurrentCharisma()/3) + 1) > ch.PlayerData.NumberOfCharmies)
+            if (((ch.GetCurrentCharisma() / 3) + 1) > ((PlayerInstance)ch).PlayerData.NumberOfCharmies)
                 return true;
             return false;
         }
@@ -625,12 +638,12 @@ namespace SmaugCS
             return false;
         }
 
-        public static bool IsRetired(this CharacterInstance ch)
+        public static bool IsRetired(this PlayerInstance ch)
         {
             return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Retired);
         }
 
-        public static bool IsGuest(this CharacterInstance ch)
+        public static bool IsGuest(this PlayerInstance ch)
         {
             return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Guest);
         }
@@ -675,27 +688,42 @@ namespace SmaugCS
 
         public static bool IsDrunk(this CharacterInstance ch, int drunk)
         {
-            return SmaugRandom.D100() < (ch.GetCondition(ConditionTypes.Drunk) & 2 / drunk);
+            if (ch.IsNpc()) return false;
+
+            PlayerInstance pch = (PlayerInstance) ch;
+            return SmaugRandom.D100() < (pch.GetCondition(ConditionTypes.Drunk) & 2 / drunk);
         }
 
         public static bool IsDevoted(this CharacterInstance ch)
         {
-            return !ch.IsNpc() && ch.PlayerData.CurrentDeity != null;
+            if (ch.IsNpc()) return false;
+
+            PlayerInstance pch = (PlayerInstance)ch;
+            return pch.PlayerData.CurrentDeity != null;
         }
-        
+
         public static bool IsIdle(this CharacterInstance ch)
         {
-            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Idle);
+            if (ch.IsNpc()) return false;
+
+            PlayerInstance pch = (PlayerInstance)ch;
+            return pch.PlayerData != null && pch.PlayerData.Flags.IsSet(PCFlags.Idle);
         }
-        
+
         public static bool IsPKill(this CharacterInstance ch)
         {
-            return ch.PlayerData != null && ch.PlayerData.Flags.IsSet(PCFlags.Deadly);
+            if (ch.IsNpc()) return false;
+
+            PlayerInstance pch = (PlayerInstance)ch;
+            return pch.PlayerData != null && pch.PlayerData.Flags.IsSet(PCFlags.Deadly);
         }
-        
+
         public static bool CanPKill(this CharacterInstance ch)
         {
-            return ch.IsPKill() && ch.Level >= 5 && ch.CalculateAge() >= 18;
+            if (ch.IsNpc()) return false;
+
+            PlayerInstance pch = (PlayerInstance) ch;
+            return pch.IsPKill() && pch.Level >= 5 && pch.CalculateAge() >= 18;
         }
 
         public static bool HasBodyPart(this CharacterInstance ch, int part)
@@ -710,16 +738,19 @@ namespace SmaugCS
 
         public static bool IsNotAuthorized(this CharacterInstance ch)
         {
-            bool isNotNpc = !ch.IsNpc();
-            bool hasAuthState = ch.PlayerData == null || ch.PlayerData.AuthState <= 3;
-            bool isUnauthed = ch.PlayerData == null  || ch.PlayerData.Flags.IsSet(PCFlags.Unauthorized);
-            return isNotNpc && hasAuthState && isUnauthed;
+            if (ch.IsNpc())
+                return false;
+            bool hasAuthState = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.AuthState <= 3;
+            bool isUnauthed = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Unauthorized);
+            return hasAuthState && isUnauthed;
         }
 
         public static bool IsWaitingForAuthorization(this CharacterInstance ch)
         {
-            return !ch.IsNpc() && ch.Descriptor != null && ch.PlayerData.AuthState == 1
-                   && ch.PlayerData.Flags.IsSet(PCFlags.Unauthorized);
+            if (ch.IsNpc())
+                return false;
+            return ((PlayerInstance)ch).Descriptor != null && ((PlayerInstance)ch).PlayerData.AuthState == 1
+                   && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Unauthorized);
         }
 
         public static bool IsCircleFollowing(this CharacterInstance ch, CharacterInstance victim)
@@ -757,33 +788,37 @@ namespace SmaugCS
 
         public static bool IsClanned(this CharacterInstance ch)
         {
-            return !ch.IsNpc() &&
-                ch.PlayerData.Clan != null &&
-                ch.PlayerData.Clan.ClanType != ClanTypes.Order &&
-                ch.PlayerData.Clan.ClanType != ClanTypes.Guild;
+            if (ch.IsNpc())
+                return false;
+            return ((PlayerInstance)ch).PlayerData.Clan != null &&
+                ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Order &&
+                ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Guild;
         }
 
         public static bool IsOrdered(this CharacterInstance ch)
         {
-            return !ch.IsNpc() &&
-                   ch.PlayerData.Clan != null &&
-                   ch.PlayerData.Clan.ClanType == ClanTypes.Order;
+            if (ch.IsNpc())
+                return false;
+            return ((PlayerInstance)ch).PlayerData.Clan != null &&
+                   ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Order;
         }
 
         public static bool IsGuilded(this CharacterInstance ch)
         {
-            return !ch.IsNpc() &&
-                   ch.PlayerData.Clan != null &&
-                   ch.PlayerData.Clan.ClanType == ClanTypes.Guild;
+            if (ch.IsNpc())
+                return false;
+            return ((PlayerInstance)ch).PlayerData.Clan != null &&
+                   ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Guild;
         }
 
         public static bool IsDeadlyClan(this CharacterInstance ch)
         {
-            return !ch.IsNpc() &&
-                   ch.PlayerData.Clan != null &&
-                   ch.PlayerData.Clan.ClanType != ClanTypes.NoKill &&
-                   ch.PlayerData.Clan.ClanType != ClanTypes.Order &&
-                   ch.PlayerData.Clan.ClanType != ClanTypes.Guild;
+            if (ch.IsNpc())
+                return false;
+            return ((PlayerInstance)ch).PlayerData.Clan != null &&
+                   ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.NoKill &&
+                   ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Order &&
+                   ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Guild;
         }
 
         public static bool CanTakePrototype(this CharacterInstance ch)
@@ -801,9 +836,9 @@ namespace SmaugCS
 
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
             if (add)
-                ch.PlayerData.Learned[sn] += mod;
+                ((PlayerInstance)ch).PlayerData.Learned[sn] += mod;
             else
-                ch.PlayerData.Learned[sn] = (ch.PlayerData.Learned[sn] + mod).GetNumberThatIsBetween(0, skill.GetMasteryLevel(ch));
+                ((PlayerInstance)ch).PlayerData.Learned[sn] = (((PlayerInstance)ch).PlayerData.Learned[sn] + mod).GetNumberThatIsBetween(0, skill.GetMasteryLevel((PlayerInstance)ch));
         }
 
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, WearLocations location)
@@ -844,7 +879,7 @@ namespace SmaugCS
             return movement;
         }
 
-        public static void AdvanceLevel(this CharacterInstance ch, IDatabaseManager databaseManager = null)
+        public static void AdvanceLevel(this PlayerInstance ch, IDatabaseManager databaseManager = null)
         {
             string buffer = string.Format("the {0}", tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender));
             player.set_title(ch, buffer);
@@ -912,7 +947,7 @@ namespace SmaugCS
             Help.do_help(ch, "M_ADVHERO_");
         }
 
-        public static void GainXP(this CharacterInstance ch, int gain)
+        public static void GainXP(this PlayerInstance ch, int gain)
         {
             if (ch.IsNpc() || (ch.Level >= LevelConstants.AvatarLevel))
                 return;
@@ -1005,9 +1040,9 @@ namespace SmaugCS
             if (ch.IsVampire())
                 gain = ch.GetModifiedStatGainForVampire(gain);
 
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Full] == 0)
+            if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Full] == 0)
                 gain /= 2;
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] == 0)
+            if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] == 0)
                 gain /= 2;
 
             if (ch.IsAffected(AffectedByTypes.Poison))
@@ -1041,9 +1076,9 @@ namespace SmaugCS
                     break;
             }
 
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Full] == 0)
+            if (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Full) == 0)
                 gain /= 2;
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] == 0)
+            if (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) == 0)
                 gain /= 2;
 
             if (ch.IsAffected(AffectedByTypes.Poison))
@@ -1085,9 +1120,9 @@ namespace SmaugCS
             if (ch.IsVampire())
                 gain = ch.GetModifiedStatGainForVampire(gain);
 
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Full] == 0)
+            if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Full] == 0)
                 gain /= 2;
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] == 0)
+            if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] == 0)
                 gain /= 2;
 
             if (ch.IsAffected(AffectedByTypes.Poison))
@@ -1099,9 +1134,9 @@ namespace SmaugCS
         private static int GetModifiedStatGainForVampire(this CharacterInstance ch, int gain)
         {
             int modGain = gain;
-            if (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] <= 1)
+            if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] <= 1)
                 modGain /= 2;
-            else if (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] >= (8 + ch.Level))
+            else if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] >= (8 + ch.Level))
                 modGain *= 2;
 
             if (ch.IsOutside())
@@ -1136,7 +1171,7 @@ namespace SmaugCS
                     color.set_char_color(ATTypes.AT_BLOOD, ch);
                     color.send_to_char("You are wracked with guilt and remorse for your craven actions!\r\n", ch);
                     comm.act(ATTypes.AT_BLOOD, "$n prostrates $mself, seeking forgiveness from $s Lord.", ch, null, null, ToTypes.Room);
-                    ch.WorsenMentalState(15);
+                    ((PlayerInstance)ch).WorsenMentalState(15);
                     return;
                 }
                 if (ch.CurrentAlignment < 500)
@@ -1144,7 +1179,7 @@ namespace SmaugCS
                     color.set_char_color(ATTypes.AT_BLOOD, ch);
                     color.send_to_char("As you betray your faith, your mind begins to betray you.\r\n", ch);
                     comm.act(ATTypes.AT_BLOOD, "$n shudders, judging $s actions unworthy of a Paladin.", ch, null, null, ToTypes.Room);
-                    ch.WorsenMentalState(6);
+                    ((PlayerInstance)ch).WorsenMentalState(6);
                 }
             }
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Spells
 {

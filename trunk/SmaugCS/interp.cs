@@ -7,6 +7,8 @@ using Realm.Library.Patterns.Command;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -73,12 +75,12 @@ namespace SmaugCS
             string logLine = string.Empty;
             CommandData foundCmd = null;
 
-            if (ch.SubState == CharacterSubStates.RepeatCommand)
+            if (((PlayerInstance)ch).SubState == CharacterSubStates.RepeatCommand)
             {
                 DoFunction fun = ch.LastCommand;
                 if (fun == null)
                 {
-                    ch.SubState = CharacterSubStates.None;
+                    ((PlayerInstance)ch).SubState = CharacterSubStates.None;
                     throw new InvalidDataException("CharacterSubStates.RepeatCommand with null LastCommand");
                 }
 
@@ -106,13 +108,13 @@ namespace SmaugCS
             if (foundCmd != null && foundCmd.Log == LogAction.Never)
                 logLine = "XXXXXXXX XXXXXXXX XXXXXXXX";
 
-            if (!ch.IsNpc() && ch.Descriptor != null && valid_watch(logLine))
+            if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor != null && valid_watch(logLine))
             {
                 if (foundCmd != null && foundCmd.Flags.IsSet(CommandFlags.Watch))
                 {
                     // TODO Write the watch
                 }
-                else if (ch.PlayerData.Flags.IsSet(PCFlags.Watch))
+                else if (((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Watch))
                 {
                     // TODO Write the watch
                 }
@@ -123,19 +125,19 @@ namespace SmaugCS
             TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
             if (timer != null)
             {
-                CharacterSubStates substate = ch.SubState;
-                ch.SubState = CharacterSubStates.TimerDoAbort;
+                CharacterSubStates substate = ((PlayerInstance)ch).SubState;
+                ((PlayerInstance)ch).SubState = CharacterSubStates.TimerDoAbort;
                 timer.Action.Value.Invoke(ch, string.Empty);
                 if (ch.CharDied())
                     return;
-                if (ch.SubState != CharacterSubStates.TimerDoAbort)
+                if (((PlayerInstance)ch).SubState != CharacterSubStates.TimerDoAbort)
                 {
-                    ch.SubState = substate;
+                    ((PlayerInstance)ch).SubState = substate;
                     // TODO Extract timer
                 }
                 else
                 {
-                    ch.SubState = substate;
+                    ((PlayerInstance)ch).SubState = substate;
                     return;
                 }
             }

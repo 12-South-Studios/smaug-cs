@@ -6,6 +6,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 
 namespace SmaugCS.Commands.Player
@@ -70,7 +71,7 @@ namespace SmaugCS.Commands.Player
                 return;
 
             color.set_pager_color(ATTypes.AT_SCORE, ch);
-            color.pager_printf(ch, "\r\nWorth for {0}{1}.\r\n", ch.Name, ch.PlayerData.Title);
+            color.pager_printf(ch, "\r\nWorth for {0}{1}.\r\n", ch.Name, ((PlayerInstance)ch).PlayerData.Title);
             color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
 
             string buffer = "|Level: {0} |Favor: {1} |Alignment: {2} |Experience: {3}|\r\n";
@@ -85,7 +86,7 @@ namespace SmaugCS.Commands.Player
             color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
 
             buffer = "|Glory: {0} |Weight: {1} |Style: {2} |Gold: {3} |\r\n";
-            buffer = string.Format(buffer, ch.PlayerData.quest_curr.ToString(CultureInfo.InvariantCulture).PadLeft(4),
+            buffer = string.Format(buffer, ((PlayerInstance)ch).PlayerData.quest_curr.ToString(CultureInfo.InvariantCulture).PadLeft(4),
                                    ch.CarryWeight.ToString(CultureInfo.InvariantCulture).PadLeft(9),
                                    ch.CurrentStyle.GetName().PadLeft(13), ch.CurrentCoin.ToPunctuation().PadLeft(14));
             color.pager_printf(ch, buffer);
@@ -103,11 +104,11 @@ namespace SmaugCS.Commands.Player
 
         private static string GetDeityFavor(CharacterInstance ch)
         {
-            if (ch.PlayerData.CurrentDeity == null)
+            if (((PlayerInstance)ch).PlayerData.CurrentDeity == null)
                 return "N/A";
 
             DeityFavorList.Sort();
-            LookupLevel deityLookup = DeityFavorList.FirstOrDefault(level => ch.PlayerData.Favor > level.Level);
+            LookupLevel deityLookup = DeityFavorList.FirstOrDefault(level => ((PlayerInstance)ch).PlayerData.Favor > level.Level);
             return deityLookup != null ? deityLookup.Text : "N/A";
         }
 

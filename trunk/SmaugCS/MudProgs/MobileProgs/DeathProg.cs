@@ -1,11 +1,12 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.MudProgs.MobileProgs
 {
     public static class DeathProg
     {
-        public static void Execute(CharacterInstance killer, CharacterInstance mob)
+        public static void Execute(CharacterInstance killer, MobileInstance mob)
         {
             if (mob.IsNpc() && killer != mob &&
                 mob.MobIndex.HasProg(MudProgTypes.Death))

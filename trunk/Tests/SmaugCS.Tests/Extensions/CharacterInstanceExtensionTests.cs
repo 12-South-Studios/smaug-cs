@@ -4,8 +4,9 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
-using SmaugCS.Managers;
 using SmaugCS.Repositories;
 
 namespace SmaugCS.Tests.Extensions
@@ -51,42 +52,45 @@ namespace SmaugCS.Tests.Extensions
         }
 
         [Test]
-        public void TimesKilled_CharacterIsNpc_Test()
+        public void TimesKilled_NoMobPassed_Test()
         {
-            _ch.Act = _ch.Act.SetBit(ActFlags.IsNpc);
-            Assert.That(_ch.TimesKilled(null), Is.EqualTo(0));
+            PlayerInstance pch = new PlayerInstance(1, "TestChar");
+            Assert.That(pch.TimesKilled(null), Is.EqualTo(0));
         }
 
         [Test]
         public void TimesKilled_MobIsPlayer_Test()
         {
-            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
-            Assert.That(_ch.TimesKilled(mob), Is.EqualTo(0));
+            PlayerInstance pch = new PlayerInstance(1, "TestChar");
+            MobileInstance mob = new MobileInstance(2, "TesterMob");
+            Assert.That(pch.TimesKilled(mob), Is.EqualTo(0));
         }
 
         [Test]
         public void TimesKilled_NoMatch_Test()
         {
-            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            PlayerInstance pch = new PlayerInstance(1, "TestChar");
+            MobileInstance mob = new MobileInstance(2, "TesterMob");
             mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
             mob.Parent = new MobTemplate(2, "Template");
 
-            _ch.PlayerData = new PlayerData(1, 1);
+            pch.PlayerData = new PlayerData(1, 1);
 
-            Assert.That(_ch.TimesKilled(mob), Is.EqualTo(0));
+            Assert.That(pch.TimesKilled(mob), Is.EqualTo(0));
         }
 
         [Test]
         public void TimesKilled_Match_Test()
         {
-            CharacterInstance mob = new CharacterInstance(2, "TesterMob");
+            PlayerInstance pch = new PlayerInstance(1, "TestChar");
+            MobileInstance mob = new MobileInstance(2, "TesterMob");
             mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
             mob.Parent = new MobTemplate(2, "Template");
 
-            _ch.PlayerData = new PlayerData(1, 1);
-            _ch.PlayerData.Killed.Add(new KilledData(2));
+            pch.PlayerData = new PlayerData(1, 1);
+            pch.PlayerData.Killed.Add(new KilledData(2));
 
-            Assert.That(_ch.TimesKilled(mob), Is.EqualTo(1));
+            Assert.That(pch.TimesKilled(mob), Is.EqualTo(1));
         }
 
         [TestCase(ResistanceTypes.Unknown, false)]
@@ -179,23 +183,32 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void IsDevoted_IsNpc_Test()
         {
-            _ch.Act = _ch.Act.SetBit(ActFlags.IsNpc);
-            Assert.That(_ch.IsDevoted(), Is.False);
+            MobileInstance mob = new MobileInstance(1, "TestChar");
+            mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
+            Assert.That(mob.IsDevoted(), Is.False);
         }
 
         [Test]
         public void IsDevoted_NoDeity_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
-            Assert.That(_ch.IsDevoted(), Is.False);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar")
+            {
+                PlayerData = new PlayerData(1, 1)
+            };
+            Assert.That(pch.IsDevoted(), Is.False);
         }
 
         [Test]
         public void IsDevoted_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
-            _ch.PlayerData.CurrentDeity = new DeityData(1, "Test");
-            Assert.That(_ch.IsDevoted(), Is.True);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar")
+            {
+                PlayerData = new PlayerData(1, 1)
+                {
+                    CurrentDeity = new DeityData(1, "Test")
+                }
+            };
+            Assert.That(pch.IsDevoted(), Is.True);
         }
 
         [TestCase(RoomFlags.Dark, true)]
@@ -226,43 +239,57 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void IsRetired_NoData_Test()
         {
-            Assert.That(_ch.IsRetired(), Is.False);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar");
+            Assert.That(pch.IsRetired(), Is.False);
         }
 
         [Test]
         public void IsRetired_NoFlag_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
-            Assert.That(_ch.IsRetired(), Is.False);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar")
+            {
+                PlayerData = new PlayerData(1, 1)
+            };
+            Assert.That(pch.IsRetired(), Is.False);
         }
 
         [Test]
         public void IsRetired_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
-            _ch.PlayerData.Flags = _ch.PlayerData.Flags.SetBit((int) PCFlags.Retired);
-            Assert.That(_ch.IsRetired(), Is.True);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar")
+            {
+                PlayerData = new PlayerData(1, 1)
+            };
+            pch.PlayerData.Flags = pch.PlayerData.Flags.SetBit(PCFlags.Retired);
+            Assert.That(pch.IsRetired(), Is.True);
         }
 
         [Test]
         public void IsGuest_NoData_Test()
         {
-            Assert.That(_ch.IsGuest(), Is.False);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar");
+            Assert.That(pch.IsGuest(), Is.False);
         }
 
         [Test]
         public void IsGuest_NoFlag_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
-            Assert.That(_ch.IsGuest(), Is.False);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar")
+            {
+                PlayerData = new PlayerData(1, 1)
+            };
+            Assert.That(pch.IsGuest(), Is.False);
         }
 
         [Test]
         public void IsGuest_Test()
         {
-            _ch.PlayerData = new PlayerData(1, 1);
-            _ch.PlayerData.Flags = _ch.PlayerData.Flags.SetBit((int)PCFlags.Guest);
-            Assert.That(_ch.IsGuest(), Is.True);
+            PlayerInstance pch = new PlayerInstance(1, "TestChar")
+            {
+                PlayerData = new PlayerData(1, 1)
+            };
+            pch.PlayerData.Flags = pch.PlayerData.Flags.SetBit(PCFlags.Guest);
+            Assert.That(pch.IsGuest(), Is.True);
         }
     }
 }

@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -47,14 +48,14 @@ namespace SmaugCS.Commands.Skills
             if (!ch.CanUseSkill(percent, skill))
             {
                 color.send_to_char("You fail.", ch);
-               skill.LearnFromFailure(ch);
+               skill.LearnFromFailure((PlayerInstance)ch);
                 return;
             }
 
             comm.act(ATTypes.AT_SKILL, "You aid $N!", ch, null, victim, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n aids $N!", ch, null, victim, ToTypes.Room);
-            skill.LearnFromSuccess(ch);
-            ch.AdjustFavor(DeityFieldTypes.Aid, 1);
+            skill.LearnFromSuccess((PlayerInstance)ch);
+            ((PlayerInstance)ch).AdjustFavor(DeityFieldTypes.Aid, 1);
 
             if (victim.CurrentHealth < 1)
                 victim.CurrentHealth = 1;

@@ -4,6 +4,7 @@ using SmaugCS.Communication;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Managers
 {
@@ -128,12 +129,12 @@ namespace SmaugCS.Managers
                 return;
             }
 
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.Silence))
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Silence))
             {
                 color.send_to_char("You can't do that here.\r\n", ch);
                 return;
             }
-            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Silence))
+            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Silence))
             {
                 color.ch_printf(ch, "You can't %s.\r\n", verb);
                 return;
@@ -181,7 +182,7 @@ namespace SmaugCS.Managers
                     break;
             }
 
-            if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.LogSpeech))
             {
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
                                   string.Format("{0}: {1} ({2})", ch.IsNpc() ? ch.ShortDescription : ch.Name,
@@ -191,8 +192,8 @@ namespace SmaugCS.Managers
 
             foreach (DescriptorData d in db.DESCRIPTORS)
             {
-                CharacterInstance och = d.Original ?? d.Character;
-                CharacterInstance vch = d.Character;
+                PlayerInstance och = d.Original ?? d.Character;
+                PlayerInstance vch = d.Character;
 
                 if (d.ConnectionStatus == ConnectionTypes.Playing && vch != ch &&
                     !och.Deaf.IsSet((int)channel))
@@ -231,9 +232,9 @@ namespace SmaugCS.Managers
                     if (channel == ChannelTypes.Yell && vch.CurrentRoom.Area != ch.CurrentRoom.Area)
                         continue;
                     if ((channel == ChannelTypes.Clan || channel == ChannelTypes.Order || channel == ChannelTypes.Guild)
-                        && (vch.IsNpc() || vch.PlayerData.Clan != ch.PlayerData.Clan))
+                        && (vch.IsNpc() || vch.PlayerData.Clan != ((PlayerInstance)ch).PlayerData.Clan))
                         continue;
-                    if (channel == ChannelTypes.Council && (vch.IsNpc() || vch.PlayerData.Council != ch.PlayerData.Council))
+                    if (channel == ChannelTypes.Council && (vch.IsNpc() || vch.PlayerData.Council != ((PlayerInstance)ch).PlayerData.Council))
                         continue;
                     if (channel == ChannelTypes.RaceTalk && vch.CurrentRace != ch.CurrentRace)
                         continue;
@@ -243,7 +244,7 @@ namespace SmaugCS.Managers
                         && vch.CanSee(ch) && vch.IsImmortal())
                     {
                         lbuf = string.Format("({0})", !ch.IsNpc()
-                                                             ? ch.PlayerData.WizardInvisible
+                                                             ? ((PlayerInstance)ch).PlayerData.WizardInvisible
                                                              : ch.MobInvisible);
                     }
 
@@ -264,9 +265,9 @@ namespace SmaugCS.Managers
                         sbuf = ScrambleText(argument, ch.Speaking);
 #endif
                     if (!ch.IsNpc()
-                        && ch.PlayerData.Nuisance != null
-                        && ch.PlayerData.Nuisance.Flags > 7
-                        && (SmaugCS.Common.SmaugRandom.D100() < ((ch.PlayerData.Nuisance.Flags - 7) * 10 * ch.PlayerData.Nuisance.Power)))
+                        && ((PlayerInstance)ch).PlayerData.Nuisance != null
+                        && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 7
+                        && (SmaugCS.Common.SmaugRandom.D100() < ((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 7) * 10 * ((PlayerInstance)ch).PlayerData.Nuisance.Power)))
                         sbuf = argument.Scramble(SmaugCS.Common.SmaugRandom.Between(1, 10));
 
                     if (!vch.IsNpc() && vch.PlayerData.Nuisance != null

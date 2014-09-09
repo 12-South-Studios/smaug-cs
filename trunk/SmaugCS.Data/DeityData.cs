@@ -2,6 +2,7 @@
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data
 {
@@ -64,7 +65,7 @@ namespace SmaugCS.Data
             return SmaugRandom.Fuzzy(fieldvalue / mod);
         }
 
-        public void UpdateCharacterBits(CharacterInstance ch)
+        public void UpdateCharacterBits(PlayerInstance ch)
         {
             //if (ch.PlayerData.Favor > AffectedNum)
             //    ch.AffectedBy.SetBits(AffectedBy);

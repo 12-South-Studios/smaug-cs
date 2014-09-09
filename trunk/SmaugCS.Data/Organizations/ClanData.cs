@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Realm.Library.Common;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data.Organizations
 {
@@ -76,7 +77,7 @@ namespace SmaugCS.Data.Organizations
             return true;
         }
 
-        public void UpdateRoster(CharacterInstance ch)
+        public void UpdateRoster(PlayerInstance ch)
         {
             RosterData roster = Members.Find(x => x.Name.EqualsIgnoreCase(ch.Name));
             if (roster != null)

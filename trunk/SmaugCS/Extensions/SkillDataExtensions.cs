@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
-using SmaugCS.Lookup;
-using SmaugCS.Managers;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Extensions
 {
@@ -16,26 +11,28 @@ namespace SmaugCS.Extensions
     {
         public static void LearnFromSuccess(this SkillData skill, CharacterInstance ch)
         {
-            if (ch.IsNpc() || ch.PlayerData == null)
-                return;
+            if (ch.IsNpc()) return;
+            
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.PlayerData == null) return;
 
-            int val = ch.PlayerData.Learned[(int) skill.ID];
+            int val = pch.GetLearned((int)skill.ID);
             if (val <= 0)
                 return;
 
-            int mastery = skill.GetMasteryLevel(ch);
+            int mastery = skill.GetMasteryLevel(pch);
             int skillLevel = skill.SkillLevels.ToList()[(int) ch.CurrentClass];
             if (skillLevel == 0)
                 skillLevel = ch.Level;
 
-            if (ch.PlayerData.Learned[(int)skill.ID] >= mastery)
+            if (pch.GetLearned((int)skill.ID) >= mastery)
                 return;
 
-            GainLearningInSkill(skill, ch, mastery);
-            GainExperienceFromSkill(skill, ch, mastery, skillLevel);
+            GainLearningInSkill(skill, pch, mastery);
+            GainExperienceFromSkill(skill, pch, mastery, skillLevel);
         }
 
-        private static void GainExperienceFromSkill(SkillData skill, CharacterInstance ch, int mastery, int skillLevel)
+        private static void GainExperienceFromSkill(SkillData skill, PlayerInstance ch, int mastery, int skillLevel)
         {
             int gain = ch.PlayerData.Learned[(int) skill.ID] == mastery
                 ? GainMasteryOfSkill(skill, ch, skillLevel)
@@ -44,7 +41,7 @@ namespace SmaugCS.Extensions
             ch.GainXP(gain);
         }
 
-        private static int GainExperienceInSkill(CharacterInstance ch, int skillLevel)
+        private static int GainExperienceInSkill(PlayerInstance ch, int skillLevel)
         {
             int gain = 20*skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
@@ -57,7 +54,7 @@ namespace SmaugCS.Extensions
             return gain;
         }
 
-        private static int GainMasteryOfSkill(SkillData skill, CharacterInstance ch, int skillLevel)
+        private static int GainMasteryOfSkill(SkillData skill, PlayerInstance ch, int skillLevel)
         {
             int gain = 1000*skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
@@ -70,9 +67,9 @@ namespace SmaugCS.Extensions
             return gain;
         }
 
-        private static void GainLearningInSkill(SkillData skill, CharacterInstance ch, int mastery)
+        private static void GainLearningInSkill(SkillData skill, PlayerInstance ch, int mastery)
         {
-            int chance = ch.PlayerData.Learned[(int) skill.ID] + (5*skill.difficulty);
+            int chance = ch.GetLearned((int) skill.ID) + (5*skill.difficulty);
             int percent = SmaugRandom.D100();
             int learn;
 
@@ -83,33 +80,34 @@ namespace SmaugCS.Extensions
             else
                 learn = 1;
 
-            mastery.GetLowestOfTwoNumbers(ch.PlayerData.Learned[(int) skill.ID] + learn);
+            mastery.GetLowestOfTwoNumbers(ch.GetLearned((int) skill.ID) + learn);
         }
 
         public static void LearnFromFailure(this SkillData skill, CharacterInstance ch)
         {
-            if (ch.IsNpc() || ch.PlayerData == null)
-                return;
+            if (ch.IsNpc()) return;
+            
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.PlayerData == null) return;
 
-            int val = ch.PlayerData.Learned[(int) skill.ID];
-            if (val <= 0)
-                return;
+            int val = pch.GetLearned((int) skill.ID);
+            if (val <= 0) return;
 
-            int chance = ch.PlayerData.Learned[(int) skill.ID] + (5*skill.difficulty);
-            if ((chance - SmaugRandom.D100()) > 25)
-                return;
+            int chance = pch.GetLearned((int) skill.ID) + (5*skill.difficulty);
+            if ((chance - SmaugRandom.D100()) > 25) return;
 
-            int mastery = skill.GetMasteryLevel(ch);
-            if (ch.PlayerData.Learned[(int) skill.ID] < (mastery - 1))
-                ch.PlayerData.Learned[(int) skill.ID] =
-                    mastery.GetLowestOfTwoNumbers(ch.PlayerData.Learned[(int) skill.ID] + 1);
+            int mastery = skill.GetMasteryLevel(pch);
+            if (pch.GetLearned((int) skill.ID) < (mastery - 1))
+                pch.PlayerData.Learned[(int) skill.ID] =
+                    mastery.GetLowestOfTwoNumbers(pch.GetLearned((int) skill.ID) + 1);
         }
 
-        public static int GetMasteryLevel(this SkillData skill, CharacterInstance ch)
+        public static int GetMasteryLevel(this SkillData skill, PlayerInstance ch)
         {
             SkillMasteryData mastery = skill.SkillMasteries.FirstOrDefault(x => x.ClassType == ch.CurrentClass);
             if (mastery == null)
-                throw new EntryNotFoundException("Mastery value for Class {0} not found in Skill {1}", ch.CurrentClass, skill.ID);
+                throw new EntryNotFoundException("Mastery value for Class {0} not found in Skill {1}", ch.CurrentClass,
+                    skill.ID);
 
             return mastery.MasteryLevel;
         }
@@ -144,7 +142,7 @@ namespace SmaugCS.Extensions
             return saved;
         }
 
-        public static void AbilityLearnFromSuccess(this SkillData skill, CharacterInstance ch)
+        public static void AbilityLearnFromSuccess(this SkillData skill, PlayerInstance ch)
         {
             int sn = (int) skill.ID;
 

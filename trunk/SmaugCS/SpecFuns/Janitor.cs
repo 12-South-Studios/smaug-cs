@@ -2,14 +2,14 @@
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {
     public static class Janitor
     {
-        public static bool DoSpecJanitor(CharacterInstance ch)
+        public static bool DoSpecJanitor(MobileInstance ch)
         {
             if (!ch.IsAwake())
                 return false;

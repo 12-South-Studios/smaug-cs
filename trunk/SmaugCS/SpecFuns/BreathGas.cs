@@ -1,11 +1,12 @@
 ﻿using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
     public static class BreathGas
     {
-        public static bool DoSpecBreathGas(CharacterInstance ch)
+        public static bool DoSpecBreathGas(MobileInstance ch)
         {
             if (!ch.IsInCombatPosition())
                 return false;
@@ -14,7 +15,7 @@ namespace SmaugCS.SpecFuns
             if (skill == null || skill.SpellFunction == null)
                 return false;
 
-            skill.SpellFunction.Value.DynamicInvoke(new object[] { skill.ID, ch.Level, ch, null });
+            skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, null);
             return true;
         }
     }

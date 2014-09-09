@@ -1,5 +1,6 @@
 ﻿using SmaugCS.Data;
 using System;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Communication
 {
@@ -14,7 +15,7 @@ namespace SmaugCS.Communication
             this.MinTrust = MinTrust;
         }
 
-        public override bool Verify(ChannelTypes channelType, CharacterInstance ch, int minTrust = 0)
+        public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
         {
             if (ch.Trust < MinTrust)
                 return false;

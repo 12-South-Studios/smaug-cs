@@ -5,6 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
@@ -23,10 +24,11 @@ namespace SmaugCS.Commands
         [Descriptor(new[] { " is here chanting." })]
         public static void do_cast(CharacterInstance ch, string argument)
         {
-            switch (ch.SubState)
+            PlayerInstance pch = (PlayerInstance) ch;
+            switch (pch.SubState)
             {
                 case CharacterSubStates.TimerDoAbort:
-                    CastAbortTimer(ch, argument);
+                    CastAbortTimer(pch, argument);
                     break;
                 case CharacterSubStates.Pause:
                     CastPause(ch, argument);
@@ -45,14 +47,14 @@ namespace SmaugCS.Commands
             if (!magic.process_spell_components(ch, (int)_skill.ID))
             {
                 if (ch.IsVampire())
-                    ch.GainCondition(ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
+                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
                 else if (ch.Level < LevelConstants.ImmortalLevel)
                     ch.CurrentMana -= _mana/2;
                 //skills.learn_from_failure(ch, (int)_skill.ID);
                 return;
             }
 
-            if (!ch.IsNpc() && (SmaugRandom.D100() + _skill.difficulty*5) > ch.PlayerData.Learned[_skill.ID])
+            if (!ch.IsNpc() && (SmaugRandom.D100() + _skill.difficulty * 5) > pch.PlayerData.Learned[_skill.ID])
             {
 
             }
@@ -67,7 +69,7 @@ namespace SmaugCS.Commands
             
         }
 
-        private static void CastAbortTimer(CharacterInstance ch, string argument)
+        private static void CastAbortTimer(PlayerInstance ch, string argument)
         {
             int sn = ch.tempnum;
             if (Macros.IS_VALID_SN(sn))

@@ -9,6 +9,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -79,7 +81,7 @@ namespace SmaugCS.Extensions
                 && obj1.Count + obj2.Count > 0)
             {
                 obj1.Count += obj2.Count;
-                obj1.ObjectIndex.count += obj2.Count;
+                obj1.ObjectIndex.Count += obj2.Count;
                 obj2.Extract();
                 return obj1;
             }
@@ -128,7 +130,7 @@ namespace SmaugCS.Extensions
 
             handler.queue_extracted_obj(obj);
 
-            obj.ObjectIndex.count -= obj.Count;
+            obj.ObjectIndex.Count -= obj.Count;
             db.NumberOfObjectsLoaded -= obj.Count;
             --db.PhysicalObjects;
 
@@ -241,7 +243,7 @@ namespace SmaugCS.Extensions
                 }
             }
 
-            if (ch.IsNpc() && ch.MobIndex.Shop != null)
+            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.Shop != null)
                 skipGroup = true;
 
             ObjectInstance groupObj = null;
@@ -261,7 +263,7 @@ namespace SmaugCS.Extensions
 
             if (!grouped)
             {
-                if (!ch.IsNpc() || ch.MobIndex.Shop == null)
+                if (!ch.IsNpc() || ((MobileInstance)ch).MobIndex.Shop == null)
                 {
                     ch.Carrying.Add(obj);
                     obj.CarriedBy = ch;
@@ -404,7 +406,7 @@ namespace SmaugCS.Extensions
                 return;
 
             ObjectInstance rest = obj.Clone();
-            --obj.ObjectIndex.count;
+            --obj.ObjectIndex.Count;
             rest.Count = obj.Count - number;
             obj.Count = number;
 

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -150,23 +152,23 @@ namespace SmaugCS.Extensions
 
                 case (int)ApplyTypes.Full:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Full] =
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Full] + mod).GetNumberThatIsBetween(0, 48);
+                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Full] =
+                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Full] + mod).GetNumberThatIsBetween(0, 48);
                     break;
                 case (int)ApplyTypes.Thirst:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] =
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Thirsty] + mod).GetNumberThatIsBetween(0, 48);
+                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] =
+                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] + mod).GetNumberThatIsBetween(0, 48);
                     break;
                 case (int)ApplyTypes.Drunk:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Drunk] =
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Drunk] + mod).GetNumberThatIsBetween(0, 48);
+                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk] =
+                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk] + mod).GetNumberThatIsBetween(0, 48);
                     break;
                 case (int)ApplyTypes.Blood:
                     if (!ch.IsNpc())
-                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] =
-                            (ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] + mod).GetNumberThatIsBetween(0, ch.Level + 10);
+                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] =
+                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] + mod).GetNumberThatIsBetween(0, ch.Level + 10);
                     break;
 
                 case (int)ApplyTypes.MentalState:
@@ -356,14 +358,14 @@ namespace SmaugCS.Extensions
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);
 
-            if (ch.PlayerData.CurrentDeity != null)
+            if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.CurrentDeity != null)
             {
                 // if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.AffectedNum)
                 //    ch.AffectedBy.SetBits(ch.PlayerData.CurrentDeity.AffectedBy);
-                if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.ElementNum)
-                    ch.Resistance.SetBit(ch.PlayerData.CurrentDeity.Element);
-                if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)
-                    ch.Susceptibility.SetBit(ch.PlayerData.CurrentDeity.Suscept);
+                if (((PlayerInstance)ch).PlayerData.Favor > ((PlayerInstance)ch).PlayerData.CurrentDeity.ElementNum)
+                    ch.Resistance.SetBit(((PlayerInstance)ch).PlayerData.CurrentDeity.Element);
+                if (((PlayerInstance)ch).PlayerData.Favor < ((PlayerInstance)ch).PlayerData.CurrentDeity.SusceptNum)
+                    ch.Susceptibility.SetBit(((PlayerInstance)ch).PlayerData.CurrentDeity.Suscept);
             }
 
             foreach (AffectData affect in ch.Affects)
@@ -386,7 +388,7 @@ namespace SmaugCS.Extensions
             // TODO: Polymorph
 
             if (hiding)
-                ch.AffectedBy.SetBit((int)AffectedByTypes.Hide);
+                ch.AffectedBy = ch.AffectedBy.SetBit(AffectedByTypes.Hide);
         }
     }
 }

@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
@@ -23,21 +24,21 @@ namespace SmaugCS.Skills
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'disarm' not found");
 
-            if (ch.GetEquippedItem(WearLocations.Wield) == null && SmaugRandom.Bits(1) == 0)
+            if (!ch.IsNpc() && ch.GetEquippedItem(WearLocations.Wield) == null && SmaugRandom.Bits(1) == 0)
             {
-                skill.LearnFromFailure(ch);
+                skill.LearnFromFailure((PlayerInstance)ch);
                 return;
             }
 
-            if (ch.IsNpc() && !ch.CanSee(obj) && SmaugRandom.Bits(1) == 0)
+            if (!ch.IsNpc() && !ch.CanSee(obj) && SmaugRandom.Bits(1) == 0)
             {
-                skill.LearnFromFailure(ch);
+                skill.LearnFromFailure((PlayerInstance)ch);
                 return;
             }
 
-            if (Grip.CheckGrip(ch, victim))
+            if (Grip.CheckGrip(ch, victim) && !ch.IsNpc())
             {
-                skill.LearnFromFailure(ch);
+                skill.LearnFromFailure((PlayerInstance)ch);
                 return;
             }
 
@@ -45,7 +46,7 @@ namespace SmaugCS.Skills
             comm.act(ATTypes.AT_SKILL, "You disarm $N!", ch, null, victim, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n disarms $N!", ch, null, victim, ToTypes.Room);
 
-            skill.LearnFromFailure(ch);
+            skill.LearnFromFailure((PlayerInstance)ch);
 
             obj.FromCharacter();
 
