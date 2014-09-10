@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Common;
@@ -55,7 +56,7 @@ namespace SmaugCS
                         && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                         && (i >= moonpos - 2) && (i <= moonpos + 2)
                         && ((sunpos == moonpos && GameManager.Instance.GameTime.Hour == 12) || moonphase != 0)
-                        && (WeatherManager.Instance.Weather.MoonMap[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
+                        && (WeatherManager.Instance.Weather.MoonMap.ToList()[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
                             || (moonphase > 0 && i + 2 - moonpos <= moonphase))
@@ -66,7 +67,7 @@ namespace SmaugCS
                     else if ((line >= 3) && (line < 6)
                              && (moonpos >= Program.MAP_WIDTH / 4 - 2) && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                              && (i >= moonpos - 2) && (i <= moonpos + 2)
-                             && (WeatherManager.Instance.Weather.MoonMap[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
+                             && (WeatherManager.Instance.Weather.MoonMap.ToList()[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
                             || (moonphase > 0 && i + 2 - moonpos <= moonphase))
@@ -80,7 +81,7 @@ namespace SmaugCS
                         {
                             if (i >= sunpos - 2 && i <= sunpos + 2)
                                 sb.AppendFormat("&Y{0}",
-                                                WeatherManager.Instance.Weather.SunMap[line - 3].ToCharArray()[
+                                                WeatherManager.Instance.Weather.SunMap.ToList()[line - 3].ToCharArray()[
                                                     i + 2 - sunpos]);
                             else
                                 sb.Append(" ");
@@ -88,7 +89,7 @@ namespace SmaugCS
                         else
                         {
                             char c =
-                                WeatherManager.Instance.Weather.StarMap[line].ToCharArray()[
+                                WeatherManager.Instance.Weather.StarMap.ToList()[line].ToCharArray()[
                                     (Program.MAP_WIDTH + 1 - starpos) % Program.MAP_WIDTH];
                             sb.Append(LookupConstants.StarCharacterMap.ContainsKey(c)
                                           ? LookupConstants.StarCharacterMap[c]
@@ -370,7 +371,7 @@ namespace SmaugCS
             }
 
             if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
-                buffer += PlayerFlags.AwayFromKeyboard.GetAttribute<DescriptorAttribute>().Messages[0];
+                buffer += PlayerFlags.AwayFromKeyboard.GetAttribute<DescriptorAttribute>().Messages.ToList()[0];
 
             if ((!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.WizardInvisibility))
                 || (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)))
@@ -460,38 +461,38 @@ namespace SmaugCS
         private static string GenerateBufferForAffectedBy(CharacterInstance victim, PlayerInstance ch)
         {
             if (victim.IsAffected(AffectedByTypes.Invisible))
-                return AffectedByTypes.Invisible.GetAttribute<DescriptorAttribute>().Messages[0];
+                return AffectedByTypes.Invisible.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.IsAffected(AffectedByTypes.Hide))
-                return AffectedByTypes.Hide.GetAttribute<DescriptorAttribute>().Messages[0];
+                return AffectedByTypes.Hide.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.IsAffected(AffectedByTypes.PassDoor))
-                return AffectedByTypes.PassDoor.GetAttribute<DescriptorAttribute>().Messages[0];
+                return AffectedByTypes.PassDoor.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.IsAffected(AffectedByTypes.FaerieFire))
-                return AffectedByTypes.FaerieFire.GetAttribute<DescriptorAttribute>().Messages[0];
+                return AffectedByTypes.FaerieFire.GetAttribute<DescriptorAttribute>().Messages.First();
             if ((ch.IsAffected(AffectedByTypes.DetectEvil) && victim.IsEvil())
                 || ch.CurrentClass == ClassTypes.Paladin)
-                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages[0];
+                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.IsNeutral() && ch.CurrentClass == ClassTypes.Paladin)
-                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages[1];
+                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages.ToList()[1];
             if (victim.IsGood() && ch.CurrentClass == ClassTypes.Paladin)
-                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages[2];
+                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages.ToList()[2];
 
             if (victim.IsAffected(AffectedByTypes.Berserk))
-                return AffectedByTypes.Berserk.GetAttribute<DescriptorAttribute>().Messages[0];
+                return AffectedByTypes.Berserk.GetAttribute<DescriptorAttribute>().Messages.First();
             if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Attacker))
-                return PlayerFlags.Attacker.GetAttribute<DescriptorAttribute>().Messages[0];
+                return PlayerFlags.Attacker.GetAttribute<DescriptorAttribute>().Messages.First();
             if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Killer))
-                return PlayerFlags.Killer.GetAttribute<DescriptorAttribute>().Messages[0];
+                return PlayerFlags.Killer.GetAttribute<DescriptorAttribute>().Messages.First();
             if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Thief))
-                return PlayerFlags.Thief.GetAttribute<DescriptorAttribute>().Messages[0];
+                return PlayerFlags.Thief.GetAttribute<DescriptorAttribute>().Messages.First();
             if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Litterbug))
-                return PlayerFlags.Litterbug.GetAttribute<DescriptorAttribute>().Messages[0];
+                return PlayerFlags.Litterbug.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.IsNpc() && ch.IsImmortal() && victim.Act.IsSet((int) ActFlags.Prototype))
-                return ActFlags.Prototype.GetAttribute<DescriptorAttribute>().Messages[0];
+                return ActFlags.Prototype.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.IsNpc() && ch.CurrentMount != null
                 && ch.CurrentMount == victim && ch.CurrentRoom == ch.CurrentMount.CurrentRoom)
                 return "(Mount) ";
             if (victim.Switched != null && ((PlayerInstance)victim.Switched).Descriptor.ConnectionStatus == ConnectionTypes.Editing)
-                return ConnectionTypes.Editing.GetAttribute<DescriptorAttribute>().Messages[0];
+                return ConnectionTypes.Editing.GetAttribute<DescriptorAttribute>().Messages.First();
             if (victim.CurrentMorph != null)
                 return "(Morphed) ";
             return string.Empty;
@@ -530,12 +531,12 @@ namespace SmaugCS
                 return attrib.Messages.First();
 
             if (victim.GetMyTarget() == ch)
-                return attrib.Messages[1];
+                return attrib.Messages.ToList()[2];
 
             if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)
-                return string.Format(attrib.Messages[2], Macros.PERS(victim.CurrentFighting.Who, ch));
+                return string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentFighting.Who, ch));
 
-            return attrib.Messages[3];
+            return attrib.Messages.ToList()[3];
         }
 
         private static string GetMountedDescriptor(CharacterInstance ch, CharacterInstance victim,
@@ -545,12 +546,12 @@ namespace SmaugCS
                 return attrib.Messages.First();
 
             if (victim.CurrentMount == ch)
-                return attrib.Messages[1];
+                return attrib.Messages.ToList()[1];
 
             if (victim.CurrentRoom == victim.CurrentMount.CurrentRoom)
-                return string.Format(attrib.Messages[2], Macros.PERS(victim.CurrentMount, ch));
+                return string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentMount, ch));
 
-            return attrib.Messages[3];
+            return attrib.Messages.ToList()[3];
         }
 
         private static string GetStandingDescriptor(CharacterInstance ch, CharacterInstance victim,
@@ -563,17 +564,17 @@ namespace SmaugCS
                  || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
                 && !victim.IsAffected(AffectedByTypes.AquaBreath)
                 && !victim.IsNpc())
-                return attrib.Messages[1];
+                return attrib.Messages.ToList()[1];
 
             if ((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
                 || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
-                return attrib.Messages[2];
+                return attrib.Messages.ToList()[2];
 
             if (victim.IsAffected(AffectedByTypes.Floating)
                 || victim.IsAffected(AffectedByTypes.Flying))
-                return attrib.Messages[3];
+                return attrib.Messages.ToList()[3];
 
-            return attrib.Messages[4];
+            return attrib.Messages.ToList()[4];
         }
 
         private static string GetSittingDescriptor(CharacterInstance ch, CharacterInstance victim,
@@ -582,8 +583,8 @@ namespace SmaugCS
             if (ch.CurrentPosition == PositionTypes.Sitting)
                 return attrib.Messages.First();
             if (ch.CurrentPosition == PositionTypes.Resting)
-                return attrib.Messages[1];
-            return attrib.Messages[2];
+                return attrib.Messages.ToList()[1];
+            return attrib.Messages.ToList()[2];
         }
 
         private static string GetSleepingDescriptor(CharacterInstance ch, CharacterInstance victim,
@@ -591,7 +592,7 @@ namespace SmaugCS
         {
             if (ch.CurrentPosition == PositionTypes.Sitting || ch.CurrentPosition == PositionTypes.Resting)
                 return attrib.Messages.First();
-            return attrib.Messages[1];
+            return attrib.Messages.ToList()[1];
         }
 
         public static void show_char_to_char_1(CharacterInstance victim, PlayerInstance ch)
@@ -818,7 +819,7 @@ namespace SmaugCS
             }
 
             DescriptorAttribute attrib = healthCond.GetAttribute<DescriptorAttribute>();
-            return isSelf ? attrib.Messages[0] : attrib.Messages[1];
+            return isSelf ? attrib.Messages.First() : attrib.Messages.ToList()[1];
         }
 
         public static void show_condition(CharacterInstance ch, CharacterInstance victim)

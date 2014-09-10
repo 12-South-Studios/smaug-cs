@@ -1,5 +1,4 @@
-﻿
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -9,6 +8,8 @@ namespace SmaugCS.Constants.Enums
 
         [Name("in_file_prog")]
         InFile = -2,
+
+        None = 0,
 
         [Name("act_prog")]
         Act = 1,

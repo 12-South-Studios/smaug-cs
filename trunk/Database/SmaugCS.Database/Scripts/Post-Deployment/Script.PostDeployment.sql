@@ -17,7 +17,9 @@ Post-Deployment Script Template
 :r .\POPULATE_RefData_dbo.NoteVoteTypes.sql
 :r .\POPULATE_RefData_dbo.HemisphereTypes.sql
 :r .\POPULATE_RefData_dbo.ClimateTypes.sql
-:r .\PoPULATE_RefData_live.OrganizationTypes.sql
+:r .\POPULATE_RefData_live.OrganizationTypes.sql
+:r .\POPULATE_RefData_live.SkillTypes.sql
+:r .\POPULATE_RefData_live.StatisticTypes.sql
 
 -- Populate some data tables (do this for Defaults!)
 :r .\POPULATE_DefaultData_dbo.Boards.sql

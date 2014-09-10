@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using Realm.Library.Common;
 using SmaugCS.Config;
 using SmaugCS.Constants.Enums;
@@ -19,45 +20,25 @@ namespace SmaugCS.Constants.Constants
         private static readonly Dictionary<SystemFileTypes, KeyValuePair<string, bool>> SystemFiles =
             new Dictionary<SystemFileTypes, KeyValuePair<string, bool>>();
 
-        private static readonly string[] BooleanConstants = new[] {"true", "false", "1", "0", "yes", "no"};
+        private static readonly string[] BooleanConstants = {"true", "false", "1", "0", "yes", "no"};
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <returns></returns>
         public static string GetSystemDirectory(string directory)
         {
             var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(directory);
             return GetSystemDirectory(dirType);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <returns></returns>
         public static string GetSystemDirectory(SystemDirectoryTypes directory)
         {
             return SystemDirectories.ContainsKey(directory) ? SystemDirectories[directory] : string.Empty;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
         public static string GetSystemFile(string file)
         {
             var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(file);
             return GetSystemFile(fileType);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
         public static string GetSystemFile(SystemFileTypes file)
         {
             if (SystemFiles.ContainsKey(file))
@@ -70,11 +51,7 @@ namespace SmaugCS.Constants.Constants
             return string.Empty;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
-        [Obsolete]
+        [Obsolete("No longer loaded from a data file, now stored in app.Config")]
         public static void LoadSystemDirectoriesFromDataFile(string path)
         {
             using (var proxy = new TextReaderProxy(new StreamReader(path + "\\SystemDirectories.txt")))
@@ -90,11 +67,7 @@ namespace SmaugCS.Constants.Constants
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
-        [Obsolete]
+        [Obsolete("No longer loaded from a data file, now stored in app.Config")]
         public static void LoadSystemFilesFromDataFile(string path)
         {
             using (var proxy = new TextReaderProxy(new StreamReader(path + "\\SystemFiles.txt")))
@@ -112,10 +85,6 @@ namespace SmaugCS.Constants.Constants
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
         public static int LoadSystemDirectoriesFromConfig(string path)
         {
             var section = (SystemDataConfigurationSection) ConfigurationManager.GetSection("SystemDataSection");
@@ -130,11 +99,7 @@ namespace SmaugCS.Constants.Constants
             return SystemDirectories.Count;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
-        public static int LoadSystemFilesFromConfig(string path)
+        public static int LoadSystemFilesFromConfig()
         {
             var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
             var collection = section.SystemFiles;

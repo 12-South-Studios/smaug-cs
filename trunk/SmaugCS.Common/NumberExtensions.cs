@@ -55,6 +55,18 @@ namespace SmaugCS.Common
             int bitValue = bit.GetValue();
             return (value & (bitValue == 0 ? Convert.ToInt32(bit) : bitValue)) > 0;
         }
+
+        public static bool IsSet(this long value, long bit)
+        {
+            return (value & bit) > 0;
+        }
+
+        public static bool IsSet(this long value, Enum bit)
+        {
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return false;
+            int bitValue = bit.GetValue();
+            return (value & (bitValue == 0 ? Convert.ToInt64(bit) : bitValue)) > 0;
+        }
         #endregion
 
         #region SetBit
@@ -71,6 +83,20 @@ namespace SmaugCS.Common
             value = value | (bitValue == 0 ? Convert.ToInt32(bit) : bitValue);
             return value;
         }
+
+        public static long SetBit(this long value, Enum bit)
+        {
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
+            int bitValue = bit.GetValue();
+            value = value | (bitValue == 0 ? Convert.ToInt64(bit) : bitValue);
+            return value;
+        }
+
+        public static long SetBit(this long value, long bit)
+        {
+            value = value | bit;
+            return value;
+        }
         #endregion
 
         #region RemoveBit
@@ -84,6 +110,18 @@ namespace SmaugCS.Common
             if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
             int bitValue = bit.GetValue();
             return value &= ~(bitValue == 0 ? Convert.ToInt32(bit) : bitValue); 
+        }
+
+        public static long RemoveBit(this long value, long bit)
+        {
+            return value &= ~bit;
+        }
+
+        public static long RemoveBit(this long value, Enum bit)
+        {
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
+            long bitValue = bit.GetValue();
+            return value &= ~(bitValue == 0 ? Convert.ToInt64(bit) : bitValue);
         }
         #endregion
 

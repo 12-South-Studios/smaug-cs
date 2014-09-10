@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Interfaces;
 
 namespace SmaugCS.LuaHelpers
@@ -64,7 +65,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LDataPath", "Retrieves the game's data path")]
         public static string LuaGetDataPath()
         {
-            return _dataPath.IsNullOrEmpty() ? GameConstants.GetDataPath() : _dataPath;
+            return _dataPath.IsNullOrEmpty() ? GameConstants.DataPath : _dataPath;
         }
 
         [LuaFunction("FindInstance", "Locates a character matching the given name", "Instance executing this search", "String argument")]

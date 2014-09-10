@@ -5,7 +5,7 @@ namespace SmaugCS.Constants.Enums
     [Flags]
     public enum ATTypes
     {
-        AT_BLACK = 0,
+        None = 0,
         AT_BLOOD,
         AT_DGREEN,
         AT_ORANGE,
@@ -24,7 +24,7 @@ namespace SmaugCS.Constants.Enums
         AT_BLINK = 16,
 
         // These should be 17 - 31 normaly 
-        AT_BLACK_BLINK = AT_BLACK + AT_BLINK,
+        AT_BLACK_BLINK = None + AT_BLINK,
         AT_BLOOD_BLINK = AT_BLOOD + AT_BLINK,
         AT_DGREEN_BLINK = AT_DGREEN + AT_BLINK,
         AT_ORANGE_BLINK = AT_ORANGE + AT_BLINK,

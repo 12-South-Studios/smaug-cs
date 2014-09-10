@@ -15,14 +15,13 @@ using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
-namespace SmaugCS
+namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {

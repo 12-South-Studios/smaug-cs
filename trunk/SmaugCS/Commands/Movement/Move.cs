@@ -20,15 +20,16 @@ namespace SmaugCS.Commands.Movement
 
             if (!ch.IsNpc())
             {
+                PlayerInstance pch = (PlayerInstance) ch;
+
                 if (ch.IsDrunk(2) && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag)
                     drunk = true;
 
-                if (((PlayerInstance)ch).PlayerData.Nuisance != null
-                    && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 8
+                if (pch.PlayerData.Nuisance != null && pch.PlayerData.Nuisance.Flags > 8
                     && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag
-                    && SmaugCS.Common.SmaugRandom.D100() > (((PlayerInstance)ch).PlayerData.Nuisance.Flags * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
+                    && SmaugRandom.D100() > (pch.PlayerData.Nuisance.Flags*pch.PlayerData.Nuisance.Power))
                     nuisance = true;
             }
 
@@ -49,7 +50,7 @@ namespace SmaugCS.Commands.Movement
             }
 #endif
 
-            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Mounted))
+            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Mounted))
                 return ReturnTypes.None;
 
             RoomTemplate inRoom = ch.CurrentRoom;
@@ -64,7 +65,7 @@ namespace SmaugCS.Commands.Movement
                     && ch.CurrentRoom.SectorType != SectorTypes.Underwater
                     && ch.CurrentRoom.SectorType != SectorTypes.OceanFloor)
                 {
-                    switch (SmaugCS.Common.SmaugRandom.Bits(4))
+                    switch (SmaugRandom.Bits(4))
                     {
                         default:
                             comm.act(ATTypes.AT_ACTION, "You drunkenly stumble into some obstacle.", ch, null, null, ToTypes.Character);
@@ -99,34 +100,27 @@ namespace SmaugCS.Commands.Movement
             int distance = exit.Distance;
 
             // Exit is only a "window", there is no way to travel in that direction unless it's a door with a window in it 
-            if (exit.Flags.IsSet((int)ExitFlags.Window)
-                && !exit.Flags.IsSet((int)ExitFlags.IsDoor))
-            {
-                color.send_to_char("Alas, you cannot go that way.\r\n", ch);
-                return ReturnTypes.None;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, exit.Flags.IsSet(ExitFlags.Window) && !exit.Flags.IsSet(ExitFlags.IsDoor),
+                "Alas, you cannot go that way.")) return ReturnTypes.None;
 
             if (ch.IsNpc())
             {
-                if (exit.Flags.IsSet((int)ExitFlags.Portal))
+                if (exit.Flags.IsSet(ExitFlags.Portal))
                 {
                     comm.act(ATTypes.AT_PLAIN, "Mobs can't use portals.", ch, null, null, ToTypes.Character);
                     return ReturnTypes.None;
                 }
-                if (exit.Flags.IsSet((int)ExitFlags.NoMob)
-                    || toRoom.Flags.IsSet((int)RoomFlags.NoMob))
+
+                if (exit.Flags.IsSet(ExitFlags.NoMob) || toRoom.Flags.IsSet(RoomFlags.NoMob))
                 {
                     comm.act(ATTypes.AT_PLAIN, "Mobs can't enter there.", ch, null, null, ToTypes.Character);
                     return ReturnTypes.None;
                 }
             }
 
-            if (exit.Flags.IsSet((int)ExitFlags.Closed)
-                && (!ch.IsAffected(AffectedByTypes.PassDoor)
-                    || exit.Flags.IsSet((int)ExitFlags.NoPassDoor)))
+            if (exit.Flags.IsSet(ExitFlags.Closed) && (!ch.IsAffected(AffectedByTypes.PassDoor) || exit.Flags.IsSet(ExitFlags.NoPassDoor)))
             {
-                if (!exit.Flags.IsSet((int)ExitFlags.Secret)
-                    && !exit.Flags.IsSet((int)ExitFlags.Dig))
+                if (!exit.Flags.IsSet(ExitFlags.Secret) && !exit.Flags.IsSet(ExitFlags.Dig))
                 {
                     if (drunk)
                     {
@@ -158,25 +152,15 @@ namespace SmaugCS.Commands.Movement
                     color.send_to_char("Alas, you cannot go that way.\r\n", ch);
             }
 
-            if (fall == 0 && ch.IsAffected(AffectedByTypes.Charm)
-                && ch.Master != null
-                && inRoom == ch.Master.CurrentRoom)
-            {
-                color.send_to_char("What?  And leave your beloved master?\r\n", ch);
+            if (CheckFunctions.CheckIfTrue(ch, fall == 0 && ch.IsAffected(AffectedByTypes.Charm)
+                && ch.Master != null && inRoom == ch.Master.CurrentRoom, "What?  And leave your beloved master?")) 
                 return ReturnTypes.None;
-            }
 
-            if (toRoom.IsPrivate())
-            {
-                color.send_to_char("That room is private right now.\r\n", ch);
+            if (CheckFunctions.CheckIfTrue(ch, toRoom.IsPrivate(), "That room is private right now."))
                 return ReturnTypes.None;
-            }
 
-            if (toRoom.IsDoNotDisturb(ch) != null)
-            {
-                color.send_to_char("That room is \"do not disturb\" right now.\r\n", ch);
-                return ReturnTypes.None;
-            }
+            if (CheckFunctions.CheckIfNotNullObject(ch, toRoom.IsDoNotDisturb(ch),
+                "That room is \"do not disturb\" right now.")) return ReturnTypes.None;
 
             if (!ch.IsImmortal() && !ch.IsNpc()
                 && ch.CurrentRoom.Area != toRoom.Area)
@@ -216,8 +200,7 @@ namespace SmaugCS.Commands.Movement
 
                 // Prevent deadlies from entering a nopkill-flagged area from a non-flagged area, 
                 // but allow them to move around if already inside a nopkill area.
-                if (toRoom.Area.Flags.IsSet((int)AreaFlags.NoPKill)
-                    && !ch.CurrentRoom.Area.Flags.IsSet((int)AreaFlags.NoPKill)
+                if (toRoom.Area.Flags.IsSet(AreaFlags.NoPKill) && !ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill)
                     && ch.IsPKill() && !ch.IsImmortal())
                 {
                     color.set_char_color(ATTypes.AT_MAGIC, ch);
@@ -236,28 +219,21 @@ namespace SmaugCS.Commands.Movement
                         "You'd need to fly to go there.")) return ReturnTypes.None;
                 }
 
-                if (inRoom.SectorType == SectorTypes.DeepWater
-                    || toRoom.SectorType == SectorTypes.DeepWater)
+                if (inRoom.SectorType == SectorTypes.DeepWater || toRoom.SectorType == SectorTypes.DeepWater)
                 {
-                    if ((ch.CurrentMount != null && !ch.CurrentMount.IsFloating())
-                        || !ch.IsFloating())
+                    if ((ch.CurrentMount != null && !ch.CurrentMount.IsFloating()) || !ch.IsFloating())
                     {
                         // Look for a boat. We can use the boat obj for a more detailed description.
                         ObjectInstance boat = ch.GetObjectOfType(ItemTypes.Boat);
-                        if (boat != null)
-                            txt = drunk ? "paddles unevenly" : "paddles";
-                        else
-                        {
-                            color.send_to_char(
-                                ch.CurrentMount != null
-                                    ? "Your mount would drown!\r\n"
-                                    : "You'd need a boat to go there.\r\n", ch);
+                        if (CheckFunctions.CheckIfNullObject(ch, boat,
+                            ch.CurrentMount != null ? "Your mount would drown!" : "You'd need a boat to go there."))
                             return ReturnTypes.None;
-                        }
+
+                        txt = drunk ? "paddles unevenly" : "paddles";
                     }
                 }
 
-                if (exit.Flags.IsSet((int)ExitFlags.Climb))
+                if (exit.Flags.IsSet(ExitFlags.Climb))
                 {
                     bool found = false;
                     if (ch.CurrentMount != null && ch.CurrentMount.IsAffected(AffectedByTypes.Flying))
@@ -270,11 +246,7 @@ namespace SmaugCS.Commands.Movement
                         // TODO Climbing
                     }
 
-                    if (!found)
-                    {
-                        color.send_to_char("You can't climb.\r\n", ch);
-                        return ReturnTypes.None;
-                    }
+                    if (CheckFunctions.CheckIfTrue(ch, !found, "You can't climb.")) return ReturnTypes.None;
                 }
 
                 if (ch.CurrentMount != null)

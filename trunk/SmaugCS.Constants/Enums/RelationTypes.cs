@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums
 {
     public enum RelationTypes
     {
+        None = 0,
         MSet_On = 1,
         OSet_On = 2
     }

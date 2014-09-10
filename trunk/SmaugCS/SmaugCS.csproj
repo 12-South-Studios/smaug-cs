@@ -68,6 +68,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -275,6 +276,11 @@
     <Compile Include="MudProgs\MobileProgs\HitPercentProg.cs" />
     <Compile Include="MudProgs\MobileProgs\SpeechProg.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Skills\Ability.cs" />
     <Compile Include="Skills\Disarm.cs" />
     <Compile Include="Skills\Dodge.cs" />
@@ -774,7 +780,6 @@
     <Compile Include="Spells\Ventriloquate.cs" />
     <Compile Include="Spells\Life\Weaken.cs" />
     <Compile Include="Spells\WordOfRecall.cs" />
-    <Compile Include="SqlConnectionProvider.cs" />
     <Compile Include="SqlQueries.cs" />
     <Compile Include="StringExt.cs" />
     <Compile Include="Loaders\Obsolete\AreaLoader.cs" />
@@ -1041,6 +1046,12 @@
   <ItemGroup>
     <Folder Include="MudProgs\ObjectProgs\" />
     <Folder Include="MudProgs\RoomProgs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,8 +1,6 @@
-﻿using System.Security.AccessControl;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
@@ -31,10 +29,13 @@ namespace SmaugCS.Commands.Liquids
             if (CheckFunctions.CheckIfTrue(ch, obj.Values.Quantity == -1 && obj.Values.LiquidID == -1
                                                && obj.Values.Poison == -1, "You suck in nothing but air.")) return;
 
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc()
-                                               && (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
-                                                   || ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48),
-                "Your stomach cannot contain any more.")) return;
+            if (!ch.IsNpc())
+            {
+                PlayerInstance pch = (PlayerInstance) ch;
+                if (CheckFunctions.CheckIfTrue(ch, pch.PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
+                    || pch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48,
+                    "Your stomach cannot contain any more.")) return;
+            }
 
             // TODO People with nuisance flag fill up more quickly
 
@@ -107,8 +108,10 @@ namespace SmaugCS.Commands.Liquids
                 Drink.do_drink(ch, obj.Name);
             else
             {
-                comm.act(ATTypes.AT_ACTION, "$n lifts $p up to $s mouth and tries to drink from it...", ch, obj, null, ToTypes.Room);
-                comm.act(ATTypes.AT_ACTION, "You lift $p up to your mouth and try to drink from it...", ch, obj, null, ToTypes.Character);
+                comm.act(ATTypes.AT_ACTION, "$n lifts $p up to $s mouth and tries to drink from it...", ch, obj, null,
+                    ToTypes.Room);
+                comm.act(ATTypes.AT_ACTION, "You lift $p up to your mouth and try to drink from it...", ch, obj, null,
+                    ToTypes.Character);
             }
         }
     }

@@ -2,7 +2,8 @@
 
 namespace SmaugCS.Constants
 {
-    public class ValuedAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class ValuedAttribute : Attribute
     {
     }
 }

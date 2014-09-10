@@ -4,12 +4,10 @@ using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.Objects;
 
 namespace SmaugCS
@@ -19,7 +17,7 @@ namespace SmaugCS
         public static int BFS_ERROR = -1;
         public static int BFS_ALREADY_THERE = -2;
         public static int BFS_NO_PATH = -3;
-        public static int BFS_MARK = (int)RoomFlags.BfsMark;
+        public static int BFS_MARK = Convert.ToInt32(RoomFlags.BfsMark);
 
         public static Queue<BFSQueueData> BFS_DATA = new Queue<BFSQueueData>();
         public static List<BFSQueueData> room_queue = new List<BFSQueueData>();

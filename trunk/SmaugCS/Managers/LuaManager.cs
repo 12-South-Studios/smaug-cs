@@ -1,9 +1,7 @@
 ﻿using Ninject;
-using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Data;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Managers
 {

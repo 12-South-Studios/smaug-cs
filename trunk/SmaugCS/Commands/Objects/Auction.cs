@@ -60,7 +60,8 @@ namespace SmaugCS.Commands.Objects
 
             if (AuctionManager.Instance.Auction != null)
             {
-                comm.act(ATTypes.AT_TELL, "Try again later - $p is being auctioned right now!", ch, AuctionManager.Instance.Auction.ItemForSale, null, ToTypes.Character);
+                comm.act(ATTypes.AT_TELL, "Try again later - $p is being auctioned right now!", ch,
+                    AuctionManager.Instance.Auction.ItemForSale, null, ToTypes.Character);
                 if (!ch.IsImmortal())
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulseViolence"));
                 return;
@@ -102,7 +103,9 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfTrue(ch, bid < (auction.BidAmount + 10000),
                 "You must bid at least 10,000 coins over the current bid.")) return;
             if (CheckFunctions.CheckIfTrue(ch, bid < ch.CurrentCoin, "You don't have that much money!")) return;
-            if (CheckFunctions.CheckIfTrue(ch, bid > 2000000000, "You can't bid over 2 billion coins.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, bid > GameConstants.GetSystemValue<int>("MaximumAuctionBid"),
+                string.Format("You can't bid over {0} coins.", GameConstants.GetSystemValue<int>("MaximumAuctionBid"))))
+                return;
 
             string thirdArg = argument.ThirdWord();
             if (CheckFunctions.CheckIfTrue(ch, thirdArg.IsNullOrEmpty() || auction.ItemForSale.Name.IsAnyEqual(thirdArg),

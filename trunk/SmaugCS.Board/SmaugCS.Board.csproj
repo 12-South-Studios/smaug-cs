@@ -38,8 +38,9 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\x86\Debug\SmaugCS.Board.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -63,6 +64,7 @@
   <ItemGroup>
     <Compile Include="BoardData.cs" />
     <Compile Include="BoardManager.cs" />
+    <Compile Include="BoardModule.cs" />
     <Compile Include="boards.cs" />
     <Compile Include="BoardTypes.cs" />
     <Compile Include="IBoardManager.cs" />
@@ -86,6 +88,10 @@
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>

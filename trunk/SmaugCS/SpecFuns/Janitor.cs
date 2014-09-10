@@ -16,12 +16,10 @@ namespace SmaugCS.SpecFuns
 
             foreach (ObjectInstance trash in ch.CurrentRoom.Contents)
             {
-                if (!trash.WearFlags.IsSet(ItemWearFlags.Take)
-                    || trash.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                if (!trash.WearFlags.IsSet(ItemWearFlags.Take) || trash.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                     continue;
 
-                if (trash.ExtraFlags.IsSet(ItemExtraFlags.Prototype)
-                    && !ch.Act.IsSet(ActFlags.Prototype))
+                if (trash.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.Act.IsSet(ActFlags.Prototype))
                     continue;
 
                 if (trash.ItemType == ItemTypes.DrinkContainer 

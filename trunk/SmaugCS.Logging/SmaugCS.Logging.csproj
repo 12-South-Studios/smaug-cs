@@ -43,8 +43,9 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\x86\Debug\SmaugCS.Logging.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -79,6 +80,7 @@
     <Compile Include="LogManager.cs" />
     <Compile Include="LogTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LoggingModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -99,6 +101,10 @@
     <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
       <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
       <Name>SmallDBConnectivity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

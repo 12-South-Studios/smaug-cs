@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums
 {
     public enum PlaneTypes
     {
+        None = 0,
         Water = 100,
         Air = 200,
         Earth = 300,

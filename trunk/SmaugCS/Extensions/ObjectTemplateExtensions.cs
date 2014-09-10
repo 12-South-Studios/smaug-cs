@@ -2,10 +2,9 @@
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS
+namespace SmaugCS.Extensions
 {
     public static class ObjectTemplateExtensions
     {

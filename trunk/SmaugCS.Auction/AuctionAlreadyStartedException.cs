@@ -4,6 +4,7 @@ using Realm.Library.Common;
 
 namespace SmaugCS.Auction
 {
+    [Serializable]
     public class AuctionAlreadyStartedException : BaseException
     {
         protected AuctionAlreadyStartedException(SerializationInfo info, StreamingContext context)

@@ -3,7 +3,6 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
@@ -66,7 +65,7 @@ namespace SmaugCS.Commands.Objects
             if (obj != null)
             {
                 num += 1;
-                ObjectInstanceExtensions.Extract(obj);
+                obj.Extract();
             }
             else
             {
@@ -74,7 +73,7 @@ namespace SmaugCS.Commands.Objects
                 if (obj != null)
                 {
                     num += obj.Value[0];
-                    ObjectInstanceExtensions.Extract(obj);
+                    obj.Extract();
                 }
             }
 

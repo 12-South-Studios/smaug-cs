@@ -1,5 +1,4 @@
 ﻿using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Spells

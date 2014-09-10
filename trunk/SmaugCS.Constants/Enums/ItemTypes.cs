@@ -11,16 +11,16 @@ namespace SmaugCS.Constants.Enums
         Light,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_MAGIC)]
+        [CharacterColor(ATType = ATTypes.AT_MAGIC)]
         Scroll,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_MAGIC)]
+        [CharacterColor(ATType = ATTypes.AT_MAGIC)]
         [Valued]
         Wand,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_MAGIC)]
+        [CharacterColor(ATType = ATTypes.AT_MAGIC)]
         [Valued]
         Staff,
 
@@ -35,7 +35,7 @@ namespace SmaugCS.Constants.Enums
         Missile,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_YELLOW)]
+        [CharacterColor(ATType = ATTypes.AT_YELLOW)]
         Treasure,
 
         [Auctionable]
@@ -61,15 +61,15 @@ namespace SmaugCS.Constants.Enums
 
         [Auctionable]
         [Name("drinkcon")]
-        [CharacterColor(ATTypes.AT_THIRSTY)]
+        [CharacterColor(ATType = ATTypes.AT_THIRSTY)]
         DrinkContainer,
         Key,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_HUNGRY)]
+        [CharacterColor(ATType = ATTypes.AT_HUNGRY)]
         Food,
 
-        [CharacterColor(ATTypes.AT_YELLOW)]
+        [CharacterColor(ATType = ATTypes.AT_YELLOW)]
         Money,
 
         [Auctionable]
@@ -84,13 +84,13 @@ namespace SmaugCS.Constants.Enums
         [Name("corpse_pc")]
         PlayerCorpse,
 
-        [CharacterColor(ATTypes.AT_THIRSTY)]
+        [CharacterColor(ATType = ATTypes.AT_THIRSTY)]
         Fountain,
 
         [Auctionable]
         Pill,
 
-        [CharacterColor(ATTypes.AT_BLOOD)]
+        [CharacterColor(ATType = ATTypes.AT_BLOOD)]
         Blood,
         BloodStain,
         Scraps,
@@ -107,7 +107,7 @@ namespace SmaugCS.Constants.Enums
         Incense,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_FIRE)]
+        [CharacterColor(ATType = ATTypes.AT_FIRE)]
         Fire,
 
         [Auctionable]
@@ -155,7 +155,7 @@ namespace SmaugCS.Constants.Enums
         Salve,
 
         [Auctionable]
-        [CharacterColor(ATTypes.AT_HUNGRY)]
+        [CharacterColor(ATType = ATTypes.AT_HUNGRY)]
         Cook,
 
         [Auctionable]

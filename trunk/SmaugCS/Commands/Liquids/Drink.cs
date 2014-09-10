@@ -57,7 +57,8 @@ namespace SmaugCS.Commands.Liquids
             switch (obj.ItemType)
             {
                 case ItemTypes.Blood:
-                    DrinkFromBlood(ch, obj);
+                    if (!ch.IsNpc())
+                        DrinkFromBlood((PlayerInstance)ch, obj);
                     break;
                 case ItemTypes.Potion:
                     DrinkFromPotion(ch, obj);
@@ -83,10 +84,13 @@ namespace SmaugCS.Commands.Liquids
         {
             if (CheckFunctions.CheckIfTrue(ch, obj.Values.Quantity <= 0, "It is already empty.")) return;
 
-            if (CheckFunctions.CheckIfTrue(ch,
-                !ch.IsNpc() && (((PlayerInstance)ch).GetCondition(ConditionTypes.Full) == GetMaximumCondition()
-                                || ((PlayerInstance)ch).GetCondition(ConditionTypes.Thirsty) == GetMaximumCondition()),
-                "Your stomach is too full to drink more!")) return;
+            if (!ch.IsNpc())
+            {
+                PlayerInstance pch = (PlayerInstance) ch;
+                if (CheckFunctions.CheckIfTrue(ch, pch.GetCondition(ConditionTypes.Full) == GetMaximumCondition()
+                    || pch.GetCondition(ConditionTypes.Thirsty) == GetMaximumCondition(),
+                    "Your stomach is too full to drink more!")) return;
+            }
 
             LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
                                 DatabaseManager.Instance.LIQUIDS.Get(0);
@@ -97,25 +101,30 @@ namespace SmaugCS.Commands.Liquids
                 comm.act(ATTypes.AT_ACTION, "You drink $T from $p.", ch, obj, liquid.ShortDescription, ToTypes.Character);
             }
 
-            ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
-            ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
-            ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
-
-            if (ch.IsVampire())
-                ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
+            if (!ch.IsNpc())
+            {
+                PlayerInstance pch = (PlayerInstance) ch;
+                pch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
+                pch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
+                pch.GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
+                if (ch.IsVampire())
+                    pch.GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
+            }
 
             if (liquid.Type == LiquidTypes.Poison)
                 DrinkPoison(ch, obj);
 
             if (!ch.IsNpc())
             {
-                EvaluateDrunkCondition(ch);
-                EvaluateThirstCondition(ch);
+                PlayerInstance pch = (PlayerInstance)ch;
+
+                EvaluateDrunkCondition(pch);
+                EvaluateThirstCondition(pch);
 
                 if (ch.IsVampire())
-                    EvaluateBloodthirstCondition(ch);
-                else if (!ch.IsVampire() && ((PlayerInstance)ch).GetCondition(ConditionTypes.Bloodthirsty) >= GetMaximumCondition())
-                    ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = GetMaximumCondition();
+                    EvaluateBloodthirstCondition(pch);
+                else if (!ch.IsVampire() && pch.GetCondition(ConditionTypes.Bloodthirsty) >= GetMaximumCondition())
+                    pch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = GetMaximumCondition();
             }
 
             obj.Values.Quantity -= 1;
@@ -123,9 +132,9 @@ namespace SmaugCS.Commands.Liquids
                 obj.Values.Quantity = 0;
         }
 
-        private static void EvaluateBloodthirstCondition(CharacterInstance ch)
+        private static void EvaluateBloodthirstCondition(PlayerInstance ch)
         {
-            int cond = ((PlayerInstance)ch).GetCondition(ConditionTypes.Bloodthirsty);
+            int cond = ch.GetCondition(ConditionTypes.Bloodthirsty);
             int maxCond = GetMaximumCondition();
 
             if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
@@ -138,9 +147,9 @@ namespace SmaugCS.Commands.Liquids
                 color.send_to_char("&RYou drinnk the last drop of the fluid, the thirst for more leaves your body.", ch);
         }
 
-        private static void EvaluateThirstCondition(CharacterInstance ch)
+        private static void EvaluateThirstCondition(PlayerInstance ch)
         {
-            int cond = ((PlayerInstance)ch).GetCondition(ConditionTypes.Thirsty);
+            int cond = ch.GetCondition(ConditionTypes.Thirsty);
             int maxCond = GetMaximumCondition();
 
             if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
@@ -155,9 +164,9 @@ namespace SmaugCS.Commands.Liquids
                 color.send_to_char("Your stomach is full, you can't manage to get anymore down.", ch);
         }
 
-        private static void EvaluateDrunkCondition(CharacterInstance ch)
+        private static void EvaluateDrunkCondition(PlayerInstance ch)
         {
-            int cond = ((PlayerInstance)ch).GetCondition(ConditionTypes.Drunk);
+            int cond = ch.GetCondition(ConditionTypes.Drunk);
             int maxCond = GetMaximumCondition();
 
             if (cond > (maxCond/2) && cond < (maxCond*0.4f))
@@ -195,17 +204,21 @@ namespace SmaugCS.Commands.Liquids
             LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
                                 DatabaseManager.Instance.LIQUIDS.Get(0);
 
-            if (!ch.IsNpc() && obj.Values.LiquidID != 0)
+            if (!ch.IsNpc())
             {
-                ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
-                ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
-                ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
+                PlayerInstance pch = (PlayerInstance)ch;
+                if (obj.Values.LiquidID != 0)
+                {
+                    pch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
+                    pch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
+                    pch.GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
 
-                if (ch.IsVampire())
-                    ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
+                    if (ch.IsVampire())
+                        pch.GainCondition(ConditionTypes.Bloodthirsty, liquid.GetMod(ConditionTypes.Bloodthirsty));
+                }
+                else if (obj.Values.LiquidID == 0)
+                    pch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = GetMaximumCondition();
             }
-            else if (!ch.IsNpc() && obj.Values.LiquidID == 0)
-               ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] = GetMaximumCondition();
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
             {
@@ -221,24 +234,23 @@ namespace SmaugCS.Commands.Liquids
             interp.interpret(ch, string.Format("quaff {0}", obj.Name));
         }
 
-        private static void DrinkFromBlood(CharacterInstance ch, ObjectInstance obj)
+        private static void DrinkFromBlood(PlayerInstance ch, ObjectInstance obj)
         {
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsVampire() || ch.IsNpc(),
-                "It is not in your nature to do such things.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsVampire(), "It is not in your nature to do such things.")) return;
 
-            if (obj.Timer < 0 && ch.Level > 5 && ((PlayerInstance)ch).GetCondition(ConditionTypes.Bloodthirsty) > (5 + ch.Level/10))
+            if (obj.Timer < 0 && ch.Level > 5 && ch.GetCondition(ConditionTypes.Bloodthirsty) > (5 + ch.Level/10))
             {
                 color.send_to_char("It is beneath you to stoop to drinking blood from the ground!", ch);
                 color.send_to_char("Unless in dire need, you'd much rather have blood from a victim's neck!", ch);
                 return;
             }
 
-            if (CheckFunctions.CheckIfTrue(ch, ((PlayerInstance)ch).GetCondition(ConditionTypes.Bloodthirsty) >= (10 + ch.Level),
+            if (CheckFunctions.CheckIfTrue(ch, ch.GetCondition(ConditionTypes.Bloodthirsty) >= (10 + ch.Level),
                 "Alas... you cannot consume any more blood.")) return;
 
             int maxCond = GetMaximumCondition();
-            if (CheckFunctions.CheckIfTrue(ch, ((PlayerInstance)ch).GetCondition(ConditionTypes.Bloodthirsty) >= maxCond
-                                               || ((PlayerInstance)ch).GetCondition(ConditionTypes.Thirsty) >= maxCond,
+            if (CheckFunctions.CheckIfTrue(ch, ch.GetCondition(ConditionTypes.Bloodthirsty) >= maxCond
+                                               || ch.GetCondition(ConditionTypes.Thirsty) >= maxCond,
                 "You are too full to drink any blood.")) return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -256,14 +268,12 @@ namespace SmaugCS.Commands.Liquids
                 }
             }
 
-            ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, 1);
-            ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, 1);
-            ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, 1);
+            ch.GainCondition(ConditionTypes.Bloodthirsty, 1);
+            ch.GainCondition(ConditionTypes.Full, 1);
+            ch.GainCondition(ConditionTypes.Thirsty, 1);
 
             if ((obj.Values.Quantity - 1) <= 0)
             {
-                //if (obj.Serial == cur_obj)
-                //  global_objcode = rOBJ_DRUNK;
                 obj.Extract();
                 ObjectFactory.CreateBloodstain(ch, DatabaseManager.Instance);
             }

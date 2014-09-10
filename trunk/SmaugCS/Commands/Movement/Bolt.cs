@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
@@ -14,7 +15,7 @@ namespace SmaugCS.Commands.Movement
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Bolt what?")) return;
 
-            ExitData exit = act_move.find_door(ch, firstArg, true);
+            ExitData exit = ch.FindExit(firstArg, true);
             if (exit == null)
             {
                 color.ch_printf(ch, "You see no %s here.", firstArg);

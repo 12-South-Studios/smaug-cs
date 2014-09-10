@@ -54,8 +54,8 @@ namespace SmaugCS.Data.Instances
         public int CurrentCoin { get; set; }
         public int Experience { get; set; }
         public int Act { get; set; }
-        public int AffectedBy { get; set; }
-        public ExtendedBitvector NoAffectedBy { get; set; }
+        public long AffectedBy { get; set; }
+        public long NoAffectedBy { get; set; }
         public int CarryWeight { get; set; }
         public int CarryNumber { get; set; }
         public int ExtraFlags { get; set; }
@@ -108,7 +108,7 @@ namespace SmaugCS.Data.Instances
         public int ResetNum { get; set; }
         public LuaInterfaceProxy LuaVM { get; set; }
 
-        public CharacterInstance(int id, string name)
+        public CharacterInstance(long id, string name)
             : base(id, name)
         {
             SavingThrows = new SavingThrowData();
@@ -118,24 +118,8 @@ namespace SmaugCS.Data.Instances
 
         ~CharacterInstance()
         {
-            Dispose(true);
+            LuaVM.Close();
         }
-
-        #region IDisposable
-
-        /// <summary>
-        /// Dispose of any internal resources
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                LuaVM.Close();
-            }
-        }
-
-        #endregion
 
         #region IVerifiable
         public bool IsNpc()

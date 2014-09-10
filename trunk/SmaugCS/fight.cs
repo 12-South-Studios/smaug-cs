@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
-using SmaugCS.Commands;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
@@ -1429,7 +1428,7 @@ namespace SmaugCS
 
             if (vnum > 0)
             {
-                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(vnum);
+                ObjectTemplate template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(vnum);
                 if (template == null)
                 {
                     LogManager.Instance.Bug("Invalid vnum");

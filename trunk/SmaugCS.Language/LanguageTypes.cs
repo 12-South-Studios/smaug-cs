@@ -6,32 +6,32 @@ namespace SmaugCS.Language
     [Flags]
     public enum LanguageTypes
     {
-        Unknown = 0,
-        Common = 1 << 0,
+        None = 0,
+        Common = 1,
 
         [Name("elvish")]
-        Elven = 1 << 1,
-        Dwarven = 1 << 2,
-        Pixie = 1 << 3,
-        Ogre = 1 << 4,
-        Orcish = 1 << 5,
+        Elven = 2,
+        Dwarven = 4,
+        Pixie = 8,
+        Ogre = 16,
+        Orcish = 32,
 
         [Name("trollese")]
-        Trollish = 1 << 6,
-        Rodent = 1 << 7,
-        Insectoid = 1 << 8,
-        Mammal = 1 << 9,
-        Reptile = 1 << 10,
-        Dragon = 1 << 11,
-        Spiritual = 1 << 12,
-        Magical = 1 << 13,
-        Goblin = 1 << 14,
-        God = 1 << 15,
-        Ancient = 1 << 16,
-        Halfling = 1 << 17,
-        Clan = 1 << 18,
-        Gith = 1 << 19,
-        Gnome = 1 << 20,
+        Trollish = 64,
+        Rodent = 128,
+        Insectoid = 256,
+        Mammal = 512,
+        Reptile = 1024,
+        Dragon = 2048,
+        Spiritual = 4096,
+        Magical = 8192,
+        Goblin = 16384,
+        God = 32768,
+        Ancient = 65536,
+        Halfling = 131072,
+        Clan = 262144,
+        Gith = 524288,
+        Gnome = 1048576,
         ValidLanguages = (Common | Elven | Dwarven | Pixie | Ogre
             | Orcish | Trollish | Goblin | Halfling | Gith | Gnome)
     }

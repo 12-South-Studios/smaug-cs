@@ -29,12 +29,16 @@ namespace SmaugCS.Data
             {10, 14},
             {11, 15}
         };
-        public int GetModifiedPosition()
+
+        public int ModifiedPosition
         {
-            int originalPosition = Position;
-            if (originalPosition < 100 && ModifiedPositionTable.ContainsKey(originalPosition))
-                originalPosition = ModifiedPositionTable[originalPosition];
-            return originalPosition >= 100 ? originalPosition - 100 : originalPosition;
+            get
+            {
+                int originalPosition = Position;
+                if (originalPosition < 100 && ModifiedPositionTable.ContainsKey(originalPosition))
+                    originalPosition = ModifiedPositionTable[originalPosition];
+                return originalPosition >= 100 ? originalPosition - 100 : originalPosition;
+            }
         }
     }
 }

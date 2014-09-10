@@ -3,13 +3,9 @@ using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants
 {
-    public class DamageResistanceAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class DamageResistanceAttribute : Attribute
     {
         public ResistanceTypes ResistanceType { get; set; }
-
-        public DamageResistanceAttribute(ResistanceTypes ResistanceType = ResistanceTypes.Unknown)
-        {
-            this.ResistanceType = ResistanceType;
-        }
     }
 }

@@ -126,6 +126,17 @@ namespace Realm.Library.Common
         }
 
         /// <summary>
+        /// Converts a long value into a member of the enumeration type
+        /// </summary>
+        /// <exception cref="ArgumentException">If the member is not found, throws an ArgumentException</exception>
+        public static T GetEnum<T>(long value)
+        {
+            if (Enum.IsDefined(typeof(T), value))
+                return (T)Enum.ToObject(typeof(T), value);
+            throw new ArgumentException(string.Format(Resources.ERR_NO_VALUE, typeof(T), value));
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>

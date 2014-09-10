@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.Constants
 {
-    public class DescriptorAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method, AllowMultiple = false)]
+    public sealed class DescriptorAttribute : Attribute
     {
-        public string[] Messages { get; set; }
+        public IEnumerable<string> Messages { get; private set; }
 
         public DescriptorAttribute(string[] Messages = null)
         {

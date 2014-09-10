@@ -30,7 +30,7 @@ namespace SmaugCS.Spells.Smaug
                     id = GameConstants.GetVnum("shield");
             }
 
-            ObjectTemplate oi = DatabaseManager.Instance.OBJECT_INDEXES.Get(id);
+            ObjectTemplate oi = DatabaseManager.Instance.OBJECTTEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(oi, skill, ch)) return ReturnTypes.None;
 
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(oi);

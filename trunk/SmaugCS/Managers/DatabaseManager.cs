@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using Realm.Library.Common;
-using SmaugCS.Auction;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Interfaces;
@@ -93,12 +92,12 @@ namespace SmaugCS.Managers
             get { return _repositories[RepositoryTypes.Areas].CastAs<AreaRepository>(); }
         }
 
-        public ObjectRepository OBJECT_INDEXES
+        public ObjectRepository OBJECTTEMPLATES
         {
             get { return _repositories[RepositoryTypes.ObjectTemplates].CastAs<ObjectRepository>(); }
         }
         
-        public MobileRepository MOBILE_INDEXES
+        public MobileRepository MOBILETEMPLATES
         {
             get { return _repositories[RepositoryTypes.MobileTemplates].CastAs<MobileRepository>(); }
         }

@@ -53,7 +53,9 @@ namespace Realm.Library.NCalcExt
             object result = exp.Evaluate();
 
             Int32 outResult;
-            Int32.TryParse(result.ToString(), out outResult);
+            if (!Int32.TryParse(result.ToString(), out outResult))
+                throw new InvalidOperationException(string.Format("Expression '{0}' result could not be parsed", expr));
+
             return outResult;
         }
 

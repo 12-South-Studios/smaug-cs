@@ -43,7 +43,8 @@ namespace SmaugCS.Common
             if (words.Length >= 2 && words[0].IsNumber())
             {
                 int val;
-                Int32.TryParse(words[0], out val);
+                if (!Int32.TryParse(words[0], out val))
+                    return null;
 
                 string outVal = string.Empty;
                 for (int i = 1; i < words.Length; i++)
@@ -68,8 +69,7 @@ namespace SmaugCS.Common
             if (words.Length >= 2 && words[0].IsNumber())
             {
                 int val;
-                Int32.TryParse(words[0], out val);
-                return val;
+                return !Int32.TryParse(words[0], out val) ? 0 : val;
             }
             return 0;
         }
@@ -140,7 +140,8 @@ namespace SmaugCS.Common
             foreach (string number in numbers)
             {
                 UInt64 num;
-                UInt64.TryParse(number, out num);
+                if (!UInt64.TryParse(number, out num))
+                    continue;
 
                 bit.SetBit(num);
                 ++x;

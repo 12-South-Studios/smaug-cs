@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -73,7 +74,7 @@ namespace SmaugCS.Logging
                 SmallDb.ExecuteNonQuery(Connection, "cp_AddLog", parameters);
                 scope.Commit();
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
 

@@ -10,39 +10,35 @@ namespace Realm.Library.Common
     [Flags]
     public enum DelimiterType
     {
-#pragma warning disable 1591
+        [Enum("None", Value = 0)]
+        None = 0,
 
         [Enum("Whitespace", Value = 1)]
         [Description("\t\n\r ")]
-        Whitespace,
+        Whitespace = 1,
 
         [Enum("Comma", Value = 2)]
         [Description(",")]
-        Comma,
+        Comma = 2,
 
         [Enum("Period", Value = 4)]
         [Description(".")]
-        Period,
+        Period = 4,
 
         [Enum("Colon", Value = 8)]
         [Description(":")]
-        Colon,
+        Colon = 8,
 
         [Enum("Equals", Value = 16)]
         [Description("=")]
-        Equals,
+        Equals = 16,
 
         [Enum("Punctuation", Value = 32)]
         [Description(",:.=")]
-        Punctuation,
+        Punctuation = 32,
 
         [Enum("Backslash", Value = 64)]
         [Description("/")]
-        Backslash,
-
-        [Enum("None", Value = 128)]
-        None
-
-#pragma warning restore 1591
+        Backslash = 64
     }
 }

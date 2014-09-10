@@ -5,8 +5,6 @@ using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmallDBConnectivity;
 using SmaugCS.Auction;
-using SmaugCS.Ban;
-using SmaugCS.Board;
 using SmaugCS.Constants;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -34,18 +32,11 @@ namespace SmaugCS
             Kernel.Bind<ITimer>().To<CommonTimer>().Named("AuctionPulseTimer")
                 .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("AuctionPulseSeconds"));
 
-            Kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope()
-                .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"));
-
             Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
 
             Kernel.Bind<ILuaManager>().To<LuaManager>().InSingletonScope()
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
-                .WithConstructorArgument("path", GameConstants.GetDataPath());
+                .WithConstructorArgument("path", GameConstants.DataPath);
 
             Kernel.Bind<ITcpUserRepository>().To<TcpUserRepository>();
             Kernel.Bind<ITcpServer>().To<TcpServer>().InSingletonScope()
@@ -55,25 +46,12 @@ namespace SmaugCS
             Kernel.Bind<IDatabaseManager>().To<DatabaseManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>());
 
-            Kernel.Bind<IBanManager>().To<BanManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("BanExpireTimer"))
-                .OnActivation(x => x.Initialize());
-
-            Kernel.Bind<IBoardManager>().To<BoardManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
-                .OnActivation(x => x.Initialize());
-
             Kernel.Bind<IGameManager>().To<GameManager>().InSingletonScope();
 
             Kernel.Bind<ICalendarManager>().To<CalendarManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
+                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
                 .WithConstructorArgument("gameManager", Kernel.Get<IGameManager>())
                 .OnActivation(x => x.Initialize());
 
@@ -81,7 +59,7 @@ namespace SmaugCS
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("kernel", Kernel)
                 .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection())
+                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
                 .OnActivation(x => x.Initialize(Kernel.Get<IGameManager>().GameTime,
                     GameConstants.GetConstant<int>("WeatherWidth"),
                     GameConstants.GetConstant<int>("WeatherHeight")));
@@ -90,7 +68,7 @@ namespace SmaugCS
 
             Kernel.Bind<IInitializer>().To<LuaInitializer>().InSingletonScope()
                 .Named("LuaInitializer")
-                .OnActivation(x => x.InitializeLuaInjections(GameConstants.GetDataPath()))
+                .OnActivation(x => x.InitializeLuaInjections(GameConstants.DataPath))
                 .OnActivation(x => x.InitializeLuaFunctions());
 
             Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope();
@@ -98,7 +76,7 @@ namespace SmaugCS
             Kernel.Bind<IAuctionRepository>().To<AuctionRepository>()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.GetConnection());
+                .WithConstructorArgument("connection", SqlConnectionProvider.Connection);
 
             Kernel.Bind<IAuctionManager>().To<AuctionManager>().InSingletonScope()
                 .WithConstructorArgument("kernel", Kernel)

@@ -69,7 +69,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateAvatarCost,
                 "You are not favored enough for that.")) return;
 
-            MobTemplate template = DatabaseManager.Instance.MOBILE_INDEXES.Get(VnumConstants.MOB_VNUM_DEITY);
+            MobTemplate template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY);
             CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template);
 
             ch.CurrentRoom.ToRoom(mob);
@@ -91,7 +91,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost,
                 "You are not favored enough for that.")) return;
 
-            ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(VnumConstants.OBJ_VNUM_DEITY);
+            ObjectTemplate template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(template, ch.Level,
                 string.Format("sigil {0}", ch.PlayerData.CurrentDeity.Name));
             obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.ToCharacter(ch) : ch.CurrentRoom.ToRoom(obj);

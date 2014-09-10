@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Movement
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Close what?")) return;
 
-            ExitData exit = act_move.find_door(ch, firstArg, true);
+            ExitData exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 CloseDoor(ch, exit, firstArg);

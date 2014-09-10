@@ -1,7 +1,7 @@
 ﻿using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS
+namespace SmaugCS.Extensions
 {
     public static class AreaExtensions
     {

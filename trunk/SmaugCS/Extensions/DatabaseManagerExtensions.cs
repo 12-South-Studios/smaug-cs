@@ -7,9 +7,7 @@ using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Managers;
 
-// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+namespace SmaugCS.Extensions
 {
     public static class DatabaseManagerExtensions
     {
@@ -67,7 +65,7 @@ namespace SmaugCS
             return
                 langList.Count(
                     lang =>
-                    lang.Type != LanguageTypes.Clan && lang.Type != LanguageTypes.Unknown &&
+                    lang.Type != LanguageTypes.Clan && lang.Type != LanguageTypes.None &&
                     ((int) lang.Type & languages) > 0);
         }
 

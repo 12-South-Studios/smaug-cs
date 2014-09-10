@@ -5,6 +5,8 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Managers
 {
@@ -65,11 +67,7 @@ namespace SmaugCS.Managers
 
         public static void SendToChat(CharacterInstance ch, string argument, ChannelTypes channel, string channelName)
         {
-            if (ch.IsNotAuthorized())
-            {
-                color.send_to_char("Huh?\r\n", ch);
-                return;
-            }
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsNotAuthorized(), "Huh?")) return;
 
             talk_channel(ch, argument, channel, channelName);
         }

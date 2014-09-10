@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common;
-using SmaugCS.Auction;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;
@@ -23,8 +22,8 @@ namespace SmaugCS.Interfaces
 
         RoomRepository ROOMS { get; }
         AreaRepository AREAS { get; }
-        ObjectRepository OBJECT_INDEXES { get; }
-        MobileRepository MOBILE_INDEXES { get; }
+        ObjectRepository OBJECTTEMPLATES { get; }
+        MobileRepository MOBILETEMPLATES { get; }
         CharacterRepository CHARACTERS { get; }
         ObjInstanceRepository OBJECTS { get; }
         GenericRepository<LiquidData> LIQUIDS { get; }

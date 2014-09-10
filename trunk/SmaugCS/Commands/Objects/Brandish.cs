@@ -31,10 +31,6 @@ namespace SmaugCS.Commands.Objects
             {
                 comm.act(ATTypes.AT_MAGIC, "$p blazes bright and vanishes from $n's hands!", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_MAGIC, "$p blazes bright and is gone!", ch, obj, null, ToTypes.Character);
-
-                //if(obj.Serial == cur_obj)
-                //    global_objcode = rOBJ_USED;
-
                 obj.Extract();
             }
         }
@@ -49,10 +45,14 @@ namespace SmaugCS.Commands.Objects
 
             foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
             {
-                if (!vch.IsNpc() && vch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
-                    ((PlayerInstance)vch).PlayerData.WizardInvisible >= LevelConstants.ImmortalLevel)
-                    continue;
-
+                if (!vch.IsNpc())
+                {
+                    PlayerInstance pch = (PlayerInstance) ch;
+                    if (pch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
+                        pch.PlayerData.WizardInvisible >= LevelConstants.ImmortalLevel)
+                        continue;
+                }
+  
                 SkillData skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
                 switch (skill.Target)
                 {

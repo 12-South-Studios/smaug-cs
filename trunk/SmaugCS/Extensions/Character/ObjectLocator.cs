@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
@@ -13,6 +14,67 @@ namespace SmaugCS.Extensions
 {
     public static class ObjectLocator
     {
+        private static readonly Dictionary<string, int> DoorDirectionMap = new Dictionary<string, int>
+            {
+                {"n;north", 0},
+                {"e;east", 1},
+                {"s;south", 2},
+                {"w;west", 3},
+                {"u;up", 4},
+                {"d;down", 5},
+                {"ne;northeast", 6},
+                {"nw;northwest", 7},
+                {"se;southeast", 8},
+                {"sw;southwest", 9}
+            };
+
+        public static ExitData FindExit(this CharacterInstance ch, string arg, bool quiet = false)
+        {
+            if (string.IsNullOrEmpty(arg))
+                return null;
+
+            int door = (from key in DoorDirectionMap.Keys
+                let words = key.Split(';')
+                where words.Any(x => x.EqualsIgnoreCase(arg))
+                select DoorDirectionMap[key]).FirstOrDefault();
+
+            if (door == 0)
+            {
+                foreach (ExitData pexit in ch.CurrentRoom.Exits)
+                {
+                    if ((quiet || pexit.Flags.IsSet(ExitFlags.IsDoor))
+                        && !string.IsNullOrEmpty(pexit.Keywords)
+                        && arg.IsAnyEqual(pexit.Keywords))
+                        return pexit;
+                }
+
+                if (!quiet)
+                    comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
+                return null;
+            }
+
+            ExitData exit = ch.CurrentRoom.GetExit(door);
+            if (exit == null)
+            {
+                if (!quiet)
+                    comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
+                return null;
+            }
+
+            if (quiet)
+                return exit;
+
+            if (exit.Flags.IsSet(ExitFlags.Secret))
+            {
+                comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
+                return null;
+            }
+
+            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.IsDoor, "You can't do that.")) return null;
+
+            return exit;
+        }
+
         public static ObjectInstance GetObjectOfType(this CharacterInstance ch, ItemTypes type)
         {
             return ch.Carrying.FirstOrDefault(obj => obj.ItemType == type);

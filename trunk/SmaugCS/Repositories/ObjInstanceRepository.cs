@@ -8,6 +8,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Repositories
 {
@@ -23,11 +24,17 @@ namespace SmaugCS.Repositories
 
             ObjectTemplate objParent = parent.CastAs<ObjectTemplate>();
 
+            long id;
+            if (args != null && args.Length > 0)
+                id = Convert.ToInt64(args[0]);
+            else
+                id = GetNextId;
+
             string name = parent.Name;
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            ObjectInstance obj = new ObjectInstance(GetNextId, name, 99, 99)
+            ObjectInstance obj = new ObjectInstance(id, name, 99, 99)
             {
                 Parent = parent,
                 Level = args == null || args.Length == 0 ? 1 : (int) args[0],

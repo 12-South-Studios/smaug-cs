@@ -271,7 +271,7 @@ namespace SmaugCS.Commands.Movement
         {
             if (obj.Value[0].IsSet(TriggerFlags.MobileLoad))
             {
-                MobTemplate template = DatabaseManager.Instance.MOBILE_INDEXES.Get(obj.Value[1]);
+                MobTemplate template = DatabaseManager.Instance.MOBILETEMPLATES.Get(obj.Value[1]);
                 if (template == null)
                 {
                     // TODO Exception, log it!
@@ -332,7 +332,7 @@ namespace SmaugCS.Commands.Movement
         {
             if (obj.Value[0].IsSet((int) TriggerFlags.ObjectLoad))
             {
-                ObjectTemplate template = DatabaseManager.Instance.OBJECT_INDEXES.Get(obj.Value[1]);
+                ObjectTemplate template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(obj.Value[1]);
                 if (template == null)
                 {
                     // TODO Exception, log it!

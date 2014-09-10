@@ -1,62 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Constants
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class FlagLookup
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="sourceList"></param>
-        /// <returns></returns>
-        public static int GetIndexOf(string value, List<string> sourceList)
+        public static int GetIndexOf(string value, IEnumerable<string> sourceList)
         {
-            return sourceList.FindIndex(x => x.EqualsIgnoreCase(value));
+            return sourceList.ToList().FindIndex(x => x.EqualsIgnoreCase(value));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static int get_otype(string value)
         {
             return GetIndexOf(value, BuilderConstants.o_types);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static int get_aflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.a_flags);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static int get_trapflag(string value)
         {
             return GetIndexOf(value, BuilderConstants.trap_flags);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static int get_atype(string value)
         {
             return GetIndexOf(value, BuilderConstants.a_types);

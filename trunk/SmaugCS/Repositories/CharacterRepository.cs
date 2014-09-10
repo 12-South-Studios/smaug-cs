@@ -1,17 +1,19 @@
-﻿using Realm.Library.Common;
+﻿using System;
+using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Repositories
 {
     public class CharacterRepository : Repository<long, CharacterInstance>, IInstanceRepository<CharacterInstance>
     {
-        private static int _idSpace = 1;
-        private static int GetNextId { get { return _idSpace++; } }
+        private static long _idSpace = 1;
+        private static long GetNextId { get { return _idSpace++; } }
 
         public CharacterInstance Create(Template parent, params object[] args)
         {
@@ -19,6 +21,12 @@ namespace SmaugCS.Repositories
             Validation.Validate(parent is MobTemplate, "Invalid Template Type");
 
             MobTemplate mobParent = parent.CastAs<MobTemplate>();
+
+            long id;
+            if (args != null && args.Length > 0)
+                id = Convert.ToInt64(args[0]);
+            else
+                id = GetNextId;
 
             string name = parent.Name;
             if (args != null && args.Length > 1)
@@ -28,7 +36,7 @@ namespace SmaugCS.Repositories
             if (args != null && args.Length > 2)
                 isMobile = (bool) args[2];
 
-            CharacterInstance mob = new CharacterInstance(GetNextId, name)
+            CharacterInstance mob = new CharacterInstance(id, name)
             {
                 Parent = parent,
                 ShortDescription = mobParent.ShortDescription,

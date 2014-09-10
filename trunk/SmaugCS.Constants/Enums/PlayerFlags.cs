@@ -3,51 +3,52 @@
 namespace SmaugCS.Constants.Enums
 {
     [Flags]
-    public enum PlayerFlags
+    public enum PlayerFlags : long
     {
-        IsNpc = 1 << 0,
-        BoughtPet = 1 << 1,
-        ShoveDrag = 1 << 2,
-        AutoExit = 1 << 3,
-        AutoLoot = 1 << 4,
-        AutoSacrifice = 1 << 5,
-        Blank = 1 << 6,
-        Outcast = 1 << 7,
-        Brief = 1 << 8,
-        Combine = 1 << 9,
-        Prompt = 1 << 10,
-        TelnetGA = 1 << 11,
-        HolyLight = 1 << 12,
-        WizardInvisibility = 1 << 13,
-        RoomVNum = 1 << 14,
-        Silence = 1 << 15,
-        NoEmote = 1 << 16,
+        None = 0,
+        IsNpc = 1,
+        BoughtPet = 2,
+        ShoveDrag = 4,
+        AutoExit = 8,
+        AutoLoot = 16,
+        AutoSacrifice = 32,
+        Blank = 64,
+        Outcast = 128,
+        Brief = 256,
+        Combine = 512,
+        Prompt = 1024,
+        TelnetGA = 2048,
+        HolyLight = 4096,
+        WizardInvisibility = 8192,
+        RoomVNum = 16384,
+        Silence = 32768,
+        NoEmote = 65536,
 
         [Descriptor(new[] { "(ATTACKER) " })]
-        Attacker = 1 << 17,
-        NoTell = 1 << 18,
-        Log = 1 << 19,
-        Deny = 1 << 20,
-        Freeze = 1 << 21,
+        Attacker = 131072,
+        NoTell = 262144,
+        Log = 524288,
+        Deny = 1048576,
+        Freeze = 2097152,
 
         [Descriptor(new[] { "(THIEF) " })]
-        Thief = 1 << 22,
+        Thief = 4194304,
 
         [Descriptor(new[] { "(KILLER) " })]
-        Killer = 1 << 23,
+        Killer = 8388608,
 
         [Descriptor(new[] { "(LITTERBUG) " })]
-        Litterbug = 1 << 24,
-        Ansi = 1 << 25,
-        Rip = 1 << 26,
-        Nice = 1 << 27,
-        Flee = 1 << 28,
-        AutoGold = 1 << 29,
-        AutoMap = 1 << 30,
+        Litterbug = 16777216,
+        Ansi = 33554432,
+        Rip = 67108864,
+        Nice = 134217728,
+        Flee = 268435456,
+        AutoGold = 536870912,
+        AutoMap = 1073741824,
 
         [Descriptor(new []{"[AFK]"})]
-        AwayFromKeyboard = 1 << 31,
-        InvisibilePrompt = 1 << 32,
-        Compass = 1 << 33
+        AwayFromKeyboard = 214783648,
+        InvisibilePrompt = 4294967296,
+        Compass = 8589934592
     }
 }
