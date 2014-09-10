@@ -2,7 +2,8 @@
 
 namespace SmaugCS.Constants
 {
-    public class AuctionableAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class AuctionableAttribute : Attribute
     {
     }
 }

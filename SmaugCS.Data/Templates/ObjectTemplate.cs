@@ -223,7 +223,7 @@ namespace SmaugCS.Data.Templates
                 Spells.Add(spell.ToLower());
         }
 
-        public void AddAffect(int type, int duration, int modifier, int location, int flags)
+        public void AddAffect(long type, int duration, int modifier, int location, int flags)
         {
             AffectData newAffect = new AffectData
             {

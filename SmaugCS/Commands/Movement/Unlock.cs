@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -16,7 +15,7 @@ namespace SmaugCS.Commands.Movement
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Unlock what?")) return;
 
-            ExitData exit = act_move.find_door(ch, firstArg, true);
+            ExitData exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 UnlockDoor(ch, exit, firstArg);
@@ -35,11 +34,9 @@ namespace SmaugCS.Commands.Movement
 
         private static void UnlockObject(CharacterInstance ch, ObjectInstance obj, string firstArg)
         {
-            if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).ItemType != ItemTypes.Container,
-                "That's not a container.", new List<object> {obj})) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.ItemType != ItemTypes.Container, "That's not a container.")) return;
             if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ContainerFlags.Closed, "It's not closed.")) return;
-            if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).Value[2] < 0, "It can't be unlocked.",
-                new List<object> {obj})) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Value[2] < 0, "It can't be unlocked.")) return;
 
             ObjectInstance key = ch.HasKey(obj.Value[2]);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
@@ -61,7 +58,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void UnlockDoor(CharacterInstance ch, ExitData exit, string firstArg)
         {
-            if (exit.Flags.IsSet((int) ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(firstArg))
+            if (exit.Flags.IsSet(ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(firstArg))
             {
                 color.ch_printf(ch, "You see no %s here.", firstArg);
                 return;

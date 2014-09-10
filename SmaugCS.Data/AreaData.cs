@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
@@ -154,7 +155,7 @@ namespace SmaugCS.Data
 
 
 
-        public void FireStartupResets()
+        public virtual void OnStartup(object o, EventArgs e)
         {
             foreach (RoomTemplate room in Rooms)
                 room.ProcessResets();

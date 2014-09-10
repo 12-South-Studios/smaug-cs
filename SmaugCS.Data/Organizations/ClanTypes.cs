@@ -5,7 +5,7 @@ namespace SmaugCS.Data.Organizations
     [Flags]
     public enum ClanTypes
     {
-        Plain = 0,
+        None = 0,
         Vampire = 1,
         Warrior = 2,
         Druid = 3,

@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using System;
+using Ninject;
 using Realm.Library.NCalcExt;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -46,7 +47,7 @@ namespace SmaugCS.Managers
         private void InitializeResets()
         {
             foreach (AreaData area in _dbManager.AREAS.Values)
-                area.FireStartupResets();
+                area.OnStartup(this, new EventArgs());
         }
     }
 }

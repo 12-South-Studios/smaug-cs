@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -17,7 +16,7 @@ namespace SmaugCS.Commands.Movement
 
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Lock what?")) return;
 
-            ExitData exit = act_move.find_door(ch, firstArg, true);
+            ExitData exit =ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 LockDoor(ch, exit, firstArg);
@@ -36,8 +35,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void LockObject(CharacterInstance ch, ObjectInstance obj, string arg)
         {
-            if (CheckFunctions.CheckIf(ch, args => ((ObjectInstance) args[0]).ItemType != ItemTypes.Container,
-                "That's not a container.", new List<object> {obj})) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.ItemType != ItemTypes.Container, "That's not a container.")) return;
             if (CheckFunctions.CheckIfNotSet(ch, obj.Values.Flags, ContainerFlags.Closed, "It's not closed.")) return;
             if (CheckFunctions.CheckIfTrue(ch, obj.Values.KeyID <= 0, "It can't be locked.")) return;
 

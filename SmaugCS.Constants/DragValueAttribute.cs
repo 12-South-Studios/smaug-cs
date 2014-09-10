@@ -2,13 +2,9 @@
 
 namespace SmaugCS.Constants
 {
-    public class DragValueAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class DragValueAttribute : Attribute
     {
         public int ModValue { get; set; }
-
-        public DragValueAttribute(int ModValue = 0)
-        {
-            this.ModValue = ModValue;
-        }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Realm.Library.Common;
-using Realm.Library.Patterns.Command;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Polymorph;
@@ -17,9 +14,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
-using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.SpecFuns;
 
 namespace SmaugCS
 {

@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.Tests.Extensions
 {

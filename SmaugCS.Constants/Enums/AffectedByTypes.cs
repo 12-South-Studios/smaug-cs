@@ -4,87 +4,87 @@ using Realm.Library.Common;
 namespace SmaugCS.Constants.Enums
 {
     [Flags]
-    public enum AffectedByTypes
+    public enum AffectedByTypes : long
     {
-        None = -1,
-        Blind = 1 << 0, 
+        None = 0,
+        Blind = 1, 
 
         [Descriptor(new []{"(Invis) "})]
-        Invisible = 1 << 1,
+        Invisible = 2,
 
         [Name("detect_evil")]
         [Descriptor(new[] { "(Red Aura) " })]
-        DetectEvil = 1 << 2, 
+        DetectEvil = 4, 
 
         [Name("detect_invis")]
-        DetectInvisibility = 1 << 3,
+        DetectInvisibility = 8,
 
         [Name("detect_magic")] 
-        DetectMagic = 1 << 4,
+        DetectMagic = 16,
 
         [Name("detect_hidden")]
-        DetectHidden = 1 << 5,
-        Hold = 1 << 6,     
-        Sanctuary = 1 << 7,
+        DetectHidden = 32,
+        Hold = 64,     
+        Sanctuary = 128,
 
         [Name("faerie_fire")]
         [Descriptor(new[] { "(Pink Aura) " })]
-        FaerieFire = 1 << 8,    
-        Infrared = 1 << 9,  
-        Curse = 1 << 10, 
-        Flaming = 1 << 11, 
-        Poison = 1 << 12,
-        Protect = 1 << 13,
-        Paralysis = 1 << 14,
-        Sneak = 1 << 15,
+        FaerieFire = 256,    
+        Infrared = 512,  
+        Curse = 1024, 
+        Flaming = 2048, 
+        Poison = 4096,
+        Protect = 8192,
+        Paralysis = 16384,
+        Sneak = 32768,
 
         [Descriptor(new []{"(Hide) "})]
-        Hide = 1 << 16,
-        Sleep = 1 << 17,
+        Hide = 65536,
+        Sleep = 131072,
 
-        [VisibleAffect(ATTypes.AT_MAGIC, "%s wanders in a dazed, zombie-like state.\r\n")]
-        Charm = 1 << 18,
-        Flying = 1 << 19,
+        [VisibleAffect(ATType = ATTypes.AT_MAGIC, Description = "%s wanders in a dazed, zombie-like state.")]
+        Charm = 262144,
+        Flying = 524288,
 
         [Name("pass_door")]
         [Descriptor(new[] { "(Translucent) " })]
-        PassDoor = 1 << 20,
-        Floating = 1 << 21,
+        PassDoor = 1048576,
+        Floating = 2097152,
 
         [Name("true_sight")]
-        TrueSight = 1 << 22,
+        TrueSight = 4194304,
 
         [Name("detect_traps")]
-        DetectTraps = 1 << 23,
-        Scrying = 1 << 24,
+        DetectTraps = 8388608,
+        Scrying = 16777216,
 
-        [VisibleAffect(ATTypes.AT_FIRE, "{0} is engulfed within a blaze of mystical flame.\r\n")]
-        FireShield = 1 << 25,
+        [VisibleAffect(ATType = ATTypes.AT_FIRE, Description = "{0} is engulfed within a blaze of mystical flame.")]
+        FireShield = 33554432,
 
-        [VisibleAffect(ATTypes.AT_BLUE, "%s is surrounded by cascading torrents of energy.")]
-        ShockShield = 1 << 26,
-        Haus1 = 1 << 27,
+        [VisibleAffect(ATType = ATTypes.AT_BLUE, Description = "%s is surrounded by cascading torrents of energy.")]
+        ShockShield = 67108864,
+        Haus1 = 134217728,
 
-        [VisibleAffect(ATTypes.AT_LBLUE, "%s is ensphered by shards of glistening ice.\r\n")]
-        IceShield = 1 << 28,
+        [VisibleAffect(ATType = ATTypes.AT_LBLUE, Description = "%s is ensphered by shards of glistening ice.")]
+        IceShield = 268435456,
 
-        [VisibleAffect(ATTypes.AT_MAGIC, "%s appears to be in a deep trance...\r\n")]
-        Possess = 1 << 29,
+        [VisibleAffect(ATType = ATTypes.AT_MAGIC, Description = "%s appears to be in a deep trance...")]
+        Possess = 536870912,
 
         [Descriptor(new[] { "(Wild-eyed) " })]
-        Berserk = 1 << 30,
+        Berserk = 1073741824,
 
         [Name("aqua_breath")]
-        AquaBreath = 1 << 31,
+        AquaBreath = 214783648,
 
         [Name("recurring_spell")]
-        RecurringSpell = 1 << 32,
-        Contagious = 1 << 33,
+        RecurringSpell = 4294967296,
+        Contagious = 8589934592,
 
-        [VisibleAffect(ATTypes.AT_GREEN, "%s is visible through a cloud of churning mist.\r\n")]
-        AcidMist = 1 << 34,
+        [VisibleAffect(ATType = ATTypes.AT_GREEN, Description = "%s is visible through a cloud of churning mist.")]
+        AcidMist = 17179869184,
 
-        [VisibleAffect(ATTypes.AT_GREEN, "%s is enshrouded in a choking cloud of gas.\r\n")]
-        VenomShield = 1 << 35
+        [VisibleAffect(ATType = ATTypes.AT_GREEN, Description = "%s is enshrouded in a choking cloud of gas.")]
+        VenomShield = 34359738368
     }
 }

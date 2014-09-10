@@ -2,9 +2,6 @@
 
 namespace SmaugCS.Config
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class MayorTextStringsElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

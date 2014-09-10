@@ -14,7 +14,8 @@ namespace SmaugCS.Commands.Deity
         public static void do_devote(CharacterInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfNpc(ch, ch, "Huh?")) return;
-            if (CheckFunctions.CheckIfTrue(ch, ch.Level < 5, "You are not yet prepared for such devotion.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, ch.Level < GameConstants.GetSystemValue<int>("MinimumDevotionLevel"),
+                "You are not yet prepared for such devotion.")) return;
 
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Devote yourself to which deity?")) return;
@@ -96,11 +97,13 @@ namespace SmaugCS.Commands.Deity
             // TODO Remove deity resistances from player
             // TODO Remove deity susceptibles from player
 
-            AffectData af = new AffectData();
-            af.Type = AffectedByTypes.Blind;
-            af.Location = ApplyTypes.HitRoll;
-            af.Modifier = -4;
-            af.Duration = 50*GameConstants.GetConstant<int>("AffectDurationConversionValue");
+            AffectData af = new AffectData
+            {
+                Type = AffectedByTypes.Blind,
+                Location = ApplyTypes.HitRoll,
+                Modifier = -4,
+                Duration = 50*GameConstants.GetConstant<int>("AffectDurationConversionValue")
+            };
             // TODO af.bitvecotr = meb(AFF_BLIND);
             ch.AddAffect(af);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -86,7 +87,7 @@ namespace SmaugCS.Ban
                 bans.ForEach(ban => _bans.Add(ban));
                 _logManager.Boot("Loaded {0} Bans", _bans.Count);
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 _logManager.Error(ex);
             }
@@ -106,7 +107,7 @@ namespace SmaugCS.Ban
                 transaction.Commit();
                 return true;
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 if (transaction != null)
                     transaction.Rollback();
@@ -130,7 +131,7 @@ namespace SmaugCS.Ban
                 transaction.Commit();
                 return true;
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 if (transaction != null)
                     transaction.Rollback();
@@ -170,7 +171,7 @@ namespace SmaugCS.Ban
                 transaction.Commit();
                 return true;
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 if (transaction != null)
                     transaction.Rollback();
@@ -272,44 +273,53 @@ namespace SmaugCS.Ban
             switch (type)
             {
                 case (int)BanTypes.Race:
-                    foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Race)
-                        .Where(ban => ban.Flag == (int)ch.CurrentRace))
-                    {
-                        return CheckBanExpireAndLevel(ban, ch.Level);
-                    }
-                    break;
+                    return CheckRaceBans(ch);
                 case (int)BanTypes.Class:
-                    foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Class)
-                        .Where(ban => ban.Flag == (int)ch.CurrentClass))
-                    {
-                        return CheckBanExpireAndLevel(ban, ch.Level);
-                    }
-                    break;
+                    return CheckClassBans(ch);
                 case (int)BanTypes.Site:
-                    string host = ch.Descriptor.host.ToLower();
-                    bool match = false;
-
-                    foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Site))
-                    {
-                        if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
-                            match = true;
-                        else if (ban.Suffix && host.StartsWith(ban.Name))
-                            match = true;
-                        else if (ban.Prefix && host.EndsWith(ban.Name))
-                            match = true;
-                        else if (host.EqualsIgnoreCase(ban.Name))
-                            match = true;
-
-                        if (match)
-                            return CheckBanExpireAndLevel(ban, ch.Level);
-                    }
-                    break;
+                    return CheckSiteBans(ch);
                 default:
                     _logManager.Bug("Invalid ban type {0}", type);
                     return false;
             }
+        }
 
+        private bool CheckSiteBans(PlayerInstance ch)
+        {
+            string host = ch.Descriptor.host.ToLower();
+            bool match = false;
+
+            foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Site))
+            {
+                if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
+                    match = true;
+                else if (ban.Suffix && host.StartsWith(ban.Name))
+                    match = true;
+                else if (ban.Prefix && host.EndsWith(ban.Name))
+                    match = true;
+                else if (host.EqualsIgnoreCase(ban.Name))
+                    match = true;
+
+                if (match)
+                    return CheckBanExpireAndLevel(ban, ch.Level);
+            }
             return false;
+        }
+
+        private bool CheckClassBans(PlayerInstance ch)
+        {
+            return _bans.Where(x => x.Type == BanTypes.Class)
+                    .Where(ban => ban.Flag == (int) ch.CurrentClass)
+                    .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
+                    .FirstOrDefault();
+        }
+
+        private bool CheckRaceBans(PlayerInstance ch)
+        {
+            return _bans.Where(x => x.Type == BanTypes.Race)
+                    .Where(ban => ban.Flag == (int) ch.CurrentRace)
+                    .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
+                    .FirstOrDefault();
         }
     }
 }

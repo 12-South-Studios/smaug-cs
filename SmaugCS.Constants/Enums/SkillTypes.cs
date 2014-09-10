@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Realm.Library.Common;
 
 namespace SmaugCS.Constants.Enums
@@ -7,7 +6,7 @@ namespace SmaugCS.Constants.Enums
     [Flags]
     public enum SkillTypes
     {
-        Unknown = 0,
+        None = 0,
 
         [Name("spell")]
         Spell = 1,

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.MudProgs.MobileProgs

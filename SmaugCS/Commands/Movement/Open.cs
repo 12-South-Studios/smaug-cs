@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -18,7 +17,7 @@ namespace SmaugCS.Commands.Movement
             string firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Open what?")) return;
 
-            ExitData exit = act_move.find_door(ch, firstArg, true);
+            ExitData exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 OpenDoor(ch, exit, firstArg);

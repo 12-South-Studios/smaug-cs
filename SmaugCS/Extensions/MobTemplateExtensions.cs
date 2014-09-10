@@ -1,12 +1,9 @@
 ﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 
-// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+namespace SmaugCS.Extensions
 {
     public static class MobTemplateExtensions
     {

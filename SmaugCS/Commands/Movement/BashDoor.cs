@@ -23,7 +23,7 @@ namespace SmaugCS.Commands.Movement
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Bash what?")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You can't break off your fight.")) return;
 
-            ExitData exit = act_move.find_door(ch, firstArg, false);
+            ExitData exit = ch.FindExit(firstArg);
             if (exit == null)
                 Bash(ch, skill, "wall");
             else
@@ -39,7 +39,7 @@ namespace SmaugCS.Commands.Movement
 
             int damage = (actor.MaximumHealth/20) + 10;
             actor.CauseDamageTo(actor, damage, (int)skill.ID);
-            skill.LearnFromFailure((PlayerInstance)actor);
+            skill.LearnFromFailure(actor);
         }
 
         private static void BashSomething(CharacterInstance actor, ExitData exit, SkillData skill, string arg)
@@ -70,7 +70,7 @@ namespace SmaugCS.Commands.Movement
 
             comm.act(ATTypes.AT_SKILL, "Crash! You bashed open the $d!", actor, null, keyword, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n bashes open the $d!", actor, null, keyword, ToTypes.Room);
-            skill.LearnFromSuccess((PlayerInstance)actor);
+            skill.LearnFromSuccess(actor);
 
             ExitData reverseExit = exit.GetReverseExit();
             BashExit(reverseExit);

@@ -4,14 +4,9 @@ using SmaugCS.Data.Instances;
 namespace SmaugCS.Communication
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class CouncilChannelAttribute : ChannelAttribute
+    public sealed class CouncilChannelAttribute : ChannelAttribute
     {
         public bool NoNpc { get; set; }
-
-        public CouncilChannelAttribute(bool NoNpc = false)
-        {
-            this.NoNpc = NoNpc;
-        }
 
         public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
         {

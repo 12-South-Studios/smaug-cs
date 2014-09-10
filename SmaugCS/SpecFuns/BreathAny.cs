@@ -1,4 +1,5 @@
 ﻿using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 
 namespace SmaugCS.SpecFuns
 {

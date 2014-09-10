@@ -15,9 +15,9 @@ namespace SmaugCS.Weather
         private readonly WeatherCell[,] Map;
         private readonly WeatherCell[,] Delta;
 
-        public List<string> StarMap { get; private set; }
-        public List<string> SunMap { get; private set; }
-        public List<string> MoonMap { get; private set; }
+        public IEnumerable<string> StarMap { get; private set; }
+        public IEnumerable<string> SunMap { get; private set; }
+        public IEnumerable<string> MoonMap { get; private set; }
 
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -86,8 +86,7 @@ namespace SmaugCS.Weather
         public void LoadMap(SystemFileTypes fileType, List<string> map)
         {
             string path = SystemConstants.GetSystemFile(fileType);
-            using (
-                TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 List<string> lines = proxy.ReadIntoList();
                 if (lines.Count == 0)

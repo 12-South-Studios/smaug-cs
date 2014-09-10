@@ -5,7 +5,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -43,7 +42,7 @@ namespace SmaugCS.LuaHelpers
         {
             long mobId = Convert.ToInt64(id);
 
-            MobTemplate newMob = _dbManager.MOBILE_INDEXES.Create(mobId, name);
+            MobTemplate newMob = _dbManager.MOBILETEMPLATES.Create(mobId, name);
             _luaManager.Proxy.CreateTable("mobile");
             LastObject = newMob;
 

@@ -4,6 +4,7 @@ using Realm.Library.Common;
 
 namespace SmaugCS.Auction
 {
+    [Serializable]
     public class InvalidBidException : BaseException
     {
         protected InvalidBidException(SerializationInfo info, StreamingContext context)

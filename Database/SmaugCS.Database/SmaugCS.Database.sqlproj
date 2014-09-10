@@ -87,6 +87,8 @@
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\News" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Weather" />
     <Folder Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions" />
+    <Folder Include="Schema Objects\Schemas\live\Tables\Characters" />
+    <Folder Include="Schema Objects\Schemas\live\Tables\Organizations" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Settings\Work.publish.xml" />
@@ -96,9 +98,6 @@
   <ItemGroup>
     <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\Server.sql" />
     <Build Include="Schema Objects\Database Level Objects\Security\Schemas\live.schema.sql" />
-    <Build Include="Schema Objects\Schemas\live\Tables\Hash.sql" />
-    <Build Include="Schema Objects\Schemas\live\Tables\User.sql" />
-    <Build Include="Schema Objects\Schemas\live\Tables\UserLoginHistory.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\Bans.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\BanTypes.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Bans\cp_GetBans.sql" />
@@ -138,9 +137,26 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\Auctions.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions\cp_GetAuctions.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programability\Stored Procedures\Auctions\cp_AddAuction.sql" />
-    <Build Include="Schema Objects\Schemas\live\Tables\Organizations.sql" />
-    <Build Include="Schema Objects\Schemas\live\Tables\OrganizationTypes.sql" />
     <None Include="Scripts\Post-Deployment\POPULATE_RefData_live.OrganizationTypes.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\SkillTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_live.SkillTypes.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterActivityHistory.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterAffects.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterFriends.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterIgnored.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterLanguages.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterPvEHistory.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\Characters.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterSkills.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterStatistics.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Organizations\Organizations.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Organizations\OrganizationTypes.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterLoginHistory.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterItems.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterPets.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\Characters\CharacterImmortals.sql" />
+    <Build Include="Schema Objects\Schemas\live\Tables\StatisticTypes.sql" />
+    <None Include="Scripts\Post-Deployment\POPULATE_RefData_live.StatisticTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

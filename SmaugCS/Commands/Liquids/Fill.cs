@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
@@ -74,9 +72,8 @@ namespace SmaugCS.Commands.Liquids
                     if (CheckFunctions.CheckIfNullObject(ch, source, "You cannot find that item.")) return;
                 }
 
-                if (CheckFunctions.CheckIf(ch,
-                    args => ((ObjectInstance) args[0]) == null && ((ObjectInstance) args[1]).ItemType == ItemTypes.Pipe,
-                    "Fill it with what?", new List<object> {source, obj})) return;
+                if (CheckFunctions.CheckIfTrue(ch, source == null && obj.ItemType == ItemTypes.Pipe,
+                    "Fill it with what?")) return;
 
                 // TODO Finish this (source function is VERY MESSY!)
             }

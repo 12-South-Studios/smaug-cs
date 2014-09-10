@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
-using Realm.Library.Common;
+using System.Linq;
 using SmaugCS.Common;
 
 namespace SmaugCS.Board
@@ -28,15 +29,19 @@ namespace SmaugCS.Board
         public int MaximumPosts { get; set; }
         public int BoardObjectId { get; set; }
 
-        public List<NoteData> NoteList { get; private set; }
+        public ReadOnlyCollection<NoteData> Notes { get; private set; }
 
         public BoardData(int id, BoardTypes type)
         {
             Id = id;
             Type = type;
-            NoteList = new List<NoteData>();
+            Notes = new ReadOnlyCollection<NoteData>(new List<NoteData>());
         }
 
+        public void AddNotes(IEnumerable<NoteData> notes)
+        {
+            Notes.ToList().AddRange(notes);
+        }
        /* public void Save(TextWriterProxy proxy)
         {
             proxy.Write("#BOARD\n");

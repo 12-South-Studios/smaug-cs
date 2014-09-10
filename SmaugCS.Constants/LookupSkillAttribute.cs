@@ -2,13 +2,9 @@
 
 namespace SmaugCS.Constants
 {
-    public class LookupSkillAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class LookupSkillAttribute : Attribute
     {
         public string Skill { get; set; }
-
-        public LookupSkillAttribute(string Skill = "")
-        {
-            this.Skill = Skill;
-        }
     }
 }

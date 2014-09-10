@@ -2,7 +2,8 @@
 
 namespace SmaugCS.Constants
 {
-    public class PlayerAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class PlayerAttribute : Attribute
     {
     }
 }

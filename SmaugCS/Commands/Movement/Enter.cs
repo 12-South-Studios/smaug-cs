@@ -4,6 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
@@ -18,7 +19,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            ExitData exit = act_move.find_door(ch, argument, true);
+            ExitData exit = ch.FindExit(argument, true);
             if (exit != null && exit.Flags.IsSet(ExitFlags.xEnter))
             {
                 Move.move_char(ch, exit, 0);

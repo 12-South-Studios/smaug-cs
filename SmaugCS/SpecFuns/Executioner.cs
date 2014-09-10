@@ -5,6 +5,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns

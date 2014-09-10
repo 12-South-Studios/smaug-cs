@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
-using SmaugCS.Auction;
 using SmaugCS.Board;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -15,7 +14,6 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
-using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -320,7 +318,7 @@ namespace SmaugCS
 
                 for (int x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    MobTemplate mob = DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Get(x);
+                    MobTemplate mob = DatabaseManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.Gold * 10);
                 }

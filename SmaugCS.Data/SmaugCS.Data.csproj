@@ -175,10 +175,6 @@
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
       <Name>SmaugCS.Constants</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
-      <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
-      <Name>SmaugCS.Logging</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,7 +1,5 @@
 ﻿using System;
-using SmaugCS.Constants.Enums;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS

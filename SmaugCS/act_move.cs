@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
@@ -217,68 +216,6 @@ namespace SmaugCS
             }
 
             return newRoom;
-        }
-
-        private static readonly Dictionary<string, int> DoorDirectionMap = new Dictionary<string, int>()
-            {
-                {"n;north", 0},
-                {"e;east", 1},
-                {"s;south", 2},
-                {"w;west", 3},
-                {"u;up", 4},
-                {"d;down", 5},
-                {"ne;northeast", 6},
-                {"nw;northwest", 7},
-                {"se;southeast", 8},
-                {"sw;southwest", 9}
-            };
-
-        public static ExitData find_door(CharacterInstance ch, string arg, bool quiet)
-        {
-            if (string.IsNullOrEmpty(arg))
-                return null;
-
-            int door = (from key in DoorDirectionMap.Keys let words = key.Split(';') where words.Any(x => x.EqualsIgnoreCase(arg)) select DoorDirectionMap[key]).FirstOrDefault();
-
-            if (door == 0)
-            {
-                foreach (ExitData pexit in ch.CurrentRoom.Exits)
-                {
-                    if ((quiet || pexit.Flags.IsSet((int)ExitFlags.IsDoor))
-                        && !string.IsNullOrEmpty(pexit.Keywords)
-                        && arg.IsAnyEqual(pexit.Keywords))
-                        return pexit;
-                }
-
-                if (!quiet)
-                    comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
-                return null;
-            }
-
-            ExitData exit = ch.CurrentRoom.GetExit(door);
-            if (exit == null)
-            {
-                if (!quiet)
-                    comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
-                return null;
-            }
-
-            if (quiet)
-                return exit;
-
-            if (exit.Flags.IsSet(ExitFlags.Secret))
-            {
-                comm.act(ATTypes.AT_PLAIN, "You see no $T here.", ch, null, arg, ToTypes.Character);
-                return null;
-            }
-
-            if (!exit.Flags.IsSet(ExitFlags.IsDoor))
-            {
-                color.send_to_char("You can't do that.\r\n", ch);
-                return null;
-            }
-
-            return exit;
         }
 
         public static void teleportch(CharacterInstance ch, RoomTemplate room, bool show)

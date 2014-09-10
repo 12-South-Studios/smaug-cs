@@ -2,7 +2,7 @@
 {
     public enum TrapTypes
     {
-        None = -1,
+        None = 0,
 
         [Descriptor(new []{ "surrounded by a green cloud of gas", "poison"})]
         PoisonGas = 1, 

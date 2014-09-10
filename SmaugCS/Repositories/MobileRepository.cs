@@ -12,20 +12,20 @@ namespace SmaugCS.Repositories
     {
         private MobTemplate LastMob { get; set; }
 
-        public MobTemplate Create(long vnum, long cvnum, string name)
+        public MobTemplate Create(long id, long cloneId, string name)
         {
-            Validation.Validate(cvnum >= 1 && cvnum != vnum && vnum >= 1 && !name.IsNullOrWhitespace());
+            Validation.Validate(cloneId >= 1 && cloneId != id && id >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
                 {
-                    if (Contains(vnum))
-                        throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
-                    if (!Contains(cvnum))
-                        throw new InvalidDataException(string.Format("Clone vnum {0} is not present", cvnum));
+                    if (Contains(id))
+                        throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
+                    if (!Contains(cloneId))
+                        throw new InvalidDataException(string.Format("Clone ID {0} is not present", cloneId));
                 });
 
-            MobTemplate newMob = Create(vnum, name);
+            MobTemplate newMob = Create(id, name);
 
-            MobTemplate cloneMob = Get(cvnum);
+            MobTemplate cloneMob = Get(cloneId);
             if (cloneMob != null)
                 CloneMobTemplate(newMob, cloneMob);
 
@@ -68,16 +68,16 @@ namespace SmaugCS.Repositories
             newMob.Defenses = cloneMob.Defenses;
         }
 
-        public MobTemplate Create(long vnum, string name)
+        public MobTemplate Create(long id, string name)
         {
-            Validation.Validate(vnum >= 1 && !name.IsNullOrWhitespace());
+            Validation.Validate(id >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
                 {
-                    if (Contains(vnum))
-                        throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+                    if (Contains(id))
+                        throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                 });
 
-            MobTemplate newMob = new MobTemplate(vnum, name);
+            MobTemplate newMob = new MobTemplate(id, name);
             newMob.Statistics[StatisticTypes.Strength] = 13;
             newMob.Statistics[StatisticTypes.Dexterity] = 13;
             newMob.Statistics[StatisticTypes.Intelligence] = 13;
@@ -87,7 +87,7 @@ namespace SmaugCS.Repositories
             newMob.Statistics[StatisticTypes.Luck] = 13;
             newMob.ActFlags = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
 
-            Add(vnum, newMob);
+            Add(id, newMob);
             LastMob = newMob;
             return newMob;
         }

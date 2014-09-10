@@ -6,12 +6,12 @@ namespace SmaugCS.Weather
 {
     public static class WeatherConstants
     {
-        public static readonly List<WeatherRangeData> WeatherData = new List<WeatherRangeData>();
+        public static readonly IList<WeatherRangeData> WeatherData = new List<WeatherRangeData>();
 
         private static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages =
             new Dictionary<PrecipitationTypes, List<string>>();
 
-        public static List<string> GetWeatherMessages(PrecipitationTypes precip)
+        public static IEnumerable<string> GetWeatherMessages(PrecipitationTypes precip)
         {
             return WeatherMessages.ContainsKey(precip) ? WeatherMessages[precip] : new List<string>();
         }

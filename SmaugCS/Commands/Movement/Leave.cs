@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
@@ -21,8 +20,8 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            ExitData exit = act_move.find_door(ch, argument, true);
-            if (exit != null && exit.Flags.IsSet((int) ExitFlags.xLeave))
+            ExitData exit = ch.FindExit(argument, true);
+            if (exit != null && exit.Flags.IsSet(ExitFlags.xLeave))
             {
                 Move.move_char(ch, exit, 0);
                 return;
@@ -46,7 +45,7 @@ namespace SmaugCS.Commands.Movement
                 {
                     RoomTemplate room = xit.GetDestination(DatabaseManager.Instance);
                     if (room == null ||
-                        (room.SectorType != SectorTypes.Inside && !room.Flags.IsSet((int)RoomFlags.Indoors))) continue;
+                        (room.SectorType != SectorTypes.Inside && !room.Flags.IsSet(RoomFlags.Indoors))) continue;
 
                     Move.move_char(ch, xit, 0);
                     return;

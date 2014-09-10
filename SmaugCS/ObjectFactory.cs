@@ -5,7 +5,6 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
@@ -20,7 +19,7 @@ namespace SmaugCS
         {
             ObjectInstance fire =
                 (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                    (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                    (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                    .Get(VnumConstants.OBJ_VNUM_FIRE), 0);
             fire.Timer = (short)SmaugRandom.Fuzzy(duration);
             inRoom.ToRoom(fire);
@@ -29,7 +28,7 @@ namespace SmaugCS
         public static ObjectInstance CreateTrap(IEnumerable<int> values, IDatabaseManager dbManager = null)
         {
             ObjectInstance trap = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_TRAP), 0);
             trap.Timer = 0;
             trap.Value = values.ToArray();
@@ -41,7 +40,7 @@ namespace SmaugCS
             obj.Split();
             ObjectInstance scraps =
                 (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                    (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                    (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                            .Get(VnumConstants.OBJ_VNUM_SCRAPS), 0);
 
             scraps.Timer = SmaugRandom.Between(5, 15);
@@ -109,7 +108,7 @@ namespace SmaugCS
                 name = ch.ShortDescription;
                 corpse =
                     (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                        (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                        (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                                .Get(VnumConstants.OBJ_VNUM_CORPSE_NPC), 0);
 
                 corpse.Timer = 6;
@@ -134,7 +133,7 @@ namespace SmaugCS
                 name = ch.Name;
                 corpse =
                     (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                        (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
+                        (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
 
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value[2] = corpse.Timer / 8;
@@ -168,7 +167,7 @@ namespace SmaugCS
         public static void CreateBlood(CharacterInstance ch, IDatabaseManager dbManager = null)
         {
             ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
 
             obj.Timer = (short)SmaugRandom.Between(2, 4);
@@ -179,7 +178,7 @@ namespace SmaugCS
         public static void CreateBloodstain(CharacterInstance ch, IDatabaseManager dbManager = null)
         {
             ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
 
             obj.Timer = (short)SmaugRandom.Between(1, 2);
@@ -191,7 +190,7 @@ namespace SmaugCS
             int coinAmt = amount <= 0 ? 1 : amount;
 
             ObjectInstance obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>()
+                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(coinAmt == 1
                                                                 ? VnumConstants.OBJ_VNUM_MONEY_ONE
                                                                 : VnumConstants.OBJ_VNUM_MONEY_SOME), 0);

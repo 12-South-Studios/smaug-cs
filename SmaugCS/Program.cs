@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -67,12 +66,12 @@ namespace SmaugCS
         private static void ConfigureLogging()
         {
             GlobalContext.Properties["BootLogName"] = string.Format("{0}\\{1}_{2}.log",
-                                                                    GameConstants.GetLogPath(), "BootLog",
+                                                                    GameConstants.LogPath, "BootLog",
                                                                     DateTime.Now.ToString("yyyyMMdd-HHmmss"));
             GlobalContext.Properties["BugsLogName"] = string.Format("{0}\\{1}.log",
-                                                                    GameConstants.GetLogPath(), "Bugs");
+                                                                    GameConstants.LogPath, "Bugs");
             GlobalContext.Properties["SmaugLogName"] = string.Format("{0}\\{1}.log",
-                                                                     GameConstants.GetLogPath(), "Smaug");
+                                                                     GameConstants.LogPath, "Smaug");
 
             log4net.Config.XmlConfigurator.Configure();
         }
@@ -94,10 +93,10 @@ namespace SmaugCS
             LogManager = Kernel.Get<ILogManager>();
             LogManager.Boot("---------------------[ Boot Log ]--------------------");
 
-            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.GetDataPath());
+            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.DataPath);
             LogManager.Boot("{0} SystemDirectories loaded.", loaded);
 
-            loaded = SystemConstants.LoadSystemFilesFromConfig(GameConstants.GetDataPath());
+            loaded = SystemConstants.LoadSystemFilesFromConfig();
             LogManager.Boot("{0} SystemFiles loaded.", loaded);
 
             LookupManager = Kernel.Get<ILookupManager>();
@@ -189,7 +188,7 @@ namespace SmaugCS
             LoaderInitializer.Initialize();
 
             //// Pre-Tests the module_Area to catch any errors early before area load
-            LuaManager.DoLuaScript(GameConstants.GetDataPath() + "//modules//module_area.lua");
+            LuaManager.DoLuaScript(GameConstants.DataPath + "//modules//module_area.lua");
 
             LoaderInitializer.Load();
         }

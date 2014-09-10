@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using Ninject.Modules;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Extensions;

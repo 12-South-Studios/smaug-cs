@@ -1,9 +1,11 @@
-﻿using SmaugCS.Common;
+﻿using SmaugCS.Commands.Admin;
+using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Spells
@@ -15,30 +17,29 @@ namespace SmaugCS.Spells
             CharacterInstance victim = (CharacterInstance) vo;
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            if (victim.Immunity.IsSet(ResistanceTypes.Magic))
-            {
-                ch.ImmuneCast(skill, victim);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(victim.Immunity.IsSet(ResistanceTypes.Magic), skill, ch,
+                CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
-            if (victim.IsAffected(AffectedByTypes.Curse) || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
-            {
-                ch.FailedCast(skill, victim);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsAffected(AffectedByTypes.Curse) 
+                || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch, 
+                CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
-            AffectData af = new AffectData();
-            af.SkillNumber = sn;
-            af.Duration = ((4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue"));
-            af.Location = ApplyTypes.HitRoll;
-            af.Modifier = -1;
+            AffectData af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = ((4*level)*GameConstants.GetConstant<int>("AffectDurationConversionValue")),
+                Location = ApplyTypes.HitRoll,
+                Modifier = -1
+            };
             victim.AddAffect(af);
             
-            af = new AffectData();
-            af.SkillNumber = sn;
-            af.Duration = ((4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue"));
-            af.Location = ApplyTypes.SaveVsSpell;
-            af.Modifier = 1;
+            af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = ((4*level)*GameConstants.GetConstant<int>("AffectDurationConversionValue")),
+                Location = ApplyTypes.SaveVsSpell,
+                Modifier = 1
+            };
             victim.AddAffect(af);
 
             color.set_char_color(ATTypes.AT_MAGIC, victim);

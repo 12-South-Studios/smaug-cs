@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using Realm.Library.Common;
-using SmaugCS.Common;
-using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Loaders

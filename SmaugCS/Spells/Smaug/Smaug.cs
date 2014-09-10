@@ -16,10 +16,7 @@ namespace SmaugCS.Spells.Smaug
         {
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
             if (skill == null)
-            {
-                // TODO Exception, log it
                 return ReturnTypes.Error;
-            }
 
             switch (skill.Target)
             {

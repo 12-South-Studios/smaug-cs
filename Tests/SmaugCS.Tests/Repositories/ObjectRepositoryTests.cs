@@ -11,7 +11,6 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmallDBConnectivity;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
@@ -36,7 +35,7 @@ namespace SmaugCS.Tests.Repositories
             sb.Append("object.this.Flags = \"magic antigood antievil\";");
             sb.Append("object.this.WearFlags = \"take wield\";");
             sb.Append("object.this:SetValues(12, 4, 8, 6, 0, 0);");
-            sb.Append("object.this:AddAffect(-1, -1, 60, 14, 32)");
+            sb.Append("object.this:AddAffect(0, -1, 60, 14, 32)");
             sb.Append("object.this:AddSpell(\"armor\");");
             sb.Append("object.this:SetStats(1, 2500, 250, 0, 0);");
             sb.Append(
@@ -72,7 +71,7 @@ namespace SmaugCS.Tests.Repositories
             LuaObjectFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
 
-            dbMgr.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Clear();
+            dbMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>().Clear();
 
             _proxy = LuaInterfaceProxy.Create();
 

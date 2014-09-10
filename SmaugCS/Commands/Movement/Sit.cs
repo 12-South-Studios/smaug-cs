@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -38,11 +39,8 @@ namespace SmaugCS.Commands.Movement
 
         private static void FromSleeping(CharacterInstance ch)
         {
-            if (ch.IsAffected(AffectedByTypes.Sleep))
-            {
-                color.send_to_char("You can't seem to wake up!", ch);
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Sleep), "You can't seem to wake up!"))
                 return;
-            }
 
             color.send_to_char("You wake and sit up.", ch);
             comm.act(ATTypes.AT_ACTION, "$n wakes and sits up.", ch, null, null, ToTypes.Room);

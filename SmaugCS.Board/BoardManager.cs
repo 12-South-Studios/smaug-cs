@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace SmaugCS.Board
                 }
                 _logManager.Boot("Loaded {0} Boards", _boards.Count);
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 _logManager.Error(ex);
             }
@@ -60,7 +61,7 @@ namespace SmaugCS.Board
                                                              {
                                                                  new SqlParameter("@boardId", board.Id)
                                                              });
-            board.NoteList.AddRange(notes);
+            board.AddNotes(notes);
         }
 
         [ExcludeFromCodeCoverage]

@@ -57,15 +57,16 @@ namespace SmaugCS.Constants
             return element != null ? Convert.ToInt32(element.Value) : -1;
         }
 
-        public static string GetDataPath()
+        public static string DataPath
         {
-            return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "data");
+            get { return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "data"); }
         }
 
-        public static string GetLogPath()
+        public static string LogPath
         {
-            return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "logs");
+            get { return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "logs"); }
         }
+
         #endregion
 
 

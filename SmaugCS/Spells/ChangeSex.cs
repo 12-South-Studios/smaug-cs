@@ -3,6 +3,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Common;
 
@@ -15,22 +16,18 @@ namespace SmaugCS.Spells
             CharacterInstance victim = (CharacterInstance)vo;
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            if (victim.IsImmune(ResistanceTypes.Magic))
-            {
-                ch.ImmuneCast(skill, victim);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic), skill, ch,
+                CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
-            if (victim.IsAffectedBy(sn))
-            {
-                ch.FailedCast(skill, victim);
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsAffectedBy(sn), skill, ch, CastingFunctionType.Failed, victim))
                 return ReturnTypes.SpellFailed;
-            }
 
-            AffectData af = new AffectData();
-            af.SkillNumber = sn;
-            af.Duration = (10 * level * GameConstants.GetConstant<int>("AffectDurationConversionValue"));
-            af.Location = ApplyTypes.Gender;
+            AffectData af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = (10*level*GameConstants.GetConstant<int>("AffectDurationConversionValue")),
+                Location = ApplyTypes.Gender
+            };
 
             do
             {

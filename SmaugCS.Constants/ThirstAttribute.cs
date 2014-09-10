@@ -2,13 +2,9 @@
 
 namespace SmaugCS.Constants
 {
-    public class ThirstAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class ThirstAttribute : Attribute
     {
         public int ModValue { get; set; }
-
-        public ThirstAttribute(int ModValue = 0)
-        {
-            this.ModValue = ModValue;
-        }
     }
 }

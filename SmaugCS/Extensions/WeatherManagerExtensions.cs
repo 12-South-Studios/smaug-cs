@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 
-// ReSharper disable CheckNamespace
-namespace SmaugCS
-// ReSharper restore CheckNamespace
+namespace SmaugCS.Extensions
 {
     public static class WeatherManagerExtensions
     {
         public static void InitializeWeatherMap(this IWeatherManager manager, int weatherSizeX, int weatherSizeY)
         {
             WeatherMap newMap = new WeatherMap(GameManager.Instance.GameTime, weatherSizeX, weatherSizeY);
-            newMap.LoadMap(SystemFileTypes.StarMap, newMap.StarMap);
-            newMap.LoadMap(SystemFileTypes.SunMap, newMap.SunMap);
-            newMap.LoadMap(SystemFileTypes.MoonMap, newMap.MoonMap);
+            newMap.LoadMap(SystemFileTypes.StarMap, newMap.StarMap.ToList());
+            newMap.LoadMap(SystemFileTypes.SunMap, newMap.SunMap.ToList());
+            newMap.LoadMap(SystemFileTypes.MoonMap, newMap.MoonMap.ToList());
             newMap.Initialize();
             manager.Weather = newMap;
         }

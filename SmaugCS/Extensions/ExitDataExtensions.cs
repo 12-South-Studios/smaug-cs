@@ -8,8 +8,7 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
-// ReSharper disable once CheckNamespace
-namespace SmaugCS
+namespace SmaugCS.Extensions
 {
     public static class ExitDataExtensions
     {

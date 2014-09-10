@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
 using SmaugCS.Interfaces;
 using SmaugCS.Repositories;
 
@@ -45,7 +46,7 @@ namespace SmaugCS.Tests.Extensions
 
         [TestCase(AffectedByTypes.Blind | AffectedByTypes.Invisible, AffectedByTypes.DetectEvil, false)]
         [TestCase(AffectedByTypes.Blind | AffectedByTypes.Invisible, AffectedByTypes.Blind, true)]
-        public void IsAffected_Test(int flags, AffectedByTypes affectedBy, bool expectedValue)
+        public void IsAffected_Test(long flags, AffectedByTypes affectedBy, bool expectedValue)
         {
             _ch.AffectedBy = _ch.AffectedBy.SetBit(flags);
             Assert.That(_ch.IsAffected(affectedBy), Is.EqualTo(expectedValue));

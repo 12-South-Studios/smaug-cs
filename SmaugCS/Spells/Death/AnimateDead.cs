@@ -23,14 +23,14 @@ namespace SmaugCS.Spells
 
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            MobTemplate template = DatabaseManager.Instance.MOBILE_INDEXES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
+            MobTemplate template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
             if (template == null)
                 throw new ObjectNotFoundException("Animated Corpse VNUM template was not found.");
 
             // TODO Get the template using the corpse cost?  huh?
 
             if (CheckFunctions.CheckIfEquivalent(ch, template,
-                DatabaseManager.Instance.MOBILE_INDEXES.Get(VnumConstants.MOB_VNUM_DEITY),
+                DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY),
                 "You can't animate the corpse of a deity's Avatar.")) return ReturnTypes.SpellFailed;
 
             if (!ch.IsNpc())
@@ -82,11 +82,12 @@ namespace SmaugCS.Spells
 
                 mob.AddFollower(ch);
 
-                AffectData af = new AffectData();
-                af.Type = AffectedByTypes.Charm;
-                af.Duration =
-                    (SmaugRandom.Fuzzy((level + 1)/4) + 1)*
-                    GameConstants.GetSystemValue<int>("AffectDurationConversionValue");
+                AffectData af = new AffectData
+                {
+                    Type = AffectedByTypes.Charm,
+                    Duration = (SmaugRandom.Fuzzy((level + 1)/4) + 1)*
+                               GameConstants.GetSystemValue<int>("AffectDurationConversionValue")
+                };
                 mob.AddAffect(af);
 
                 if (corpse.Contents.Any())

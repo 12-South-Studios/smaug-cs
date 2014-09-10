@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
@@ -20,8 +18,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            if (CheckFunctions.CheckIf(ch, args => !((CharacterInstance) args[0]).IsAwake(), "You are asleep yourself!",
-                new List<object> {ch})) return;
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsAwake(), "You are asleep yourself!")) return;
 
             CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;

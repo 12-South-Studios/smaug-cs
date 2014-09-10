@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using System.Runtime.Versioning;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -7,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Properties;
 
 namespace SmaugCS.Commands.Skills
 {
@@ -15,10 +17,10 @@ namespace SmaugCS.Commands.Skills
         public static void do_aid(CharacterInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() && ch.IsAffected(AffectedByTypes.Charm),
-                "You can't concentrate enough for that.")) return;
+                Resources.CANNOT_CONCENTRATE)) return;
 
             string arg = argument.FirstWord();
-            if (CheckFunctions.CheckIfEmptyString(ch, arg, "Aid whom?")) return;
+            if (CheckFunctions.CheckIfEmptyString(ch, arg, Resources.AID_WHO)) return;
 
             CharacterInstance victim = ch.GetCharacterInRoom(arg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;

@@ -11,7 +11,6 @@ using SmaugCS.Data.Shops;
 using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS.LuaHelpers
@@ -125,8 +124,10 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSkill", "Creates a new skill", "ID of the skill", "Skill Name", "Skill Type")]
         public static SkillData LuaCreateSkill(int id, string name, string type)
         {
-            SkillData newSkill = new SkillData(id, name);
-            newSkill.Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type);
+            SkillData newSkill = new SkillData(id, name)
+            {
+                Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type)
+            };
 
             if (type.EqualsIgnoreCase("herb"))
                 throw new InvalidOperationException(string.Format("Use of LCreateSkill for Herbs is deprecated"));
@@ -201,7 +202,7 @@ namespace SmaugCS.LuaHelpers
                     Log = EnumerationExtensions.GetEnum<LogAction>(log),
                     FunctionName = function
                 };
-            newCommand.Position = newCommand.GetModifiedPosition();
+            newCommand.Position = newCommand.ModifiedPosition;
 
             _luaManager.Proxy.CreateTable("command");
             AddLastObject(newCommand);

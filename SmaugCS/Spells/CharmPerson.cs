@@ -19,11 +19,9 @@ namespace SmaugCS.Spells
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You like yourself even better!"))
                 return ReturnTypes.SpellFailed;
 
-            if (victim.IsImmune(ResistanceTypes.Magic) || victim.IsImmune(ResistanceTypes.Charm))
-            {
-                ch.ImmuneCast(skill, victim);
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic) 
+                || victim.IsImmune(ResistanceTypes.Charm), skill, ch, CastingFunctionType.Immune, victim)) 
                 return ReturnTypes.SpellFailed;
-            }
 
             if (!victim.IsNpc() && !ch.IsNpc())
             {
@@ -66,8 +64,9 @@ namespace SmaugCS.Spells
                 ((PlayerInstance)ch).PlayerData.NumberOfCharmies++;
             if (victim.IsNpc())
             {
-                ((MobileInstance)victim).StartHating(ch);
-                ((MobileInstance)victim).StartHunting(ch);
+                MobileInstance mob = (MobileInstance) victim;
+                mob.StartHating(ch);
+                mob.StartHunting(ch);
             }
 
             return ReturnTypes.None;

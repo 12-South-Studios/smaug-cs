@@ -5,7 +5,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -43,7 +42,7 @@ namespace SmaugCS.LuaHelpers
         {
             long objId = Convert.ToInt64(id);
 
-            ObjectTemplate newObj = _dbManager.OBJECT_INDEXES.Create(objId, name);
+            ObjectTemplate newObj = _dbManager.OBJECTTEMPLATES.Create(objId, name);
             _luaManager.Proxy.CreateTable("object");
             LastObject = newObj;
 

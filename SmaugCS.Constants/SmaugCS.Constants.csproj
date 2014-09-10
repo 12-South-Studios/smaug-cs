@@ -60,10 +60,12 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PlayerAttribute.cs" />
     <Compile Include="MentalStateAttribute.cs" />
+    <Compile Include="SqlConnectionProvider.cs" />
     <Compile Include="ThirstAttribute.cs" />
     <Compile Include="ShoveValueAttribute.cs" />
     <Compile Include="DragValueAttribute.cs" />

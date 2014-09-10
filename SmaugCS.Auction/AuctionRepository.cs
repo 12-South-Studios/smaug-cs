@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace SmaugCS.Auction
                 auctions.ForEach(x => History.ToList().Add(x));
                 _logManager.Boot("Loaded {0} Auctions", History.Count());
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 _logManager.Error(ex);
             }
@@ -80,7 +81,7 @@ namespace SmaugCS.Auction
                 }
                 transaction.Commit();
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 if (transaction != null)
                     transaction.Rollback();

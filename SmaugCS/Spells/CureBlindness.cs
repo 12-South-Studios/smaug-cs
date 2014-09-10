@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -15,11 +16,8 @@ namespace SmaugCS.Spells
 
             color.set_char_color(ATTypes.AT_MAGIC, ch);
 
-            if (victim.IsImmune(ResistanceTypes.Magic))
-            {
-                ch.ImmuneCast(skill, victim);
-                return ReturnTypes.SpellFailed;
-            }
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic), skill, ch,
+                CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
             if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Blind),
                 ch != victim

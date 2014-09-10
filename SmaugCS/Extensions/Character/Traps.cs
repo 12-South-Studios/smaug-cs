@@ -23,7 +23,7 @@ namespace SmaugCS.Extensions
             {
                 trapType = Realm.Library.Common.EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
                 attrib = trapType.GetAttribute<DescriptorAttribute>();
-                txt = attrib.Messages[0];
+                txt = attrib.Messages.FirstOrDefault();
             }
             catch (ArgumentException)
             {
@@ -40,9 +40,9 @@ namespace SmaugCS.Extensions
                 obj.Extract();
 
             ReturnTypes returnCode = ReturnTypes.None;
-            if (attrib != null && !string.IsNullOrEmpty(attrib.Messages[1]))
+            if (attrib != null && !string.IsNullOrEmpty(attrib.Messages.ToList()[1]))
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(attrib.Messages[1]);
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(attrib.Messages.ToList()[1]);
                 returnCode = ch.ObjectCastSpell((int)skill.ID, level, ch);
             }
 

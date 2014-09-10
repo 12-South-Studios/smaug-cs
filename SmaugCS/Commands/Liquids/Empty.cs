@@ -2,7 +2,6 @@
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Helpers;
@@ -112,7 +111,7 @@ namespace SmaugCS.Commands.Liquids
             comm.act(ATTypes.AT_ACTION, "You empty $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n empties $p.", ch, obj, null, ToTypes.Room);
                 
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Empty))
+            if (GetSaveFlags().IsSet(AutoSaveFlags.Empty))
                 save.save_char_obj(ch);
         }
 

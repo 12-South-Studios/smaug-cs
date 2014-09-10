@@ -1,5 +1,4 @@
 ﻿using SmaugCS.Data;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Commands.Building

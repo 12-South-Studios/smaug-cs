@@ -5,7 +5,7 @@ namespace SmaugCS.Logging
     [Flags]
     public enum LogTypes
     {
-        Info,
+        Info = 0,
         Error,
         Bug,
         Debug,

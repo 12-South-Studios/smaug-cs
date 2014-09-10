@@ -13,24 +13,24 @@ namespace SmaugCS.Repositories
     {
         private RoomTemplate LastRoom { get; set; }
 
-        public RoomTemplate Create(long vnum, long cvnum, string name)
+        public RoomTemplate Create(long id, long cloneId, string name)
         {
             throw new NotImplementedException();
         }
 
-        public RoomTemplate Create(long vnum, string name)
+        public RoomTemplate Create(long id, string name)
         {
-            Validation.Validate(vnum >= 1);
+            Validation.Validate(id >= 1);
             Validation.Validate(() =>
                 {
-                    if (Contains(vnum))
-                        throw new DuplicateIndexException("Invalid vnum {0}, Index already exists", vnum);
+                    if (Contains(id))
+                        throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                 });
 
-            RoomTemplate newRoom = new RoomTemplate(vnum, name.IsNullOrEmpty() ? "Floating in a Void" : name);
+            RoomTemplate newRoom = new RoomTemplate(id, name.IsNullOrEmpty() ? "Floating in a Void" : name);
             newRoom.Flags.SetBit(RoomFlags.Prototype);
 
-            Add(vnum, newRoom);
+            Add(id, newRoom);
             return newRoom;
         }
     }

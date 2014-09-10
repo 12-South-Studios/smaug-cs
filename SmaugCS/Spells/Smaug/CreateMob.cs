@@ -30,7 +30,7 @@ namespace SmaugCS.Spells.Smaug
                     id = GameConstants.GetVnum("vampire");
             }
 
-            MobTemplate mi = DatabaseManager.Instance.MOBILE_INDEXES.Get(id);
+            MobTemplate mi = DatabaseManager.Instance.MOBILETEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(mi, skill, ch)) return ReturnTypes.None;
 
             CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(mi);

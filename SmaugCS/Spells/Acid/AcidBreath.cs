@@ -1,6 +1,5 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 
@@ -12,7 +11,13 @@ namespace SmaugCS.Spells
         {
             CharacterInstance victim = (CharacterInstance) vo;
 
-            if (ch.Chance(2*level) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
+            int chance;
+            checked
+            {
+                chance = 2*level;
+            }
+
+            if (ch.Chance(chance) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
             {
                 foreach (ObjectInstance obj in victim.Carrying)
                 {

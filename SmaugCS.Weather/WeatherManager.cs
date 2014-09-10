@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Ninject;
@@ -56,7 +57,7 @@ namespace SmaugCS.Weather
                 Weather = new WeatherMap(timeInfo, width, height, cells);
                 _logManager.Boot("Loaded {0} Weather Cells", cells.Count);
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 _logManager.Error(ex);
             }

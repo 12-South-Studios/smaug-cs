@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using SmaugCS.Commands.Shop;
-using SmaugCS.Config;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -204,7 +200,7 @@ namespace SmaugCS.Constants
 
         public static List<ATTypes> default_set = new List<ATTypes>()
                                                     {
-                                                        ATTypes.AT_BLACK,
+                                                        ATTypes.None,
                                                         ATTypes.AT_BLOOD,
                                                         ATTypes.AT_DGREEN,
                                                         ATTypes.AT_ORANGE,
