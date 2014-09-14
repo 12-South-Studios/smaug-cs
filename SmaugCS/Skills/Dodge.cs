@@ -37,7 +37,7 @@ namespace SmaugCS.Skills
 
             if (!victim.IsNpc() && !victim.Chance(chances + victim.Level - ch.Level))
             {
-                skill.LearnFromFailure((PlayerInstance)victim);
+                skill.LearnFromFailure(victim);
                 return false;
             }
 
@@ -47,7 +47,7 @@ namespace SmaugCS.Skills
             if (!ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))
                 comm.act(ATTypes.AT_SKILL, "$N dodges your attack.", ch, null, victim, ToTypes.Character);
 
-            skill.LearnFromSuccess((PlayerInstance)victim);
+            skill.LearnFromSuccess(victim);
             return true;
         }
     }

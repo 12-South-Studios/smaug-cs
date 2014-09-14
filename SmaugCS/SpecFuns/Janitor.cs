@@ -14,26 +14,20 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake())
                 return false;
 
-            foreach (ObjectInstance trash in ch.CurrentRoom.Contents)
+            foreach (ObjectInstance trash in ch.CurrentRoom.Contents
+                .Where(x => x.WearFlags.IsSet(ItemWearFlags.Take))
+                .Where(x => !x.ExtraFlags.IsSet(ItemExtraFlags.Buried)))
             {
-                if (!trash.WearFlags.IsSet(ItemWearFlags.Take) || trash.ExtraFlags.IsSet(ItemExtraFlags.Buried))
-                    continue;
+                if (trash.ItemType != ItemTypes.DrinkContainer && trash.ItemType != ItemTypes.Trash && trash.Cost >= 10 &&
+                    (trash.ObjectIndex.Vnum != GameConstants.GetVnum("ObjectShoppingBag") ||
+                     trash.Contents.First() != null)) continue;
 
-                if (trash.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.Act.IsSet(ActFlags.Prototype))
-                    continue;
-
-                if (trash.ItemType == ItemTypes.DrinkContainer 
-                    || trash.ItemType == ItemTypes.Trash 
-                    || trash.Cost < 10
-                    || (trash.ObjectIndex.Vnum == GameConstants.GetVnum("ObjectShoppingBag")  
-                        && trash.Contents.First() == null))
-                {
-                    comm.act(ATTypes.AT_ACTION, "$n picks up some trash.", ch, null, null, ToTypes.Room);
-                    ch.CurrentRoom.FromRoom(trash);
-                    trash.ToCharacter(ch);
-                    return true;
-                }
+                comm.act(ATTypes.AT_ACTION, "$n picks up some trash.", ch, null, null, ToTypes.Room);
+                ch.CurrentRoom.FromRoom(trash);
+                trash.ToCharacter(ch);
+                return true;
             }
+
             return false;
         }
     }

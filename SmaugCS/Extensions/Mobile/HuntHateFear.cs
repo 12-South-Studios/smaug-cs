@@ -1,10 +1,34 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Interfaces;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Extensions
 {
     public static class HuntHateFear
     {
+        public static void SummonIfHating(this MobileInstance ch, IDatabaseManager dbManager = null)
+        {
+            if ((int)ch.CurrentPosition <= (int)PositionTypes.Sleeping
+                || ch.CurrentFighting != null
+                || ch.CurrentFearing != null
+                || ch.CurrentHating == null
+                || ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
+                || ch.CurrentHunting != null)
+                return;
+
+            CharacterInstance victim =
+                (dbManager ?? DatabaseManager.Instance).GetEntity<CharacterInstance>(ch.CurrentHating.Name);
+            if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
+                return;
+
+            Commands.Cast.do_cast(ch,
+                                  string.Format("summon {0}{1}", victim.IsNpc() ? string.Empty : "0.",
+                                                ch.CurrentHating.Name));
+        }
+
         public static bool IsHunting(this MobileInstance ch, CharacterInstance victim)
         {
             return ch.CurrentHunting != null

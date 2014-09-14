@@ -94,7 +94,7 @@ namespace SmaugCS
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color) + "default";
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
-                List<string> lines = proxy.ReadIntoList();
+                IEnumerable<string> lines = proxy.ReadIntoList();
                 foreach (string line in lines.Where(l => !l.EqualsIgnoreCase("#colortheme")
                                                          && !l.StartsWithIgnoreCase("name") &&
                                                          !l.EqualsIgnoreCase("maxcolors")))

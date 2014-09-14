@@ -40,13 +40,13 @@ namespace SmaugCS.Commands.Liquids
         {
             if (firstObj.ItemType == ItemTypes.DrinkContainer
                 && secondObj.ItemType == ItemTypes.DrinkContainer)
-                return liquids.liq_can_mix(firstObj, secondObj) != null;
+                return liquids.MixFullyWith(firstObj, secondObj) != null;
             if (firstObj.ItemType == ItemTypes.DrinkMixture
                 && secondObj.ItemType == ItemTypes.DrinkContainer)
-                return liquids.liqobj_can_mix(secondObj, firstObj) != null;
+                return liquids.MixPartiallyWith(secondObj, firstObj) != null;
             if (firstObj.ItemType == ItemTypes.DrinkContainer
                 && secondObj.ItemType == ItemTypes.DrinkMixture)
-                return liquids.liqobj_can_mix(firstObj, secondObj) != null;
+                return liquids.MixPartiallyWith(firstObj, secondObj) != null;
             return false;
         }
     }

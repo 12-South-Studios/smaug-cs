@@ -33,7 +33,7 @@ namespace SmaugCS.Loaders
         {
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
-                List<string> lines = proxy.ReadIntoList();
+                IEnumerable<string> lines = proxy.ReadIntoList();
                 HintData newHint = null;
 
                 foreach (string line in lines)

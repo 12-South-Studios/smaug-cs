@@ -569,9 +569,9 @@ namespace Realm.Library.Common.Test.Extensions
             var actual = value.ToWords();
 
             Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Count, Is.EqualTo(4));
-            Assert.That(actual[0], Is.EqualTo("This"));
-            Assert.That(actual[3], Is.EqualTo("test"));
+            Assert.That(actual.Count(), Is.EqualTo(4));
+            Assert.That(actual.First(), Is.EqualTo("This"));
+            Assert.That(actual.ToList()[3], Is.EqualTo("test"));
         }
     }
 }

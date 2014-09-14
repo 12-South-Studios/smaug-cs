@@ -69,9 +69,10 @@ namespace SmaugCS.Repositories
                                  : mob.Level.Interpolate(100, -100);
 
             if (mobParent.HitDice == null || mobParent.HitDice.NumberOf == 0)
-                mob.MaximumHealth = mob.Level * 8 + SmaugRandom.Between(mob.Level * mob.Level / 4, mob.Level * mob.Level);
+                mob.MaximumHealth = mob.Level*8 + SmaugRandom.Between(mob.Level*mob.Level/4, mob.Level*mob.Level);
             else
-                mob.MaximumHealth = mobParent.HitDice.NumberOf * SmaugRandom.Between(1, mobParent.HitDice.SizeOf) + mobParent.HitDice.Bonus;
+                mob.MaximumHealth = mobParent.HitDice.NumberOf*SmaugRandom.Between(1, mobParent.HitDice.SizeOf) +
+                                    mobParent.HitDice.Bonus;
 
             mob.CurrentCoin = mobParent.Gold;
             mob.Experience = mobParent.Experience;

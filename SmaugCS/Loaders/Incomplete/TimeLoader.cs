@@ -34,7 +34,7 @@ namespace SmaugCS.Loaders
             {
                 TimeInfoData timeInfo = new TimeInfoData();
 
-                List<string> lines = proxy.ReadIntoList();
+                IEnumerable<string> lines = proxy.ReadIntoList();
                 foreach (string line in lines.Where(x => !x.StartsWith("*")))
                 {
                     if (line.StartsWithIgnoreCase("#time"))

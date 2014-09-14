@@ -9,8 +9,7 @@ namespace SmaugCS.Skills
     {
         public static void CheckTrip(CharacterInstance ch, CharacterInstance victim)
         {
-            if (victim.IsAffected(AffectedByTypes.Flying)
-                || victim.CurrentMount.IsAffected(AffectedByTypes.Floating))
+            if (victim.IsAffected(AffectedByTypes.Flying) || victim.CurrentMount.IsAffected(AffectedByTypes.Floating))
                 return;
 
             if (victim.CurrentMount != null)
@@ -29,8 +28,7 @@ namespace SmaugCS.Skills
 
         private static void TripMount(CharacterInstance ch, CharacterInstance victim)
         {
-            if (victim.CurrentMount.IsAffected(AffectedByTypes.Flying)
-                || victim.CurrentMount.IsAffected(AffectedByTypes.Floating))
+            if (victim.CurrentMount.IsAffected(AffectedByTypes.Flying) || victim.CurrentMount.IsAffected(AffectedByTypes.Floating))
                 return;
 
             comm.act(ATTypes.AT_SKILL, "$n trips your mount and you fall off!", ch, null, victim, ToTypes.Victim);

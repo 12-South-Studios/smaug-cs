@@ -82,6 +82,7 @@ namespace Realm.Library.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sender"></param>
         /// <param name="table"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         void ThrowEvent<T>(object sender, EventTable table) where T : EventBase;
 
         /// <summary>

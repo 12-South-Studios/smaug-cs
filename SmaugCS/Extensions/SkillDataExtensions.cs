@@ -41,7 +41,7 @@ namespace SmaugCS.Extensions
             ch.GainXP(gain);
         }
 
-        private static int GainExperienceInSkill(PlayerInstance ch, int skillLevel)
+        private static int GainExperienceInSkill(CharacterInstance ch, int skillLevel)
         {
             int gain = 20*skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
@@ -54,7 +54,7 @@ namespace SmaugCS.Extensions
             return gain;
         }
 
-        private static int GainMasteryOfSkill(SkillData skill, PlayerInstance ch, int skillLevel)
+        private static int GainMasteryOfSkill(SkillData skill, CharacterInstance ch, int skillLevel)
         {
             int gain = 1000*skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
@@ -172,7 +172,7 @@ namespace SmaugCS.Extensions
                 {
                     gain = 1000 * skillLevel;
                     color.set_char_color(ATTypes.AT_WHITE, ch);
-                    color.ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!\r\n", skill.Name,
+                    color.ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!", skill.Name,
                                     gain);
                 }
                 else
@@ -181,7 +181,7 @@ namespace SmaugCS.Extensions
                     if (ch.CurrentFighting == null) // TODO: Check gsn_hide && gsn_sneak
                     {
                         color.set_char_color(ATTypes.AT_WHITE, ch);
-                        color.ch_printf(ch, "You gain %d experience points from your success!\r\n", gain);
+                        color.ch_printf(ch, "You gain %d experience points from your success!", gain);
                     }
                 }
                 ch.GainXP(gain);

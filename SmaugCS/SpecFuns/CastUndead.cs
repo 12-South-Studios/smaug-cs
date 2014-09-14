@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ninject;
 using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
-using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
@@ -13,8 +13,8 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecCastUndead(MobileInstance ch)
         {
-            SpecFunHandler handler = new SpecFunHandler(DatabaseManager.Instance);
-            handler.summon_if_hating(ch);
+            ISpecFunHandler handler = Program.Kernel.Get<ISpecFunHandler>();
+            ch.SummonIfHating();
 
             if (!ch.IsInCombatPosition())
                 return false;

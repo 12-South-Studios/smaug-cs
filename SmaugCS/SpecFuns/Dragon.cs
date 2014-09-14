@@ -25,7 +25,7 @@ namespace SmaugCS.SpecFuns
             if (skill == null || skill.SpellFunction == null)
                 return false;
 
-            skill.SpellFunction.Value.DynamicInvoke(new object[] {skill.ID, ch.Level, ch, victim});
+            skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, victim);
             return true;
         }
     }

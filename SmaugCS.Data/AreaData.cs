@@ -18,7 +18,7 @@ namespace SmaugCS.Data
         }
 
         [XmlArray("Rooms")]
-        public List<RoomTemplate> Rooms { get; set; }
+        public IEnumerable<RoomTemplate> Rooms { get; set; }
 
         [XmlIgnore]
         public string Filename { get; set; }
@@ -114,7 +114,7 @@ namespace SmaugCS.Data
         public void AddRoom(RoomTemplate room)
         {
             if (Rooms.All(x => x.ID != room.ID))
-                Rooms.Add(room);
+                Rooms.ToList().Add(room);
         }
 
         public void SetFlags(string flags)

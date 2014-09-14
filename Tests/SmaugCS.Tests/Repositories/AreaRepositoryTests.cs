@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 using System.Text;
 using Moq;
 using Ninject;
@@ -86,8 +87,8 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Rooms.Count, Is.EqualTo(1));
-            Assert.That(result.Rooms[0].ID, Is.EqualTo(801));
+            Assert.That(result.Rooms.Count(), Is.EqualTo(1));
+            Assert.That(result.Rooms.First().ID, Is.EqualTo(801));
         }
 
         /*[Test]

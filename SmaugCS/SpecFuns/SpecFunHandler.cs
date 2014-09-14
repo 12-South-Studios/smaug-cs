@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using SmaugCS.Common;
-using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 
 namespace SmaugCS.SpecFuns
 {
-    public sealed class SpecFunHandler
+    public sealed class SpecFunHandler : ISpecFunHandler
     {
         private readonly IDatabaseManager _dbManager;
 
@@ -60,31 +59,12 @@ namespace SmaugCS.SpecFuns
                        : null;
         }
 
-        public void summon_if_hating(MobileInstance ch)
-        {
-            if ((int) ch.CurrentPosition <= (int) PositionTypes.Sleeping 
-                || ch.CurrentFighting != null
-                || ch.CurrentFearing != null
-                || ch.CurrentHating == null
-                || ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
-                || ch.CurrentHunting != null)
-                return;
-
-            CharacterInstance victim = _dbManager.GetEntity<CharacterInstance>(ch.CurrentHating.Name);
-            if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
-                return;
-
-            Commands.Cast.do_cast(ch,
-                                  string.Format("summon {0}{1}", victim.IsNpc() ? string.Empty : "0.",
-                                                ch.CurrentHating.Name));
-        }
-
         public SkillData PickSpell(Dictionary<int, Tuple<int, string>> lookupTable, int characterLevel)
         {
             int minLevel = 0;
             string spellName = string.Empty;
 
-            while (characterLevel < minLevel)
+            while (minLevel < characterLevel)
             {
                 int bits = SmaugRandom.Bits(4);
                 if (lookupTable.ContainsKey(bits))

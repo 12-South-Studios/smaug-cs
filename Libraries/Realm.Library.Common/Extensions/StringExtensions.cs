@@ -50,15 +50,8 @@ namespace Realm.Library.Common
         /// <returns></returns>
         public static bool IsNumber(this string value)
         {
-            try
-            {
-                int val;
-                return Int32.TryParse(value, out val);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            int val;
+            return Int32.TryParse(value, out val);
         }
 
         /// <summary>
@@ -66,9 +59,9 @@ namespace Realm.Library.Common
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static List<string> ToWords(this string value)
+        public static IEnumerable<string> ToWords(this string value)
         {
-            return value.Split(' ').ToList();
+            return value.Split(' ');
         }
 
         /// <summary>
@@ -116,7 +109,11 @@ namespace Realm.Library.Common
             {
                 val = Convert.ToInt32(argument);
             }
-            catch
+            catch (FormatException)
+            {
+                val = 0;
+            }
+            catch (OverflowException)
             {
                 val = 0;
             }

@@ -53,8 +53,8 @@ namespace Realm.Library.Common
             return (T)Cache.Get(GetCacheKey(key));
         }
 
-        public IEnumerable<TKey> Keys { get { throw new NotImplementedException(); } }
+        public IEnumerable<TKey> Keys { get { return null; } }
 
-        public IEnumerable<T> Values { get { throw new NotImplementedException(); } }
+        public IEnumerable<T> Values { get { return null; } }
     }
 }

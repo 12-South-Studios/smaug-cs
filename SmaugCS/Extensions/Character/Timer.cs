@@ -21,7 +21,7 @@ namespace SmaugCS.Extensions
                 Value = value,
                 Action = new DoFunction {Value = fun}
             };
-            ch.Timers.Add(timer);
+            ch.Timers.ToList().Add(timer);
             return true;
         }
 
@@ -33,12 +33,12 @@ namespace SmaugCS.Extensions
         public static bool RemoveTimer(this CharacterInstance ch, TimerTypes type)
         {
             TimerData timer = ch.GetTimer(type);
-            return timer != null && ch.Timers.Remove(timer);
+            return timer != null && ch.Timers.ToList().Remove(timer);
         }
 
         public static bool RemoveTimer(this CharacterInstance ch, TimerData timer)
         {
-            return ch.Timers.Any(x => x == timer) && ch.Timers.Remove(timer);
+            return ch.Timers.Any(x => x == timer) && ch.Timers.ToList().Remove(timer);
         }
 
         public static bool HasTimer(this CharacterInstance ch, TimerTypes type)

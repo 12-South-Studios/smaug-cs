@@ -19,13 +19,13 @@ namespace SmaugCS.Data.Instances
         public CharacterInstance Switched { get; set; }
         public CharacterInstance CurrentMount { get; set; }
 
-        public List<VariableData> Variables { get; set; }
+        public IEnumerable<VariableData> Variables { get; set; }
 
         public MudProgActData mpact { get; set; }
         public int mpactnum { get; set; }
         public uint mpscriptpos { get; set; }
 
-        public List<ObjectInstance> Carrying { get; set; }
+        public IEnumerable<ObjectInstance> Carrying { get; set; }
         public RoomTemplate CurrentRoom { get; set; }
         public RoomTemplate PreviousRoom { get; set; }
         
@@ -34,7 +34,7 @@ namespace SmaugCS.Data.Instances
         public object DestinationBuffer { get; set; }
 
         
-        public List<TimerData> Timers { get; set; }
+        public IEnumerable<TimerData> Timers { get; set; }
         public CharacterMorph CurrentMorph { get; set; }
         public string LongDescription { get; set; }
         

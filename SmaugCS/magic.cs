@@ -25,7 +25,7 @@ namespace SmaugCS
 
             if (ch.IsNpc())
                 return (int)skill.ID;
-            if (((PlayerInstance)ch).PlayerData.Learned[skill.ID] > 0
+            if (((PlayerInstance)ch).GetLearned((int)skill.ID) > 0
                 && (ch.Level >= skill.SkillLevels.ToList()[(int)ch.CurrentClass]
                     || ch.Level >= skill.RaceLevel[(int)ch.CurrentRace]))
                 return (int)skill.ID;

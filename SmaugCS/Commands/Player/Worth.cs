@@ -65,6 +65,7 @@ namespace SmaugCS.Commands.Player
                 new LookupLevel {Level = -1001, Text = "fiendish"}
             };
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_worth(CharacterInstance ch, string argument)
         {
             if (ch.IsNpc())

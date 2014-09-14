@@ -4,13 +4,14 @@ using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Skills
 {
     public static class Grip
     {
-        public static bool CheckGrip(CharacterInstance ch, CharacterInstance victim)
+        public static bool CheckGrip(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null)
         {
             if (!victim.IsAwake())
                 return false;
@@ -18,7 +19,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Grip))
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("grip");
+            SkillData skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("grip");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'grip' not found");
 
@@ -32,13 +33,13 @@ namespace SmaugCS.Skills
 
             if (SmaugRandom.D100() >= (chance + victim.Level - ch.Level))
             {
-                skill.LearnFromFailure((PlayerInstance)victim);
+                skill.LearnFromFailure(victim);
                 return false;
             }
 
             comm.act(ATTypes.AT_SKILL, "You evade $n's attempt to disarm you.", ch, null, victim, ToTypes.Victim);
             comm.act(ATTypes.AT_SKILL, "$N holds $S weapon strongly, and is not disarmed.", ch, null, victim, ToTypes.Character);
-            skill.LearnFromSuccess((PlayerInstance)victim);
+            skill.LearnFromSuccess(victim);
             return true;
         }
     }
