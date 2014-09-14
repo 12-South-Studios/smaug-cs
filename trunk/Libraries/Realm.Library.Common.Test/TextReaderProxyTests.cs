@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 
 namespace Realm.Library.Common.Test
@@ -51,12 +52,12 @@ namespace Realm.Library.Common.Test
             TextReaderProxy proxy =
                 new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r"));
 
-            List<string> results = proxy.ReadIntoList();
+            IEnumerable<string> results = proxy.ReadIntoList();
 
             Assert.That(results, Is.Not.Null);
-            Assert.That(results.Count, Is.EqualTo(4));
-            Assert.That(results[0], Is.EqualTo("#common"));
-            Assert.That(results[3], Is.EqualTo("~"));
+            Assert.That(results.Count(), Is.EqualTo(4));
+            Assert.That(results.First(), Is.EqualTo("#common"));
+            Assert.That(results.ToList()[3], Is.EqualTo("~"));
         }
 
         [Test]
@@ -66,10 +67,10 @@ namespace Realm.Library.Common.Test
             TextReaderProxy proxy =
                 new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
 
-            List<TextSection> results = proxy.ReadSections(new List<string> {"#"}, new List<string> {"*"},
+            IEnumerable<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
                                                            new List<string> {"#"}, "#end");
 
-            Assert.That(results.Count, Is.EqualTo(0));
+            Assert.That(results.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -79,11 +80,11 @@ namespace Realm.Library.Common.Test
             TextReaderProxy proxy =
                 new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\r\n^end_common\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r^end_uncommon\r\n#end\n\r"));
 
-            List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
+            IEnumerable<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
                                                            new List<string> { "^" }, "#end");
 
             Assert.That(results, Is.Not.Null);
-            Assert.That(results[0].Footer, Is.EqualTo("end_common"));
+            Assert.That(results.First().Footer, Is.EqualTo("end_common"));
         }
 
         [Test]
@@ -93,12 +94,12 @@ namespace Realm.Library.Common.Test
             TextReaderProxy proxy =
                 new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
 
-            List<TextSection> results = proxy.ReadSections(new List<string> {"#"}, new List<string> {"*"}, null, "#end");
+            IEnumerable<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" }, null, "#end");
 
             Assert.That(results, Is.Not.Null);
-            Assert.That(results.Count, Is.EqualTo(2));
-            Assert.That(results[0].Header, Is.EqualTo("common"));
-            Assert.That(results[0].Lines.Count, Is.EqualTo(3));
+            Assert.That(results.Count(), Is.EqualTo(2));
+            Assert.That(results.First().Header, Is.EqualTo("common"));
+            Assert.That(results.First().Lines.Count(), Is.EqualTo(3));
         }
 
         [Test]

@@ -69,6 +69,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CustomExpression.cs" />
     <Compile Include="ExpressionParser.cs" />
     <Compile Include="ExpressionTable.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Reflection;
 using System.Timers;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Properties;
@@ -274,7 +275,19 @@ namespace Realm.Library.Common
                                           tuple.CallbackFunction.DynamicInvoke(thrownEvent.Args);
                                       });
             }
-            catch (Exception ex)
+            catch (MemberAccessException ex)
+            {
+                ex.Handle(ExceptionHandlingOptions.RecordOnly, _log,
+                          "Event Type {0}, EventSender Type {1}, TupleList {2}", thrownEvent.Name,
+                          thrownEvent.Sender.GetType(), tupleList.ToString());
+            }
+            catch (ArgumentException ex)
+            {
+                ex.Handle(ExceptionHandlingOptions.RecordOnly, _log,
+                          "Event Type {0}, EventSender Type {1}, TupleList {2}", thrownEvent.Name,
+                          thrownEvent.Sender.GetType(), tupleList.ToString());
+            }
+            catch (TargetInvocationException ex)
             {
                 ex.Handle(ExceptionHandlingOptions.RecordOnly, _log,
                           "Event Type {0}, EventSender Type {1}, TupleList {2}", thrownEvent.Name,

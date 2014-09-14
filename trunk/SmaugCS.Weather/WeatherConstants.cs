@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Realm.Library.Common;
 
 namespace SmaugCS.Weather
@@ -32,11 +33,11 @@ namespace SmaugCS.Weather
         {
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(filename)))
             {
-                List<TextSection> sections = proxy.ReadSections(new[] { "#" }, null, null, "#END");
+                IEnumerable<TextSection> sections = proxy.ReadSections(new[] { "#" }, null, null, "#END");
                 foreach (TextSection section in sections)
                 {
                     List<string> lines = new List<string>();
-                    section.Lines.ForEach(x => lines.Add(x.TrimEnd(new[] { '~' })));
+                    section.Lines.ToList().ForEach(x => lines.Add(x.TrimEnd(new[] { '~' })));
 
                     WeatherMessages.Add(EnumerationExtensions.GetEnum<PrecipitationTypes>(section.Header), lines);
                 }

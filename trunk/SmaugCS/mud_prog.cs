@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
+using LuaInterface;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+
 
 namespace SmaugCS
 {
@@ -161,27 +164,9 @@ namespace SmaugCS
                                            ObjectInstance trueSupermobObject)
         {
             // TODO
-        }
+        }*/
 
-        /// <summary>
-        /// Recursive function used by the carryingvnum ifcheck.  Loops through all objects
-        /// belonging to an instance (in nested containers) and returns true if it finds a 
-        /// matching vnum.
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="obj"></param>
-        /// <param name="vnum"></param>
-        /// <returns></returns>
-        public static bool carryingvnum_visit(CharacterInstance ch, ObjectInstance obj, int vnum)
-        {
-            if (obj.WearLocation == WearLocations.None
-                && obj.ObjectIndex.Vnum == vnum)
-                return true;
-
-            return obj.Contents.Any(vobj => carryingvnum_visit(ch, vobj, vnum));
-        }
-
-        public static void init_supermob()
+       /* public static void init_supermob()
         {
             db.Supermob = DatabaseManager.Instance.CHARACTERS.Create(DatabaseManager.Instance.MOBILE_INDEXES.Get(3));
             RoomTemplate office = DatabaseManager.Instance.ROOMS.Get(3);

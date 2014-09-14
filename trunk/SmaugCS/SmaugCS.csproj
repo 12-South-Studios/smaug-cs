@@ -138,6 +138,7 @@
     <Compile Include="Extensions\Character\Timer.cs" />
     <Compile Include="Extensions\Character\Traps.cs" />
     <Compile Include="Extensions\Player\PlayerInstanceExtensions.cs" />
+    <Compile Include="LuaHelpers\LuaMudProgFunctions.cs" />
     <Compile Include="ObjectAlreadyExtractedException.cs" />
     <Compile Include="Repositories\TypeMapAttribute.cs" />
     <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
@@ -304,6 +305,7 @@
     <Compile Include="SpecFuns\Executioner.cs" />
     <Compile Include="SpecFuns\Fido.cs" />
     <Compile Include="SpecFuns\Guard.cs" />
+    <Compile Include="SpecFuns\ISpecFunHandler.cs" />
     <Compile Include="SpecFuns\Janitor.cs" />
     <Compile Include="SpecFuns\Mayor.cs" />
     <Compile Include="SpecFuns\Poison.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Data.Instances;
@@ -10,7 +11,7 @@ namespace SmaugCS.Data.Organizations
     public class ClanData : OrganizationData
     {
         [XmlArray]
-        public List<RosterData> Members { get; set; }
+        public IEnumerable<RosterData> Members { get; set; }
 
         public string Motto { get; set; }
         public string Deity { get; set; }
@@ -79,7 +80,7 @@ namespace SmaugCS.Data.Organizations
 
         public void UpdateRoster(PlayerInstance ch)
         {
-            RosterData roster = Members.Find(x => x.Name.EqualsIgnoreCase(ch.Name));
+            RosterData roster = Members.ToList().Find(x => x.Name.EqualsIgnoreCase(ch.Name));
             if (roster != null)
             {
                 roster.Level = ch.Level;
@@ -93,7 +94,7 @@ namespace SmaugCS.Data.Organizations
 
         public void AddToRoster(string name, int Class, int level, int kills, int deaths)
         {
-            Members.Add(new RosterData
+            Members.ToList().Add(new RosterData
                             {
                                 Name = name,
                                 Class = Class,
@@ -106,14 +107,14 @@ namespace SmaugCS.Data.Organizations
 
         public void RemoveFromRoster(string name)
         {
-            RosterData roster = Members.Find(x => x.Name.EqualsIgnoreCase(name));
+            RosterData roster = Members.ToList().Find(x => x.Name.EqualsIgnoreCase(name));
             if (roster != null)
-                Members.Remove(roster);
+                Members.ToList().Remove(roster);
         }
 
         public void RemoveAllRosters()
         {
-            Members.Clear();
+            Members.ToList().Clear();
         }
 
         public void SetTypeByValue(int type)

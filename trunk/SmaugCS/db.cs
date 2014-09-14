@@ -552,7 +552,7 @@ namespace SmaugCS
         {
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(filename)))
             {
-                List<string> lines = proxy.ReadIntoList();
+                IEnumerable<string> lines = proxy.ReadIntoList();
                 foreach (string line in lines)
                 {
                     color.send_to_pager_color(line.Trim(new[] { '\r', '\n' }), ch);

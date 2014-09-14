@@ -15,6 +15,7 @@ namespace Realm.Library.Common
         /// Handles exceptions based upon the indicated behavior and throws a new exception of the given
         /// type, assigning the original exception as the InnerException
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Handle<T>(this Exception exception, ExceptionHandlingOptions exceptionBehavior, ILogWrapper log = null,
             string msg = "", params object[] parameters) where T : Exception
         {

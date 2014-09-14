@@ -14,6 +14,7 @@ namespace SmaugCS.Common
             return enumAttrib;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static bool HasAttribute<T>(this Enum value) where T : Attribute
         {
             Validation.IsNotNull(value, "value");

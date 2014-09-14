@@ -677,7 +677,7 @@ namespace SmaugCS
             if (SmaugRandom.D100() < Macros.LEARNED(ch, (int) skill.ID))
             {
                 color.ch_printf(ch, "\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
-                show_list_to_char(victim.Carrying, ch, true, true);
+                show_list_to_char(victim.Carrying.ToList(), ch, true, true);
                 skill.LearnFromSuccess(ch);
             }
             else if (ch.PlayerData.Learned[0] > (int)skill.ID)
@@ -834,11 +834,30 @@ namespace SmaugCS
                 .CapitalizeFirst() + Environment.NewLine, ch);
         }
 
-
         public static HelpData get_help(CharacterInstance ch, string argument)
         {
+            string arg = string.Empty;
+
+            if (string.IsNullOrEmpty(argument))
+                arg = "summary";
+
+            int lev = 0;
+            if (arg[0].IsDigit() && !arg.IsNumber())
+            {
+                // TODO first part is a number
+                // TODO strip it and update arg with the remainder
+            }
+            else
+                lev = -2;
+
+            
+            string argall = string.Empty;
             // TODO
-            return null;
+
+            return db.HELPS
+                .Where(help => help.Level <= ch.Trust)
+                .Where(help => lev == -2 || help.Level == lev)
+                .FirstOrDefault(help => argall.IsAnyEqual(help.Keyword));
         }
 
         // TODO Rewrite this whogr stuff as its clunky and uses linked lists which we have no need of

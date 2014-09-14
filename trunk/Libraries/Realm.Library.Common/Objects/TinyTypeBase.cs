@@ -18,6 +18,7 @@ namespace Realm.Library.Common
             get { return _value; }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public override string ToString()
         {
             throw new InvalidOperationException("Do not use ToString on a TinyType.");

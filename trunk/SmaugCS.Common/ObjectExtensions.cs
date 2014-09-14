@@ -23,6 +23,7 @@ namespace SmaugCS.Common
             return (T)attributes.ToList().FirstOrDefault(x => x.GetType() == typeof (T));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static bool HasAttribute<T>(this object value, string memberName = "") where T : Attribute
         {
             object[] attributes;

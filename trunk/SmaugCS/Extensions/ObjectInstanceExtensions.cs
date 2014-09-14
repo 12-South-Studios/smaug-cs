@@ -265,7 +265,7 @@ namespace SmaugCS.Extensions
             {
                 if (!ch.IsNpc() || ((MobileInstance)ch).MobIndex.Shop == null)
                 {
-                    ch.Carrying.Add(obj);
+                    ch.Carrying.ToList().Add(obj);
                     obj.CarriedBy = ch;
                     obj.InRoom = null;
                     obj.InObject = null;
@@ -277,21 +277,21 @@ namespace SmaugCS.Extensions
                     {
                         if (obj.Level > carriedObj.Level)
                         {
-                            ch.Carrying.Insert(0, carriedObj);
+                            ch.Carrying.ToList().Insert(0, carriedObj);
                             foundObj = carriedObj;
                             break;
                         }
                         if (obj.Level == carriedObj.Level
                             && obj.ShortDescription.Equals(carriedObj.ShortDescription))
                         {
-                            ch.Carrying.Insert(0, carriedObj);
+                            ch.Carrying.ToList().Insert(0, carriedObj);
                             foundObj = carriedObj;
                             break;
                         }
                     }
 
                     if (foundObj == null)
-                        ch.Carrying.Add(obj);
+                        ch.Carrying.ToList().Add(obj);
 
                     obj.CarriedBy = ch;
                     obj.InRoom = null;
@@ -325,7 +325,7 @@ namespace SmaugCS.Extensions
             if (obj.CarriedBy == null)
                 return;
 
-            ch.Carrying.Remove(obj);
+            ch.Carrying.ToList().Remove(obj);
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null && obj.Contents.Count > 0)
                 obj.Empty();
@@ -412,7 +412,7 @@ namespace SmaugCS.Extensions
 
             if (obj.CarriedBy != null)
             {
-                obj.CarriedBy.Carrying.Add(rest);
+                obj.CarriedBy.Carrying.ToList().Add(rest);
                 rest.CarriedBy = obj.CarriedBy;
                 rest.InRoom = null;
                 rest.InObject = null;

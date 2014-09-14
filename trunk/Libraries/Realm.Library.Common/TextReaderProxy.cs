@@ -48,13 +48,12 @@ namespace Realm.Library.Common
             return Convert.ToChar(Read());
         }
 
-        public virtual int ReadNumber()
+        public virtual int ReadNumber(int defaultVal = 0)
         {
             string word = ReadNextWord();
 
             int result;
-            Int32.TryParse(word, out result);
-            return result;
+            return Int32.TryParse(word, out result) ? result : defaultVal;
         }
 
         public virtual string ReadString(IEnumerable<char> terminatorChars = null)
@@ -97,24 +96,23 @@ namespace Realm.Library.Common
             return word;
         }
 
-        public List<string> ReadIntoList(char[] splitChars = null)
+        public IEnumerable<string> ReadIntoList(char[] splitChars = null)
         {
-            char[] charsToSplit = new[] { '\n' };
+            char[] charsToSplit = { '\n' };
 
             return
                 new List<string>(
                     ReadToEnd()
                         .Replace(Environment.NewLine, "\n")
                         .Replace("\n\r", "\n")
-                        .Split(splitChars ?? charsToSplit, StringSplitOptions.RemoveEmptyEntries)
-                        .ToList());
+                        .Split(splitChars ?? charsToSplit, StringSplitOptions.RemoveEmptyEntries));
         }
 
-        public List<TextSection> ReadSections(IEnumerable<string> headerChars = null,
+        public IEnumerable<TextSection> ReadSections(IEnumerable<string> headerChars = null,
                                               IEnumerable<string> commentChars = null,
                                               IEnumerable<string> footerChars = null, string endOfFile = "")
         {
-            List<string> lines = ReadIntoList();
+            IEnumerable<string> lines = ReadIntoList();
             List<TextSection> sections = new List<TextSection>();
 
             if (HasInvalidSectionParameters(headerChars, commentChars, footerChars, endOfFile))
@@ -138,7 +136,7 @@ namespace Realm.Library.Common
                     continue;
                 }
 
-                section.Lines.Add(line);
+                section.Lines.ToList().Add(line);
             }
             return sections;
         }

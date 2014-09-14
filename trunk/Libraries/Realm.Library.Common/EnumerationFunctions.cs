@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Realm.Library.Common
@@ -25,6 +26,7 @@ namespace Realm.Library.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static Enum GetEnumByName<T>(string name)
         {
             ValidateEnumType(typeof(T));
@@ -47,6 +49,7 @@ namespace Realm.Library.Common
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static int MaximumEnumValue<T>()
         {
             ValidateEnumType(typeof(T));
@@ -58,6 +61,7 @@ namespace Realm.Library.Common
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static int MinimumEnumValue<T>()
         {
             ValidateEnumType(typeof(T));

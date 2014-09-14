@@ -4,13 +4,15 @@ using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Skills
 {
     public static class Parry
     {
-        public static bool CheckParry(CharacterInstance ch, CharacterInstance victim)
+        public static bool CheckParry(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null, 
+            IGameManager gameManager = null)
         {
             if (!victim.IsAwake())
                 return false;
@@ -20,7 +22,7 @@ namespace SmaugCS.Skills
 
             int chances;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("parry");
+            SkillData skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("parry");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'parry' not found");
 
@@ -30,7 +32,8 @@ namespace SmaugCS.Skills
             {
                 if (victim.GetEquippedItem(WearLocations.Wield) == null)
                     return false;
-                chances = Macros.LEARNED(victim, (int) skill.ID)/GameManager.Instance.SystemData.ParryMod;
+                chances = Macros.LEARNED(victim, (int) skill.ID)/
+                          (gameManager ?? GameManager.Instance).SystemData.ParryMod;
             }
 
             if (chances != 0 && victim.CurrentMorph != null)
@@ -38,7 +41,7 @@ namespace SmaugCS.Skills
 
             if (!victim.Chance(chances + victim.Level - ch.Level))
             {
-                skill.LearnFromFailure((PlayerInstance)victim);
+                skill.LearnFromFailure(victim);
                 return false;
             }
 
@@ -48,7 +51,7 @@ namespace SmaugCS.Skills
             if (!ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))
                 comm.act(ATTypes.AT_SKILL, "$N parries your attack.", ch, null, victim, ToTypes.Character);
 
-            skill.LearnFromSuccess((PlayerInstance)victim);
+            skill.LearnFromSuccess(victim);
             return true;
         }
     }

@@ -48,7 +48,7 @@ namespace SmaugCS
 
         public static bool remove_tag(CharacterInstance ch, string tag, int vnum)
         {
-            if (ch.Variables == null || ch.Variables.Count == 0)
+            if (ch.Variables == null || !ch.Variables.Any())
                 return false;
 
             // TODO

@@ -35,8 +35,8 @@ namespace SmaugCS.LuaHelpers
 
         public void InitializeLuaFunctions()
         {
-            var proxy = LuaInterfaceProxy.Create();
-            var luaFuncRepo = new LuaFunctionRepository();
+            LuaInterfaceProxy proxy = LuaInterfaceProxy.Create();
+            LuaFunctionRepository luaFuncRepo = new LuaFunctionRepository();
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaAreaFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaCreateFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaGetFunctions));
@@ -45,6 +45,7 @@ namespace SmaugCS.LuaHelpers
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaRoomFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaLookupFunctions));
             LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof(LuaManagerFunctions));
+            LuaHelper.RegisterFunctionTypes(luaFuncRepo, typeof (LuaMudProgFunctions));
             proxy.RegisterFunctions(luaFuncRepo);
             _luaManager.InitializeLuaProxy(proxy);
         }

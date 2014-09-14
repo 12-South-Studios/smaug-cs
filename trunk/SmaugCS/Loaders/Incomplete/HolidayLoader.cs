@@ -40,7 +40,7 @@ namespace SmaugCS.Loaders
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
                 int dayCount = 0;
-                List<TextSection> sections = proxy.ReadSections(new[] { "#HOLIDAY" }, new[] { "*" }, null, "END");
+                IEnumerable<TextSection> sections = proxy.ReadSections(new[] { "#HOLIDAY" }, new[] { "*" }, null, "END");
                 foreach (TextSection section in sections)
                 {
                     if (dayCount >= GameManager.Instance.SystemData.MaxHolidays)

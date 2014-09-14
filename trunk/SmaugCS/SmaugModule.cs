@@ -15,6 +15,7 @@ using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.News;
 using SmaugCS.Repositories;
+using SmaugCS.SpecFuns;
 using SmaugCS.Weather;
 
 namespace SmaugCS
@@ -90,6 +91,7 @@ namespace SmaugCS
             Kernel.Bind<ITemplateRepository<ObjectTemplate>>().To<ObjectRepository>();
             Kernel.Bind<ITemplateRepository<RoomTemplate>>().To<RoomRepository>();
 
+            Kernel.Bind<ISpecFunHandler>().To<SpecFunHandler>();
         }
     }
 }

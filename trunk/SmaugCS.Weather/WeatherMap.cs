@@ -88,8 +88,8 @@ namespace SmaugCS.Weather
             string path = SystemConstants.GetSystemFile(fileType);
             using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
             {
-                List<string> lines = proxy.ReadIntoList();
-                if (lines.Count == 0)
+                IEnumerable<string> lines = proxy.ReadIntoList();
+                if (!lines.Any())
                     throw new InvalidDataException(string.Format("Missing data for {0}", fileType));
 
                 map.AddRange(lines);
