@@ -14,6 +14,7 @@ namespace SmaugCS.Commands
 {
     public static class Quit
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_quit(CharacterInstance ch, string argument)
         {
             if (Helpers.CheckFunctions.CheckIfNpc(ch, ch)) return;

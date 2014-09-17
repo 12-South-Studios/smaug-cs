@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Realm.Library.Common;
 
 namespace SmaugCS.Data.Exceptions
@@ -8,12 +9,21 @@ namespace SmaugCS.Data.Exceptions
     {
         public CharacterDiedException() { }
 
+        public CharacterDiedException(string message) : base(message)
+        {
+        }
+
         public CharacterDiedException(string format, params object[] args) 
             : base(string.Format(format, args))
         {
         }
 
-        /*public NewException(string, Exception)
-protected or private NewException(SerializationInfo, StreamingContext)*/
+        public CharacterDiedException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
+        protected CharacterDiedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

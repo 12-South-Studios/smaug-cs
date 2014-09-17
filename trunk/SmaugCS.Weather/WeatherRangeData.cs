@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 
@@ -10,25 +12,25 @@ namespace SmaugCS.Weather
         public SeasonTypes Season { get; private set; }
         public ClimateTypes Climate { get; private set; }
 
-        public int[] Temperature { get; set; }
-        public int[] Pressure { get; set; }
-        public int[] CloudCover { get; set; }
-        public int[] Humidity { get; set; }
-        public int[] Precipitation { get; set; }
-        public int[] Energy { get; set; }
-        public int[] WindSpeedX { get; set; }
-        public int[] WindSpeedY { get; set; }
+        public IEnumerable<int> Temperature { get; private set; }
+        public IEnumerable<int> Pressure { get; private set; }
+        public IEnumerable<int> CloudCover { get; private set; }
+        public IEnumerable<int> Humidity { get; private set; }
+        public IEnumerable<int> Precipitation { get; private set; }
+        public IEnumerable<int> Energy { get; private set; }
+        public IEnumerable<int> WindSpeedX { get; private set; }
+        public IEnumerable<int> WindSpeedY { get; private set; }
 
         public WeatherRangeData(HemisphereTypes hemisphere, SeasonTypes season, ClimateTypes climate)
         {
-            Temperature = new int[2];
-            Pressure = new int[2];
-            CloudCover = new int[2];
-            Humidity = new int[2];
-            Precipitation = new int[2];
-            Energy = new int[2];
-            WindSpeedX = new int[2];
-            WindSpeedY = new int[2];
+            Temperature = new List<int>();
+            Pressure = new List<int>();
+            CloudCover = new List<int>();
+            Humidity = new List<int>();
+            Precipitation = new List<int>();
+            Energy = new List<int>();
+            WindSpeedX = new List<int>();
+            WindSpeedY = new List<int>();
 
             Hemisphere = hemisphere;
             Season = season;
@@ -40,22 +42,22 @@ namespace SmaugCS.Weather
                             int precipHi, int energyLo, int energyHi, int windXLo, int windXHi,
                             int windYLo, int windYHi)
         {
-            Temperature[0] = tempLo;
-            Temperature[1] = tempHi;
-            Pressure[0] = presLo;
-            Pressure[1] = presHi;
-            CloudCover[0] = cloudLo;
-            CloudCover[1] = cloudHi;
-            Humidity[0] = humidLo;
-            Humidity[1] = humidHi;
-            Precipitation[0] = precipLo;
-            Precipitation[1] = precipHi;
-            Energy[0] = energyLo;
-            Energy[1] = energyHi;
-            WindSpeedX[0] = windXLo;
-            WindSpeedX[1] = windXHi;
-            WindSpeedY[0] = windYLo;
-            WindSpeedY[1] = windYHi;
+            Temperature.ToList()[0] = tempLo;
+            Temperature.ToList()[1] = tempHi;
+            Pressure.ToList()[0] = presLo;
+            Pressure.ToList()[1] = presHi;
+            CloudCover.ToList()[0] = cloudLo;
+            CloudCover.ToList()[1] = cloudHi;
+            Humidity.ToList()[0] = humidLo;
+            Humidity.ToList()[1] = humidHi;
+            Precipitation.ToList()[0] = precipLo;
+            Precipitation.ToList()[1] = precipHi;
+            Energy.ToList()[0] = energyLo;
+            Energy.ToList()[1] = energyHi;
+            WindSpeedX.ToList()[0] = windXLo;
+            WindSpeedX.ToList()[1] = windXHi;
+            WindSpeedY.ToList()[0] = windYLo;
+            WindSpeedY.ToList()[1] = windYHi;
         }
 
         public static void InitializeWeatherData(string filename)

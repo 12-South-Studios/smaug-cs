@@ -94,6 +94,7 @@
     <Compile Include="IgnoreData.cs" />
     <Compile Include="Instances\MobileInstance.cs" />
     <Compile Include="Instances\PlayerInstance.cs" />
+    <Compile Include="Interfaces\IGameManager.cs" />
     <Compile Include="Interfaces\IInstanceRepository.cs" />
     <Compile Include="Instances\CharacterInstance.cs" />
     <Compile Include="Instances\Instance.cs" />
@@ -158,6 +159,10 @@
     <ProjectReference Include="..\Libraries\Realm.Library.Lua\Realm.Library.Lua.csproj">
       <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
       <Name>Realm.Library.Lua</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Realm.Library.NCalcExt\Realm.Library.NCalcExt.csproj">
+      <Project>{d2eba739-4153-48ff-93f0-aaeb43d1ab7e}</Project>
+      <Name>Realm.Library.NCalcExt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Realm.Library.Network\Realm.Library.Network.csproj">
       <Project>{551f2b16-cec5-4e16-8f30-290005c04e16}</Project>

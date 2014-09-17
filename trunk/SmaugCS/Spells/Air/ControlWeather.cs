@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -24,6 +25,8 @@ namespace SmaugCS.Spells
             {"calmer", DecreaseEnergy}
         };
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level"), 
+        SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_control_weather(int sn, int level, CharacterInstance ch, object vo)
         {
             if (CheckFunctions.CheckIfTrue(ch, !WeatherChangeTable.ContainsKey(Cast.TargetName.ToLower()),

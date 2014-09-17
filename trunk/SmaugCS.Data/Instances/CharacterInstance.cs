@@ -116,10 +116,24 @@ namespace SmaugCS.Data.Instances
             Timers = new List<TimerData>();
         }
 
-        ~CharacterInstance()
+        #region IDisposable
+
+        private bool _disposed;
+
+        protected override void Dispose(bool disposing)
         {
-            LuaVM.Close();
+            if (_disposed)
+                return; 
+
+            if (disposing)
+            {
+                LuaVM.Close();
+            }
+
+            _disposed = true;
+            base.Dispose(disposing);
         }
+        #endregion
 
         #region IVerifiable
         public bool IsNpc()

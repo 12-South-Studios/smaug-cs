@@ -25,7 +25,7 @@ namespace SmaugCS.Spells
             AffectData af = new AffectData
             {
                 SkillNumber = sn,
-                Duration = (10*level*GameConstants.GetConstant<int>("AffectDurationConversionValue")),
+                Duration = GetDuration(level),
                 Location = ApplyTypes.Gender
             };
 
@@ -34,12 +34,18 @@ namespace SmaugCS.Spells
                 af.Modifier = SmaugRandom.Between(0, 2) - (int) victim.Gender;
             } while (af.Modifier == 0);
 
-            //af.BitVector.ClearBits();
-
             victim.AddAffect(af);
             ch.SuccessfulCast(skill, victim);
 
             return ReturnTypes.None;
+        }
+
+        private static int GetDuration(int level)
+        {
+            checked
+            {
+                return (10*level*GameConstants.GetConstant<int>("AffectDurationConversionValue"));
+            }
         }
     }
 }

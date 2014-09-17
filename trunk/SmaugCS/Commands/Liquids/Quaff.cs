@@ -49,48 +49,10 @@ namespace SmaugCS.Commands.Liquids
             bool hgFlag = !(!ch.IsNpc() &&
                            (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.HighGag))));
 
-            if (ch.CurrentFighting != null
-                && SmaugRandom.D100() > (ch.GetCurrentDexterity()*2 + 48))
-            {
-                comm.act(ATTypes.AT_MAGIC, "$n fumbles $p and it shatters into fragments.", ch, obj, null, ToTypes.Room);
-                if (!hgFlag)
-                    comm.act(ATTypes.AT_MAGIC, "Oops... $p is knocked from your hand and shatters!", ch, obj, null,
-                        ToTypes.Character);
-            }
+            if (ch.CurrentFighting != null && PotionWasFumbled(ch))
+                FumblePotion(ch, obj, hgFlag);
             else
-            {
-                if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
-                {
-                    if (!ch.CanPKill() || obj.InObject == null)
-                    {
-                        comm.act(ATTypes.AT_ACTION, "$n quaffs $p.", ch, obj, null, ToTypes.Room);
-                        if (!hgFlag)
-                            comm.act(ATTypes.AT_MAGIC, "You quaff $p.", ch, obj, null, ToTypes.Character);
-                    }
-                    else if (obj.InObject != null)
-                    {
-                        comm.act(ATTypes.AT_ACTION, "$n quaffs $p from $P.", ch, obj, obj.InObject, ToTypes.Room);
-                        if (!hgFlag)
-                            comm.act(ATTypes.AT_MAGIC, "You quaff $p from $P.", ch, obj, obj.InObject, ToTypes.Character);
-                    }
-                }
-
-                if (ch.GetMyTarget() != null && ch.IsPKill())
-                    Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
-                else 
-                    Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
-
-                ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, 1);
-
-                if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
-                    comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null, ToTypes.Character);
-
-                ReturnTypes retcode = ch.ObjectCastSpell((int)obj.Values.Skill1ID, (int)obj.Values.SpellLevel, ch);
-                if (retcode == ReturnTypes.None)
-                    retcode = ch.ObjectCastSpell((int)obj.Values.Skill2ID, (int)obj.Values.SpellLevel, ch);
-                if (retcode == ReturnTypes.None)
-                    retcode = ch.ObjectCastSpell((int)obj.Values.Skill3ID, (int)obj.Values.SpellLevel, ch);
-            }
+                QuaffPotion(ch, obj, hgFlag);
 
             if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_FLASK_BREWING)
                 GameManager.Instance.SystemData.brewed_used++;
@@ -100,6 +62,55 @@ namespace SmaugCS.Commands.Liquids
             // TODO global_objcode?
 
             obj.Extract();
+        }
+
+        private static void QuaffPotion(CharacterInstance ch, ObjectInstance obj, bool hgFlag)
+        {
+            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            {
+                if (!ch.CanPKill() || obj.InObject == null)
+                {
+                    comm.act(ATTypes.AT_ACTION, "$n quaffs $p.", ch, obj, null, ToTypes.Room);
+                    if (!hgFlag)
+                        comm.act(ATTypes.AT_MAGIC, "You quaff $p.", ch, obj, null, ToTypes.Character);
+                }
+                else if (obj.InObject != null)
+                {
+                    comm.act(ATTypes.AT_ACTION, "$n quaffs $p from $P.", ch, obj, obj.InObject, ToTypes.Room);
+                    if (!hgFlag)
+                        comm.act(ATTypes.AT_MAGIC, "You quaff $p from $P.", ch, obj, obj.InObject, ToTypes.Character);
+                }
+            }
+
+            if (ch.GetMyTarget() != null && ch.IsPKill())
+                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
+            else
+                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
+
+            ((PlayerInstance) ch).GainCondition(ConditionTypes.Thirsty, 1);
+
+            if (!ch.IsNpc() && ((PlayerInstance) ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
+                comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null,
+                    ToTypes.Character);
+
+            ReturnTypes retcode = ch.ObjectCastSpell((int) obj.Values.Skill1ID, (int) obj.Values.SpellLevel, ch);
+            if (retcode == ReturnTypes.None)
+                retcode = ch.ObjectCastSpell((int) obj.Values.Skill2ID, (int) obj.Values.SpellLevel, ch);
+            if (retcode == ReturnTypes.None)
+                retcode = ch.ObjectCastSpell((int) obj.Values.Skill3ID, (int) obj.Values.SpellLevel, ch);
+        }
+
+        private static void FumblePotion(CharacterInstance ch, ObjectInstance obj, bool hgFlag)
+        {
+            comm.act(ATTypes.AT_MAGIC, "$n fumbles $p and it shatters into fragments.", ch, obj, null, ToTypes.Room);
+            if (!hgFlag)
+                comm.act(ATTypes.AT_MAGIC, "Oops... $p is knocked from your hand and shatters!", ch, obj, null,
+                    ToTypes.Character);
+        }
+
+        private static bool PotionWasFumbled(CharacterInstance ch)
+        {
+            return SmaugRandom.D100() > (ch.GetCurrentDexterity()*2 + 48);
         }
 
         private static void QuaffNonPotion(CharacterInstance ch, ObjectInstance obj)

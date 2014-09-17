@@ -9,7 +9,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class Janitor
     {
-        public static bool DoSpecJanitor(MobileInstance ch)
+        public static bool DoSpecJanitor(CharacterInstance ch)
         {
             if (!ch.IsAwake())
                 return false;

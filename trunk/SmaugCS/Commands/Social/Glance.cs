@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Social
                "You can't see anything but stars!")) return;
            if (CheckFunctions.CheckIfTrue(ch, ch.CurrentPosition == PositionTypes.Sleeping,
                "You can't see anything, you're sleeping!")) return;
-           if (CheckFunctions.CheckIfBlind(ch)) return;
+           if (CheckFunctions.CheckIfBlind(ch, "You can't see a thing!")) return;
 
            color.set_char_color(ATTypes.AT_ACTION, ch);
 

@@ -11,6 +11,9 @@ namespace SmaugCS.Logging
     {
         public override void Load()
         {
+            Kernel.Bind<ITimer>().To<CommonTimer>().Named("LogDumpTimer")
+                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("LogDumpFrequencyMS"));
+
             Kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope()
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
                 .WithConstructorArgument("kernel", Kernel)

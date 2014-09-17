@@ -8,13 +8,23 @@ namespace SmaugCS.Data.Templates
     public abstract class Template : Entity, IHasMudProgs
     {
         public string Description { get; set; }
-        public long Vnum { get { return ID; } }
-        public List<MudProgData> MudProgs { get; set; }
+
+        public long Vnum
+        {
+            get { return ID; }
+        }
+
+        private readonly List<MudProgData> _mudProgs;
+
+        public IEnumerable<MudProgData> MudProgs
+        {
+            get { return _mudProgs; }
+        }
 
         protected Template(long id, string name)
             : base(id, name)
         {
-            MudProgs = new List<MudProgData>();
+            _mudProgs = new List<MudProgData>();
         }
 
         #region Implementation of IHasMudProgs
@@ -32,7 +42,7 @@ namespace SmaugCS.Data.Templates
         public void AddMudProg(MudProgData mprog)
         {
             if (!MudProgs.Contains(mprog))
-                MudProgs.Add(mprog);
+                _mudProgs.Add(mprog);
         }
 
         #endregion

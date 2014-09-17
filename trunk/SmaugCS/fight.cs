@@ -18,6 +18,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
+using SmaugCS.Skills;
 using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS
@@ -170,53 +171,45 @@ namespace SmaugCS
                     continue;
 
                 //// NPC Special attack flags
-                if (ch.IsNpc())
-                {
-                    MobileInstance mch = (MobileInstance) ch;
-                    if (!mch.Attacks.IsEmpty())
-                    {
-                        int attacktype = -1;
-                        if (30 + (ch.Level/4) >= SmaugRandom.D100())
-                        {
-                            int cnt = 0;
-                            for (;;)
-                            {
-                                if (cnt++ > 10)
-                                {
-                                    attacktype = -1;
-                                    break;
-                                }
-                                attacktype = SmaugRandom.Between(7,
-                                    EnumerationFunctions.MaximumEnumValue<AttackTypes>() - 1);
-                                if (mch.Attacks.IsSet(attacktype))
-                                    break;
-                            }
+                if (!ch.IsNpc()) continue;
 
-                            AttackTypes atkType =
-                                Realm.Library.Common.EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
-                            switch (atkType)
-                            {
-                                case AttackTypes.Bash:
-                                    Bash.do_bash(ch, "");
-                                    retCode = ReturnTypes.None;
-                                    break;
-                                case AttackTypes.Stun:
-                                    Stun.do_stun(ch, "");
-                                    retCode = ReturnTypes.None;
-                                    break;
-                                case AttackTypes.Gouge:
-                                    Gouge.do_gouge(ch, "");
-                                    retCode = ReturnTypes.None;
-                                    break;
-                                case AttackTypes.Feed:
-                                    Feed.do_feed(ch, "");
-                                    retCode = ReturnTypes.None;
-                                    break;
-                                case AttackTypes.Drain:
-                                    break;
-                            }
-                        }
+                MobileInstance mch = (MobileInstance) ch;
+                if (mch.Attacks.IsEmpty()) continue;
+                if (30 + (ch.Level/4) < SmaugRandom.D100()) continue;
+
+                int cnt = 0;
+                int attacktype;
+                for (;;)
+                {
+                    if (cnt++ > 10)
+                    {
+                        attacktype = -1;
+                        break;
                     }
+                    attacktype = SmaugRandom.Between(7,
+                        EnumerationFunctions.MaximumEnumValue<AttackTypes>() - 1);
+                    if (mch.Attacks.IsSet(attacktype))
+                        break;
+                }
+
+                AttackTypes atkType =
+                    Realm.Library.Common.EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
+                switch (atkType)
+                {
+                    case AttackTypes.Bash:
+                        Bash.do_bash(ch, "");
+                        break;
+                    case AttackTypes.Stun:
+                        Stun.do_stun(ch, "");
+                        break;
+                    case AttackTypes.Gouge:
+                        Gouge.do_gouge(ch, "");
+                        break;
+                    case AttackTypes.Feed:
+                        Feed.do_feed(ch, "");
+                        break;
+                    case AttackTypes.Drain:
+                        break;
                 }
             }
         }
@@ -253,7 +246,7 @@ namespace SmaugCS
             //// Add a timer to pkillers
             if (!ch.IsNpc() && !victim.IsNpc())
             {
-                if (ch.Act.IsSet((int) PlayerFlags.Nice))
+                if (ch.Act.IsSet(PlayerFlags.Nice))
                     return ReturnTypes.None;
 
                 ch.AddTimer(TimerTypes.RecentFight, 11, null, 0);
@@ -294,13 +287,13 @@ namespace SmaugCS
 
                 if (SmaugRandom.D100() < chance)
                 {
-                    dualWield.LearnFromSuccess((PlayerInstance)ch);
+                    dualWield.LearnFromSuccess(ch);
                     retcode = one_hit(ch, victim, dt);
                     if (retcode != ReturnTypes.None || ch.GetMyTarget() != victim)
                         return retcode;
                 }
                 else
-                    dualWield.LearnFromFailure((PlayerInstance)ch);
+                    dualWield.LearnFromFailure(ch);
             }
 
             if (ch.CurrentMovement < 10)
@@ -321,49 +314,49 @@ namespace SmaugCS
             chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int) secondAttack.ID) + dualBonus)/1.5f);
             if (SmaugRandom.D100() < chance)
             {
-                secondAttack.LearnFromSuccess((PlayerInstance)ch);
+                secondAttack.LearnFromSuccess(ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             } 
             else 
-                secondAttack.LearnFromFailure((PlayerInstance)ch);
+                secondAttack.LearnFromFailure(ch);
 
             SkillData thirdAttack = DatabaseManager.Instance.GetEntity<SkillData>("third attack");
             chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int)thirdAttack.ID) + (dualBonus*1.5f)) / 2);
             if (SmaugRandom.D100() < chance)
             {
-                thirdAttack.LearnFromSuccess((PlayerInstance)ch);
+                thirdAttack.LearnFromSuccess(ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             }
             else
-                thirdAttack.LearnFromFailure((PlayerInstance)ch);
+                thirdAttack.LearnFromFailure(ch);
 
             SkillData fourthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fourth attack");
             chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fourthAttack.ID) + (dualBonus*2)) / 3;
             if (SmaugRandom.D100() < chance)
             {
-                fourthAttack.LearnFromSuccess((PlayerInstance)ch);
+                fourthAttack.LearnFromSuccess(ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             }
             else
-                fourthAttack.LearnFromFailure((PlayerInstance)ch);
+                fourthAttack.LearnFromFailure(ch);
 
             SkillData fifthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fifth attack");
             chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fifthAttack.ID) + (dualBonus*3)) / 4;
             if (SmaugRandom.D100() < chance)
             {
-                fifthAttack.LearnFromSuccess((PlayerInstance)ch);
+                fifthAttack.LearnFromSuccess(ch);
                 retcode = one_hit(ch, victim, dt);
                 if (retcode != ReturnTypes.None && ch.GetMyTarget() != victim)
                     return retcode;
             }
             else
-                fifthAttack.LearnFromFailure((PlayerInstance)ch);
+                fifthAttack.LearnFromFailure(ch);
 
             retcode = ReturnTypes.None;
 
@@ -399,11 +392,10 @@ namespace SmaugCS
                 return new Tuple<int, int>(0, -1);
 
             int bonus = 0;
-            int sn = -1;
 
             DamageTypes damageType = Realm.Library.Common.EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]);
             LookupSkillAttribute attrib = damageType.GetAttribute<LookupSkillAttribute>();
-            sn = (int) DatabaseManager.Instance.GetEntity<SkillData>(attrib.Skill).ID;
+            int sn = (int) DatabaseManager.Instance.GetEntity<SkillData>(attrib.Skill).ID;
 
             if (sn != -1)
                 bonus = (Macros.LEARNED(ch, sn) - 50)/10;
@@ -416,18 +408,16 @@ namespace SmaugCS
 
         public static int off_shld_lvl(CharacterInstance ch, CharacterInstance victim)
         {
-            int lvl = 0;
+            int lvl;
 
             if (!ch.IsNpc())
             {
                 lvl = 1.GetHighestOfTwoNumbers(ch.Level - 10/2);
-                if (SmaugRandom.D100() + (victim.Level - lvl) < 40)
-                {
-                    if (ch.CanPKill() && victim.CanPKill())
-                        return ch.Level;
-                    return lvl;
-                }
-                return 0;
+                if (SmaugRandom.D100() + (victim.Level - lvl) >= 40) return 0;
+
+                if (ch.CanPKill() && victim.CanPKill())
+                    return ch.Level;
+                return lvl;
             }
 
             lvl = ch.Level/2;
@@ -575,25 +565,13 @@ namespace SmaugCS
             // Weapon proficiency bonus
             victimArmorClass += proficiencyBonus;
 
-            int diceroll = 0;
+            int diceroll;
             while ((diceroll = SmaugRandom.Bits(5)) >= 20)
                 ;
 
             if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_00 - victimArmorClass))
-            {
-                // Miss!
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
-                if (skill == null)
-                    throw new ObjectNotFoundException("Skill 'poison' not found");
+                return OneHitMiss(ch, victim, sn, damageType);
 
-                // TODO Do something with poison skill
-                skill.LearnFromFailure((PlayerInstance)ch);
-                ch.CauseDamageTo(victim, 0, damageType);
-                // TODO Tail_chain?
-                return ReturnTypes.None;
-            }
-
-            // HIt!
             int damage = wield == null
                 ? SmaugRandom.Roll(ch.BareDice.NumberOf, ch.BareDice.SizeOf) + ch.DamageRoll.Bonus
                 : SmaugRandom.Between(wield.Value[1], wield.Value[2]);
@@ -605,16 +583,7 @@ namespace SmaugCS
 
             damage = ModifyDamageByFightingStyle(victim, damage);
             damage = ModifyDamageByFightingStyle(ch, damage);
-
-            SkillData dmgSkill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
-            if (dmgSkill == null)
-                throw new ObjectNotFoundException("Skill 'enhanced damage' not found");
-
-            if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Learned[(int)dmgSkill.ID] > 0)
-            {
-                damage += damage*Macros.LEARNED(ch, (int) dmgSkill.ID);
-                dmgSkill.LearnFromSuccess((PlayerInstance)ch);
-            }
+            damage = CalculateEnhancedDamage(ch, damage);
 
             if (!victim.IsAwake())
                 damage *= 2;
@@ -625,63 +594,17 @@ namespace SmaugCS
             if (damage <= 0)
                 damage = 1;
 
-            int plusRIS = 0;
-            if (wield != null)
-            {
-                damage = wield.ExtraFlags.IsSet(ItemExtraFlags.Magical)
-                    ? victim.ModifyDamageWithResistance(damage, ResistanceTypes.Magic)
-                    : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
-
-                // Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
-                plusRIS = wield.GetHitRoll();
-            }
-            else
-                damage = victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
-
-            // Check for RIS_PLUS
-            if (damage > 0)
-            {
-                if (plusRIS > 0)
-                    plusRIS = (int) ResistanceTypes.Plus1 << plusRIS.GetLowestOfTwoNumbers(7);
-
-                int imm = -1, res = -1, sus = 1;
-
-                // find the high resistance
-                for (int x = (int) ResistanceTypes.Plus1; x <= (int) ResistanceTypes.Plus6; x <<= 1)
-                {
-                    if (victim.Immunity.IsSet(x))
-                        imm = x;
-                    if (victim.Resistance.IsSet(x))
-                        res = x;
-                    if (victim.Susceptibility.IsSet(x))
-                        sus = x;
-                }
-
-                int mod = 10;
-                if (imm >= plusRIS)
-                    mod -= 10;
-                if (res >= plusRIS)
-                    mod -= 2;
-                if (sus <= plusRIS)
-                    mod += 2;
-
-                // check if immune
-                if (mod <= 0)
-                    damage = -1;
-                if (mod != 10)
-                    damage = (damage*mod)/10;
-            }
+            damage = ModifyDamageForResistancesAndVulnerabilities(victim, wield, damage);
 
             if (sn != -1)
             {
                 SkillData sk = DatabaseManager.Instance.SKILLS.Get(sn);
                 if (damage > 0)
-                    sk.LearnFromSuccess((PlayerInstance)ch);
+                    sk.LearnFromSuccess(ch);
                 else 
-                    sk.LearnFromFailure((PlayerInstance)ch);
+                    sk.LearnFromFailure(ch);
             }
 
-            // immune to damage
             if (damage == -1)
             {
                 SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
@@ -785,6 +708,84 @@ namespace SmaugCS
             return 0;
         }
 
+        private static int ModifyDamageForResistancesAndVulnerabilities(CharacterInstance victim, ObjectInstance wield,
+            int damage)
+        {
+            int plusRIS = 0;
+            if (wield != null)
+            {
+                damage = wield.ExtraFlags.IsSet(ItemExtraFlags.Magical)
+                    ? victim.ModifyDamageWithResistance(damage, ResistanceTypes.Magic)
+                    : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
+
+                // Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
+                plusRIS = wield.GetHitRoll();
+            }
+            else
+                damage = victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
+
+            // Check for RIS_PLUS
+            if (damage > 0)
+            {
+                if (plusRIS > 0)
+                    plusRIS = (int) ResistanceTypes.Plus1 << plusRIS.GetLowestOfTwoNumbers(7);
+
+                int imm = -1, res = -1, sus = 1;
+
+                // find the high resistance
+                for (int x = (int) ResistanceTypes.Plus1; x <= (int) ResistanceTypes.Plus6; x <<= 1)
+                {
+                    if (victim.Immunity.IsSet(x))
+                        imm = x;
+                    if (victim.Resistance.IsSet(x))
+                        res = x;
+                    if (victim.Susceptibility.IsSet(x))
+                        sus = x;
+                }
+
+                int mod = 10;
+                if (imm >= plusRIS)
+                    mod -= 10;
+                if (res >= plusRIS)
+                    mod -= 2;
+                if (sus <= plusRIS)
+                    mod += 2;
+
+                // check if immune
+                if (mod <= 0)
+                    damage = -1;
+                if (mod != 10)
+                    damage = (damage*mod)/10;
+            }
+            return damage;
+        }
+
+        private static int CalculateEnhancedDamage(CharacterInstance ch, int damage)
+        {
+            SkillData dmgSkill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
+            if (dmgSkill == null)
+                throw new ObjectNotFoundException("Skill 'enhanced damage' not found");
+
+            if (!ch.IsNpc() && ((PlayerInstance) ch).GetLearned((int) dmgSkill.ID) > 0)
+            {
+                damage += damage*Macros.LEARNED(ch, (int) dmgSkill.ID);
+                dmgSkill.LearnFromSuccess(ch);
+            }
+            return damage;
+        }
+
+        private static ReturnTypes OneHitMiss(CharacterInstance ch, CharacterInstance victim, int sn, int damageType)
+        {
+            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            if (skill == null)
+                throw new ObjectNotFoundException(string.Format("Skill {0} not found", sn));
+
+            skill.LearnFromFailure(ch);
+            ch.CauseDamageTo(victim, 0, damageType);
+            // TODO Tail_chain?
+            return ReturnTypes.None;
+        }
+
         public static ReturnTypes projectile_hit(CharacterInstance ch, CharacterInstance victim, ObjectInstance wield,
             ObjectInstance projectile, short dist)
         {
@@ -822,8 +823,8 @@ namespace SmaugCS
 
             int diceroll = SmaugRandom.D20();
             if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_0 - victimArmorClass))
-                return ProjectileMissed(ch, profBonus.Item2, projectile, victim, dt, profBonus.Item1);
-            return ProjectileHit(ch, victim, projectile, wield, bonus, dt, profBonus.Item1);
+                return ProjectileMissed(ch, profBonus.Item2, projectile, victim, dt);
+            return ProjectileHit(ch, victim, projectile, wield, bonus, profBonus.Item2);
         }
 
         private static Tuple<int, int> CalculateProjectileBonus(ObjectInstance projectile)
@@ -878,10 +879,13 @@ namespace SmaugCS
         }
 
         private static ReturnTypes ProjectileMissed(CharacterInstance ch, int proficiencySkillNumber,
-            ObjectInstance projectile, CharacterInstance victim, int dt, int sn)
+            ObjectInstance projectile, CharacterInstance victim, int dt)
         {
-            // if (proficiencySkillNumber != -1)
-            //skills.learn_from_failure(ch, proficiencySkillNumber);
+            if (proficiencySkillNumber > 0)
+            {
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(proficiencySkillNumber);
+                skill.LearnFromFailure(ch);
+            }
 
             if (SmaugRandom.D100() < 50)
                 projectile.Extract();
@@ -900,7 +904,7 @@ namespace SmaugCS
         }
 
         private static ReturnTypes ProjectileHit(CharacterInstance ch, CharacterInstance victim,
-            ObjectInstance projectile, ObjectInstance wield, int bonus, int dt, int sn)
+            ObjectInstance projectile, ObjectInstance wield, int bonus, int proficiencySkillNumber, int dt)
         {
             int damage = wield == null ? bonus : SmaugRandom.Between(wield.Value[1], wield.Value[2]) + (bonus/10);
             damage += ch.GetDamroll();
@@ -914,7 +918,7 @@ namespace SmaugCS
                 if (((PlayerInstance)ch).PlayerData.Learned[skill.ID] > 0)
                 {
                     damage += damage*Macros.LEARNED(ch, (int) skill.ID);
-                    skill.LearnFromSuccess((PlayerInstance)ch);
+                    skill.LearnFromSuccess(ch);
                 }
             }
 
@@ -933,19 +937,64 @@ namespace SmaugCS
             if (wield != null)
                 plusris = wield.GetHitRoll();
 
-            int imm, res, sus;
+            ResistanceTypes imm, res, sus;
             if (damage > 0)
             {
-                if (plusris > 0)
-                    plusris = (int) ResistanceTypes.Plus1 << plusris.GetLowestOfTwoNumbers(7);
-
-                imm = res = -1;
-                sus = 1;
-
-
+                // TODO MOdify damage by resistance/immunity/susceptibility
+                // TODO Existing system is GARBAGE
             }
 
-            return ReturnTypes.None;
+            if (proficiencySkillNumber > 0)
+            {
+                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(proficiencySkillNumber);
+                if (damage > 0)
+                    skill.LearnFromSuccess(ch);
+                else 
+                    skill.LearnFromFailure(ch);
+            }
+
+            // TODO Immune to Damage
+
+            ReturnTypes retcode = ch.CauseDamageTo(victim, damage, dt);
+            if (retcode != ReturnTypes.None)
+            {
+                projectile.Extract();
+                return retcode;
+            }
+
+            if (ch.CharDied())
+            {
+                projectile.Extract();
+                return ReturnTypes.CharacterDied;
+            }
+
+            if (victim.CharDied())
+            {
+                projectile.Extract();
+                return ReturnTypes.VictimDied;
+            }
+
+            retcode = ReturnTypes.None;
+            if (damage == 0)
+            {
+                if (SmaugRandom.D100() < 50)
+                    projectile.Extract();
+                else
+                {
+                    if (projectile.InObject != null)
+                        projectile.FromObject(projectile);
+                    if (projectile.CarriedBy != null) 
+                        projectile.FromCharacter();
+                    victim.CurrentRoom.ToRoom(projectile);
+                }
+                return retcode;
+            }
+
+            // TODO Weapon sPells
+
+            projectile.Extract();
+            // TODO tail_chain
+            return retcode;
         }
 
         private static int ModifyDamageByFightingStyle(CharacterInstance victim, int damage)

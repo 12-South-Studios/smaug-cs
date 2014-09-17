@@ -136,7 +136,7 @@ namespace Realm.Library.Common
                     continue;
                 }
 
-                section.Lines.ToList().Add(line);
+                section.AddLine(line);
             }
             return sections;
         }

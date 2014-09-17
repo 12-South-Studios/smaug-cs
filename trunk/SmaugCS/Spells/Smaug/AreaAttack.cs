@@ -12,6 +12,7 @@ namespace SmaugCS.Spells.Smaug
 {
     public static class AreaAttack
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_area_attack(int sn, int level, CharacterInstance ch, object vo)
         {
             SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
@@ -40,36 +41,7 @@ namespace SmaugCS.Spells.Smaug
                 int damage = GetBaseDamage(level, ch, skill);
 
                 if (saved)
-                {
-                    SpellSaveEffectTypes spellSaveType =
-                        Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(
-                            Macros.SPELL_SAVE(skill));
-                    switch (spellSaveType)
-                    {
-                        case SpellSaveEffectTypes.ThreeQuartersDamage:
-                            damage = GetThreeQuartersDamage(damage);
-                            break;
-
-                        case SpellSaveEffectTypes.HalfDamage:
-                            damage = GetHalfDamage(damage);
-                            break;
-
-                        case SpellSaveEffectTypes.QuarterDamage:
-                            damage = GetQuarterDamage(damage);
-                            break;
-
-                        case SpellSaveEffectTypes.EighthDamage:
-                            damage = GetEighthDamage(damage);
-                            break;
-
-                        case SpellSaveEffectTypes.Absorb:
-                            AbsorbDamage(ch, skill, vch, damage);
-                            continue;
-                        case SpellSaveEffectTypes.Reflect:
-                            if (ReflectDamage(sn, level, ch, vch)) break;
-                            continue;
-                    }
-                }
+                    damage = GetDamageIfSaved(sn, level, ch, skill, vch, damage);
 
                 ReturnTypes retcode = ch.CauseDamageTo(vch, damage, sn);
                 if (retcode == ReturnTypes.None
@@ -83,6 +55,40 @@ namespace SmaugCS.Spells.Smaug
                     break;
             }
             return ReturnTypes.None;
+        }
+
+        private static int GetDamageIfSaved(int sn, int level, CharacterInstance ch, SkillData skill, CharacterInstance vch,
+            int damage)
+        {
+            SpellSaveEffectTypes spellSaveType =
+                Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(
+                    Macros.SPELL_SAVE(skill));
+            switch (spellSaveType)
+            {
+                case SpellSaveEffectTypes.ThreeQuartersDamage:
+                    damage = GetThreeQuartersDamage(damage);
+                    break;
+
+                case SpellSaveEffectTypes.HalfDamage:
+                    damage = GetHalfDamage(damage);
+                    break;
+
+                case SpellSaveEffectTypes.QuarterDamage:
+                    damage = GetQuarterDamage(damage);
+                    break;
+
+                case SpellSaveEffectTypes.EighthDamage:
+                    damage = GetEighthDamage(damage);
+                    break;
+
+                case SpellSaveEffectTypes.Absorb:
+                    AbsorbDamage(ch, skill, vch, damage);
+                    return damage;
+                case SpellSaveEffectTypes.Reflect:
+                    if (ReflectDamage(sn, level, ch, vch)) break;
+                    return damage;
+            }
+            return damage;
         }
 
         private static int GetBaseDamage(int level, CharacterInstance ch, SkillData skill)

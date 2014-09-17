@@ -90,7 +90,7 @@ namespace SmaugCS.Tests
 			Assert.That(result.ShopType, Is.EqualTo(ShopTypes.Item));
 			Assert.That(result.OpenHour, Is.EqualTo(7));
 			Assert.That(result.CloseHour, Is.EqualTo(21));
-			Assert.That(result.ItemTypes.Count, Is.EqualTo(2));
+			Assert.That(result.ItemTypes.Count(), Is.EqualTo(2));
 			Assert.That(result.ItemTypes.Contains(ItemTypes.Armor), Is.True);
 			Assert.That(result.ItemTypes.Contains(ItemTypes.Weapon), Is.True);
 
@@ -590,15 +590,15 @@ namespace SmaugCS.Tests
 			Assert.That(result.Name, Is.EqualTo("elvish"));
 			Assert.That(result.Alphabet, Is.EqualTo("iqqdakvtujfwghepcrslybszoz"));
 
-			Assert.That(result.PreConversion.Count, Is.EqualTo(3));
-			Assert.That(result.PreConversion[0], Is.Not.Null);
-			Assert.That(result.PreConversion[0].OldValue, Is.EqualTo("the hour"));
-			Assert.That(result.PreConversion[0].NewValue, Is.EqualTo("lumenn"));
+			Assert.That(result.PreConversion.Count(), Is.EqualTo(3));
+			Assert.That(result.PreConversion.First(), Is.Not.Null);
+			Assert.That(result.PreConversion.First().OldValue, Is.EqualTo("the hour"));
+			Assert.That(result.PreConversion.First().NewValue, Is.EqualTo("lumenn"));
 
-			Assert.That(result.Conversion.Count, Is.EqualTo(2));
-			Assert.That(result.Conversion[0], Is.Not.Null);
-			Assert.That(result.Conversion[0].OldValue, Is.EqualTo("rr"));
-			Assert.That(result.Conversion[0].NewValue, Is.EqualTo("r"));
+			Assert.That(result.Conversion.Count(), Is.EqualTo(2));
+			Assert.That(result.Conversion.First(), Is.Not.Null);
+			Assert.That(result.Conversion.First().OldValue, Is.EqualTo("rr"));
+			Assert.That(result.Conversion.First().NewValue, Is.EqualTo("r"));
 		}
 		#endregion
 

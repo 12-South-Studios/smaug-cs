@@ -55,6 +55,7 @@ namespace SmaugCS.Extensions
             AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
         };
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void ShowVisibleAffectsOn(this PlayerInstance ch, CharacterInstance victim)
         {
             ATTypes atType = ATTypes.AT_WHITE;

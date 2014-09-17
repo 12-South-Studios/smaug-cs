@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -45,10 +46,7 @@ namespace SmaugCS.Commands.Movement
             {
                 RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Values.Val1) ?? obj.InRoom;
                 if (room == null)
-                {
-                    // TODO Exception, log it!
-                    return true;
-                }
+                    throw new InvalidDataException(string.Format("Room {0} was null", obj.Values.Val1));
 
                 Tuple<DirectionTypes, string> exitDir = GetExitDirectionAndText(obj);
 
@@ -106,31 +104,21 @@ namespace SmaugCS.Commands.Movement
             if (obj.Values.Flags.IsSet(TriggerFlags.D_Down))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.Down, "from below");
             
-            // TODO Exception, log it!
-            return null;
+            throw new InvalidDataException(string.Format("Object {0} has invalid direction", obj.ID));
         }
 
         private static void CreateNewPassage(CharacterInstance ch, ObjectInstance obj, DirectionTypes exitDir)
         {
             if (!obj.Values.Flags.IsSet(TriggerFlags.Passage))
-            {
-                // TODO Exception, log it!
-                return;
-            }
+                throw new InvalidDataException(string.Format("Object {0} is not a passage", obj.ID));
 
             RoomTemplate sourceRoom = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
             if (sourceRoom == null)
-            {
-                // TODO Exception, log it!
-                return;
-            }
+                throw new InvalidDataException(string.Format("Source Room {0} was null", obj.Value[1]));
             
             RoomTemplate destRoom = DatabaseManager.Instance.ROOMS.Get(obj.Value[2]);
             if (destRoom == null)
-            {
-                // TODO Exception, log it!
-                return;
-            }
+                throw new InvalidDataException(string.Format("Destination Room {0} was null", obj.Value[2]));
 
             ExitData exit = db.make_exit(sourceRoom, destRoom, (int)exitDir);
             exit.Key = -1;
@@ -160,10 +148,7 @@ namespace SmaugCS.Commands.Movement
 
             RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
             if (room == null)
-            {
-                // TODO Exception, log it!
-                return;
-            }
+                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value[1]));
 
             foreach(CharacterInstance rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, exit.Keywords, ToTypes.Character);
@@ -187,10 +172,7 @@ namespace SmaugCS.Commands.Movement
 
             RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
             if (room == null)
-            {
-                // TODO Exception, log it!
-                return;
-            }
+                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value[1]));
 
             foreach (CharacterInstance rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d closes.", rch, null, exit.Keywords, ToTypes.Character);
@@ -214,25 +196,16 @@ namespace SmaugCS.Commands.Movement
             {
                 RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]) ?? obj.InRoom;
                 if (room == null)
-                {
-                    // TODO Exception, log it!
-                    return true;
-                }
+                    throw new InvalidDataException(string.Format("Room {0} was null", obj.Value[1]));
 
                 ObjectInstance container =
                     ch.CurrentRoom.Contents.FirstOrDefault(foundObj => foundObj.ObjectIndex.ID == obj.Value[2]);
 
                 if (container == null)
-                {
-                    // TODO Exception, log it!
-                    return true;
-                }
+                    throw new InvalidDataException(string.Format("Container {0} was null", obj.Value[2]));
 
                 if (container.ItemType != ItemTypes.Container)
-                {
-                    // TODO Exception, log it!
-                    return true;
-                }
+                    throw new InvalidDataException(string.Format("Container {0} is not of type 'Container'", container.ID));
 
                 if (obj.Value[3].IsSet( ContainerFlags.Closeable))
                     container.Value[1].ToggleBit( ContainerFlags.Closeable);

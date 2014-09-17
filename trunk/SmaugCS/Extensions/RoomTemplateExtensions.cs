@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
@@ -55,10 +56,7 @@ namespace SmaugCS.Extensions
             RoomTemplate localRoom = room;
 
             if (ch == null)
-            {
-                LogManager.Instance.Bug("%s: NULL ch!", "char_to_room");
-                return;
-            }
+                throw new ArgumentNullException("ch");
 
             if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {

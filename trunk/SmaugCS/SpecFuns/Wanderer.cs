@@ -7,13 +7,14 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
 {
     public static class Wanderer
     {
-        public static bool DoSpecWanderer(MobileInstance ch)
+        public static bool DoSpecWanderer(CharacterInstance ch)
         {
             if (!ch.IsAwake())
                 return false;
@@ -51,7 +52,7 @@ namespace SmaugCS.SpecFuns
                 }
 
                 if (!thrown)
-                    act_obj.wear_obj(ch, trash, false, -1);
+                    ch.WearItem(trash, false, ItemWearFlags.None);
 
                 bool found = false;
                 if (!thrown)
@@ -88,22 +89,8 @@ namespace SmaugCS.SpecFuns
                 if (!noExit && thrown)
                 {
                     handler.set_cur_obj(trash);
-                    if (act_obj.damage_obj(trash) != ReturnTypes.ObjectScrapped)
-                    {
-                        trash.Split();
-                        comm.act(ATTypes.AT_ACTION, "$n growls and throws $p $T.", ch, trash, exit.Direction.GetName(),
-                            ToTypes.Room);
-                        trash.FromCharacter();
-
-                        RoomTemplate oldRoom = ch.CurrentRoom;
-                        RoomTemplate room = exit.GetDestination(DatabaseManager.Instance);
-                        room.ToRoom(trash);
-                        ch.CurrentRoom.FromRoom(ch);
-                        room.ToRoom(ch);
-                        comm.act(ATTypes.AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, ToTypes.Room);
-                        ch.CurrentRoom.FromRoom(ch);
-                        oldRoom.ToRoom(ch);
-                    }
+                    if (trash.DamageObject() != ReturnTypes.ObjectScrapped)
+                        ThrowScrapAtDirection(ch, trash, exit);
                     else
                     {
                         Say.do_say(ch, "This thing is junk!");
@@ -116,6 +103,23 @@ namespace SmaugCS.SpecFuns
             }
 
             return false;
+        }
+
+        private static void ThrowScrapAtDirection(CharacterInstance ch, ObjectInstance trash, ExitData exit)
+        {
+            trash.Split();
+            comm.act(ATTypes.AT_ACTION, "$n growls and throws $p $T.", ch, trash, exit.Direction.GetName(),
+                ToTypes.Room);
+            trash.FromCharacter();
+
+            RoomTemplate oldRoom = ch.CurrentRoom;
+            RoomTemplate room = exit.GetDestination(DatabaseManager.Instance);
+            room.ToRoom(trash);
+            ch.CurrentRoom.FromRoom(ch);
+            room.ToRoom(ch);
+            comm.act(ATTypes.AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, ToTypes.Room);
+            ch.CurrentRoom.FromRoom(ch);
+            oldRoom.ToRoom(ch);
         }
     }
 }

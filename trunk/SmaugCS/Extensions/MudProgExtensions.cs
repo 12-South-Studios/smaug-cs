@@ -1,4 +1,5 @@
 ﻿using System;
+using LuaInterface;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -22,7 +23,7 @@ namespace SmaugCS.Extensions
             {
                 (luaManager ?? LuaManager.Instance).DoLuaScript(mudProg.Script);
             }
-            catch (Exception ex)
+            catch (LuaException ex)
             {
                 (logManager ?? LogManager.Instance).Error(ex);
                 return false;

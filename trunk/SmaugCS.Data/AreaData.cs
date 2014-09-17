@@ -14,11 +14,15 @@ namespace SmaugCS.Data
         public AreaData(long id, string name)
             : base(id, name)
         {
-            Rooms = new List<RoomTemplate>();
+            _rooms = new List<RoomTemplate>();
         }
 
-        [XmlArray("Rooms")]
-        public IEnumerable<RoomTemplate> Rooms { get; set; }
+        private List<RoomTemplate> _rooms;
+
+        public IEnumerable<RoomTemplate> Rooms
+        {
+            get { return _rooms; }
+        }
 
         [XmlIgnore]
         public string Filename { get; set; }
@@ -113,8 +117,8 @@ namespace SmaugCS.Data
 
         public void AddRoom(RoomTemplate room)
         {
-            if (Rooms.All(x => x.ID != room.ID))
-                Rooms.ToList().Add(room);
+            if (_rooms.All(x => x.ID != room.ID))
+                _rooms.Add(room);
         }
 
         public void SetFlags(string flags)

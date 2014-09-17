@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using SmaugCS.Common;
@@ -34,21 +33,21 @@ namespace SmaugCS.SpecFuns
             return true;
         }
 
-        private static readonly Dictionary<int, Tuple<int, string>> SpellLevelLookupTable 
-            = new Dictionary<int, Tuple<int, string>>
+        private static readonly Dictionary<int, SpecFunSpell> SpellLevelLookupTable
+            = new Dictionary<int, SpecFunSpell>
             {
-                {0, new Tuple<int, string>(0, "cause light")},
-                {1, new Tuple<int, string>(3, "cause serious")},
-                {2, new Tuple<int, string>(6, "earthquake")},
-                {3, new Tuple<int, string>(7, "blindness")},
-                {4, new Tuple<int, string>(9, "cause critical")},
-                {5, new Tuple<int, string>(10, "dispel evil")},
-                {6, new Tuple<int, string>(12, "curse")},
-                {7, new Tuple<int, string>(13, "flamestrike")},
-                {8, new Tuple<int, string>(15, "harm")},
-                {9, new Tuple<int, string>(15, "harm")},
-                {10, new Tuple<int, string>(15, "harm")},
-                {-1, new Tuple<int, string>(16, "dispel magic")}
-            }; 
+                {0, new SpecFunSpell {Level = 0, Spell = "cause light"}},
+                {1, new SpecFunSpell {Level = 3, Spell = "cause serious"}},
+                {2, new SpecFunSpell {Level = 6, Spell = "earthquake"}},
+                {3, new SpecFunSpell {Level = 7, Spell = "blindness"}},
+                {4, new SpecFunSpell {Level = 9, Spell = "cause critical"}},
+                {5, new SpecFunSpell {Level = 10, Spell = "dispel evil"}},
+                {6, new SpecFunSpell {Level = 12, Spell = "curse"}},
+                {7, new SpecFunSpell {Level = 13, Spell = "flamestrike"}},
+                {8, new SpecFunSpell {Level = 15, Spell = "harm"}},
+                {9, new SpecFunSpell {Level = 15, Spell = "harm"}},
+                {10, new SpecFunSpell {Level = 15, Spell = "harm"}},
+                {-1, new SpecFunSpell {Level = 16, Spell = "dispel magic"}}
+            };
     }
 }

@@ -59,7 +59,7 @@ namespace SmaugCS.SpecFuns
                        : null;
         }
 
-        public SkillData PickSpell(Dictionary<int, Tuple<int, string>> lookupTable, int characterLevel)
+        public SkillData PickSpell(Dictionary<int, SpecFunSpell> lookupTable, int characterLevel)
         {
             int minLevel = 0;
             string spellName = string.Empty;
@@ -69,13 +69,13 @@ namespace SmaugCS.SpecFuns
                 int bits = SmaugRandom.Bits(4);
                 if (lookupTable.ContainsKey(bits))
                 {
-                    minLevel = lookupTable[bits].Item1;
-                    spellName = lookupTable[bits].Item2;
+                    minLevel = lookupTable[bits].Level;
+                    spellName = lookupTable[bits].Spell;
                 }
                 else
                 {
-                    minLevel = lookupTable[-1].Item1;
-                    spellName = lookupTable[-1].Item2;
+                    minLevel = lookupTable[-1].Level;
+                    spellName = lookupTable[-1].Spell;
                 }
             }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using SmaugCS.Common;
@@ -34,20 +33,20 @@ namespace SmaugCS.SpecFuns
             return true;
         }
 
-        private static readonly Dictionary<int, Tuple<int, string>> SpellLevelLookupTable 
-            = new Dictionary<int, Tuple<int, string>>
+        private static readonly Dictionary<int, SpecFunSpell> SpellLevelLookupTable
+            = new Dictionary<int, SpecFunSpell>
             {
-                {0, new Tuple<int, string>(0, "magic missile")},
-                {1, new Tuple<int, string>(3, "chill touch")},
-                {2, new Tuple<int, string>(7, "weaken")},
-                {3, new Tuple<int, string>(8, "galvanic whip")},
-                {4, new Tuple<int, string>(11, "colour spray")},
-                {5, new Tuple<int, string>(12, "weaken")},
-                {6, new Tuple<int, string>(13, "energy drain")},
-                {7, new Tuple<int, string>(14, "spectral furor")},
-                {8, new Tuple<int, string>(15, "fireball")},
-                {9, new Tuple<int, string>(15, "fireball")},
-                {-1, new Tuple<int, string>(20, "acid blast")}
+                {0, new SpecFunSpell {Level = 0, Spell = "magic missile"}},
+                {1, new SpecFunSpell {Level = 3, Spell = "chill touch"}},
+                {2, new SpecFunSpell {Level = 7, Spell = "weaken"}},
+                {3, new SpecFunSpell {Level = 8, Spell = "galvanic whip"}},
+                {4, new SpecFunSpell {Level = 11, Spell = "colour spray"}},
+                {5, new SpecFunSpell {Level = 12, Spell = "weaken"}},
+                {6, new SpecFunSpell {Level = 13, Spell = "energy drain"}},
+                {7, new SpecFunSpell {Level = 14, Spell = "spectral furor"}},
+                {8, new SpecFunSpell {Level = 15, Spell = "fireball"}},
+                {9, new SpecFunSpell {Level = 15, Spell = "fireball"}},
+                {-1, new SpecFunSpell {Level = 20, Spell = "acid blast"}}
             };
     }
 }

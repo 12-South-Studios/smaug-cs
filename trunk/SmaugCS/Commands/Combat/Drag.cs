@@ -31,18 +31,17 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfEquivalent(pch, pch, victim,
                 "You take yourself by the scruff of your neck, but go nowhere.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "You can only drag characters.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, !victim.Act.IsSet(PlayerFlags.ShoveDrag)
-                || (!victim.IsNpc() && !((PlayerInstance) victim).PlayerData.Flags.IsSet(PCFlags.Deadly)),
+            if (CheckFunctions.CheckIfTrue(ch,
+                !victim.Act.IsSet(PlayerFlags.ShoveDrag) || (!victim.IsNpc() && !victim.IsDeadly()),
                 "That character doesn't seem to appreciate your attentions.")) return;
             if (CheckFunctions.CheckIfTrue(ch, victim.HasTimer(TimerTypes.PKilled),
                 "You can't drag that player right now.")) return;
             if (CheckFunctions.CheckIf(ch, HelperFunctions.IsFighting,
                 "You try, but can't get close enough.", new List<object> {ch})) return;
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly)
-                                               && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly),
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !victim.IsDeadly() && ch.IsDeadly(),
                 "You can't drag a deadly character.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly) 
-                && (int)ch.CurrentPosition > 3, "They don't seem to need your assistance.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !ch.IsDeadly() && (int)ch.CurrentPosition > 3, 
+                "They don't seem to need your assistance.")) return;
 
             string secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Drag them in which direction?")) return;
@@ -56,11 +55,7 @@ namespace SmaugCS.Commands.Combat
             DirectionTypes exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
             ExitData exit = ch.CurrentRoom.GetExit(exitDir);
             if (CheckFunctions.CheckIfNullObject(ch, exit, "There's no exit in that direction.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, exit.Flags.IsSet(ExitFlags.Closed)
-                                               &&
-                                               (!victim.IsAffected(AffectedByTypes.PassDoor) ||
-                                                exit.Flags.IsSet(ExitFlags.NoPassDoor)),
-                "There's no exit in that direction.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, !IsPassable(exit, victim), "There's no exit in that direction.")) return;
 
             RoomTemplate toRoom = exit.GetDestination();
             if (CheckFunctions.CheckIfSet(ch, toRoom.Flags, RoomFlags.Death,
@@ -73,11 +68,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            int chance = GetChanceByCharacterClass(ch);
-            chance += (ch.GetCurrentStrength() - 15)*3;
-            chance += (ch.Level - victim.Level);
-            chance += GetBonusByCharacterRace(ch);
-
+            int chance = CalculateChanceToDrag(ch, victim);
             if (CheckFunctions.CheckIfTrue(ch, chance < SmaugRandom.D100(), "You failed."))
             {
                 victim.CurrentPosition = PositionTypes.Standing;
@@ -86,22 +77,44 @@ namespace SmaugCS.Commands.Combat
 
             if ((int) victim.CurrentPosition < (int) PositionTypes.Standing)
             {
-                PositionTypes temp = victim.CurrentPosition;
-                victim.CurrentPosition = PositionTypes.Drag;
-
-                comm.act(ATTypes.AT_ACTION, "You drag $M into the next room.", ch, victim, null, ToTypes.Character);
-                comm.act(ATTypes.AT_ACTION, "$n grabs your hair and drags you.", ch, victim, null, ToTypes.Victim);
-                Move.move_char(victim, exit, 0);
-
-                if (!victim.CharDied())
-                    victim.CurrentPosition = temp;
-
-                Move.move_char(ch, exit, 0);
-                Macros.WAIT_STATE(ch, 12);
+                DragIntoNextRoom(ch, victim, exit);
                 return;
             }
 
             color.send_to_char("You cannot do that to someone who is standing.", ch);
+        }
+
+        private static bool IsPassable(ExitData exit, CharacterInstance victim)
+        {
+            return exit.Flags.IsSet(ExitFlags.Closed)
+                   &&
+                   (!victim.IsAffected(AffectedByTypes.PassDoor) ||
+                    exit.Flags.IsSet(ExitFlags.NoPassDoor));
+        }
+
+        private static int CalculateChanceToDrag(CharacterInstance ch, CharacterInstance victim)
+        {
+            int chance = GetChanceByCharacterClass(ch);
+            chance += (ch.GetCurrentStrength() - 15)*3;
+            chance += (ch.Level - victim.Level);
+            chance += GetBonusByCharacterRace(ch);
+            return chance;
+        }
+
+        private static void DragIntoNextRoom(CharacterInstance ch, CharacterInstance victim, ExitData exit)
+        {
+            PositionTypes temp = victim.CurrentPosition;
+            victim.CurrentPosition = PositionTypes.Drag;
+
+            comm.act(ATTypes.AT_ACTION, "You drag $M into the next room.", ch, victim, null, ToTypes.Character);
+            comm.act(ATTypes.AT_ACTION, "$n grabs your hair and drags you.", ch, victim, null, ToTypes.Victim);
+            Move.move_char(victim, exit, 0);
+
+            if (!victim.CharDied())
+                victim.CurrentPosition = temp;
+
+            Move.move_char(ch, exit, 0);
+            Macros.WAIT_STATE(ch, 12);
         }
 
         private static int GetChanceByCharacterClass(CharacterInstance ch)

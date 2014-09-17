@@ -44,7 +44,7 @@ namespace SmaugCS.Commands.Objects
             firstArg = firstArg.ParseWord(2, ".");
 
             if (number > 0 && (firstArg.EqualsIgnoreCase("coins") || firstArg.EqualsIgnoreCase("coin")))
-                DropCoins(ch, number, firstArg);
+                DropCoins(ch, number);
             else if (number <= 1 && !firstArg.EqualsIgnoreCase("all") && !firstArg.StartsWithIgnoreCase("all."))
                 DropObject(ch, firstArg);
             else
@@ -54,7 +54,7 @@ namespace SmaugCS.Commands.Objects
                 save.save_char_obj(ch);
         }
 
-        private static void DropCoins(CharacterInstance ch, int number, string firstArg)
+        private static void DropCoins(CharacterInstance ch, int number)
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.CurrentCoin < number, "You haven't got that many coins.")) return;
 

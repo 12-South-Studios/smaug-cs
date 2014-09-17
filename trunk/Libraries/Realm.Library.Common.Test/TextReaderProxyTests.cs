@@ -91,15 +91,21 @@ namespace Realm.Library.Common.Test
         [Category("Object Tests")]
         public void ReadSections_ReturnsValidList()
         {
-            TextReaderProxy proxy =
-                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
+            var proxy =
+                new TextReaderProxy(
+                    new StringReader(
+                        "#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
 
-            IEnumerable<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" }, null, "#end");
+            var results = proxy.ReadSections(new List<string> {"#"}, new List<string> {"*"}, null, "#end");
 
             Assert.That(results, Is.Not.Null);
-            Assert.That(results.Count(), Is.EqualTo(2));
-            Assert.That(results.First().Header, Is.EqualTo("common"));
-            Assert.That(results.First().Lines.Count(), Is.EqualTo(3));
+
+            var textSections = results as IList<TextSection> ?? results.ToList();
+            Assert.That(textSections.Count(), Is.EqualTo(2));
+
+            TextSection section = textSections.First();
+            Assert.That(section.Header, Is.EqualTo("common"));
+            Assert.That(section.Lines.Count(), Is.EqualTo(3));
         }
 
         [Test]
