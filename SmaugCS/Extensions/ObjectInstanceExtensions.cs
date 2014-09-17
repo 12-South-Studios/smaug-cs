@@ -11,6 +11,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Exceptions;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -20,6 +21,123 @@ namespace SmaugCS.Extensions
 {
     public static class ObjectInstanceExtensions
     {
+        public static ReturnTypes DamageObject(this ObjectInstance obj)
+        {
+            CharacterInstance ch = obj.CarriedBy;
+            obj.Split();
+
+            if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))))
+                comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
+            else if (obj.InRoom != null && obj.InRoom.Persons.First() != null)
+            {
+                ch = obj.InRoom.Persons.First();
+                comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Room);
+                comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
+                ch = null;
+            }
+
+            if (obj.ItemType != ItemTypes.Light)
+                mud_prog.oprog_damage_trigger(ch, obj);
+            else if (!ch.IsInArena())
+                mud_prog.oprog_damage_trigger(ch, obj);
+
+            if (handler.obj_extracted(obj))
+                return handler.GlobalObjectCode;
+
+            ReturnTypes returnVal;
+
+            switch (obj.ItemType)
+            {
+                default:
+                    ObjectFactory.CreateScraps(obj);
+                    returnVal = ReturnTypes.ObjectScrapped;
+                    break;
+                case ItemTypes.Container:
+                case ItemTypes.KeyRing:
+                case ItemTypes.Quiver:
+                    returnVal = DamageContainer(obj, ch);
+                    break;
+                case ItemTypes.Light:
+                    returnVal = DamageLight(obj, ch);
+                    break;
+                case ItemTypes.Armor:
+                    returnVal = DamageArmor(obj, ch);
+                    break;
+                case ItemTypes.Weapon:
+                    returnVal = DamageWeapon(obj, ch);
+                    break;
+            }
+
+            if (ch != null)
+                save.save_char_obj(ch);
+
+            return returnVal;
+        }
+
+        private static ReturnTypes DamageWeapon(ObjectInstance obj, CharacterInstance ch)
+        {
+            if (--obj.Values.Condition <= 0)
+            {
+                if (!ch.IsPKill() && !ch.IsInArena())
+                {
+                    ObjectFactory.CreateScraps(obj);
+                    return ReturnTypes.ObjectScrapped;
+                }
+                obj.Values.Condition = 1;
+            }
+            return ReturnTypes.None;
+        }
+
+        private static ReturnTypes DamageArmor(ObjectInstance obj, CharacterInstance ch)
+        {
+            if (ch != null && obj.Values.CurrentAC >= 1)
+                ch.ArmorClass += obj.ApplyArmorClass;
+
+            if (--obj.Values.CurrentAC <= 0)
+            {
+                if (!ch.IsPKill() && !ch.IsInArena())
+                {
+                    ObjectFactory.CreateScraps(obj);
+                    return ReturnTypes.ObjectScrapped;
+                }
+
+                obj.Values.CurrentAC = 1;
+                ch.ArmorClass -= obj.ApplyArmorClass;
+            }
+            else if (ch != null && obj.Values.CurrentAC >= 1)
+                ch.ArmorClass -= obj.ApplyArmorClass;
+
+            return ReturnTypes.None;
+        }
+
+        private static ReturnTypes DamageLight(ObjectInstance obj, CharacterInstance ch)
+        {
+            if (--obj.Values.CurrentAC <= 0)
+            {
+                if (!ch.IsInArena())
+                {
+                    ObjectFactory.CreateScraps(obj);
+                    return ReturnTypes.ObjectScrapped;
+                }
+                obj.Values.CurrentAC = 1;
+            }
+            return ReturnTypes.None;
+        }
+
+        private static ReturnTypes DamageContainer(ObjectInstance obj, CharacterInstance ch)
+        {
+            if (--obj.Values.Condition <= 0)
+            {
+                if (!ch.IsInArena())
+                {
+                    ObjectFactory.CreateScraps(obj);
+                    return ReturnTypes.ObjectScrapped;
+                }
+                obj.Values.Condition = 1;
+            }
+            return ReturnTypes.None;
+        }
+
         public static int GetArmorRepairCost(this ObjectInstance obj, int baseCost)
         {
             int cost = baseCost;
@@ -61,7 +179,7 @@ namespace SmaugCS.Extensions
                 && obj1.Description.EqualsIgnoreCase(obj2.Description)
                 && obj1.Owner.EqualsIgnoreCase(obj2.Owner)
                 && obj1.ItemType == obj2.ItemType
-                //&& obj1.ExtraFlags.SameBits(obj2.ExtraFlags)
+                && obj1.ExtraFlags == obj2.ExtraFlags
                 && obj1.MagicFlags == obj2.MagicFlags
                 && obj1.WearFlags == obj2.WearFlags
                 && obj1.WearLocation == obj2.WearLocation
@@ -131,8 +249,6 @@ namespace SmaugCS.Extensions
             handler.queue_extracted_obj(obj);
 
             obj.ObjectIndex.Count -= obj.Count;
-            db.NumberOfObjectsLoaded -= obj.Count;
-            --db.PhysicalObjects;
 
             if (obj == handler.CurrentObject)
             {

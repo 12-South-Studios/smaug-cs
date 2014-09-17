@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmaugCS.News
 {
-    class SqlProcedureStatics
+    public static class SqlProcedureStatics
     {
     }
 }

@@ -7,6 +7,7 @@ namespace SmaugCS.Commands.Movement
 {
     public static class Sit
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_sit(CharacterInstance ch, string argument)
         {
             if (ch.CurrentPosition == PositionTypes.Sleeping)

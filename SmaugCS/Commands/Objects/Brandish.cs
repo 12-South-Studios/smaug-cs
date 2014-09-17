@@ -12,6 +12,7 @@ namespace SmaugCS.Commands.Objects
 {
     public static class Brandish
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_brandish(CharacterInstance ch, string argument)
         {
             ObjectInstance obj = ch.GetEquippedItem(WearLocations.Hold);

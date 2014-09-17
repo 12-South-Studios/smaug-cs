@@ -11,6 +11,9 @@ namespace SmaugCS.Ban
     {
         public override void Load()
         {
+            Kernel.Bind<ITimer>().To<CommonTimer>().Named("BanExpireTimer")
+                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("BanExpireFrequencyMS"));
+
             Kernel.Bind<IBanManager>().To<BanManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())

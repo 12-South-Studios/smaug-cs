@@ -25,7 +25,7 @@ namespace SmaugCS.Data
         [XmlElement("LiquidType")]
         public LiquidTypes Type { get; set; }
 
-        public Dictionary<ConditionTypes, int> Mods { get; set; }
+        public Dictionary<ConditionTypes, int> Mods { get; private set; }
 
 
         public void SetType(string type)
@@ -33,6 +33,7 @@ namespace SmaugCS.Data
             Type = EnumerationExtensions.GetEnumIgnoreCase<LiquidTypes>(type);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray")]
         public void AddMods(int mod1, int mod2, int mod3, int mod4)
         {
             Mods[ConditionTypes.Drunk] = mod1;

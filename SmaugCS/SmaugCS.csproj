@@ -123,7 +123,9 @@
     <Compile Include="Commands\Polymorph\Unmorph.cs" />
     <Compile Include="Commands\Polymorph\Morph.cs" />
     <Compile Include="Commands\Track.cs" />
+    <Compile Include="Exceptions\ObjectAlreadyEquippedException.cs" />
     <Compile Include="Extensions\Character\Affect.cs" />
+    <Compile Include="Extensions\Character\Items.cs" />
     <Compile Include="Extensions\DescriptorExtensions.cs" />
     <Compile Include="Extensions\Player\Condition.cs" />
     <Compile Include="Extensions\Character\Damage.cs" />
@@ -138,8 +140,10 @@
     <Compile Include="Extensions\Character\Timer.cs" />
     <Compile Include="Extensions\Character\Traps.cs" />
     <Compile Include="Extensions\Player\PlayerInstanceExtensions.cs" />
+    <Compile Include="Extensions\GameManagerExtensions.cs" />
     <Compile Include="LuaHelpers\LuaMudProgFunctions.cs" />
-    <Compile Include="ObjectAlreadyExtractedException.cs" />
+    <Compile Include="Exceptions\ObjectNotCarriedByCharacterException.cs" />
+    <Compile Include="Exceptions\ObjectAlreadyExtractedException.cs" />
     <Compile Include="Repositories\TypeMapAttribute.cs" />
     <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
     <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
@@ -268,7 +272,6 @@
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Interfaces\ICalendarManager.cs" />
     <Compile Include="Interfaces\IDatabaseManager.cs" />
-    <Compile Include="Interfaces\IGameManager.cs" />
     <Compile Include="Interfaces\ITimerManager.cs" />
     <Compile Include="Managers\LuaManager.cs" />
     <Compile Include="Repositories\RepositoryTypes.cs" />
@@ -309,6 +312,7 @@
     <Compile Include="SpecFuns\Janitor.cs" />
     <Compile Include="SpecFuns\Mayor.cs" />
     <Compile Include="SpecFuns\Poison.cs" />
+    <Compile Include="SpecFuns\SpecFunSpell.cs" />
     <Compile Include="SpecFuns\Thief.cs" />
     <Compile Include="SpecFuns\Wanderer.cs" />
     <Compile Include="Spells\Smaug\Affect.cs" />
@@ -970,7 +974,7 @@
       <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
       <Name>Realm.Library.Patterns.Singleton</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
+    <ProjectReference Include="..\Libraries\SmallDBConnectivity\SmallDBConnectivity.csproj">
       <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
       <Name>SmallDBConnectivity</Name>
     </ProjectReference>

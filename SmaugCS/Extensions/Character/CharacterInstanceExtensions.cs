@@ -15,6 +15,7 @@ using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
+using SmaugCS.Exceptions;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
@@ -25,6 +26,17 @@ namespace SmaugCS.Extensions
 {
     public static class CharacterInstanceExtensions
     {
+        public static bool IsDeadly(this CharacterInstance ch)
+        {
+            if (ch.IsNpc()) return false;
+
+            var instance = ch as PlayerInstance;
+            if (instance == null) return false;
+
+            PlayerInstance player = instance;
+            return player.PlayerData != null && player.PlayerData.Flags.IsSet(PCFlags.Deadly);
+        }
+
         public static bool IsBlind(this CharacterInstance ch)
         {
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
@@ -141,10 +153,7 @@ namespace SmaugCS.Extensions
             }
 
             if (ch.IsNpc())
-            {
-                --((MobileInstance)ch).MobIndex.Count;
-                --db.NumberOfMobsLoaded;
-            }
+                --((MobileInstance) ch).MobIndex.Count;
 
             if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor != null && ((PlayerInstance)ch).Descriptor.Original != null)
                 Return.do_return(ch, "");
@@ -176,7 +185,7 @@ namespace SmaugCS.Extensions
         public static bool Chance(this CharacterInstance ch, int percent)
         {
             return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
-                   (((PlayerInstance)ch).IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent;
+                   (ch.IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent;
         }
 
         public static int GetVampArmorClass(this CharacterInstance ch, IGameManager gameManager = null)
@@ -204,6 +213,7 @@ namespace SmaugCS.Extensions
             return CanUseSkill(ch, percent, skill);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static bool CanUseSkill(this CharacterInstance ch, int percent, SkillData skill)
         {
             bool check = false;
@@ -339,10 +349,10 @@ namespace SmaugCS.Extensions
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral) &&
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.Death) &&
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.Prototype) && victim.Level < (ch.Level + 15) &&
-                   (!((PlayerInstance)victim).CanPKill() || ch.IsNpc() || ((PlayerInstance)ch).CanPKill()) &&
+                   (!victim.CanPKill() || ch.IsNpc() || ch.CanPKill()) &&
                    (!victim.IsNpc() || !victim.Act.IsSet(ActFlags.Prototype)) &&
                    (!victim.IsNpc() || !victim.SavingThrows.CheckSaveVsSpellStaff(ch.Level, victim)) &&
-                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) || !((PlayerInstance)ch).IsPKill());
+                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) || !ch.IsPKill());
         }
 
         public static bool CanDrop(this CharacterInstance ch, ObjectInstance obj)
@@ -407,7 +417,7 @@ namespace SmaugCS.Extensions
                 return false;
 
             if (victim.IsNpc() && victim.Act.IsSet(ActFlags.MobInvisibility)
-                && ((PlayerInstance)victim).IsPKill() && victim.Timer > 1 && ((PlayerInstance)victim).Descriptor == null)
+                && victim.IsPKill() && victim.Timer > 1 && ((PlayerInstance)victim).Descriptor == null)
                 return false;
 
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
@@ -427,9 +437,9 @@ namespace SmaugCS.Extensions
                     return false;
             }
 
-            if (((PlayerInstance)victim).IsNotAuthorized())
+            if (victim.IsNotAuthorized())
             {
-                if (((PlayerInstance)ch).IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
+                if (ch.IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
                     return true;
                 if (((PlayerInstance)ch).PlayerData.Council != null && ((PlayerInstance)ch).PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council"))
                     return true;
@@ -478,13 +488,12 @@ namespace SmaugCS.Extensions
             return true;
         }
 
-        public static bool CanWearLayer(this CharacterInstance ch, ObjectInstance obj, int wear_loc)
+        public static bool CanWearLayer(this CharacterInstance ch, ObjectInstance obj, WearLocations location)
         {
             int bitlayers = 0;
             int objlayers = obj.ObjectIndex.Layers;
 
-            foreach (ObjectInstance otmp in ch.Carrying
-                .Where(otmp => (int)otmp.WearLocation == wear_loc))
+            foreach (ObjectInstance otmp in ch.Carrying.Where(otmp => otmp.WearLocation == location))
             {
                 if (otmp.ObjectIndex.Layers == 0)
                     return false;
@@ -499,7 +508,9 @@ namespace SmaugCS.Extensions
 
         public static bool CouldDualWield(this CharacterInstance ch)
         {
-            return ch.IsNpc() || ((PlayerInstance)ch).PlayerData.Learned[DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID] > 0;
+            return ch.IsNpc() ||
+                   ((PlayerInstance) ch).PlayerData.Learned[
+                       DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID] > 0;
         }
 
         public static bool CanDualWield(this CharacterInstance ch)
@@ -550,9 +561,9 @@ namespace SmaugCS.Extensions
                 return false;
             if (ch.Level < morph.level)
                 return false;
-            if (morph.pkill == Program.ONLY_PKILL && !((PlayerInstance)ch).IsPKill())
+            if (morph.pkill == Program.ONLY_PKILL && !ch.IsPKill())
                 return false;
-            if (morph.pkill == Program.ONLY_PEACEFULL && ((PlayerInstance)ch).IsPKill())
+            if (morph.pkill == Program.ONLY_PEACEFULL && ch.IsPKill())
                 return false;
             if (morph.sex != -1 && morph.sex != (int) ch.Gender)
                 return false;
@@ -730,6 +741,7 @@ namespace SmaugCS.Extensions
             return (ch.ExtraFlags == 0 || ch.ExtraFlags.IsSet(part));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static bool IsAffectedBy(this CharacterInstance ch, int sn)
         {
             return ch.Affects.Exists(x => x.SkillNumber == sn);
@@ -854,28 +866,26 @@ namespace SmaugCS.Extensions
             return maxObj;
         }
 
-        public static ObjectInstance GetEquippedItem(this CharacterInstance ch, int location)
-        {
-            WearLocations wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(location);
-            return GetEquippedItem(ch, wearLoc);
-        }
-
         public static int GetEncumberedMove(this CharacterInstance ch, int movement)
         {
-            int max = ch.CanCarryMaxWeight();
-            if (ch.CarryWeight >= max)
-                return Convert.ToInt16(movement * 4);
-            if (ch.CarryWeight >= max * 0.95)
-                return Convert.ToInt16(movement * 3.5);
-            if (ch.CarryWeight >= max * 0.90)
-                return Convert.ToInt16(movement * 3);
-            if (ch.CarryWeight >= max * 0.85)
-                return Convert.ToInt16(movement * 2.5);
-            if (ch.CarryWeight >= max * 0.80)
-                return Convert.ToInt16(movement * 2);
-            if (ch.CarryWeight >= max * 0.75)
-                return Convert.ToInt16(movement * 1.5);
-            return movement;
+            checked
+            {
+                int max = ch.CanCarryMaxWeight();
+
+                if (ch.CarryWeight >= max)
+                    return Convert.ToInt16(movement*4);
+                if (ch.CarryWeight >= max*0.95)
+                    return Convert.ToInt16(movement*3.5);
+                if (ch.CarryWeight >= max*0.90)
+                    return Convert.ToInt16(movement*3);
+                if (ch.CarryWeight >= max*0.85)
+                    return Convert.ToInt16(movement*2.5);
+                if (ch.CarryWeight >= max*0.80)
+                    return Convert.ToInt16(movement*2);
+                if (ch.CarryWeight >= max*0.75)
+                    return Convert.ToInt16(movement*1.5);
+                return movement;
+            }
         }
 
         public static void AdvanceLevel(this PlayerInstance ch, IDatabaseManager databaseManager = null)
@@ -1206,33 +1216,26 @@ namespace SmaugCS.Extensions
             return false;
         }
 
-        public static void Equip(this CharacterInstance ch, ObjectInstance obj, int iWear)
+        public static void Equip(this CharacterInstance ch, ObjectInstance obj, WearLocations wearLoc,
+            IGameManager gameManager = null)
         {
             if (obj.CarriedBy != ch)
-            {
-                LogManager.Instance.Bug("obj not being carried by ch");
-                return;
-            }
+                throw new ObjectNotCarriedByCharacterException("Object {0} is not carried by Character {1}", obj.ID,
+                    ch.ID);
 
-            ObjectInstance temp = ch.GetEquippedItem(iWear);
+            ObjectInstance temp = ch.GetEquippedItem(wearLoc);
             if (temp != null && (temp.ObjectIndex.Layers == 0 || obj.ObjectIndex.Layers == 0))
-            {
-                LogManager.Instance.Bug("already equipped (%d)", iWear);
-                return;
-            }
+                throw new ObjectAlreadyEquippedException("Object {0} is already equipped at {1} by Character {2}",
+                    obj.ID, wearLoc, ch.ID);
 
             obj.Split();
-            if ((obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                 && ch.IsEvil())
-                || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood)
-                    && ch.IsGood())
-                || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && ch.IsNeutral()))
+            if ((obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil) && ch.IsEvil())
+                || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood) && ch.IsGood())
+                || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral) && ch.IsNeutral()))
             {
                 if (handler.LoadingCharacter != ch)
                 {
-                    comm.act(ATTypes.AT_MAGIC, "You are zapped by $p and drop it.", ch, obj, null,
-                             ToTypes.Character);
+                    comm.act(ATTypes.AT_MAGIC, "You are zapped by $p and drop it.", ch, obj, null, ToTypes.Character);
                     comm.act(ATTypes.AT_MAGIC, "$n is zapped by $p and drops it.", ch, obj, null, ToTypes.Room);
                 }
                 if (obj.CarriedBy != null)
@@ -1241,14 +1244,13 @@ namespace SmaugCS.Extensions
                 ch.CurrentRoom.ToRoom(obj);
                 mud_prog.oprog_zap_trigger(ch, obj);
 
-                if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.ZapDrop)
-                    && !ch.CharDied())
+                if ((gameManager ?? GameManager.Instance).GetSaveFlags().IsSet(AutoSaveFlags.ZapDrop) && !ch.CharDied())
                     save.save_char_obj(ch);
                 return;
             }
 
             ch.ArmorClass -= obj.ApplyArmorClass;
-            obj.WearLocation = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(iWear);
+            obj.WearLocation = wearLoc;
             ch.CarryNumber -= obj.GetObjectNumber();
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight -= obj.GetObjectWeight();
@@ -1258,9 +1260,7 @@ namespace SmaugCS.Extensions
             foreach (AffectData affect in obj.Affects)
                 ch.AddAffect(affect);
 
-            if (obj.ItemType == ItemTypes.Light
-                && obj.Value[2] != 0
-                && ch.CurrentRoom != null)
+            if (obj.ItemType == ItemTypes.Light && obj.Values.HoursLeft != 0 && ch.CurrentRoom != null)
                 ++ch.CurrentRoom.Light;
         }
 

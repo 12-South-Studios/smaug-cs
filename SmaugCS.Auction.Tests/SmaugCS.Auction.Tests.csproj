@@ -66,10 +66,6 @@
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
-      <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
-      <Name>SmallDBConnectivity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Auction\SmaugCS.Auction.csproj">
       <Project>{101243bd-e350-43ff-944f-1a5a01d5b0d3}</Project>
       <Name>SmaugCS.Auction</Name>

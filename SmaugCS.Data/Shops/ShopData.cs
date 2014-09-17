@@ -8,9 +8,11 @@ namespace SmaugCS.Data.Shops
     [XmlRoot("Shop")]
     public abstract class ShopData
     {
+        private List<ItemTypes> _itemTypes;
+ 
         public int Keeper { get; set; }
 
-        public List<ItemTypes> ItemTypes { get; set; }
+        public IEnumerable<ItemTypes> ItemTypes { get { return _itemTypes; } }
 
         public int OpenHour { get; set; }
 
@@ -20,14 +22,20 @@ namespace SmaugCS.Data.Shops
 
         protected ShopData()
         {
-            ItemTypes = new List<ItemTypes>();
+            _itemTypes = new List<ItemTypes>();
         }
 
         public void AddItemType(string type)
         {
             ItemTypes itemType = EnumerationExtensions.GetEnumIgnoreCase<ItemTypes>(type);
-            if (!ItemTypes.Contains(itemType))
-                ItemTypes.Add(itemType);
+            if (!_itemTypes.Contains(itemType))
+                _itemTypes.Add(itemType);
+        }
+
+        public void AddItemType(ItemTypes type)
+        {
+            if (!_itemTypes.Contains(type))
+                _itemTypes.Add(type);
         }
     }
 }

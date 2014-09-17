@@ -1,5 +1,4 @@
-﻿using SmaugCS.Commands.Admin;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -24,23 +23,8 @@ namespace SmaugCS.Spells
                 || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch, 
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
-            AffectData af = new AffectData
-            {
-                SkillNumber = sn,
-                Duration = ((4*level)*GameConstants.GetConstant<int>("AffectDurationConversionValue")),
-                Location = ApplyTypes.HitRoll,
-                Modifier = -1
-            };
-            victim.AddAffect(af);
-            
-            af = new AffectData
-            {
-                SkillNumber = sn,
-                Duration = ((4*level)*GameConstants.GetConstant<int>("AffectDurationConversionValue")),
-                Location = ApplyTypes.SaveVsSpell,
-                Modifier = 1
-            };
-            victim.AddAffect(af);
+            AddAffectToTarget(ch, sn, level, ApplyTypes.HitRoll);
+            AddAffectToTarget(victim, sn, level, ApplyTypes.SaveVsSpell);
 
             color.set_char_color(ATTypes.AT_MAGIC, victim);
             color.send_to_char("You feel unclean.", victim);
@@ -52,6 +36,24 @@ namespace SmaugCS.Spells
             }
 
             return ReturnTypes.None;
+        }
+
+        private static void AddAffectToTarget(CharacterInstance ch, int sn, int level, ApplyTypes appLocation)
+        {
+            int duration;
+            checked
+            {
+                duration = (4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue");
+            }
+
+            AffectData af = new AffectData
+            {
+                SkillNumber = sn,
+                Duration = duration,
+                Location = appLocation,
+                Modifier = -1
+            };
+            ch.AddAffect(af);
         }
     }
 }

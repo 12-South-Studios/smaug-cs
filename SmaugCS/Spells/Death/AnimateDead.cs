@@ -14,6 +14,7 @@ namespace SmaugCS.Spells
 {
     public static class AnimateDead
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_animate_dead(int sn, int level, CharacterInstance ch, object vo)
         {
             ObjectInstance corpse =
@@ -54,58 +55,74 @@ namespace SmaugCS.Spells
             }
 
             if (ch.IsImmortal() || (ch.Chance(75) && template.Level - ch.Level < 10))
-            {
-                CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
-                    string.Format("animated corpse {0}", template.PlayerName));
+                return AnimateCorpse(level, ch, template, corpse);
 
-                ch.CurrentRoom.ToRoom(mob);
-                mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
-                mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
-
-                mob.MaximumHealth = template.Level*8 +
-                                    SmaugRandom.Between(template.Level*template.Level/4, template.Level*template.Level);
-                mob.MaximumHealth = (mob.MaximumHealth/4).GetNumberThatIsBetween(
-                    (mob.MaximumHealth*corpse.Value[3])/100, ch.Level*SmaugRandom.D20(10));
-                mob.MaximumHealth = mob.MaximumHealth.GetHighestOfTwoNumbers(1);
-                mob.CurrentHealth = mob.MaximumHealth;
-                mob.DamageRoll = new DiceData {SizeOf = ch.Level/8};
-                mob.HitRoll = new DiceData {SizeOf = ch.Level/6};
-                mob.CurrentAlignment = ch.CurrentAlignment;
-
-                comm.act(ATTypes.AT_MAGIC, "$n makes $T rise from the grave!", ch, null, template.ShortDescription, ToTypes.Room);
-                comm.act(ATTypes.AT_MAGIC, "You make $T rise from the grave!", ch, null, template.ShortDescription, ToTypes.Character);
-
-                mob.ShortDescription = string.Format("The animated corpse of {0}", template.ShortDescription);
-                mob.LongDescription =
-                    string.Format("An animated corpse of {0} struggles with the horror of its undeath.",
-                        template.ShortDescription);
-
-                mob.AddFollower(ch);
-
-                AffectData af = new AffectData
-                {
-                    Type = AffectedByTypes.Charm,
-                    Duration = (SmaugRandom.Fuzzy((level + 1)/4) + 1)*
-                               GameConstants.GetSystemValue<int>("AffectDurationConversionValue")
-                };
-                mob.AddAffect(af);
-
-                if (corpse.Contents.Any())
-                {
-                    foreach (ObjectInstance obj in corpse.Contents)
-                    {
-                        obj.FromObject(obj);
-                        corpse.InRoom.ToRoom(obj);
-                    }
-                }
-
-                corpse.Split();
-                corpse.Extract();
-                return ReturnTypes.None;
-            }
-
-           ch.FailedCast(skill);
+            ch.FailedCast(skill);
             return ReturnTypes.SpellFailed;
+        }
+
+        private static ReturnTypes AnimateCorpse(int level, CharacterInstance ch, MobTemplate template, ObjectInstance corpse)
+        {
+            CreateAnimatedCorpse(level, ch, template, corpse);
+
+            corpse.Split();
+            corpse.Extract();
+
+            comm.act(ATTypes.AT_MAGIC, "$n makes $T rise from the grave!", ch, null, template.ShortDescription, ToTypes.Room);
+            comm.act(ATTypes.AT_MAGIC, "You make $T rise from the grave!", ch, null, template.ShortDescription,
+                ToTypes.Character);
+
+            return ReturnTypes.None;
+        }
+
+        private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobTemplate template, ObjectInstance corpse)
+        {
+            CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
+                string.Format("animated corpse {0}", template.PlayerName));
+
+            ch.CurrentRoom.ToRoom(mob);
+            mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
+            mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
+
+            mob.MaximumHealth = template.Level*8 +
+                                SmaugRandom.Between(template.Level*template.Level/4, template.Level*template.Level);
+            mob.MaximumHealth = (mob.MaximumHealth/4).GetNumberThatIsBetween(
+                (mob.MaximumHealth*corpse.Value[3])/100, ch.Level*SmaugRandom.D20(10));
+            mob.MaximumHealth = mob.MaximumHealth.GetHighestOfTwoNumbers(1);
+            mob.CurrentHealth = mob.MaximumHealth;
+            mob.DamageRoll = new DiceData {SizeOf = ch.Level/8};
+            mob.HitRoll = new DiceData {SizeOf = ch.Level/6};
+            mob.CurrentAlignment = ch.CurrentAlignment;
+            mob.ShortDescription = string.Format("The animated corpse of {0}", template.ShortDescription);
+            mob.LongDescription =
+                string.Format("An animated corpse of {0} struggles with the horror of its undeath.",
+                    template.ShortDescription);
+            mob.AddFollower(ch);
+
+            MakeCorpseTemporary(level, mob);
+            TransferContentsOfCorpse(corpse);
+        }
+
+        private static void MakeCorpseTemporary(int level, CharacterInstance mob)
+        {
+            AffectData af = new AffectData
+            {
+                Type = AffectedByTypes.Charm,
+                Duration = (SmaugRandom.Fuzzy((level + 1)/4) + 1)*
+                           GameConstants.GetSystemValue<int>("AffectDurationConversionValue")
+            };
+            mob.AddAffect(af);
+        }
+
+        private static void TransferContentsOfCorpse(ObjectInstance corpse)
+        {
+            if (!corpse.Contents.Any()) return;
+
+            foreach (ObjectInstance obj in corpse.Contents)
+            {
+                obj.FromObject(obj);
+                corpse.InRoom.ToRoom(obj);
+            }
         }
     }
 }

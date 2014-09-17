@@ -1,10 +1,8 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmallDBConnectivity;
-using SmaugCS.Auction;
 using SmaugCS.Constants;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -13,10 +11,8 @@ using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
-using SmaugCS.News;
 using SmaugCS.Repositories;
 using SmaugCS.SpecFuns;
-using SmaugCS.Weather;
 
 namespace SmaugCS
 {
@@ -25,13 +21,6 @@ namespace SmaugCS
         public override void Load()
         {
             Kernel.Bind<ISmallDb>().To<SmallDb>();
-
-            Kernel.Bind<ITimer>().To<CommonTimer>().Named("LogDumpTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("LogDumpFrequencyMS"));
-            Kernel.Bind<ITimer>().To<CommonTimer>().Named("BanExpireTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("BanExpireFrequencyMS"));
-            Kernel.Bind<ITimer>().To<CommonTimer>().Named("AuctionPulseTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("AuctionPulseSeconds"));
 
             Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
 
@@ -56,34 +45,12 @@ namespace SmaugCS
                 .WithConstructorArgument("gameManager", Kernel.Get<IGameManager>())
                 .OnActivation(x => x.Initialize());
 
-            Kernel.Bind<IWeatherManager>().To<WeatherManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
-                .OnActivation(x => x.Initialize(Kernel.Get<IGameManager>().GameTime,
-                    GameConstants.GetConstant<int>("WeatherWidth"),
-                    GameConstants.GetConstant<int>("WeatherHeight")));
-
-            Kernel.Bind<INewsManager>().To<NewsManager>().InSingletonScope();
-
             Kernel.Bind<IInitializer>().To<LuaInitializer>().InSingletonScope()
                 .Named("LuaInitializer")
                 .OnActivation(x => x.InitializeLuaInjections(GameConstants.DataPath))
                 .OnActivation(x => x.InitializeLuaFunctions());
 
             Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope();
-
-            Kernel.Bind<IAuctionRepository>().To<AuctionRepository>()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.Connection);
-
-            Kernel.Bind<IAuctionManager>().To<AuctionManager>().InSingletonScope()
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("AuctionPulseTimer"))
-                .WithConstructorArgument("repository", Kernel.Get<IAuctionRepository>())
-                .OnActivation(x => x.Initialize());
 
             Kernel.Bind<IInstanceRepository<ObjectInstance>>().To<ObjInstanceRepository>();
             Kernel.Bind<IInstanceRepository<CharacterInstance>>().To<CharacterRepository>();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Moq;
 using Ninject;
@@ -148,10 +149,11 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.MudProgs.Count, Is.EqualTo(1));
-            Assert.That(result.MudProgs[0].Type, Is.EqualTo(MudProgTypes.Damage));
-            Assert.That(result.MudProgs[0].ArgList, Is.EqualTo("100"));
-            Assert.That(result.MudProgs[0].Script, Is.EqualTo("local ch = GetLastCharacter();MPEcho(\"Testing\", ch);LObjectCommand(\"c fires $n\", ch);"));
+            Assert.That(result.MudProgs.Count(), Is.EqualTo(1));
+            Assert.That(result.MudProgs.First().Type, Is.EqualTo(MudProgTypes.Damage));
+            Assert.That(result.MudProgs.First().ArgList, Is.EqualTo("100"));
+            Assert.That(result.MudProgs.First().Script,
+                Is.EqualTo("local ch = GetLastCharacter();MPEcho(\"Testing\", ch);LObjectCommand(\"c fires $n\", ch);"));
         }
 
         [Test]

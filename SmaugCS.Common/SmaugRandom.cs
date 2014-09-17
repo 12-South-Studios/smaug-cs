@@ -10,7 +10,10 @@ namespace SmaugCS.Common
         public static int Fuzzy(int number)
         {
             int bits = Bits(2);
-            return 1.GetHighestOfTwoNumbers((bits == 0) ? number - 1 : (bits == 3) ? number + 1 : number);
+            checked
+            {
+                return 1.GetHighestOfTwoNumbers((bits == 0) ? number - 1 : (bits == 3) ? number + 1 : number);
+            }
         }
 
         public static int Bits(int width)

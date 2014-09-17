@@ -50,6 +50,7 @@
     <Compile Include="AuctionAlreadyStartedException.cs" />
     <Compile Include="AuctionData.cs" />
     <Compile Include="AuctionHistory.cs" />
+    <Compile Include="AuctionModule.cs" />
     <Compile Include="AuctionRepository.cs" />
     <Compile Include="AuctionManager.cs" />
     <Compile Include="IAuctionManager.cs" />
@@ -64,7 +65,7 @@
       <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
       <Name>Realm.Library.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
+    <ProjectReference Include="..\Libraries\SmallDBConnectivity\SmallDBConnectivity.csproj">
       <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
       <Name>SmallDBConnectivity</Name>
     </ProjectReference>

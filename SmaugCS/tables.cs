@@ -96,92 +96,92 @@ namespace SmaugCS
 
 
 
-        #region Languages
-        //new StreamReader(Program.TONGUE_FILE)
-        private enum LanguageSection
-        {
-            Name, PreCNV, Alphabet, CNV
-        }
-        public static List<LanguageData> load_tongues()
-        {
-            List<LanguageData> languages = new List<LanguageData>();
-            /*string path = SystemConstants.GetSystemFile(SystemFileTypes.Tongues);
+        //#region Languages
+        ////new StreamReader(Program.TONGUE_FILE)
+        //private enum LanguageSection
+        //{
+        //    Name, PreCNV, Alphabet, CNV
+        //}
+        //public static List<LanguageData> load_tongues()
+        //{
+        //    List<LanguageData> languages = new List<LanguageData>();
+        //    /*string path = SystemConstants.GetSystemFile(SystemFileTypes.Tongues);
 
-            using (TextReaderProxy sr = new TextReaderProxy(new StreamReader(path)))
-            {
-                List<TextSection> sections = sr.ReadSections(new[] { "#" }, new[] { "*" }, null, "#end");
+        //    using (TextReaderProxy sr = new TextReaderProxy(new StreamReader(path)))
+        //    {
+        //        List<TextSection> sections = sr.ReadSections(new[] { "#" }, new[] { "*" }, null, "#end");
 
-                foreach (TextSection section in sections)
-                {
-                    LanguageData ld = new LanguageData() { Name = section.Header };
-                    languages.Add(ld);
-                    LanguageSection lngSection = LanguageSection.PreCNV;
+        //        foreach (TextSection section in sections)
+        //        {
+        //            LanguageData ld = new LanguageData() { Name = section.Header };
+        //            languages.Add(ld);
+        //            LanguageSection lngSection = LanguageSection.PreCNV;
 
-                    foreach (string line in section.Lines)
-                    {
-                        if (lngSection == LanguageSection.PreCNV)
-                        {
-                            ld = ReadPreCnv(line, ld);
-                            lngSection = LanguageSection.Alphabet;
-                            continue;
-                        }
-                        if (lngSection == LanguageSection.Alphabet)
-                        {
-                            ld = ReadAlphabet(line, ld);
-                            lngSection = LanguageSection.CNV;
-                            continue;
-                        }
-                        if (lngSection == LanguageSection.CNV)
-                        {
-                            ld = ReadCnv(line, ld);
-                            lngSection = LanguageSection.Name;
-                        }
-                    }
-                }
-            }*/
-            return languages;
-        }
+        //            foreach (string line in section.Lines)
+        //            {
+        //                if (lngSection == LanguageSection.PreCNV)
+        //                {
+        //                    ld = ReadPreCnv(line, ld);
+        //                    lngSection = LanguageSection.Alphabet;
+        //                    continue;
+        //                }
+        //                if (lngSection == LanguageSection.Alphabet)
+        //                {
+        //                    ld = ReadAlphabet(line, ld);
+        //                    lngSection = LanguageSection.CNV;
+        //                    continue;
+        //                }
+        //                if (lngSection == LanguageSection.CNV)
+        //                {
+        //                    ld = ReadCnv(line, ld);
+        //                    lngSection = LanguageSection.Name;
+        //                }
+        //            }
+        //        }
+        //    }*/
+        //    return languages;
+        //}
 
-        private static LanguageData ReadAlphabet(string line, LanguageData ld)
-        {
-            if (!line.Equals("~"))
-            {
-                string tempLine = line;
-                if (line.EndsWith("~"))
-                    tempLine = tempLine.Substring(0, tempLine.Length - 1);
-                ld.Alphabet = tempLine;
-            }
-            return ld;
-        }
+        //private static LanguageData ReadAlphabet(string line, LanguageData ld)
+        //{
+        //    if (!line.Equals("~"))
+        //    {
+        //        string tempLine = line;
+        //        if (line.EndsWith("~"))
+        //            tempLine = tempLine.Substring(0, tempLine.Length - 1);
+        //        ld.Alphabet = tempLine;
+        //    }
+        //    return ld;
+        //}
 
-        private static LanguageData ReadPreCnv(string line, LanguageData ld)
-        {
-            if (line.Equals("~"))
-                return ld;
+        //private static LanguageData ReadPreCnv(string line, LanguageData ld)
+        //{
+        //    if (line.Equals("~"))
+        //        return ld;
 
-            string tempLine = line;
-            if (tempLine.EndsWith("~"))
-                tempLine = tempLine.Substring(0, tempLine.Length - 1);
+        //    string tempLine = line;
+        //    if (tempLine.EndsWith("~"))
+        //        tempLine = tempLine.Substring(0, tempLine.Length - 1);
 
 
-            ld.PreConversion.Add(new LanguageConversionData(tempLine));
-            return ld;
-        }
+        //    ld.PreConversion.Add(new LanguageConversionData(tempLine));
+        //    return ld;
+        //}
 
-        private static LanguageData ReadCnv(string line, LanguageData ld)
-        {
-            if (line.Equals("~"))
-                return ld;
+        //private static LanguageData ReadCnv(string line, LanguageData ld)
+        //{
+        //    if (line.Equals("~"))
+        //        return ld;
 
-            string tempLine = line;
-            if (tempLine.EndsWith("~"))
-                tempLine = tempLine.Substring(0, tempLine.Length - 1);
+        //    string tempLine = line;
+        //    if (tempLine.EndsWith("~"))
+        //        tempLine = tempLine.Substring(0, tempLine.Length - 1);
 
-            ld.Conversion.Add(new LanguageConversionData(tempLine));
-            return ld;
-        }
+        //    ld.Conversion.Add(new LanguageConversionData(tempLine));
+        //    return ld;
+        //}
 
-        #endregion
+        //#endregion
 
         //public static readonly string[, ,] TitleTable = new string[Program.MAX_CLASS, Program.MAX_LEVEL + 1, 2];
         public static readonly string[, ,] TitleTable;

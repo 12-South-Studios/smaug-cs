@@ -7,7 +7,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class BreathGas
     {
-        public static bool DoSpecBreathGas(MobileInstance ch)
+        public static bool DoSpecBreathGas(CharacterInstance ch)
         {
             if (!ch.IsInCombatPosition())
                 return false;

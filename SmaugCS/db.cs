@@ -45,20 +45,11 @@ namespace SmaugCS
         }
 
         #region Objects
-        public static int NumberOfObjectsLoaded { get; set; }
-        public static int PhysicalObjects { get; set; }
         public static ObjectInstance SupermobObject { get; set; }
         #endregion
 
         #region Mobiles/Characters
-        public static int NumberOfMobsLoaded { get; set; }
         public static CharacterInstance Supermob { get; set; }
-        #endregion
-
-
-        #region Areas
-        public static List<AreaData> BUILD_AREAS = new List<AreaData>();
-        public static int TopArea { get; set; }
         #endregion
 
         #region Helps
@@ -66,23 +57,11 @@ namespace SmaugCS
         public static string HelpGreeting { get; set; }
         #endregion
 
-        #region Boards
-        public static List<BoardData> BOARDS = new List<BoardData>();
-        public static BoardData GetBoard(ObjectInstance obj)
-        {
-            return BOARDS.FirstOrDefault(x => x.BoardObjectId == obj.ObjectIndex.Vnum);
-        }
-        public static BoardData FindBoard(CharacterInstance ch)
-        {
-            return ch.CurrentRoom.Contents.Select(GetBoard).FirstOrDefault(board => board != null);
-        }
-        #endregion
 
         public static List<ExtraDescriptionData> ExtraDescriptions = new List<ExtraDescriptionData>();
 
         public static List<WizardData> WIZARDS = new List<WizardData>();
         public static List<LoginMessageData> LOGIN_MESSAGES = new List<LoginMessageData>();
-        public static List<ShopData> SHOP = new List<ShopData>();
         public static List<RepairShopData> REPAIR = new List<RepairShopData>();
         public static List<TeleportData> TELEPORT = new List<TeleportData>();
 
@@ -705,8 +684,7 @@ namespace SmaugCS
                         IsFileProg = true
                     };
 
-                    //index.ProgTypes.SetBit((int)prog.Type);
-                    index.MudProgs.Add(prog);
+                    index.AddMudProg(prog);
                     break;
 
                 } while (!proxy.EndOfStream);
@@ -727,7 +705,7 @@ namespace SmaugCS
                 }
 
                 MudProgData prog = new MudProgData();
-                index.MudProgs.Add(prog);
+                index.AddMudProg(prog);
 
                 MudProgTypes type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
                 if (type == MudProgTypes.Error)

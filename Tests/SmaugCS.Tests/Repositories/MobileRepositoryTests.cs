@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Moq;
 using Ninject;
@@ -216,10 +217,11 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.MudProgs.Count, Is.EqualTo(1));
-            Assert.That(result.MudProgs[0].Type, Is.EqualTo(MudProgTypes.Greet));
-            Assert.That(result.MudProgs[0].ArgList, Is.EqualTo("100"));
-            Assert.That(result.MudProgs[0].Script, Is.EqualTo("LMobCommand(\"cac\");LMobSay(\"Now your soul shall be mine!\");"));
+            Assert.That(result.MudProgs.Count(), Is.EqualTo(1));
+            Assert.That(result.MudProgs.First().Type, Is.EqualTo(MudProgTypes.Greet));
+            Assert.That(result.MudProgs.First().ArgList, Is.EqualTo("100"));
+            Assert.That(result.MudProgs.First().Script,
+                Is.EqualTo("LMobCommand(\"cac\");LMobSay(\"Now your soul shall be mine!\");"));
         }
 
         [Test]
@@ -232,7 +234,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Shop.ShopType, Is.EqualTo(ShopTypes.Item));
             Assert.That(result.Shop.OpenHour, Is.EqualTo(7));
             Assert.That(result.Shop.CloseHour, Is.EqualTo(21));
-            Assert.That(result.Shop.ItemTypes.Count, Is.EqualTo(2));
+            Assert.That(result.Shop.ItemTypes.Count(), Is.EqualTo(2));
             Assert.That(result.Shop.ItemTypes.Contains(ItemTypes.Armor), Is.True);
             Assert.That(result.Shop.ItemTypes.Contains(ItemTypes.Weapon), Is.True);
 

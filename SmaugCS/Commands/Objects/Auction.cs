@@ -28,7 +28,7 @@ namespace SmaugCS.Commands.Objects
 
             string firstArg = argument.FirstWord();
             if (firstArg.IsNullOrEmpty())
-                ReviewAuction(ch, argument);
+                ReviewAuction(ch);
             if (ch.IsImmortal() && firstArg.EqualsIgnoreCase("stop"))
                 StopAuction(ch, "Sale of {0} has been stopped by an Immortal.");
             if (firstArg.EqualsIgnoreCase("bid"))
@@ -148,7 +148,7 @@ namespace SmaugCS.Commands.Objects
             AuctionManager.Instance.StopAuction();
         }
 
-        private static void ReviewAuction(CharacterInstance ch, string argument)
+        private static void ReviewAuction(CharacterInstance ch)
         {
             if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
                 "There is nothing being auctioned right now.  What would you like to auction?")) return;

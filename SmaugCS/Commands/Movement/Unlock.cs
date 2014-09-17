@@ -25,14 +25,14 @@ namespace SmaugCS.Commands.Movement
             ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj != null)
             {
-                UnlockObject(ch, obj, firstArg);
+                UnlockObject(ch, obj);
                 return;
             }
 
             color.ch_printf(ch, "You see no %s here.", firstArg);
         }
 
-        private static void UnlockObject(CharacterInstance ch, ObjectInstance obj, string firstArg)
+        private static void UnlockObject(CharacterInstance ch, ObjectInstance obj)
         {
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType != ItemTypes.Container, "That's not a container.")) return;
             if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ContainerFlags.Closed, "It's not closed.")) return;

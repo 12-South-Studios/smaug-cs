@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Movement
         {
             if (String.IsNullOrEmpty(argument))
             {
-                LeaveRoom(ch, argument);
+                LeaveRoom(ch);
                 return;
             }
 
@@ -30,9 +30,9 @@ namespace SmaugCS.Commands.Movement
             color.send_to_char("You cannot leave that way.", ch);
         }
 
-        private static void LeaveRoom(CharacterInstance ch, string argument)
+        private static void LeaveRoom(CharacterInstance ch)
         {
-            ExitData exit = ch.CurrentRoom.Exits.FirstOrDefault(x => x.Flags.IsSet((int) ExitFlags.xLeave));
+            ExitData exit = ch.CurrentRoom.Exits.FirstOrDefault(x => x.Flags.IsSet(ExitFlags.xLeave));
             if (exit != null)
             {
                 Move.move_char(ch, exit, 0);

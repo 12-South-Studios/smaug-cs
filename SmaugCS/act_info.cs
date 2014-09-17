@@ -630,7 +630,8 @@ namespace SmaugCS
             bool found = false;
             for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
             {
-                ObjectInstance obj = victim.GetEquippedItem(i);
+                WearLocations wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(i);
+                ObjectInstance obj = victim.GetEquippedItem(wearLoc);
                 if (obj != null && ch.CanSee(obj))
                 {
                     if (!found)

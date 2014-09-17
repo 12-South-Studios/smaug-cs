@@ -81,7 +81,7 @@
       <Project>{b459e90b-793a-48b1-b672-50d162edc662}</Project>
       <Name>Realm.Library.Patterns.Singleton</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\SmallDbConnectivity\SmallDBConnectivity.csproj">
+    <ProjectReference Include="..\Libraries\SmallDBConnectivity\SmallDBConnectivity.csproj">
       <Project>{7d9c9772-4747-4e29-9806-1007528bbeee}</Project>
       <Name>SmallDBConnectivity</Name>
     </ProjectReference>

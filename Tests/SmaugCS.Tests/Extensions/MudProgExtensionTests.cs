@@ -1,4 +1,5 @@
 ﻿using System;
+using LuaInterface;
 using Moq;
 using NUnit.Framework;
 using SmaugCS.Common;
@@ -55,9 +56,9 @@ namespace SmaugCS.Tests.Extensions
 
             var mprog = new MudProgData {Type = MudProgTypes.Act};
 
-            _mockedLuaManager.Setup(x => x.DoLuaScript(It.IsAny<string>())).Throws(new Exception("Test Exception"));
+            _mockedLuaManager.Setup(x => x.DoLuaScript(It.IsAny<string>())).Throws(new LuaException("Test Exception"));
 
-            _mockedLogManager.Setup(x => x.Error(It.IsAny<Exception>())).Callback(() => { callback = true; });
+            _mockedLogManager.Setup(x => x.Error(It.IsAny<LuaException>())).Callback(() => { callback = true; });
 
             Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.False);
             Assert.That(callback, Is.True);

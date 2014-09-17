@@ -39,7 +39,7 @@ namespace SmaugCS.Data.Templates
         public string Race { get; set; }
         public string Class { get; set; }
         public SavingThrowData SavingThrows { get; set; }
-        public Dictionary<StatisticTypes, int> Statistics { get; set; }
+        public Dictionary<StatisticTypes, int> Statistics { get; private set; }
         public string PlayerName { get; set; }
 
         public MobTemplate(long id, string name)

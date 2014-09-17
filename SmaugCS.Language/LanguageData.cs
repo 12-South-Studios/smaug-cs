@@ -1,38 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Realm.Library.Common;
 
 namespace SmaugCS.Language
 {
-    [XmlRoot("Language")]
     public class LanguageData : Entity
     {
-        [XmlArray]
-        public List<LanguageConversionData> PreConversion { get; set; }
+        private readonly List<LanguageConversionData> _preConversion;
+        private readonly List<LanguageConversionData> _conversion;
 
-        [XmlElement]
+        public IEnumerable<LanguageConversionData> PreConversion
+        {
+            get { return _preConversion; }
+        }
+
         public string Alphabet { get; set; }
 
         public LanguageTypes Type { get; private set; }
 
-        [XmlArray]
-        public List<LanguageConversionData> Conversion { get; set; }
+        public IEnumerable<LanguageConversionData> Conversion
+        {
+            get { return _conversion; }
+        }
 
         public LanguageData(long id, string name, LanguageTypes type) : base(id, name)
         {
             Type = type;
-            PreConversion = new List<LanguageConversionData>();
-            Conversion = new List<LanguageConversionData>();
+            _preConversion = new List<LanguageConversionData>();
+            _conversion = new List<LanguageConversionData>();
         }
 
         public void AddPreConversion(string part1, string part2)
         {
-            PreConversion.Add(new LanguageConversionData {OldValue = part1, NewValue = part2});
+            _preConversion.Add(new LanguageConversionData
+            {
+                OldValue = part1, 
+                NewValue = part2
+            });
         }
+
         public void AddPostConversion(string part1, string part2)
         {
-            Conversion.Add(new LanguageConversionData { OldValue = part1, NewValue = part2 });
+            _conversion.Add(new LanguageConversionData
+            {
+                OldValue = part1, 
+                NewValue = part2
+            });
         }
 
         public string Translate(int percent, string text)

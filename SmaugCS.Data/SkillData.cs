@@ -28,7 +28,7 @@ namespace SmaugCS.Data
             set
             {
                 _minimumPosition = value;
-                _minimumPosition = GetModifiedPosition();
+                _minimumPosition = ModifiedPosition;
             }
         }
 
@@ -73,6 +73,7 @@ namespace SmaugCS.Data
             SkillMasteries = new List<SkillMasteryData>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static int Compare(SkillData sk1, SkillData sk2)
         {
             if (sk1 == null && sk2 != null)
@@ -123,38 +124,41 @@ namespace SmaugCS.Data
                 Teachers.Add(value);
         }
 
-        public int GetModifiedPosition()
+        public int ModifiedPosition
         {
-            int originalPosition = MinimumPosition;
-            if (originalPosition < 100)
+            get
             {
-                switch (originalPosition)
+                int originalPosition = MinimumPosition;
+                if (originalPosition < 100)
                 {
-                    case 5:
-                        originalPosition = 6;
-                        break;
-                    case 6:
-                        originalPosition = 8;
-                        break;
-                    case 7:
-                        originalPosition = 9;
-                        break;
-                    case 8:
-                        originalPosition = 12;
-                        break;
-                    case 9:
-                        originalPosition = 13;
-                        break;
-                    case 10:
-                        originalPosition = 14;
-                        break;
-                    case 11:
-                        originalPosition = 15;
-                        break;
+                    switch (originalPosition)
+                    {
+                        case 5:
+                            originalPosition = 6;
+                            break;
+                        case 6:
+                            originalPosition = 8;
+                            break;
+                        case 7:
+                            originalPosition = 9;
+                            break;
+                        case 8:
+                            originalPosition = 12;
+                            break;
+                        case 9:
+                            originalPosition = 13;
+                            break;
+                        case 10:
+                            originalPosition = 14;
+                            break;
+                        case 11:
+                            originalPosition = 15;
+                            break;
+                    }
                 }
-            }
 
-            return originalPosition >= 100 ? originalPosition - 100 : originalPosition;
+                return originalPosition >= 100 ? originalPosition - 100 : originalPosition;
+            }
         }
 
         public void SetFlags(string flags)

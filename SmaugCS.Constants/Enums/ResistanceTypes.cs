@@ -1,34 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmaugCS.Constants.Enums
 {
     [Flags]
     public enum ResistanceTypes
     {
-        Fire = 1 << 0,
-        Cold = 1 << 1,
-        Electricity = 1 << 2,
-        Energy = 1 << 3,
-        Blunt = 1 << 4,
-        Pierce = 1 << 5,
-        Slash = 1 << 6,
-        Acid = 1 << 7,
-        Poison = 1 << 8,
-        Drain = 1 << 9,
-        Sleep = 1 << 10,
-        Charm = 1 << 11,
-        Hold = 1 << 12,
-        NonMagic = 1 << 13,
-        Plus1 = 1 << 14,
-        Plus2 = 1 << 15,
-        Plus3 = 1 << 16,
-        Plus4 = 1 << 17,
-        Plus5 = 1 << 18,
-        Plus6 = 1 << 19,
-        Magic = 1 << 20,
-        Paralysis = 1 << 21,
-        Unknown = 1 << 22
+        Unknown = 0,
+        Fire = 1,
+        Cold = 2,
+        Electricity = 4,
+        Energy = 8,
+        Blunt = 16,
+        Pierce = 32,
+        Slash = 64,
+        Acid = 128,
+        Poison = 256,
+        Drain = 512,
+        Sleep = 1024,
+        Charm = 2048,
+        Hold = 4096,
+        NonMagic = 8192,
+        Plus1 = 16384,
+        Plus2 = 32768,
+        Plus3 = 65536,
+        Plus4 = 131072,
+        Plus5 = 262144,
+        Plus6 = 524288,
+        Magic = 1048576,
+        Paralysis = 2097152
     }
 }

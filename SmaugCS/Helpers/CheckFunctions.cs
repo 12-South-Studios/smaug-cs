@@ -93,7 +93,7 @@ namespace SmaugCS.Helpers
         public static bool CheckIfBlind(CharacterInstance ch, string message = "")
         {
             if (ch.IsBlind())
-                return SendToChar(ch, "You can't see a thing!");
+                return SendToChar(ch, message);
             return false;
         }
 

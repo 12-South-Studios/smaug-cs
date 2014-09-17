@@ -7,7 +7,7 @@ namespace SmaugCS.Weather
 {
     public static class WeatherConstants
     {
-        public static readonly IList<WeatherRangeData> WeatherData = new List<WeatherRangeData>();
+        public static readonly List<WeatherRangeData> WeatherData = new List<WeatherRangeData>();
 
         private static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages =
             new Dictionary<PrecipitationTypes, List<string>>();
@@ -19,13 +19,13 @@ namespace SmaugCS.Weather
 
         public static int GetHemisphere(string type)
         {
-            HemisphereTypes hemisphere = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
+            HemisphereTypes hemisphere = EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
             return (int)hemisphere;
         }
 
         public static int GetClimate(string type)
         {
-            ClimateTypes climate = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
+            ClimateTypes climate = EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
             return (int)climate;
         }
 
