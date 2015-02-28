@@ -9,8 +9,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Logging;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -19,7 +18,7 @@ namespace SmaugCS
     {
         public static void show_colorthemes(CharacterInstance ch)
         {
-            send_to_pager("&Ythe following themes are available:\r\n", ch);
+            ch.SendToPager("&Ythe following themes are available:\r\n");
 
             DirectoryProxy proxy = new DirectoryProxy();
             string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color);
@@ -30,62 +29,61 @@ namespace SmaugCS
                                          .Where(x => !x.EqualsIgnoreCase("cvs") && !x.StartsWith(".")))
             {
                 ++count;
-                pager_printf(ch, "%s%-15.15s", color_str(ATTypes.AT_PLAIN, ch), file);
+                ch.PagerPrintf("%s%-15.15s", color_str(ATTypes.AT_PLAIN, ch), file);
                 if (++col % 6 == 0)
-                    send_to_pager("\r\n", ch);
+                    ch.SendToPager("\r\n");
             }
 
             if (count == 0)
-                send_to_pager("No themes defined yet.\r\n", ch);
+                ch.SendToPager("No themes defined yet.\r\n");
 
             if (col % 6 != 0)
-                send_to_pager("\r\n", ch);
+                ch.SendToPager("\r\n");
         }
 
         public static void show_colors(CharacterInstance ch)
         {
-            send_to_pager("&BSyntax: color [color type] [color] | default\r\n", ch);
-            send_to_pager("&BSyntax: color _reset_ (Resets all colors to default set)\r\n", ch);
-            send_to_pager("&BSyntax: color _all_ [color] (Sets all color types to [color])\r\n\r\n", ch);
-            send_to_pager("&BSyntax: color theme [name] (Sets all color types to a defined theme)\r\n\r\n", ch);
+            ch.SendToPager("&BSyntax: color [color type] [color] | default\r\n");
+            ch.SendToPager("&BSyntax: color _reset_ (Resets all colors to default set)\r\n");
+            ch.SendToPager("&BSyntax: color _all_ [color] (Sets all color types to [color])\r\n\r\n");
+            ch.SendToPager("&BSyntax: color theme [name] (Sets all color types to a defined theme)\r\n\r\n");
 
-            send_to_pager("&W********************************[ COLORS ]*********************************\r\n", ch);
+            ch.SendToPager("&W********************************[ COLORS ]*********************************\r\n");
 
             for (int count = 0; count < 16; ++count)
             {
                 if ((count % 8) == 0 && count != 0)
-                    send_to_pager("\r\n", ch);
+                    ch.SendToPager("\r\n");
 
                 ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
-                pager_printf(ch, "%s%-10s", color_str(atType, ch), LookupConstants.pc_displays[count]);
+                ch.PagerPrintf("%s%-10s", color_str(atType, ch), LookupConstants.pc_displays[count]);
             }
 
-            send_to_pager("\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n",
-                          ch);
+            ch.SendToPager("\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n");
 
             for (int count = 32; count < (int)ATTypes.MAX_COLORS; ++count)
             {
                 if ((count % 8) == 0 && count != 32)
-                    send_to_pager("\r\n", ch);
+                    ch.SendToPager("\r\n");
 
                 ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
-                pager_printf(ch, "%s%-10s%s", color_str(atType, ch), LookupConstants.pc_displays[count], AnsiCodes.Reset);
+                ch.PagerPrintf("%s%-10s%s", color_str(atType, ch), LookupConstants.pc_displays[count], AnsiCodes.Reset);
             }
 
-            send_to_pager("\r\n\r\n", ch);
-            send_to_pager("&YAvailable colors are:\r\n", ch);
+            ch.SendToPager("\r\n\r\n");
+            ch.SendToPager("&YAvailable colors are:\r\n");
 
             int numColors = 0;
             foreach (string color in LookupManager.Instance.GetLookups("ValidColors"))
             {
                 if ((numColors % 8) == 0 && numColors != 0)
-                    send_to_pager("\r\n", ch);
+                    ch.SendToPager("\r\n");
 
-                pager_printf(ch, "%s%-10s", color_str(ATTypes.AT_PLAIN, ch), color);
+                ch.PagerPrintf("%s%-10s", color_str(ATTypes.AT_PLAIN, ch), color);
                 numColors++;
             }
 
-            send_to_pager("\r\n", ch);
+            ch.SendToPager("\r\n");
             show_colorthemes(ch);
         }
 
@@ -222,147 +220,11 @@ namespace SmaugCS
             return string.Empty;
         }
 
-        public static void set_char_color(ATTypes attype, CharacterInstance ch)
-        {
-            if (ch == null || ch.IsNpc())
-                return;
-
-            PlayerInstance pch = (PlayerInstance) ch;
-            if (pch.Descriptor == null)
-                return;
-
-            pch.Descriptor.WriteToBuffer(color_str(attype, ch), 0);
-            pch.Descriptor.PageColor = pch.Colors.ContainsKey(attype) ? pch.Colors[attype] : (char)0;
-        }
-
-        public static void write_to_pager(DescriptorData d, string txt, int length)
-        {
-            int len = length <= 0 ? txt.Length : length;
-            if (len == 0)
-                return;
-
-            if (string.IsNullOrEmpty(d.PageBuffer))
-            {
-                d.PageSize = Program.MAX_STRING_LENGTH;
-                d.PageBuffer = new string('\0', d.PageSize);
-            }
-            if (string.IsNullOrEmpty(d.PagePoint))
-            {
-                d.PagePoint = d.PageBuffer;
-                d.PageTop = 0;
-                d.PageCommand = "";
-            }
-            if (d.PageTop == 0 && !d.fcommand)
-            {
-                char[] bufferArray = d.PageBuffer.ToCharArray();
-                bufferArray[0] = '\r';
-                bufferArray[1] = '\n';
-                d.PageTop = 2;
-                d.PageBuffer = bufferArray.ToString();
-            }
-
-            //int pagerOffset = d.PagePoint - d.PageBuffer;
-            while (d.PageTop + len >= d.PageSize)
-            {
-                if (d.PageSize > Program.MAX_STRING_LENGTH * 16)
-                {
-                    LogManager.Instance.Bug("Pager overflow. Ignoring.\r\n");
-                    d.PageTop = 0;
-                    d.PagePoint = string.Empty;
-                    d.PageBuffer = string.Empty;
-                    d.PageSize = Program.MAX_STRING_LENGTH;
-                    return;
-                }
-
-                d.PageSize *= 2;
-                // recreate?
-            }
-
-            // TODO finish this
-        }
-
-        public static void set_pager_color(ATTypes attype, CharacterInstance ch)
-        {
-            if (ch == null || ch.IsNpc())
-                return;
-
-            PlayerInstance pch = (PlayerInstance)ch;
-            if (pch.Descriptor == null)
-                return;
-
-            write_to_pager(pch.Descriptor, color_str(attype, ch), 0);
-            pch.Descriptor.PageColor = pch.Colors.ContainsKey(attype) ? pch.Colors[attype] : (char)0;
-        }
-
-        public static void send_to_desc_color(string txt, DescriptorData d)
-        {
-            if (d == null || string.IsNullOrEmpty(txt))
-                return;
-
-            d.WriteToBuffer(colorize(txt, d), 0);
-        }
-
-        public static void send_to_char(string txt, CharacterInstance ch)
-        {
-            if (ch.IsNpc() || string.IsNullOrEmpty(txt))
-                return;
-
-            PlayerInstance pch = (PlayerInstance) ch;
-            if (pch.Descriptor != null)
-                send_to_desc_color(txt, pch.Descriptor);
-        }
-
-        public static void send_to_pager(string txt, CharacterInstance ch)
-        {
-            if (ch == null || ch.IsNpc() || string.IsNullOrEmpty(txt))
-                return;
-
-            PlayerInstance pch = (PlayerInstance)ch;
-            if (pch.Descriptor == null)
-                return;
-
-            PlayerInstance och = (PlayerInstance)pch.Descriptor.Original ?? (PlayerInstance)pch.Descriptor.Character;
-            if (och.IsNpc() || !och.PlayerData.Flags.IsSet(PCFlags.PagerOn))
-                send_to_desc_color(txt, pch.Descriptor);
-            else
-                write_to_pager(pch.Descriptor, colorize(txt, pch.Descriptor), 0);
-        }
-
-        public static void ch_printf(CharacterInstance ch, string fmt, params object[] args)
-        {
-            send_to_char(string.Format(fmt, args), ch);
-        }
-
-        public static void pager_printf(CharacterInstance ch, string fmt, params object[] args)
-        {
-            send_to_pager(string.Format(fmt, args), ch);
-        }
-
-        public static void ch_printf_color(CharacterInstance ch, string fmt, params object[] args)
-        {
-            send_to_char(string.Format(fmt, args), ch);
-        }
-
-        public static void pager_printf_color(CharacterInstance ch, string fmt, params object[] args)
-        {
-            send_to_pager(string.Format(fmt, args), ch);
-        }
-
         public static void paint(ATTypes attype, CharacterInstance ch, string fmt, params object[] args)
         {
-            set_char_color(attype, ch);
-            send_to_char(string.Format(fmt, args), ch);
-            set_char_color(attype, ch);
-        }
-
-        public static void send_to_char_color(string txt, CharacterInstance ch)
-        {
-            send_to_char(txt, ch);
-        }
-
-        public static void send_to_pager_color(string txt, CharacterInstance ch)
-        {
-            send_to_pager(txt, ch);
+            ch.SetColor(attype);
+            ch.SendTo(string.Format(fmt, args));
+            ch.SetColor(attype);
         }
 
         private static readonly List<string> color_list = new List<string>()

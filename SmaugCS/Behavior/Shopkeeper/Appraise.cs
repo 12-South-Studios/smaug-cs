@@ -5,12 +5,26 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
     public static class Appraise
     {
+        public static int GetAdjustedCost(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj, bool buy)
+        {
+            if (obj == null || keeper.MobIndex.Shop == null)
+                return 0;
+
+            int cost = buy ? GetCostIfBuying(ch, keeper, obj) : GetCostIfSelling(ch, keeper, obj);
+
+            if (obj.ItemType == ItemTypes.Staff || obj.ItemType == ItemTypes.Wand)
+                cost = cost * (obj.Values.Charges / obj.Values.MaxCharges);
+
+            return cost;
+        }
+
         private static int GetCostIfBuying(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj)
         {
             bool richCustomer = ch.CurrentCoin > (ch.Level * ch.Level * 100000);
@@ -18,7 +32,7 @@ namespace SmaugCS.Behavior.Shopkeeper
                             + ((ch.Level.GetNumberThatIsBetween(5, LevelConstants.AvatarLevel) - 20) / 2);
 
             ItemShopData shop = keeper.MobIndex.Shop.CastAs<ItemShopData>();
-            int cost = (obj.Cost*(shop.ProfitSell + 1).GetHighestOfTwoNumbers(shop.ProfitBuy + profitMod)/100);
+            int cost = (obj.Cost * (shop.ProfitSell + 1).GetHighestOfTwoNumbers(shop.ProfitBuy + profitMod) / 100);
             return cost;
         }
 
@@ -34,19 +48,6 @@ namespace SmaugCS.Behavior.Shopkeeper
 
             if (keeper.Carrying.Any(carriedObj => obj.ObjectIndex == carriedObj.ObjectIndex))
                 cost = 0;
-
-            return cost;
-        }
-
-        public static int GetAdjustedCost(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj, bool buy)
-        {
-            if (obj == null || keeper.MobIndex.Shop == null)
-                return 0;
-
-            int cost = buy ? GetCostIfBuying(ch, keeper, obj) : GetCostIfSelling(ch, keeper, obj);
-
-            if (obj.ItemType == ItemTypes.Staff || obj.ItemType == ItemTypes.Wand)
-                cost = cost * (obj.Values.Charges / obj.Values.MaxCharges);
 
             return cost;
         }

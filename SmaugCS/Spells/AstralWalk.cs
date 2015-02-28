@@ -1,8 +1,10 @@
-﻿using SmaugCS.Commands;
+﻿using System.Diagnostics.CodeAnalysis;
+using SmaugCS.Commands;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -10,8 +12,8 @@ namespace SmaugCS.Spells
 {
     public static class AstralWalk
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo"), 
-        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo"), 
+        SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
@@ -19,7 +21,7 @@ namespace SmaugCS.Spells
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null
                                                   || !ch.CanAstral(victim)
-                                                  || !victim.CurrentRoom.Area.InHardRange(ch), skill, ch,
+                                                  || !victim.CurrentRoom.Area.IsInHardRange(ch), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
             
 
@@ -33,8 +35,8 @@ namespace SmaugCS.Spells
             else 
                 comm.act(ATTypes.AT_MAGIC, "$n disappears in a flash of light!", ch, null, victim, ToTypes.Room);
 
-            ch.CurrentRoom.FromRoom(ch);
-            victim.CurrentRoom.ToRoom(ch);
+            ch.CurrentRoom.RemoveFrom(ch);
+            victim.CurrentRoom.AddTo(ch);
 
             if (!string.IsNullOrEmpty(skill.HitDestinationMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitDestinationMessage, ch, null, victim, ToTypes.NotVictim);

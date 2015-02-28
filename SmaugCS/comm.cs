@@ -8,7 +8,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 
 namespace SmaugCS
@@ -337,8 +337,8 @@ namespace SmaugCS
 
                 if (playerInstance != null)
                 {
-                    color.set_char_color(attype, to);
-                    color.send_to_char(txt, to);
+                    to.SetColor(attype);
+                    to.SendTo(txt);
                 }
 
                 mud_prog.mprog_act_trigger(txt, to, ch, (ObjectInstance)arg1, arg2);
@@ -416,7 +416,7 @@ namespace SmaugCS
                 // TODO
             }
 
-            color.send_to_char(buffer, ch);
+            ch.SendTo(buffer);
         }
 
         public static void set_pager_input(DescriptorData d, string argument)

@@ -5,6 +5,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
@@ -45,15 +46,15 @@ namespace SmaugCS.Spells
             if (CheckFunctions.CheckIfTrueCasting(victim.IsNpc() 
                 && victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch,CastingFunctionType.Failed, 
                 victim)) return ReturnTypes.SpellFailed;
-            if (CheckFunctions.CheckIfTrueCasting(!victim.CurrentRoom.Area.InHardRange(ch), skill, ch,
+            if (CheckFunctions.CheckIfTrueCasting(!victim.CurrentRoom.Area.IsInHardRange(ch), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
             if (CheckFunctions.CheckIfTrueCasting(
                 victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) && ch.IsPKill(), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
             comm.act(ATTypes.AT_MAGIC, "$n disappears in a blinding flash of light!", ch, null, null, ToTypes.Room);
-            ch.CurrentRoom.FromRoom(ch);
-            victim.CurrentRoom.ToRoom(ch);
+            ch.CurrentRoom.RemoveFrom(ch);
+            victim.CurrentRoom.AddTo(ch);
             comm.act(ATTypes.AT_MAGIC, "$n appears in a blinding flash of light!", ch, null, null, ToTypes.Room);
             Look.do_look(ch, "auto");
             return ReturnTypes.None;

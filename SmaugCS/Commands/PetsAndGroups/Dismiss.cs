@@ -1,7 +1,8 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Mobile;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -28,7 +29,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            color.send_to_char("You cannot dismiss them.", ch);
+            ch.SendTo("You cannot dismiss them.");
         }
     }
 }

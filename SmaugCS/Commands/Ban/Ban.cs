@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Ban;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -17,7 +18,7 @@ namespace SmaugCS.Commands.Admin
 
             PlayerInstance pch = (PlayerInstance) ch;
 
-            color.set_char_color(ATTypes.AT_IMMORT, ch);
+            ch.SetColor(ATTypes.AT_IMMORT);
             string[] args = new string[4];
             args[0] = argument.ParseWord(1, " ");
             args[1] = argument.ParseWord(2, " ");
@@ -68,15 +69,15 @@ namespace SmaugCS.Commands.Admin
 
         private static void SendSyntaxMessage(CharacterInstance ch)
         {
-            color.send_to_char("Syntax: ban site  <address> <type> <duration>\r\n", ch);
-            color.send_to_char("Syntax: ban race  <race>    <type> <duration>\r\n", ch);
-            color.send_to_char("Syntax: ban class <class>   <type> <duration>\r\n", ch);
-            color.send_to_char("Syntax: ban show  <field>   <number>\r\n", ch);
-            color.send_to_char("Ban site lists current bans.\r\n", ch);
-            color.send_to_char("Duration is the length of the ban in days.\r\n", ch);
-            color.send_to_char("Type can be:  newbie, mortal, all, warn or level.\r\n", ch);
-            color.send_to_char("In ban show, the <field> is site, race or class,", ch);
-            color.send_to_char("  and the <number> is the ban number.\r\n", ch);
+            ch.SendTo("Syntax: ban site  <address> <type> <duration>\r\n");
+            ch.SendTo("Syntax: ban race  <race>    <type> <duration>\r\n");
+            ch.SendTo("Syntax: ban class <class>   <type> <duration>\r\n");
+            ch.SendTo("Syntax: ban show  <field>   <number>\r\n");
+            ch.SendTo("Ban site lists current bans.\r\n");
+            ch.SendTo("Duration is the length of the ban in days.\r\n");
+            ch.SendTo("Type can be:  newbie, mortal, all, warn or level.\r\n");
+            ch.SendTo("In ban show, the <field> is site, race or class,");
+            ch.SendTo("  and the <number> is the ban number.\r\n");
         }
 
         private static void DoSiteBan(CharacterInstance ch, string[] args, int duration)
@@ -89,7 +90,7 @@ namespace SmaugCS.Commands.Admin
 
             if (ch.Trust < GameManager.Instance.SystemData.ban_site_level)
             {
-                color.ch_printf(ch, "You must be {0} level to add bans.", GameManager.Instance.SystemData.ban_site_level);
+                ch.Printf("You must be {0} level to add bans.", GameManager.Instance.SystemData.ban_site_level);
                 return;
             }
 
@@ -126,7 +127,7 @@ namespace SmaugCS.Commands.Admin
         {
             if (ch.SubState == CharacterSubStates.Restricted)
             {
-                color.send_to_char("You cannot use this command from within another command.\r\n", ch);
+                ch.SendTo("You cannot use this command from within another command.\r\n");
                 return 0;
             }
 
@@ -157,9 +158,9 @@ namespace SmaugCS.Commands.Admin
             BanManager.Instance.AddBan(ban);
 
             if (ban.Duration > 0)
-                color.ch_printf(ch, "{0} is banned for {1} days.\r\n", ban.Name, ban.Duration / 86400);
+                ch.Printf("{0} is banned for {1} days.\r\n", ban.Name, ban.Duration / 86400);
             else 
-                color.ch_printf(ch, "{0} is banned forever.\r\n", ban.Name);
+                ch.Printf("{0} is banned forever.\r\n", ban.Name);
 
             return 1;
         }
@@ -203,7 +204,7 @@ namespace SmaugCS.Commands.Admin
 
         //                            if (value < 0 || value >= DatabaseManager.Instance.CLASSES.Count())
         //                            {
-        //                                color.send_to_char("Unknown class.\r\n", ch);
+        //                                ch.SendTo("Unknown class.\r\n", ch);
         //                                return 0;
         //                            }
 
@@ -213,7 +214,7 @@ namespace SmaugCS.Commands.Admin
         //                            {
         //                                if (cBan.Level == level)
         //                                {
-        //                                    color.send_to_char("That entry already exists.\r\n", ch);
+        //                                    ch.SendTo("That entry already exists.\r\n", ch);
         //                                    return 0;
         //                                }
 
@@ -225,7 +226,7 @@ namespace SmaugCS.Commands.Admin
         //                                                     ? DateTime.Now.Add(new TimeSpan(btime, 0, 0))
         //                                                     : DateTime.MaxValue;
         //                                cBan.BannedBy = ch.Name;
-        //                                color.send_to_char("Updated entry.\r\n", ch);
+        //                                ch.SendTo("Updated entry.\r\n", ch);
         //                                return 1;
         //                            }
 
@@ -252,7 +253,7 @@ namespace SmaugCS.Commands.Admin
 
         //                            if (value < 0 || value >= DatabaseManager.Instance.RACES.Count())
         //                            {
-        //                                color.send_to_char("Unknown race.\r\n", ch);
+        //                                ch.SendTo("Unknown race.\r\n", ch);
         //                                return 0;
         //                            }
 
@@ -262,7 +263,7 @@ namespace SmaugCS.Commands.Admin
         //                            {
         //                                if (rBan.Level == level)
         //                                {
-        //                                    color.send_to_char("That entry already exists.\r\n", ch);
+        //                                    ch.SendTo("That entry already exists.\r\n", ch);
         //                                    return 0;
         //                                }
 
@@ -274,7 +275,7 @@ namespace SmaugCS.Commands.Admin
         //                                                     ? DateTime.Now.Add(new TimeSpan(btime, 0, 0))
         //                                                     : DateTime.MaxValue;
         //                                rBan.BannedBy = ch.Name;
-        //                                color.send_to_char("Updated entry.\r\n", ch);
+        //                                ch.SendTo("Updated entry.\r\n", ch);
         //                                return 1;
         //                            }
         //                            newBan.Name = DatabaseManager.Instance.RACES.ToList()[value].Name;
@@ -303,7 +304,7 @@ namespace SmaugCS.Commands.Admin
         //                            string name = !userName ? arg : tempHost;
         //                            if (!string.IsNullOrEmpty(name))
         //                            {
-        //                                color.send_to_char("Name was null.\r\n", ch);
+        //                                ch.SendTo("Name was null.\r\n", ch);
         //                                return 0;
         //                            }
 

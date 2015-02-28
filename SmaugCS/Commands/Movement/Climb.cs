@@ -3,7 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -19,7 +19,7 @@ namespace SmaugCS.Commands.Movement
                     return;
                 }
 
-                color.send_to_char("You cannot climb here.", ch);
+                ch.SendTo("You cannot climb here.");
                 return;
             }
 
@@ -30,7 +30,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            color.send_to_char("You cannot climb there.", ch);
+            ch.SendTo("You cannot climb there.");
         }
     }
 }

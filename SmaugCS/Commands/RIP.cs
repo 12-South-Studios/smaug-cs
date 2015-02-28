@@ -2,7 +2,8 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 
 namespace SmaugCS.Commands
 {
@@ -17,8 +18,8 @@ namespace SmaugCS.Commands
                 EnableRip(((PlayerInstance)ch));
             else if (firstArg.EqualsIgnoreCase("off"))
                 DisableRip(((PlayerInstance)ch));
-            else 
-                color.send_to_char("Huh?!?", ch);
+            else
+                ch.SendTo("Huh?!?");
         }
 
         private static void EnableRip(PlayerInstance ch)
@@ -31,7 +32,7 @@ namespace SmaugCS.Commands
         private static void DisableRip(PlayerInstance ch)
         {
             ch.Act.RemoveBit(PlayerFlags.Rip);
-            color.send_to_char("!|*\r\nRIP now off...", ch);
+            ch.SendTo("!|*\r\nRIP now off...");
         }
     }
 }

@@ -11,6 +11,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -74,7 +76,7 @@ namespace SmaugCS
                 ? ObjectMessageLargeMap[SmaugRandom.Between(1.GetHighestOfTwoNumbers(ms / 5 - 15), (ms + 4) / 5)]
                 : ObjectMessageSmallMap[SmaugRandom.Between(1, ((Math.Abs(ms) / 2 + drunk).GetNumberThatIsBetween(1, 60)) / 10)];
 
-            color.send_to_char(output, ch);
+            ch.SendTo(output);
             return true;
         }
 
@@ -328,7 +330,7 @@ namespace SmaugCS
                 if (obj.WearLocation == WearLocations.None)
                     ch.CarryNumber += obj.GetObjectNumber();
                 if (!obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
-                    ch.CarryWeight += obj.GetObjectWeight();
+                    ch.CarryWeight += obj.GetWeight();
             }
 
             save.re_equip_char(ch);
@@ -382,7 +384,7 @@ namespace SmaugCS
                     break;
             }
 
-            color.send_to_char(buf, ch);            
+            ch.SendTo(buf);            
         }
 
         public static void set_cur_obj(ObjectInstance obj)
@@ -493,8 +495,8 @@ namespace SmaugCS
 
             if (!possess)
             {
-                color.set_char_color(ATTypes.AT_BLUE, ch.Switched);
-                color.send_to_char("You suddenly forfeit the power to switch!", ch.Switched);
+                ch.Switched.SetColor(ATTypes.AT_BLUE);
+                ch.Switched.SendTo("You suddenly forfeit the power to switch!");
             }
 
             Return.do_return(ch.Switched, string.Empty);

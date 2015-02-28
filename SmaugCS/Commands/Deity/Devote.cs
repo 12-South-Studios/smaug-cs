@@ -3,7 +3,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -91,7 +91,7 @@ namespace SmaugCS.Commands.Deity
 
             ch.PlayerData.Favor = -2500;
             ch.MentalState = -80;
-            color.send_to_char("A terrible curse afflicts you as you forsake a deity!", ch);
+            ch.SendTo("A terrible curse afflicts you as you forsake a deity!");
 
             // TODO Remove deity affects from player
             // TODO Remove deity resistances from player
@@ -108,8 +108,8 @@ namespace SmaugCS.Commands.Deity
             ch.AddAffect(af);
 
             // TODO Save the deity data to the database
-
-            color.send_to_char("You cease to worship any deity.", ch);
+ 
+            ch.SendTo("You cease to worship any deity.");
             ch.PlayerData.CurrentDeity = null;
             save.save_char_obj(ch);
         }

@@ -37,7 +37,7 @@ namespace SmaugCS.Tests.Extensions
             _ch.Level = level;
             _ch.Act = _ch.Act.SetBit(flags);
 
-            Assert.That(_area.InSoftRange(_ch), Is.EqualTo(expectedValue));
+            Assert.That(_area.IsInSoftRange(_ch), Is.EqualTo(expectedValue));
         }
 
         [TestCase(35, 35, ActFlags.IsNpc, true)]
@@ -49,7 +49,7 @@ namespace SmaugCS.Tests.Extensions
             _ch.Level = level;
             _ch.Act = _ch.Act.SetBit(flags);
 
-            Assert.That(_area.InHardRange(_ch), Is.EqualTo(expectedValue));
+            Assert.That(_area.IsInHardRange(_ch), Is.EqualTo(expectedValue));
         }
     }
 }

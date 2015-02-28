@@ -3,7 +3,8 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
@@ -90,7 +91,7 @@ namespace SmaugCS.Spells.Smaug
 
                     ObjectInstance clonedObj = null;    // TODO Clone ObjectInstance
                     clonedObj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 0;
-                    clonedObj.ToCharacter(ch);
+                    clonedObj.AddTo(ch);
                     ch.SuccessfulCast(skill, null, obj);
                     break;
                 default:
@@ -178,7 +179,7 @@ namespace SmaugCS.Spells.Smaug
                 if (CheckFunctions.CheckIfTrue(ch, obj.Value[3] != 0, "You smell poisonous fumes."))
                     return ReturnTypes.None;
 
-                color.send_to_char("It looks very delicious.", ch);
+                ch.SendTo("It looks very delicious.");
             }
             return ReturnTypes.None;
         }

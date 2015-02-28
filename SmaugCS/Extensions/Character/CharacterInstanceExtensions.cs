@@ -16,16 +16,98 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Character
 {
     public static class CharacterInstanceExtensions
     {
+        public static void Printf(this CharacterInstance ch, string fmt, params object[] args)
+        {
+            ch.SendTo(string.Format(fmt, args));
+        }
+
+        public static void PagerPrintf(this CharacterInstance ch, string fmt, params object[] args)
+        {
+            ch.SendToPager(string.Format(fmt, args));
+        }
+
+        public static void PrintfColor(this CharacterInstance ch, string fmt, params object[] args)
+        {
+            ch.SendTo(string.Format(fmt, args));
+        }
+
+        public static void PagerPrintfColor(this CharacterInstance ch, string fmt, params object[] args)
+        {
+            ch.SendToPager(string.Format(fmt, args));
+        }
+
+        public static void SendToPagerColor(this CharacterInstance ch, string txt)
+        {
+            ch.SendToPager(txt);
+        }
+
+        public static void SendToPager(this CharacterInstance ch, string txt)
+        {
+            if (ch == null || ch.IsNpc() || string.IsNullOrEmpty(txt))
+                return;
+
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.Descriptor == null)
+                return;
+
+            PlayerInstance och = pch.Descriptor.Original ?? pch.Descriptor.Character;
+            if (och.IsNpc() || !och.PlayerData.Flags.IsSet(PCFlags.PagerOn))
+                pch.Descriptor.SendTo(txt);
+            else
+                pch.Descriptor.WriteToPager(color.colorize(txt, pch.Descriptor), 0);
+        }
+
+        public static void SetPagerColor(this CharacterInstance ch, ATTypes attype)
+        {
+            if (ch == null || ch.IsNpc())
+                return;
+
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.Descriptor == null)
+                return;
+
+            pch.Descriptor.WriteToPager(color.color_str(attype, ch), 0);
+            pch.Descriptor.PageColor = pch.Colors.ContainsKey(attype) ? pch.Colors[attype] : (char)0;
+        }
+
+        public static void SetColor(this CharacterInstance ch, ATTypes attype)
+        {
+            if (ch == null || ch.IsNpc())
+                return;
+
+            PlayerInstance pch = (PlayerInstance)ch;
+            if (pch.Descriptor == null)
+                return;
+
+            pch.Descriptor.WriteToBuffer(color.color_str(attype, ch), 0);
+
+            char value;
+            if (pch.Colors.TryGetValue(attype, out value))
+                pch.Descriptor.PageColor = value;
+        }
+
+        public static void SendTo(this CharacterInstance ch, string txt)
+        {            
+            if (ch.IsNpc() || string.IsNullOrEmpty(txt))
+                return;
+
+            PlayerInstance pch = (PlayerInstance) ch;
+            if (pch.Descriptor != null && !string.IsNullOrEmpty(txt))
+                pch.Descriptor.WriteToBuffer(color.colorize(txt, pch.Descriptor), 0);
+        }
+
         public static bool IsDeadly(this CharacterInstance ch)
         {
             if (ch.IsNpc()) return false;
@@ -119,7 +201,7 @@ namespace SmaugCS.Extensions
             if (lastObj != null)
                 lastObj.Extract();
 
-            ch.CurrentRoom.FromRoom(ch);
+            ch.CurrentRoom.RemoveFrom(ch);
 
             if (!fPull)
             {
@@ -133,7 +215,7 @@ namespace SmaugCS.Extensions
                 if (location == null)
                     location = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(1);
 
-                location.ToRoom(ch);
+                location.AddTo(ch);
 
                 CharacterInstance wch = ch.GetCharacterInRoom("healer");
                 if (wch != null)
@@ -912,7 +994,7 @@ namespace SmaugCS.Extensions
                 add_mana = (int)(add_mana + add_mana * 0.3f);
                 add_move = (int)(add_move + add_move * 0.3f);
                 add_hp += 1;
-                color.send_to_char("Gravoc's Pandect steels your sinews.\r\n", ch);
+                ch.SendTo("Gravoc's Pandect steels your sinews.");
             }
 
             ch.MaximumHealth += add_hp;
@@ -936,8 +1018,8 @@ namespace SmaugCS.Extensions
                                            add_hp, ch.MaximumHealth, add_mana, ch.MaximumMana, add_move, ch.MaximumMovement,
                                            add_prac, ch.Practice);
 
-                color.set_char_color(ATTypes.AT_WHITE, ch);
-                color.send_to_char(buffer, ch);
+               ch.SetColor(ATTypes.AT_WHITE);
+               ch.SendTo(buffer);
             }
         }
 
@@ -948,11 +1030,11 @@ namespace SmaugCS.Extensions
                                                              && d.Character != ch);
             foreach (DescriptorData d in descriptors)
             {
-                color.set_char_color(ATTypes.AT_WHITE, d.Character);
-                color.ch_printf(d.Character, "%s has just achieved Avatarhood!\r\n", ch.Name);
+                d.Character.SetColor(ATTypes.AT_WHITE);
+                d.Character.Printf("%s has just achieved Avatarhood!", ch.Name);
             }
 
-            color.set_char_color(ATTypes.AT_WHITE, ch);
+           ch.SetColor(ATTypes.AT_WHITE);
             Help.do_help(ch, "M_ADVHERO_");
         }
 
@@ -966,22 +1048,22 @@ namespace SmaugCS.Extensions
             {
                 if (ch.Level <= 6)
                 {
-                    color.send_to_char("The Favor of Gravoc fosters your learning.\r\n", ch);
+                    ch.SendTo("The Favor of Gravoc fosters your learning.");
                     modgain *= 2;
                 }
                 if (ch.Level <= 10 && ch.Level >= 7)
                 {
-                    color.send_to_char("The Hand of Gravoc hastens your learning.\r\n", ch);
+                    ch.SendTo("The Hand of Gravoc hastens your learning.");
                     modgain *= 1.75f;
                 }
                 if (ch.Level <= 13 && ch.Level >= 11)
                 {
-                    color.send_to_char("The Cunning of Gravoc succors your learning.\r\n", ch);
+                    ch.SendTo("The Cunning of Gravoc succors your learning.");
                     modgain *= 1.5f;
                 }
                 if (ch.Level <= 16 && ch.Level >= 14)
                 {
-                    color.send_to_char("THe Patronage of Gravoc reinforces your learning.\r\n", ch);
+                    ch.SendTo("THe Patronage of Gravoc reinforces your learning.");
                     modgain *= 1.25f;
                 }
             }
@@ -994,7 +1076,7 @@ namespace SmaugCS.Extensions
                 if (ch.Experience + modgain < ch.GetExperienceLevel(ch.Level))
                 {
                     modgain = ch.GetExperienceLevel(ch.Level) - ch.Experience;
-                    color.send_to_char("Gravoc's Pandect protects your insight.\r\n", ch);
+                    ch.SendTo("Gravoc's Pandect protects your insight.");
                 }
             }
 
@@ -1003,16 +1085,16 @@ namespace SmaugCS.Extensions
 
             if (ch.IsNotAuthorized() && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
-                color.send_to_char("You cannot ascend to a higher level until you are authorized.\r\n", ch);
+                ch.SendTo("You cannot ascend to a higher level until you are authorized.");
                 ch.Experience = ch.GetExperienceLevel(ch.Level + 1) - 1;
                 return;
             }
 
             while (ch.Level < LevelConstants.AvatarLevel && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
-                color.set_char_color(ATTypes.AT_WHITE | ATTypes.AT_BLINK, ch);
+               ch.SetColor(ATTypes.AT_WHITE | ATTypes.AT_BLINK);
                 ch.Level += 1;
-                color.ch_printf(ch, "You have not obtained experience level %d!\r\n", ch.Level);
+                ch.Printf("You have not obtained experience level %d!", ch.Level);
                 ch.AdvanceLevel();
             }
         }
@@ -1169,24 +1251,24 @@ namespace SmaugCS.Extensions
             if (ch.CurrentAlignment < DatabaseManager.Instance.GetRace(ch.CurrentRace).MinimumAlignment
                 || ch.CurrentAlignment > DatabaseManager.Instance.GetRace(ch.CurrentRace).MaximumAlignment)
             {
-                color.set_char_color(ATTypes.AT_BLOOD, ch);
-                color.send_to_char("Your actions have been incompatible with the ideals of your race. This troubles you.", ch);
+               ch.SetColor(ATTypes.AT_BLOOD);
+               ch.SendTo("Your actions have been incompatible with the ideals of your race. This troubles you.");
             }
 
             if (ch.CurrentClass == ClassTypes.Paladin)
             {
                 if (ch.CurrentAlignment < 250)
                 {
-                    color.set_char_color(ATTypes.AT_BLOOD, ch);
-                    color.send_to_char("You are wracked with guilt and remorse for your craven actions!\r\n", ch);
+                   ch.SetColor(ATTypes.AT_BLOOD);
+                   ch.SendTo("You are wracked with guilt and remorse for your craven actions!");
                     comm.act(ATTypes.AT_BLOOD, "$n prostrates $mself, seeking forgiveness from $s Lord.", ch, null, null, ToTypes.Room);
                     ((PlayerInstance)ch).WorsenMentalState(15);
                     return;
                 }
                 if (ch.CurrentAlignment < 500)
                 {
-                    color.set_char_color(ATTypes.AT_BLOOD, ch);
-                    color.send_to_char("As you betray your faith, your mind begins to betray you.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_BLOOD);
+                   ch.SendTo("As you betray your faith, your mind begins to betray you.");
                     comm.act(ATTypes.AT_BLOOD, "$n shudders, judging $s actions unworthy of a Paladin.", ch, null, null, ToTypes.Room);
                     ((PlayerInstance)ch).WorsenMentalState(6);
                 }
@@ -1203,13 +1285,13 @@ namespace SmaugCS.Extensions
                 if (fall > 80)
                 {
                     LogManager.Instance.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.Vnum);
-                    ch.CurrentRoom.FromRoom(ch);
-                    DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_TEMPLE).ToRoom(ch);
+                    ch.CurrentRoom.RemoveFrom(ch);
+                    DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_TEMPLE).AddTo(ch);
                     return true;
                 }
 
-                color.set_char_color(ATTypes.AT_FALLING, ch);
-                color.send_to_char("You're falling down...\r\n", ch);
+               ch.SetColor(ATTypes.AT_FALLING);
+               ch.SendTo("You're falling down...");
                 Move.move_char(ch, ch.CurrentRoom.GetExit(DirectionTypes.Down), ++fall);
                 return true;
             }
@@ -1239,9 +1321,9 @@ namespace SmaugCS.Extensions
                     comm.act(ATTypes.AT_MAGIC, "$n is zapped by $p and drops it.", ch, obj, null, ToTypes.Room);
                 }
                 if (obj.CarriedBy != null)
-                    obj.FromCharacter();
+                    obj.RemoveFrom();
 
-                ch.CurrentRoom.ToRoom(obj);
+                ch.CurrentRoom.AddTo(obj);
                 mud_prog.oprog_zap_trigger(ch, obj);
 
                 if ((gameManager ?? GameManager.Instance).GetSaveFlags().IsSet(AutoSaveFlags.ZapDrop) && !ch.CharDied())
@@ -1253,7 +1335,7 @@ namespace SmaugCS.Extensions
             obj.WearLocation = wearLoc;
             ch.CarryNumber -= obj.GetObjectNumber();
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
-                ch.CarryWeight -= obj.GetObjectWeight();
+                ch.CarryWeight -= obj.GetWeight();
 
             foreach (AffectData affect in obj.ObjectIndex.Affects)
                 ch.AddAffect(affect);
@@ -1271,7 +1353,7 @@ namespace SmaugCS.Extensions
 
             ch.CarryNumber += obj.GetObjectNumber();
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
-                ch.CarryWeight += obj.GetObjectWeight();
+                ch.CarryWeight += obj.GetWeight();
 
             ch.ArmorClass += obj.ApplyArmorClass;
             obj.WearLocation = WearLocations.None;

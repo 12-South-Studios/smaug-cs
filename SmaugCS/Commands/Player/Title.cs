@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Player
@@ -12,7 +13,7 @@ namespace SmaugCS.Commands.Player
             if (ch.IsNpc())
                 return;
 
-            color.set_char_color(ATTypes.AT_SCORE, ch);
+           ch.SetColor(ATTypes.AT_SCORE);
 
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < 5,
                 "Sorry... you must be at least level 5 to set your title...")) return;
@@ -24,7 +25,7 @@ namespace SmaugCS.Commands.Player
 
             buffer.SmashTilde();
             player.set_title((PlayerInstance)ch, buffer);
-            color.send_to_char("Ok.", ch);
+            ch.SendTo("Ok.");
         }
     }
 }

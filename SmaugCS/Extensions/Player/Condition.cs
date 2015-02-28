@@ -5,9 +5,10 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Player
 {
     public static class Condition
     {
@@ -48,10 +49,10 @@ namespace SmaugCS.Extensions
 
             if (ch.Level >= LevelConstants.AvatarLevel || ch.CurrentClass == ClassTypes.Vampire) return retcode;
 
-            color.set_char_color(ATTypes.AT_HUNGRY, ch);
+           ch.SetColor(ATTypes.AT_HUNGRY);
             DescriptorAttribute attrib = ConditionTypes.Full.GetAttribute<DescriptorAttribute>();
 
-            color.send_to_char(attrib.Messages.ToList()[conditionValue * 2], ch);
+            ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
 
             comm.act(ATTypes.AT_HUNGRY, attrib.Messages.ToList()[(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
@@ -76,10 +77,10 @@ namespace SmaugCS.Extensions
 
             if (ch.Level >= LevelConstants.AvatarLevel || ch.CurrentClass == ClassTypes.Vampire) return retcode;
 
-            color.set_char_color(ATTypes.AT_THIRSTY, ch);
+           ch.SetColor(ATTypes.AT_THIRSTY);
             DescriptorAttribute attrib = ConditionTypes.Thirsty.GetAttribute<DescriptorAttribute>();
 
-            color.send_to_char(attrib.Messages.ToList()[conditionValue * 2], ch);
+            ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
 
             comm.act(ATTypes.AT_THIRSTY, attrib.Messages.ToList()[(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
@@ -100,10 +101,10 @@ namespace SmaugCS.Extensions
 
             if (ch.Level >= LevelConstants.AvatarLevel) return retcode;
 
-            color.set_char_color(ATTypes.AT_BLOOD, ch);
+           ch.SetColor(ATTypes.AT_BLOOD);
             DescriptorAttribute attrib = ConditionTypes.Bloodthirsty.GetAttribute<DescriptorAttribute>();
 
-            color.send_to_char(attrib.Messages.ToList()[conditionValue * 2], ch);
+            ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
 
             comm.act(ATTypes.AT_HUNGRY, attrib.Messages.ToList()[(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
@@ -122,10 +123,10 @@ namespace SmaugCS.Extensions
         {
             if (conditionValue < 0 || conditionValue > 1) return ReturnTypes.None;
 
-            color.set_char_color(ATTypes.AT_SOBER, ch);
+           ch.SetColor(ATTypes.AT_SOBER);
 
             DescriptorAttribute attrib = ConditionTypes.Drunk.GetAttribute<DescriptorAttribute>();
-            color.send_to_char(attrib.Messages.ToList()[conditionValue], ch);
+            ch.SendTo(attrib.Messages.ToList()[conditionValue]);
 
             return ReturnTypes.None;
         }

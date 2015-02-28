@@ -2,7 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Social
@@ -18,7 +18,7 @@ namespace SmaugCS.Commands.Social
                "You can't see anything, you're sleeping!")) return;
            if (CheckFunctions.CheckIfBlind(ch, "You can't see a thing!")) return;
 
-           color.set_char_color(ATTypes.AT_ACTION, ch);
+          ch.SetColor(ATTypes.AT_ACTION);
 
            string firstWord = argument.FirstWord();
            if (string.IsNullOrEmpty(firstWord))
@@ -53,15 +53,15 @@ namespace SmaugCS.Commands.Social
        private static void GlanceFromImmortal(CharacterInstance ch, CharacterInstance victim)
        {
            if (victim.IsNpc())
-               color.ch_printf(ch, "Mobile #{0} '{1}'", ((MobileInstance)victim).MobIndex.ID, victim.Name);
+               ch.Printf("Mobile #{0} '{1}'", ((MobileInstance)victim).MobIndex.ID, victim.Name);
            else
            {
-               color.ch_printf(ch, "{0}", victim.Name);
-               color.ch_printf(ch, "is a level {0} {1} {2}.", victim.Level, victim.CurrentRace.GetShortName(),
+               ch.Printf("{0}", victim.Name);
+               ch.Printf("is a level {0} {1} {2}.", victim.Level, victim.CurrentRace.GetShortName(),
                    victim.CurrentClass.GetShortName());
            }
 
-           act_info.show_condition(ch, victim);
+           ch.ShowConditionTo(victim);
        }
     }
 }

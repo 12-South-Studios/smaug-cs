@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Liquids
@@ -33,12 +33,12 @@ namespace SmaugCS.Commands.Liquids
             bool success = CheckMixture(firstObj, secondObj);
             if (CheckFunctions.CheckIfTrue(ch, !success, "Those two don't mix well together.")) return;
 
-            color.send_to_char("&cYou mix them together.&g", ch);
+            ch.SendTo("&cYou mix them together.&g");
         }
 
         private static bool CheckMixture(ObjectInstance firstObj, ObjectInstance secondObj)
         {
-            if (firstObj.ItemType == ItemTypes.DrinkContainer
+            /*if (firstObj.ItemType == ItemTypes.DrinkContainer
                 && secondObj.ItemType == ItemTypes.DrinkContainer)
                 return liquids.MixFullyWith(firstObj, secondObj) != null;
             if (firstObj.ItemType == ItemTypes.DrinkMixture
@@ -46,7 +46,7 @@ namespace SmaugCS.Commands.Liquids
                 return liquids.MixPartiallyWith(secondObj, firstObj) != null;
             if (firstObj.ItemType == ItemTypes.DrinkContainer
                 && secondObj.ItemType == ItemTypes.DrinkMixture)
-                return liquids.MixPartiallyWith(firstObj, secondObj) != null;
+                return liquids.MixPartiallyWith(firstObj, secondObj) != null;*/
             return false;
         }
     }

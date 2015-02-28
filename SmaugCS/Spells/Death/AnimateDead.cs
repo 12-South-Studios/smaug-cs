@@ -7,6 +7,9 @@ using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -47,7 +50,7 @@ namespace SmaugCS.Spells
                 }
                 else if ((ch.CurrentMana - (template.Level/4)) < 0)
                 {
-                    color.send_to_char("You do not have enough mana to reanimate this corpse.", ch);
+                    ch.SendTo("You do not have enough mana to reanimate this corpse.");
                     return ReturnTypes.SpellFailed;
                 }
                 else
@@ -80,7 +83,7 @@ namespace SmaugCS.Spells
             CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
                 string.Format("animated corpse {0}", template.PlayerName));
 
-            ch.CurrentRoom.ToRoom(mob);
+            ch.CurrentRoom.AddTo(mob);
             mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
             mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
 
@@ -120,8 +123,8 @@ namespace SmaugCS.Spells
 
             foreach (ObjectInstance obj in corpse.Contents)
             {
-                obj.FromObject(obj);
-                corpse.InRoom.ToRoom(obj);
+                obj.RemoveFrom(obj);
+                corpse.InRoom.AddTo(obj);
             }
         }
     }

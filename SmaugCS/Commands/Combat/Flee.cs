@@ -6,6 +6,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -19,7 +21,7 @@ namespace SmaugCS.Commands.Combat
             {
                 if (ch.IsInCombatPosition())
                     ch.CurrentPosition = ch.CurrentMount != null ? PositionTypes.Mounted : PositionTypes.Standing;
-                color.send_to_char("You aren't fighting anyone.", ch);
+                ch.SendTo("You aren't fighting anyone.");
                 return;
             }
 

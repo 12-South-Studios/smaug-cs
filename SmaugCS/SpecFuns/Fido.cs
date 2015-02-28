@@ -2,6 +2,8 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 
 namespace SmaugCS.SpecFuns
 {
@@ -18,8 +20,8 @@ namespace SmaugCS.SpecFuns
 
                 foreach (ObjectInstance obj in corpse.Contents)
                 {
-                    corpse.FromObject(obj);
-                    ch.CurrentRoom.ToRoom(obj);
+                    corpse.RemoveFrom(obj);
+                    ch.CurrentRoom.AddTo(obj);
                 }
 
                 corpse.Extract();

@@ -1,5 +1,6 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Spells
 {
@@ -12,7 +13,7 @@ namespace SmaugCS.Spells
 
         public static ReturnTypes SpellNotFound(int sn, int level, CharacterInstance ch, object vo)
         {
-            color.send_to_char("That's not a spell!", ch);
+            ch.SendTo("That's not a spell!");
             return ReturnTypes.None;
         }
     }

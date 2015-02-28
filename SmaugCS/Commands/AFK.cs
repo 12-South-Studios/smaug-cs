@@ -2,6 +2,7 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands
 {
@@ -12,24 +13,15 @@ namespace SmaugCS.Commands
         {
             if (Helpers.CheckFunctions.CheckIfNpc(ch, ch)) return;
 
-            string sendMsg;
-            string actMsg;
-
             if (ch.Act.IsSet(PlayerFlags.AwayFromKeyboard))
-            {
                 ch.Act.RemoveBit(PlayerFlags.AwayFromKeyboard);
-                sendMsg = "You are no longer afk.";
-                actMsg = "$n is no longer afk.";
-            }
             else 
-            {
                 ch.Act.SetBit(PlayerFlags.AwayFromKeyboard);
-                sendMsg = "You are now afk.";
-                actMsg = "$n is now afk.";
-            }
 
-            color.send_to_char(sendMsg, ch);
-            comm.act(ATTypes.AT_GREY, actMsg, ch, null, null, ToTypes.CanSee);
+            bool isAfkSet = ch.Act.IsSet(PlayerFlags.AwayFromKeyboard);
+            ch.SendTo(isAfkSet ? "You are no longer afk." : "You are now afk.");
+            comm.act(ATTypes.AT_GREY, isAfkSet ? "$n is no longer afk." : "$n is now afk.", ch, null, null,
+                ToTypes.CanSee);
         }
     }
 }

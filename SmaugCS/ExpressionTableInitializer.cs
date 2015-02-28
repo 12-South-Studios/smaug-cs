@@ -2,7 +2,8 @@
 using NCalc;
 using Realm.Library.NCalcExt;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
 
 namespace SmaugCS

@@ -2,7 +2,7 @@
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 
@@ -48,7 +48,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             if (CheckFunctions.CheckIfTrue(ch, !found, "You have no followers here.")) return;
 
             LogManager.Instance.Info("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Info, ch.Level));
-            color.send_to_char("Ok.\r\n", ch);
+            ch.SendTo("Ok.");
             Macros.WAIT_STATE(ch, 12);
         }
     }

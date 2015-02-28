@@ -1,11 +1,12 @@
-﻿using System.Runtime.Versioning;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Properties;
@@ -49,7 +50,7 @@ namespace SmaugCS.Commands.Skills
             Macros.WAIT_STATE(ch, skill.Rounds);
             if (!ch.CanUseSkill(percent, skill))
             {
-                color.send_to_char("You fail.", ch);
+                ch.SendTo("You fail.");
                skill.LearnFromFailure((PlayerInstance)ch);
                 return;
             }

@@ -9,7 +9,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -45,9 +45,9 @@ namespace SmaugCS
                 KeyValuePair<PositionTypes, string> kvp = PositionMap.FirstOrDefault(x => x.Key == ch.CurrentPosition);
 
                 if (ch.IsInCombatPosition() && position <= (int)PositionTypes.Evasive)
-                    color.send_to_char(FightingMessage, ch);
+                    ch.SendTo(FightingMessage);
                 else
-                    color.send_to_char(kvp.Value, ch);
+                    ch.SendTo(kvp.Value);
                 return false;
             }
 
@@ -150,7 +150,7 @@ namespace SmaugCS
             string buf = check_cmd_flags(ch, foundCmd);
             if (!buf.IsNullOrEmpty())
             {
-                color.send_to_char_color(buf, ch);
+                ch.SendTo(buf);
                 return;
             }
 
@@ -176,19 +176,19 @@ namespace SmaugCS
             switch (ch.CurrentPosition)
             {
                 case PositionTypes.Dead:
-                    color.send_to_char("Lie still; you are DEAD.", ch);
+                    ch.SendTo("Lie still; you are DEAD.");
                     return true;
                 case PositionTypes.Incapacitated:
                 case PositionTypes.Mortal:
-                    color.send_to_char("You are hurt far too badly for that.", ch);
+                    ch.SendTo("You are hurt far too badly for that.");
                     return true;
                 case PositionTypes.Stunned:
-                    color.send_to_char("You are too stunned to do that.", ch);
+                    ch.SendTo("You are too stunned to do that.");
                     return true;
                 case PositionTypes.Sleeping:
                     if (social.Name.EqualsIgnoreCase("snore"))
                         break;
-                    color.send_to_char("In your dreams, or what?", ch);
+                    ch.SendTo("In your dreams, or what?");
                     return true;
             }
 
@@ -212,8 +212,8 @@ namespace SmaugCS
                     }
                     else
                     {
-                        color.set_char_color(ATTypes.AT_IGNORE, victim);
-                        color.ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", ch.Name);
+                        victim.SetColor(ATTypes.AT_IGNORE);
+                        victim.Printf("You attempt to ignore %s, but are unable to do so.\r\n", ch.Name);
                     }
                 }
             }

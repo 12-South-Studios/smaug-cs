@@ -2,7 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -11,7 +11,7 @@ namespace SmaugCS
     {
         public static void skill_notfound(CharacterInstance ch, string argument)
         {
-            color.send_to_char("Huh?\r\n", ch);
+            ch.SendTo("Huh?");
         }
 
         public static int get_ssave(string name)

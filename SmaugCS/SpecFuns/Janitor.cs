@@ -4,6 +4,8 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 
 namespace SmaugCS.SpecFuns
 {
@@ -23,8 +25,8 @@ namespace SmaugCS.SpecFuns
                      trash.Contents.First() != null)) continue;
 
                 comm.act(ATTypes.AT_ACTION, "$n picks up some trash.", ch, null, null, ToTypes.Room);
-                ch.CurrentRoom.FromRoom(trash);
-                trash.ToCharacter(ch);
+                ch.CurrentRoom.RemoveFrom(trash);
+                trash.AddTo(ch);
                 return true;
             }
 

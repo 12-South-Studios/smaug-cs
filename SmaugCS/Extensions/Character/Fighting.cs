@@ -10,7 +10,7 @@ using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Character
 {
     public static class Fighting
     {
@@ -57,7 +57,7 @@ namespace SmaugCS.Extensions
                 return corpse;
             }
 
-            color.set_char_color(ATTypes.AT_DIEMSG, victim);
+           victim.SetColor(ATTypes.AT_DIEMSG);
             Help.do_help(victim,
                          ((PlayerInstance)victim).PlayerData.PvEDeaths + ((PlayerInstance)victim).PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
 
@@ -150,9 +150,9 @@ namespace SmaugCS.Extensions
             if (ch.IsAffected(AffectedByTypes.Berserk))
             {
                 // TODO affect_strip
-                color.set_char_color(ATTypes.AT_WEAROFF, ch);
-                color.send_to_char(DatabaseManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage, ch);
-                color.send_to_char("\r\n", ch);
+               ch.SetColor(ATTypes.AT_WEAROFF);
+               ch.SendTo(DatabaseManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage);
+               ch.SendTo("\r\n");
             }
         }
 

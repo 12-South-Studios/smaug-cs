@@ -3,6 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Social
@@ -13,7 +14,7 @@ namespace SmaugCS.Commands.Social
         {
             if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
-            color.set_char_color(ATTypes.AT_NOTE, ch);
+           ch.SetColor(ATTypes.AT_NOTE);
             string firstArg = argument.FirstWord();
 
             if (string.IsNullOrEmpty(firstArg))
@@ -28,19 +29,19 @@ namespace SmaugCS.Commands.Social
             if (((PlayerInstance)ch).PlayerData.PagerLineCount < 5)
                 ((PlayerInstance)ch).PlayerData.PagerLineCount = 5;
 
-            color.ch_printf(ch, "Page pausing set to {0} lines.", ((PlayerInstance)ch).PlayerData.PagerLineCount);
+            ch.Printf("Page pausing set to {0} lines.", ((PlayerInstance)ch).PlayerData.PagerLineCount);
         }
 
         private static void TogglePager(CharacterInstance ch)
         {
             if (((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.PagerOn))
             {
-                color.send_to_char("Pager disabled.", ch);
+                ch.SendTo("Pager disabled.");
                 Config.do_config(ch, "-pager");
             }
             else
             {
-                color.ch_printf(ch, "Pager is now enabled at {0} lines.", ((PlayerInstance)ch).PlayerData.PagerLineCount);
+                ch.Printf("Pager is now enabled at {0} lines.", ((PlayerInstance)ch).PlayerData.PagerLineCount);
                 Config.do_config(ch, "+pager");
             }
         }

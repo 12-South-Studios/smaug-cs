@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Extensions
 {

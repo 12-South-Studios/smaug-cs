@@ -8,6 +8,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -16,7 +18,7 @@ namespace SmaugCS.Extensions
 {
     public static class RoomTemplateExtensions
     {
-        public static void FromRoom(this RoomTemplate room, CharacterInstance ch)
+        public static void RemoveFrom(this RoomTemplate room, CharacterInstance ch)
         {
             if (ch.CurrentRoom != room)
             {
@@ -51,7 +53,7 @@ namespace SmaugCS.Extensions
                 ch.RemoveTimer(TimerTypes.ShoveDrag);
         }
 
-        public static void ToRoom(this RoomTemplate room, CharacterInstance ch)
+        public static void AddTo(this RoomTemplate room, CharacterInstance ch)
         {
             RoomTemplate localRoom = room;
 
@@ -126,7 +128,7 @@ namespace SmaugCS.Extensions
                 && ((PlayerInstance)rch).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb) && ch.Trust < rch.Trust && ch.CanSee(rch));
         }
 
-        public static void FromRoom(this RoomTemplate room, ObjectInstance obj)
+        public static void RemoveFrom(this RoomTemplate room, ObjectInstance obj)
         {
             if (obj.InRoom != room)
             {
@@ -155,7 +157,7 @@ namespace SmaugCS.Extensions
                 save.write_corpses(null, obj.ShortDescription, obj);
         }
 
-        public static ObjectInstance ToRoom(this RoomTemplate room, ObjectInstance obj)
+        public static ObjectInstance AddTo(this RoomTemplate room, ObjectInstance obj)
         {
             foreach (AffectData paf in obj.Affects)
                 room.AddAffect(paf);

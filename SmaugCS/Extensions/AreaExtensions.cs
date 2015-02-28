@@ -5,7 +5,7 @@ namespace SmaugCS.Extensions
 {
     public static class AreaExtensions
     {
-        public static bool InSoftRange(this AreaData area, CharacterInstance ch)
+        public static bool IsInSoftRange(this AreaData area, CharacterInstance ch)
         {
             if (ch.IsImmortal()) return true;
             if (ch.IsNpc()) return true;
@@ -13,7 +13,7 @@ namespace SmaugCS.Extensions
             return false;
         }
 
-        public static bool InHardRange(this AreaData area, CharacterInstance ch)
+        public static bool IsInHardRange(this AreaData area, CharacterInstance ch)
         {
             if (ch.IsImmortal()) return true;
             if (ch.IsNpc()) return true;

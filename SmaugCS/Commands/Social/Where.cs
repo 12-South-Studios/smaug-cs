@@ -7,7 +7,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands
 {
@@ -33,7 +33,7 @@ namespace SmaugCS.Commands
                     && !victim.IsAffected(AffectedByTypes.Sneak)
                     && ch.CanSee(victim))
                 {
-                    color.pager_printf(ch, "{0} {1}", Macros.PERS(victim, ch).PadRight(28, ' '), victim.CurrentRoom.Name);
+                    ch.PagerPrintf("{0} {1}", Macros.PERS(victim, ch).PadRight(28, ' '), victim.CurrentRoom.Name);
                     return;
                 }
             }
@@ -43,30 +43,30 @@ namespace SmaugCS.Commands
 
         private static void ViewPlayersNearby(CharacterInstance ch)
         {
-            color.pager_printf(ch, "Players near you in {0}:", ch.CurrentRoom.Area.Name);
+            ch.PagerPrintf("Players near you in {0}:", ch.CurrentRoom.Area.Name);
 
             IEnumerable<CharacterInstance> victimList = GetVisiblePlayersInArea(ch);
             if (!victimList.Any())
             {
-                color.send_to_char("None", ch);
+                ch.SendTo("None");
                 return;
             }
 
             foreach (CharacterInstance victim in victimList)
             {
-                color.pager_printf_color(ch, "&P{0}  ", victim.Name.PadRight(13, ' '));
+                ch.PagerPrintfColor("&P{0}  ", victim.Name.PadRight(13, ' '));
                 if (victim.IsImmortal() && victim.Level > LevelConstants.AvatarLevel)
-                    color.send_to_pager_color("&P(&WImmortal&P)\t", ch);
+                   ch.SendToPagerColor("&P(&WImmortal&P)\t");
                 else if (victim.CanPKill() && ((PlayerInstance)victim).PlayerData.Clan != null
                          && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Order
                          && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Guild)
-                    color.pager_printf_color(ch, "{0}\t", ((PlayerInstance)victim).PlayerData.Clan.Badge.PadRight(18, ' '));
+                    ch.PagerPrintfColor("{0}\t", ((PlayerInstance)victim).PlayerData.Clan.Badge.PadRight(18, ' '));
                 else if (victim.CanPKill())
-                    color.send_to_pager_color("(&wUnclanned&P)\t", ch);
-                else 
-                    color.send_to_char("\t\t\t", ch);
+                    ch.SendToPagerColor("(&wUnclanned&P)\t");
+                else
+                    ch.SendTo("\t\t\t");
 
-                color.pager_printf_color(ch, "&P{0}\r\n", victim.CurrentRoom.Name);
+                ch.PagerPrintfColor("&P{0}\r\n", victim.CurrentRoom.Name);
             }
         }
 

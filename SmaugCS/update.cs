@@ -14,6 +14,10 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Mobile;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
 
 namespace SmaugCS
@@ -24,208 +28,15 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
             {
-                handler.set_cur_char(ch);
-                if (!ch.IsNpc())
-                {
-                    drunk_randoms(ch);
-                    hallucinations(ch);
-                    continue;
-                }
-
-                if (ch.CurrentRoom == null || ch.IsAffected(AffectedByTypes.Charm) ||
-                    ch.IsAffected(AffectedByTypes.Paralysis))
-                    continue;
-
-                if (((MobileInstance)ch).MobIndex.ID == VnumConstants.MOB_VNUM_ANIMATED_CORPSE && !ch.IsAffected(AffectedByTypes.Charm))
-                {
-                    if (ch.CurrentRoom.Persons.Any()) 
-                        comm.act(ATTypes.AT_MAGIC, "$n returns to the dust from whence $e came.", ch, null, null, ToTypes.Room);
-
-                    if (ch.IsNpc())
-                        ch.Extract(true);
-                    continue;
-                }
-
-                if (!ch.Act.IsSet(ActFlags.Running) && !ch.Act.IsSet(ActFlags.Sentinel) && ch.CurrentFighting == null &&
-                    ((MobileInstance)ch).CurrentHunting == null)
-                {
-                    Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
-                    track.hunt_victim(ch);
-                    continue;
-                }
-
-                if (!ch.Act.IsSet(ActFlags.Running) && ((MobileInstance)ch).SpecialFunction != null)
-                {
-                    if (((MobileInstance)ch).SpecialFunction.Value.Invoke((MobileInstance)ch))
-                        continue;
-                    if (ch.CharDied())
-                        continue;
-                }
-
-                if (((MobileInstance)ch).MobIndex.HasProg(MudProgTypes.Script))
-                {
-                    mud_prog.mprog_script_trigger(ch);
-                    continue;
-                }
-
-                if (ch != handler.CurrentCharacter)
-                {
-                    // TODO BUG: ch does not equal CurrentCharacter after spec_fun");
-                    continue;
-                }
-
-                if (ch.CurrentPosition != PositionTypes.Standing)
-                    continue;
-
-                if (ch.Act.IsSet(ActFlags.Mounted))
-                {
-                    if (ch.Act.IsSet(ActFlags.Aggressive) || ch.Act.IsSet(ActFlags.MetaAggr))
-                        Emote.do_emote(ch, "snarls and growls.");
-                    continue;
-                }
-
-                if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe) 
-                    && (ch.Act.IsSet(ActFlags.Aggressive) || ch.Act.IsSet(ActFlags.MetaAggr)))
-                    Emote.do_emote(ch, "glares around and snarls.");
-
-                if (ch.CurrentRoom.Area.NumberOfPlayers > 0)
-                {
-                    mud_prog.mprog_random_trigger(ch);
-                    if (ch.CharDied())
-                        continue;
-                    if ((int) ch.CurrentPosition < (int) PositionTypes.Standing)
-                        continue;
-                }
-
-                mud_prog.mprog_hour_trigger(ch);
-                if (ch.CharDied())
-                    continue;
-
-                mud_prog.rprog_hour_trigger(ch);
-                if (ch.CharDied())
-                    continue;
-
-                if ((int)ch.CurrentPosition < (int)PositionTypes.Standing)
-                    continue;
-
-                if (ch.Act.IsSet(ActFlags.Scavenger) && ch.CurrentRoom.Contents.Any() && SmaugRandom.Bits(2) == 0)
-                    Scavenge(ch);
-
-                if (!ch.Act.IsSet(ActFlags.Running)
-                    && !ch.Act.IsSet(ActFlags.Sentinel)
-                    && !ch.Act.IsSet(ActFlags.Prototype)
-                    && !ch.Act.IsSet(ActFlags.StayArea))
-                {
-                    int door = SmaugRandom.Bits(5);
-                    if (door > 9)
-                        break;
-
-                    ExitData exit = ch.CurrentRoom.GetExit(door);
-                    if (exit == null)
-                        break;
-
-                    if (exit.Flags.IsSet(ExitFlags.Window) || exit.Flags.IsSet(ExitFlags.Closed))
-                        break;
-
-                    RoomTemplate room = exit.GetDestination();
-                    if (room == null)
-                        break;
-
-                    if (room.Flags.IsSet(RoomFlags.NoMob) || room.Flags.IsSet(RoomFlags.Death))
-                        break;
-
-                    if (room.Area != ch.CurrentRoom.Area)
-                        break;
-
-                    ReturnTypes retcode = Commands.Movement.Move.move_char(ch, exit, 0);
-                    if (ch.CharDied())
-                        continue;
-                    if (retcode != ReturnTypes.None || ch.Act.IsSet(ActFlags.Sentinel) ||
-                        (int) ch.CurrentPosition < (int) PositionTypes.Standing)
-                        continue;
-                }
-
-                if (ch.CurrentHealth < ch.MaximumHealth/2)
-                {
-                    int door = SmaugRandom.Bits(4);
-                    if (door > 9)
-                        break;
-
-                    ExitData exit = ch.CurrentRoom.GetExit(door);
-                    if (exit == null)
-                        break;
-
-                    if (exit.Flags.IsSet(ExitFlags.Window) || exit.Flags.IsSet(ExitFlags.Closed))
-                        break;
-
-                    RoomTemplate room = exit.GetDestination();
-                    if (room == null)
-                        break;
-
-                    if (room.Flags.IsSet(RoomFlags.NoMob) || room.Flags.IsSet(RoomFlags.Death))
-                        break;
-
-                    bool found = false;
-                    foreach (CharacterInstance rch in ch.CurrentRoom.Persons)
-                    {
-                        if (((MobileInstance)ch).IsFearing(rch))
-                        {
-                            string buf = string.Empty;
-                            switch (SmaugRandom.Bits(2))
-                            {
-                                case 0:
-                                    buf = string.Format("Get away from me, {0}!", rch.Name);
-                                    break;
-                                case 1:
-                                    buf = string.Format("Leave me be, {0}!", rch.Name);
-                                    break;
-                                case 2:
-                                    buf = string.Format("{0} is trying to kill me!  Help!", rch.Name);
-                                    break;
-                                case 3:
-                                    buf = string.Format("Someone save me from {0}!", rch.Name);
-                                    break;
-                            }
-
-                            Yell.do_yell(ch, buf);
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (found)
-                        Commands.Movement.Move.move_char(ch, exit, 0);
-                }
+                if (ch is PlayerInstance)
+                    ((PlayerInstance)ch).ProcessUpdate();
+                else if (ch is MobileInstance)
+                    ((MobileInstance)ch).ProcessUpdate();
             }
 
             // trworld_dispose
-        }
-
-        private static void Scavenge(CharacterInstance ch)
-        {
-            int max = 1;
-            ObjectInstance best = null;
-
-            foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
-            {
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.Act.IsSet(ActFlags.Prototype))
-                    continue;
-                if (obj.WearFlags.IsSet(ItemWearFlags.Take) && obj.Cost > max &&
-                    !obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
-                {
-                    best = obj;
-                    max = obj.Cost;
-                }
-            }
-
-            if (best != null)
-            {
-                best.InRoom.FromRoom(best);
-                best.ToCharacter(ch);
-                comm.act(ATTypes.AT_ACTION, "$n gets $p.", ch, best, null, ToTypes.Room);
-            }
         }
 
         public static void char_calendar_update()
@@ -374,9 +185,9 @@ namespace SmaugCS
                     if (location == null)
                         location = ch.CurrentRoom;
 
-                    ch.CurrentRoom.FromRoom(ch);
-                    location.ToRoom(ch);
-                    color.send_to_char("The gods have released you from hell as your sentence is up!", ch);
+                    ch.CurrentRoom.RemoveFrom(ch);
+                    location.AddTo(ch);
+                    ch.SendTo("The gods have released you from hell as your sentence is up!");
                     Look.do_look(ch, "auto");
                     ((PlayerInstance)ch).PlayerData.helled_by = string.Empty;
                     ((PlayerInstance)ch).PlayerData.release_date = DateTime.MinValue;
@@ -433,7 +244,7 @@ namespace SmaugCS
                         int val = (ch.MentalState + 5)/10;
                         if (HighMentalStateTable.ContainsKey(val))
                         {
-                            color.send_to_char(HighMentalStateTable[val].Key, ch);
+                            ch.SendTo(HighMentalStateTable[val].Key);
                             comm.act(ATTypes.AT_ACTION, HighMentalStateTable[val].Value, ch, null, null, ToTypes.Room);
                         }
                     }
@@ -452,13 +263,13 @@ namespace SmaugCS
                                         (SmaugRandom.D100() + ((100 - (val*10)) + 10) < Math.Abs(ch.MentalState)))
                                         Commands.Movement.Sleep.do_sleep(ch, string.Empty);
                                     else
-                                        color.send_to_char(LowMentalStateTable[val], ch);
+                                        ch.SendTo(LowMentalStateTable[val]);
                                 }
                             }
                             else
                             {
                                 if ((int) ch.CurrentPosition > (int) PositionTypes.Resting)
-                                    color.send_to_char(LowMentalStateTable[val], ch);
+                                    ch.SendTo(LowMentalStateTable[val]);
                             }
                         }
                     }
@@ -519,16 +330,16 @@ namespace SmaugCS
                     ch.StopFighting(true);
 
                 comm.act(ATTypes.AT_ACTION, "$n disappears into the void.", ch, null, null, ToTypes.Room);
-                color.send_to_char("You disappear into the void.", ch);
+                ch.SendTo("You disappear into the void.");
 
                 if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Idle))
                     save.save_char_obj(ch);
 
                 ((PlayerInstance)ch).PlayerData.Flags.SetBit(PCFlags.Idle);
-                ch.CurrentRoom.FromRoom(ch);
+                ch.CurrentRoom.RemoveFrom(ch);
 
                 RoomTemplate room = DatabaseManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
-                room.ToRoom(ch);
+                room.AddTo(ch);
             }
         }
 

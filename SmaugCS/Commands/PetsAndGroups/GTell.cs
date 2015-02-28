@@ -4,7 +4,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -25,13 +25,13 @@ namespace SmaugCS.Commands.PetsAndGroups
 
             if (string.IsNullOrEmpty(argument))
             {
-                color.send_to_char("Tell your group what?\r\n", ch);
+                ch.SendTo("Tell your group what?\r\n");
                 return;
             }
 
             if (ch.Act.IsSet((int) PlayerFlags.NoTell))
             {
-                color.send_to_char("Your message didn't get through!\r\n", ch);
+                ch.SendTo("Your message didn't get through!\r\n");
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                     DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
                         .Values.Where(x => x.IsSameGroup(ch)))
             {
-                color.set_char_color(ATTypes.AT_GTELL, gch);
+                gch.SetColor(ATTypes.AT_GTELL);
 
 #if !SCRAMBLE
                 if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
@@ -52,7 +52,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                                         : argument);*/
                 }
                 else
-                    color.ch_printf(gch, "%s tells the group '%s'.\r\n", ch.Name, argument);
+                    gch.Printf("%s tells the group '%s'.\r\n", ch.Name, argument);
 #else
                 if (act_comm.KnowsLanguage(gch, ch.Spekaing, gch) || (ch.IsNpc() && ch.Speaking == 0))
                     color.ch_printf(gch, "%s tells the group '%s'.\r\n", ch.Name, argument);

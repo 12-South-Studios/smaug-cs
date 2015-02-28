@@ -407,41 +407,9 @@ namespace SmaugCS.Constants
                                                        "r31"
                                                    };
 
-        public static List<short> movement_loss = new List<short>() { 1, 2, 2, 3, 4, 6, 4, 1, 6, 10, 6, 5, 7, 4 };
-
-        public static List<TrapTriggerTypes> trap_door = new List<TrapTriggerTypes>()
-                                                             {
-                                                                 TrapTriggerTypes.North,
-                                                                 TrapTriggerTypes.East,
-                                                                 TrapTriggerTypes.South,
-                                                                 TrapTriggerTypes.West,
-                                                                 TrapTriggerTypes.Up,
-                                                                 TrapTriggerTypes.Down,
-                                                                 TrapTriggerTypes.Northeast,
-                                                                 TrapTriggerTypes.Northwest,
-                                                                 TrapTriggerTypes.Southeast,
-                                                                 TrapTriggerTypes.Southwest
-                                                             };
 
         public static List<short> rev_dir = new List<short>() { 2, 3, 0, 1, 5, 4, 9, 8, 7, 6, 10 };
 
-        public static List<KeyValuePair<string, string>> SectorNames = new List<KeyValuePair<string, string>>()
-                                                                  {
-                                                                      new KeyValuePair<string, string>("In a room", "inside"),
-                                                                      new KeyValuePair<string, string>("In a city", "cities"),
-                                                                      new KeyValuePair<string, string>( "In a field", "fields"),
-                                                                      new KeyValuePair<string, string>("In a forest", "forests"),
-                                                                      new KeyValuePair<string, string>("hill", "hills"),
-                                                                      new KeyValuePair<string, string>("On a mountain", "mountains"),
-                                                                      new KeyValuePair<string, string>("In the water", "waters"),
-                                                                      new KeyValuePair<string, string>("In rough water", "waters"),
-                                                                      new KeyValuePair<string, string>("Underwater", "underwaters"),
-                                                                      new KeyValuePair<string, string>("In the air", "air"),
-                                                                      new KeyValuePair<string, string>("In a desert", "deserts"),
-                                                                      new KeyValuePair<string, string>("Somewhere", "unknown"),
-                                                                      new KeyValuePair<string, string>("ocean floor", "ocean floor"),
-                                                                      new KeyValuePair<string, string>("underground", "underground")
-                                                                  };
 
         public static List<int> SentTotals = new List<int>() { 3, 5, 4, 4, 1, 1, 1, 1, 1, 2, 2, 25, 1, 1 };
 

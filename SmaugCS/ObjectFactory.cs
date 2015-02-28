@@ -8,6 +8,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
@@ -22,7 +24,7 @@ namespace SmaugCS
                     (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                    .Get(VnumConstants.OBJ_VNUM_FIRE), 0);
             fire.Timer = (short)SmaugRandom.Fuzzy(duration);
-            inRoom.ToRoom(fire);
+            inRoom.AddTo(fire);
         }
 
         public static ObjectInstance CreateTrap(IEnumerable<int> values, IDatabaseManager dbManager = null)
@@ -63,7 +65,7 @@ namespace SmaugCS
                     tmpObj.WearLocation = WearLocations.Wield;
                 }
 
-                obj.CarriedBy.CurrentRoom.ToRoom(scraps);
+                obj.CarriedBy.CurrentRoom.AddTo(scraps);
             }
             else if (obj.InRoom != null)
             {
@@ -73,7 +75,7 @@ namespace SmaugCS
                     comm.act(ATTypes.AT_OBJECT, "$p is reduced to little more than scraps.", ch, obj, null, ToTypes.Character);
                 }
 
-                obj.InRoom.ToRoom(scraps);
+                obj.InRoom.AddTo(scraps);
             }
 
             if (obj.ItemType == ItemTypes.Container
@@ -121,7 +123,7 @@ namespace SmaugCS
                     }
 
                     ObjectInstance money = CreateMoney(ch.CurrentCoin);
-                    money.ToObject(corpse);
+                    money.AddTo(corpse);
                     ch.CurrentCoin = 0;
                 }
 
@@ -153,15 +155,15 @@ namespace SmaugCS
 
             foreach (ObjectInstance obj in ch.Carrying)
             {
-                obj.FromCharacter();
+                obj.RemoveFrom();
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory)
                     || obj.ExtraFlags.IsSet(ItemExtraFlags.DeathRot))
                     obj.Extract();
                 else
-                    obj.ToObject(corpse);
+                    obj.AddTo(corpse);
             }
 
-            return ch.CurrentRoom.ToRoom(corpse);
+            return ch.CurrentRoom.AddTo(corpse);
         }
 
         public static void CreateBlood(CharacterInstance ch, IDatabaseManager dbManager = null)
@@ -172,7 +174,7 @@ namespace SmaugCS
 
             obj.Timer = (short)SmaugRandom.Between(2, 4);
             obj.Value[1] = SmaugRandom.Between(3, 5.GetLowestOfTwoNumbers(ch.Level));
-            ch.CurrentRoom.ToRoom(obj);
+            ch.CurrentRoom.AddTo(obj);
         }
 
         public static void CreateBloodstain(CharacterInstance ch, IDatabaseManager dbManager = null)
@@ -182,7 +184,7 @@ namespace SmaugCS
                                                        .Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
 
             obj.Timer = (short)SmaugRandom.Between(1, 2);
-            ch.CurrentRoom.ToRoom(obj);
+            ch.CurrentRoom.AddTo(obj);
         }
 
         public static ObjectInstance CreateMoney(int amount, IDatabaseManager dbManager = null)

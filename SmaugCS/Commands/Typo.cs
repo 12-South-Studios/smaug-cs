@@ -4,6 +4,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands
 {
@@ -11,13 +12,13 @@ namespace SmaugCS.Commands
     {
         public static void do_typo(CharacterInstance ch, string argument)
         {
-            color.set_char_color(ATTypes.AT_PLAIN, ch);
+           ch.SetColor(ATTypes.AT_PLAIN);
 
             if (Helpers.CheckFunctions.CheckIfEmptyString(ch, argument,
                 "Usage:  'typo <message>'  (your location is automatically recorded)"))
             {
                 if (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Ascendant))
-                    color.send_to_char("Usage:  'typo list' or 'typo clear now'", ch);
+                    ch.SendTo("Usage:  'typo list' or 'typo clear now'");
                 return;
             }
 
@@ -29,7 +30,7 @@ namespace SmaugCS.Commands
                 {
                     proxy.Write(string.Empty);
                 }
-                color.send_to_char("Typo file cleared.\r\n", ch);
+                ch.SendTo("Typo file cleared.");
             }
         }
     }

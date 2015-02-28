@@ -3,7 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
@@ -19,7 +19,7 @@ namespace SmaugCS.Behavior.Shopkeeper
                                                                     && (obj.ItemType.GetAttribute<ValuedAttribute>() != null)))
             {
                 if (!ch.CanDrop(obj))
-                    color.ch_printf(ch, "You can't let go of %s.", obj.Name);
+                    ch.Printf("You can't let go of %s.", obj.Name);
                 else if ((cost = Appraise.GetAdjustedRepairCost(keeper, obj)) > 0)
                 {
                     comm.act(ATTypes.AT_TELL,
@@ -38,7 +38,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
             if (total > 0)
             {
-                color.send_to_char("\r\n", ch);
+                ch.SendTo("\r\n");
 
                 buffer = string.Format("$N tells you, 'It will cost {0} piece{1} of gold in total.'", total,
                                               cost == 1 ? "" : "s");

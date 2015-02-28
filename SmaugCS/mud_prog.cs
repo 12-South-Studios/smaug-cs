@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using LuaInterface;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -170,7 +168,7 @@ namespace SmaugCS
         {
             db.Supermob = DatabaseManager.Instance.CHARACTERS.Create(DatabaseManager.Instance.MOBILE_INDEXES.Get(3));
             RoomTemplate office = DatabaseManager.Instance.ROOMS.Get(3);
-            office.ToRoom(db.Supermob);
+            office.AddTo(db.Supermob);
         }
 
         public static string mprog_next_command(string clist)

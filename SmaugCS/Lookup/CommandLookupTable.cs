@@ -3,13 +3,14 @@ using System.Linq;
 using SmaugCS.Commands.Social;
 using SmaugCS.Data;
 using Realm.Library.Common;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Lookup
 {
     public class CommandLookupTable : LookupBase<CommandData, DoFunction>
     {
         public CommandLookupTable()
-            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?", ch)})
+            : base(new DoFunction { Value = (ch, arg) => ch.SendTo("Huh?") })
         {
             LookupTable.Add("do_say", new DoFunction {Value = Say.do_say});
 

@@ -1,7 +1,7 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -15,7 +15,7 @@ namespace SmaugCS.Spells
             CharacterInstance victim = (CharacterInstance)vo;
             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            color.set_char_color(ATTypes.AT_MAGIC, ch);
+           ch.SetColor(ATTypes.AT_MAGIC);
 
             if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic), skill, ch,
                 CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
@@ -27,10 +27,10 @@ namespace SmaugCS.Spells
             
             // TODO: affect_strip(victim, AffectedByTypes.Blind);
             
-            color.set_char_color(ATTypes.AT_MAGIC, victim);
-            color.send_to_char("Your vision returns!", victim);
+           victim.SetColor(ATTypes.AT_MAGIC);
+           victim.SendTo("Your vision returns!");
             if (ch != victim)
-                color.send_to_char("You work your cure, restoring vision.", ch);
+                ch.SendTo("You work your cure, restoring vision.");
             return ReturnTypes.None;
         }
     }

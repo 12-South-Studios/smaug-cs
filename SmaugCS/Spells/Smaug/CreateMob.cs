@@ -6,6 +6,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -43,7 +44,7 @@ namespace SmaugCS.Spells.Smaug
             mob.CurrentCoin = 0;
 
             ch.SuccessfulCast(skill, mob);
-            ch.CurrentRoom.ToRoom(mob);
+            ch.CurrentRoom.AddTo(mob);
             mob.AddFollower(ch);
 
             AffectData af = new AffectData

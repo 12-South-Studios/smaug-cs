@@ -15,10 +15,12 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
-using SmaugCS.Skills;
 using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS
@@ -43,7 +45,7 @@ namespace SmaugCS
             {
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n gets $p from $P", ch, content, corpse, ToTypes.Room);
-                content.InObject.FromObject(content);
+                content.InObject.RemoveFrom(content);
                 ch.CheckObjectForTrap(content, TrapTriggerTypes.Get);
                 if (ch.CharDied())
                     return false;
@@ -106,9 +108,9 @@ namespace SmaugCS
                             SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>((int) paf.Type);
                             if (paf.Type > 0 && skill != null && !string.IsNullOrEmpty(skill.WearOffMessage))
                             {
-                                color.set_char_color(ATTypes.AT_WEAROFF, ch);
-                                color.send_to_char(skill.WearOffMessage, ch);
-                                color.send_to_char("\r\n", ch);
+                               ch.SetColor(ATTypes.AT_WEAROFF);
+                               ch.SendTo(skill.WearOffMessage);
+                               ch.SendTo("\r\n");
                             }
                         }
 
@@ -370,11 +372,8 @@ namespace SmaugCS
                 if (!ch.IsAffected(AffectedByTypes.Flying)
                     && !ch.IsAffected(AffectedByTypes.Floating))
                 {
-                    int sectorCount = SectorTypes.Air.GetMaximum() - 1;
-                    move =
-                        ch.GetEncumberedMove(
-                            LookupConstants.movement_loss[
-                                sectorCount.GetLowestOfTwoNumbers(ch.CurrentRoom.SectorType.GetValue())]);
+                    var attributes = ch.CurrentRoom.SectorType.GetAttributes<MovementLossAttribute>();
+                    move = ch.GetEncumberedMove(attributes.Any() ? attributes.First().ModValue : 1);
                 }
                 else
                     move = ch.GetEncumberedMove(1);
@@ -824,7 +823,7 @@ namespace SmaugCS
             int diceroll = SmaugRandom.D20();
             if (diceroll == 0 || (diceroll != 19 && diceroll < thac0_0 - victimArmorClass))
                 return ProjectileMissed(ch, profBonus.Item2, projectile, victim, dt);
-            return ProjectileHit(ch, victim, projectile, wield, bonus, profBonus.Item2);
+            return ProjectileHit(ch, victim, projectile, wield, bonus, profBonus.Item2, 0);
         }
 
         private static Tuple<int, int> CalculateProjectileBonus(ObjectInstance projectile)
@@ -839,7 +838,7 @@ namespace SmaugCS
             else
             {
                 dt = (int) SkillNumberTypes.Undefined;
-                bonus = SmaugRandom.Between(1, 2.GetNumberThatIsBetween(projectile.GetObjectWeight(), 100));
+                bonus = SmaugRandom.Between(1, 2.GetNumberThatIsBetween(projectile.GetWeight(), 100));
             }
 
             return new Tuple<int, int>(bonus, dt);
@@ -892,10 +891,10 @@ namespace SmaugCS
             else
             {
                 if (projectile.InObject != null)
-                    projectile.FromObject(projectile.InObject);
+                    projectile.RemoveFrom(projectile.InObject);
                 if (projectile.CarriedBy != null)
-                    projectile.FromCharacter();
-                victim.CurrentRoom.ToRoom(projectile);
+                    projectile.RemoveFrom();
+                victim.CurrentRoom.AddTo(projectile);
             }
 
             ch.CauseDamageTo(victim, 0, dt);
@@ -982,10 +981,10 @@ namespace SmaugCS
                 else
                 {
                     if (projectile.InObject != null)
-                        projectile.FromObject(projectile);
+                        projectile.RemoveFrom(projectile);
                     if (projectile.CarriedBy != null) 
-                        projectile.FromCharacter();
-                    victim.CurrentRoom.ToRoom(projectile);
+                        projectile.RemoveFrom();
+                    victim.CurrentRoom.AddTo(projectile);
                 }
                 return retcode;
             }
@@ -1019,8 +1018,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_MAGIC, ch);
-                    color.send_to_char("A magical force prevents you from attacking.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_MAGIC);
+                   ch.SendTo("A magical force prevents you from attacking.");
                 }
                 return true;
             }
@@ -1029,8 +1028,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_MAGIC, ch);
-                    color.ch_printf(ch, "You are a pacifist and will not fight.\r\n");
+                    ch.SetColor(ATTypes.AT_MAGIC);
+                    ch.Printf("You are a pacifist and will not fight.");
                 }
                 return true;
             }
@@ -1039,8 +1038,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_MAGIC, ch);
-                    color.send_to_char(string.Format("{0} is a pacifist and will not fight.\r\n", victim.ShortDescription.CapitalizeFirst()), ch);
+                   ch.SetColor(ATTypes.AT_MAGIC);
+                   ch.SendTo(string.Format("{0} is a pacifist and will not fight.\r\n", victim.ShortDescription.CapitalizeFirst()));
                 }
                 return true;
             }
@@ -1053,8 +1052,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_IMMORT, ch);
-                    color.send_to_char("The gods have forbidden player killing in this area.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_IMMORT);
+                   ch.SendTo("The gods have forbidden player killing in this area.");
                 }
                 return true;
             }
@@ -1066,8 +1065,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_WHITE, ch);
-                    color.send_to_char("You are not yet ready, needing age or experience, if not both.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_WHITE);
+                   ch.SendTo("You are not yet ready, needing age or experience, if not both.");
                 }
                 return true;
             }
@@ -1075,8 +1074,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_WHITE, ch);
-                    color.send_to_char("They are yet too young to die.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_WHITE);
+                   ch.SendTo("They are yet too young to die.");
                 }
                 return true;
             }
@@ -1085,8 +1084,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_IMMORT, ch);
-                    color.send_to_char("The gods do not allow murder when there is such a difference in level.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_IMMORT);
+                   ch.SendTo("The gods do not allow murder when there is such a difference in level.");
                 }
                 return true;
             }
@@ -1095,8 +1094,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_GREEN, ch);
-                    color.send_to_char("That character has died within the last 5 minutes.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_GREEN);
+                   ch.SendTo("That character has died within the last 5 minutes.");
                 }
                 return true;
             }
@@ -1105,8 +1104,8 @@ namespace SmaugCS
             {
                 if (show_messg)
                 {
-                    color.set_char_color(ATTypes.AT_GREEN, ch);
-                    color.send_to_char("You have been killed within the last 5 minutes.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_GREEN);
+                   ch.SendTo("You have been killed within the last 5 minutes.");
                 }
                 return true;
             }
@@ -1355,12 +1354,12 @@ namespace SmaugCS
             if (ch.Act.IsSet((int)PlayerFlags.Killer))
                 return;
 
-            color.set_char_color(ATTypes.AT_WHITE, ch);
-            color.send_to_char("A strange feeling grows deep inside you, and a tingle goes up your spine...\r\n", ch);
-            color.set_char_color(ATTypes.AT_IMMORT, ch);
-            color.send_to_char("A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'\r\n", ch);
-            color.set_char_color(ATTypes.AT_WHITE, ch);
-            color.send_to_char("You feel as if your soul has been revealed for all to see.\r\n", ch);
+           ch.SetColor(ATTypes.AT_WHITE);
+           ch.SendTo("A strange feeling grows deep inside you, and a tingle goes up your spine...");
+           ch.SetColor(ATTypes.AT_IMMORT);
+           ch.SendTo("A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'");
+           ch.SetColor(ATTypes.AT_WHITE);
+           ch.SendTo("You feel as if your soul has been revealed for all to see.");
             ch.Act.SetBit(PlayerFlags.Killer);
             if (ch.Act.IsSet(PlayerFlags.Attacker))
                 ch.Act.RemoveBit(PlayerFlags.Attacker);
@@ -1382,7 +1381,7 @@ namespace SmaugCS
 
             if (victim.NumberFighting > Program.MAX_FIGHT)
             {
-                color.send_to_char("There are too many people fighting for you to join in.\r\n", ch);
+                ch.SendTo("There are too many people fighting for you to join in.");
                 return;
             }
 
@@ -1425,7 +1424,7 @@ namespace SmaugCS
             victim.NumberFighting++;
             if (victim.Switched != null && victim.Switched.IsAffected(AffectedByTypes.Possess))
             {
-                color.send_to_char("You are disturbed!\r\n", victim.Switched);
+                victim.Switched.SendTo("You are disturbed!");
                 Return.do_return(victim.Switched, "");
             }
         }
@@ -1492,7 +1491,7 @@ namespace SmaugCS
 
                 obj.ShortDescription = string.Format(obj.ShortDescription, name);
                 obj.Description = string.Format(obj.Description, name);
-                ch.CurrentRoom.ToRoom(obj);
+                ch.CurrentRoom.AddTo(obj);
             }
 
             msg = ch.IsNpc()
@@ -1526,12 +1525,12 @@ namespace SmaugCS
             {
                 if (gch.Level - leader.Level > 8)
                 {
-                    color.send_to_char("You are too high for this group!", gch);
+                    gch.SendTo("You are too high for this group!");
                     continue;
                 }
                 if (gch.Level - leader.Level < -8)
                 {
-                    color.send_to_char("You are too low for this group!", gch);
+                    gch.SendTo("You are too low for this group!");
                     continue;
                 }
 
@@ -1542,7 +1541,7 @@ namespace SmaugCS
                 gch.CurrentAlignment = gch.ComputeAlignmentChange(victim);
                 if (xp > 0)
                 {
-                    color.ch_printf(gch, "You receive {0} experience points.", xp);
+                    gch.Printf("You receive {0} experience points.", xp);
                     ((PlayerInstance)gch).GainXP(xp);
                 }
 
@@ -1562,8 +1561,8 @@ namespace SmaugCS
                 comm.act(ATTypes.AT_MAGIC, "You are zapped by $p.", gch, obj, null, ToTypes.Character);
                 comm.act(ATTypes.AT_MAGIC, "$n is zapped by $p.", gch, obj, null, ToTypes.Room);
 
-                obj.FromCharacter();
-                ObjectInstance newObj = gch.CurrentRoom.ToRoom(obj);
+                obj.RemoveFrom();
+                ObjectInstance newObj = gch.CurrentRoom.AddTo(obj);
                 mud_prog.oprog_zap_trigger(gch, newObj);
                 if (gch.CharDied())
                     return;
@@ -1583,8 +1582,8 @@ namespace SmaugCS
             if (ch.CurrentRoom != victim.CurrentRoom)
             {
                 wasInRoom = ch.CurrentRoom;
-                ch.CurrentRoom.FromRoom(ch);
-                victim.CurrentRoom.ToRoom(ch);
+                ch.CurrentRoom.RemoveFrom(ch);
+                victim.CurrentRoom.AddTo(ch);
             }
 
             int w_index = CalculateWeaponTypeIndex(dt);
@@ -1645,8 +1644,8 @@ namespace SmaugCS
                         {
                             if (wasInRoom != null)
                             {
-                                ch.CurrentRoom.FromRoom(ch);
-                                wasInRoom.ToRoom(ch);
+                                ch.CurrentRoom.RemoveFrom(ch);
+                                wasInRoom.AddTo(ch);
                             }
                         }
                     }
@@ -1685,8 +1684,8 @@ namespace SmaugCS
 
             if (wasInRoom != null)
             {
-                ch.CurrentRoom.FromRoom(ch);
-                wasInRoom.ToRoom(ch);
+                ch.CurrentRoom.RemoveFrom(ch);
+                wasInRoom.AddTo(ch);
             }
         }
 

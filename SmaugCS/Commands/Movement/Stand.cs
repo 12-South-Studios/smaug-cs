@@ -1,13 +1,14 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
 {
     public static class Stand
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_stand(CharacterInstance ch, string argument)
         {
             if (ch.CurrentPosition == PositionTypes.Sleeping)
@@ -17,21 +18,21 @@ namespace SmaugCS.Commands.Movement
             else if (ch.CurrentPosition == PositionTypes.Sitting)
                 FromSitting(ch);
             else if (ch.CurrentPosition == PositionTypes.Standing)
-                color.send_to_char("You are already standing.", ch);
+                ch.SendTo("You are already standing.");
             else if (ch.IsInCombatPosition())
-                color.send_to_char("You are already fighting!", ch);
+                ch.SendTo("You are already fighting!");
         }
 
         private static void FromSitting(CharacterInstance ch)
         {
-            color.send_to_char("You move quickly to your feet.", ch);
+            ch.SendTo("You move quickly to your feet.");
             comm.act(ATTypes.AT_ACTION, "$n rises up.", ch, null, null, ToTypes.Room);
             ch.CurrentPosition = PositionTypes.Standing;
         }
 
         private static void FromResting(CharacterInstance ch)
         {
-            color.send_to_char("You gather yourself and stand up.", ch);
+            ch.SendTo("You gather yourself and stand up.");
             comm.act(ATTypes.AT_ACTION, "$n rises from $s rest.", ch, null, null, ToTypes.Room);
             ch.CurrentPosition = PositionTypes.Standing;
         }
@@ -41,7 +42,7 @@ namespace SmaugCS.Commands.Movement
             if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Sleep), "You can't seem to wake up!"))
                 return;
 
-            color.send_to_char("You wake and climb quickly to your feet.", ch);
+            ch.SendTo("You wake and climb quickly to your feet.");
             comm.act(ATTypes.AT_ACTION, "$n arises from $s slumber.", ch, null, null, ToTypes.Room);
             ch.CurrentPosition = PositionTypes.Standing;
         }

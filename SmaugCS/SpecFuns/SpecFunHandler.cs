@@ -66,17 +66,11 @@ namespace SmaugCS.SpecFuns
 
             while (minLevel < characterLevel)
             {
-                int bits = SmaugRandom.Bits(4);
-                if (lookupTable.ContainsKey(bits))
-                {
-                    minLevel = lookupTable[bits].Level;
-                    spellName = lookupTable[bits].Spell;
-                }
-                else
-                {
-                    minLevel = lookupTable[-1].Level;
-                    spellName = lookupTable[-1].Spell;
-                }
+                SpecFunSpell value;
+                lookupTable.TryGetValue(SmaugRandom.Bits(4), out value);
+
+                minLevel = value != null ? value.Level : lookupTable[-1].Level;
+                spellName = value != null ? value.Spell : lookupTable[-1].Spell;
             }
 
             return _dbManager.GetEntity<SkillData>(spellName);

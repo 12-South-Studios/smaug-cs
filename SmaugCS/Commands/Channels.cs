@@ -6,6 +6,7 @@ using Realm.Library.Common;
 using SmaugCS.Communication;
 using SmaugCS.Common;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands
 {
@@ -24,25 +25,25 @@ namespace SmaugCS.Commands
             else if (firstWord.StartsWith("-"))
                 ProcessChannelStatus(pch, firstWord.Remove(0, 1), RemoveChannel, RemoveChannel);
             else
-                color.send_to_char("Channels -channel or +channel?", ch);
+                ch.SendTo("Channels -channel or +channel?");
         }
 
         private static void ListChannels(PlayerInstance ch, string argument)
         {
             if (string.IsNullOrEmpty(argument) && ch.Act.IsSet(PlayerFlags.Silence))
             {
-                color.set_char_color(ATTypes.AT_GREEN, ch);
-                color.send_to_char("You are silenced.", ch);
+                ch.SetColor(ATTypes.AT_GREEN);
+                ch.SendTo("You are silenced.");
                 return;
             }
 
-            color.send_to_char_color(" %gChannels  %G:\r\n  ", ch);
+            ch.SendTo(" %gChannels  %G:\r\n  ");
 
             foreach(ChannelTypes channelType in Realm.Library.Common.EnumerationExtensions.GetValues<ChannelTypes>())
             {
                 string msg = GetChannelText(channelType, ch);
                 if (!string.IsNullOrEmpty(msg))
-                    color.ch_printf_color(ch, msg);
+                    ch.PrintfColor(msg);
             }
         }
 

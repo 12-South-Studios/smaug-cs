@@ -5,6 +5,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 
@@ -92,7 +93,7 @@ namespace SmaugCS.Commands.Movement
                 else if (drunk)
                     comm.act(ATTypes.AT_ACTION, "You stare around trying to make sense of things through your drunken stupor.", ch, null, null, ToTypes.Character);
                 else
-                    color.send_to_char("Alas, you cannot go that way.\r\n", ch);
+                    ch.SendTo("Alas, you cannot go that way.\r\n");
                 return ReturnTypes.None;
             }
 
@@ -135,10 +136,9 @@ namespace SmaugCS.Commands.Movement
                 }
                 else
                 {
-                    color.send_to_char(drunk
+                    ch.SendTo(drunk
                         ? "You stagger around in your drunken state.\r\n"
-                        : "Alas, you cannot go that way.\r\n",
-                        ch);
+                        : "Alas, you cannot go that way.\r\n");
                 }
 
                 return ReturnTypes.None;
@@ -149,7 +149,7 @@ namespace SmaugCS.Commands.Movement
             {
                 toRoom = act_move.generate_exit(inRoom, exit);
                 if (toRoom == null)
-                    color.send_to_char("Alas, you cannot go that way.\r\n", ch);
+                    ch.SendTo("Alas, you cannot go that way.");
             }
 
             if (CheckFunctions.CheckIfTrue(ch, fall == 0 && ch.IsAffected(AffectedByTypes.Charm)
@@ -167,20 +167,20 @@ namespace SmaugCS.Commands.Movement
             {
                 if (ch.Level < toRoom.Area.LowHardRange)
                 {
-                    color.set_char_color(ATTypes.AT_TELL, ch);
+                    ch.SetColor(ATTypes.AT_TELL);
                     switch (toRoom.Area.LowHardRange - ch.Level)
                     {
                         case 1:
-                            color.send_to_char("A voice in your mind says, 'You are nearly ready to go that way...'\r\n", ch);
+                            ch.SendTo("A voice in your mind says, 'You are nearly ready to go that way...'");
                             break;
                         case 2:
-                            color.send_to_char("A voice in your mind says, 'Soon you shall be ready to travel down this path... soon.'\r\n", ch);
+                            ch.SendTo("A voice in your mind says, 'Soon you shall be ready to travel down this path... soon.'");
                             break;
                         case 3:
-                            color.send_to_char("A voice in your mind says, 'You are not ready to go down that path... yet.'\r\n", ch);
+                            ch.SendTo("A voice in your mind says, 'You are not ready to go down that path... yet.'");
                             break;
                         default:
-                            color.send_to_char("A voice in your mind says, 'You are not ready to go down that path.'\r\n", ch);
+                            ch.SendTo("A voice in your mind says, 'You are not ready to go down that path.'");
                             break;
                     }
 
@@ -188,8 +188,8 @@ namespace SmaugCS.Commands.Movement
                 }
                 if (ch.Level > toRoom.Area.HighHardRange)
                 {
-                    color.set_char_color(ATTypes.AT_TELL, ch);
-                    color.send_to_char("A voice in your mind says, 'There is nothing more for you down that path.'\r\n", ch);
+                    ch.SetColor(ATTypes.AT_TELL);
+                    ch.SendTo("A voice in your mind says, 'There is nothing more for you down that path.'");
                     return ReturnTypes.None;
                 }
             }
@@ -203,8 +203,8 @@ namespace SmaugCS.Commands.Movement
                 if (toRoom.Area.Flags.IsSet(AreaFlags.NoPKill) && !ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill)
                     && ch.IsPKill() && !ch.IsImmortal())
                 {
-                    color.set_char_color(ATTypes.AT_MAGIC, ch);
-                    color.send_to_char("\r\nA godly force forbids deadly characters from entering that area...\r\n", ch);
+                    ch.SetColor(ATTypes.AT_MAGIC);
+                    ch.SendTo("\r\nA godly force forbids deadly characters from entering that area...");
                     return ReturnTypes.None;
                 }
 
@@ -253,7 +253,7 @@ namespace SmaugCS.Commands.Movement
                 {
                     if (PositionMoveMessage.ContainsKey(ch.CurrentMount.CurrentPosition))
                     {
-                        color.send_to_char(PositionMoveMessage[ch.CurrentMount.CurrentPosition], ch);
+                        ch.SendTo(PositionMoveMessage[ch.CurrentMount.CurrentPosition]);
                         return ReturnTypes.None;
                     }
 
@@ -267,16 +267,17 @@ namespace SmaugCS.Commands.Movement
             return ReturnTypes.None;
         }
 
-        private static readonly Dictionary<PositionTypes, string> PositionMoveMessage = new Dictionary<PositionTypes, string>()
-            {
-                { PositionTypes.Dead, "Your mount is dead!\r\n"},
-                { PositionTypes.Mortal, "Your mount is hurt far too badly to move.\r\n"},
-                { PositionTypes.Incapacitated, "Your mount is hurt far too badly to move.\r\n"},
-                { PositionTypes.Stunned, "Your mount is too stunned to do that.\r\n"},
-                { PositionTypes.Sleeping, "Your mount is sleeping.\r\n"},
-                { PositionTypes.Resting, "Your mount is resting.\r\n"},
-                { PositionTypes.Sitting, "Your mount is sitting down.\r\n"}
-            };
+        private static readonly Dictionary<PositionTypes, string> PositionMoveMessage = new Dictionary
+            <PositionTypes, string>
+        {
+            {PositionTypes.Dead, "Your mount is dead!\r\n"},
+            {PositionTypes.Mortal, "Your mount is hurt far too badly to move.\r\n"},
+            {PositionTypes.Incapacitated, "Your mount is hurt far too badly to move.\r\n"},
+            {PositionTypes.Stunned, "Your mount is too stunned to do that.\r\n"},
+            {PositionTypes.Sleeping, "Your mount is sleeping.\r\n"},
+            {PositionTypes.Resting, "Your mount is resting.\r\n"},
+            {PositionTypes.Sitting, "Your mount is sitting down.\r\n"}
+        };
 
         public static void do_north(CharacterInstance ch, string argument)
         {

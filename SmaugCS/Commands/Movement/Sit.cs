@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
@@ -17,23 +17,23 @@ namespace SmaugCS.Commands.Movement
             else if (ch.CurrentPosition == PositionTypes.Standing)
                 FromStanding(ch);
             else if (ch.CurrentPosition == PositionTypes.Sitting)
-                color.send_to_char("You are already sitting.", ch);
+                ch.SendTo("You are already sitting.");
             else if (ch.IsInCombatPosition())
-                color.send_to_char("You are busy fighting!", ch);
+                ch.SendTo("You are busy fighting!");
             else if (ch.CurrentPosition == PositionTypes.Mounted)
-                color.send_to_char("You are already sitting - on your mount.", ch);
+                ch.SendTo("You are already sitting - on your mount.");
         }
 
         private static void FromStanding(CharacterInstance ch)
         {
-            color.send_to_char("You sit down.", ch);
+            ch.SendTo("You sit down.");
             comm.act(ATTypes.AT_ACTION, "$n sits down.", ch, null, null, ToTypes.Room);
             ch.CurrentPosition = PositionTypes.Sitting;
         }
 
         private static void FromResting(CharacterInstance ch)
         {
-            color.send_to_char("You stop resting and sit up.", ch);
+            ch.SendTo("You stop resting and sit up.");
             comm.act(ATTypes.AT_ACTION, "$n stops resting and sits up.", ch, null, null, ToTypes.Room);
             ch.CurrentPosition = PositionTypes.Sitting;
         }
@@ -43,7 +43,7 @@ namespace SmaugCS.Commands.Movement
             if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Sleep), "You can't seem to wake up!"))
                 return;
 
-            color.send_to_char("You wake and sit up.", ch);
+            ch.SendTo("You wake and sit up.");
             comm.act(ATTypes.AT_ACTION, "$n wakes and sits up.", ch, null, null, ToTypes.Room);
             ch.CurrentPosition = PositionTypes.Sitting;
         }

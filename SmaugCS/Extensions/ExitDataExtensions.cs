@@ -16,11 +16,11 @@ namespace SmaugCS.Extensions
         {
             RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(exit.Room_vnum);
             room.Exits.Remove(exit);
-            ExitData rexit = exit.GetReverseExit();
+            ExitData rexit = exit.GetReverse();
             rexit.Reverse = 0;
         }
 
-        public static ExitData GetReverseExit(this ExitData exit)
+        public static ExitData GetReverse(this ExitData exit)
         {
             if (exit.Reverse == 0)
                 return null;
@@ -45,7 +45,7 @@ namespace SmaugCS.Extensions
         {
             exit.Flags = exit.Flags.SetBit(flag);
 
-            ExitData reverseExit = exit.GetReverseExit();
+            ExitData reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit != exit)
                 reverseExit.Flags = reverseExit.Flags.SetBit(flag);
         }
@@ -59,7 +59,7 @@ namespace SmaugCS.Extensions
         {
             exit.Flags = exit.Flags.RemoveBit(flag);
 
-            ExitData reverseExit = exit.GetReverseExit();
+            ExitData reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit != exit)
                 reverseExit.Flags = reverseExit.Flags.RemoveBit(flag);
         }
@@ -73,7 +73,7 @@ namespace SmaugCS.Extensions
         {
             exit.Flags = exit.Flags.ToggleBit(flag);
 
-            ExitData reverseExit = exit.GetReverseExit();
+            ExitData reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit != exit)
                 reverseExit.Flags = reverseExit.Flags.ToggleBit(flag);
         }

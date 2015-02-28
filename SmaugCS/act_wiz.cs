@@ -8,6 +8,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -34,7 +35,7 @@ namespace SmaugCS
             {
                 if (++NumberOfHits > 1)
                 {
-                    color.ch_printf(ch, "%s does not uniquely identify a char.\r\n", name);
+                    ch.Printf("%s does not uniquely identify a char.\r\n", name);
                     return null;
                 }
 
@@ -44,7 +45,7 @@ namespace SmaugCS
             if (NumberOfHits == 1)
                 return retChar;
 
-            color.send_to_char("No one like that waiting for authorization.\r\n", ch);
+            ch.SendTo("No one like that waiting for authorization.");
             return null;
         }
 
@@ -62,9 +63,9 @@ namespace SmaugCS
                 if (tar == (int)EchoTypes.Immortal && !d.Character.IsImmortal())
                     continue;
 
-                color.set_char_color(atColor, d.Character);
-                color.send_to_char(argument, d.Character);
-                color.send_to_char("\r\n", d.Character);
+               d.Character.SetColor(atColor);
+               d.Character.SendTo(argument);
+               d.Character.SendTo("\r\n");
             }
         }
 
@@ -72,9 +73,9 @@ namespace SmaugCS
         {
             foreach (CharacterInstance ch in room.Persons)
             {
-                color.set_char_color(atcolor, ch);
-                color.send_to_char(argument, ch);
-                color.send_to_char("\r\n", ch);
+               ch.SetColor(atcolor);
+               ch.SendTo(argument);
+               ch.SendTo("\r\n");
             }
         }
 
@@ -133,7 +134,7 @@ namespace SmaugCS
             }
 
             // if victim not in area's level range, do not transfer
-            if (ch.IsNpc() && !location.Area.InHardRange(victim)
+            if (ch.IsNpc() && !location.Area.IsInHardRange(victim)
                 && !location.Flags.IsSet((int)RoomFlags.Prototype))
                 return;
 
@@ -146,8 +147,8 @@ namespace SmaugCS
                 victim.retran = (int)victim.CurrentRoom.Vnum;
             }
 
-            victim.CurrentRoom.FromRoom(victim);
-            location.ToRoom(victim);
+            victim.CurrentRoom.RemoveFrom(victim);
+            location.AddTo(victim);
 
             if (!ch.IsNpc())
             {
@@ -157,7 +158,7 @@ namespace SmaugCS
                 Look.do_look(victim, "auto");
                 if (!victim.IsImmortal()
                     && !victim.IsNpc()
-                    && !location.Area.InHardRange(victim))
+                    && !location.Area.IsInHardRange(victim))
                     comm.act(ATTypes.AT_DANGER, "Warning: this player's level is not within the area's level range.", ch, null, null, ToTypes.Character);
             }
         }
