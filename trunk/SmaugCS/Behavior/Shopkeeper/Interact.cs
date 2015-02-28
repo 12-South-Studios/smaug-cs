@@ -4,7 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
@@ -53,47 +53,38 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool DoesKeeperHateKillers(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (ch.Act.IsSet(PlayerFlags.Killer))
-            {
-                Say.do_say(keeper, "Murderers are not welcome here!");
-                Shout.do_shout(keeper, string.Format("{0} the KILLER is over here!", ch.Name));
-                return false;
-            }
-            return true;
+            if (!ch.Act.IsSet(PlayerFlags.Killer)) return true;
+
+            Say.do_say(keeper, "Murderers are not welcome here!");
+            Shout.do_shout(keeper, string.Format("{0} the KILLER is over here!", ch.Name));
+            return false;
         }
 
         private static bool DoesKeeperHateThieves(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (ch.Act.IsSet(PlayerFlags.Thief))
-            {
-                Say.do_say(keeper, "Thieves are not welcome here!");
-                Shout.do_shout(keeper, string.Format("{0} the THIEF is over here!", ch.Name));
-                return true;
-            }
-            return false;
+            if (!ch.Act.IsSet(PlayerFlags.Thief)) return false;
+
+            Say.do_say(keeper, "Thieves are not welcome here!");
+            Shout.do_shout(keeper, string.Format("{0} the THIEF is over here!", ch.Name));
+            return true;
         }
 
         private static bool DoesKeeperHateFighting(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (ch.GetMyTarget() != null)
-            {
-                color.ch_printf(ch, "%s doesn't seem to wnat to get involved.\r\n", Macros.PERS(keeper, ch));
-                return true;
-            }
-            return false;
+            if (ch.GetMyTarget() == null) return false;
+
+            ch.Printf("%s doesn't seem to wnat to get involved.\r\n", Macros.PERS(keeper, ch));
+            return true;
         }
 
         private static bool IsKeeperFighting(CharacterInstance keeper, CharacterInstance ch)
         {
             CharacterInstance whof = keeper.GetMyTarget();
-            if (whof != null)
-            {
-                if (!CheckFunctions.CheckIfEquivalent(ch, whof, ch, "I don't think that's a good idea..."))
-                    Say.do_say(keeper, "I'm too busy for that!");
+            if (whof == null) return false;
 
-                return true;
-            }
-            return false;
+            if (!CheckFunctions.CheckIfEquivalent(ch, whof, ch, "I don't think that's a good idea..."))
+                Say.do_say(keeper, "I'm too busy for that!");
+            return true;
         }
 
         private static bool IsShopClosed(MobileInstance keeper, CharacterInstance ch, int gameHour)
@@ -105,23 +96,18 @@ namespace SmaugCS.Behavior.Shopkeeper
                 return true;
             }
 
-            if (gameHour > shop.CloseHour)
-            {
-                Say.do_say(keeper, "Sorry, come back tomorrow.");
-                return true;
-            }
+            if (gameHour <= shop.CloseHour) return false;
 
-            return false;
+            Say.do_say(keeper, "Sorry, come back tomorrow.");
+            return true;
         }
 
         private static bool IsVisibleToKeeper(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (!keeper.CanSee(ch))
-            {
-                Say.do_say(keeper, "I don't trade with folks I can't see.");
-                return true;
-            }
-            return false;
+            if (keeper.CanSee(ch)) return false;
+
+            Say.do_say(keeper, "I don't trade with folks I can't see.");
+            return true;
         }
     }
 }

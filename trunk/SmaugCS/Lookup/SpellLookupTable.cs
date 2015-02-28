@@ -3,6 +3,7 @@ using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using Realm.Library.Common;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Lookup
 {
@@ -11,7 +12,7 @@ namespace SmaugCS.Lookup
         public SpellLookupTable()
             : base(new SpellFunction {Value = (id, level, ch, vo) =>
                 {
-                    color.send_to_char("That's not a spell!", ch);
+                    ch.SendTo("That's not a spell!");
                     return ReturnTypes.None;
                 }})
         {

@@ -8,7 +8,8 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -20,7 +21,7 @@ namespace SmaugCS.Commands.Objects
         {
             if (ch.IsNpc()) return;
             
-            color.set_char_color(ATTypes.AT_LBLUE, ch);
+            ch.SetColor(ATTypes.AT_LBLUE);
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < GameConstants.GetSystemValue<int>("MinimumAuctionLevel"),
                 "You need to gain more experience to use the auction...")) return;
 
@@ -74,7 +75,7 @@ namespace SmaugCS.Commands.Objects
             }
 
             obj.Split();
-            obj.FromCharacter();
+            obj.RemoveFrom();
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
 
@@ -129,12 +130,12 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction, "There is no auction to stop."))
                 return;
 
-            color.set_char_color(ATTypes.AT_LBLUE, ch);
+            ch.SetColor(ATTypes.AT_LBLUE);
 
             AuctionData auction = AuctionManager.Instance.Auction;
 
             ChatManager.talk_auction(string.Format(argument, auction.ItemForSale.ShortDescription));
-            auction.ItemForSale.ToCharacter(auction.Seller);
+            auction.ItemForSale.AddTo(auction.Seller);
 
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(auction.Seller);
@@ -142,7 +143,7 @@ namespace SmaugCS.Commands.Objects
             if (auction.Buyer != null && auction.Buyer != auction.Seller)
             {
                 auction.Buyer.CurrentCoin += auction.BidAmount;
-                color.send_to_char("Your money has been returned.", auction.Buyer);
+                auction.Buyer.SendTo("Your money has been returned.");
             }
 
             AuctionManager.Instance.StopAuction();
@@ -153,25 +154,24 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
                 "There is nothing being auctioned right now.  What would you like to auction?")) return;
 
-            color.set_char_color(ATTypes.AT_BLUE, ch);
-            color.send_to_char("Auctions:", ch);
+            ch.SetColor(ATTypes.AT_BLUE);
+            ch.SendTo("Auctions:");
 
             AuctionData auction = AuctionManager.Instance.Auction;
             if (auction.BidAmount > 0)
-                color.ch_printf(ch, "Current bid on this item is %s coin.", auction.BidAmount);
+                ch.Printf("Current bid on this item is %s coin.", auction.BidAmount);
             else 
-                color.send_to_char("No bids on this item have been received.", ch);
+                ch.SendTo("No bids on this item have been received.");
 
-            color.set_char_color(ATTypes.AT_LBLUE, ch);
-            color.ch_printf(ch,
-                "Object '%s' is %s, special properties: %s\r\nIts weight is %d, value is %d, and level is %d.",
+            ch.SetColor(ATTypes.AT_LBLUE);
+            ch.Printf("Object '%s' is %s, special properties: %s\r\nIts weight is %d, value is %d, and level is %d.",
                 auction.ItemForSale.Name, auction.ItemForSale.Name.AOrAn(), auction.ItemForSale.ExtraFlags.ToString(),
                 auction.ItemForSale.Weight, auction.ItemForSale.Cost, auction.ItemForSale.Level);
 
             if (auction.ItemForSale.WearLocation != WearLocations.Light)
-                color.ch_printf(ch, "Item's wear location: %s", auction.ItemForSale.WearLocation);
+                ch.Printf("Item's wear location: %s", auction.ItemForSale.WearLocation);
 
-            color.set_char_color(ATTypes.AT_BLUE, ch);
+            ch.SetColor(ATTypes.AT_BLUE);
 
             if (DisplayTable.ContainsKey(auction.ItemForSale.ItemType))
                 DisplayTable[auction.ItemForSale.ItemType].Invoke(ch, auction.ItemForSale);
@@ -187,16 +187,16 @@ namespace SmaugCS.Commands.Objects
                 || auction.ItemForSale.ItemType == ItemTypes.Quiver) 
                 && auction.ItemForSale.Contents.Any())
             {
-                color.set_char_color(ATTypes.AT_OBJECT, ch);
-                color.send_to_char("Contents:", ch);
+                ch.SetColor(ATTypes.AT_OBJECT);
+                ch.SendTo("Contents:");
                 act_info.show_list_to_char(auction.ItemForSale.Contents, (PlayerInstance)ch, true, false);
             }
 
             if (ch.IsImmortal())
             {
-                color.ch_printf(ch, "Seller: %s.  Bidder: %s.  Round: %d,",
+                ch.Printf("Seller: %s.  Bidder: %s.  Round: %d,",
                     auction.Seller.Name, auction.Buyer.Name, auction.GoingCounter + 1);
-                color.ch_printf(ch, "Time left in round: %d.", auction.PulseFrequency);
+                ch.Printf("Time left in round: %d.", auction.PulseFrequency);
             }
         }
 
@@ -218,7 +218,7 @@ namespace SmaugCS.Commands.Objects
 
         private static void DisplayContainerDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            color.ch_printf(ch, "%s appears to %s.", obj.ShortDescription.CapitalizeFirst(), 
+            ch.Printf("%s appears to %s.", obj.ShortDescription.CapitalizeFirst(), 
                 GetObjectValueText(obj.Value[0]));
         }
 
@@ -245,55 +245,55 @@ namespace SmaugCS.Commands.Objects
 
         private static void DisplayConsumableDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            color.ch_printf(ch, "Level %d spells of: ", obj.Value[0]);
+            ch.Printf("Level %d spells of: ", obj.Value[0]);
 
             SkillData skill;
             if (obj.Value[1] >= 0)
             {
                 skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[1]);
                 if (skill != null)
-                    color.send_to_char(string.Format(" '{0}'", skill.Name), ch);
+                    ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
 
             if (obj.Value[2] >= 0)
             {
                 skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[2]);
                 if (skill != null)
-                    color.send_to_char(string.Format(" '{0}'", skill.Name), ch);
+                    ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
 
             if (obj.Value[3] >= 0)
             {
                 skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
                 if (skill != null)
-                    color.send_to_char(string.Format(" '{0}'", skill.Name), ch);
+                    ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
-            color.send_to_char(".", ch);
+            ch.SendTo(".");
         }
 
         private static void DisplayMagicImplementDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            color.ch_printf(ch, "Has %d(%d) charges of level %d", obj.Value[1], obj.Value[2], obj.Value[0]);
+            ch.Printf("Has %d(%d) charges of level %d", obj.Value[1], obj.Value[2], obj.Value[0]);
 
             if (obj.Value[3] >= 0)
             {
                 SkillData skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
                 if (skill != null)
-                    color.send_to_char(string.Format(" '{0}'", skill.Name), ch);
+                    ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
-            color.send_to_char(".", ch);
+            ch.SendTo(".");
         }
 
         private static void DisplayWeaponDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            color.ch_printf(ch, "Damage is %d to %d (Average %d).%s",
+            ch.Printf("Damage is %d to %d (Average %d).%s",
                 obj.Value[1], obj.Value[2], (obj.Value[1] + obj.Value[2])/2,
                 obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned) ? "This weapon is poisoned." : string.Empty);
         }
 
         private static void DisplayArmorDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            color.ch_printf(ch, "Armor class is %d.", obj.Value[0]);
+            ch.Printf("Armor class is %d.", obj.Value[0]);
         }
     }
 }

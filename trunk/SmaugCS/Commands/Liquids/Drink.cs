@@ -6,7 +6,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -138,13 +140,13 @@ namespace SmaugCS.Commands.Liquids
             int maxCond = GetMaximumCondition();
 
             if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
-                color.send_to_char("&rYou replenish your body with the vital fluid.", ch);
+                ch.SendTo("&rYou replenish your body with the vital fluid.");
             else if (cond >= (maxCond * 0.4f) && cond < (maxCond * 0.6f))
-                color.send_to_char("&rYour thirst for blood begins to decrease.", ch);
+                ch.SendTo("&rYour thirst for blood begins to decrease.");
             else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
-                color.send_to_char("&RThe thirst for blood begins to leave you...", ch);
+                ch.SendTo("&RThe thirst for blood begins to leave you...");
             else if (cond >= (maxCond * 0.9f) && cond < maxCond)
-                color.send_to_char("&RYou drinnk the last drop of the fluid, the thirst for more leaves your body.", ch);
+                ch.SendTo("&RYou drinnk the last drop of the fluid, the thirst for more leaves your body.");
         }
 
         private static void EvaluateThirstCondition(PlayerInstance ch)
@@ -153,15 +155,15 @@ namespace SmaugCS.Commands.Liquids
             int maxCond = GetMaximumCondition();
 
             if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
-                color.send_to_char("Your stomach begins to slosh around.", ch);
+                ch.SendTo("Your stomach begins to slosh around.");
             else if (cond >= (maxCond * 0.4f) && cond < (maxCond * 0.6f))
-                color.send_to_char("You start to feel bloated.", ch);
+                ch.SendTo("You start to feel bloated.");
             else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
-                color.send_to_char("You feel bloated.", ch);
+                ch.SendTo("You feel bloated.");
             else if (cond >= (maxCond * 0.9f) && cond < maxCond)
-                color.send_to_char("Your stomach is almost filled to it's brim!", ch);
+                ch.SendTo("Your stomach is almost filled to it's brim!");
             else if (cond == maxCond)
-                color.send_to_char("Your stomach is full, you can't manage to get anymore down.", ch);
+                ch.SendTo("Your stomach is full, you can't manage to get anymore down.");
         }
 
         private static void EvaluateDrunkCondition(PlayerInstance ch)
@@ -170,15 +172,15 @@ namespace SmaugCS.Commands.Liquids
             int maxCond = GetMaximumCondition();
 
             if (cond > (maxCond/2) && cond < (maxCond*0.4f))
-                color.send_to_char("You feel quite sloshed.", ch);
+                ch.SendTo("You feel quite sloshed.");
             else if (cond >= (maxCond*0.4f) && cond < (maxCond*0.6f))
-                color.send_to_char("You start to feel a little drunk.", ch);
+                ch.SendTo("You start to feel a little drunk.");
             else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
-                color.send_to_char("Your vision starts to get blurry.", ch);
+                ch.SendTo("Your vision starts to get blurry.");
             else if (cond >= (maxCond * 0.9f) && cond < maxCond)
-                color.send_to_char("You feel very drunk.", ch);
+                ch.SendTo("You feel very drunk.");
             else if (cond == maxCond)
-                color.send_to_char("You feel like you're going to pass out.", ch);
+                ch.SendTo("You feel like you're going to pass out.");
         }
 
         private static void DrinkPoison(CharacterInstance ch, ObjectInstance obj)
@@ -223,7 +225,7 @@ namespace SmaugCS.Commands.Liquids
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n drinks from the fountain.", ch, null, null, ToTypes.Room);
-                color.send_to_char("You take a long thirst quenching drink.", ch);
+                ch.SendTo("You take a long thirst quenching drink.");
             }
         }
 
@@ -240,8 +242,8 @@ namespace SmaugCS.Commands.Liquids
 
             if (obj.Timer < 0 && ch.Level > 5 && ch.GetCondition(ConditionTypes.Bloodthirsty) > (5 + ch.Level/10))
             {
-                color.send_to_char("It is beneath you to stoop to drinking blood from the ground!", ch);
-                color.send_to_char("Unless in dire need, you'd much rather have blood from a victim's neck!", ch);
+                ch.SendTo("It is beneath you to stoop to drinking blood from the ground!");
+                ch.SendTo("Unless in dire need, you'd much rather have blood from a victim's neck!");
                 return;
             }
 
@@ -256,13 +258,13 @@ namespace SmaugCS.Commands.Liquids
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_BLOOD, "$n drinks from the spilled blood.", ch, null, null, ToTypes.Room);
-                color.set_char_color(ATTypes.AT_BLOOD, ch);
-                color.send_to_char("You relish in the replenishment of this vital fluid...", ch);
+                ch.SetColor(ATTypes.AT_BLOOD);
+                ch.SendTo("You relish in the replenishment of this vital fluid...");
 
                 if (obj.Values.Quantity <= 1)
                 {
-                    color.set_char_color(ATTypes.AT_BLOOD, ch);
-                    color.send_to_char("You drink the last drop of blood from the spill", ch);
+                    ch.SetColor(ATTypes.AT_BLOOD);
+                    ch.SendTo("You drink the last drop of blood from the spill");
                     comm.act(ATTypes.AT_BLOOD, "$n drinks the last drop of blood from the spill.", ch, null, null,
                         ToTypes.Room);
                 }

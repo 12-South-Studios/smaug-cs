@@ -9,6 +9,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -36,7 +38,7 @@ namespace SmaugCS.Commands.Deity
             if (SupplicateTable.ContainsKey(firstArg.ToLower()))
                 SupplicateTable[firstArg.ToLower()].Invoke((PlayerInstance)ch, argument);
             else 
-                color.send_to_char("You cannot supplicate for that.", ch);
+                ch.SendTo("You cannot supplicate for that.");
         }
 
         private static void SupplicateForCorpse(PlayerInstance ch, string argument)
@@ -55,8 +57,8 @@ namespace SmaugCS.Commands.Deity
 
             comm.act(ATTypes.AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, null, null, ToTypes.Character);
             comm.act(ATTypes.AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, null, null, ToTypes.Room);
-            corpse.InRoom.FromRoom(corpse);
-            ch.CurrentRoom.ToRoom(corpse);
+            corpse.InRoom.RemoveFrom(corpse);
+            ch.CurrentRoom.AddTo(corpse);
             corpse.ExtraFlags.RemoveBit(ItemExtraFlags.Buried);
 
             ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateCorpseCost;
@@ -72,7 +74,7 @@ namespace SmaugCS.Commands.Deity
             MobTemplate template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY);
             CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template);
 
-            ch.CurrentRoom.ToRoom(mob);
+            ch.CurrentRoom.AddTo(mob);
 
             comm.act(ATTypes.AT_MAGIC, "$n summons a powerful avatar!", ch, null, null, ToTypes.Room);
             comm.act(ATTypes.AT_MAGIC, "You summon a powerful avatar!", ch, null, null, ToTypes.Character);
@@ -94,7 +96,7 @@ namespace SmaugCS.Commands.Deity
             ObjectTemplate template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
             ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(template, ch.Level,
                 string.Format("sigil {0}", ch.PlayerData.CurrentDeity.Name));
-            obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.ToCharacter(ch) : ch.CurrentRoom.ToRoom(obj);
+            obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.AddTo(ch) : ch.CurrentRoom.AddTo(obj);
 
             comm.act(ATTypes.AT_MAGIC, "$n weaves $p from divine matter!", ch, obj, null, ToTypes.Room);
             comm.act(ATTypes.AT_MAGIC, "You weave $p from divine matter!", ch, obj, null, ToTypes.Character);
@@ -165,13 +167,13 @@ namespace SmaugCS.Commands.Deity
             comm.act(ATTypes.AT_MAGIC, "$n disappears in a column of divine power.", ch, null, null, ToTypes.Room);
 
             RoomTemplate oldRoom = ch.CurrentRoom;
-            oldRoom.FromRoom(ch);
-            location.ToRoom(ch);
+            oldRoom.RemoveFrom(ch);
+            location.AddTo(ch);
 
             if (ch.CurrentMount != null)
             {
-                oldRoom.FromRoom(ch.CurrentMount);
-                location.ToRoom(ch.CurrentMount);
+                oldRoom.RemoveFrom(ch.CurrentMount);
+                location.AddTo(ch.CurrentMount);
             }
 
             comm.act(ATTypes.AT_MAGIC, "$n appears in the room from a column of divine power.", ch, null, null, ToTypes.Room);

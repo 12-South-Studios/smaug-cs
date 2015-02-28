@@ -8,6 +8,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
@@ -153,7 +155,7 @@ namespace SmaugCS.Commands.Movement
             foreach(CharacterInstance rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, exit.Keywords, ToTypes.Character);
 
-            ExitData reverseExit = exit.GetReverseExit();
+            ExitData reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit.Destination == exit.Destination)
             {
                 reverseExit.Flags = reverseExit.Flags.RemoveBit(ExitFlags.Closed);
@@ -177,7 +179,7 @@ namespace SmaugCS.Commands.Movement
             foreach (CharacterInstance rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d closes.", rch, null, exit.Keywords, ToTypes.Character);
 
-            ExitData reverseExit = exit.GetReverseExit();
+            ExitData reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit.Destination == exit.Destination)
             {
                 reverseExit.Flags = reverseExit.Flags.SetBit(ExitFlags.Closed);
@@ -269,7 +271,7 @@ namespace SmaugCS.Commands.Movement
                     return true;
                 }
 
-                room.ToRoom(instance);
+                room.AddTo(instance);
                 return true;
             }
             return false;
@@ -289,13 +291,13 @@ namespace SmaugCS.Commands.Movement
                         state = isUp ? "in" : "out";
                     else
                         state = isUp ? "up" : "down";
-                    color.ch_printf(ch, "It is already %s.", state);
+                    ch.Printf("It is already %s.", state);
                     return true;
                 }
             }
             else
             {
-                color.ch_printf(ch, "You can't %s that!", pull ? "pull" : "push");
+                ch.Printf("You can't %s that!", pull ? "pull" : "push");
                 return true;
             }
             return true;
@@ -332,13 +334,13 @@ namespace SmaugCS.Commands.Movement
                 }
 
                 if (room != null)
-                    room.ToRoom(instance);
+                    room.AddTo(instance);
                 else
                 {
                     if (obj.WearFlags.IsSet(ItemWearFlags.Take))
-                        instance.ToCharacter(ch);
+                        instance.AddTo(ch);
                     else
-                        ch.CurrentRoom.ToRoom(instance);
+                        ch.CurrentRoom.AddTo(instance);
                 }
                 return true;
             }
@@ -377,8 +379,8 @@ namespace SmaugCS.Commands.Movement
                 db.randomize_exits(room, maxd);
                 foreach (CharacterInstance rch in room.Persons)
                 {
-                    color.send_to_char("You hear a loud rumbling sound.", rch);
-                    color.send_to_char("Something seems different...", rch);
+                    rch.SendTo("You hear a loud rumbling sound.");
+                    rch.SendTo("Something seems different...");
                 }
                 return true;
             }

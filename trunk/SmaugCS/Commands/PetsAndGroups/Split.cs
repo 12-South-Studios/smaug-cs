@@ -4,7 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -34,8 +34,8 @@ namespace SmaugCS.Commands.PetsAndGroups
             ch.CurrentCoin -= amount;
             ch.CurrentCoin += share + extra;
 
-            color.set_char_color(ATTypes.AT_GOLD, ch);
-            color.ch_printf(ch, "You split %d gold coins.  Your share is %d gold coins.\r\n", amount, share + extra);
+           ch.SetColor(ATTypes.AT_GOLD);
+            ch.Printf("You split %d gold coins.  Your share is %d gold coins.\r\n", amount, share + extra);
 
             string buffer = string.Format("$n splits {0} gold coins. Your share is {1} gold coins.", amount, share);
             foreach (CharacterInstance gch in ch.CurrentRoom.Persons.Where(x => x.IsSameGroup(ch) && x != ch))

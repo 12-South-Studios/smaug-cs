@@ -8,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -42,9 +43,9 @@ namespace SmaugCS.SpecFuns
 
                 obj.Split();
                 comm.act(ATTypes.AT_ACTION, "$n leans over and gets $p.", ch, obj, null, ToTypes.Room);
-                ch.CurrentRoom.FromRoom(obj);
+                ch.CurrentRoom.RemoveFrom(obj);
 
-                ObjectInstance trash = obj.ToCharacter(ch);
+                ObjectInstance trash = obj.AddTo(ch);
                 if (ch.Level < trash.Level)
                 {
                     comm.act(ATTypes.AT_ACTION, "$n tries to use $p, but is too inexperienced.", ch, trash, null, ToTypes.Room);
@@ -89,7 +90,7 @@ namespace SmaugCS.SpecFuns
                 if (!noExit && thrown)
                 {
                     handler.set_cur_obj(trash);
-                    if (trash.DamageObject() != ReturnTypes.ObjectScrapped)
+                    if (trash.CauseDamageTo() != ReturnTypes.ObjectScrapped)
                         ThrowScrapAtDirection(ch, trash, exit);
                     else
                     {
@@ -110,16 +111,16 @@ namespace SmaugCS.SpecFuns
             trash.Split();
             comm.act(ATTypes.AT_ACTION, "$n growls and throws $p $T.", ch, trash, exit.Direction.GetName(),
                 ToTypes.Room);
-            trash.FromCharacter();
+            trash.RemoveFrom();
 
             RoomTemplate oldRoom = ch.CurrentRoom;
             RoomTemplate room = exit.GetDestination(DatabaseManager.Instance);
-            room.ToRoom(trash);
-            ch.CurrentRoom.FromRoom(ch);
-            room.ToRoom(ch);
+            room.AddTo(trash);
+            ch.CurrentRoom.RemoveFrom(ch);
+            room.AddTo(ch);
             comm.act(ATTypes.AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, ToTypes.Room);
-            ch.CurrentRoom.FromRoom(ch);
-            oldRoom.ToRoom(ch);
+            ch.CurrentRoom.RemoveFrom(ch);
+            oldRoom.AddTo(ch);
         }
     }
 }

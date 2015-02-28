@@ -6,7 +6,9 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -116,8 +118,8 @@ namespace SmaugCS
             else
                 spell = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(affect).GetName().ToLower();
 
-            color.set_char_color(ATTypes.AT_MAGIC, ch);
-            color.set_char_color(ATTypes.AT_HITME, victim);
+           ch.SetColor(ATTypes.AT_MAGIC);
+           victim.SetColor(ATTypes.AT_HITME);
 
             string buffer = !ch.CanSee(victim)
                          ? "Someone"
@@ -127,16 +129,16 @@ namespace SmaugCS
 
             if (dispel)
             {
-                color.ch_printf(victim, "Your %s vanishes.", spell);
+                victim.Printf("Your %s vanishes.", spell);
                 if (isMage && hasDetect)
-                   color.ch_printf(ch, "%s's %s vanishes.", buffer, spell);
+                   ch.Printf("%s's %s vanishes.", buffer, spell);
                 else
                     return 0;
             }
             else
             {
                 if (isMage && hasDetect)
-                    color.ch_printf(ch, "%s's %s wavers but holds.", buffer, spell);
+                    ch.Printf("%s's %s wavers but holds.", buffer, spell);
                 else
                     return 0;
             }
@@ -486,8 +488,8 @@ namespace SmaugCS
                                     "Something disrupts the casting of this spell...")) return false;
                             if (consume)
                             {
-                                color.set_char_color(ATTypes.AT_GOLD, ch);
-                                color.send_to_char("You feel a little lighter...", ch);
+                               ch.SetColor(ATTypes.AT_GOLD);
+                               ch.SendTo("You feel a little lighter...");
                                 ch.CurrentCoin -= component.RequiredData.ToInt32();
                             }
                             continue;
@@ -500,8 +502,8 @@ namespace SmaugCS
                                     "Something disrupts the casting of this spell...")) return false;
                             if (consume)
                             {
-                                color.set_char_color(ATTypes.AT_BLOOD, ch);
-                                color.send_to_char("You feel a little weaker...", ch);
+                               ch.SetColor(ATTypes.AT_BLOOD);
+                               ch.SendTo("You feel a little weaker...");
                                 ch.CurrentHealth -= component.RequiredData.ToInt32();
                                 ch.UpdatePositionByCurrentHealth();
                             }
@@ -617,7 +619,7 @@ namespace SmaugCS
                     !silence ? "You can't cast this on yourself!" : "")) return null;
 
                 if (!silence)
-                    color.send_to_char("Cast this on yourself?  Okay...", ch);
+                    ch.SendTo("Cast this on yourself?  Okay...");
             }
 
             if (!ch.IsNpc())
@@ -636,7 +638,7 @@ namespace SmaugCS
                     if (victim != ch)
                     {
                         if (!silence)
-                            color.send_to_char("You really shouldn't do this to another player...", ch);
+                            ch.SendTo("You really shouldn't do this to another player...");
                         else if (victim.GetMyTarget() != ch)
                             return null;
                     }
@@ -705,8 +707,8 @@ namespace SmaugCS
                 || (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
                     && skill.Target == TargetTypes.OffensiveCharacter))
             {
-                color.set_char_color(ATTypes.AT_MAGIC, ch);
-                color.send_to_char("Nothing seems to happen...\r\n", ch);
+               ch.SetColor(ATTypes.AT_MAGIC);
+               ch.SendTo("Nothing seems to happen...");
                 return ReturnTypes.None;
             }
 

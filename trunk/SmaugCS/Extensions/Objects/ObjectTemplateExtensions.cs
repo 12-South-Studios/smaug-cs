@@ -4,7 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Objects
 {
     public static class ObjectTemplateExtensions
     {

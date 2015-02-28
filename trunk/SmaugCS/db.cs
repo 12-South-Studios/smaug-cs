@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
-using SmaugCS.Board;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
@@ -14,6 +13,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
@@ -168,7 +168,7 @@ namespace SmaugCS
             {
                 foreach (ExitData exit in room.Exits)
                 {
-                    if (exit.Destination <= 0 && exit.GetReverseExit() == null)
+                    if (exit.Destination <= 0 && exit.GetReverse() == null)
                     {
                         ExitData reverseExit = exit.GetDestination().GetExitTo(LookupConstants.rev_dir[(int)exit.Direction], room.ID);
                         if (reverseExit != null)
@@ -342,8 +342,8 @@ namespace SmaugCS
                             && pch.CurrentRoom != null
                             && pch.CurrentRoom.Area == area))
                     {
-                        color.set_char_color(ATTypes.AT_RESET, pch);
-                        color.send_to_char(buffer, pch);
+                       pch.SetColor(ATTypes.AT_RESET);
+                       pch.SendTo(buffer);
                     }
                 }
 
@@ -473,15 +473,15 @@ namespace SmaugCS
             if (string.IsNullOrWhiteSpace(filename) || filename.Length < 3)
             {
                 if (string.IsNullOrWhiteSpace(filename))
-                    color.send_to_char("Empty filename is not valid\r\n", ch);
+                    ch.SendTo("Empty filename is not valid");
                 else
-                    color.ch_printf(ch, "Filename {0} is too short\r\n", filename);
+                    ch.Printf("Filename {0} is too short\r\n", filename);
                 return false;
             }
 
             if (filename.StartsWith("..") || filename.StartsWith("/") || filename.StartsWith("\\"))
             {
-                color.send_to_char("A filename may not start with a '..', '/', or '\\'.\r\n", ch);
+                ch.SendTo("A filename may not start with a '..', '/', or '\\'.");
                 return false;
             }
 
@@ -534,7 +534,7 @@ namespace SmaugCS
                 IEnumerable<string> lines = proxy.ReadIntoList();
                 foreach (string line in lines)
                 {
-                    color.send_to_pager_color(line.Trim(new[] { '\r', '\n' }), ch);
+                    ch.SendToPagerColor(line.Trim(new[] { '\r', '\n' }));
                 }
             }
         }
@@ -740,8 +740,8 @@ namespace SmaugCS
             {
                 if (!ch.IsNpc())
                 {
-                    room.FromRoom(ch);
-                    limbo.ToRoom(ch);
+                    room.RemoveFrom(ch);
+                    limbo.AddTo(ch);
                 }
                 else
                     CharacterInstanceExtensions.Extract(ch, true);
@@ -754,7 +754,7 @@ namespace SmaugCS
                 if (och.SubState == CharacterSubStates.RoomDescription
                     && och.DestinationBuffer == room)
                 {
-                    color.send_to_char("The room is no more.\r\n", och);
+                    ch.SetColor("The room is no more.\r\n", och);
                     build.stop_editing(och);
                     och.SubState = CharacterSubStates.None;
                     och.DestinationBuffer = null;
@@ -764,7 +764,7 @@ namespace SmaugCS
                 {
                     if (room.ExtraDescriptions.Any(e => e == och.DestinationBuffer))
                     {
-                        color.send_to_char("The room is no more.\r\n", och);
+                        ch.SetColor("The room is no more.\r\n", och);
                         build.stop_editing(och);
                         och.SubState = CharacterSubStates.None;
                         och.DestinationBuffer = null;
@@ -807,7 +807,7 @@ namespace SmaugCS
                 {
                     if (mob.MudProgs.Any(mp => mp == ch.DestinationBuffer))
                     {
-                        color.send_to_char("Your victim has departed.\r\n", ch);
+                        ch.SetColor("Your victim has departed.\r\n", ch);
                         build.stop_editing(ch);
                         ch.DestinationBuffer = null;
                         ch.SubState = CharacterSubStates.MProgEditing;
@@ -986,7 +986,7 @@ namespace SmaugCS
                         WorldChangeMessage(ch, loginMessage);
                         break;
                     default:
-                        color.send_to_char_color(LookupManager.Instance.GetLookup("LoginMessage", loginMessage.Type), ch);
+                        ch.SendTo(LookupManager.Instance.GetLookup("LoginMessage", loginMessage.Type));
                         break;
                 }
 
@@ -1005,7 +1005,7 @@ namespace SmaugCS
                 return;
             }
 
-            color.ch_printf(ch, "\r\n&YThe game administrators have left you the following message:\r\n%s\r\n", lmsg.Text);
+            ch.Printf("\r\n&YThe game administrators have left you the following message:\r\n%s\r\n", lmsg.Text);
         }
         private static void DeathMessage(CharacterInstance ch, LoginMessageData lmsg)
         {
@@ -1015,8 +1015,8 @@ namespace SmaugCS
                 return;
             }
 
-            color.ch_printf(ch, "\r\n&RYou were killed by %s while your character was link-dead.\r\n", lmsg.Text);
-            color.send_to_char("You should look for your corpse immediately.\r\n", ch);
+            ch.Printf("\r\n&RYou were killed by %s while your character was link-dead.\r\n", lmsg.Text);
+            ch.SendTo("You should look for your corpse immediately.");
         }
         private static void WorldChangeMessage(CharacterInstance ch, LoginMessageData lmsg)
         {
@@ -1026,7 +1026,7 @@ namespace SmaugCS
                 return;
             }
 
-            color.ch_printf(ch, "\r\n&GA change in the Realms has affected you personally:\r\n%s\r\n", lmsg.Text);
+            ch.Printf("\r\n&GA change in the Realms has affected you personally:\r\n%s\r\n", lmsg.Text);
         }
     }
 }

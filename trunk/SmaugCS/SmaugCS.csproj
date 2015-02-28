@@ -126,7 +126,11 @@
     <Compile Include="Exceptions\ObjectAlreadyEquippedException.cs" />
     <Compile Include="Extensions\Character\Affect.cs" />
     <Compile Include="Extensions\Character\Items.cs" />
+    <Compile Include="Extensions\Character\Show.cs" />
     <Compile Include="Extensions\DescriptorExtensions.cs" />
+    <Compile Include="Extensions\Mobile\MobileInstanceExtensions.cs" />
+    <Compile Include="Extensions\Objects\StatsAndValues.cs" />
+    <Compile Include="Extensions\Objects\Damage.cs" />
     <Compile Include="Extensions\Player\Condition.cs" />
     <Compile Include="Extensions\Character\Damage.cs" />
     <Compile Include="Extensions\Player\Deity.cs" />
@@ -179,8 +183,8 @@
     <Compile Include="Extensions\ExitDataExtensions.cs" />
     <Compile Include="Extensions\LogManagerExtensions.cs" />
     <Compile Include="Extensions\MobTemplateExtensions.cs" />
-    <Compile Include="Extensions\ObjectInstanceExtensions.cs" />
-    <Compile Include="Extensions\ObjectTemplateExtensions.cs" />
+    <Compile Include="Extensions\Objects\ObjectInstanceExtensions.cs" />
+    <Compile Include="Extensions\Objects\ObjectTemplateExtensions.cs" />
     <Compile Include="Extensions\RoomTemplateExtensions.cs" />
     <Compile Include="Commands\Apply.cs" />
     <Compile Include="Commands\MudProgs\MPAdvance.cs" />

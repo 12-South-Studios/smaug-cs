@@ -4,6 +4,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Mobile;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -25,8 +27,8 @@ namespace SmaugCS.Spells
 
             if (!victim.IsNpc() && !ch.IsNpc())
             {
-                color.send_to_char("I don't think so...", ch);
-                color.send_to_char("You feel charmed...", victim);
+                ch.SendTo("I don't think so...");
+                victim.SendTo("You feel charmed...");
                 return ReturnTypes.SpellFailed;
             }
 

@@ -6,6 +6,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
@@ -70,7 +72,7 @@ namespace SmaugCS.Skills
                 {
                     default:
                         LogManager.Instance.Bug("Bad target to Skill {0}", sn);
-                        color.send_to_char("Something went wrong...\r\n", ch);
+                        ch.SendTo("Something went wrong...");
                         return true;
 
                     case TargetTypes.Ignore:
@@ -83,7 +85,7 @@ namespace SmaugCS.Skills
 
                         if (argument.IsNullOrEmpty() && victim == null)
                         {
-                            color.ch_printf(ch, "Confusion overcomes you as your '%s' has no target.\r\n", skill.Name);
+                            ch.Printf("Confusion overcomes you as your '%s' has no target.\r\n", skill.Name);
                             return true;
                         }
 

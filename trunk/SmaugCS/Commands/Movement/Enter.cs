@@ -5,6 +5,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
@@ -26,7 +27,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            color.send_to_char("You cannot enter that.", ch);
+            ch.SendTo("You cannot enter that.");
         }
 
         private static void EnterExit(CharacterInstance ch)
@@ -51,7 +52,7 @@ namespace SmaugCS.Commands.Movement
                 }
             }
 
-            color.send_to_char("You cannot find an entrance here.", ch);
+            ch.SendTo("You cannot find an entrance here.");
         }
     }
 }

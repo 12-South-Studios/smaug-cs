@@ -6,6 +6,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -72,7 +73,7 @@ namespace SmaugCS.Commands.Movement
             comm.act(ATTypes.AT_SKILL, "$n bashes open the $d!", actor, null, keyword, ToTypes.Room);
             skill.LearnFromSuccess(actor);
 
-            ExitData reverseExit = exit.GetReverseExit();
+            ExitData reverseExit = exit.GetReverse();
             BashExit(reverseExit);
 
             RoomTemplate destination = exit.GetDestination(DatabaseManager.Instance);

@@ -8,9 +8,12 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Mobile;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Character
 {
     public static class Damage
     {
@@ -276,8 +279,8 @@ namespace SmaugCS.Extensions
             {
                 ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
                 victim.CurrentHealth += 4.GetNumberThatIsBetween(victim.CurrentHealth / 30, 15);
-                color.set_char_color(ATTypes.AT_BLOOD, victim);
-                color.send_to_char("You howl with rage as the beast within stirs!", victim);
+               victim.SetColor(ATTypes.AT_BLOOD);
+               victim.SendTo("You howl with rage as the beast within stirs!");
             }
         }
 
@@ -306,7 +309,7 @@ namespace SmaugCS.Extensions
             if (obj != null && dam > obj.GetResistance() && SmaugRandom.Bits(1) == 0)
             {
                 handler.set_cur_obj(obj);
-                obj.DamageObject();
+                obj.CauseDamageTo();
                 return dam - 5;
             }
 

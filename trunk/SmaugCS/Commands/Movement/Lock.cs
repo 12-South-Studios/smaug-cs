@@ -4,6 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
@@ -30,7 +31,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            color.ch_printf(ch, "You see no %s here.", firstArg);
+            ch.Printf("You see no %s here.", firstArg);
         }
 
         private static void LockObject(CharacterInstance ch, ObjectInstance obj, string arg)
@@ -45,7 +46,7 @@ namespace SmaugCS.Commands.Movement
                 return;
 
             obj.Values.Flags = obj.Values.Flags.SetBit(ContainerFlags.Locked);
-            color.send_to_char("*Click*", ch);
+            ch.SendTo("*Click*");
             int count = key.Count;
             key.Count = 1;
             comm.act(ATTypes.AT_ACTION, "$n locks $p with $P.", ch, obj, key, ToTypes.Room);
@@ -56,7 +57,7 @@ namespace SmaugCS.Commands.Movement
         {
             if (exit.Flags.IsSet(ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(arg))
             {
-                color.ch_printf(ch, "You see no %s here.", arg);
+                ch.Printf( "You see no %s here.", arg);
                 return;
             }
 
@@ -70,7 +71,7 @@ namespace SmaugCS.Commands.Movement
 
             if (!exit.Flags.IsSet(ExitFlags.Secret) || exit.Keywords.IsAnyEqual(arg))
             {
-                color.send_to_char("*Click*", ch);
+                ch.SendTo("*Click*");
                 int count = key.Count;
                 key.Count++;
                 comm.act(ATTypes.AT_ACTION, "$n locks the $d with $p.", ch, key, exit.Keywords, ToTypes.Room);

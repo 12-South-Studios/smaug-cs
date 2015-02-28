@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Common;
@@ -9,8 +8,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 using SmaugCS.Constants;
@@ -23,11 +23,11 @@ namespace SmaugCS
         {
             WeatherCell cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
-            color.send_to_pager("You gaze up towards the heavens and see:\r\n", ch);
+            ch.SendToPager("You gaze up towards the heavens and see:\r\n");
 
             if (WeatherCell.GetCloudCover(cell.CloudCover) == CloudCoverTypes.Moderately)
             {
-                color.send_to_char("There are too many clouds in the sky so you cannot see anything else.\r\n", ch);
+                ch.SendTo("There are too many clouds in the sky so you cannot see anything else.");
                 return;
             }
 
@@ -99,94 +99,11 @@ namespace SmaugCS
                 }
 
                 sb.Append(Environment.NewLine);
-                color.send_to_pager(sb.ToString(), ch);
+                ch.SendToPager(sb.ToString());
             }
         }
 
-        public static string format_obj_to_char(ObjectInstance obj, CharacterInstance ch, bool fShort)
-        {
-            bool glowsee = false;
-
-            StringBuilder sb = new StringBuilder();
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow)
-                && !ch.IsAffected(AffectedByTypes.TrueSight)
-                && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
-                glowsee = true;
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 0));
-            if ((ch.IsAffected(AffectedByTypes.DetectEvil)
-                 || ch.CurrentClass == ClassTypes.Paladin)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.Evil))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 1));
-
-            if (ch.CurrentClass == ClassTypes.Paladin)
-            {
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 2));
-                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 3));
-                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 4));
-
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 5));
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                    && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 6));
-                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 7));
-            }
-
-            if ((ch.IsAffected(AffectedByTypes.DetectMagic)
-                 || ch.Act.IsSet((int)PlayerFlags.HolyLight))
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 8));
-            if (!glowsee && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 9));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hum))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 10));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hidden))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 11));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 12));
-            if (ch.IsImmortal() && obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype))
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 13));
-            if ((ch.IsAffected(AffectedByTypes.DetectTraps)
-                 || ch.Act.IsSet((int)PlayerFlags.HolyLight))
-                && obj.IsTrapped())
-                sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 14));
-
-            if (fShort)
-            {
-                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 15));
-                else if (!string.IsNullOrWhiteSpace(obj.ShortDescription))
-                    sb.Append(obj.ShortDescription);
-            }
-            else
-            {
-                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
-                    sb.Append(LookupManager.Instance.GetLookup("ObjectAffectStrings", 16));
-                else if (!string.IsNullOrWhiteSpace(obj.Description))
-                    sb.Append(obj.Description);
-            }
-
-            return sb.ToString();
-        }
+        
 
         public static string hallucinated_object(int ms, bool fShort)
         {
@@ -211,9 +128,9 @@ namespace SmaugCS
                 if (fShowNothing)
                 {
                     if (ch.Act.IsSet(PlayerFlags.Combine))
-                        color.send_to_char("     ", ch);
-                    color.set_char_color(ATTypes.AT_OBJECT, ch);
-                    color.send_to_char("Nothing.", ch);
+                        ch.SendTo("     ");
+                   ch.SetColor(ATTypes.AT_OBJECT);
+                   ch.SendTo("Nothing.");
                 }
                 return;
             }
@@ -242,9 +159,9 @@ namespace SmaugCS
                 if (fShowNothing)
                 {
                     if (ch.Act.IsSet(PlayerFlags.Combine))
-                        color.send_to_char("     ", ch);
-                    color.set_char_color(ATTypes.AT_OBJECT, ch);
-                    color.send_to_char("Nothing.\r\n", ch);
+                        ch.SendTo("     ");
+                   ch.SetColor(ATTypes.AT_OBJECT);
+                   ch.SendTo("Nothing.");
                 }
                 return;
             }
@@ -279,7 +196,7 @@ namespace SmaugCS
                     && (obj.ItemType != ItemTypes.Trap
                         || ch.IsAffected(AffectedByTypes.DetectInvisibility)))
                 {
-                    pstrShow = format_obj_to_char(obj, ch, fShort);
+                    pstrShow = obj.GetFormattedDescription(ch, fShort);
                     fCombine = false;
 
                     if (ch.Act.IsSet(PlayerFlags.Combine))
@@ -322,21 +239,21 @@ namespace SmaugCS
                 SetCharacterColorByItemType(ch, pitShow, i);
 
                 if (fShowNothing)
-                    color.send_to_char("     ", ch);
-                color.send_to_char(prgpstrShow[i], ch);
+                    ch.SendTo("     ");
+                ch.SendTo(prgpstrShow[i]);
 
                 if (prgnShow[i] != 1)
-                    color.ch_printf(ch, " (%d)", prgnShow[i]);
+                    ch.Printf(" (%d)", prgnShow[i]);
 
-                color.send_to_char("\r\n", ch);
+                ch.SendTo("\r\n");
             }
 
             if (fShowNothing && nShow == 0)
             {
                 if (ch.Act.IsSet(PlayerFlags.Combine))
-                    color.send_to_char("     ", ch);
-                color.set_char_color(ATTypes.AT_OBJECT, ch);
-                color.send_to_char("Nothing.\r\n", ch);
+                    ch.SendTo("     ");
+               ch.SetColor(ATTypes.AT_OBJECT);
+               ch.SendTo("Nothing.");
             }
         }
 
@@ -344,255 +261,7 @@ namespace SmaugCS
         {
             ItemTypes itemType = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
             CharacterColorAttribute attrib = itemType.GetAttribute<CharacterColorAttribute>();
-            if (attrib == null)
-                color.set_char_color(ATTypes.AT_OBJECT, ch);
-            else
-                color.set_char_color(attrib.ATType, ch);
-        }
-        
-        public static void show_char_to_char_0(CharacterInstance victim, PlayerInstance ch)
-        {
-            string buffer = string.Empty;
-
-            color.set_char_color(ATTypes.AT_PERSON, ch);
-            if (!victim.IsNpc())
-            {
-                if (victim.Switched == null)
-                    color.send_to_char_color("&P[(Link Dead)]", ch);
-                else if (!victim.IsAffected(AffectedByTypes.Possess))
-                    buffer += "(Switched) ";
-            }
-
-            if (victim.IsNpc()
-                && victim.IsAffected(AffectedByTypes.Possess)
-                && ch.IsImmortal() && ch.Switched != null)
-            {
-                buffer += "(" + victim.Switched.Name + ")";
-            }
-
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
-                buffer += PlayerFlags.AwayFromKeyboard.GetAttribute<DescriptorAttribute>().Messages.ToList()[0];
-
-            if ((!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.WizardInvisibility))
-                || (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)))
-            {
-                if (!victim.IsNpc())
-                    buffer += string.Format("(Invis {0}) ", ((PlayerInstance)victim).PlayerData.WizardInvisible);
-                else
-                    buffer += string.Format("(MobInvis {0}) ", victim.MobInvisible);
-            }
-
-            if (!victim.IsNpc())
-            {
-                PlayerInstance vict = (PlayerInstance) victim;
-                if (vict.IsImmortal() && vict.Level > LevelConstants.GetLevel(ImmortalTypes.Avatar))
-                    color.send_to_char_color("&P(&WImmortal&P) ", ch);
-                if (vict.PlayerData.Clan != null
-                    && vict.PlayerData.Flags.IsSet(PCFlags.Deadly)
-                    && !string.IsNullOrEmpty(vict.PlayerData.Clan.Badge)
-                    && (vict.PlayerData.Clan.ClanType != ClanTypes.Order
-                    || vict.PlayerData.Clan.ClanType != ClanTypes.Guild))
-                    color.ch_printf_color(ch, "%s ", vict.PlayerData.Clan.Badge);
-                else if (vict.CanPKill() && vict.Level < LevelConstants.ImmortalLevel)
-                    color.send_to_char_color("&P(&wUnclanned&P) ", ch);
-            }
-
-            color.set_char_color(ATTypes.AT_PERSON, ch);
-
-            buffer += GenerateBufferForAffectedBy(victim, ch);
-
-            color.set_char_color(ATTypes.AT_PERSON, ch);
-            if ((victim.CurrentPosition == victim.CurrentDefensivePosition && !string.IsNullOrEmpty(victim.LongDescription))
-                || (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null
-                    && victim.CurrentMorph.Morph.Position == (int)victim.CurrentPosition))
-            {
-                if (victim.CurrentMorph != null)
-                {
-                    if (!ch.IsImmortal())
-                    {
-                        if (victim.CurrentMorph.Morph != null)
-                            buffer += victim.CurrentMorph.Morph.LongDescription;
-                        else
-                            buffer += victim.LongDescription;
-                    }
-                    else
-                    {
-                        buffer += Macros.PERS(victim, ch);
-                        if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
-                            buffer += ((PlayerInstance)victim).PlayerData.Title;
-                        buffer += ".\r\n";
-                    }
-                }
-                else
-                    buffer += victim.LongDescription;
-                color.send_to_char(buffer, ch);
-                ch.ShowVisibleAffectsOn(victim);
-                return;
-            }
-
-            if (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null
-                && !ch.IsImmortal())
-                buffer += Macros.MORPHERS(victim, ch);
-            else
-                buffer += Macros.PERS(victim, ch);
-
-            if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
-                buffer += ((PlayerInstance)victim).PlayerData.Title;
-
-            TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
-            if (timer != null)
-            {
-                object[] attributes = timer.Action.Value.Method.GetCustomAttributes(typeof (DescriptorAttribute), false);
-                DescriptorAttribute attrib =
-                    (DescriptorAttribute) attributes.FirstOrDefault(x => x.GetType() == typeof (DescriptorAttribute));
-                buffer += attrib == null ? " is looking rather lost." : attrib.Messages.First();
-            }
-            else
-            {
-                buffer += GenerateBufferDescriptorFromVictimPosition(victim, ch);
-            }
-
-            buffer += "\r\n";
-            buffer = buffer.CapitalizeFirst();
-            color.send_to_char(buffer, ch);
-            ch.ShowVisibleAffectsOn(victim);
-        }
-
-        private static string GenerateBufferForAffectedBy(CharacterInstance victim, PlayerInstance ch)
-        {
-            if (victim.IsAffected(AffectedByTypes.Invisible))
-                return AffectedByTypes.Invisible.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.IsAffected(AffectedByTypes.Hide))
-                return AffectedByTypes.Hide.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.IsAffected(AffectedByTypes.PassDoor))
-                return AffectedByTypes.PassDoor.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.IsAffected(AffectedByTypes.FaerieFire))
-                return AffectedByTypes.FaerieFire.GetAttribute<DescriptorAttribute>().Messages.First();
-            if ((ch.IsAffected(AffectedByTypes.DetectEvil) && victim.IsEvil())
-                || ch.CurrentClass == ClassTypes.Paladin)
-                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.IsNeutral() && ch.CurrentClass == ClassTypes.Paladin)
-                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages.ToList()[1];
-            if (victim.IsGood() && ch.CurrentClass == ClassTypes.Paladin)
-                return ClassTypes.Paladin.GetAttribute<DescriptorAttribute>().Messages.ToList()[2];
-
-            if (victim.IsAffected(AffectedByTypes.Berserk))
-                return AffectedByTypes.Berserk.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Attacker))
-                return PlayerFlags.Attacker.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Killer))
-                return PlayerFlags.Killer.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Thief))
-                return PlayerFlags.Thief.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (!victim.IsNpc() && victim.Act.IsSet((int) PlayerFlags.Litterbug))
-                return PlayerFlags.Litterbug.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.IsNpc() && ch.IsImmortal() && victim.Act.IsSet((int) ActFlags.Prototype))
-                return ActFlags.Prototype.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.IsNpc() && ch.CurrentMount != null
-                && ch.CurrentMount == victim && ch.CurrentRoom == ch.CurrentMount.CurrentRoom)
-                return "(Mount) ";
-            if (victim.Switched != null && ((PlayerInstance)victim.Switched).Descriptor.ConnectionStatus == ConnectionTypes.Editing)
-                return ConnectionTypes.Editing.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.CurrentMorph != null)
-                return "(Morphed) ";
-            return string.Empty;
-        }
-
-        private static string GenerateBufferDescriptorFromVictimPosition(CharacterInstance victim, CharacterInstance ch)
-        {
-            PositionTypes pos = victim.CurrentPosition;
-            DescriptorAttribute attrib = pos.GetAttribute<DescriptorAttribute>();
-
-            switch (pos)
-            {
-                case PositionTypes.Sleeping:
-                    return GetSleepingDescriptor(ch, victim, attrib);
-                case PositionTypes.Sitting:
-                    return GetSittingDescriptor(ch, victim, attrib);
-                case PositionTypes.Standing:
-                    return GetStandingDescriptor(ch, victim, attrib);
-                case PositionTypes.Mounted:
-                    return GetMountedDescriptor(ch, victim, attrib);
-                case PositionTypes.Fighting:
-                case PositionTypes.Evasive:
-                case PositionTypes.Defensive:
-                case PositionTypes.Berserk:
-                case PositionTypes.Aggressive:
-                    return GetFightingDescriptor(ch, victim, attrib);
-                default:
-                    return attrib.Messages.First();
-            }
-        }
-
-        private static string GetFightingDescriptor(CharacterInstance ch, CharacterInstance victim,
-            DescriptorAttribute attrib)
-        {
-            if (victim.CurrentFighting != null)
-                return attrib.Messages.First();
-
-            if (victim.GetMyTarget() == ch)
-                return attrib.Messages.ToList()[2];
-
-            if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)
-                return string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentFighting.Who, ch));
-
-            return attrib.Messages.ToList()[3];
-        }
-
-        private static string GetMountedDescriptor(CharacterInstance ch, CharacterInstance victim,
-            DescriptorAttribute attrib)
-        {
-            if (victim.CurrentMount == null)
-                return attrib.Messages.First();
-
-            if (victim.CurrentMount == ch)
-                return attrib.Messages.ToList()[1];
-
-            if (victim.CurrentRoom == victim.CurrentMount.CurrentRoom)
-                return string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentMount, ch));
-
-            return attrib.Messages.ToList()[3];
-        }
-
-        private static string GetStandingDescriptor(CharacterInstance ch, CharacterInstance victim,
-            DescriptorAttribute attrib)
-        {
-            if (victim.IsImmortal())
-                return attrib.Messages.First();
-
-            if (((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
-                 || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
-                && !victim.IsAffected(AffectedByTypes.AquaBreath)
-                && !victim.IsNpc())
-                return attrib.Messages.ToList()[1];
-
-            if ((victim.CurrentRoom.SectorType == SectorTypes.Underwater)
-                || (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor))
-                return attrib.Messages.ToList()[2];
-
-            if (victim.IsAffected(AffectedByTypes.Floating)
-                || victim.IsAffected(AffectedByTypes.Flying))
-                return attrib.Messages.ToList()[3];
-
-            return attrib.Messages.ToList()[4];
-        }
-
-        private static string GetSittingDescriptor(CharacterInstance ch, CharacterInstance victim,
-            DescriptorAttribute attrib)
-        {
-            if (ch.CurrentPosition == PositionTypes.Sitting)
-                return attrib.Messages.First();
-            if (ch.CurrentPosition == PositionTypes.Resting)
-                return attrib.Messages.ToList()[1];
-            return attrib.Messages.ToList()[2];
-        }
-
-        private static string GetSleepingDescriptor(CharacterInstance ch, CharacterInstance victim,
-            DescriptorAttribute attrib)
-        {
-            if (ch.CurrentPosition == PositionTypes.Sitting || ch.CurrentPosition == PositionTypes.Resting)
-                return attrib.Messages.First();
-            return attrib.Messages.ToList()[1];
+            ch.SetColor(attrib == null ? ATTypes.AT_OBJECT : attrib.ATType);
         }
 
         public static void show_char_to_char_1(CharacterInstance victim, PlayerInstance ch)
@@ -608,14 +277,14 @@ namespace SmaugCS
             if (!string.IsNullOrEmpty(victim.Description))
             {
                 if (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null)
-                    color.send_to_char(victim.CurrentMorph.Morph.Description, ch);
+                    ch.SendTo(victim.CurrentMorph.Morph.Description);
                 else
-                    color.send_to_char(victim.Description, ch);
+                    ch.SendTo(victim.Description);
             }
             else
             {
                 if (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null)
-                    color.send_to_char(victim.CurrentMorph.Morph.Description, ch);
+                    ch.SendTo(victim.CurrentMorph.Morph.Description);
                 else if (victim.IsNpc())
                     comm.act(ATTypes.AT_PLAIN, "You see nothing special about $M.", ch, null, victim, ToTypes.Character);
                 else if (ch != victim)
@@ -624,8 +293,8 @@ namespace SmaugCS
                     comm.act(ATTypes.AT_PLAIN, "You're not much to look at...", ch, null, null, ToTypes.Character);
             }
 
-            show_race_line(ch, victim);
-            show_condition(ch, victim);
+            ch.ShowRaceOf(victim);
+            ch.ShowConditionTo(victim);
 
             bool found = false;
             for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
@@ -636,7 +305,7 @@ namespace SmaugCS
                 {
                     if (!found)
                     {
-                        color.send_to_char("\r\n", ch);
+                        ch.SendTo("\r\n");
                         if (victim != ch)
                             comm.act(ATTypes.AT_PLAIN, "$n is using:", ch, null, victim, ToTypes.Character);
                         else
@@ -647,12 +316,12 @@ namespace SmaugCS
                     if (!victim.IsNpc())
                     {
                         RaceData race = DatabaseManager.Instance.GetRace(victim.CurrentRace);
-                        color.send_to_char(race.WhereNames[i], ch);
+                        ch.SendTo(race.WhereNames[i]);
                     }
                     else
-                        color.send_to_char(LookupManager.Instance.GetLookup("WhereNames", i), ch);
-                    color.send_to_char(format_obj_to_char(obj, ch, true), ch);
-                    color.send_to_char("\r\n", ch);
+                        ch.SendTo(LookupManager.Instance.GetLookup("WhereNames", i));
+                    ch.SendTo(obj.GetFormattedDescription(ch, true));
+                    ch.SendTo("\r\n");
                 }
             }
 
@@ -662,11 +331,11 @@ namespace SmaugCS
             if (ch.IsImmortal())
             {
                 if (victim.IsNpc())
-                    color.ch_printf(ch, "\r\nMobile #%d '%s' ", ((MobileInstance)victim).MobIndex.Vnum, victim.Name);
+                    ch.Printf("\r\nMobile #%d '%s' ", ((MobileInstance)victim).MobIndex.Vnum, victim.Name);
                 else
-                    color.ch_printf(ch, "\r\n%s ", victim.Name);
+                    ch.Printf("\r\n%s ", victim.Name);
 
-                color.ch_printf(ch, "is a level %d %s %s.\r\n", victim.Level,
+                ch.Printf("is a level %d %s %s.\r\n", victim.Level,
                                 DatabaseManager.Instance.GetRace(victim.CurrentRace).Name,
                                 DatabaseManager.Instance.GetClass(victim.CurrentClass).Name);
             }
@@ -677,7 +346,7 @@ namespace SmaugCS
 
             if (SmaugRandom.D100() < Macros.LEARNED(ch, (int) skill.ID))
             {
-                color.ch_printf(ch, "\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
+                ch.Printf("\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
                 show_list_to_char(victim.Carrying.ToList(), ch, true, true);
                 skill.LearnFromSuccess(ch);
             }
@@ -690,11 +359,11 @@ namespace SmaugCS
             foreach (CharacterInstance rch in list.Where(x => x != ch))
             {
                 if (ch.CanSee(rch))
-                    show_char_to_char_0(rch, ch);
+                    rch.ShowToCharacter(ch);
                 else if (ch.CurrentRoom.IsDark() && ch.IsAffected(AffectedByTypes.Infrared))
                 {
-                    color.set_char_color(ATTypes.AT_BLOOD, ch);
-                    color.send_to_char("The red form of a living creature is here.\r\n", ch);
+                   ch.SetColor(ATTypes.AT_BLOOD);
+                   ch.SendTo("The red form of a living creature is here.");
                 }
             }
         }
@@ -753,8 +422,8 @@ namespace SmaugCS
                     exitInfo[(int)exit.Direction] = 1;
             }
 
-            color.set_char_color(ATTypes.AT_RMNAME, ch);
-            color.ch_printf_color(ch, "\r\n%-50s         %s%s    %s%s    %s%s\r\n",
+           ch.SetColor(ATTypes.AT_RMNAME);
+            ch.PrintfColor("\r\n%-50s         %s%s    %s%s    %s%s\r\n",
                                   ch.CurrentRoom.Name, exitColors[exitInfo[(int)DirectionTypes.Northwest]],
                                   exitInfo[(int)DirectionTypes.Northwest] > 0 ? "NW" : "- ",
                                   exitColors[exitInfo[(int)DirectionTypes.North]],
@@ -763,11 +432,11 @@ namespace SmaugCS
                                   exitInfo[(int)DirectionTypes.Northeast] > 0 ? "NE" : " -");
 
             if (ch.IsImmortal() && ch.Act.IsSet((int)PlayerFlags.RoomVNum))
-                color.ch_printf_color(ch, "&w-<---- &YVnum: %6d &w----------------------------->-        ", ch.CurrentRoom.Vnum);
+                ch.PrintfColor("&w-<---- &YVnum: %6d &w----------------------------->-        ", ch.CurrentRoom.Vnum);
             else
-                color.send_to_char_color("&w-<----------------------------------------------->-        ", ch);
+                ch.SendTo("&w-<----------------------------------------------->-        ");
 
-            color.ch_printf_color(ch, "%s%s&w<-%s%s&w-&W(*)&w-%s%s&w->%s%s\r\n",
+            ch.PrintfColor("%s%s&w<-%s%s&w-&W(*)&w-%s%s&w->%s%s\r\n",
                                   exitColors[exitInfo[(int)DirectionTypes.West]],
                                   exitInfo[(int)DirectionTypes.West] > 0 ? "W" : "-",
                                   exitColors[exitInfo[(int)DirectionTypes.Up]],
@@ -776,8 +445,7 @@ namespace SmaugCS
                                   exitInfo[(int)DirectionTypes.Down] > 0 ? "D" : "-",
                                   exitColors[exitInfo[(int)DirectionTypes.East]],
                                   exitInfo[(int)DirectionTypes.East] > 0 ? "E" : "-");
-            color.ch_printf_color(ch,
-                                  "                                                           %s%s    %s%s    %s%s\r\n\r\n",
+            ch.PrintfColor("                                                           %s%s    %s%s    %s%s\r\n\r\n",
                                   exitColors[exitInfo[(int)DirectionTypes.Southwest]],
                                   exitInfo[(int)DirectionTypes.Southwest] > 0 ? "SW" : "- ",
                                   exitColors[exitInfo[(int)DirectionTypes.South]],
@@ -798,41 +466,6 @@ namespace SmaugCS
                 buffer += "(Not Set)";
 
             return buffer;
-        }
-
-        public static void show_race_line(CharacterInstance ch, CharacterInstance victim)
-        {
-            if (!victim.IsNpc() && victim != ch)
-                color.ch_printf(ch, "%s is %d'%d\" and weighs %d pounds.\r\n",
-                                Macros.PERS(victim, ch), victim.Height / 12, victim.Height % 12, victim.Weight);
-            else if (!victim.IsNpc() && victim == ch)
-                color.ch_printf(ch, "You are %d'%d\" and weight %d pounds.\r\n", victim.Height / 12, victim.Height % 12,
-                                victim.Weight);
-        }
-
-        private static string GetConditionPhrase(int percent, bool isSelf)
-        {
-            HealthConditionTypes healthCond = HealthConditionTypes.PerfectHealth;
-            foreach (HealthConditionTypes cond in EnumerationFunctions.GetAllEnumValues<HealthConditionTypes>())
-            {
-                if (percent >= cond.GetValue())
-                    healthCond = cond;
-            }
-
-            DescriptorAttribute attrib = healthCond.GetAttribute<DescriptorAttribute>();
-            return isSelf ? attrib.Messages.First() : attrib.Messages.ToList()[1];
-        }
-
-        public static void show_condition(CharacterInstance ch, CharacterInstance victim)
-        {
-            int percent = -1;
-            if (victim.MaximumHealth > 0)
-                percent = (int)(100.0f * (victim.CurrentHealth / (double)victim.MaximumHealth));
-
-            color.send_to_char(
-                string.Format(GetConditionPhrase(percent, victim == ch),
-                victim != ch ? Macros.PERS(victim, ch) : "You")
-                .CapitalizeFirst() + Environment.NewLine, ch);
         }
 
         public static HelpData get_help(CharacterInstance ch, string argument)

@@ -3,6 +3,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 using SmaugCS.Common;
 
@@ -38,8 +39,8 @@ namespace SmaugCS.Spells
             };
 
             victim.AddAffect(af);
-            color.set_char_color(ATTypes.AT_MAGIC, victim);
-            color.send_to_char("You are blinded!", victim);
+           victim.SetColor(ATTypes.AT_MAGIC);
+           victim.SendTo("You are blinded!");
 
             if (ch != victim)
             {

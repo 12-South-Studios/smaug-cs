@@ -12,6 +12,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -224,8 +226,8 @@ namespace SmaugCS
                 return;
 
             comm.act(ATTypes.AT_ACTION, "$n disappears suddenly!", ch, null, null, ToTypes.Room);
-            ch.CurrentRoom.FromRoom(ch);
-            room.ToRoom(ch);
+            ch.CurrentRoom.RemoveFrom(ch);
+            room.AddTo(ch);
             comm.act(ATTypes.AT_ACTION, "$n arrives suddenly!", ch, null, null, ToTypes.Room);
 
             if (show)
@@ -235,8 +237,8 @@ namespace SmaugCS
                 && !ch.IsImmortal())
             {
                 comm.act(ATTypes.AT_DEAD, "$n falls prey to a terrible death!", ch, null, null, ToTypes.Room);
-                color.set_char_color(ATTypes.AT_DEAD, ch);
-                color.send_to_char("Oopsie... you're dead!\r\n", ch);
+               ch.SetColor(ATTypes.AT_DEAD);
+               ch.SendTo("Oopsie... you're dead!");
 
                 string buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
                 //log_string(buffer);
@@ -270,8 +272,8 @@ namespace SmaugCS
             {
                 foreach (ObjectInstance obj in start.Contents)
                 {
-                    obj.InRoom.FromRoom(obj);
-                    dest.ToRoom(obj);
+                    obj.InRoom.RemoveFrom(obj);
+                    dest.AddTo(obj);
                 }
             }
         }
@@ -406,7 +408,7 @@ namespace SmaugCS
                 {
                     comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null,
                              LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Character);
-                    color.send_to_char("\r\n", ch);
+                    ch.SendTo("\r\n");
                 }
                 if (!string.IsNullOrEmpty(msg.ToRoom))
                     comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null,
@@ -422,16 +424,16 @@ namespace SmaugCS
                 if (xit.PullType == DirectionPullTypes.Slip)
                     return Move.move_char(ch, xit, 1);
 
-                ch.CurrentRoom.FromRoom(ch);
-                xit.GetDestination().ToRoom(ch);
+                ch.CurrentRoom.RemoveFrom(ch);
+                xit.GetDestination().AddTo(ch);
 
                 if (showroom)
                     Look.do_look(ch, "auto");
 
                 if (ch.CurrentMount != null)
                 {
-                    ch.CurrentMount.CurrentRoom.FromRoom(ch.CurrentMount);
-                    xit.GetDestination().ToRoom(ch.CurrentMount);
+                    ch.CurrentMount.CurrentRoom.RemoveFrom(ch.CurrentMount);
+                    xit.GetDestination().AddTo(ch.CurrentMount);
                     if (showroom)
                         Look.do_look(ch.CurrentMount, "auto");
                 }
@@ -443,7 +445,7 @@ namespace SmaugCS
                     || !obj.WearFlags.IsSet(ItemWearFlags.Take))
                     continue;
 
-                int resistance = obj.GetObjectWeight();
+                int resistance = obj.GetWeight();
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
                     resistance = (resistance * 6) / 5;
 
@@ -487,8 +489,8 @@ namespace SmaugCS
                         comm.act(ATTypes.AT_PLAIN, msg.DestObj, xit.GetDestination().Persons.First(), obj, dtxt, ToTypes.Room);
                     }
 
-                    obj.InRoom.FromRoom(obj);
-                    xit.GetDestination().ToRoom(obj);
+                    obj.InRoom.RemoveFrom(obj);
+                    xit.GetDestination().AddTo(obj);
                 }
             }
 

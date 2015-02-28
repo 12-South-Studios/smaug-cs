@@ -6,26 +6,13 @@ using Realm.Library.Common;
 
 namespace SmaugCS.Common
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class StringExtensions
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static bool IsAllUpper(this string value)
         {
             return Regex.IsMatch(value, @"^[A-Z ]+$");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static string TrimHash(this string value)
         {
             return value.TrimEnd(new[] { '~' });

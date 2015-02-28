@@ -4,6 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -26,8 +27,8 @@ namespace SmaugCS.Spells
             AddAffectToTarget(ch, sn, level, ApplyTypes.HitRoll);
             AddAffectToTarget(victim, sn, level, ApplyTypes.SaveVsSpell);
 
-            color.set_char_color(ATTypes.AT_MAGIC, victim);
-            color.send_to_char("You feel unclean.", victim);
+           victim.SetColor(ATTypes.AT_MAGIC);
+           victim.SendTo("You feel unclean.");
 
             if (ch != victim)
             {

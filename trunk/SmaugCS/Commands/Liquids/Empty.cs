@@ -3,7 +3,8 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -97,8 +98,8 @@ namespace SmaugCS.Commands.Liquids
         {
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDrop) || ch.Act.IsSet(PlayerFlags.Litterbug))
             {
-                color.send_to_char("&[magic]A magical force stops you!", ch);
-                color.send_to_char("&[tell]Someone tells you, 'No littering here!", ch);
+                ch.SendTo("&[magic]A magical force stops you!");
+                ch.SendTo("&[tell]Someone tells you, 'No littering here!");
                 return;
             }
 

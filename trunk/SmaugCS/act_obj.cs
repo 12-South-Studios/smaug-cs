@@ -7,6 +7,8 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
@@ -28,7 +30,7 @@ namespace SmaugCS
                 {
                     if (ch.Level - obj.Value[5] > 5 || obj.Value[5] - ch.Level > 5)
                     {
-                        color.send_to_char_color("\r\n&bA godly force freezes your outstretched hand.\r\n", ch);
+                        ch.SendTo("\r\n&bA godly force freezes your outstretched hand.");
                         return;
                     }
 
@@ -38,7 +40,7 @@ namespace SmaugCS
             }
             else
             {
-                color.send_to_char_color("\r\n&BA godly force freezes your outstretched hand.\r\n", ch);
+                ch.SendTo("\r\n&BA godly force freezes your outstretched hand.");
                 return;
             }
 
@@ -53,7 +55,7 @@ namespace SmaugCS
 
             int weight = obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                              ? obj.Weight
-                             : obj.GetObjectWeight();
+                             : obj.GetWeight();
 
             if (obj.ItemType != ItemTypes.Money)
             {
@@ -116,7 +118,7 @@ namespace SmaugCS
                 obj.Extract();
             }
             else
-                obj = obj.ToCharacter(ch);
+                obj = obj.AddTo(ch);
 
             if (ch.CharDied() || handler.obj_extracted(obj))
                 return;
@@ -128,7 +130,7 @@ namespace SmaugCS
         {
             comm.act(ATTypes.AT_ACTION, "You get $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n gets $p.", ch, obj, null, ToTypes.Room);
-            obj.InRoom.FromRoom(obj);
+            obj.InRoom.RemoveFrom(obj);
         }
 
         private static void GetObjectFromContainer(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
@@ -152,7 +154,7 @@ namespace SmaugCS
             if (container.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse)
                 && !ch.IsNpc() && container.Name.Contains(ch.Name))
                 container.Value[5]++;
-            obj.InObject.FromObject(obj);
+            obj.InObject.RemoveFrom(obj);
         }
 
         private static int fall_count;
@@ -197,9 +199,9 @@ namespace SmaugCS
                     comm.act(ATTypes.AT_PLAIN, "$p falls far below...", obj.InRoom.Persons.First(), obj, null, ToTypes.Character);
                 }
 
-                obj.InRoom.FromRoom(obj);
+                obj.InRoom.RemoveFrom(obj);
                 is_falling = true;
-                to_room.ToRoom(obj);
+                to_room.AddTo(obj);
                 is_falling = false;
 
                 if (obj.InRoom.Persons.Any())

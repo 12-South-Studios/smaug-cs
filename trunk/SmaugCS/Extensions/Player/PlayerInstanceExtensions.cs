@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
@@ -6,12 +7,20 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Player
 {
     public static class PlayerInstanceExtensions
     {
+        public static void ProcessUpdate(this PlayerInstance ch)
+        {
+            handler.set_cur_char(ch);
+            update.drunk_randoms(ch);
+            update.hallucinations(ch);
+        }
+
         public static void StopIdling(this PlayerInstance ch)
         {
             if (ch == null || ch.Descriptor == null
@@ -20,8 +29,8 @@ namespace SmaugCS.Extensions
 
             ch.Timer = 0;
             RoomTemplate wasInRoom = ch.PreviousRoom;
-            ch.CurrentRoom.FromRoom(ch);
-            wasInRoom.ToRoom(ch);
+            ch.CurrentRoom.RemoveFrom(ch);
+            wasInRoom.AddTo(ch);
             ch.PreviousRoom = ch.CurrentRoom;
 
             ch.PlayerData.Flags.RemoveBit((int)PCFlags.Idle);
@@ -55,7 +64,7 @@ namespace SmaugCS.Extensions
             AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
         };
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void ShowVisibleAffectsOn(this PlayerInstance ch, CharacterInstance victim)
         {
             ATTypes atType = ATTypes.AT_WHITE;
@@ -89,8 +98,8 @@ namespace SmaugCS.Extensions
                 description = attrib.Description;
             }
 
-            color.set_char_color(atType, ch);
-            color.ch_printf(ch, description);
+            ch.SetColor(atType);
+            ch.Printf(description);
         }
     }
 }

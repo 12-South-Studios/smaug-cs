@@ -5,7 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Helpers
 {
@@ -18,9 +18,9 @@ namespace SmaugCS.Helpers
         private static bool SendToChar(CharacterInstance actor, string message, ATTypes atType = ATTypes.AT_PLAIN)
         {
             if (atType != ATTypes.AT_PLAIN)
-                color.set_char_color(atType, actor);
+               actor.SetColor(atType);
             if (!string.IsNullOrEmpty(message))
-                color.send_to_char(message, actor);
+                actor.SendTo(message);
             return true;
         }
 

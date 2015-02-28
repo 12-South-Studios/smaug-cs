@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
@@ -12,166 +13,111 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 using SmaugCS.Repositories;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Objects
 {
     public static class ObjectInstanceExtensions
     {
-        public static ReturnTypes DamageObject(this ObjectInstance obj)
+        public static string GetFormattedDescription(this ObjectInstance obj, CharacterInstance ch,
+            bool isShortDescription, ILookupManager lookupManager = null)
         {
-            CharacterInstance ch = obj.CarriedBy;
-            obj.Split();
+            ILookupManager lookupMgr = lookupManager ?? LookupManager.Instance;
+            bool glowsee = IsGlowingOrCanSee(obj, ch);
 
-            if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))))
-                comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
-            else if (obj.InRoom != null && obj.InRoom.Persons.First() != null)
+            StringBuilder sb = new StringBuilder();
+
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 0));
+            if ((ch.IsAffected(AffectedByTypes.DetectEvil)
+                 || ch.CurrentClass == ClassTypes.Paladin)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.Evil))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 1));
+
+            if (ch.CurrentClass == ClassTypes.Paladin)
+                GetPaladinDescriptions(obj, sb, lookupMgr);
+
+            if ((ch.IsAffected(AffectedByTypes.DetectMagic)
+                 || ch.Act.IsSet(PlayerFlags.HolyLight))
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 8));
+            if (!glowsee && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 9));
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hum))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 10));
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hidden))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 11));
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 12));
+            if (ch.IsImmortal() && obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 13));
+            if ((ch.IsAffected(AffectedByTypes.DetectTraps)
+                 || ch.Act.IsSet(PlayerFlags.HolyLight))
+                && obj.IsTrapped())
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 14));
+
+            if (isShortDescription)
             {
-                ch = obj.InRoom.Persons.First();
-                comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Room);
-                comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
-                ch = null;
+                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet(PlayerFlags.HolyLight)))
+                    sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 15));
+                else if (!string.IsNullOrWhiteSpace(obj.ShortDescription))
+                    sb.Append(obj.ShortDescription);
             }
-
-            if (obj.ItemType != ItemTypes.Light)
-                mud_prog.oprog_damage_trigger(ch, obj);
-            else if (!ch.IsInArena())
-                mud_prog.oprog_damage_trigger(ch, obj);
-
-            if (handler.obj_extracted(obj))
-                return handler.GlobalObjectCode;
-
-            ReturnTypes returnVal;
-
-            switch (obj.ItemType)
-            {
-                default:
-                    ObjectFactory.CreateScraps(obj);
-                    returnVal = ReturnTypes.ObjectScrapped;
-                    break;
-                case ItemTypes.Container:
-                case ItemTypes.KeyRing:
-                case ItemTypes.Quiver:
-                    returnVal = DamageContainer(obj, ch);
-                    break;
-                case ItemTypes.Light:
-                    returnVal = DamageLight(obj, ch);
-                    break;
-                case ItemTypes.Armor:
-                    returnVal = DamageArmor(obj, ch);
-                    break;
-                case ItemTypes.Weapon:
-                    returnVal = DamageWeapon(obj, ch);
-                    break;
-            }
-
-            if (ch != null)
-                save.save_char_obj(ch);
-
-            return returnVal;
-        }
-
-        private static ReturnTypes DamageWeapon(ObjectInstance obj, CharacterInstance ch)
-        {
-            if (--obj.Values.Condition <= 0)
-            {
-                if (!ch.IsPKill() && !ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-                obj.Values.Condition = 1;
-            }
-            return ReturnTypes.None;
-        }
-
-        private static ReturnTypes DamageArmor(ObjectInstance obj, CharacterInstance ch)
-        {
-            if (ch != null && obj.Values.CurrentAC >= 1)
-                ch.ArmorClass += obj.ApplyArmorClass;
-
-            if (--obj.Values.CurrentAC <= 0)
-            {
-                if (!ch.IsPKill() && !ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-
-                obj.Values.CurrentAC = 1;
-                ch.ArmorClass -= obj.ApplyArmorClass;
-            }
-            else if (ch != null && obj.Values.CurrentAC >= 1)
-                ch.ArmorClass -= obj.ApplyArmorClass;
-
-            return ReturnTypes.None;
-        }
-
-        private static ReturnTypes DamageLight(ObjectInstance obj, CharacterInstance ch)
-        {
-            if (--obj.Values.CurrentAC <= 0)
-            {
-                if (!ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-                obj.Values.CurrentAC = 1;
-            }
-            return ReturnTypes.None;
-        }
-
-        private static ReturnTypes DamageContainer(ObjectInstance obj, CharacterInstance ch)
-        {
-            if (--obj.Values.Condition <= 0)
-            {
-                if (!ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-                obj.Values.Condition = 1;
-            }
-            return ReturnTypes.None;
-        }
-
-        public static int GetArmorRepairCost(this ObjectInstance obj, int baseCost)
-        {
-            int cost = baseCost;
-            if (obj.Values.CurrentAC >= obj.Values.OriginalAC)
-                cost = -2;
             else
-                cost *= (obj.Values.OriginalAC - obj.Values.CurrentAC);
-            return cost;
+            {
+                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet(PlayerFlags.HolyLight)))
+                    sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 16));
+                else if (!string.IsNullOrWhiteSpace(obj.Description))
+                    sb.Append(obj.Description);
+            }
+
+            return sb.ToString();
         }
-        public static int GetWeaponRepairCost(this ObjectInstance obj, int baseCost, int weaponCondition)
+
+        private static void GetPaladinDescriptions(ObjectInstance obj, StringBuilder sb, ILookupManager lookupMgr)
         {
-            int cost = baseCost;
-            if (weaponCondition == obj.Values.Condition)
-                cost = -2;
-            else
-                cost *= (weaponCondition - obj.Values.Condition);
-            return cost;
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 2));
+            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 3));
+            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 4));
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 5));
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 6));
+            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
+                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 7));
         }
-        public static int GetImplementRepairCost(this ObjectInstance obj, int baseCost)
+
+        private static bool IsGlowingOrCanSee(ObjectInstance obj, CharacterInstance ch)
         {
-            int cost = baseCost;
-            if (obj.Value[2] >= obj.Value[1])
-                cost = -2;
-            else
-                cost *= (obj.Value[1] - obj.Value[2]);
-            return cost;
+            return obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible)
+                    && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow)
+                    && !ch.IsAffected(AffectedByTypes.TrueSight)
+                    && !ch.IsAffected(AffectedByTypes.DetectInvisibility);
         }
 
         public static ObjectInstance GroupWith(this ObjectInstance obj1, ObjectInstance obj2)
         {
-            if (obj1 == null || obj2 == null)
-                return null;
-            if (obj1 == obj2)
-                return obj1;
+            if (obj1 == null || obj2 == null) return null;
+            if (obj1 == obj2) return obj1;
 
             if (obj1.ObjectIndex == obj2.ObjectIndex
                 && obj1.Name.EqualsIgnoreCase(obj2.Name)
@@ -219,11 +165,11 @@ namespace SmaugCS.Extensions
                     "Sale of {0} has been stopped by a system action.");
 
             if (obj.CarriedBy != null)
-                obj.FromCharacter();
+                obj.RemoveFrom();
             else if (obj.InRoom != null)
-                obj.InRoom.FromRoom(obj);
+                obj.InRoom.RemoveFrom(obj);
             else if (obj.InObject != null)
-                obj.InObject.FromObject(obj);
+                obj.InObject.RemoveFrom(obj);
 
             ObjectInstance objContent = obj.Contents.Last();
             if (objContent != null)
@@ -268,68 +214,23 @@ namespace SmaugCS.Extensions
             return obj.ItemType.GetName().ToLower();
         }
 
-        public static int GetResistance(this ObjectInstance obj)
-        {
-            int resist = SmaugRandom.Fuzzy(Program.MAX_ITEM_IMPACT);
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
-                resist += SmaugRandom.Fuzzy(12);
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
-                resist += SmaugRandom.Fuzzy(5);
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Organic))
-                resist -= SmaugRandom.Fuzzy(5);
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Blessed))
-                resist += SmaugRandom.Fuzzy(5);
-
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory))
-                resist += 20;
-
-            resist += (obj.Level / 10) - 2;
-
-            if (obj.ItemType == ItemTypes.Armor || obj.ItemType == ItemTypes.Weapon)
-                resist += (obj.Value[0] / 2) - 2;
-
-            return resist.GetNumberThatIsBetween(10, 99);
-        }
-
-        public static bool InMagicContainer(this ObjectInstance obj)
+        public static bool IsInMagicContainer(this ObjectInstance obj)
         {
             if (obj.ItemType == ItemTypes.Container && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 return true;
-            return obj.InObject != null && obj.InObject.InMagicContainer();
+            return obj.InObject != null && obj.InObject.IsInMagicContainer();
         }
 
-        public static int GetObjectWeight(this ObjectInstance obj)
+        public static ObjectInstance AddTo(this ObjectInstance obj, CharacterInstance ch)
         {
-            int weight = obj.Count * obj.Weight;
-            if (obj.ItemType != ItemTypes.Container || !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
-                weight += obj.Contents.Sum(o => o.GetObjectWeight());
-            
-            return weight;
-        }
-
-        public static int GetRealObjectWeight(this ObjectInstance obj)
-        {
-            int weight = obj.Count * obj.Weight;
-
-            weight += obj.Contents.Sum(o => o.GetRealObjectWeight());
-
-            return weight;
-        }
-
-        public static ObjectInstance ToCharacter(this ObjectInstance obj, CharacterInstance ch)
-        {
-            int oweight = obj.GetObjectWeight();
+            int oweight = obj.GetWeight();
             int onum = obj.GetObjectNumber();
             int wearLoc = (int)obj.WearLocation;
             int extraFlags = obj.ExtraFlags;
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.IsImmortal() 
                 && (!ch.IsNpc() || !ch.Act.IsSet(ActFlags.Prototype)))
-                return ch.CurrentRoom.ToRoom(obj);
+                return ch.CurrentRoom.AddTo(obj);
 
             bool skipGroup = false;
 
@@ -426,7 +327,7 @@ namespace SmaugCS.Extensions
             return groupObj ?? obj;
         }
 
-        public static void FromCharacter(this ObjectInstance obj)
+        public static void RemoveFrom(this ObjectInstance obj)
         {
             CharacterInstance ch = obj.CarriedBy;
             if (ch == null)
@@ -449,11 +350,10 @@ namespace SmaugCS.Extensions
             obj.InRoom = null;
             obj.CarriedBy = null;
             ch.CarryNumber -= obj.GetObjectNumber();
-            ch.CarryWeight -= obj.GetObjectWeight();
+            ch.CarryWeight -= obj.GetWeight();
         }
 
-
-        public static ObjectInstance ToObject(this ObjectInstance o, ObjectInstance obj)
+        public static ObjectInstance AddTo(this ObjectInstance o, ObjectInstance obj)
         {
             if (obj == o)
             {
@@ -463,8 +363,8 @@ namespace SmaugCS.Extensions
 
             CharacterInstance who = o.GetCarriedBy();
 
-            if (!o.InMagicContainer() && who != null)
-                who.CarryWeight += obj.GetObjectWeight();
+            if (!o.IsInMagicContainer() && who != null)
+                who.CarryWeight += obj.GetWeight();
 
             foreach (ObjectInstance otmp in o.Contents)
             {
@@ -480,12 +380,12 @@ namespace SmaugCS.Extensions
             return obj;
         }
 
-        public static void FromObject(this ObjectInstance o, ObjectInstance obj)
+        public static void RemoveFrom(this ObjectInstance o, ObjectInstance obj)
         {
             if (obj.InObject != o)
                 throw new InvalidDataException(string.Format("Object {0} is not in {1}", obj.ID, o.ID));
 
-            bool magic = o.InMagicContainer();
+            bool magic = o.IsInMagicContainer();
 
             o.Contents.Remove(obj);
 
@@ -503,7 +403,7 @@ namespace SmaugCS.Extensions
                 {
                     tmp = o.InObject;
                     if (tmp.CarriedBy != null)
-                        tmp.CarriedBy.CarryWeight -= obj.GetObjectWeight();
+                        tmp.CarriedBy.CarryWeight -= obj.GetWeight();
                 } while (tmp != null);
             }
         }
@@ -554,21 +454,21 @@ namespace SmaugCS.Extensions
             CharacterInstance ch = obj.CarriedBy;
 
             if (destobj != null)
-                return EmptyIntoObject(obj, destobj);
+                return EmptyInto(obj, destobj);
 
             if (destroom != null)
-                return EmptyIntoRoom(ch, obj, destroom);
+                return EmptyInto(ch, obj, destroom);
 
             if (obj.InObject != null)
-                return EmptyIntoObject(obj, obj.InObject);
+                return EmptyInto(obj, obj.InObject);
 
             if (ch != null)
             {
                 bool retVal = false;
                 foreach (ObjectInstance cobj in obj.Contents)
                 {
-                    cobj.FromObject(cobj);
-                    cobj.ToCharacter(ch);
+                    cobj.RemoveFrom(cobj);
+                    cobj.AddTo(ch);
                     retVal = true;
                 }
                 return retVal;
@@ -578,7 +478,7 @@ namespace SmaugCS.Extensions
                 string.Format("Nothing specified to empty the contents of object {0} into", obj.ID));
         }
 
-        private static bool EmptyIntoObject(ObjectInstance obj, ObjectInstance destobj)
+        private static bool EmptyInto(ObjectInstance obj, ObjectInstance destobj)
         {
             bool retVal = false;
             foreach (ObjectInstance cobj in obj.Contents)
@@ -590,17 +490,17 @@ namespace SmaugCS.Extensions
                 if ((destobj.ItemType == ItemTypes.Container
                      || destobj.ItemType == ItemTypes.KeyRing
                      || destobj.ItemType == ItemTypes.Quiver)
-                    && (cobj.GetRealObjectWeight() + destobj.GetRealObjectWeight() > destobj.Value[0]))
+                    && (cobj.GetRealWeight() + destobj.GetRealWeight() > destobj.Value[0]))
                     continue;
 
-                cobj.FromObject(cobj);
-                destobj.ToObject(cobj);
+                cobj.RemoveFrom(cobj);
+                destobj.AddTo(cobj);
                 retVal = true;
             }
             return retVal;
         }
 
-        private static bool EmptyIntoRoom(CharacterInstance ch, ObjectInstance obj, RoomTemplate destroom)
+        private static bool EmptyInto(CharacterInstance ch, ObjectInstance obj, RoomTemplate destroom)
         {
             bool retVal = false;
             foreach (ObjectInstance cobj in obj.Contents)
@@ -608,12 +508,12 @@ namespace SmaugCS.Extensions
                 if (ch != null && cobj.ObjectIndex.HasProg(MudProgTypes.Drop) && cobj.Count > 1)
                 {
                     cobj.Split();
-                    cobj.FromObject(cobj);
+                    cobj.RemoveFrom(cobj);
                 }
                 else
-                    cobj.FromObject(cobj);
+                    cobj.RemoveFrom(cobj);
 
-                ObjectInstance tObj = destroom.ToRoom(cobj);
+                ObjectInstance tObj = destroom.AddTo(cobj);
 
                 if (ch != null)
                 {

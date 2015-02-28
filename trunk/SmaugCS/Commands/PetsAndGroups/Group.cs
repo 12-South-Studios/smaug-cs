@@ -6,6 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.PetsAndGroups
@@ -28,19 +29,18 @@ namespace SmaugCS.Commands.PetsAndGroups
         private static void display_group(CharacterInstance ch)
         {
             CharacterInstance leader = ch.Leader ?? ch;
-            color.set_char_color(ATTypes.AT_DGREEN, ch);
-            color.ch_printf(ch, "\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
+            ch.SetColor(ATTypes.AT_DGREEN);
+            ch.Printf("\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                             Macros.PERS(leader, ch), ch.Level < LevelConstants.AvatarLevel ? " [to lvl]" : "");
 
             foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
-                color.set_char_color(ATTypes.AT_DGREEN, ch);
+                ch.SetColor(ATTypes.AT_DGREEN);
                 string buffer = string.Empty;
 
                 if (gch.IsAffected(AffectedByTypes.Possess))
                 {
-                    color.ch_printf(ch,
-                                    "[%2d %s] %-16s %4s/%4s hp %4s/%4s %s %4s/%4s mv %5s xp\r\n",
+                    ch.Printf("[%2d %s] %-16s %4s/%4s hp %4s/%4s %s %4s/%4s mv %5s xp\r\n",
                                     gch.Level,
                                     gch.IsNpc() ? "Mob" : DatabaseManager.Instance.GetClass(gch.CurrentClass).Name,
                                     Macros.PERS(gch, ch).CapitalizeFirst(),
@@ -50,48 +50,48 @@ namespace SmaugCS.Commands.PetsAndGroups
                 else
                     buffer = GetAlignmentString(gch.CurrentAlignment);
 
-                color.set_char_color(ATTypes.AT_DGREEN, ch);
-                color.send_to_char("[", ch);
-                color.set_char_color(ATTypes.AT_DGREEN, ch);
-                color.ch_printf(ch, "%-2d %2.2s %3.3s", gch.Level, buffer,
+                ch.SetColor(ATTypes.AT_DGREEN);
+                ch.SendTo("[");
+                ch.SetColor(ATTypes.AT_DGREEN);
+                ch.Printf("%-2d %2.2s %3.3s", gch.Level, buffer,
                                 gch.IsNpc() ? "Mob" : DatabaseManager.Instance.GetClass(gch.CurrentClass).Name);
-                color.set_char_color(ATTypes.AT_DGREEN, ch);
-                color.send_to_char("]  ", ch);
-                color.set_char_color(ATTypes.AT_DGREEN, ch);
-                color.ch_printf(ch, "%-12.12s ", Macros.PERS(gch, ch).CapitalizeFirst());
+                ch.SetColor(ATTypes.AT_DGREEN);
+                ch.SendTo("]  ");
+                ch.SetColor(ATTypes.AT_DGREEN);
+                ch.Printf("%-12.12s ", Macros.PERS(gch, ch).CapitalizeFirst());
 
                 if (gch.CurrentHealth < gch.MaximumHealth / 4)
-                    color.set_char_color(ATTypes.AT_DANGER, ch);
+                    ch.SetColor(ATTypes.AT_DANGER);
                 else if (gch.CurrentHealth < gch.MaximumHealth / 2.5f)
-                    color.set_char_color(ATTypes.AT_YELLOW, ch);
+                    ch.SetColor(ATTypes.AT_YELLOW);
                 else
-                    color.set_char_color(ATTypes.AT_GREY, ch);
+                    ch.SetColor(ATTypes.AT_GREY);
 
-                color.ch_printf(ch, "%5d", gch.CurrentHealth);
-                color.set_char_color(ATTypes.AT_GREY, ch);
-                color.ch_printf(ch, "/%-5d ", gch.MaximumHealth);
+                ch.Printf("%5d", gch.CurrentHealth);
+                ch.SetColor(ATTypes.AT_GREY);
+                ch.Printf("/%-5d ", gch.MaximumHealth);
 
-                color.set_char_color(gch.IsVampire()
+                ch.SetColor(gch.IsVampire()
                                          ? ATTypes.AT_BLOOD
-                                         : ATTypes.AT_LBLUE, ch);
+                                         : ATTypes.AT_LBLUE);
 
                 if (gch.CurrentClass != ClassTypes.Warrior)
                 {
-                    color.ch_printf(ch, "%5d/%-5d ",
+                    ch.Printf("%5d/%-5d ",
                                     gch.IsVampire() && !gch.IsNpc()
                                         ? ((PlayerInstance)gch).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty)
                                         : gch.CurrentMana,
                                     gch.IsVampire() ? 10 + gch.Level : gch.MaximumMana);
                 }
                 else
-                    color.send_to_char("            ", ch);
+                    ch.SendTo("            ");
 
                 if (gch.MentalState < -25 || gch.MentalState > 25)
-                    color.set_char_color(ATTypes.AT_YELLOW, ch);
+                    ch.SetColor(ATTypes.AT_YELLOW);
                 else
-                    color.set_char_color(ATTypes.AT_GREEN, ch);
+                    ch.SetColor(ATTypes.AT_GREEN);
 
-                color.ch_printf(ch, "%3.3s  ",
+                ch.Printf("%3.3s  ",
                                 gch.MentalState > 75
                                     ? "+++"
                                     : gch.MentalState > 50
@@ -102,15 +102,15 @@ namespace SmaugCS.Commands.PetsAndGroups
                                                       ? "==="
                                                       : gch.MentalState > -50 ? "-==" : gch.MentalState > -75 ? "--=" : "---");
 
-                color.set_char_color(ATTypes.AT_DGREEN, ch);
-                color.ch_printf(ch, "%5d ", gch.CurrentMovement);
-                color.ch_printf(ch, "%6s ", gch.CurrentRace.GetName());
-                color.set_char_color(ATTypes.AT_GREEN, ch);
+                ch.SetColor(ATTypes.AT_DGREEN);
+                ch.Printf("%5d ", gch.CurrentMovement);
+                ch.Printf("%6s ", gch.CurrentRace.GetName());
+                ch.SetColor(ATTypes.AT_GREEN);
 
                 if (gch.Level < LevelConstants.AvatarLevel)
-                    color.ch_printf(ch, "%8d ", gch.GetExperienceLevel(gch.Level + 1) - gch.Experience);
+                    ch.Printf("%8d ", gch.GetExperienceLevel(gch.Level + 1) - gch.Experience);
 
-                color.send_to_char("\r\n", ch);
+                ch.SendTo("\r\n");
             }
         }
 
@@ -134,7 +134,7 @@ namespace SmaugCS.Commands.PetsAndGroups
         {
             if (ch.Leader != null || ch.Master != null)
             {
-                color.send_to_char("You cannot disband a group if you're following someone.\r\n", ch);
+                ch.SendTo("You cannot disband a group if you're following someone.");
                 return;
             }
 
@@ -144,12 +144,12 @@ namespace SmaugCS.Commands.PetsAndGroups
                 gch.Leader = null;
                 gch.Master = null;
                 count++;
-                color.send_to_char("Your group is disbanded.\r\n", gch);
+                gch.SendTo("Your group is disbanded.");
             }
 
-            color.send_to_char(count == 0
-                                   ? "You have no group members to disband.\r\n"
-                                   : "You disband your group.\r\n", ch);
+            ch.SendTo(count == 0
+                                   ? "You have no group members to disband."
+                                   : "You disband your group.");
         }
 
         private static void group_all(CharacterInstance ch)
@@ -171,11 +171,11 @@ namespace SmaugCS.Commands.PetsAndGroups
             }
 
             if (count == 0)
-                color.send_to_char("You have no eligible group members.\r\n", ch);
+                ch.SendTo("You have no eligible group members.");
             else
             {
                 comm.act(ATTypes.AT_ACTION, "$n groups $s followers.", ch, null, null, ToTypes.Room);
-                color.send_to_char("You group your followers.\r\n", ch);
+                ch.SendTo("You group your followers.");
             }
         }
 
@@ -184,13 +184,13 @@ namespace SmaugCS.Commands.PetsAndGroups
             CharacterInstance victim = ch.GetCharacterInRoom(argument);
             if (victim == null)
             {
-                color.send_to_char("They aren't here.\r\n", ch);
+                ch.SendTo("They aren't here.");
                 return;
             }
 
             if (ch.Master != null || (ch.Leader != null && ch.Leader != ch))
             {
-                color.send_to_char("But you are following someone else!\r\n", ch);
+                ch.SendTo("But you are following someone else!");
                 return;
             }
 

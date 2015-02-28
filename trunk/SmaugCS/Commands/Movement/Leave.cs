@@ -6,6 +6,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Movement
@@ -27,7 +28,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            color.send_to_char("You cannot leave that way.", ch);
+            ch.SendTo("You cannot leave that way.");
         }
 
         private static void LeaveRoom(CharacterInstance ch)
@@ -52,7 +53,7 @@ namespace SmaugCS.Commands.Movement
                 }
             }
 
-            color.send_to_char("You cannot find an exit here.", ch);
+            ch.SendTo("You cannot find an exit here.");
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
@@ -14,7 +14,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             string buffer;
 
             if (!ch.CanDrop(obj))
-                color.ch_printf(ch, "You can't let go of %s.\r\n", obj.Name);
+                ch.Printf("You can't let go of %s.\r\n", obj.Name);
             else if ((cost = Appraise.GetAdjustedRepairCost(keeper, obj)) < 0)
             {
                 if (cost < 0)
@@ -57,7 +57,7 @@ namespace SmaugCS.Behavior.Shopkeeper
                 switch (obj.ItemType)
                 {
                     default:
-                        color.send_to_char("For some reason, you think you got ripped off...", ch);
+                        ch.SendTo("For some reason, you think you got ripped off...");
                         break;
                     case ItemTypes.Armor:
                         obj.Values.CurrentAC = obj.Values.OriginalAC;

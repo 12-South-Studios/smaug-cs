@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Language;
 
 namespace SmaugCS
 {

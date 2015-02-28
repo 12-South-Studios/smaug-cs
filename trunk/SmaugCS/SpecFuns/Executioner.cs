@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.SpecFuns
@@ -47,10 +48,10 @@ namespace SmaugCS.SpecFuns
             MobTemplate cityguard = DatabaseManager.Instance.GetEntity<MobTemplate>(vnum);
 
             CharacterInstance newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
-            ch.CurrentRoom.ToRoom(newGuard);
+            ch.CurrentRoom.AddTo(newGuard);
 
             newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
-            ch.CurrentRoom.ToRoom(newGuard);
+            ch.CurrentRoom.AddTo(newGuard);
             
             return true;
         }

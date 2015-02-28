@@ -6,6 +6,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -20,17 +22,17 @@ namespace SmaugCS.Commands.Objects
             if (handler.FindObject_CheckMentalState(ch)) return;
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Litterbug))
             {
-                color.set_char_color(ATTypes.AT_YELLOW, ch);
-                color.send_to_char("A godly force prevents you from dropping anything...", ch);
+                ch.SetColor(ATTypes.AT_YELLOW);
+                ch.SendTo("A godly force prevents you from dropping anything...");
                 return;
             }
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDrop) && ch != db.Supermob)
             {
-                color.set_char_color(ATTypes.AT_MAGIC, ch);
-                color.send_to_char("A magical force stops you!", ch);
-                color.set_char_color(ATTypes.AT_TELL, ch);
-                color.send_to_char("Someone tells you, 'No littering here!'", ch);
+                ch.SetColor(ATTypes.AT_MAGIC);
+                ch.SendTo("A magical force stops you!");
+                ch.SetColor(ATTypes.AT_TELL);
+                ch.SendTo("Someone tells you, 'No littering here!'");
                 return;
             }
 
@@ -78,8 +80,8 @@ namespace SmaugCS.Commands.Objects
             }
 
             comm.act(ATTypes.AT_ACTION, "$n drops some coin.", ch, null, null, ToTypes.Room);
-            ch.CurrentRoom.ToRoom(ObjectFactory.CreateMoney(num));
-            color.send_to_char("You let the coin slip from your hand.", ch);
+            ch.CurrentRoom.AddTo(ObjectFactory.CreateMoney(num));
+            ch.SendTo("You let the coin slip from your hand.");
 
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
                 save.save_char_obj(ch);
@@ -95,8 +97,8 @@ namespace SmaugCS.Commands.Objects
             comm.act(ATTypes.AT_ACTION, "$n drops $p.", ch, obj, null, ToTypes.Room);
             comm.act(ATTypes.AT_ACTION, "You drop $p.", ch, obj, null, ToTypes.Character);
 
-            obj.FromCharacter();
-            obj = ch.CurrentRoom.ToRoom(obj);
+            obj.RemoveFrom();
+            obj = ch.CurrentRoom.AddTo(obj);
             mud_prog.oprog_drop_trigger(ch, obj);
 
             if (ch.CharDied() || handler.obj_extracted(obj))

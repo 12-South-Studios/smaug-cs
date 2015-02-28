@@ -4,6 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Movement
@@ -18,13 +19,13 @@ namespace SmaugCS.Commands.Movement
             ExitData exit = ch.FindExit(firstArg, true);
             if (exit == null)
             {
-                color.ch_printf(ch, "You see no %s here.", firstArg);
+                ch.Printf("You see no %s here.", firstArg);
                 return;
             }
             
             if (exit.Flags.IsSet(ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(firstArg))
             {
-                color.ch_printf(ch, "You see no %s here.", firstArg);
+                ch.Printf("You see no %s here.", firstArg);
                 return;
             }
 
@@ -37,7 +38,7 @@ namespace SmaugCS.Commands.Movement
 
             if (!exit.Flags.IsSet(ExitFlags.Secret))
             {
-                color.send_to_char("*Clunk*", ch);
+                ch.SendTo("*Clunk*");
                 comm.act(ATTypes.AT_ACTION, "$n unbolts the $d.", ch, null, exit.Keywords, ToTypes.Room);
                 exit.RemoveFlagFromSelfAndReverseExit(ExitFlags.Bolted);
             }   

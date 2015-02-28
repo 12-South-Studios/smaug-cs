@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands.Player
 {
@@ -8,8 +9,8 @@ namespace SmaugCS.Commands.Player
     {
         public static void do_gold(CharacterInstance ch, string argument)
         {
-            color.set_char_color(ATTypes.AT_GOLD, ch);
-            color.ch_printf(ch, "You have {0} gold pieces.", ch.CurrentCoin.ToPunctuation());
+           ch.SetColor(ATTypes.AT_GOLD);
+            ch.Printf("You have {0} gold pieces.", ch.CurrentCoin.ToPunctuation());
         }
     }
 }

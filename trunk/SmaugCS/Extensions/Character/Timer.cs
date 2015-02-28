@@ -4,7 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Character
 {
     public static class Timer
     {

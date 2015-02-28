@@ -4,7 +4,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Player
 {
     public static class Comm
     {

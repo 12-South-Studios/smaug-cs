@@ -5,6 +5,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 
@@ -12,7 +13,7 @@ namespace SmaugCS.Extensions.Character
 {
     public static class Objects
     {
-        public static bool RemoveItem(this CharacterInstance ch, WearLocations location, bool replace)
+        public static bool RemoveFrom(this CharacterInstance ch, WearLocations location, bool replace)
         {
             ObjectInstance obj = ch.GetEquippedItem(location);
             if (obj == null) return true;
@@ -56,7 +57,7 @@ namespace SmaugCS.Extensions.Character
             obj.Split();
             if (ch.Trust < obj.Level)
             {
-                color.ch_printf(ch, "You must be level %d to use this object.\r\n", obj.Level);
+                ch.Printf("You must be level %d to use this object.", obj.Level);
                 comm.act(ATTypes.AT_ACTION, "$n tries to use $p, but is too inexperienced.", ch, obj, null, ToTypes.Room);
                 return;
             }
@@ -70,10 +71,10 @@ namespace SmaugCS.Extensions.Character
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Personal) && ch.Name.EqualsIgnoreCase(obj.Owner))
             {
-                color.send_to_char("That item is personalized and belongs to someone else.", ch);
+                ch.SendTo("That item is personalized and belongs to someone else.");
                 if (obj.CarriedBy != null)
-                    obj.FromCharacter();
-                ch.CurrentRoom.ToRoom(obj);
+                    obj.RemoveFrom();
+                ch.CurrentRoom.AddTo(obj);
                 return;
             }
 
@@ -89,11 +90,11 @@ namespace SmaugCS.Extensions.Character
                         switch (1 << bit)
                         {
                             case (int)ItemWearFlags.Hold:
-                                color.send_to_char("You cannot hold that.\r\n", ch);
+                                ch.SetColor("You cannot hold that.\r\n", ch);
                                 break;
                             case (int)ItemWearFlags.Wield:
                             case (int)ItemWearFlags.MissileWield:
-                                color.send_to_char("You cannot wield that.\r\n", ch);
+                                ch.SetColor("You cannot wield that.\r\n", ch);
                                 break;
                             default:
                                 color.ch_printf(ch, "You cannot wear that on your %s.\r\n", BuilderConstants.w_flags[bit]);
@@ -118,7 +119,7 @@ namespace SmaugCS.Extensions.Character
 
             if (obj.ItemType == ItemTypes.Light)
             {
-                if (!ch.RemoveItem(WearLocations.Light, replace))
+                if (!ch.RemoveFrom(WearLocations.Light, replace))
                     return;
                 if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
                 {
@@ -134,7 +135,7 @@ namespace SmaugCS.Extensions.Character
             /*if (bit == -1)
             {
                 if (replace)
-                    color.send_to_char("You can't wear, wield, or hold that.\r\n", ch);
+                    ch.SetColor("You can't wear, wield, or hold that.\r\n", ch);
                 return;
             }*/
 
@@ -148,7 +149,7 @@ namespace SmaugCS.Extensions.Character
                 {
                     LogManager.Instance.Bug("Unknown/Unused ItemWearFlag {0}", wearFlag);
                     if (replace)
-                        color.send_to_char("You can't wear, wield, or hold that.", ch);
+                        ch.SendTo("You can't wear, wield, or hold that.");
                 }
             }
         }
@@ -180,8 +181,8 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.GetEquippedItem(WearLocations.LeftFinger) != null
                 && ch.GetEquippedItem(WearLocations.RightFinger) != null
-                && !ch.RemoveItem(WearLocations.LeftFinger, replace)
-                && !ch.RemoveItem(WearLocations.RightFinger, replace))
+                && !ch.RemoveFrom(WearLocations.LeftFinger, replace)
+                && !ch.RemoveFrom(WearLocations.RightFinger, replace))
                 return;
 
             if (ch.GetEquippedItem(WearLocations.LeftFinger) != null)
@@ -210,14 +211,14 @@ namespace SmaugCS.Extensions.Character
                 return;
             }
 
-            color.send_to_char("You already wear something on both fingers.\r\n", ch);
+            ch.SendTo("You already wear something on both fingers.");
         }
         private static void ItemWearNeck(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (ch.GetEquippedItem(WearLocations.Neck_1) != null
                 && ch.GetEquippedItem(WearLocations.Neck_2) != null
-                && !ch.RemoveItem(WearLocations.Neck_1, replace)
-                && !ch.RemoveItem(WearLocations.Neck_2, replace))
+                && !ch.RemoveFrom(WearLocations.Neck_1, replace)
+                && !ch.RemoveFrom(WearLocations.Neck_2, replace))
                 return;
 
             if (ch.GetEquippedItem(WearLocations.Neck_1) != null)
@@ -246,7 +247,7 @@ namespace SmaugCS.Extensions.Character
                 return;
             }
 
-            color.send_to_char("You already wear two neck items.", ch);
+            ch.SendTo("You already wear two neck items.");
         }
         private static void ItemWearBody(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
@@ -264,7 +265,7 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearHead(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
-            if (!ch.RemoveItem(WearLocations.Head, replace))
+            if (!ch.RemoveFrom(WearLocations.Head, replace))
                 return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -278,7 +279,7 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearEyes(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
-            if (!ch.RemoveItem(WearLocations.Eyes, replace))
+            if (!ch.RemoveFrom(WearLocations.Eyes, replace))
                 return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -292,7 +293,7 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearFace(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
-            if (!ch.RemoveItem(WearLocations.Face, replace))
+            if (!ch.RemoveFrom(WearLocations.Face, replace))
                 return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -306,7 +307,7 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearEars(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
-            if (!ch.RemoveItem(WearLocations.Ears, replace))
+            if (!ch.RemoveFrom(WearLocations.Ears, replace))
                 return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -390,7 +391,7 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearBack(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
-            if (!ch.RemoveItem(WearLocations.Back, replace))
+            if (!ch.RemoveFrom(WearLocations.Back, replace))
                 return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -420,8 +421,8 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.GetEquippedItem(WearLocations.LeftWrist) != null
                 && ch.GetEquippedItem(WearLocations.RightWrist) != null
-                && !ch.RemoveItem(WearLocations.LeftWrist, replace)
-                && !ch.RemoveItem(WearLocations.RightWrist, replace))
+                && !ch.RemoveFrom(WearLocations.LeftWrist, replace)
+                && !ch.RemoveFrom(WearLocations.RightWrist, replace))
                 return;
 
             if (ch.GetEquippedItem(WearLocations.LeftWrist) != null)
@@ -450,14 +451,14 @@ namespace SmaugCS.Extensions.Character
                 return;
             }
 
-            color.send_to_char("You already wear two wrist items.", ch);
+            ch.SendTo("You already wear two wrist items.");
         }
         private static void ItemWearAnkle(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (ch.GetEquippedItem(WearLocations.LeftAnkle) != null
                 && ch.GetEquippedItem(WearLocations.RightAnkle) != null
-                && !ch.RemoveItem(WearLocations.LeftAnkle, replace)
-                && !ch.RemoveItem(WearLocations.RightAnkle, replace))
+                && !ch.RemoveFrom(WearLocations.LeftAnkle, replace)
+                && !ch.RemoveFrom(WearLocations.RightAnkle, replace))
                 return;
 
             if (ch.GetEquippedItem(WearLocations.LeftAnkle) != null)
@@ -486,7 +487,7 @@ namespace SmaugCS.Extensions.Character
                 return;
             }
 
-            color.send_to_char("You already wear two ankle items.", ch);
+            ch.SendTo("You already wear two ankle items.");
         }
         private static void ItemWearShield(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
@@ -496,13 +497,13 @@ namespace SmaugCS.Extensions.Character
                 || (ch.GetEquippedItem(WearLocations.Wield) != null
                     && ch.GetEquippedItem(WearLocations.Hold) != null))
             {
-                color.send_to_char(
+                ch.SendTo(
                     ch.GetEquippedItem(WearLocations.Hold) != null
                         ? "You can't use a shield while using a weapon and holding something!"
-                        : "You can't use a shield AND two weapons!", ch);
+                        : "You can't use a shield AND two weapons!");
                 return;
             }
-            if (!ch.RemoveItem(WearLocations.Shield, replace))
+            if (!ch.RemoveFrom(WearLocations.Shield, replace))
                 return;
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
             {
@@ -517,8 +518,8 @@ namespace SmaugCS.Extensions.Character
         {
             if (!ch.CouldDualWield())
             {
-                if (!ch.RemoveItem(WearLocations.WieldMissile, replace)
-                    || !ch.RemoveItem(WearLocations.Wield, replace))
+                if (!ch.RemoveFrom(WearLocations.WieldMissile, replace)
+                    || !ch.RemoveFrom(WearLocations.Wield, replace))
                     return;
             }
             else
@@ -538,7 +539,7 @@ namespace SmaugCS.Extensions.Character
                         return;
 
                     if (CheckFunctions.CheckIfTrue(ch,
-                        (obj.GetObjectWeight() + tobj.GetObjectWeight()) >
+                        (obj.GetWeight() + tobj.GetWeight()) >
                         LookupConstants.str_app[ch.GetCurrentStrength()].Wield, "It is too heavy for you to wield."))
                         return;
 
@@ -565,7 +566,7 @@ namespace SmaugCS.Extensions.Character
             }
 
             if (CheckFunctions.CheckIfTrue(ch,
-                obj.GetObjectWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield,
+                obj.GetWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield,
                 "It is too heavy for you to wield.")) return;
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
@@ -588,7 +589,7 @@ namespace SmaugCS.Extensions.Character
                 "You're already wielding a missile weapon.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch,
-                (obj.GetObjectWeight() + mw.GetObjectWeight()) > LookupConstants.str_app[ch.GetCurrentStrength()].Wield,
+                (obj.GetWeight() + mw.GetWeight()) > LookupConstants.str_app[ch.GetCurrentStrength()].Wield,
                 "It is too heavy for you to wield.")) return;
 
             if (CheckFunctions.CheckIfNotNullObject(ch, dw, "You're already wielding two weapons.")) return;
@@ -612,14 +613,14 @@ namespace SmaugCS.Extensions.Character
                     && (ch.GetEquippedItem(WearLocations.WieldMissile) != null
                         || ch.GetEquippedItem(WearLocations.Shield) != null)))
             {
-                color.send_to_char(
+                ch.SendTo(
                     ch.GetEquippedItem(WearLocations.Shield) != null
-                        ? "You cannot hold something while using a weapon and a shield!\r\n"
-                        : "You cannot hold something AND two weapons!\r\n", ch);
+                        ? "You cannot hold something while using a weapon and a shield!"
+                        : "You cannot hold something AND two weapons!");
                 return;
             }
 
-            if (!ch.RemoveItem(WearLocations.Hold, replace))
+            if (!ch.RemoveFrom(WearLocations.Hold, replace))
                 return;
 
             if (obj.ItemType == ItemTypes.Wand

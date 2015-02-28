@@ -5,7 +5,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Character
 {
     public static class Statistics
     {

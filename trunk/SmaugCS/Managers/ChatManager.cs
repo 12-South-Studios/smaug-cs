@@ -5,7 +5,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Managers
@@ -59,8 +59,8 @@ namespace SmaugCS.Managers
                     && !och.Deaf.IsSet((int)channel)
                     && vch.Trust >= level)
                 {
-                    color.set_char_color(ATTypes.AT_LOG, vch);
-                    color.send_to_char_color(buf, vch);
+                   vch.SetColor(ATTypes.AT_LOG);
+                   vch.SendTo(buf);
                 }
             }
         }
@@ -106,7 +106,7 @@ namespace SmaugCS.Managers
                         {
                             if (ch.Master != null)
                             {
-                                color.send_to_char("I don't think so...\r\n", ch.Master);
+                                ch.Master.SendTo("I don't think so...");
                                 return;
                             }
                         }
@@ -115,7 +115,7 @@ namespace SmaugCS.Managers
 
                 if (!string.IsNullOrEmpty(message))
                 {
-                    color.send_to_char(message, ch);
+                    ch.SendTo(message);
                     return;
                 }
             }
@@ -123,45 +123,45 @@ namespace SmaugCS.Managers
             if (!ch.IsPKill() && channel == ChannelTypes.WarTalk
                 && !ch.IsImmortal())
             {
-                color.send_to_char("Peacefuls have no need to use wartalk.\r\n", ch);
+                ch.SendTo("Peacefuls have no need to use wartalk.");
                 return;
             }
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Silence))
             {
-                color.send_to_char("You can't do that here.\r\n", ch);
+                ch.SendTo("You can't do that here.");
                 return;
             }
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Silence))
             {
-                color.ch_printf(ch, "You can't %s.\r\n", verb);
+                ch.Printf("You can't %s.\r\n", verb);
                 return;
             }
 
             if (string.IsNullOrEmpty(argument))
             {
-                color.send_to_char(string.Format("{0} what?\r\n", verb).CapitalizeFirst(), ch);
+                ch.SendTo(string.Format("{0} what?\r\n", verb).CapitalizeFirst());
                 return;
             }
 
             ch.Deaf.RemoveBit((int)channel);
 
-            color.set_char_color(GetColorForChannelTalk(channel), ch);
+           ch.SetColor(GetColorForChannelTalk(channel));
 
             string buffer = string.Empty;
 
             switch (channel)
             {
                 case ChannelTypes.RaceTalk:
-                    color.ch_printf(ch, "You %s '%s'\r\n", verb, argument);
+                    ch.Printf("You %s '%s'\r\n", verb, argument);
                     buffer = string.Format("$n {0}s '$t'", verb);
                     break;
                 case ChannelTypes.Traffic:
-                    color.ch_printf(ch, "You %s:  %s\r\n", verb, argument);
+                    ch.Printf("You %s:  %s\r\n", verb, argument);
                     buffer = string.Format("$n {0}s:  $t", verb);
                     break;
                 case ChannelTypes.WarTalk:
-                    color.ch_printf(ch, "You %s '%s'\r\n", verb, argument);
+                    ch.Printf("You %s '%s'\r\n", verb, argument);
                     buffer = string.Format("$n {0}s '$t'", verb);
                     break;
                 case ChannelTypes.AvTalk:
@@ -175,7 +175,7 @@ namespace SmaugCS.Managers
                     }
                     break;
                 default:
-                    color.ch_printf(ch, "You %s '%s'\r\n", verb, argument);
+                    ch.Printf("You %s '%s'\r\n", verb, argument);
                     buffer = string.Format("$n {0}s '$t'", verb);
                     break;
             }

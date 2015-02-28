@@ -4,6 +4,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
@@ -49,7 +51,7 @@ namespace SmaugCS.Skills
 
             skill.LearnFromFailure(ch);
 
-            obj.FromCharacter();
+            obj.RemoveFrom();
 
             if (!victim.IsNpc() && victim.CanPKill() && !obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal))
             {
@@ -58,9 +60,9 @@ namespace SmaugCS.Skills
             }
 
             if (victim.IsNpc() || (obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal) && victim.IsPKill() && !ch.IsNpc()))
-                obj.ToCharacter(victim);
+                obj.AddTo(victim);
             else
-                victim.CurrentRoom.ToRoom(obj);
+                victim.CurrentRoom.AddTo(obj);
         }
     }
 }

@@ -3,7 +3,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands.Organizations
@@ -14,14 +14,14 @@ namespace SmaugCS.Commands.Organizations
         {
             if (ch.IsNpc())
             {
-                color.send_to_char("NPCs can't use this command.\r\n", ch);
+               ch.SendTo("NPCs can't use this command.\r\n");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(argument))
             {
-                color.send_to_char("Usage: roster <clanname>\r\n", ch);
-                color.send_to_char("Usage: roster <clanname> remove <name>\r\n", ch);
+               ch.SendTo("Usage: roster <clanname>\r\n");
+               ch.SendTo("Usage: roster <clanname> remove <name>\r\n");
                 return;
             }
 
@@ -32,28 +32,28 @@ namespace SmaugCS.Commands.Organizations
             ClanData clan = DatabaseManager.Instance.GetEntity<ClanData>(arg);
             if (clan == null)
             {
-                color.ch_printf(ch, "No such guild or clan known as %s.\r\n", arg);
+                ch.Printf("No such guild or clan known as %s.\r\n", arg);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(argument))
             {
-                color.ch_printf(ch, "Membership roster for the %s %s\r\n\r\n",
+                ch.Printf("Membership roster for the %s %s\r\n\r\n",
                     clan.ClanType == ClanTypes.Order ? "Guild" : "Clan");
-                color.ch_printf(ch, "%-15.15s  %-15.15s %-6.6s %-6.6s %-6.6s %s\r\n",
+                ch.Printf("%-15.15s  %-15.15s %-6.6s %-6.6s %-6.6s %s\r\n",
                     "Name", "Class", "Level", "Kills", "Deaths", "Joined on");
-                color.send_to_char("-------------------------------------------------------------------------------------\r\n", ch);
+               ch.SendTo("-------------------------------------------------------------------------------------\r\n");
 
                 int total = 0;
                 foreach (RosterData member in clan.Members)
                 {
-                    color.ch_printf(ch, "%-15.15s  %-15.15s %-6d %-6d %-6d %s",
+                    ch.Printf("%-15.15s  %-15.15s %-6d %-6d %-6d %s",
                                     member.Name, LookupManager.Instance.GetLookup("NPCClasses", member.Class).CapitalizeFirst(),
                                     member.Level, member.Kills, member.Deaths, member.Joined.ToShortTimeString());
                     total++;
                 }
 
-                color.ch_printf(ch, "\r\nThere are %d member%s in %s\r\n", total, total == 1 ? "" : "s", clan.Name);
+                ch.Printf("\r\nThere are %d member%s in %s\r\n", total, total == 1 ? "" : "s", clan.Name);
             }
 
             tuple = argument.FirstArgument();
@@ -64,13 +64,13 @@ namespace SmaugCS.Commands.Organizations
             {
                 if (string.IsNullOrWhiteSpace(argument))
                 {
-                    color.send_to_char("Remove who from the roster?\r\n", ch);
+                   ch.SendTo("Remove who from the roster?");
                     return;
                 }
 
                 clan.RemoveFromRoster(argument);
                 //clan.Save();
-                color.ch_printf(ch, "%s has been removed from the roster for %s.\r\n", argument, clan.Name);
+                ch.Printf("%s has been removed from the roster for %s.\r\n", argument, clan.Name);
             }
 
             do_roster(ch, "");

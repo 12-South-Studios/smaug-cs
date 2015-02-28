@@ -1,5 +1,4 @@
-﻿
-using SmaugCS.Communication;
+﻿using SmaugCS.Communication;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 

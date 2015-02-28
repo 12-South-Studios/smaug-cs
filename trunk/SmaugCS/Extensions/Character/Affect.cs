@@ -7,10 +7,11 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Extensions.Character
 {
     public static class Affect
     {
@@ -224,7 +225,7 @@ namespace SmaugCS.Extensions
 
             ObjectInstance wield = ch.GetEquippedItem(WearLocations.Wield);
             if (!ch.IsNpc() && handler.SavingCharacter != ch
-                && wield != null && wield.GetObjectWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
+                && wield != null && wield.GetWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
             {
                 if (Depth == 0)
                 {

@@ -5,7 +5,8 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Commands
@@ -87,8 +88,8 @@ namespace SmaugCS.Commands
 
             }
 
-            color.set_char_color(ATTypes.AT_MAGIC, ch);
-            color.send_to_char("You stop chanting...\r\n", ch);
+            ch.SetColor(ATTypes.AT_MAGIC);
+            ch.SendTo("You stop chanting...");
             
             // TODO: Add a chance to backfire here
         }

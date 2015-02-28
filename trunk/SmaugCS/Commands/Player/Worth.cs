@@ -6,7 +6,7 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
 
 namespace SmaugCS.Commands.Player
@@ -71,9 +71,9 @@ namespace SmaugCS.Commands.Player
             if (ch.IsNpc())
                 return;
 
-            color.set_pager_color(ATTypes.AT_SCORE, ch);
-            color.pager_printf(ch, "\r\nWorth for {0}{1}.\r\n", ch.Name, ((PlayerInstance)ch).PlayerData.Title);
-            color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
+            ch.SetPagerColor(ATTypes.AT_SCORE);
+            ch.PagerPrintf("\r\nWorth for {0}{1}.\r\n", ch.Name, ((PlayerInstance)ch).PlayerData.Title);
+            ch.SendToPager(" ----------------------------------------------------------------------------\r\n");
 
             string buffer = "|Level: {0} |Favor: {1} |Alignment: {2} |Experience: {3}|\r\n";
             buffer = string.Format(buffer, ch.Level.ToString(CultureInfo.InvariantCulture).PadLeft(4),
@@ -83,24 +83,23 @@ namespace SmaugCS.Commands.Player
                                         : ch.CurrentAlignment.ToString(CultureInfo.InvariantCulture)).PadLeft(9),
                                    ch.Experience.ToString(CultureInfo.InvariantCulture).PadLeft(9));
 
-            color.pager_printf(ch, buffer);
-            color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
+            ch.PagerPrintf(buffer);
+            ch.SendToPager(" ----------------------------------------------------------------------------\r\n");
 
             buffer = "|Glory: {0} |Weight: {1} |Style: {2} |Gold: {3} |\r\n";
             buffer = string.Format(buffer, ((PlayerInstance)ch).PlayerData.quest_curr.ToString(CultureInfo.InvariantCulture).PadLeft(4),
                                    ch.CarryWeight.ToString(CultureInfo.InvariantCulture).PadLeft(9),
                                    ch.CurrentStyle.GetName().PadLeft(13), ch.CurrentCoin.ToPunctuation().PadLeft(14));
-            color.pager_printf(ch, buffer);
-            color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
+            ch.PagerPrintf(buffer);
+            ch.SendToPager(" ----------------------------------------------------------------------------\r\n");
 
             if (ch.Level < 15 && !ch.IsPKill())
-                color.pager_printf(ch,
-                                   "|            |Hitroll: -------- |Damroll: ----------- |                     |\r\n");
+               ch.PagerPrintf("|            |Hitroll: -------- |Damroll: ----------- |                     |\r\n");
             else
-                color.pager_printf(ch, "|            |Hitroll: {0} |Damroll: {1} |                     |\r\n",
+                ch.PagerPrintf("|            |Hitroll: {0} |Damroll: {1} |                     |\r\n",
                                    ch.GetHitroll().ToString(CultureInfo.InvariantCulture).PadLeft(8),
                                    ch.GetDamroll().ToString(CultureInfo.InvariantCulture).PadLeft(11));
-            color.send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
+            ch.SendToPager(" ----------------------------------------------------------------------------\r\n");
         }
 
         private static string GetDeityFavor(CharacterInstance ch)

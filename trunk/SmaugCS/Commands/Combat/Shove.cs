@@ -7,6 +7,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
@@ -71,7 +72,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            if (CheckFunctions.CheckIfTrue(ch, ch.CurrentRoom.Area != toRoom.Area && !toRoom.Area.InHardRange(victim),
+            if (CheckFunctions.CheckIfTrue(ch, ch.CurrentRoom.Area != toRoom.Area && !toRoom.Area.IsInHardRange(victim),
                 "That character cannot enter that area."))
             {
                 victim.CurrentPosition = PositionTypes.Standing;

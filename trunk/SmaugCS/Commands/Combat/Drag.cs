@@ -9,6 +9,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
@@ -61,7 +62,7 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfSet(ch, toRoom.Flags, RoomFlags.Death,
                 "You cannot drag someone into a death trap.")) return;
 
-            if (CheckFunctions.CheckIfTrue(ch, ch.CurrentRoom.Area != toRoom.Area && !toRoom.Area.InHardRange(victim),
+            if (CheckFunctions.CheckIfTrue(ch, ch.CurrentRoom.Area != toRoom.Area && !toRoom.Area.IsInHardRange(victim),
                 "That character cannot enter that area."))
             {
                 victim.CurrentPosition = PositionTypes.Standing;
@@ -81,7 +82,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            color.send_to_char("You cannot do that to someone who is standing.", ch);
+            ch.SendTo("You cannot do that to someone who is standing.");
         }
 
         private static bool IsPassable(ExitData exit, CharacterInstance victim)

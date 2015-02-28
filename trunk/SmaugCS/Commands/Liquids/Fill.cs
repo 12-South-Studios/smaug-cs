@@ -4,7 +4,8 @@ using Realm.Library.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Liquids
@@ -27,7 +28,7 @@ namespace SmaugCS.Commands.Liquids
                     comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, obj.Name, ToTypes.Character);
                     return;
                 }
-                if (CheckFunctions.CheckIfTrue(ch, (obj.GetRealObjectWeight()/obj.Count) >= obj.Values.Capacity,
+                if (CheckFunctions.CheckIfTrue(ch, (obj.GetRealWeight()/obj.Count) >= obj.Values.Capacity,
                     "It's already full as it can be.")) return;
             }
             else
@@ -96,7 +97,7 @@ namespace SmaugCS.Commands.Liquids
                 return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
 
             comm.act(ATTypes.AT_ACTION, "$n tries to fill $p... (Don't ask me how)", ch, obj, null, ToTypes.Room);
-            color.send_to_char("You cannot fill that.", ch);
+            ch.SendTo("You cannot fill that.");
             return new List<ItemTypes>();
         }
     }

@@ -4,6 +4,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Player;
 
 namespace SmaugCS.Extensions
 {
@@ -49,8 +51,8 @@ namespace SmaugCS.Extensions
             if (ch.CurrentClass == ClassTypes.Cleric)
                 gain *= 3;
 
-            color.set_char_color(ATTypes.AT_WHITE, ch);
-            color.ch_printf(ch, "You gain %d experience points from your success!", gain);
+           ch.SetColor(ATTypes.AT_WHITE);
+            ch.Printf("You gain %d experience points from your success!", gain);
             return gain;
         }
 
@@ -62,8 +64,8 @@ namespace SmaugCS.Extensions
             if (ch.CurrentClass == ClassTypes.Cleric)
                 gain *= 2;
 
-            color.set_char_color(ATTypes.AT_WHITE, ch);
-            color.ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!", skill.Name, gain);
+           ch.SetColor(ATTypes.AT_WHITE);
+            ch.Printf("You are now an adept of %s!  You gain %d bonus experience!", skill.Name, gain);
             return gain;
         }
 
@@ -171,8 +173,8 @@ namespace SmaugCS.Extensions
                 if (ch.PlayerData.Learned[sn] == adept)
                 {
                     gain = 1000 * skillLevel;
-                    color.set_char_color(ATTypes.AT_WHITE, ch);
-                    color.ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!", skill.Name,
+                   ch.SetColor(ATTypes.AT_WHITE);
+                    ch.Printf("You are now an adept of %s!  You gain %d bonus experience!", skill.Name,
                                     gain);
                 }
                 else
@@ -180,8 +182,8 @@ namespace SmaugCS.Extensions
                     gain = 20 * skillLevel;
                     if (ch.CurrentFighting == null) // TODO: Check gsn_hide && gsn_sneak
                     {
-                        color.set_char_color(ATTypes.AT_WHITE, ch);
-                        color.ch_printf(ch, "You gain %d experience points from your success!", gain);
+                        ch.SetColor(ATTypes.AT_WHITE);
+                        ch.Printf("You gain %d experience points from your success!", gain);
                     }
                 }
                 ch.GainXP(gain);

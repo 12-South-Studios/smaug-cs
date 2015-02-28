@@ -2,13 +2,14 @@
 using System.Linq;
 using SmaugCS.Data;
 using Realm.Library.Common;
+using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Lookup
 {
     public class SkillLookupTable : LookupBase<SkillData, DoFunction>
     {
         public SkillLookupTable()
-            : base(new DoFunction {Value = (ch, arg) => color.send_to_char("Huh?", ch)})
+            : base(new DoFunction { Value = (ch, arg) => ch.SendTo("Huh?") })
         {
             // TODO Add skills here
         }

@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Combat
@@ -10,7 +10,7 @@ namespace SmaugCS.Commands.Combat
     {
         public static void do_wimpy(CharacterInstance ch, string argument)
         {
-            color.set_char_color(ATTypes.AT_YELLOW, ch);
+            ch.SetColor(ATTypes.AT_YELLOW);
 
             string firstArg = argument.FirstWord();
 
@@ -34,7 +34,7 @@ namespace SmaugCS.Commands.Combat
                 return;
 
             ch.wimpy = wimpy;
-            color.ch_printf(ch, "Wimpy set to %d hit points.", wimpy);
+            ch.Printf("Wimpy set to %d hit points.", wimpy);
         }
     }
 }

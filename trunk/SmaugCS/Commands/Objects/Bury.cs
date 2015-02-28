@@ -3,7 +3,9 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands.Objects
@@ -40,10 +42,10 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfTrue(ch, sectorType == SectorTypes.Air, "What?  In the air?!")) return;
 
             int carryWeight = 5.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight()/10);
-            if (CheckFunctions.CheckIfTrue(ch, shovel == null && obj.GetObjectWeight() > carryWeight,
+            if (CheckFunctions.CheckIfTrue(ch, shovel == null && obj.GetWeight() > carryWeight,
                 "You'd need a shovel to bury something that big.")) return;
 
-            int move = (obj.GetObjectWeight()*50*(shovel != null ? 1 : 5))/
+            int move = (obj.GetWeight()*50*(shovel != null ? 1 : 5))/
                        1.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight());
             move = 2.GetNumberThatIsBetween(move, 1000);
             if (CheckFunctions.CheckIfTrue(ch, move > ch.CurrentMovement,

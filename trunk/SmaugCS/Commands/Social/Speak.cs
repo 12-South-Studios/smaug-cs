@@ -1,6 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Language;
 
 namespace SmaugCS.Commands.Social
@@ -13,9 +14,9 @@ namespace SmaugCS.Commands.Social
             if (firstArg.EqualsIgnoreCase("all")
                 || ch.IsImmortal())
             {
-                color.set_char_color(ATTypes.AT_SAY, ch);
+               ch.SetColor(ATTypes.AT_SAY);
                 ch.Speaking = ~(int)LanguageTypes.Clan;
-                color.send_to_char("Now speaking all languages.\r\n", ch);
+                ch.SendTo("Now speaking all languages.\r\n");
                 return;
             }
 
@@ -30,15 +31,15 @@ namespace SmaugCS.Commands.Social
                             continue;
 
                         ch.Speaking = lang;
-                        color.set_char_color(ATTypes.AT_SAY, ch);
+                       ch.SetColor(ATTypes.AT_SAY, ch);
                         color.ch_printf(ch, "You now speak %s.\r\n", GameConstants.LanguageTable[lang]);
                         return;
                     }
                 }
             }*/
 
-            color.set_char_color(ATTypes.AT_SAY, ch);
-            color.send_to_char("You do not know that language.\r\n", ch);
+           ch.SetColor(ATTypes.AT_SAY);
+           ch.SendTo("You do not know that language.\r\n");
         }
     }
 }

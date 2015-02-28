@@ -15,7 +15,7 @@ namespace SmaugCS.Commands
                 string secondArg = argument.SecondWord();
                 if (string.IsNullOrWhiteSpace(secondArg))
                 {
-                    color.send_to_char("Learn what language?\r\n", ch);
+                    ch.SetColor("Learn what language?\r\n", ch);
                     return;
                 }
 
@@ -30,15 +30,15 @@ namespace SmaugCS.Commands
             {
                 if (((ch.Speaking & lang) > 0) ||
                     (ch.IsNpc() && ch.Speaking == 0))
-                    color.set_char_color(ATTypes.AT_SAY, ch);
+                   ch.SetColor(ATTypes.AT_SAY, ch);
                 else
-                    color.set_char_color(ATTypes.AT_PLAIN, ch);
+                   ch.SetColor(ATTypes.AT_PLAIN, ch);
 
-                color.send_to_char(GameConstants.LanguageTable[lang], ch);
-                color.send_to_char("\r\n", ch);
+                ch.SetColor(GameConstants.LanguageTable[lang], ch);
+                ch.SetColor("\r\n", ch);
             }
 
-            color.send_to_char("\r\n", ch);*/
+            ch.SetColor("\r\n", ch);*/
         }
     }
 }

@@ -6,6 +6,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
@@ -40,9 +41,9 @@ namespace SmaugCS.Spells.Smaug
             ch.SuccessfulCast(skill, null, obj);
 
             if (obj.WearFlags.IsSet(ItemWearFlags.Take))
-                obj.ToCharacter(ch);
+                obj.AddTo(ch);
             else
-                ch.CurrentRoom.ToRoom(obj);
+                ch.CurrentRoom.AddTo(obj);
             
             return ReturnTypes.None;
         }

@@ -2,6 +2,7 @@
 using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
 
@@ -30,7 +31,7 @@ namespace SmaugCS.Extensions
                                                                     && c.Character.CurrentRoom.Area.WeatherX == x
                                                                     && c.Character.CurrentRoom.Area.WeatherY == y);
 
-            players.ToList().ForEach(p => color.send_to_char(txt, p.Character));
+            players.ToList().ForEach(p => p.Character.SendTo(txt));
         }
     }
 }

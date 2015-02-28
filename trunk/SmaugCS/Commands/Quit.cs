@@ -6,7 +6,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -28,8 +28,8 @@ namespace SmaugCS.Commands
             TimerData timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
             if (timer != null && !ch.IsImmortal())
             {
-                color.set_char_color(ATTypes.AT_RED, ch);
-                color.send_to_char("Your adrenaline is pumping too hard to quit now!\r\n", ch);
+               ch.SetColor(ATTypes.AT_RED);
+               ch.SendTo("Your adrenaline is pumping too hard to quit now!");
                 return;
             }
 
@@ -44,11 +44,11 @@ namespace SmaugCS.Commands
             if (ch.CurrentPosition == PositionTypes.Mounted)
                 Dismount.do_dismount(ch, string.Empty);
 
-            color.set_char_color(ATTypes.AT_WHITE, ch);
-            color.send_to_char("Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n", ch);
+           ch.SetColor(ATTypes.AT_WHITE);
+           ch.SendTo("Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n");
             comm.act(ATTypes.AT_SAY, "A strange voice says, 'We await your return, $n...'", ch, null, null, ToTypes.Character);
             comm.act(ATTypes.AT_BYE, "$n has left the game.", ch, null, null, ToTypes.CanSee);
-            color.set_char_color(ATTypes.AT_GREY, ch);
+           ch.SetColor(ATTypes.AT_GREY);
 
             // TODO quitting_char = ch;
             save.save_char_obj(ch);

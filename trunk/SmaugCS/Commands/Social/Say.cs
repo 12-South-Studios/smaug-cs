@@ -4,7 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.MudProgs.MobileProgs;
 
@@ -42,8 +42,8 @@ namespace SmaugCS.Commands.Social
                     if (!ch.IsImmortal() || vch.Trust > ch.Trust)
                         continue;
 
-                    color.set_char_color(ATTypes.AT_IGNORE, vch);
-                    color.ch_printf(vch, "You attempt to ignore %s, but are unable to do so.\r\n", ch.Name);
+                    vch.SetColor(ATTypes.AT_IGNORE);
+                    vch.Printf("You attempt to ignore %s, but are unable to do so.\r\n", ch.Name);
                 }
 
 #if !SCRAMBLE
