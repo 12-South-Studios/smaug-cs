@@ -1,0 +1,26 @@
+Code Coverage Statistics:
+  * Overall: 27.24%
+
+  * SmaugCS Projects
+    * SmaugCS (4.09%)
+    * SmaugCS.Ban (9.85%)
+    * SmaugCS.Board (26.32%)
+    * SmaugCS.Common (77.12%)
+    * SmaugCS.Constants (0.00%)
+    * SmaugCS.Data (26.23%)
+    * SmaugCS.Language (100.00%)
+    * SmaugCS.Logging (23.53%)
+    * SmaugCS.News (0.00%)
+    * SmaugCS.Weather (9.68%)
+
+  * Realm.Libraries
+    * Realm.Library.Common (67.45%)
+    * Realm.Library.Lua (27.15%)
+    * Realm.Library.NCalcExt (96.88%)
+    * Realm.Library.Network (26.19%)
+    * Realm.Library.Patterns.Command (100.0%)
+    * Realm.Library.Patterns.Decorator (100.0%)
+    * Realm.Library.Patterns.Factory (0.00%)
+    * Realm.Library.Patterns.Repository (100.0%)
+    * Realm.Library.Patterns.Singleton (0.00%)
+    * SmallDBCOnnectivity (72.97%)

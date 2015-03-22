@@ -1,0 +1,1 @@
+This is the main project page for the SmaugCS MUD development project.  See the wiki for additional information regarding this project.
