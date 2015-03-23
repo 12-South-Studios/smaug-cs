@@ -26,10 +26,3 @@ The goals of this project are:
  * Use Windows sockets instead of the existing network layer
  * Replace file-handling with a more robust file handling system
  * Lastly, get the code back into working (and running) order
-
-The following third-party libraries have been used (thus far) in the project.
-
-For the Project:
-
-
-
