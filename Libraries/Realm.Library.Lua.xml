@@ -1,0 +1,432 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Realm.Library.Lua</name>
+    </assembly>
+    <members>
+        <member name="T:Realm.Library.Lua.ILuaHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.ILuaHelper.Register(System.Type,Realm.Library.Lua.LuaFunctionRepository)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="functionRepository"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.ILuaHelper.Create(System.Reflection.MethodInfo,System.Attribute)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="attr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Realm.Library.Lua.ILuaLoadBalancer">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.ILuaLoadBalancer.ExecuteScript(Realm.Library.Lua.LuaScript)">
+             <summary>
+            
+             </summary>
+             <param name="script"></param>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaFunctionRepository">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaResponse">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaResponse.Success">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaResponse.ResponseData">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaScript">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaScript.Name">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaScript.Script">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaScript.Function">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaScript.IsFile">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaScript.Table">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaScript.Path">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaScriptCache">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaVirtualMachine">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachine.#ctor(System.Int64,Realm.Library.Common.Logging.ILogWrapper,Realm.Library.Lua.LuaFunctionRepository,Realm.Library.Lua.LuaInterfaceProxy)">
+             <summary>
+            
+             </summary>
+             <param name="id"></param>
+             <param name="log"></param>
+             <param name="repository"></param>
+            <param name="luaProxy"></param>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachine.ExecuteScript(Realm.Library.Lua.LuaScript)">
+             <summary>
+            
+             </summary>
+             <param name="script"></param>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachine.RegisterFunctions">
+            <summary>
+            Tells the virtual machine to re-register functions
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachine.Dispose(System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="disposing"></param>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachine.ExecuteNextScript(System.Threading.CancellationToken,Realm.Library.Lua.LuaScript)">
+             <summary>
+            
+             </summary>
+             <param name="token"></param>
+             <param name="script"></param>
+             <returns></returns>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaVirtualMachineContext">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachineContext.#ctor(Realm.Library.Common.Logging.ILogWrapper,System.Int32,Realm.Library.Lua.LuaFunctionRepository)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachineContext.RegisterLuaFunctions(System.Object)">
+            <summary>
+            Registers all lua functions found within the given object
+            </summary>
+            <param name="value">Object to scan for LuaFunctionAttribute</param>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachineContext.RegisterLuaFunctions(System.Type)">
+            <summary>
+            Registers all lua functions found within the given object type
+            </summary>
+            <param name="type">The type of the object to scan for LuaFunctionAttribute</param>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaVirtualMachineContext.Dispose(System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="disposing"></param>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaVirtualMachineContext.VMCount">
+            <summary>
+            Gets the number of virtual machines on the queue
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaVirtualMachineContext.NextVM">
+            <summary>
+            Gets the next virtual machine on the queue and then re-enqueues the chosen vm.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaExtension">
+            <summary>
+            Static class that overrides the Lua Virtual Machine with some
+            useful functions.
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaExtension.GetTable(LuaInterface.Lua,System.String)">
+            <summary>
+            Returns a <see cref="T:LuaInterface.LuaTable"/> from the stack with the given name
+            </summary>
+            <param name="lua">Reference to the <see cref="T:LuaInterface.Lua"/> VM</param>
+            <param name="tableName">Name of the table</param>
+            <returns>Returns a reference to a <see cref="T:LuaInterface.LuaTable"/></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaExtension.CreateTable(LuaInterface.Lua,System.String)">
+            <summary>
+            Creates a new <see cref="T:LuaInterface.LuaTable"/> on the stack with the given name
+            </summary>
+            <param name="lua">Reference to the <see cref="T:LuaInterface.Lua"/> VM</param>
+            <param name="tableName">Name of the table</param>
+            <returns>Returns a reference to a <see cref="T:LuaInterface.LuaTable"/></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaExtension.CreateTable(LuaInterface.Lua)">
+            <summary>
+            Creates a new <see cref="T:LuaInterface.LuaTable"/> on the stack
+            </summary>
+            <param name="lua">Reference to the <see cref="T:LuaInterface.Lua"/> VM</param>
+            <returns>Returns a reference to a <see cref="T:LuaInterface.LuaTable"/></returns>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaFunctionAttribute">
+            <summary>
+            Defines an attribute for a Lua Function
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaFunctionAttribute.#ctor(System.String,System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the LuaFunctionAttribute class.
+            </summary>
+            <param name="name">Name of the function</param>
+            <param name="description">Description of the function</param>
+            <param name="parameters">String array of parameters</param>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaFunctionAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the LuaFunctionAttribute class.
+            </summary>
+            <param name="name">Name of the function</param>
+            <param name="description">Description of the function</param>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionAttribute.Name">
+            <summary>
+            Gets the name of the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionAttribute.Description">
+            <summary>
+            Gets the documentation for the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionAttribute.Parameters">
+            <summary>
+            Gets the parameters for the function
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaFunctionDescriptor">
+            <summary>
+            Defines a description for a Lua Function
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaFunctionDescriptor.#ctor(System.String,System.String,System.Collections.IDictionary,System.Reflection.MethodInfo)">
+            <summary>
+            Initializes a new instance of the LuaFunctionDescriptor class.
+            </summary>
+            <param name="name">Name of the function</param>
+            <param name="description">Description of the function</param>
+            <param name="parameters">Hashtable of parameter strings</param>
+            <param name="info"></param>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionDescriptor.Name">
+            <summary>
+            Gets the name of the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionDescriptor.Description">
+            <summary>
+            Gets the description of the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionDescriptor.Parameters">
+            <summary>
+            Gets the parameter list of the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionDescriptor.Info">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionDescriptor.Header">
+            <summary>
+            Gets the header of the function
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaFunctionDescriptor.FullDescription">
+            <summary>
+            Gets the full description
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Lua.LuaHelper">
+            <summary>
+            Helper static class for common Lua functions
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.Create(System.Reflection.MethodInfo,System.Attribute)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="attr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.Register(System.Type,Realm.Library.Lua.LuaFunctionRepository)">
+            <summary>
+            
+            </summary>
+            <param name="functionRepository"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaExploreObject(System.Object)">
+             <summary>
+            
+             </summary>
+             <param name="obj"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaGetProperty(Realm.Library.Common.IPropertyContext,System.String)">
+             <summary>
+            
+             </summary>
+             <param name="context"></param>
+             <param name="name"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaSetProperty(Realm.Library.Common.IPropertyContext,System.String,System.Object,Realm.Library.Common.PropertyTypeOptions)">
+             <summary>
+            
+             </summary>
+             <param name="context"></param>
+             <param name="name"></param>
+             <param name="value"></param>
+             <param name="flags"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaEnumToString(System.Enum,System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="value"></param>
+             <param name="toUpper"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaPadString(System.String,System.String,System.Int32,System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="str"></param>
+             <param name="padChar"></param>
+             <param name="totalLength"></param>
+             <param name="toFront"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaParseWord(System.String,System.Int32,Realm.Library.Common.DelimiterType)">
+             <summary>
+            
+             </summary>
+             <param name="str"></param>
+             <param name="wordNumber"></param>
+             <param name="delim"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaRemoveWord(System.String,System.Int32)">
+             <summary>
+            
+             </summary>
+             <param name="str"></param>
+             <param name="wordNumber"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaToLower(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="str"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Lua.LuaHelper.LuaToUpper(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="str"></param>
+             <returns></returns>
+        </member>
+        <member name="T:Realm.Library.Lua.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_FUNC_ARG_MISMATCH">
+            <summary>
+              Looks up a localized string similar to Function {0} (exported as {1}) argument number mismatch. Declared {2} but requires {3}..
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_FUNC_NOT_FOUND">
+            <summary>
+              Looks up a localized string similar to Function {0} not found in Lua Script {1}.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_INVALID_FILE">
+            <summary>
+              Looks up a localized string similar to Script file &apos;{0}&apos; was invalid.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_NO_LUATABLE">
+            <summary>
+              Looks up a localized string similar to LuaTable {0} could not be found..
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_NULL_LUAVM">
+            <summary>
+              Looks up a localized string similar to LuaVM was null.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_NULL_PARAMETER">
+            <summary>
+              Looks up a localized string similar to Parameter is null.
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.Properties.Resources.ERR_UNABLE_INITIALIZE">
+            <summary>
+              Looks up a localized string similar to Unable to initialize the Lua Virtual Machine.
+            </summary>
+        </member>
+    </members>
+</doc>
