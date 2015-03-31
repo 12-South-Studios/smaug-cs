@@ -1,8 +1,0 @@
-TODO 
-
-02/18/2014
-- Move all lookup tables from GameConstants to lua scripts
-
-02/19/2014 
-- Unit tests for managers
-
