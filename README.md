@@ -9,6 +9,7 @@ The project uses the following third-party libraries:
  * VikingErik.LuaInterface? (v1.0.42) http://www.nuget.org/packages/VikingErik.LuaInterface
  * NUnit (v2.6.3) http://nunit.org/
  * Moq (v4.2.13) https://code.google.com/p/moq/
+ * EntityFramework (v6.0)
 
 Details of the project tools and specs:
  * Language: C# (.NET 4.5)
