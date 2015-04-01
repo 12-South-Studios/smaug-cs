@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Ban
 {

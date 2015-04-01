@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
 
@@ -100,20 +101,20 @@ namespace SmaugCS.Data.Templates
             Height = height;
             Weight = weight;
             NumberOfAttacks = numberAttacks;
-            Statistics[StatisticTypes.HitRoll] = hitRoll;
-            Statistics[StatisticTypes.DamageRoll] = dmgRoll;
+            Statistics[StatisticTypes.Hitroll] = hitRoll;
+            Statistics[StatisticTypes.Damroll] = dmgRoll;
         }
 
         public void SetAttributes(int strength, int intelligence, int wisdom, int dexterity, int constitution, int charisma,
                                int luck)
         {
-            Statistics[StatisticTypes.Strength] = strength;
-            Statistics[StatisticTypes.Intelligence] = intelligence;
-            Statistics[StatisticTypes.Wisdom] = wisdom;
-            Statistics[StatisticTypes.Dexterity] = dexterity;
-            Statistics[StatisticTypes.Constitution] = constitution;
-            Statistics[StatisticTypes.Charisma] = charisma;
-            Statistics[StatisticTypes.Luck] = luck;
+            Statistics[StatisticTypes.PermanentStrength] = strength;
+            Statistics[StatisticTypes.PermanentIntelligence] = intelligence;
+            Statistics[StatisticTypes.PermanentWisdom] = wisdom;
+            Statistics[StatisticTypes.PermanentDexterity] = dexterity;
+            Statistics[StatisticTypes.PermanentConstitution] = constitution;
+            Statistics[StatisticTypes.PermanentCharisma] = charisma;
+            Statistics[StatisticTypes.PermanentLuck] = luck;
         }
 
         public void SetSaves(int saveVsDeath, int saveVsWand, int saveVsParalysis, int saveVsBreath, int saveVsSpell)

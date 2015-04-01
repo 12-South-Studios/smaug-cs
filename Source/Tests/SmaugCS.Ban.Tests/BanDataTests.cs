@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using NUnit.Framework;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Ban.Tests
 {

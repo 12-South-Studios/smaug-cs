@@ -1,6 +1,7 @@
 ﻿using System;
 using Realm.Library.Common;
 using SmaugCS.Ban;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;

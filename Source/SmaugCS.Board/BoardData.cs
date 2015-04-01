@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Board
 {

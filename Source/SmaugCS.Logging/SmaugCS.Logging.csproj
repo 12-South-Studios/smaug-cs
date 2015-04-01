@@ -45,7 +45,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\x86\Debug\SmaugCS.Logging.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
@@ -87,7 +88,6 @@
     <Compile Include="ILogManager.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogManager.cs" />
-    <Compile Include="LogTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoggingModule.cs" />
   </ItemGroup>
@@ -95,6 +95,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
       <Name>SmaugCS.Constants</Name>

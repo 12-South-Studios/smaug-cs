@@ -4,11 +4,11 @@ using System.Timers;
 using Ninject;
 using Realm.Library.Common;
 using SmaugCS.Constants;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Auction
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public sealed class AuctionManager : IAuctionManager
     {
         private static IKernel _kernel;

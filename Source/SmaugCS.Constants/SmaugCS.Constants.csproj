@@ -44,7 +44,8 @@
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\x86\Debug\SmaugCS.Constants.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -145,14 +146,12 @@
     <Compile Include="Enums\ShopTypes.cs" />
     <Compile Include="Enums\SkillFlags.cs" />
     <Compile Include="Enums\SkillNumberTypes.cs" />
-    <Compile Include="Enums\SkillTypes.cs" />
     <Compile Include="Enums\SkyConditionTypes.cs" />
     <Compile Include="Enums\SpellActTypes.cs" />
     <Compile Include="Enums\SpellClassTypes.cs" />
     <Compile Include="Enums\SpellDamageTypes.cs" />
     <Compile Include="Enums\SpellPowerTypes.cs" />
     <Compile Include="Enums\SpellSaveEffectTypes.cs" />
-    <Compile Include="Enums\StatisticTypes.cs" />
     <Compile Include="Enums\StyleTypes.cs" />
     <Compile Include="Enums\SunPositionTypes.cs" />
     <Compile Include="Enums\SystemDirectoryTypes.cs" />

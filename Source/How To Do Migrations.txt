@@ -1,0 +1,6 @@
+To create a new migration:
+ add-migration <Name>
+ update-database -verbose
+
+To revert a migration:
+ update-database -TargetMigration $InitialDatabase

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Weather
 {
@@ -19,24 +20,24 @@ namespace SmaugCS.Weather
 
         public static int GetHemisphere(string type)
         {
-            HemisphereTypes hemisphere = EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
+            var hemisphere = EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
             return (int)hemisphere;
         }
 
         public static int GetClimate(string type)
         {
-            ClimateTypes climate = EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
+            var climate = EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
             return (int)climate;
         }
 
         public static void InitializeWeatherMessages(string filename)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(filename)))
             {
                 IEnumerable<TextSection> sections = proxy.ReadSections(new[] { "#" }, null, null, "#END");
-                foreach (TextSection section in sections)
+                foreach (var section in sections)
                 {
-                    List<string> lines = new List<string>();
+                    var lines = new List<string>();
                     section.Lines.ToList().ForEach(x => lines.Add(x.TrimEnd(new[] { '~' })));
 
                     WeatherMessages.Add(EnumerationExtensions.GetEnum<PrecipitationTypes>(section.Header), lines);

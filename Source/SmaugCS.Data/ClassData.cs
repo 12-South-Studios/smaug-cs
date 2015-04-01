@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data

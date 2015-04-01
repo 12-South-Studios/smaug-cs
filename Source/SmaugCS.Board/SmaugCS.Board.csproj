@@ -40,7 +40,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\x86\Debug\SmaugCS.Board.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
@@ -73,7 +74,6 @@
     <Compile Include="BoardManager.cs" />
     <Compile Include="BoardModule.cs" />
     <Compile Include="boards.cs" />
-    <Compile Include="BoardTypes.cs" />
     <Compile Include="IBoardManager.cs" />
     <Compile Include="NoteData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

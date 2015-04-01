@@ -42,7 +42,8 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\x86\Debug\SmaugCS.Common.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -70,6 +71,14 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\BanTypes.cs" />
+    <Compile Include="Enumerations\BoardTypes.cs" />
+    <Compile Include="Enumerations\ClimateTypes.cs" />
+    <Compile Include="Enumerations\GroupTypes.cs" />
+    <Compile Include="Enumerations\HemisphereTypes.cs" />
+    <Compile Include="Enumerations\LogTypes.cs" />
+    <Compile Include="Enumerations\SkillTypes.cs" />
+    <Compile Include="Enumerations\StatisticTypes.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="DataRowExtensions.cs" />
     <Compile Include="DirectoryProxy.cs" />

@@ -9,6 +9,7 @@ using System.Timers;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.SmallDb;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 

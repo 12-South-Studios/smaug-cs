@@ -1,4 +1,5 @@
 ﻿using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -27,42 +28,42 @@ namespace SmaugCS.Extensions.Character
         public static int GetCurrentStrength(this CharacterInstance ch)
         {
             return (ch.PermanentStrength + ch.ModStrength).GetNumberThatIsBetween(3,
-                ch.GetCurrentStat(StatisticTypes.Strength));
+                ch.GetCurrentStat(StatisticTypes.PermanentStrength));
         }
 
         public static int GetCurrentIntelligence(this CharacterInstance ch)
         {
             return (ch.PermanentIntelligence + ch.ModIntelligence).GetNumberThatIsBetween(3,
-                ch.GetCurrentStat(StatisticTypes.Intelligence));
+                ch.GetCurrentStat(StatisticTypes.PermanentIntelligence));
         }
 
         public static int GetCurrentWisdom(this CharacterInstance ch)
         {
             return (ch.PermanentWisdom + ch.ModWisdom).GetNumberThatIsBetween(3,
-                ch.GetCurrentStat(StatisticTypes.Wisdom));
+                ch.GetCurrentStat(StatisticTypes.PermanentWisdom));
         }
 
         public static int GetCurrentDexterity(this CharacterInstance ch)
         {
             return (ch.PermanentDexterity + ch.ModDexterity).GetNumberThatIsBetween(3,
-                ch.GetCurrentStat(StatisticTypes.Dexterity));
+                ch.GetCurrentStat(StatisticTypes.PermanentDexterity));
         }
 
         public static int GetCurrentConstitution(this CharacterInstance ch)
         {
             return (ch.PermanentConstitution + ch.ModConstitution).GetNumberThatIsBetween(3,
-                ch.GetCurrentStat(StatisticTypes.Constitution));
+                ch.GetCurrentStat(StatisticTypes.PermanentConstitution));
         }
 
         public static int GetCurrentCharisma(this CharacterInstance ch)
         {
             return (ch.PermanentCharisma + ch.ModCharisma).GetNumberThatIsBetween(3,
-                ch.GetCurrentStat(StatisticTypes.Charisma));
+                ch.GetCurrentStat(StatisticTypes.PermanentCharisma));
         }
 
         public static int GetCurrentLuck(this CharacterInstance ch)
         {
-            return (ch.PermanentLuck + ch.ModLuck).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.Luck));
+            return (ch.PermanentLuck + ch.ModLuck).GetNumberThatIsBetween(3, ch.GetCurrentStat(StatisticTypes.PermanentLuck));
         }
 
         public static int CanCarryN(this CharacterInstance ch)

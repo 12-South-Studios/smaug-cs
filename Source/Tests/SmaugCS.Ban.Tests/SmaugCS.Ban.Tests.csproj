@@ -97,6 +97,10 @@
       <Project>{ada623a7-32ef-402d-9a12-db64077ed303}</Project>
       <Name>SmaugCS.Ban</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SmaugCS.Logging\SmaugCS.Logging.csproj">
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
       <Name>SmaugCS.Logging</Name>

@@ -11,6 +11,7 @@ using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using Realm.Library.SmallDb;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Shops;
@@ -178,8 +179,8 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Height, Is.EqualTo(50));
             Assert.That(result.Weight, Is.EqualTo(100));
             Assert.That(result.NumberOfAttacks, Is.EqualTo(2));
-            Assert.That(result.GetStatistic(StatisticTypes.HitRoll), Is.EqualTo(5));
-            Assert.That(result.GetStatistic(StatisticTypes.DamageRoll), Is.EqualTo(6));
+            Assert.That(result.GetStatistic(StatisticTypes.Hitroll), Is.EqualTo(5));
+            Assert.That(result.GetStatistic(StatisticTypes.Damroll), Is.EqualTo(6));
         }
 
         [Test]
@@ -188,13 +189,13 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.GetStatistic(StatisticTypes.Strength), Is.EqualTo(11));
-            Assert.That(result.GetStatistic(StatisticTypes.Intelligence), Is.EqualTo(12));
-            Assert.That(result.GetStatistic(StatisticTypes.Wisdom), Is.EqualTo(13));
-            Assert.That(result.GetStatistic(StatisticTypes.Dexterity), Is.EqualTo(14));
-            Assert.That(result.GetStatistic(StatisticTypes.Constitution), Is.EqualTo(15));
-            Assert.That(result.GetStatistic(StatisticTypes.Charisma), Is.EqualTo(16));
-            Assert.That(result.GetStatistic(StatisticTypes.Luck), Is.EqualTo(17));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentStrength), Is.EqualTo(11));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentIntelligence), Is.EqualTo(12));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentWisdom), Is.EqualTo(13));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentDexterity), Is.EqualTo(14));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentConstitution), Is.EqualTo(15));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentCharisma), Is.EqualTo(16));
+            Assert.That(result.GetStatistic(StatisticTypes.PermanentLuck), Is.EqualTo(17));
         }
 
         [Test]

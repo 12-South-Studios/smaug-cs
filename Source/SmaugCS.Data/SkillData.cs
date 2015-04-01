@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data.Test

@@ -8,6 +8,7 @@ using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Polymorph;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;

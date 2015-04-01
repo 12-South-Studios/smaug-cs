@@ -1,4 +1,5 @@
 ﻿using System;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Logging;
 
 // ReSharper disable CheckNamespace

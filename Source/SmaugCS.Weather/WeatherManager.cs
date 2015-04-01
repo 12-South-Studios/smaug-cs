@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
@@ -11,6 +10,7 @@ using SmaugCS.Logging;
 
 namespace SmaugCS.Weather
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public sealed class WeatherManager : IWeatherManager
     {
         public WeatherMap Weather { get; set; }
@@ -52,7 +52,7 @@ namespace SmaugCS.Weather
         {
             try
             {
-                List<WeatherCell> cells = _smallDb.ExecuteQuery(_connection, "cp_GetWeatherCells", TranslateCellData);
+                var cells = _smallDb.ExecuteQuery(_connection, "cp_GetWeatherCells", TranslateCellData);
 
                 Weather = new WeatherMap(timeInfo, width, height, cells);
                 _logManager.Boot("Loaded {0} Weather Cells", cells.Count);
@@ -66,8 +66,8 @@ namespace SmaugCS.Weather
         [ExcludeFromCodeCoverage]
         private static List<WeatherCell> TranslateCellData(IDataReader reader)
         {
-            List<WeatherCell> cells = new List<WeatherCell>();
-            using (DataTable dt = new DataTable())
+            var cells = new List<WeatherCell>();
+            using (var dt = new DataTable())
             {
                 dt.Load(reader);
                 cells.AddRange(from DataRow row in dt.Rows select WeatherCell.Translate(row));

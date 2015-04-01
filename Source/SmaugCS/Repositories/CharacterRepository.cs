@@ -2,6 +2,7 @@
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -92,13 +93,13 @@ namespace SmaugCS.Repositories
             {
                 Bonus = mobParent.DamageDice.Bonus
             };
-            mob.PermanentStrength = mobParent.GetStatistic(StatisticTypes.Strength);
-            mob.PermanentDexterity = mobParent.GetStatistic(StatisticTypes.Dexterity);
-            mob.PermanentWisdom = mobParent.GetStatistic(StatisticTypes.Wisdom);
-            mob.PermanentIntelligence = mobParent.GetStatistic(StatisticTypes.Intelligence);
-            mob.PermanentConstitution = mobParent.GetStatistic(StatisticTypes.Constitution);
-            mob.PermanentCharisma = mobParent.GetStatistic(StatisticTypes.Charisma);
-            mob.PermanentLuck = mobParent.GetStatistic(StatisticTypes.Luck);
+            mob.PermanentStrength = mobParent.GetStatistic(StatisticTypes.PermanentStrength);
+            mob.PermanentDexterity = mobParent.GetStatistic(StatisticTypes.PermanentDexterity);
+            mob.PermanentWisdom = mobParent.GetStatistic(StatisticTypes.PermanentWisdom);
+            mob.PermanentIntelligence = mobParent.GetStatistic(StatisticTypes.PermanentIntelligence);
+            mob.PermanentConstitution = mobParent.GetStatistic(StatisticTypes.PermanentConstitution);
+            mob.PermanentCharisma = mobParent.GetStatistic(StatisticTypes.PermanentCharisma);
+            mob.PermanentLuck = mobParent.GetStatistic(StatisticTypes.PermanentLuck);
             mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
             mob.CurrentClass = Realm.Library.Common.EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;

@@ -81,6 +81,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
       <Name>SmaugCS.Constants</Name>

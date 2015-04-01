@@ -44,7 +44,8 @@
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\x86\Debug\SmaugCS.Data.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -137,7 +138,6 @@
     <Compile Include="Organizations\ClanData.cs" />
     <Compile Include="Organizations\ClanTypes.cs" />
     <Compile Include="Organizations\CouncilData.cs" />
-    <Compile Include="Organizations\GroupTypes.cs" />
     <Compile Include="Organizations\OrganizationData.cs" />
     <Compile Include="Organizations\RosterData.cs" />
     <Compile Include="PlaneData.cs" />

@@ -7,6 +7,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using System.Linq;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Spells.Smaug
 {

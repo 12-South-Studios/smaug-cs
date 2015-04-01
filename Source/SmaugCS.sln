@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Auction", "SmaugCS.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Auction.Tests", "Tests\SmaugCS.Auction.Tests\SmaugCS.Auction.Tests.csproj", "{58161B57-13DE-417C-AEDD-E6DB96B432E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.DAL", "SmaugCS.DAL\SmaugCS.DAL.csproj", "{157B6B68-68F7-414B-AE04-9CB80B9C68B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -381,6 +383,18 @@ Global
 		{58161B57-13DE-417C-AEDD-E6DB96B432E2}.Work|Any CPU.ActiveCfg = Release|Any CPU
 		{58161B57-13DE-417C-AEDD-E6DB96B432E2}.Work|Any CPU.Build.0 = Release|Any CPU
 		{58161B57-13DE-417C-AEDD-E6DB96B432E2}.Work|x86.ActiveCfg = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Home|Any CPU.ActiveCfg = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Home|Any CPU.Build.0 = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Home|x86.ActiveCfg = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Work|Any CPU.ActiveCfg = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Work|Any CPU.Build.0 = Release|Any CPU
+		{157B6B68-68F7-414B-AE04-9CB80B9C68B4}.Work|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

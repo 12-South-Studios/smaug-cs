@@ -84,6 +84,10 @@
       <Project>{308d980e-af66-4f6b-9bb9-69e3dcdc05cf}</Project>
       <Name>SmaugCS.Board</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

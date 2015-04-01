@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Realm.Library.Common;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Command;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;

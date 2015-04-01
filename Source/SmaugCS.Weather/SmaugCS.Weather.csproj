@@ -44,7 +44,8 @@
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\x86\Debug\SmaugCS.Weather.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -72,9 +73,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ClimateTypes.cs" />
     <Compile Include="Enums\CloudCoverTypes.cs" />
-    <Compile Include="Enums\HemisphereTypes.cs" />
     <Compile Include="Enums\HumidityTypes.cs" />
     <Compile Include="IWeatherManager.cs" />
     <Compile Include="Enums\PrecipitationTypes.cs" />

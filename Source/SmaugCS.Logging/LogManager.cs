@@ -11,6 +11,7 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.SmallDb;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Logging
 {

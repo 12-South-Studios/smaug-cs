@@ -2,15 +2,13 @@
 using System.Data;
 using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Constants.Enums;
+using SmaugCS.Common.Enumerations;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Weather
 {
     public class WeatherCell : Cell
     {
-        public WeatherCell() { }
-
         public ClimateTypes Climate { get; set; }
         public HemisphereTypes Hemisphere { get; set; }
         public int XCoord { get; set; }
@@ -105,7 +103,7 @@ namespace SmaugCS.Weather
 
         public static WeatherCell Translate(DataRow dataRow)
         {
-            WeatherCell cell = new WeatherCell
+            return new WeatherCell
             {
                 ID = Convert.ToInt32(dataRow["WeatherCellId"]),
                 XCoord = dataRow.GetDataValue("CellXCoord", 0),
@@ -122,7 +120,6 @@ namespace SmaugCS.Weather
                 WindSpeedX = dataRow.GetDataValue("WindSpeedX", 0),
                 WindSpeedY = dataRow.GetDataValue("WindSpeedY", 0)
             };
-            return cell;
         }
     }
 }

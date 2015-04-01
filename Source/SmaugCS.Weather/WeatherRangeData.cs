@@ -2,7 +2,9 @@
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
+using HemisphereTypes = SmaugCS.Common.Enumerations.HemisphereTypes;
 
 namespace SmaugCS.Weather
 {
@@ -62,19 +64,19 @@ namespace SmaugCS.Weather
 
         public static void InitializeWeatherData(string filename)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(filename)))
             {
                 while (!proxy.EndOfStream)
                 {
-                    string line = proxy.ReadLine().TrimEnd(new[] { '~' });
-                    string[] words = line.Split(new[] { ',' });
+                    var line = proxy.ReadLine().TrimEnd(new[] { '~' });
+                    var words = line.Split(new[] { ',' });
 
-                    HemisphereTypes hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(words[0]
+                    var hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(words[0]
                         .EqualsIgnoreCase("north") ? 0 : 1);
-                    SeasonTypes season = EnumerationExtensions.GetEnum<SeasonTypes>(words[1]);
-                    ClimateTypes climate = EnumerationExtensions.GetEnum<ClimateTypes>(words[2]);
+                    var season = EnumerationExtensions.GetEnum<SeasonTypes>(words[1]);
+                    var climate = EnumerationExtensions.GetEnum<ClimateTypes>(words[2]);
 
-                    WeatherRangeData data = new WeatherRangeData(hemisphere, season, climate);
+                    var data = new WeatherRangeData(hemisphere, season, climate);
 
                     // 3/4 = Temperature Lo/HI
                     // 5/6 = Pressure Lo/HI
@@ -98,7 +100,7 @@ namespace SmaugCS.Weather
                                                           int windXHi,
                                                           int windYLo, int windYHi)
         {
-            WeatherRangeData data = new WeatherRangeData(hemisphere, season, climate);
+            var data = new WeatherRangeData(hemisphere, season, climate);
             data.SetData(tempLo, tempHi, presLo, presHi, cloudLo, cloudHi, humidLo, humidHi, precipLo, precipHi,
                          energyLo, energyHi, windXLo, windXHi, windYLo, windYHi);
             return data;

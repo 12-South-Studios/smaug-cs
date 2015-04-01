@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Common;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using HemisphereTypes = SmaugCS.Common.Enumerations.HemisphereTypes;
 
 namespace SmaugCS.Weather
 {
     public class WeatherMap
     {
-        private readonly WeatherCell[][] Map;
-        private readonly WeatherCell[][] Delta;
+        private readonly WeatherCell[][] _map;
+        private readonly WeatherCell[][] _delta;
 
         public IEnumerable<string> StarMap { get; private set; }
         public IEnumerable<string> SunMap { get; private set; }
@@ -28,34 +31,38 @@ namespace SmaugCS.Weather
         }
 
         #region Function Maps
-        private static readonly Dictionary<ClimateTypes, Action<TimeInfoData, WeatherCell, WeatherCell>> EnforceFuncs = new Dictionary<ClimateTypes, Action<TimeInfoData, WeatherCell, WeatherCell>>()
-            {
-                 {ClimateTypes.Rainforest, EnforceRainforest },
-                 {ClimateTypes.Savanna, EnforceSavanna},
-                 {ClimateTypes.Desert, EnforceDesert},
-                 {ClimateTypes.Steppe, EnforceSteppe},
-                 {ClimateTypes.Chapparal, EnforceChapparal},
-                 {ClimateTypes.Grasslands, EnforceGrasslands},
-                 {ClimateTypes.Deciduous, EnforceDeciduous},
-                 {ClimateTypes.Taiga, EnforceTaiga},
-                 {ClimateTypes.Tundra, EnforceTundra},
-                 {ClimateTypes.Alpine, EnforceAlpine},
-                 {ClimateTypes.Arctic, EnforceArctic}                                                                          
-            };
-        private static readonly Dictionary<PrecipitationTypes, Action<WeatherCell, WeatherCell>> PrecipFuncs = new Dictionary<PrecipitationTypes, Action<WeatherCell, WeatherCell>>()
-            {
-                {PrecipitationTypes.Torrential, TorrentialWeatherMessage},
-                {PrecipitationTypes.CatsAndDogs, CatsAndDogsWeatherMessage},
-                {PrecipitationTypes.Pouring, PouringWeatherMessage},
-                {PrecipitationTypes.Heavily, HeavilyWeatherMessage},
-                {PrecipitationTypes.Downpour, DownpourWeatherMessage},
-                {PrecipitationTypes.Steadily, SteadilyWeatherMessage},
-                {PrecipitationTypes.Raining, RainingWeatherMessage},
-                {PrecipitationTypes.Lightly, LightlyWeatherMessage},
-                {PrecipitationTypes.Drizzling, DrizzlingWeatherMessage},
-                {PrecipitationTypes.Misting, MistingWeatherMessage},
-                {PrecipitationTypes.None, NoPrecipWeatherMessage}
-            };
+
+        private static readonly Dictionary<ClimateTypes, Action<TimeInfoData, WeatherCell, WeatherCell>> EnforceFuncs = new Dictionary
+            <ClimateTypes, Action<TimeInfoData, WeatherCell, WeatherCell>>
+        {
+            {ClimateTypes.Rainforest, EnforceRainforest},
+            {ClimateTypes.Savanna, EnforceSavanna},
+            {ClimateTypes.Desert, EnforceDesert},
+            {ClimateTypes.Steppe, EnforceSteppe},
+            {ClimateTypes.Chapparal, EnforceChapparal},
+            {ClimateTypes.Grasslands, EnforceGrasslands},
+            {ClimateTypes.Deciduous, EnforceDeciduous},
+            {ClimateTypes.Taiga, EnforceTaiga},
+            {ClimateTypes.Tundra, EnforceTundra},
+            {ClimateTypes.Alpine, EnforceAlpine},
+            {ClimateTypes.Arctic, EnforceArctic}
+        };
+
+        private static readonly Dictionary<PrecipitationTypes, Action<WeatherCell, WeatherCell>> PrecipFuncs = new Dictionary
+            <PrecipitationTypes, Action<WeatherCell, WeatherCell>>
+        {
+            {PrecipitationTypes.Torrential, TorrentialWeatherMessage},
+            {PrecipitationTypes.CatsAndDogs, CatsAndDogsWeatherMessage},
+            {PrecipitationTypes.Pouring, PouringWeatherMessage},
+            {PrecipitationTypes.Heavily, HeavilyWeatherMessage},
+            {PrecipitationTypes.Downpour, DownpourWeatherMessage},
+            {PrecipitationTypes.Steadily, SteadilyWeatherMessage},
+            {PrecipitationTypes.Raining, RainingWeatherMessage},
+            {PrecipitationTypes.Lightly, LightlyWeatherMessage},
+            {PrecipitationTypes.Drizzling, DrizzlingWeatherMessage},
+            {PrecipitationTypes.Misting, MistingWeatherMessage},
+            {PrecipitationTypes.None, NoPrecipWeatherMessage}
+        };
         #endregion
 
         private readonly TimeInfoData _gameTime;
@@ -66,13 +73,13 @@ namespace SmaugCS.Weather
             Width = width;
             Height = height;
 
-            Map = new WeatherCell[width][];
-            for(int i=0;i<width;i++)
-                Map[i] = new WeatherCell[height];
+            _map = new WeatherCell[width][];
+            for(var i=0;i<width;i++)
+                _map[i] = new WeatherCell[height];
 
-            Delta = new WeatherCell[width][];
-            for (int i = 0; i < width; i++)
-                Delta[i] = new WeatherCell[height];
+            _delta = new WeatherCell[width][];
+            for (var i = 0; i < width; i++)
+                _delta[i] = new WeatherCell[height];
 
             StarMap = new List<string>();
             SunMap = new List<string>();
@@ -82,17 +89,17 @@ namespace SmaugCS.Weather
         public WeatherMap(TimeInfoData gameTime, int width, int height, IEnumerable<WeatherCell> cells) 
             : this(gameTime, width, height)
         {
-            foreach (WeatherCell cell in cells)
+            foreach (var cell in cells)
             {
-                Map[cell.XCoord][cell.YCoord] = cell;
+                _map[cell.XCoord][cell.YCoord] = cell;
             }
         }
 
         public void LoadMap(SystemFileTypes fileType, IEnumerable<string> map)
         {
-            string path = SystemConstants.GetSystemFile(fileType);
+            var path = SystemConstants.GetSystemFile(fileType);
             
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            using (var proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 IEnumerable<string> lines = proxy.ReadIntoList();
                 if (!lines.Any())
@@ -104,29 +111,29 @@ namespace SmaugCS.Weather
 
         public WeatherCell GetCellFromMap(int x, int y)
         {
-            if (x < 0 || y < 0 || x >= Map.GetLength(0) || y >= Map.GetLength(1))
+            if (x < 0 || y < 0 || x >= _map.GetLength(0) || y >= _map.GetLength(1))
                 return null;
 
-            return Map[x][y];
+            return _map[x][y];
         }
         public WeatherCell GetCellFromDelta(int x, int y)
         {
-            if (x < 0 || y < 0 || x >= Delta.GetLength(0) || y >= Delta.GetLength(1))
+            if (x < 0 || y < 0 || x >= _delta.GetLength(0) || y >= _delta.GetLength(1))
                 return null;
 
-            return Delta[x][y];
+            return _delta[x][y];
         }
 
         public void Initialize()
         {
-            for (int y = 0; y < Height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (var x = 0; x < Width; x++)
                 {
-                    WeatherCell cell = new WeatherCell
+                    var cell = new WeatherCell
                     {
                         Hemisphere =
-                            Realm.Library.Common.EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
+                            EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
                     };
 
                     cell.ChangeTemperature(SmaugRandom.Between(-30, 100));
@@ -138,19 +145,19 @@ namespace SmaugCS.Weather
                     cell.ChangeWindSpeedY(SmaugRandom.Between(-100, 100));
                     cell.ChangeEnergy(SmaugRandom.Between(0, 100));
 
-                    Map[x][y] = cell;
+                    _map[x][y] = cell;
                 }
             }
         }
 
         public void EnforceClimateConditions()
         {
-            for (int y = 0; y < Height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (var x = 0; x < Width; x++)
                 {
-                    WeatherCell cell = GetCellFromMap(x, y);
-                    WeatherCell delta = GetCellFromDelta(x, y);
+                    var cell = GetCellFromMap(x, y);
+                    var delta = GetCellFromDelta(x, y);
 
                     if (!EnforceFuncs.ContainsKey(cell.Climate))
                         continue;
@@ -161,42 +168,42 @@ namespace SmaugCS.Weather
         }
 
         #region Enforce Climate Functions
-        private static void EnforceRainforest(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceRainforest(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
             if (cell.Temperature < 80)
                 delta.ChangeTemperature(3);
             else if (cell.Temperature < 50)
                 delta.ChangeHumidity(2);
         }
-        private static void EnforceSavanna(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceSavanna(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
-            if (GameTime.Season == SeasonTypes.Winter
+            if (gameTime.Season == SeasonTypes.Winter
                 && cell.Hemisphere == HemisphereTypes.North
                 && cell.Humidity > 0)
                 delta.ChangeHumidity(-5);
             else if (cell.Temperature < 60)
                 delta.ChangePrecip(2);
-            else if (GameTime.Season == SeasonTypes.Summer
+            else if (gameTime.Season == SeasonTypes.Summer
                 && cell.Hemisphere == HemisphereTypes.North
                 && cell.Humidity < 50)
                 delta.ChangeHumidity(5);
-            else if (GameTime.Season == SeasonTypes.Summer
+            else if (gameTime.Season == SeasonTypes.Summer
                 && cell.Hemisphere == HemisphereTypes.South
                 && cell.Humidity > 0)
                 delta.ChangeHumidity(-5);
-            else if (GameTime.Season == SeasonTypes.Winter
+            else if (gameTime.Season == SeasonTypes.Winter
                 && cell.Hemisphere == HemisphereTypes.South
                 && cell.Humidity < 50)
                 delta.ChangeHumidity(5);
         }
-        private static void EnforceDesert(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceDesert(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
-            if ((GameTime.Sunlight == SunPositionTypes.Sunset
-                || GameTime.Sunlight == SunPositionTypes.Dark)
+            if ((gameTime.Sunlight == SunPositionTypes.Sunset
+                || gameTime.Sunlight == SunPositionTypes.Dark)
                 && cell.Temperature > 30)
                 delta.ChangeTemperature(-5);
-            else if ((GameTime.Sunlight == SunPositionTypes.Sunrise
-                || GameTime.Sunlight == SunPositionTypes.Light)
+            else if ((gameTime.Sunlight == SunPositionTypes.Sunrise
+                || gameTime.Sunlight == SunPositionTypes.Light)
                 && cell.Temperature < 64)
                 delta.ChangeTemperature(2);
             else if (cell.Humidity > 10)
@@ -204,35 +211,35 @@ namespace SmaugCS.Weather
             else if (cell.Pressure < 50)
                 delta.ChangePressure(2);
         }
-        private static void EnforceSteppe(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceSteppe(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceChapparal(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceChapparal(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceGrasslands(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceGrasslands(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceDeciduous(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceDeciduous(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceTaiga(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceTaiga(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceTundra(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceTundra(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceAlpine(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceAlpine(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
-        private static void EnforceArctic(TimeInfoData GameTime, WeatherCell cell, WeatherCell delta)
+        private static void EnforceArctic(TimeInfoData gameTime, WeatherCell cell, WeatherCell delta)
         {
 
         }
@@ -240,13 +247,13 @@ namespace SmaugCS.Weather
 
         public void Save()
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(WeatherFile)))
+            using (var proxy = new TextWriterProxy(new StreamWriter(WeatherFile)))
             {
-                for (int y = 0; y < Height; y++)
+                for (var y = 0; y < Height; y++)
                 {
-                    for (int x = 0; x < Width; x++)
+                    for (var x = 0; x < Width; x++)
                     {
-                        WeatherCell cell = GetCellFromMap(x, y);
+                        var cell = GetCellFromMap(x, y);
 
                         proxy.Write("#CELL		  {0} {1}\n", x, y);
                         proxy.Write("Climate      {0}\n", cell.Climate);
@@ -265,14 +272,14 @@ namespace SmaugCS.Weather
 
         public void ApplyDeltaChanges()
         {
-            for (int y = 0; y < Height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (var x = 0; x < Width; x++)
                 {
-                    WeatherCell cell = GetCellFromMap(x, y);
-                    WeatherCell delta = GetCellFromDelta(x, y);
+                    var cell = GetCellFromMap(x, y);
+                    var delta = GetCellFromDelta(x, y);
 
-                    PrecipitationTypes precipType = WeatherCell.GetPrecipitation(cell.Precipitation);
+                    var precipType = WeatherCell.GetPrecipitation(cell.Precipitation);
                     if (!PrecipFuncs.ContainsKey(precipType))
                         continue;
 
@@ -351,12 +358,12 @@ namespace SmaugCS.Weather
 
         private void PickAndUpdateRandomCell()
         {
-            int x = SmaugRandom.Between(0, Width);
-            int y = SmaugRandom.Between(0, Height);
+            var x = SmaugRandom.Between(0, Width);
+            var y = SmaugRandom.Between(0, Height);
 
-            WeatherCell cell = GetCellFromMap(x, y);
+            var cell = GetCellFromMap(x, y);
 
-            int rand = SmaugRandom.Between(-10, 10);
+            var rand = SmaugRandom.Between(-10, 10);
 
             switch (SmaugRandom.D8())
             {
@@ -387,31 +394,31 @@ namespace SmaugCS.Weather
             }
         }
 
-        public void CalculateCellToCellChanges(TimeInfoData GameTime)
+        public void CalculateCellToCellChanges(TimeInfoData gameTime)
         {
             PickAndUpdateRandomCell();
 
-            for (int y = 0; y < Height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (var x = 0; x < Width; x++)
                 {
-                    WeatherCell cell = GetCellFromMap(x, y);
-                    WeatherCell delta = GetCellFromDelta(x, y);
+                    var cell = GetCellFromMap(x, y);
+                    var delta = GetCellFromDelta(x, y);
 
-                    AdjustTemperatureForDayNight(GameTime, delta, cell);
+                    AdjustTemperatureForDayNight(gameTime, delta, cell);
                     AdjustHumidityForPrecipitation(cell, delta);
                     AdjustPrecipitationForHumidityAndPressure(cell);
                     AdjustCloudCoverForHumitityAndPrecipitation(cell, delta);
 
-                    int totalPressure = cell.Pressure;
-                    int numPressureCells = -1;
+                    var totalPressure = cell.Pressure;
+                    var numPressureCells = -1;
 
-                    for (int dy = -1; dy <= 1; ++dy)
+                    for (var dy = -1; dy <= 1; ++dy)
                     {
-                        for (int dx = -1; dx <= 1; ++dx)
+                        for (var dx = -1; dx <= 1; ++dx)
                         {
-                            int nx = x + dx;
-                            int ny = y + dy;
+                            var nx = x + dx;
+                            var ny = y + dy;
 
                             if (dx == 0 && dy == 0)
                                 continue;
@@ -420,8 +427,8 @@ namespace SmaugCS.Weather
                                 || (ny < 0 || ny >= Height))
                                 continue;
 
-                            WeatherCell neighborCell = GetCellFromMap(nx, ny);
-                            WeatherCell neighborDelta = GetCellFromDelta(nx, ny);
+                            var neighborCell = GetCellFromMap(nx, ny);
+                            var neighborDelta = GetCellFromDelta(nx, ny);
 
                             totalPressure = AdjustWindSpeedsBasedOnPressure(cell, neighborCell, dx, delta, dy,
                                 totalPressure);
@@ -451,8 +458,8 @@ namespace SmaugCS.Weather
         private static int AdjustWindSpeedsBasedOnPressure(WeatherCell cell, WeatherCell neighborCell, int dx, WeatherCell delta,
             int dy, int totalPressure)
         {
-            int pressureDelta = cell.Pressure - neighborCell.Pressure;
-            int windSpeedDleta = pressureDelta/4;
+            var pressureDelta = cell.Pressure - neighborCell.Pressure;
+            var windSpeedDleta = pressureDelta/4;
 
             if (dx != 0)
                 delta.ChangeWindSpeedX(windSpeedDleta*dx);
@@ -466,10 +473,10 @@ namespace SmaugCS.Weather
         private static void AdjustTemperatureAndHumidityWhenWindy(WeatherCell cell, WeatherCell neighborCell, int dx, int dy,
             WeatherCell neighborDelta, WeatherCell delta)
         {
-            int temperatureDelta = cell.Temperature + neighborCell.Temperature;
+            var temperatureDelta = cell.Temperature + neighborCell.Temperature;
             temperatureDelta /= 16;
 
-            int humidityDelta = cell.Humidity - neighborCell.Humidity;
+            var humidityDelta = cell.Humidity - neighborCell.Humidity;
             humidityDelta /= 16;
 
             if ((cell.WindSpeedX < 0 && dx < 0)
@@ -488,7 +495,7 @@ namespace SmaugCS.Weather
 
         private static void AdjustCloudCoverForHumitityAndPrecipitation(WeatherCell cell, WeatherCell delta)
         {
-            int humidityAndPrecip = cell.Humidity + cell.Precipitation;
+            var humidityAndPrecip = cell.Humidity + cell.Precipitation;
             if ((humidityAndPrecip/2) >= 60)
                 delta.ChangeCloudCover(0 - (cell.Humidity/10));
             else if (((humidityAndPrecip/2) < 60) && ((humidityAndPrecip/2) > 40))
@@ -499,7 +506,7 @@ namespace SmaugCS.Weather
 
         private static void AdjustPrecipitationForHumidityAndPressure(WeatherCell cell)
         {
-            int humidityAndPressure = cell.Humidity + cell.Pressure;
+            var humidityAndPressure = cell.Humidity + cell.Pressure;
             if ((humidityAndPressure/2) >= 60)
                 cell.ChangePrecip(cell.Humidity/10);
             else if (((humidityAndPressure/2) < 60) && ((humidityAndPressure/2) > 40))
@@ -516,10 +523,10 @@ namespace SmaugCS.Weather
                 delta.ChangeHumidity(SmaugRandom.Between(0, 3));
         }
 
-        private static void AdjustTemperatureForDayNight(TimeInfoData GameTime, WeatherCell delta, WeatherCell cell)
+        private static void AdjustTemperatureForDayNight(TimeInfoData gameTime, WeatherCell delta, WeatherCell cell)
         {
-            if (GameTime.Sunlight == SunPositionTypes.Sunrise
-                || GameTime.Sunlight == SunPositionTypes.Light)
+            if (gameTime.Sunlight == SunPositionTypes.Sunrise
+                || gameTime.Sunlight == SunPositionTypes.Light)
                 delta.ChangeTemperature((SmaugRandom.Between(-1, 2) + (((cell.CloudCover/10) > 5) ? -1 : 1)));
             else
                 delta.ChangeTemperature((SmaugRandom.Between(-2, 0) + (((cell.CloudCover/10) > 5) ? 2 : -3)));
@@ -527,19 +534,19 @@ namespace SmaugCS.Weather
 
         public void ClearWeatherDeltas()
         {
-            Delta.Initialize();
+            _delta.Initialize();
         }
 
-        public void RandomizeCells(TimeInfoData GameTime)
+        public void RandomizeCells(TimeInfoData gameTime)
         {
-            for (int y = 0; y < Height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (var x = 0; x < Width; x++)
                 {
-                    WeatherCell cell = GetCellFromMap(x, y);
+                    var cell = GetCellFromMap(x, y);
 
-                    WeatherRangeData rangeData = WeatherConstants.WeatherData.FirstOrDefault(d => d.Hemisphere == cell.Hemisphere
-                                                                                  && d.Season == GameTime.Season
+                    var rangeData = WeatherConstants.WeatherData.FirstOrDefault(d => d.Hemisphere == cell.Hemisphere
+                                                                                  && d.Season == gameTime.Season
                                                                                   && d.Climate == cell.Climate);
                     if (rangeData == null)
                     {
@@ -559,10 +566,10 @@ namespace SmaugCS.Weather
             }
         }
 
-        public void Update(TimeInfoData GameTime, bool save = false)
+        public void Update(TimeInfoData gameTime, bool save = false)
         {
             ClearWeatherDeltas();
-            CalculateCellToCellChanges(GameTime);
+            CalculateCellToCellChanges(gameTime);
             EnforceClimateConditions();
             ApplyDeltaChanges();
 

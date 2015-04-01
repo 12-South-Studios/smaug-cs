@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Logging.Tests
 {

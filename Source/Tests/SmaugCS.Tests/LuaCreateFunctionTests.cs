@@ -7,6 +7,7 @@ using Realm.Library.Common;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Command;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
@@ -395,7 +396,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
-			Assert.That(result.PrimaryAttribute, Is.EqualTo(StatisticTypes.Strength));
+            Assert.That(result.PrimaryAttribute, Is.EqualTo(StatisticTypes.PermanentStrength));
 		}
 
 		[Test]
@@ -405,7 +406,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
-			Assert.That(result.SecondaryAttribute, Is.EqualTo(StatisticTypes.Constitution));
+            Assert.That(result.SecondaryAttribute, Is.EqualTo(StatisticTypes.PermanentConstitution));
 		}
 
 		[Test]
@@ -415,7 +416,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
-			Assert.That(result.DeficientAttribute, Is.EqualTo(StatisticTypes.Charisma));
+            Assert.That(result.DeficientAttribute, Is.EqualTo(StatisticTypes.PermanentCharisma));
 		}
 
 		[Test]

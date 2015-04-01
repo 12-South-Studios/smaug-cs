@@ -7,6 +7,7 @@ using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.SmallDb;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban.Tests
