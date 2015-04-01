@@ -9,10 +9,12 @@ The project uses the following third-party libraries:
  * VikingErik.LuaInterface? (v1.0.42) http://www.nuget.org/packages/VikingErik.LuaInterface
  * NUnit (v2.6.3) http://nunit.org/
  * Moq (v4.2.13) https://code.google.com/p/moq/
- * EntityFramework (v6.0)
+ * EntityFramework (v6.1.3) https://msdn.microsoft.com/en-us/data/ef.aspx
+ * Lua (v5.1) http://www.lua.org/
+ * LuaInterface (v2.0.3) https://code.google.com/p/luainterface/
 
 Details of the project tools and specs:
- * Language: C# (.NET 4.5)
+ * Language: C# (.NET 4.5.1)
  * Microsoft Visual Studio 2013
  * JetBrains Resharper 7.1.2 http://www.jetbrains.com/resharper/
  * Remco Software NCrunch 2.4.0.2 http://www.ncrunch.net/
