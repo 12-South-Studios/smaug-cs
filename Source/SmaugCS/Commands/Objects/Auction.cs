@@ -27,7 +27,7 @@ namespace SmaugCS.Commands.Objects
 
             // TODO: Do we really want time restrictions on auctions?
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (firstArg.IsNullOrEmpty())
                 ReviewAuction(ch);
             if (ch.IsImmortal() && firstArg.EqualsIgnoreCase("stop"))
@@ -39,8 +39,8 @@ namespace SmaugCS.Commands.Objects
 
         private static void PlaceItemForAuction(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
-            ObjectInstance obj = ch.GetCarriedObject(firstArg);
+            var firstArg = argument.FirstWord();
+            var obj = ch.GetCarriedObject(firstArg);
 
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You aren't carrying that.")) return;
             if (CheckFunctions.CheckIfTrue(ch, obj.Timer > 0, "You can't auction objects that are decaying.")) return;
@@ -51,12 +51,12 @@ namespace SmaugCS.Commands.Objects
                 AuctionManager.Instance.Repository.History.Any(x => x.ItemForSale == obj.ObjectIndex.ID),
                 "Such an item has been auctioned recently, try again later.")) return;
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Auction it for what?")) return;
             if (CheckFunctions.CheckIfTrue(ch, !secondArg.IsNumber(),
                 "You must input a number at which to start the auction.")) return;
 
-            int startingBid = secondArg.ToInt32();
+            var startingBid = secondArg.ToInt32();
             if (CheckFunctions.CheckIfTrue(ch, startingBid <= 0, "You can't auction something for nothing!")) return;
 
             if (AuctionManager.Instance.Auction != null)
@@ -89,16 +89,16 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
                 "There isn't anything being auctioned right now.")) return;
 
-            AuctionData auction = AuctionManager.Instance.Auction;
+            var auction = AuctionManager.Instance.Auction;
 
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < auction.ItemForSale.Level,
                 "This object's level is too high for your use.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, auction.Seller, "You can't bid on your own item!")) return;
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Bid how much?")) return;
 
-            int bid = Program.parsebet(auction.BidAmount, secondArg);
+            var bid = Program.parsebet(auction.BidAmount, secondArg);
             if (CheckFunctions.CheckIfTrue(ch, bid < auction.StartingBid,
                 "You must place a bid that is higher than the starting bet.")) return;
             if (CheckFunctions.CheckIfTrue(ch, bid < (auction.BidAmount + 10000),
@@ -108,7 +108,7 @@ namespace SmaugCS.Commands.Objects
                 string.Format("You can't bid over {0} coins.", GameConstants.GetSystemValue<int>("MaximumAuctionBid"))))
                 return;
 
-            string thirdArg = argument.ThirdWord();
+            var thirdArg = argument.ThirdWord();
             if (CheckFunctions.CheckIfTrue(ch, thirdArg.IsNullOrEmpty() || auction.ItemForSale.Name.IsAnyEqual(thirdArg),
                 "That item is not being auctioned right now.")) return;
 
@@ -132,7 +132,7 @@ namespace SmaugCS.Commands.Objects
 
             ch.SetColor(ATTypes.AT_LBLUE);
 
-            AuctionData auction = AuctionManager.Instance.Auction;
+            var auction = AuctionManager.Instance.Auction;
 
             ChatManager.talk_auction(string.Format(argument, auction.ItemForSale.ShortDescription));
             auction.ItemForSale.AddTo(auction.Seller);
@@ -157,7 +157,7 @@ namespace SmaugCS.Commands.Objects
             ch.SetColor(ATTypes.AT_BLUE);
             ch.SendTo("Auctions:");
 
-            AuctionData auction = AuctionManager.Instance.Auction;
+            var auction = AuctionManager.Instance.Auction;
             if (auction.BidAmount > 0)
                 ch.Printf("Current bid on this item is %s coin.", auction.BidAmount);
             else 
@@ -176,10 +176,10 @@ namespace SmaugCS.Commands.Objects
             if (DisplayTable.ContainsKey(auction.ItemForSale.ItemType))
                 DisplayTable[auction.ItemForSale.ItemType].Invoke(ch, auction.ItemForSale);
 
-            foreach (AffectData af in auction.ItemForSale.ObjectIndex.Affects)
+            foreach (var af in auction.ItemForSale.ObjectIndex.Affects)
                 handler.showaffect(ch, af);
 
-            foreach (AffectData af in auction.ItemForSale.Affects)
+            foreach (var af in auction.ItemForSale.Affects)
                 handler.showaffect(ch, af);
 
             if ((auction.ItemForSale.ItemType == ItemTypes.Container
@@ -277,7 +277,7 @@ namespace SmaugCS.Commands.Objects
 
             if (obj.Value[3] >= 0)
             {
-                SkillData skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
+                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }

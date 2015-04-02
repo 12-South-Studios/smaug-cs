@@ -32,11 +32,11 @@ namespace SmaugCS.Extensions
         public static int LookupSkill(this IDatabaseManager dbManager, string name)
         {
             // Try to find an exact match for this skill
-            SkillData skill = dbManager.GetEntity<SkillData>(name);
+            var skill = dbManager.GetEntity<SkillData>(name);
             if (skill == null)
             {
                 // Try to find a prefix match
-                IEnumerable<SkillData> skills = dbManager.SKILLS.Values.Where(x => x.Name.StartsWithIgnoreCase(name));
+                var skills = dbManager.SKILLS.Values.Where(x => x.Name.StartsWithIgnoreCase(name));
                 if (!skills.Any())
                 {
                     dbManager.LogManager.Bug("Skill entry {0} not found", name);
@@ -54,14 +54,14 @@ namespace SmaugCS.Extensions
             if (dbManager.LookupSkill(name) > -1)
                 return -1;
 
-            long newId = dbManager.GenerateNewId<SkillData>();
+            var newId = dbManager.GenerateNewId<SkillData>();
             dbManager.AddToRepository(new SkillData(newId, name));
             return (int)newId;
         }
 
         public static int GetLanguageCount(this DatabaseManager dbManager, int languages)
         {
-            List<LanguageData> langList = dbManager.LANGUAGES.Values.ToList();
+            var langList = dbManager.LANGUAGES.Values.ToList();
 
             return
                 langList.Count(

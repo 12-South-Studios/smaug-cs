@@ -15,7 +15,7 @@ namespace SmaugCS.SpecFuns
                 return false;
 
             foreach (
-                CharacterInstance victim in
+                var victim in
                     ch.CurrentRoom.Persons.Where(victim => victim != ch)
                       .Where(
                           victim =>
@@ -31,8 +31,8 @@ namespace SmaugCS.SpecFuns
                     return true;
                 }
 
-                int maxgold = ch.Level*ch.Level*1000;
-                int gold = victim.CurrentCoin*
+                var maxgold = ch.Level*ch.Level*1000;
+                var gold = victim.CurrentCoin*
                            SmaugRandom.Between(1, 2.GetNumberThatIsBetween(ch.Level/4, 10))/100;
 
                 ch.CurrentCoin += 9*gold/10;

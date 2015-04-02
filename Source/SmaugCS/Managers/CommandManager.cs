@@ -37,11 +37,11 @@ namespace SmaugCS.Managers
 
         public void Execute(string commandName, CharacterInstance actor, string argument)
         {
-            CommandData command = _dbManager.GetEntity<CommandData>(commandName);
+            var command = _dbManager.GetEntity<CommandData>(commandName);
             if (command == null)
                 throw new EntryNotFoundException();
 
-            CommandAttribute attrib = command.DoFunction.Value.GetAttribute<CommandAttribute>(command.FunctionName);
+            var attrib = command.DoFunction.Value.GetAttribute<CommandAttribute>(command.FunctionName);
             if (attrib != null)
             {
                 if (CheckNpcAttribute(attrib, actor))

@@ -28,7 +28,7 @@ namespace SmaugCS.Extensions.Player
                 return;
 
             ch.Timer = 0;
-            RoomTemplate wasInRoom = ch.PreviousRoom;
+            var wasInRoom = ch.PreviousRoom;
             ch.CurrentRoom.RemoveFrom(ch);
             wasInRoom.AddTo(ch);
             ch.PreviousRoom = ch.CurrentRoom;
@@ -47,11 +47,11 @@ namespace SmaugCS.Extensions.Player
 
         public static int CalculateAge(this PlayerInstance ch)
         {
-            int numDays = ((GameManager.Instance.GameTime.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) +
+            var numDays = ((GameManager.Instance.GameTime.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) +
                            GameManager.Instance.GameTime.Day;
-            int chDays = ((ch.PlayerData.Month + 1) *
+            var chDays = ((ch.PlayerData.Month + 1) *
                            GameConstants.GetSystemValue<int>("DaysPerMonth")) + ch.PlayerData.Day;
-            int age = GameManager.Instance.GameTime.Year - ch.PlayerData.Year;
+            var age = GameManager.Instance.GameTime.Year - ch.PlayerData.Year;
 
             if (chDays - numDays > 0)
                 age -= 1;
@@ -67,13 +67,13 @@ namespace SmaugCS.Extensions.Player
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void ShowVisibleAffectsOn(this PlayerInstance ch, CharacterInstance victim)
         {
-            ATTypes atType = ATTypes.AT_WHITE;
-            string description = string.Empty;
+            var atType = ATTypes.AT_WHITE;
+            var description = string.Empty;
             VisibleAffectAttribute attrib = null;
 
             if (victim.IsAffected(AffectedByTypes.Sanctuary))
             {
-                string name = (victim.IsNpc() ? victim.ShortDescription : victim.Name).CapitalizeFirst();
+                var name = (victim.IsNpc() ? victim.ShortDescription : victim.Name).CapitalizeFirst();
 
                 atType = ATTypes.AT_WHITE;
                 if (victim.IsGood())
@@ -87,7 +87,7 @@ namespace SmaugCS.Extensions.Player
                 attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
             else
             {
-                AffectedByTypes affectedBy = AffectedByList.FirstOrDefault(victim.IsAffected);
+                var affectedBy = AffectedByList.FirstOrDefault(victim.IsAffected);
                 if (affectedBy != AffectedByTypes.None)
                     attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();
             }

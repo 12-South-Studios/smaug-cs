@@ -310,7 +310,7 @@ namespace SmaugCS
 
         public static void CheckIfExecute(MobileInstance mob, MudProgTypes type)
         {
-            foreach (MudProgData mprog in mob.MobIndex.MudProgs)
+            foreach (var mprog in mob.MobIndex.MudProgs)
             {
                 int chance;
                 if (!Int32.TryParse(mprog.ArgList, out chance))

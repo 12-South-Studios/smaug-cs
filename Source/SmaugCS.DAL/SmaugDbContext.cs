@@ -118,6 +118,8 @@ namespace SmaugCS.DAL
         public IDbSet<GameState> GameStates { get; set; }
         public IDbSet<Log> Logs { get; set; }
         public IDbSet<News> News { get; set; }
+        public IDbSet<NewsEntry> NewsEntries { get; set; }
+        public IDbSet<Note> Notes { get; set; } 
         public IDbSet<Organization> Organizations { get; set; }
         public IDbSet<WeatherCell> Weather { get; set; }
     }

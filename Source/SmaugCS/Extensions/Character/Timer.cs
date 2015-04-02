@@ -14,7 +14,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.Timers.Any(x => x.Type == type))
                 return false;
 
-            TimerData timer = new TimerData
+            var timer = new TimerData
             {
                 Count = count,
                 Type = type,

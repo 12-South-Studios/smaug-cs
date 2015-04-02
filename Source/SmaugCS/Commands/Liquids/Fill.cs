@@ -14,11 +14,11 @@ namespace SmaugCS.Commands.Liquids
     {
         public static void do_fill(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Fill what?")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;
 
-            ObjectInstance obj = ch.GetCarriedObject(firstArg);
+            var obj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You do not have that item.")) return;
 
             if (obj.ItemType == ItemTypes.Container)
@@ -42,15 +42,15 @@ namespace SmaugCS.Commands.Liquids
                 obj.ItemType == ItemTypes.Pipe && obj.Values.Flags.IsSet(PipeFlags.FullOfAsh),
                 "It's full of ashes, and needs to be emptied first.")) return;
 
-            IEnumerable<ItemTypes> sourceItemTypes = ChooseSourceItemTypes(ch, obj);
+            var sourceItemTypes = ChooseSourceItemTypes(ch, obj);
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (secondArg.EqualsIgnoreCase("from")
                 || secondArg.EqualsIgnoreCase("with"))
                 secondArg = argument.ThirdWord();
 
             ObjectInstance source = null;
-            bool all = false;
+            var all = false;
 
             if (!secondArg.IsNullOrEmpty())
             {

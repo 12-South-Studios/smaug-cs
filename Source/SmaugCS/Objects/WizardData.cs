@@ -15,11 +15,11 @@ namespace SmaugCS.Objects
 
         public int Load(IEnumerable<string> lines)
         {
-            int level = 0;
+            var level = 0;
 
-            foreach (string line in lines.Where(x => !x.EqualsIgnoreCase("end")))
+            foreach (var line in lines.Where(x => !x.EqualsIgnoreCase("end")))
             {
-                Tuple<string, string> tuple = line.FirstArgument();
+                var tuple = line.FirstArgument();
 
                 switch (tuple.Item1.ToLower())
                 {
@@ -27,7 +27,7 @@ namespace SmaugCS.Objects
                         Level = tuple.Item2.ToInt32();
                         break;
                     case "pcflags":
-                        int flags = tuple.Item2.ToInt32();
+                        var flags = tuple.Item2.ToInt32();
                         if (flags.IsSet((int)PCFlags.Retired))
                             level = LevelConstants.MaxLevel - 15;
                         if (flags.IsSet((int)PCFlags.Guest))

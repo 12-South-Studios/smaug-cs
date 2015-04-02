@@ -23,11 +23,11 @@ namespace SmaugCS.Commands.Liquids
 
         public static void do_drink(CharacterInstance ch, string argument)
         {
-            string arg = argument.FirstWord();
+            var arg = argument.FirstWord();
             if (arg.EqualsIgnoreCase("from"))
                 arg = arg.SecondWord();
 
-            ObjectInstance obj = GetDrinkSource(ch, arg);
+            var obj = GetDrinkSource(ch, arg);
             if (obj == null)
                 throw new ObjectNotFoundException(string.Format("Object {0} was not found.", arg));
 
@@ -40,13 +40,13 @@ namespace SmaugCS.Commands.Liquids
 
             DrinkFrom(ch, obj);
 
-            int pulsesPerSecond = GameConstants.GetSystemValue<int>("PulsesPerSecond");
+            var pulsesPerSecond = GameConstants.GetSystemValue<int>("PulsesPerSecond");
             Macros.WAIT_STATE(ch, ch.GetMyTarget() != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
         }
 
         private static ObjectInstance GetDrinkSource(CharacterInstance ch, string arg)
         {
-            ObjectInstance obj = string.IsNullOrEmpty(arg)
+            var obj = string.IsNullOrEmpty(arg)
                 ? ch.CurrentRoom.Contents.FirstOrDefault(x => x.ItemType == ItemTypes.Fountain)
                 : ch.GetObjectOnMeOrInRoom(arg);
 
@@ -88,7 +88,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                PlayerInstance pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance) ch;
                 if (CheckFunctions.CheckIfTrue(ch, pch.GetCondition(ConditionTypes.Full) == GetMaximumCondition()
                     || pch.GetCondition(ConditionTypes.Thirsty) == GetMaximumCondition(),
                     "Your stomach is too full to drink more!")) return;
@@ -105,7 +105,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                PlayerInstance pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance) ch;
                 pch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
                 pch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
                 pch.GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
@@ -118,7 +118,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                PlayerInstance pch = (PlayerInstance)ch;
+                var pch = (PlayerInstance)ch;
 
                 EvaluateDrunkCondition(pch);
                 EvaluateThirstCondition(pch);
@@ -136,8 +136,8 @@ namespace SmaugCS.Commands.Liquids
 
         private static void EvaluateBloodthirstCondition(PlayerInstance ch)
         {
-            int cond = ch.GetCondition(ConditionTypes.Bloodthirsty);
-            int maxCond = GetMaximumCondition();
+            var cond = ch.GetCondition(ConditionTypes.Bloodthirsty);
+            var maxCond = GetMaximumCondition();
 
             if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
                 ch.SendTo("&rYou replenish your body with the vital fluid.");
@@ -151,8 +151,8 @@ namespace SmaugCS.Commands.Liquids
 
         private static void EvaluateThirstCondition(PlayerInstance ch)
         {
-            int cond = ch.GetCondition(ConditionTypes.Thirsty);
-            int maxCond = GetMaximumCondition();
+            var cond = ch.GetCondition(ConditionTypes.Thirsty);
+            var maxCond = GetMaximumCondition();
 
             if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
                 ch.SendTo("Your stomach begins to slosh around.");
@@ -168,8 +168,8 @@ namespace SmaugCS.Commands.Liquids
 
         private static void EvaluateDrunkCondition(PlayerInstance ch)
         {
-            int cond = ch.GetCondition(ConditionTypes.Drunk);
-            int maxCond = GetMaximumCondition();
+            var cond = ch.GetCondition(ConditionTypes.Drunk);
+            var maxCond = GetMaximumCondition();
 
             if (cond > (maxCond/2) && cond < (maxCond*0.4f))
                 ch.SendTo("You feel quite sloshed.");
@@ -189,7 +189,7 @@ namespace SmaugCS.Commands.Liquids
             comm.act(ATTypes.AT_POISON, "You sputter and gag.", ch, null, null, ToTypes.Character);
             ch.MentalState = 20.GetNumberThatIsBetween(ch.MentalState + 5, 100);
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 Type = AffectedByTypes.Poison,
                 Duration = obj.Values.Poison,
@@ -208,7 +208,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                PlayerInstance pch = (PlayerInstance)ch;
+                var pch = (PlayerInstance)ch;
                 if (obj.Values.LiquidID != 0)
                 {
                     pch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
@@ -250,7 +250,7 @@ namespace SmaugCS.Commands.Liquids
             if (CheckFunctions.CheckIfTrue(ch, ch.GetCondition(ConditionTypes.Bloodthirsty) >= (10 + ch.Level),
                 "Alas... you cannot consume any more blood.")) return;
 
-            int maxCond = GetMaximumCondition();
+            var maxCond = GetMaximumCondition();
             if (CheckFunctions.CheckIfTrue(ch, ch.GetCondition(ConditionTypes.Bloodthirsty) >= maxCond
                                                || ch.GetCondition(ConditionTypes.Thirsty) >= maxCond,
                 "You are too full to drink any blood.")) return;

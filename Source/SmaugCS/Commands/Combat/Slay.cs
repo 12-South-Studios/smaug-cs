@@ -23,15 +23,15 @@ namespace SmaugCS.Commands.Combat
 
         public static void do_slay(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Slay whom?")) return;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
+            var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Suicide is a mortal sin.")) return;
             if (CheckFunctions.CheckIfTrue(ch, !victim.IsNpc() && victim.Trust >= ch.Trust, "You failed.")) return;
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (SlayTable.ContainsKey(secondArg.ToLower()))
                 SlayTable[secondArg.ToLower()].Invoke(ch, victim);
             else

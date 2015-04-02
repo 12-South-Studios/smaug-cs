@@ -14,17 +14,17 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_close(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Close what?")) return;
 
-            ExitData exit = ch.FindExit(firstArg, true);
+            var exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 CloseDoor(ch, exit, firstArg);
                 return;
             }
 
-            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
+            var obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj != null)
             {
                 CloseObject(ch, obj);
@@ -75,11 +75,11 @@ namespace SmaugCS.Commands.Movement
             comm.act(ATTypes.AT_ACTION, "$n closes the $d.", ch, null, exit.Keywords, ToTypes.Room);
             comm.act(ATTypes.AT_ACTION, "You close the $d.", ch, null, exit.Keywords, ToTypes.Character);
 
-            ExitData reverseExit = exit.GetReverse();
+            var reverseExit = exit.GetReverse();
             if (reverseExit != null)
             {
                 reverseExit.Flags.SetBit(ExitFlags.Closed);
-                foreach(CharacterInstance vch in exit.GetDestination(DatabaseManager.Instance).Persons)
+                foreach(var vch in exit.GetDestination(DatabaseManager.Instance).Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d closes.", vch, null, reverseExit.Keywords, ToTypes.Character);
             }
 

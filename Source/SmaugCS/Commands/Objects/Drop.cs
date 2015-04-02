@@ -17,7 +17,7 @@ namespace SmaugCS.Commands.Objects
     {
         public static void do_drop(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Drop what?")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Litterbug))
@@ -36,8 +36,8 @@ namespace SmaugCS.Commands.Objects
                 return;
             }
 
-            int number = 0;
-            string qty = firstArg.ParseWord(1, ".");
+            var number = 0;
+            var qty = firstArg.ParseWord(1, ".");
             if (!qty.IsNullOrEmpty() && qty.IsNumber())
                 number = qty.ToInt32();
 
@@ -62,8 +62,8 @@ namespace SmaugCS.Commands.Objects
 
             ch.CurrentCoin -= number;
 
-            int num = number;
-            ObjectInstance obj = ch.CurrentRoom.Contents.FirstOrDefault(x => x.ID == VnumConstants.OBJ_VNUM_MONEY_ONE);
+            var num = number;
+            var obj = ch.CurrentRoom.Contents.FirstOrDefault(x => x.ID == VnumConstants.OBJ_VNUM_MONEY_ONE);
             if (obj != null)
             {
                 num += 1;
@@ -89,7 +89,7 @@ namespace SmaugCS.Commands.Objects
 
         private static void DropObject(CharacterInstance ch, string firstArg)
         {
-            ObjectInstance obj = ch.GetCarriedObject(firstArg);
+            var obj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You do not have that item.")) return;
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanDrop(obj), "You can't let go of it.")) return;
 
@@ -106,7 +106,7 @@ namespace SmaugCS.Commands.Objects
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom))
             {
-                foreach (ClanData clan in DatabaseManager.Instance.CLANS.Values)
+                foreach (var clan in DatabaseManager.Instance.CLANS.Values)
                 {
                     if (clan.StoreRoom == ch.CurrentRoom.ID)
                         act_obj.save_clan_storeroom(ch, clan);
@@ -119,15 +119,15 @@ namespace SmaugCS.Commands.Objects
 
         private static void DropAllOrSome(CharacterInstance ch, string firstArg)
         {
-            bool all = firstArg.EqualsIgnoreCase("all");
-            string arg = all ? firstArg.Substring(4) : firstArg;
+            var all = firstArg.EqualsIgnoreCase("all");
+            var arg = all ? firstArg.Substring(4) : firstArg;
 
             if (CheckFunctions.CheckIfTrue(ch,
                 ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDropAll) || ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom),
                 "You can't seem to do that.")) return;
 
-            bool found = false;
-            foreach (ObjectInstance obj in ch.Carrying)
+            var found = false;
+            foreach (var obj in ch.Carrying)
             {
                 if ((all || obj.Name.IsAnyEqual(arg)) && ch.CanSee(obj) && obj.WearLocation == WearLocations.None &&
                     ch.CanDrop(obj))

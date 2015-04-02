@@ -11,7 +11,7 @@ namespace SmaugCS.Commands
     {
         public static void do_bug(CharacterInstance ch, string argument)
         {
-            DateTime tm = DateTime.Now;
+            var tm = DateTime.Now;
 
             ch.SetColor(ATTypes.AT_PLAIN);
             if (CheckFunctions.CheckIfEmptyString(ch, argument,

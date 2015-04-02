@@ -42,7 +42,7 @@ namespace SmaugCS
 
             if ((int)ch.CurrentPosition < position)
             {
-                KeyValuePair<PositionTypes, string> kvp = PositionMap.FirstOrDefault(x => x.Key == ch.CurrentPosition);
+                var kvp = PositionMap.FirstOrDefault(x => x.Key == ch.CurrentPosition);
 
                 if (ch.IsInCombatPosition() && position <= (int)PositionTypes.Evasive)
                     ch.SendTo(FightingMessage);
@@ -72,19 +72,19 @@ namespace SmaugCS
             if (ch.CurrentRoom == null)
                 throw new NullReferenceException("Null room reference");
 
-            string logLine = string.Empty;
+            var logLine = string.Empty;
             CommandData foundCmd = null;
 
             if (((PlayerInstance)ch).SubState == CharacterSubStates.RepeatCommand)
             {
-                DoFunction fun = ch.LastCommand;
+                var fun = ch.LastCommand;
                 if (fun == null)
                 {
                     ((PlayerInstance)ch).SubState = CharacterSubStates.None;
                     throw new InvalidDataException("CharacterSubStates.RepeatCommand with null LastCommand");
                 }
 
-                foreach (CommandData cmd in DatabaseManager.Instance.COMMANDS.Values)
+                foreach (var cmd in DatabaseManager.Instance.COMMANDS.Values)
                 {
                     if (cmd.DoFunction == fun)
                     {
@@ -104,7 +104,7 @@ namespace SmaugCS
                 // TODO 
             }
 
-            string lastPlayerCmd = string.Format("{0} used {1}", ch.Name, logLine);
+            var lastPlayerCmd = string.Format("{0} used {1}", ch.Name, logLine);
             if (foundCmd != null && foundCmd.Log == LogAction.Never)
                 logLine = "XXXXXXXX XXXXXXXX XXXXXXXX";
 
@@ -122,10 +122,10 @@ namespace SmaugCS
 
             // TODO Some more logging/snooping stuff
 
-            TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
+            var timer = ch.GetTimer(TimerTypes.DoFunction);
             if (timer != null)
             {
-                CharacterSubStates substate = ((PlayerInstance)ch).SubState;
+                var substate = ((PlayerInstance)ch).SubState;
                 ((PlayerInstance)ch).SubState = CharacterSubStates.TimerDoAbort;
                 timer.Action.Value.Invoke(ch, string.Empty);
                 if (ch.CharDied())
@@ -147,7 +147,7 @@ namespace SmaugCS
             if (!check_pos(ch, foundCmd.Position))
                 return;
 
-            string buf = check_cmd_flags(ch, foundCmd);
+            var buf = check_cmd_flags(ch, foundCmd);
             if (!buf.IsNullOrEmpty())
             {
                 ch.SendTo(buf);
@@ -166,7 +166,7 @@ namespace SmaugCS
 
         public static bool check_social(CharacterInstance ch, string command, string argument)
         {
-            SocialData social = DatabaseManager.Instance.GetEntity<SocialData>(command);
+            var social = DatabaseManager.Instance.GetEntity<SocialData>(command);
             if (social == null)
                 return false;
 
@@ -192,13 +192,13 @@ namespace SmaugCS
                     return true;
             }
 
-            int i = 0;
+            var i = 0;
             // search the room for characters ignoring the social-sender and 
             // temporarily remove them from the room until the social has 
             // been completed
-            RoomTemplate room = ch.CurrentRoom;
-            List<CharacterInstance> ignoringList = new List<CharacterInstance>();
-            foreach (CharacterInstance victim in ch.CurrentRoom.Persons)
+            var room = ch.CurrentRoom;
+            var ignoringList = new List<CharacterInstance>();
+            foreach (var victim in ch.CurrentRoom.Persons)
             {
                 if (i == 127)
                     break;
@@ -224,7 +224,7 @@ namespace SmaugCS
 
         public static string check_cmd_flags(CharacterInstance ch, CommandData cmd)
         {
-            string buf = string.Empty;
+            var buf = string.Empty;
             if (ch.IsAffected(AffectedByTypes.Possess) && cmd.Flags.IsSet(CommandFlags.Possess))
                 buf = string.Format("You can't {0} while you are possessing someone!", cmd.Name);
             else if (ch.CurrentMorph != null && cmd.Flags.IsSet(CommandFlags.Polymorphed))

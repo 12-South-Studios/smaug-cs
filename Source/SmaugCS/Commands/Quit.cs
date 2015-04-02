@@ -26,7 +26,7 @@ namespace SmaugCS.Commands
             if (Helpers.CheckFunctions.CheckIf(ch, args => ((CharacterInstance)args[0]).CurrentPosition == PositionTypes.Stunned,
                 "You're not DEAD yet.", new List<object> {ch}, ATTypes.AT_BLOOD)) return;
 
-            TimerData timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
+            var timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
             if (timer != null && !ch.IsImmortal())
             {
                ch.SetColor(ATTypes.AT_RED);
@@ -37,7 +37,7 @@ namespace SmaugCS.Commands
             // TODO: auction
             if (Helpers.CheckFunctions.CheckIf(ch, args =>
             {
-                CharacterInstance actor = (CharacterInstance) args[0];
+                var actor = (CharacterInstance) args[0];
                 return actor.IsPKill() && actor.wimpy > (actor.MaximumHealth/2.25f);
             }, "Your wimpy has been adjusted to the maximum level for deadlies.", new List<object> {ch}))
                 Wimpy.do_wimpy(ch, "max");
@@ -65,9 +65,9 @@ namespace SmaugCS.Commands
 
             // TODO saving_char = null;
 
-            for (int x = 0; x < GameConstants.MaximumWearLocations; x++)
+            for (var x = 0; x < GameConstants.MaximumWearLocations; x++)
             {
-                for (int y = 0; y < GameConstants.MaximumWearLayers; y++)
+                for (var y = 0; y < GameConstants.MaximumWearLayers; y++)
                 {
                     // TODO Save equipment
                 }

@@ -84,12 +84,12 @@ namespace SmaugCS
 
         public static string act_string(string format, CharacterInstance to, CharacterInstance ch, object arg1, object arg2, int flags)
         {
-            bool dontUpper = !format.StartsWith("$");
+            var dontUpper = !format.StartsWith("$");
 
             int varPosition;
             var startIndex = 0;
-            StringBuilder sb = new StringBuilder(format);
-            string buffer = string.Empty;
+            var sb = new StringBuilder(format);
+            var buffer = string.Empty;
 
             do
             {
@@ -100,7 +100,7 @@ namespace SmaugCS
                 if (varPosition == -1) continue;
 
                 //// Is it a valid variable?
-                string var = sb.Substring(varPosition, 2);
+                var var = sb.Substring(varPosition, 2);
                 if (!string.IsNullOrEmpty(var))
                 {
                     CharacterInstance vch;
@@ -175,7 +175,7 @@ namespace SmaugCS
                                 buffer = "door";
                             else
                             {
-                                Tuple<string, string> tuple = arg2.ToString().FirstArgument();
+                                var tuple = arg2.ToString().FirstArgument();
                                 buffer = tuple.Item1;
                             }
                             break;
@@ -206,11 +206,11 @@ namespace SmaugCS
             if (string.IsNullOrEmpty(format) || ch == null)
                 return;
 
-            int flags1 = (int) ActFFlags.None;
-            int flags2 = (int) ActFFlags.None;
-            ObjectInstance obj1 = arg1.CastAs<ObjectInstance>();
-            ObjectInstance obj2 = arg2.CastAs<ObjectInstance>();
-            CharacterInstance vch = arg2.CastAs<CharacterInstance>();
+            var flags1 = (int) ActFFlags.None;
+            var flags2 = (int) ActFFlags.None;
+            var obj1 = arg1.CastAs<ObjectInstance>();
+            var obj2 = arg2.CastAs<ObjectInstance>();
+            var vch = arg2.CastAs<CharacterInstance>();
             CharacterInstance to;
 
             #region Nasty type checking
@@ -285,14 +285,14 @@ namespace SmaugCS
                 to = vch;
             }
 
-            string txt = string.Empty;
+            var txt = string.Empty;
             if (to != null && type != ToTypes.Character && type != ToTypes.Victim)
             {
                 txt = act_string(format, null, ch, arg1, arg2, Program.STRING_IMM);
                 if (to.CurrentRoom.HasProg(MudProgTypes.Act))
                     mud_prog.rprog_act_trigger(txt, to.CurrentRoom, ch, (ObjectInstance) arg1, arg2);
 
-                foreach (ObjectInstance toObj in to.CurrentRoom.Contents
+                foreach (var toObj in to.CurrentRoom.Contents
                     .Where(toObj => to.CurrentRoom.HasProg(MudProgTypes.Act)))
                 {
                     mud_prog.oprog_act_trigger(txt, toObj, ch, (ObjectInstance) arg1, arg2);
@@ -302,7 +302,7 @@ namespace SmaugCS
             if (type == ToTypes.Character || type == ToTypes.Victim)
                 return;
 
-            foreach(CharacterInstance rch in ch.CurrentRoom.Persons)
+            foreach(var rch in ch.CurrentRoom.Persons)
             {
                 var playerInstance = to as PlayerInstance;
                 if (playerInstance != null && playerInstance.Descriptor == null)
@@ -347,7 +347,7 @@ namespace SmaugCS
     
         public static string default_fprompt(CharacterInstance ch)
         {
-            StringBuilder sb = new StringBuilder("&w<&Y%hhp ");
+            var sb = new StringBuilder("&w<&Y%hhp ");
             sb.Append(ch.IsVampire() ? "&R%bbp" : "&C%mm");
             sb.Append("&G%vmv&w> ");
 
@@ -366,7 +366,7 @@ namespace SmaugCS
         private const string Colors = "xrgObpcwzRGYBPCW";
         public static int getcolor(char clr)
         {
-            for (int x = 0; x < 16; x++)
+            for (var x = 0; x < 16; x++)
                 if (clr == Colors[x])
                     return x;
             return -1;
@@ -374,11 +374,11 @@ namespace SmaugCS
 
         public static void display_prompt(DescriptorData d)
         {
-            PlayerInstance ch = d.Character;
-            PlayerInstance och = (d.Original ?? d.Character);
-            string buffer = string.Empty;
+            var ch = d.Character;
+            var och = (d.Original ?? d.Character);
+            var buffer = string.Empty;
 
-            bool ansi = (!och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi));
+            var ansi = (!och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi));
 
             const string helpstart = "<Type HELP START>";
 

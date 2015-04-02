@@ -24,9 +24,9 @@ namespace SmaugCS.Repositories
                         throw new InvalidDataException(string.Format("Clone ID {0} is not present", cloneId));
                 });
 
-            MobTemplate newMob = Create(id, name);
+            var newMob = Create(id, name);
 
-            MobTemplate cloneMob = Get(cloneId);
+            var cloneMob = Get(cloneId);
             if (cloneMob != null)
                 CloneMobTemplate(newMob, cloneMob);
 
@@ -78,7 +78,7 @@ namespace SmaugCS.Repositories
                         throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                 });
 
-            MobTemplate newMob = new MobTemplate(id, name);
+            var newMob = new MobTemplate(id, name);
             newMob.Statistics[StatisticTypes.PermanentStrength] = 13;
             newMob.Statistics[StatisticTypes.PermanentDexterity] = 13;
             newMob.Statistics[StatisticTypes.PermanentIntelligence] = 13;

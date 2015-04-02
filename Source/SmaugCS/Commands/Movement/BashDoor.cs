@@ -16,15 +16,15 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_bashdoor(CharacterInstance ch, string argument)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("bashdoor");
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>("bashdoor");
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Level < skill.SkillLevels.ToList()[(int) ch.CurrentClass],
                 "You're not enough of a warrior to bash doors!")) return;
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Bash what?")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You can't break off your fight.")) return;
 
-            ExitData exit = ch.FindExit(firstArg);
+            var exit = ch.FindExit(firstArg);
             if (exit == null)
                 Bash(ch, skill, "wall");
             else
@@ -38,7 +38,7 @@ namespace SmaugCS.Commands.Movement
             comm.act(ATTypes.AT_SKILL, "WHAAAAM!!! $n bashes against the $d, but it holds strong.", actor, null, arg,
                 ToTypes.Room);
 
-            int damage = (actor.MaximumHealth/20) + 10;
+            var damage = (actor.MaximumHealth/20) + 10;
             actor.CauseDamageTo(actor, damage, (int)skill.ID);
             skill.LearnFromFailure(actor);
         }
@@ -50,9 +50,9 @@ namespace SmaugCS.Commands.Movement
 
             Macros.WAIT_STATE(actor, skill.Rounds);
 
-            string keyword = exit.Flags.IsSet(ExitFlags.Secret) ? "wall" : exit.Keywords;
+            var keyword = exit.Flags.IsSet(ExitFlags.Secret) ? "wall" : exit.Keywords;
 
-            int chance = !actor.IsNpc()
+            var chance = !actor.IsNpc()
                 ? Macros.LEARNED(actor, (int) skill.ID)/2
                 : 90;
 
@@ -73,11 +73,11 @@ namespace SmaugCS.Commands.Movement
             comm.act(ATTypes.AT_SKILL, "$n bashes open the $d!", actor, null, keyword, ToTypes.Room);
             skill.LearnFromSuccess(actor);
 
-            ExitData reverseExit = exit.GetReverse();
+            var reverseExit = exit.GetReverse();
             BashExit(reverseExit);
 
-            RoomTemplate destination = exit.GetDestination(DatabaseManager.Instance);
-            foreach(CharacterInstance ch in destination.Persons)
+            var destination = exit.GetDestination(DatabaseManager.Instance);
+            foreach(var ch in destination.Persons)
                 comm.act(ATTypes.AT_SKILL, "The $d crashes open!", ch, null, reverseExit.Keywords, ToTypes.Character);
             
             actor.CauseDamageTo(actor, (actor.CurrentHealth/20), (int) skill.ID);

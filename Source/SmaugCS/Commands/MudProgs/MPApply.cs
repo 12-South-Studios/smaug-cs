@@ -18,7 +18,7 @@ namespace SmaugCS.Commands.MudProgs
 
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Mpapply - bad syntax")) return;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(argument);
+            var victim = ch.GetCharacterInRoom(argument);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "Mpapply - no such player in room.")) return;
 
             if (CheckFunctions.CheckIfNullObject(ch, !victim.IsNpc() && ((PlayerInstance)victim).Descriptor != null, "Not on link-dead players")) return;
@@ -26,7 +26,7 @@ namespace SmaugCS.Commands.MudProgs
             if (!victim.IsNotAuthorized()) return;
             if (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.AuthState >= -1) return;
 
-            string buf = string.Format("{0}@{1} new {2} {3} {4} applying...",
+            var buf = string.Format("{0}@{1} new {2} {3} {4} applying...",
                 victim.Name, victim.IsNpc() ? string.Empty : ((PlayerInstance)victim).Descriptor.host, victim.CurrentRace.GetName(),
                 victim.CurrentClass.GetName(), victim.IsPKill() ? "(Deadly)" : "(Peaceful)");
 

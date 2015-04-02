@@ -14,11 +14,11 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake())
                 return false;
 
-            foreach (ObjectInstance corpse in ch.CurrentRoom.Contents.Where(obj => obj.ItemType == ItemTypes.NpcCorpse))
+            foreach (var corpse in ch.CurrentRoom.Contents.Where(obj => obj.ItemType == ItemTypes.NpcCorpse))
             {
                 comm.act(ATTypes.AT_ACTION, "$n savagely devours a corpse.", ch, null, null, ToTypes.Room);
 
-                foreach (ObjectInstance obj in corpse.Contents)
+                foreach (var obj in corpse.Contents)
                 {
                     corpse.RemoveFrom(obj);
                     ch.CurrentRoom.AddTo(obj);

@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            ExitData exit = ch.FindExit(argument, true);
+            var exit = ch.FindExit(argument, true);
             if (exit != null && exit.Flags.IsSet(ExitFlags.xLeave))
             {
                 Move.move_char(ch, exit, 0);
@@ -33,7 +33,7 @@ namespace SmaugCS.Commands.Movement
 
         private static void LeaveRoom(CharacterInstance ch)
         {
-            ExitData exit = ch.CurrentRoom.Exits.FirstOrDefault(x => x.Flags.IsSet(ExitFlags.xLeave));
+            var exit = ch.CurrentRoom.Exits.FirstOrDefault(x => x.Flags.IsSet(ExitFlags.xLeave));
             if (exit != null)
             {
                 Move.move_char(ch, exit, 0);
@@ -42,9 +42,9 @@ namespace SmaugCS.Commands.Movement
 
             if (ch.CurrentRoom.SectorType != SectorTypes.Inside && !ch.IsOutside())
             {
-                foreach (ExitData xit in ch.CurrentRoom.Exits)
+                foreach (var xit in ch.CurrentRoom.Exits)
                 {
-                    RoomTemplate room = xit.GetDestination(DatabaseManager.Instance);
+                    var room = xit.GetDestination(DatabaseManager.Instance);
                     if (room == null ||
                         (room.SectorType != SectorTypes.Inside && !room.Flags.IsSet(RoomFlags.Indoors))) continue;
 

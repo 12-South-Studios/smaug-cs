@@ -13,10 +13,10 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_bolt(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Bolt what?")) return;
 
-            ExitData exit = ch.FindExit(firstArg, true);
+            var exit = ch.FindExit(firstArg, true);
             if (exit == null)
             {
                 ch.Printf("You see no %s here.", firstArg);

@@ -10,7 +10,7 @@ namespace SmaugCS.Commands.Social
     {
         public static void do_speak(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (firstArg.EqualsIgnoreCase("all")
                 || ch.IsImmortal())
             {

@@ -22,7 +22,7 @@ namespace SmaugCS.Extensions.Player
             if (value == 0 || ch.Level >= LevelConstants.ImmortalLevel || ch.IsNotAuthorized())
                 return;
 
-            int conditionValue = ch.PlayerData.GetConditionValue(condition);
+            var conditionValue = ch.PlayerData.GetConditionValue(condition);
             ch.PlayerData.SetConditionValue(ConditionTypes.Bloodthirsty,
                                             condition == ConditionTypes.Bloodthirsty
                                                 ? (conditionValue + value).GetNumberThatIsBetween(0, 10 + ch.Level)
@@ -45,12 +45,12 @@ namespace SmaugCS.Extensions.Player
 
         private static ReturnTypes ConditionFull(PlayerInstance ch, int conditionValue)
         {
-            ReturnTypes retcode = ReturnTypes.None;
+            var retcode = ReturnTypes.None;
 
             if (ch.Level >= LevelConstants.AvatarLevel || ch.CurrentClass == ClassTypes.Vampire) return retcode;
 
            ch.SetColor(ATTypes.AT_HUNGRY);
-            DescriptorAttribute attrib = ConditionTypes.Full.GetAttribute<DescriptorAttribute>();
+            var attrib = ConditionTypes.Full.GetAttribute<DescriptorAttribute>();
 
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
@@ -73,12 +73,12 @@ namespace SmaugCS.Extensions.Player
 
         private static ReturnTypes ConditionThirsty(PlayerInstance ch, int conditionValue)
         {
-            ReturnTypes retcode = ReturnTypes.None;
+            var retcode = ReturnTypes.None;
 
             if (ch.Level >= LevelConstants.AvatarLevel || ch.CurrentClass == ClassTypes.Vampire) return retcode;
 
            ch.SetColor(ATTypes.AT_THIRSTY);
-            DescriptorAttribute attrib = ConditionTypes.Thirsty.GetAttribute<DescriptorAttribute>();
+            var attrib = ConditionTypes.Thirsty.GetAttribute<DescriptorAttribute>();
 
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
@@ -97,12 +97,12 @@ namespace SmaugCS.Extensions.Player
 
         private static ReturnTypes ConditionBloodthirsty(PlayerInstance ch, int conditionValue)
         {
-            ReturnTypes retcode = ReturnTypes.None;
+            var retcode = ReturnTypes.None;
 
             if (ch.Level >= LevelConstants.AvatarLevel) return retcode;
 
            ch.SetColor(ATTypes.AT_BLOOD);
-            DescriptorAttribute attrib = ConditionTypes.Bloodthirsty.GetAttribute<DescriptorAttribute>();
+            var attrib = ConditionTypes.Bloodthirsty.GetAttribute<DescriptorAttribute>();
 
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
@@ -125,7 +125,7 @@ namespace SmaugCS.Extensions.Player
 
            ch.SetColor(ATTypes.AT_SOBER);
 
-            DescriptorAttribute attrib = ConditionTypes.Drunk.GetAttribute<DescriptorAttribute>();
+            var attrib = ConditionTypes.Drunk.GetAttribute<DescriptorAttribute>();
             ch.SendTo(attrib.Messages.ToList()[conditionValue]);
 
             return ReturnTypes.None;

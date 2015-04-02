@@ -10,12 +10,12 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_push(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Push what?")) return;
 
             if (handler.FindObject_CheckMentalState(ch)) return;
 
-            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
+            var obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj == null)
             {
                 comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, obj, ToTypes.Character);

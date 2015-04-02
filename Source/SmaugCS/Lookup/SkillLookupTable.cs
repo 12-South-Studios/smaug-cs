@@ -16,7 +16,7 @@ namespace SmaugCS.Lookup
 
         public override void UpdateFunctionReferences(IEnumerable<SkillData> values)
         {
-            foreach (SkillData skill in values.Where(x => !x.SkillFunctionName.IsNullOrEmpty()))
+            foreach (var skill in values.Where(x => !x.SkillFunctionName.IsNullOrEmpty()))
             {
                 if (skill.SkillFunction == null)
                     skill.SkillFunction = new DoFunction();

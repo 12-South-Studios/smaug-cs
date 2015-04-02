@@ -13,7 +13,7 @@ namespace SmaugCS.Commands.PetsAndGroups
     {
         public static void do_order(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Order whom to do what?")) return;
 
             if (CheckFunctions.CheckIfTrue(ch, ch.IsAffected(AffectedByTypes.Charm),
@@ -21,10 +21,10 @@ namespace SmaugCS.Commands.PetsAndGroups
 
             if (CheckFunctions.CheckIfTrue(ch, firstArg.EqualsIgnoreCase("mp"), "No... I don't think so.")) return;
 
-            bool all = false;
+            var all = false;
             CharacterInstance victim = null;
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (secondArg.EqualsIgnoreCase("all"))
                 all = true;
             else
@@ -36,8 +36,8 @@ namespace SmaugCS.Commands.PetsAndGroups
                     "Do it yourself!")) return;
             }
 
-            bool found = false;
-            foreach (CharacterInstance och in ch.CurrentRoom.Persons
+            var found = false;
+            foreach (var och in ch.CurrentRoom.Persons
                 .Where(och => och.IsAffected(AffectedByTypes.Charm)
                     && och.Master == ch && (all || och == victim)))
             {

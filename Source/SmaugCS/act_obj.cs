@@ -25,7 +25,7 @@ namespace SmaugCS
 
             if (obj.MagicFlags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
             {
-                TimerData timer = ch.GetTimer(TimerTypes.PKilled);
+                var timer = ch.GetTimer(TimerTypes.PKilled);
                 if (ch.CanPKill() && timer == null)
                 {
                     if (ch.Level - obj.Value[5] > 5 || obj.Value[5] - ch.Level > 5)
@@ -53,7 +53,7 @@ namespace SmaugCS
                 return;
             }
 
-            int weight = obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
+            var weight = obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                              ? obj.Weight
                              : obj.GetWeight();
 
@@ -61,9 +61,9 @@ namespace SmaugCS
             {
                 if (obj.InObject != null)
                 {
-                    ObjectInstance tObject = obj.InObject;
-                    int inobj = 1;
-                    bool checkweight = tObject.ItemType == ItemTypes.Container
+                    var tObject = obj.InObject;
+                    var inobj = 1;
+                    var checkweight = tObject.ItemType == ItemTypes.Container
                                        && tObject.ExtraFlags.IsSet(ItemExtraFlags.Magical);
 
                     while (tObject.InObject != null)
@@ -99,7 +99,7 @@ namespace SmaugCS
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom)
                 && (container == null || container.CarriedBy == null))
             {
-                foreach (ClanData clan in DatabaseManager.Instance.CLANS.Values)
+                foreach (var clan in DatabaseManager.Instance.CLANS.Values)
                 {
                     //if (clan.StoreRoom == ch.CurrentRoom.Vnum)
                     //     clan.SaveStoreroom(ch);
@@ -178,8 +178,8 @@ namespace SmaugCS
                 //&& Macros.CAN_GO(obj, (int) DirectionTypes.Down)
                 && !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
             {
-                ExitData exit = obj.InRoom.GetExit(DirectionTypes.Down);
-                RoomTemplate to_room = exit.GetDestination();
+                var exit = obj.InRoom.GetExit(DirectionTypes.Down);
+                var to_room = exit.GetDestination();
 
                 if (through)
                     fall_count++;
@@ -212,12 +212,12 @@ namespace SmaugCS
 
                 if (!obj.InRoom.Flags.IsSet((int)RoomFlags.NoFloor) && through)
                 {
-                    int dam = fall_count * obj.Weight / 2;
+                    var dam = fall_count * obj.Weight / 2;
 
                     // Damage players in room
                     if (obj.InRoom.Persons.Any() && SmaugRandom.D100() > 15)
                     {
-                        foreach (CharacterInstance rch in obj.InRoom.Persons)
+                        foreach (var rch in obj.InRoom.Persons)
                         {
                             comm.act(ATTypes.AT_WHITE, "$p falls on $n!", rch, obj, null, ToTypes.Room);
                             comm.act(ATTypes.AT_WHITE, "$p falls on you!", rch, obj, null, ToTypes.Character);
@@ -273,13 +273,13 @@ namespace SmaugCS
         {
             if (obj == null) return null;
 
-            bool match = true;
-            string arg = string.Empty;
+            var match = true;
+            var arg = string.Empty;
 
             switch (obj.ItemType)
             {
                 case ItemTypes.Paper:
-                    string subject = db.get_extra_descr("_subject_", obj.ExtraDescriptions);
+                    var subject = db.get_extra_descr("_subject_", obj.ExtraDescriptions);
                     if (string.IsNullOrEmpty(subject))
                         break;
 
@@ -287,8 +287,8 @@ namespace SmaugCS
 
                     while (match)
                     {
-                        Tuple<string, string> args = argument.FirstArgument();
-                        string argcopy = args.Item2;
+                        var args = argument.FirstArgument();
+                        var argcopy = args.Item2;
                         arg = args.Item1;
                         if (string.IsNullOrEmpty(argcopy))
                             break;
@@ -305,7 +305,7 @@ namespace SmaugCS
                 case ItemTypes.PlayerCorpse:
                     if (obj.Contents.Any())
                     {
-                        ObjectInstance returnedObj = recursive_note_find(obj.Contents.First(), argument);
+                        var returnedObj = recursive_note_find(obj.Contents.First(), argument);
                         if (returnedObj != null)
                             return returnedObj;
                     }
@@ -322,8 +322,8 @@ namespace SmaugCS
 
         public static string get_ed_number(ObjectInstance obj, int number)
         {
-            int count = 1;
-            foreach (ExtraDescriptionData ed in obj.ExtraDescriptions)
+            var count = 1;
+            foreach (var ed in obj.ExtraDescriptions)
             {
                 if (count == number)
                     return ed.Description;

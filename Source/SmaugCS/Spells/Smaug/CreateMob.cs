@@ -16,12 +16,12 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_create_mob(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
-            string targetName = Cast.TargetName;
+            var targetName = Cast.TargetName;
 
-            int lvl = GetMobLevel(skill, level);
-            int id = skill.value;
+            var lvl = GetMobLevel(skill, level);
+            var id = skill.value;
 
             if (id == 0)
             {
@@ -31,10 +31,10 @@ namespace SmaugCS.Spells.Smaug
                     id = GameConstants.GetVnum("vampire");
             }
 
-            MobTemplate mi = DatabaseManager.Instance.MOBILETEMPLATES.Get(id);
+            var mi = DatabaseManager.Instance.MOBILETEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(mi, skill, ch)) return ReturnTypes.None;
 
-            CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(mi);
+            var mob = DatabaseManager.Instance.CHARACTERS.Create(mi);
             if (CheckFunctions.CheckIfNullObjectCasting(mob, skill, ch)) return ReturnTypes.None;
 
             mob.Level = lvl.GetLowestOfTwoNumbers(!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : mob.Level);
@@ -47,7 +47,7 @@ namespace SmaugCS.Spells.Smaug
             ch.CurrentRoom.AddTo(mob);
             mob.AddFollower(ch);
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID),
                 Duration = (SmaugRandom.Fuzzy((level + 1)/3) + 1)*

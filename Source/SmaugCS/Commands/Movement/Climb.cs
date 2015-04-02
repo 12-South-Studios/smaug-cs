@@ -13,7 +13,7 @@ namespace SmaugCS.Commands.Movement
         {
             if (string.IsNullOrEmpty(argument))
             {
-                foreach (ExitData ext in ch.CurrentRoom.Exits.Where(ext => ext.Flags.IsSet(ExitFlags.xClimb)))
+                foreach (var ext in ch.CurrentRoom.Exits.Where(ext => ext.Flags.IsSet(ExitFlags.xClimb)))
                 {
                     Move.move_char(ch, ext, 0);
                     return;
@@ -23,7 +23,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            ExitData exit = ch.FindExit(argument, true);
+            var exit = ch.FindExit(argument, true);
             if (exit != null && exit.Flags.IsSet(ExitFlags.xClimb))
             {
                 Move.move_char(ch, exit, 0);

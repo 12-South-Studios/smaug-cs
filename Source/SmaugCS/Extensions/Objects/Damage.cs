@@ -10,7 +10,7 @@ namespace SmaugCS.Extensions.Objects
     {
         public static ReturnTypes CauseDamageTo(this ObjectInstance obj)
         {
-            CharacterInstance ch = obj.CarriedBy;
+            var ch = obj.CarriedBy;
             obj.Split();
 
             if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))))

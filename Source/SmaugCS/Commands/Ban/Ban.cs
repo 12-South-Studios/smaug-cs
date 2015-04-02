@@ -17,21 +17,21 @@ namespace SmaugCS.Commands.Admin
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc(), "Monsters are too dumb to do that!")) return;
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
 
             ch.SetColor(ATTypes.AT_IMMORT);
-            string[] args = new string[4];
+            var args = new string[4];
             args[0] = argument.ParseWord(1, " ");
             args[1] = argument.ParseWord(2, " ");
             args[2] = argument.ParseWord(3, " ");
             args[3] = argument.ParseWord(4, " ");
 
-            int tempTime = args[3].IsNullOrWhitespace() && !args[3].IsNumber() ? -1 : Convert.ToInt32(args[3]);
+            var tempTime = args[3].IsNullOrWhitespace() && !args[3].IsNumber() ? -1 : Convert.ToInt32(args[3]);
             if (CheckFunctions.CheckIfTrue(ch, tempTime != -1 && (tempTime < 1 || tempTime > 1000),
                 "Time value is -1 (forever) or from 1 to 1000.")) return;
 
             // Convert the value from DAYS to SECONDS
-            int duration = tempTime > 0 ? (tempTime * 86400) : tempTime;
+            var duration = tempTime > 0 ? (tempTime * 86400) : tempTime;
 
             if (CheckFunctions.CheckIfTrue(pch, pch.SubState == CharacterSubStates.Restricted,
                 "You cannot use this command from within another command.")) return;
@@ -141,7 +141,7 @@ namespace SmaugCS.Commands.Admin
 
         private static int AddBanDescription(PlayerInstance ch, string arg1, string arg2, int duration, BanTypes type)
         {
-            BanData ban = ch.DestinationBuffer.CastAs<BanData>();
+            var ban = ch.DestinationBuffer.CastAs<BanData>();
             if (ban == null)
             {
                 LogManager.Instance.Bug("Null DestinationBuffer for character {0}", ch.Name);
@@ -156,7 +156,7 @@ namespace SmaugCS.Commands.Admin
             //build.stop_editing(ch);
 
             ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(ch.tempnum);
-            BanManager.Instance.AddBan(ban);
+            BanManager.Instance.Repository.Add(ban);
 
             if (ban.Duration > 0)
                 ch.Printf("{0} is banned for {1} days.\r\n", ban.Name, ban.Duration / 86400);

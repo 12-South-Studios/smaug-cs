@@ -10,10 +10,10 @@ namespace SmaugCS.Extensions.Player
     {
         private static void SendFileToBuffer(this PlayerInstance ch, SystemFileTypes fileType)
         {
-            string path = SystemConstants.GetSystemFile(fileType);
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            var path = SystemConstants.GetSystemFile(fileType);
+            using (var proxy = new TextReaderProxy(new StreamReader(path)))
             {
-                string buffer = proxy.ReadToEnd();
+                var buffer = proxy.ReadToEnd();
                 ch.Descriptor.WriteToBuffer(buffer, buffer.Length);
             } 
         }

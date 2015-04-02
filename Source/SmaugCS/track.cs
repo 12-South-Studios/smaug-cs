@@ -88,8 +88,8 @@ namespace SmaugCS
             room_enqueue(src);
             MARK(src);
 
-            int curr_dir = 0;
-            foreach (ExitData exit in src.Exits.Where(valid_edge))
+            var curr_dir = 0;
+            foreach (var exit in src.Exits.Where(valid_edge))
             {
                 curr_dir = (int)exit.Direction;
                 MARK(exit.GetDestination());
@@ -97,9 +97,9 @@ namespace SmaugCS
                 bfs_enqueue(exit.GetDestination(), Convert.ToChar(curr_dir));
             }
 
-            int count = 0;
+            var count = 0;
 
-            BFSQueueData queueHead = BFS_DATA.Peek();
+            var queueHead = BFS_DATA.Peek();
             while (queueHead != null)
             {
                 if (++count > maxdist)
@@ -116,7 +116,7 @@ namespace SmaugCS
                     return curr_dir;
                 }
 
-                foreach (ExitData exit in queueHead.Room.Exits.Where(valid_edge))
+                foreach (var exit in queueHead.Room.Exits.Where(valid_edge))
                 {
                     curr_dir = (int)exit.Direction;
                     MARK(exit.GetDestination());

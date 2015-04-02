@@ -40,9 +40,6 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\Libraries\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\Libraries\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Libraries\log4net.dll</HintPath>
     </Reference>

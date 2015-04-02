@@ -13,9 +13,9 @@ namespace SmaugCS.Commands.Social
     {
         public static void do_ignore(CharacterInstance ch, string argument)
         {
-            string arg = argument.FirstWord();
+            var arg = argument.FirstWord();
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
             if (string.IsNullOrEmpty(arg))
             {
                 DisplayIgnoreList(pch);
@@ -48,7 +48,7 @@ namespace SmaugCS.Commands.Social
             ch.Printf("----------------------------------------");
            ch.SetColor(ATTypes.AT_IGNORE);
 
-            foreach (IgnoreData ignore in ch.PlayerData.Ignored)
+            foreach (var ignore in ch.PlayerData.Ignored)
             {
                 ch.Printf("\t  - %s", ignore.Name);
             }
@@ -63,7 +63,7 @@ namespace SmaugCS.Commands.Social
 
         private static void IgnoreCharacter(string arg, PlayerInstance ch)
         {
-            string name = arg;
+            var name = arg;
 
             if (name.EqualsIgnoreCase("reply"))
             {
@@ -83,7 +83,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            CharacterInstance victim =
+            var victim =
                 DatabaseManager.Instance.CHARACTERS.Values.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
             if (victim == null)
             {
@@ -94,7 +94,7 @@ namespace SmaugCS.Commands.Social
 
             // TODO Should there be a maximum to the ignore list?
 
-            IgnoreData ignore = new IgnoreData
+            var ignore = new IgnoreData
             {
                 IgnoredOn = DateTime.Now,
                 Name = name
@@ -109,7 +109,7 @@ namespace SmaugCS.Commands.Social
 
         private static void RemoveIgnoredPlayer(string name, PlayerInstance ch)
         {
-            IgnoreData ignore = ch.PlayerData.Ignored.First(x => x.Name.EqualsIgnoreCase(name));
+            var ignore = ch.PlayerData.Ignored.First(x => x.Name.EqualsIgnoreCase(name));
             ch.PlayerData.Ignored.Remove(ignore);
 
            ch.SetColor(ATTypes.AT_IGNORE);

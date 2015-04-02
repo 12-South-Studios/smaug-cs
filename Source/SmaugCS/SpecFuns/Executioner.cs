@@ -18,10 +18,10 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake() || ch.CurrentFighting != null)
                 return false;
 
-            string crime = string.Empty;
+            var crime = string.Empty;
             CharacterInstance victim = null;
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
+            foreach (var vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {
                 victim = vch;
                 crime = GetCrime(victim);
@@ -44,10 +44,10 @@ namespace SmaugCS.SpecFuns
             if (ch.CharDied())
                 return true;
 
-            int vnum = GameConstants.GetVnum("MobileCityGuard");
-            MobTemplate cityguard = DatabaseManager.Instance.GetEntity<MobTemplate>(vnum);
+            var vnum = GameConstants.GetVnum("MobileCityGuard");
+            var cityguard = DatabaseManager.Instance.GetEntity<MobTemplate>(vnum);
 
-            CharacterInstance newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
+            var newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
             ch.CurrentRoom.AddTo(newGuard);
 
             newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);

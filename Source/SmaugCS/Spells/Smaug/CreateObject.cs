@@ -16,12 +16,12 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_create_obj(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
-            string targetName = Cast.TargetName;
+            var targetName = Cast.TargetName;
 
-            int lvl = GetObjectLevel(skill, level);
-            int id = skill.value;
+            var lvl = GetObjectLevel(skill, level);
+            var id = skill.value;
 
             if (id == 0)
             {
@@ -31,10 +31,10 @@ namespace SmaugCS.Spells.Smaug
                     id = GameConstants.GetVnum("shield");
             }
 
-            ObjectTemplate oi = DatabaseManager.Instance.OBJECTTEMPLATES.Get(id);
+            var oi = DatabaseManager.Instance.OBJECTTEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(oi, skill, ch)) return ReturnTypes.None;
 
-            ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(oi);
+            var obj = DatabaseManager.Instance.OBJECTS.Create(oi);
             obj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 0;
             obj.Level = lvl;
 

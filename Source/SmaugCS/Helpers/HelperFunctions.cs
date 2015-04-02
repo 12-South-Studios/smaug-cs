@@ -12,34 +12,34 @@ namespace SmaugCS.Helpers
     {
         public static bool HasSufficientBloodPower(IList<object> args)
         {
-            CharacterInstance actor = (CharacterInstance)args[0];
-            int blood = (int)args[1];
+            var actor = (CharacterInstance)args[0];
+            var blood = (int)args[1];
             return actor.IsVampire() && ((PlayerInstance)actor).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) >= blood;
         }
 
         public static bool HasSufficientMana(IList<object> args)
         {
-            CharacterInstance actor = (CharacterInstance)args[0];
-            int mana = (int)args[1];
+            var actor = (CharacterInstance)args[0];
+            var mana = (int)args[1];
             return !actor.IsNpc() && actor.CurrentMana >= mana;
         }
 
         public static bool IsCharmedOrPossessed(IList<object> args)
         {
-            CharacterInstance actor = (CharacterInstance) args[0];
+            var actor = (CharacterInstance) args[0];
             return actor.IsNpc() && actor.IsAffected(AffectedByTypes.Charm) || actor.IsAffected(AffectedByTypes.Possess);
         }
 
         public static bool IsFighting(IList<object> args)
         {
-            CharacterInstance actor = (CharacterInstance) args[0];
+            var actor = (CharacterInstance) args[0];
             return actor.CurrentFighting != null;
         }
 
         public static bool IsInFightingPosition(IList<object> args)
         {
-            CharacterInstance actor = (CharacterInstance) args[0];
-            PositionTypes position = actor.CurrentPosition;
+            var actor = (CharacterInstance) args[0];
+            var position = actor.CurrentPosition;
             return (position == PositionTypes.Aggressive
                     || position == PositionTypes.Berserk
                     || position == PositionTypes.Defensive

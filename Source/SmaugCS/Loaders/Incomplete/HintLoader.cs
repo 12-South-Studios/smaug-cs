@@ -17,9 +17,9 @@ namespace SmaugCS.Loaders
 
         public override void Save()
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
+            using (var proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
-                foreach (HintData hint in db.HINTS)
+                foreach (var hint in db.HINTS)
                 {
                     proxy.Write("Text {0}~\n", hint.Text);
                     proxy.Write("Low  {0}\n", hint.Low);
@@ -31,12 +31,12 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
                 IEnumerable<string> lines = proxy.ReadIntoList();
                 HintData newHint = null;
 
-                foreach (string line in lines)
+                foreach (var line in lines)
                 {
                     if (newHint == null)
                         newHint = new HintData();

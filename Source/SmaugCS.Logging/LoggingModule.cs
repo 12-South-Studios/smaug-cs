@@ -2,8 +2,8 @@
 using Ninject.Modules;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
-using Realm.Library.SmallDb;
 using SmaugCS.Constants;
+using SmaugCS.DAL.Interfaces;
 
 namespace SmaugCS.Logging
 {
@@ -17,9 +17,8 @@ namespace SmaugCS.Logging
             Kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope()
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
                 .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"));
+                .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"))
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
         }
     }
 }

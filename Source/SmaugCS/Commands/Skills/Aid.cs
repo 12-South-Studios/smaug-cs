@@ -20,10 +20,10 @@ namespace SmaugCS.Commands.Skills
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() && ch.IsAffected(AffectedByTypes.Charm),
                 Resources.CANNOT_CONCENTRATE)) return;
 
-            string arg = argument.FirstWord();
+            var arg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, arg, Resources.AID_WHO)) return;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(arg);
+            var victim = ch.GetCharacterInRoom(arg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "Not on mobs.")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentMount, "You can't do that while mounted.")) return;
@@ -41,9 +41,9 @@ namespace SmaugCS.Commands.Skills
                 return;
             }
 
-            int percent = SmaugRandom.D100() - ch.GetCurrentLuck() - 13;
+            var percent = SmaugRandom.D100() - ch.GetCurrentLuck() - 13;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("aid");
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>("aid");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'aid' was not found.");
 

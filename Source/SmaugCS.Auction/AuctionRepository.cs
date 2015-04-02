@@ -59,7 +59,6 @@ namespace SmaugCS.Auction
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public void Save()
         {
             try

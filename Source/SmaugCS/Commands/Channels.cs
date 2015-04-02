@@ -15,9 +15,9 @@ namespace SmaugCS.Commands
         [Command(NoNpc = true)]
         public static void do_channels(CharacterInstance ch, string argument)
         {
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
 
-            string firstWord = argument.FirstWord();
+            var firstWord = argument.FirstWord();
             if (firstWord.IsNullOrEmpty())
                 ListChannels(pch, argument);
             else if (firstWord.StartsWith("+"))
@@ -39,9 +39,9 @@ namespace SmaugCS.Commands
 
             ch.SendTo(" %gChannels  %G:\r\n  ");
 
-            foreach(ChannelTypes channelType in Realm.Library.Common.EnumerationExtensions.GetValues<ChannelTypes>())
+            foreach(var channelType in Realm.Library.Common.EnumerationExtensions.GetValues<ChannelTypes>())
             {
-                string msg = GetChannelText(channelType, ch);
+                var msg = GetChannelText(channelType, ch);
                 if (!string.IsNullOrEmpty(msg))
                     ch.PrintfColor(msg);
             }
@@ -49,18 +49,18 @@ namespace SmaugCS.Commands
 
         private static string GetChannelText(ChannelTypes channelType, PlayerInstance ch)
         {
-            ChannelAttribute attrib = channelType.GetAttribute<ChannelAttribute>();
+            var attrib = channelType.GetAttribute<ChannelAttribute>();
             if (attrib == null)
                 throw new InvalidOperationException();
 
-            int minTrust = 0;
-            RequireTrustChannelAttribute trustAttrib = channelType.GetAttribute<RequireTrustChannelAttribute>();
+            var minTrust = 0;
+            var trustAttrib = channelType.GetAttribute<RequireTrustChannelAttribute>();
             if (trustAttrib != null)
                 minTrust = GameConstants.GetConstant<int>(trustAttrib.TrustType);
 
             if (attrib.Verify(channelType, ch, minTrust))
             {
-                ChannelPrintAttribute print = channelType.GetAttribute<ChannelPrintAttribute>();
+                var print = channelType.GetAttribute<ChannelPrintAttribute>();
                 if (print == null)
                     throw new InvalidOperationException("ChannelPrint attribute missing from ChannelType");
 
@@ -100,19 +100,19 @@ namespace SmaugCS.Commands
         {
             if (argument.EqualsIgnoreCase("all"))
             {
-                foreach (ChannelTypes chType in ClearAllList)
+                foreach (var chType in ClearAllList)
                     clearAction.Invoke(ch, chType);
                 return;
             }
 
-            ChannelTypes channelType = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ChannelTypes>(argument);
+            var channelType = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ChannelTypes>(argument);
 
-            ChannelAttribute attrib = channelType.GetAttribute<ChannelAttribute>();
+            var attrib = channelType.GetAttribute<ChannelAttribute>();
             if (attrib == null)
                 throw new InvalidOperationException();
 
-            int minTrust = 0;
-            RequireTrustChannelAttribute trustAttrib = channelType.GetAttribute<RequireTrustChannelAttribute>();
+            var minTrust = 0;
+            var trustAttrib = channelType.GetAttribute<RequireTrustChannelAttribute>();
             if (trustAttrib != null)
                 minTrust = GameConstants.GetConstant<int>(trustAttrib.TrustType);
 

@@ -14,7 +14,7 @@ namespace SmaugCS.Extensions
     {
         public static void Extract(this ExitData exit)
         {
-            RoomTemplate room = DatabaseManager.Instance.ROOMS.Get(exit.Room_vnum);
+            var room = DatabaseManager.Instance.ROOMS.Get(exit.Room_vnum);
             room.Exits.Remove(exit);
             ExitData rexit = exit.GetReverse();
             rexit.Reverse = 0;

@@ -44,7 +44,7 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (ch.IsNpc() || ch.IsImmortal())
                     continue;
@@ -53,11 +53,11 @@ namespace SmaugCS
 
                 if (ch.CurrentRoom != null && ch.Level > 3)
                 {
-                    RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                    var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
-                    ThirstAttribute attrib = ch.CurrentRoom.SectorType.GetAttribute<ThirstAttribute>();
-                    int modValue = (attrib == null ? -1 : attrib.ModValue) + race.ThirstMod;
+                    var attrib = ch.CurrentRoom.SectorType.GetAttribute<ThirstAttribute>();
+                    var modValue = (attrib == null ? -1 : attrib.ModValue) + race.ThirstMod;
 
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, modValue);
                 }
@@ -70,7 +70,7 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK)
 
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 handler.CurrentCharacter = ch;
 
@@ -122,7 +122,7 @@ namespace SmaugCS
 
                 if (!ch.IsNpc() && ch.Level < LevelConstants.ImmortalLevel)
                 {
-                    ObjectInstance obj = ch.GetEquippedItem(WearLocations.Light);
+                    var obj = ch.GetEquippedItem(WearLocations.Light);
                     if (obj != null && obj.ItemType == ItemTypes.Light && obj.Value[2] > 0)
                         ProcessLightObject(ch, obj);
 
@@ -161,7 +161,7 @@ namespace SmaugCS
                     ch.CheckAlignment();
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
-                    RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                    var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     if (ch.IsVampire() && ch.Level >= 10)
@@ -204,7 +204,7 @@ namespace SmaugCS
                         comm.act(ATTypes.AT_POISON, "$n shivers and suffers.", ch, null, null, ToTypes.Room);
                         comm.act(ATTypes.AT_POISON, "You shiver and suffer.", ch, null, null, ToTypes.Character);
 
-                        int minMentalState = CalculateMinMentalStateWhilePoisoned(ch);
+                        var minMentalState = CalculateMinMentalStateWhilePoisoned(ch);
                         ch.MentalState = 20.GetNumberThatIsBetween(minMentalState, 100);
                         ch.CauseDamageTo(ch, 6, DatabaseManager.Instance.LookupSkill("poison"));
                     }
@@ -217,18 +217,18 @@ namespace SmaugCS
 
                     if (ch.IsAffected(AffectedByTypes.RecurringSpell))
                     {
-                        bool died = false;
-                        bool found = false;
-                        foreach (AffectData paf in ch.Affects.Where(x => x.Location == ApplyTypes.RecurringSpell))
+                        var died = false;
+                        var found = false;
+                        foreach (var paf in ch.Affects.Where(x => x.Location == ApplyTypes.RecurringSpell))
                         {
                             found = true;
                             if (Macros.IS_VALID_SN(paf.Modifier))
                             {
-                                SkillData skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
+                                var skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
                                 if (skill == null || skill.Type != SkillTypes.Spell)
                                     continue;
 
-                                ReturnTypes retCode = skill.SpellFunction.Value.Invoke(paf.Modifier, ch.Level, ch, ch);
+                                var retCode = skill.SpellFunction.Value.Invoke(paf.Modifier, ch.Level, ch, ch);
                                 if (retCode == ReturnTypes.CharacterDied || ch.CharDied())
                                 {
                                     died = true;
@@ -244,7 +244,7 @@ namespace SmaugCS
 
                     if (ch.MentalState >= 30)
                     {
-                        int val = (ch.MentalState + 5)/10;
+                        var val = (ch.MentalState + 5)/10;
                         if (HighMentalStateTable.ContainsKey(val))
                         {
                             ch.SendTo(HighMentalStateTable[val].Key);
@@ -254,7 +254,7 @@ namespace SmaugCS
 
                     if (ch.MentalState <= -30)
                     {
-                        int val = (Math.Abs(ch.MentalState) + 5)/10;
+                        var val = (Math.Abs(ch.MentalState) + 5)/10;
                         if (LowMentalStateTable.ContainsKey(val))
                         {
                             if (val > 7)
@@ -341,7 +341,7 @@ namespace SmaugCS
                 ((PlayerInstance)ch).PlayerData.Flags.SetBit(PCFlags.Idle);
                 ch.CurrentRoom.RemoveFrom(ch);
 
-                RoomTemplate room = DatabaseManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
+                var room = DatabaseManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
                 room.AddTo(ch);
             }
         }
@@ -372,7 +372,7 @@ namespace SmaugCS
         {
             // lc = trworld_create(TR_OBJ_WORLD_BACK);
 
-            foreach (ObjectInstance obj in DatabaseManager.Instance.OBJECTS.Values)
+            foreach (var obj in DatabaseManager.Instance.OBJECTS.Values)
             {
                 handler.CurrentObject = obj;
 
@@ -399,8 +399,8 @@ namespace SmaugCS
                 if (obj.Timer <= 0 || --obj.Timer > 0)
                     continue;
 
-                ATTypes AT_TEMP = ATTypes.AT_PLAIN;
-                string message = "$p mysteriously vanishes.";
+                var AT_TEMP = ATTypes.AT_PLAIN;
+                var message = "$p mysteriously vanishes.";
 
                 if (ObjectExpireTable.ContainsKey(obj.ItemType))
                 {
@@ -418,7 +418,7 @@ namespace SmaugCS
                     comm.act(AT_TEMP, message, obj.CarriedBy, obj, null, ToTypes.Character);
                 else if (obj.InRoom != null && obj.InRoom.Persons.Any() && !obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                 {
-                    CharacterInstance rch = obj.InRoom.Persons.FirstOrDefault();
+                    var rch = obj.InRoom.Persons.FirstOrDefault();
                     comm.act(AT_TEMP, message, rch, obj, null, ToTypes.Room);
                     comm.act(AT_TEMP, message, rch, obj, null, ToTypes.Character);
                 }
@@ -449,7 +449,7 @@ namespace SmaugCS
 
         private static void UpdateCorpse(ObjectInstance obj)
         {
-            int timer = 1.GetHighestOfTwoNumbers(obj.Timer - 1);
+            var timer = 1.GetHighestOfTwoNumbers(obj.Timer - 1);
             if (obj.ItemType == ItemTypes.PlayerCorpse)
                 timer = obj.Timer/8 + 1;
 
@@ -458,7 +458,7 @@ namespace SmaugCS
                 obj.Split();
                 obj.Value[2] = timer;
 
-                string buf =
+                var buf =
                     string.Format(
                         LookupManager.Instance.GetLookup("CorpseDescs", (timer - 1).GetLowestOfTwoNumbers(4)),
                         obj.ShortDescription);
@@ -503,7 +503,7 @@ namespace SmaugCS
 
             // lc1 = trworld_create(TR_CHAR_WORLD_FORW);
 
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 handler.set_cur_char(ch);
                 ch.WillFall(0);
@@ -555,18 +555,18 @@ namespace SmaugCS
                     && !ch.Act.IsSet(ActFlags.Mounted)
                     && !ch.Act.IsSet(ActFlags.Prototype))
                 {
-                    int door = SmaugRandom.Bits(4);
+                    var door = SmaugRandom.Bits(4);
                     if (door >= 9)
                         return;
 
-                    ExitData exit = ch.CurrentRoom.GetExit(door);
+                    var exit = ch.CurrentRoom.GetExit(door);
                     if (exit == null)
                         return;
 
                     if (exit.Flags.IsSet(ExitFlags.Closed))
                         return;
 
-                    RoomTemplate room = exit.GetDestination();
+                    var room = exit.GetDestination();
                     if (room == null)
                         return;
 
@@ -616,11 +616,11 @@ namespace SmaugCS
             if (portal == null)
                  throw new ArgumentNullException("portal");
 
-            RoomTemplate fromRoom = portal.InRoom;
+            var fromRoom = portal.InRoom;
             if (fromRoom == null)
                 throw new InvalidDataException("Portal has no room");
 
-            ExitData exit = fromRoom.Exits.FirstOrDefault(xit => xit.Flags.IsSet(ExitFlags.Portal));
+            var exit = fromRoom.Exits.FirstOrDefault(xit => xit.Flags.IsSet(ExitFlags.Portal));
             if (exit == null)
             {
                 // TODO Exception, log it

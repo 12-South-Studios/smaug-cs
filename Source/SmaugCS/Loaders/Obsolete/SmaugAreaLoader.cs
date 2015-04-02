@@ -20,17 +20,17 @@ namespace SmaugCS.Loaders
 
         public override AreaData LoadArea(AreaData area)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(FilePath)))
+            using (var proxy = new TextReaderProxy(new StreamReader(FilePath)))
             {
-                string word = string.Empty;
-                AreaData newArea = area;
+                var word = string.Empty;
+                var newArea = area;
                 newArea.Age = 15;
                 newArea.Author = "unknown";
                 newArea.Version = 0;
 
                 do
                 {
-                    char c = proxy.ReadNextLetter();
+                    var c = proxy.ReadNextLetter();
                     if (c != '#')
                     {
                         LogManager.Instance.Bug("LoadArea: # not found in area file %s", AreaName);

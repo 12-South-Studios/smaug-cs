@@ -32,7 +32,7 @@ namespace SmaugCS.Managers
 
         public ResistanceTypes GetResistanceType(SpellDamageTypes type)
         {
-            DamageResistanceAttribute attrib = type.GetAttribute<DamageResistanceAttribute>();
+            var attrib = type.GetAttribute<DamageResistanceAttribute>();
             return attrib == null ? ResistanceTypes.Unknown : attrib.ResistanceType;
         }
 
@@ -41,7 +41,7 @@ namespace SmaugCS.Managers
             if (!LookupTable.ContainsKey(table.ToLower()))
                 LookupTable[table.ToLower()] = new List<string>();
 
-            List<string> lookups = LookupTable[table.ToLower()];
+            var lookups = LookupTable[table.ToLower()];
             if (!lookups.Contains(entry))
                 lookups.Add(entry);
         }
@@ -69,7 +69,7 @@ namespace SmaugCS.Managers
 
         public string GetLookup(string table, int index)
         {
-            IEnumerable<string> lookups = GetLookups(table);
+            var lookups = GetLookups(table);
             if (lookups.Any() && lookups.Count() > index)
                 return lookups.ElementAt(index);
             return string.Empty;

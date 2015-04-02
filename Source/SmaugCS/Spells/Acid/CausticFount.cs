@@ -10,11 +10,11 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_caustic_fount(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = (CharacterInstance)vo;
+            var victim = (CharacterInstance)vo;
 
-            int lvl = 0.GetHighestOfTwoNumbers(level);
+            var lvl = 0.GetHighestOfTwoNumbers(level);
             lvl = 42.GetLowestOfTwoNumbers(lvl);
-            int damage = (int) (1.3f*(2*lvl*SmaugRandom.D6() - 31));
+            var damage = (int) (1.3f*(2*lvl*SmaugRandom.D6() - 31));
             damage = 0.GetHighestOfTwoNumbers(damage);
 
             if (victim.SavingThrows.CheckSaveVsSpellStaff(lvl, victim))

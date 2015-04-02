@@ -12,8 +12,8 @@ namespace SmaugCS.Extensions.Character
     {
         public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
-            ClassData currentClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
-            int max = 20;
+            var currentClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+            var max = 20;
 
             if (ch.IsNpc() || currentClass.PrimaryAttribute == statistic)
                 max = 25;
@@ -68,7 +68,7 @@ namespace SmaugCS.Extensions.Character
 
         public static int CanCarryN(this CharacterInstance ch)
         {
-            int penalty = 0;
+            var penalty = 0;
 
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return ch.Trust*200;

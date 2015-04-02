@@ -40,9 +40,9 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateMobile", "Creates a new mob", "Id of the Mobile", "Name of the Mobile")]
         public static MobTemplate LuaCreateMob(string id, string name)
         {
-            long mobId = Convert.ToInt64(id);
+            var mobId = Convert.ToInt64(id);
 
-            MobTemplate newMob = _dbManager.MOBILETEMPLATES.Create(mobId, name);
+            var newMob = _dbManager.MOBILETEMPLATES.Create(mobId, name);
             _luaManager.Proxy.CreateTable("mobile");
             LastObject = newMob;
 

@@ -20,14 +20,14 @@ namespace SmaugCS.Spells
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_animate_dead(int sn, int level, CharacterInstance ch, object vo)
         {
-            ObjectInstance corpse =
+            var corpse =
                 ch.CurrentRoom.Contents.FirstOrDefault(x => x.ItemType == ItemTypes.NpcCorpse && x.Cost != -5);
             if (CheckFunctions.CheckIfNullObject(ch, corpse, "You cannot find a suitable corpse here"))
                 return ReturnTypes.SpellFailed;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            MobTemplate template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
+            var template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
             if (template == null)
                 throw new ObjectNotFoundException("Animated Corpse VNUM template was not found.");
 
@@ -80,7 +80,7 @@ namespace SmaugCS.Spells
 
         private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobTemplate template, ObjectInstance corpse)
         {
-            CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
+            var mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
                 string.Format("animated corpse {0}", template.PlayerName));
 
             ch.CurrentRoom.AddTo(mob);
@@ -108,7 +108,7 @@ namespace SmaugCS.Spells
 
         private static void MakeCorpseTemporary(int level, CharacterInstance mob)
         {
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 Type = AffectedByTypes.Charm,
                 Duration = (SmaugRandom.Fuzzy((level + 1)/4) + 1)*
@@ -121,7 +121,7 @@ namespace SmaugCS.Spells
         {
             if (!corpse.Contents.Any()) return;
 
-            foreach (ObjectInstance obj in corpse.Contents)
+            foreach (var obj in corpse.Contents)
             {
                 obj.RemoveFrom(obj);
                 corpse.InRoom.AddTo(obj);

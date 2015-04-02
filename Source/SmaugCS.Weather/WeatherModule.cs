@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using Realm.Library.SmallDb;
 using SmaugCS.Constants;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 
@@ -14,8 +14,7 @@ namespace SmaugCS.Weather
             Kernel.Bind<IWeatherManager>().To<WeatherManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>())
                 .OnActivation(x => x.Initialize(Kernel.Get<IGameManager>().GameTime,
                     GameConstants.GetConstant<int>("WeatherWidth"),
                     GameConstants.GetConstant<int>("WeatherHeight")));

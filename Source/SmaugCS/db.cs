@@ -85,12 +85,12 @@ namespace SmaugCS
             if (level < 0)
                 return string.Format("HintLevel error, level was {0}", level);
 
-            int count = HINTS.Count(hint => level >= hint.Low && level <= hint.High);
+            var count = HINTS.Count(hint => level >= hint.Low && level <= hint.High);
             if (count > 1)
             {
-                int which = SmaugRandom.Between(1, count);
+                var which = SmaugRandom.Between(1, count);
                 count = 0;
-                foreach (HintData hint in HINTS)
+                foreach (var hint in HINTS)
                 {
                     if (level >= hint.Low && level <= hint.High)
                         ++count;
@@ -100,7 +100,7 @@ namespace SmaugCS
             }
             else if (count == 1)
             {
-                foreach (HintData hint in HINTS)
+                foreach (var hint in HINTS)
                 {
                     if (level >= hint.Low && level <= hint.High)
                         return hint.Text;
@@ -128,8 +128,8 @@ namespace SmaugCS
 
         public static void shutdown_mud(string reason)
         {
-            string path = SystemConstants.GetSystemFile(SystemFileTypes.Shutdown);
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path, true)))
+            var path = SystemConstants.GetSystemFile(SystemFileTypes.Shutdown);
+            using (var proxy = new TextWriterProxy(new StreamWriter(path, true)))
             {
                 proxy.Write("{0}\n", reason);
             }
@@ -137,10 +137,10 @@ namespace SmaugCS
 
         public static void FixExits()
         {
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
+            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
-                bool fexit = false;
-                foreach (ExitData exit in room.Exits)
+                var fexit = false;
+                foreach (var exit in room.Exits)
                 {
                     exit.Room_vnum = room.Vnum;
                     exit.Destination = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
@@ -164,13 +164,13 @@ namespace SmaugCS
                     room.Flags.SetBit((int)RoomFlags.NoMob);
             }
 
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
+            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
-                foreach (ExitData exit in room.Exits)
+                foreach (var exit in room.Exits)
                 {
                     if (exit.Destination <= 0 && exit.GetReverse() == null)
                     {
-                        ExitData reverseExit = exit.GetDestination().GetExitTo(LookupConstants.rev_dir[(int)exit.Direction], room.ID);
+                        var reverseExit = exit.GetDestination().GetExitTo(LookupConstants.rev_dir[(int)exit.Direction], room.ID);
                         if (reverseExit != null)
                         {
                             exit.Reverse = reverseExit.ID;
@@ -203,7 +203,7 @@ namespace SmaugCS
         {
             do
             {
-                HelpData help = new HelpData
+                var help = new HelpData
                     {
                         Level = proxy.ReadNumber(),
                         Keyword = proxy.ReadToEndOfLine()
@@ -284,20 +284,20 @@ namespace SmaugCS
 
         public static void initialize_economy()
         {
-            foreach (AreaData area in DatabaseManager.Instance.AREAS.Values)
+            foreach (var area in DatabaseManager.Instance.AREAS.Values)
             {
                 if (area.HighEconomy > 0 || area.LowMobNumber > 10000)
                     continue;
 
-                int range = area.HighSoftRange - area.LowSoftRange;
+                var range = area.HighSoftRange - area.LowSoftRange;
                 range = (range > 0) ? range / 2 : 25;
-                int gold = range * range * 50000;
+                var gold = range * range * 50000;
 
                 area.BoostEconomy(gold);
 
-                for (int x = area.LowMobNumber; x < area.HighMobNumber; x++)
+                for (var x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    MobTemplate mob = DatabaseManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
+                    var mob = DatabaseManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.Gold * 10);
                 }
@@ -306,7 +306,7 @@ namespace SmaugCS
 
         public static ExitData get_exit_number(RoomTemplate room, int xit)
         {
-            int count = 0;
+            var count = 0;
             return room.Exits.FirstOrDefault(exit => ++count == xit);
         }
 
@@ -322,9 +322,9 @@ namespace SmaugCS
 
         public static void area_update()
         {
-            foreach (AreaData area in DatabaseManager.Instance.AREAS.Values)
+            foreach (var area in DatabaseManager.Instance.AREAS.Values)
             {
-                int resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
+                var resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
                 if ((resetAge == -1 && area.Age == -1)
                     || (++area.Age < (resetAge - 1)))
                     continue;
@@ -332,11 +332,11 @@ namespace SmaugCS
                 //// Check players
                 if (area.NumberOfPlayers > 0 && area.Age == (resetAge - 1))
                 {
-                    string buffer = !string.IsNullOrEmpty(area.ResetMessage)
+                    var buffer = !string.IsNullOrEmpty(area.ResetMessage)
                                         ? area.ResetMessage + "\r\n"
                                         : "You hear some squeaking sounds...\r\n";
 
-                    foreach (CharacterInstance pch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
+                    foreach (var pch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                         .Where(pch => !pch.IsNpc()
                             && pch.IsAwake()
                             && pch.CurrentRoom != null
@@ -354,7 +354,7 @@ namespace SmaugCS
                     area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
-                    RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
+                    var room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
                     if (room != null && room.Area == area && area.ResetFrequency == 0)
                         area.Age = 15 - 3;
                 }
@@ -463,7 +463,7 @@ namespace SmaugCS
 
         public static string get_extra_descr(string name, IEnumerable<ExtraDescriptionData> extraDescriptions)
         {
-            foreach (ExtraDescriptionData ed in extraDescriptions.Where(ed => ed.Keyword.IsEqual(name)))
+            foreach (var ed in extraDescriptions.Where(ed => ed.Keyword.IsEqual(name)))
                 return ed.Description;
             return string.Empty;
         }
@@ -508,7 +508,7 @@ namespace SmaugCS
             if (ch.IsNpc() || string.IsNullOrEmpty(str))
                 return;
 
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(file, true)))
+            using (var proxy = new TextWriterProxy(new StreamWriter(file, true)))
             {
                 proxy.Write("[{0}] {1}: {2}\n", ch.CurrentRoom != null ? ch.CurrentRoom.Vnum : 0, ch.Name, str);
             }
@@ -516,7 +516,7 @@ namespace SmaugCS
 
         public static void append_to_file(string file, string str)
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(file, true)))
+            using (var proxy = new TextWriterProxy(new StreamWriter(file, true)))
             {
                 proxy.Write("{0}\n", str);
             }
@@ -529,10 +529,10 @@ namespace SmaugCS
         /// <param name="filename"></param>
         public static void show_file(CharacterInstance ch, string filename)
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(filename)))
             {
                 IEnumerable<string> lines = proxy.ReadIntoList();
-                foreach (string line in lines)
+                foreach (var line in lines)
                 {
                     ch.SendToPagerColor(line.Trim(new[] { '\r', '\n' }));
                 }
@@ -541,22 +541,22 @@ namespace SmaugCS
 
         public static void towizfile(string line)
         {
-            string outline = string.Empty;
+            var outline = string.Empty;
 
             if (!string.IsNullOrEmpty(line))
             {
-                int filler = (78 - line.Length);
+                var filler = (78 - line.Length);
                 if (filler < 1)
                     filler = 1;
                 filler /= 2;
-                for (int x = 0; x < filler; x++)
+                for (var x = 0; x < filler; x++)
                     outline += " ";
                 outline += line;
             }
 
             outline += "\r\n";
             using (
-                TextWriterProxy proxy =
+                var proxy =
                     new TextWriterProxy(new StreamWriter(SystemConstants.GetSystemFile(SystemFileTypes.Wizards), true)))
             {
                 proxy.Write(outline);
@@ -565,23 +565,23 @@ namespace SmaugCS
 
         public static void make_wizlist()
         {
-            List<WizardData> wizList = new List<WizardData>();
-            string directory = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
-            IEnumerable<string> files = new DirectoryProxy().GetFiles(directory);
-            foreach (string file in files.Where(x => !x.StartsWithIgnoreCase(".")))
+            var wizList = new List<WizardData>();
+            var directory = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
+            var files = new DirectoryProxy().GetFiles(directory);
+            foreach (var file in files.Where(x => !x.StartsWithIgnoreCase(".")))
             {
-                using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(file)))
+                using (var proxy = new TextReaderProxy(new StreamReader(file)))
                 {
-                    WizardData wizard = new WizardData { Name = file };
+                    var wizard = new WizardData { Name = file };
                     wizard.Level = wizard.Load(proxy.ReadIntoList());
                     wizList.Add(wizard);
                 }
             }
 
-            string buffer = string.Format(" Masters of the {0}!", GameManager.Instance.SystemData.MudTitle);
+            var buffer = string.Format(" Masters of the {0}!", GameManager.Instance.SystemData.MudTitle);
 
-            int iLevel = 65535;
-            foreach (WizardData wiz in wizList)
+            var iLevel = 65535;
+            foreach (var wiz in wizList)
             {
                 if (wiz.Level < iLevel)
                 {
@@ -649,26 +649,26 @@ namespace SmaugCS
 
         public static int mprog_name_to_type(string name)
         {
-            foreach (MudProgTypes type in Enum.GetValues(typeof(MudProgTypes)).Cast<MudProgTypes>().Where(type => type.GetName().EqualsIgnoreCase(name)))
+            foreach (var type in Enum.GetValues(typeof(MudProgTypes)).Cast<MudProgTypes>().Where(type => type.GetName().EqualsIgnoreCase(name)))
                 return (int)type;
             return (int)MudProgTypes.Error;
         }
 
         public static void mudprog_file_read(Template index, string filename)
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Prog) + filename;
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Prog) + filename;
 
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            using (var proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 do
                 {
-                    string line = proxy.ReadLine();
+                    var line = proxy.ReadLine();
                     if (line.StartsWith("|"))
                         break;
                     if (line.StartsWith(">"))
                         continue;
 
-                    MudProgTypes type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
+                    var type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
                     if (type == MudProgTypes.Error
                         || type == MudProgTypes.InFile)
                     {
@@ -676,7 +676,7 @@ namespace SmaugCS
                         continue;
                     }
 
-                    MudProgData prog = new MudProgData
+                    var prog = new MudProgData
                     {
                         Type = type,
                         ArgList = proxy.ReadString(),
@@ -695,7 +695,7 @@ namespace SmaugCS
         {
             for (; ; )
             {
-                char letter = proxy.ReadNextLetter();
+                var letter = proxy.ReadNextLetter();
                 if (letter == '|')
                     return;
                 if (letter != '>')
@@ -704,10 +704,10 @@ namespace SmaugCS
                     throw new Exception();
                 }
 
-                MudProgData prog = new MudProgData();
+                var prog = new MudProgData();
                 index.AddMudProg(prog);
 
-                MudProgTypes type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
+                var type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
                 if (type == MudProgTypes.Error)
                 {
                     LogManager.Instance.Bug("Invalid mud prog type {0} for Index {1}", type, index.Vnum);
@@ -827,7 +827,7 @@ namespace SmaugCS
 
         public static ExitData make_exit(RoomTemplate room, RoomTemplate to_room, int door)
         {
-            ExitData newExit = new ExitData(door, "An exit")
+            var newExit = new ExitData(door, "An exit")
             {
                 Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door),
                 Room_vnum = room.Vnum,
@@ -836,14 +836,14 @@ namespace SmaugCS
                 Key = -1
             };
 
-            ExitData reverseExit = to_room.GetExitTo(LookupConstants.rev_dir[door], room.Vnum);
+            var reverseExit = to_room.GetExitTo(LookupConstants.rev_dir[door], room.Vnum);
             if (reverseExit != null)
             {
                 reverseExit.Reverse = newExit.ID;
                 newExit.Reverse = reverseExit.ID;
             }
 
-            bool broke = room.Exits.Any(exit => door < (int)exit.Direction);
+            var broke = room.Exits.Any(exit => door < (int)exit.Direction);
             if (room.Exits == null)
                 room.Exits.Add(newExit);
             else
@@ -906,7 +906,7 @@ namespace SmaugCS
                 sort_area(area, false);
             }*/
 
-            string buffer = string.Format("{0}:\n\tRooms: {1} - {2}\n\tObjects: {3} - {4}\n\tMobs: {5} - {6}\n",
+            var buffer = string.Format("{0}:\n\tRooms: {1} - {2}\n\tObjects: {3} - {4}\n\tMobs: {5} - {6}\n",
                                           area.Filename, area.LowRoomNumber, area.HighRoomNumber, area.LowObjectNumber,
                                           area.HighObjectNumber, area.LowMobNumber, area.HighMobNumber);
             LogManager.Instance.Boot(buffer);
@@ -964,9 +964,9 @@ namespace SmaugCS
             if (ch == null || ch.IsNpc())
                 return;
 
-            List<LoginMessageData> loginMessages = LOGIN_MESSAGES.Where(x => x.Name.EqualsIgnoreCase(ch.Name)).ToList();
+            var loginMessages = LOGIN_MESSAGES.Where(x => x.Name.EqualsIgnoreCase(ch.Name)).ToList();
 
-            foreach (LoginMessageData loginMessage in LOGIN_MESSAGES)
+            foreach (var loginMessage in LOGIN_MESSAGES)
             {
                 if (loginMessage.Type > Program.MAX_MSG)
                 {

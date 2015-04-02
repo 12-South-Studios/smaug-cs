@@ -13,7 +13,7 @@ namespace SmaugCS.Commands.Social
         public static void do_reply(CharacterInstance ch, string argument)
         {
 #if !SCRAMBLE
-            int speaking = -1;
+            var speaking = -1;
             /*foreach (int key in GameConstants.LanguageTable.Keys
                                          .Where(key => (key & ch.Speaking) > 0))
             {
@@ -35,7 +35,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            CharacterInstance victim = ((PlayerInstance)ch).ReplyTo;
+            var victim = ((PlayerInstance)ch).ReplyTo;
             if (victim == null)
             {
                 ch.SendTo("They aren't here.\r\n");
@@ -99,7 +99,7 @@ namespace SmaugCS.Commands.Social
             }
 
             comm.act(ATTypes.AT_TELL, "You tell $N '$t'", ch, argument, victim, ToTypes.Character);
-            PositionTypes position = victim.CurrentPosition;
+            var position = victim.CurrentPosition;
             victim.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
@@ -133,7 +133,7 @@ namespace SmaugCS.Commands.Social
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {
-                string buffer = string.Format("{0}: {1} (tell to) {2}",
+                var buffer = string.Format("{0}: {1} (tell to) {2}",
                                               ch.IsNpc() ? ch.ShortDescription : ch.Name,
                                               argument,
                                               victim.IsNpc() ? victim.ShortDescription : victim.Name);

@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Ninject;
-using Realm.Library.SmallDb;
 using SmaugCS.Data;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Weather
@@ -17,15 +14,13 @@ namespace SmaugCS.Weather
 
         private static ILogManager _logManager;
         private static IKernel _kernel;
-        private static ISmallDb _smallDb;
-        private static IDbConnection _connection;
+        private static ISmaugDbContext _dbContext;
 
-        public WeatherManager(ILogManager logManager, IKernel kernel, ISmallDb smallDb, IDbConnection connection)
+        public WeatherManager(ILogManager logManager, IKernel kernel, ISmaugDbContext dbContext)
         {
             _logManager = logManager;
             _kernel = kernel;
-            _smallDb = smallDb;
-            _connection = connection;
+            _dbContext = dbContext;
         }
 
         public static IWeatherManager Instance
@@ -52,7 +47,27 @@ namespace SmaugCS.Weather
         {
             try
             {
-                var cells = _smallDb.ExecuteQuery(_connection, "cp_GetWeatherCells", TranslateCellData);
+                var cells = new List<WeatherCell>();
+                foreach (var cell in _dbContext.Weather)
+                {
+                    var newCell = new WeatherCell(cell.Id)
+                    {
+                        XCoord = cell.CellXCoordinate,
+                        YCoord = cell.CellYCoordinate,
+                        Climate = cell.ClimateType,
+                        Hemisphere = cell.HemisphereType,
+                        CloudCover = cell.CloudCover,
+                        Energy = cell.Energy,
+                        Humidity = cell.Humidity,
+                        Precipitation = cell.Precipitation,
+                        Pressure = cell.Pressure,
+                        Temperature = cell.Temperature,
+                        WindSpeedX = cell.WindSpeedX,
+                        WindSpeedY = cell.WindSpeedY
+                    };
+
+                    cells.Add(newCell);
+                }
 
                 Weather = new WeatherMap(timeInfo, width, height, cells);
                 _logManager.Boot("Loaded {0} Weather Cells", cells.Count);
@@ -61,19 +76,6 @@ namespace SmaugCS.Weather
             {
                 _logManager.Error(ex);
             }
-        }
-
-        [ExcludeFromCodeCoverage]
-        private static List<WeatherCell> TranslateCellData(IDataReader reader)
-        {
-            var cells = new List<WeatherCell>();
-            using (var dt = new DataTable())
-            {
-                dt.Load(reader);
-                cells.AddRange(from DataRow row in dt.Rows select WeatherCell.Translate(row));
-            }
-
-            return cells;
         }
     }
 }

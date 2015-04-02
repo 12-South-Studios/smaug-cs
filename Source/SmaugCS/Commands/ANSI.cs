@@ -20,7 +20,7 @@ namespace SmaugCS.Commands
 
         public static void do_ansi(CharacterInstance ch, string argument)
         {
-            string arg = argument.FirstWord().ToLower();
+            var arg = argument.FirstWord().ToLower();
 
             Action<CharacterInstance> value;
             if (AnsiTable.TryGetValue(arg, out value))

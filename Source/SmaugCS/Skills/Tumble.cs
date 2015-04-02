@@ -19,7 +19,7 @@ namespace SmaugCS.Skills
             if (victim.CurrentClass != ClassTypes.Thief || !victim.IsAwake())
                 return false;
 
-            SkillData skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("tumble");
+            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("tumble");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'tumble' not found");
 

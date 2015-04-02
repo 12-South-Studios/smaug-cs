@@ -20,7 +20,7 @@ namespace SmaugCS.Extensions.Character
 
         public static void ModifyAffect(this CharacterInstance ch, AffectData affect, bool add)
         {
-            int mod = affect.Modifier;
+            var mod = affect.Modifier;
             if (add)
                 mod = ModifyAndAddAffect(ch, affect, mod);
             else
@@ -30,7 +30,7 @@ namespace SmaugCS.Extensions.Character
                 if ((int) affect.Location%Program.REVERSE_APPLY == (int) ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
+                    var skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         throw new InvalidDataException(string.Format("RecurringSpell with bad SN {0}", mod));
@@ -197,7 +197,7 @@ namespace SmaugCS.Extensions.Character
                         return;
 
                     mod = Math.Abs(mod);
-                    SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
+                    var skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
@@ -207,7 +207,7 @@ namespace SmaugCS.Extensions.Character
                             LogManager.Instance.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
                             return;
                         }
-                        ReturnTypes retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
+                        var retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
                         if (retcode == ReturnTypes.CharacterDied || ch.CharDied())
                             return;
                     }
@@ -224,7 +224,7 @@ namespace SmaugCS.Extensions.Character
                     return;
             }
 
-            ObjectInstance wield = ch.GetEquippedItem(WearLocations.Wield);
+            var wield = ch.GetEquippedItem(WearLocations.Wield);
             if (!ch.IsNpc() && handler.SavingCharacter != ch
                 && wield != null && wield.GetWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
             {
@@ -246,7 +246,7 @@ namespace SmaugCS.Extensions.Character
             if ((int) affect.Location%Program.REVERSE_APPLY == (int) ApplyTypes.RecurringSpell)
             {
                 mod = Math.Abs(mod);
-                SkillData skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
+                var skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
 
                 if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     ch.AffectedBy.SetBit(AffectedByTypes.RecurringSpell);
@@ -274,7 +274,7 @@ namespace SmaugCS.Extensions.Character
             if (affect == null)
                 throw new ArgumentNullException("affect");
 
-            AffectData newAffect = new AffectData
+            var newAffect = new AffectData
             {
                 Type = affect.Type,
                 Duration = affect.Duration,
@@ -292,7 +292,7 @@ namespace SmaugCS.Extensions.Character
 
         public static void StripAffects(this CharacterInstance ch, int sn)
         {
-            foreach (AffectData affect in ch.Affects.Where(affect => (int)affect.Type == sn))
+            foreach (var affect in ch.Affects.Where(affect => (int)affect.Type == sn))
                 ch.RemoveAffect(affect);
         }
 
@@ -301,7 +301,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.Affects == null || ch.Affects.Count == 0)
                 return;
 
-            IEnumerable<AffectData> matchingAffects = ch.Affects.Where(x => x.Type == paf.Type);
+            var matchingAffects = ch.Affects.Where(x => x.Type == paf.Type);
             foreach (var affect in matchingAffects)
             {
                 paf.Duration = 1000000.GetLowestOfTwoNumbers(paf.Duration + affect.Duration);
@@ -338,7 +338,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsNpc() || ch.IsImmortal())
                 return;
 
-            bool hiding = ch.IsAffected(AffectedByTypes.Hide);
+            var hiding = ch.IsAffected(AffectedByTypes.Hide);
 
             //ch.AffectedBy.ClearBits();
             ch.Resistance = 0;
@@ -349,12 +349,12 @@ namespace SmaugCS.Extensions.Character
             ch.NoImmunity = 0;
             ch.NoSusceptibility = 0;
 
-            RaceData myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+            var myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
             //ch.AffectedBy.SetBits(myRace.AffectedBy);
             ch.Resistance.SetBit(myRace.Resistance);
             ch.Susceptibility.SetBit(myRace.Susceptibility);
 
-            ClassData myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+            var myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
             //ch.AffectedBy.SetBits(myClass.AffectedBy);
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);
@@ -369,20 +369,20 @@ namespace SmaugCS.Extensions.Character
                     ch.Susceptibility.SetBit(((PlayerInstance)ch).PlayerData.CurrentDeity.Suscept);
             }
 
-            foreach (AffectData affect in ch.Affects)
+            foreach (var affect in ch.Affects)
                 ch.aris_affect(affect);
 
-            foreach (ObjectInstance obj in ch.Carrying
+            foreach (var obj in ch.Carrying
                 .Where(x => x.WearLocation != WearLocations.None))
             {
-                foreach (AffectData affect in obj.Affects)
+                foreach (var affect in obj.Affects)
                     ch.aris_affect(affect);
                 // TODO figure this out
             }
 
             if (ch.CurrentRoom != null)
             {
-                foreach (AffectData affect in ch.CurrentRoom.Affects)
+                foreach (var affect in ch.CurrentRoom.Affects)
                     ch.aris_affect(affect);
             }
 

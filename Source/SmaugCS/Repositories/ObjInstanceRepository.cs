@@ -22,7 +22,7 @@ namespace SmaugCS.Repositories
             Validation.IsNotNull(parent, "parent");
             Validation.Validate(parent is ObjectTemplate, "Invalid Template Type");
 
-            ObjectTemplate objParent = parent.CastAs<ObjectTemplate>();
+            var objParent = parent.CastAs<ObjectTemplate>();
 
             long id;
             if (args != null && args.Length > 0)
@@ -30,11 +30,11 @@ namespace SmaugCS.Repositories
             else
                 id = GetNextId;
 
-            string name = parent.Name;
+            var name = parent.Name;
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            ObjectInstance obj = new ObjectInstance(id, name, 99, 99)
+            var obj = new ObjectInstance(id, name, 99, 99)
             {
                 Parent = parent,
                 Level = args == null || args.Length == 0 ? 1 : (int) args[0],
@@ -66,7 +66,7 @@ namespace SmaugCS.Repositories
         {
             Validation.IsNotNull(source, "source");
 
-            ObjectInstance obj = new ObjectInstance(GetNextId, source.Name, 99, 99)
+            var obj = new ObjectInstance(GetNextId, source.Name, 99, 99)
             {
                 Parent = source.Parent,
                 Level = source.Level,

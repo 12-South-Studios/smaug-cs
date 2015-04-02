@@ -40,9 +40,9 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateObject", "Creates a new object", "Id of the Object", "Name of the Object")]
         public static ObjectTemplate LuaCreateObject(string id, string name)
         {
-            long objId = Convert.ToInt64(id);
+            var objId = Convert.ToInt64(id);
 
-            ObjectTemplate newObj = _dbManager.OBJECTTEMPLATES.Create(objId, name);
+            var newObj = _dbManager.OBJECTTEMPLATES.Create(objId, name);
             _luaManager.Proxy.CreateTable("object");
             LastObject = newObj;
 

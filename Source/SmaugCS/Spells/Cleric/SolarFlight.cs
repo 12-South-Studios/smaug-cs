@@ -17,12 +17,12 @@ namespace SmaugCS.Spells
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_solar_flight(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
-            WeatherCell cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
-            CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
+            var victim = ch.GetCharacterInWorld(Cast.TargetName);
 
-            int lvl = GetModdedLevel(level);
+            var lvl = GetModdedLevel(level);
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null || victim == ch, skill, ch, CastingFunctionType.Failed,
                 victim)) return ReturnTypes.SpellFailed;

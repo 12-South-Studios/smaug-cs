@@ -24,14 +24,14 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Council);
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Council);
 
-            string councils = GameConstants.GetAppSetting("Councils");
+            var councils = GameConstants.GetAppSetting("Councils");
             if (string.IsNullOrEmpty(councils))
                 return;
 
             IEnumerable<string> councilList = councils.Split(new[] { ',' });
-            foreach (string councilName in councilList)
+            foreach (var councilName in councilList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + councilName + ".lua");
             }

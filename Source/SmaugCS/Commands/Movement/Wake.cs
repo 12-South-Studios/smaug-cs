@@ -10,7 +10,7 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_wake(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (string.IsNullOrEmpty(firstArg))
             {
                 interp.interpret(ch, "stand");
@@ -20,7 +20,7 @@ namespace SmaugCS.Commands.Movement
 
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsAwake(), "You are asleep yourself!")) return;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
+            var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (victim.IsAwake())

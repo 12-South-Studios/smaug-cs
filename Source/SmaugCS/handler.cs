@@ -63,16 +63,16 @@ namespace SmaugCS
         /// <returns></returns>
         public static bool FindObject_CheckMentalState(CharacterInstance ch)
         {
-            int ms = ch.MentalState;
+            var ms = ch.MentalState;
 
             // We're going to be nice and let nothing weird happen unless you're a tad messed up
-            int drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]);
+            var drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]);
             if (Math.Abs(ms) + (drunk / 3) < 30)
                 return false;
             if ((SmaugRandom.D100() + (ms < 0 ? 15 : 5)) > Math.Abs(ms) / 2 + drunk / 4)
                 return false;
 
-            string output = (ms > 15)
+            var output = (ms > 15)
                 ? ObjectMessageLargeMap[SmaugRandom.Between(1.GetHighestOfTwoNumbers(ms / 5 - 15), (ms + 4) / 5)]
                 : ObjectMessageSmallMap[SmaugRandom.Between(1, ((Math.Abs(ms) / 2 + drunk).GetNumberThatIsBetween(1, 60)) / 10)];
 
@@ -82,11 +82,11 @@ namespace SmaugCS
 
         public static ObjectInstance FindObject(CharacterInstance ch, string argument, bool carryonly)
         {
-            Tuple<string, string> tuple = argument.FirstArgument();
-            string arg1 = tuple.Item1;
+            var tuple = argument.FirstArgument();
+            var arg1 = tuple.Item1;
             tuple = tuple.Item2.FirstArgument();
-            string arg2 = tuple.Item1;
-            string remainder = tuple.Item2;
+            var arg2 = tuple.Item1;
+            var remainder = tuple.Item2;
 
             if (arg2.EqualsIgnoreCase("from") && !string.IsNullOrEmpty(remainder))
             {
@@ -138,14 +138,14 @@ namespace SmaugCS
 
         public static string affect_loc_name(int location)
         {
-            ApplyTypes type = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location);
+            var type = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location);
             return type.GetName();
         }
 
         public static string affect_bit_name(ExtendedBitvector vector)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (AffectedByTypes type in Enum.GetValues(typeof (AffectedByTypes))
+            var sb = new StringBuilder();
+            foreach (var type in Enum.GetValues(typeof (AffectedByTypes))
                         .Cast<AffectedByTypes>()
                         .Where(type => vector.IsSet((int) type)))
             {
@@ -156,8 +156,8 @@ namespace SmaugCS
 
         public static string extra_bit_name(ExtendedBitvector extra_flags)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (ItemExtraFlags type in Enum.GetValues(typeof (ItemExtraFlags))
+            var sb = new StringBuilder();
+            foreach (var type in Enum.GetValues(typeof (ItemExtraFlags))
                         .Cast<ItemExtraFlags>()
                         .Where(type => extra_flags.IsSet((int) type)))
             {
@@ -207,8 +207,8 @@ namespace SmaugCS
 
             foreach (var c in ch.Name)
             {
-                int b = c%14;
-                int a = (c%1) + 1;
+                var b = c%14;
+                var a = (c%1) + 1;
 
                 switch (b)
                 {
@@ -262,12 +262,12 @@ namespace SmaugCS
         {
             save.de_equip_char(ch);
 
-            foreach(AffectData af in ch.Affects)
+            foreach(var af in ch.Affects)
                 ch.ModifyAffect(af, false);
 
             if (ch.CurrentRoom != null)
             {
-                foreach (AffectData af in ch.CurrentRoom.Affects)
+                foreach (var af in ch.CurrentRoom.Affects)
                 {
                     if (af.Location != ApplyTypes.WearSpell
                         && af.Location != ApplyTypes.RemoveSpell
@@ -275,7 +275,7 @@ namespace SmaugCS
                         ch.ModifyAffect(af, false);
                 }
 
-                foreach (AffectData af in ch.CurrentRoom.PermanentAffects)
+                foreach (var af in ch.CurrentRoom.PermanentAffects)
                 {
                     if (af.Location != ApplyTypes.WearSpell
                         && af.Location != ApplyTypes.RemoveSpell
@@ -286,7 +286,7 @@ namespace SmaugCS
 
             ch.AffectedBy = 0;
 
-            RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+            var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
             ch.AffectedBy.SetBit(race.AffectedBy);
             ch.MentalState = -10;
             ch.CurrentHealth = 1.GetHighestOfTwoNumbers(ch.CurrentHealth);
@@ -301,12 +301,12 @@ namespace SmaugCS
             ch.CurrentAlignment = -1000.GetNumberThatIsBetween(ch.CurrentAlignment, 1000);
             ch.SavingThrows = new SavingThrowData();
 
-            foreach (AffectData af in ch.Affects)
+            foreach (var af in ch.Affects)
                 ch.ModifyAffect(af, true);
 
             if (ch.CurrentRoom != null)
             {
-                foreach (AffectData af in ch.CurrentRoom.Affects)
+                foreach (var af in ch.CurrentRoom.Affects)
                 {
                     if (af.Location != ApplyTypes.WearSpell
                         && af.Location != ApplyTypes.RemoveSpell
@@ -314,7 +314,7 @@ namespace SmaugCS
                         ch.ModifyAffect(af, true);
                 }
 
-                foreach (AffectData af in ch.CurrentRoom.PermanentAffects)
+                foreach (var af in ch.CurrentRoom.PermanentAffects)
                 {
                     if (af.Location != ApplyTypes.WearSpell
                         && af.Location != ApplyTypes.RemoveSpell
@@ -325,7 +325,7 @@ namespace SmaugCS
 
             ch.CarryWeight = ch.CarryNumber = 0;
 
-            foreach (ObjectInstance obj in ch.Carrying)
+            foreach (var obj in ch.Carrying)
             {
                 if (obj.WearLocation == WearLocations.None)
                     ch.CarryNumber += obj.GetObjectNumber();
@@ -340,7 +340,7 @@ namespace SmaugCS
         {
             Validation.IsNotNull(paf, "paf");
 
-            string buf = string.Empty;
+            var buf = string.Empty;
 
             if (paf.Location == ApplyTypes.None || paf.Modifier == 0)
                 return;
@@ -353,7 +353,7 @@ namespace SmaugCS
                 case ApplyTypes.Affect:
                     buf = string.Format("Affects {0} by", affect_loc_name((int)paf.Location), paf.Modifier);
 
-                    for (int i = 0; i < 32; i++)
+                    for (var i = 0; i < 32; i++)
                     {
                         if (paf.Modifier.IsSet(1 << i))
                             buf += " " + BuilderConstants.a_flags[i];
@@ -362,10 +362,10 @@ namespace SmaugCS
                 case ApplyTypes.WeaponSpell:
                 case ApplyTypes.WearSpell:
                 case ApplyTypes.RemoveSpell:
-                    string name = "unknown";
+                    var name = "unknown";
                     if (Macros.IS_VALID_SN(paf.Modifier))
                     {
-                        SkillData skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
+                        var skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
                         name = skill.Name;
                     }
                     buf = string.Format("Casts spell '{0}'", name);
@@ -375,7 +375,7 @@ namespace SmaugCS
                 case ApplyTypes.Susceptibility:
                     buf = string.Format("Affects {0} by", affect_loc_name((int)paf.Location), paf.Modifier);
 
-                    for (int i = 0; i < 32; i++)
+                    for (var i = 0; i < 32; i++)
                     {
                         if (paf.Modifier.IsSet(1 << i))
                             buf += " " + BuilderConstants.ris_flags[i];
@@ -425,7 +425,7 @@ namespace SmaugCS
             if (ch == null)
                 throw new ArgumentNullException("ch");
 
-            ExtracedCharacterData ecd = new ExtracedCharacterData
+            var ecd = new ExtracedCharacterData
             {
                 Character = ch,
                 Room = ch.CurrentRoom,
@@ -453,7 +453,7 @@ namespace SmaugCS
             if (mob.CurrentRoom == null)
                 return;
 
-            int gold = (mob.CurrentRoom.Area.HighEconomy > 0 ? 1 : 0)*1000000000*mob.CurrentRoom.Area.LowEconomy;
+            var gold = (mob.CurrentRoom.Area.HighEconomy > 0 ? 1 : 0)*1000000000*mob.CurrentRoom.Area.LowEconomy;
             mob.CurrentCoin = 0.GetNumberThatIsBetween(mob.CurrentCoin, gold/10);
             if (mob.CurrentCoin > 0)
                 mob.CurrentRoom.Area.LowerEconomy(mob.CurrentCoin);
@@ -461,7 +461,7 @@ namespace SmaugCS
 
         public static void check_switches(bool possess)
         {
-            foreach(CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach(var ch in DatabaseManager.Instance.CHARACTERS.Values)
                 check_switch(ch, possess);
         }
 
@@ -470,19 +470,19 @@ namespace SmaugCS
             if (ch.Switched == null) return;
             if (!possess)
             {
-                foreach (AffectData af in ch.Switched.Affects)
+                foreach (var af in ch.Switched.Affects)
                 {
                     if (af.Duration == -1)
                         continue;
 
-                    SkillData skill = DatabaseManager.Instance.SKILLS.Get((int) af.Type);
+                    var skill = DatabaseManager.Instance.SKILLS.Get((int) af.Type);
                     if (af.Type != AffectedByTypes.None && skill != null &&
                         skill.SpellFunction.Value == Spells.Possess.spell_possess)
                         return;
                 }
             }
 
-            foreach (CommandData cmd in DatabaseManager.Instance.COMMANDS.Values)
+            foreach (var cmd in DatabaseManager.Instance.COMMANDS.Values)
             {
                 if (cmd.DoFunction.Value != Switch.do_switch)
                     continue;

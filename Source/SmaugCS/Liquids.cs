@@ -35,8 +35,8 @@ namespace SmaugCS
 
             if (!mix.Object)
             {
-                LiquidData ingredient1 = DatabaseManager.Instance.GetEntity<LiquidData>(mix.Data[0]);
-                LiquidData ingredient2 = DatabaseManager.Instance.GetEntity<LiquidData>(mix.Data[1]);
+                var ingredient1 = DatabaseManager.Instance.GetEntity<LiquidData>(mix.Data[0]);
+                var ingredient2 = DatabaseManager.Instance.GetEntity<LiquidData>(mix.Data[1]);
                 ch.SendToPager("&wCombine two liquids to create this mixture:");
 
                 if (ingredient1 == null)
@@ -51,14 +51,14 @@ namespace SmaugCS
             }
             else
             {
-                ObjectTemplate obj = DatabaseManager.Instance.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>().Get(mix.Data[0]);
+                var obj = DatabaseManager.Instance.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>().Get(mix.Data[0]);
                 if (obj == null)
                 {
                     ch.PagerPrintf("%s has a bad object vnum %d, inform an Admin\r\n", mix.Name, mix.Data[0]);
                     return;
                 }
 
-                LiquidData ingredient1 = DatabaseManager.Instance.GetEntity<LiquidData>(mix.Data[1]);
+                var ingredient1 = DatabaseManager.Instance.GetEntity<LiquidData>(mix.Data[1]);
                 ch.SendToPager("Combine an object and a liquid in this mixture");
                 ch.PagerPrintf("&wMix &G%s&w (%d)\r\n", obj.Name, mix.Data[0]);
                 ch.PagerPrintf("&winto one part &G%s&w (%d)&D\r\n", ingredient1.Name, mix.Data[1]);
@@ -67,14 +67,14 @@ namespace SmaugCS
 
         public static LiquidData liq_can_mix(ObjectInstance sourceObj, ObjectInstance targetObj)
         {
-            MixtureData mixture =
+            var mixture =
                 DatabaseManager.Instance.MIXTURES.Values.FirstOrDefault(m => m.Data[0] == sourceObj.Value[2]
                     || m.Data[1] == sourceObj.Value[2]);
 
             if (mixture == null || mixture.Data[2] == -1)
                 return null;
 
-            LiquidData liquid = DatabaseManager.Instance.GetEntity<LiquidData>(mixture.Data[2]);
+            var liquid = DatabaseManager.Instance.GetEntity<LiquidData>(mixture.Data[2]);
             if (liquid == null)
                 return null;
 
@@ -87,7 +87,7 @@ namespace SmaugCS
 
         public static LiquidData liqobj_can_mix(ObjectInstance sourceObj, ObjectInstance objectLiq)
         {
-            MixtureData mixture = DatabaseManager.Instance.MIXTURES.Values.Where(m => (m.Data[0] == sourceObj.Value[2]
+            var mixture = DatabaseManager.Instance.MIXTURES.Values.Where(m => (m.Data[0] == sourceObj.Value[2]
                                                                  || m.Data[1] == sourceObj.Value[2]))
                                      .FirstOrDefault(m => m.Data[0] == objectLiq.Value[2]
                                                                 || m.Data[1] == objectLiq.Value[2]);
@@ -95,7 +95,7 @@ namespace SmaugCS
             if (mixture == null || mixture.Data[2] == -1)
                 return null;
 
-            LiquidData liquid = DatabaseManager.Instance.GetEntity<LiquidData>(mixture.Data[2]);
+            var liquid = DatabaseManager.Instance.GetEntity<LiquidData>(mixture.Data[2]);
             if (liquid == null)
                 return null;
 

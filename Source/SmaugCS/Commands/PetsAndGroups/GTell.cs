@@ -14,7 +14,7 @@ namespace SmaugCS.Commands.PetsAndGroups
         public static void do_gtell(CharacterInstance ch, string argument)
         {
 #if !SCRAMBLE
-            int speaking = -1;
+            var speaking = -1;
             /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
@@ -36,7 +36,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             }
 
             foreach (
-                CharacterInstance gch in
+                var gch in
                     DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
                         .Values.Where(x => x.IsSameGroup(ch)))
             {

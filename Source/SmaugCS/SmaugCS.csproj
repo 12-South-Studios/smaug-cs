@@ -81,6 +81,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Libraries\log4net.dll</HintPath>
     </Reference>
@@ -140,6 +144,7 @@
     <Compile Include="Commands\Polymorph\Morph.cs" />
     <Compile Include="Commands\Track.cs" />
     <Compile Include="Exceptions\ObjectAlreadyEquippedException.cs" />
+    <Compile Include="Extensions\BoardDataExtensions.cs" />
     <Compile Include="Extensions\Character\Affect.cs" />
     <Compile Include="Extensions\Character\Items.cs" />
     <Compile Include="Extensions\Character\Show.cs" />
@@ -889,7 +894,6 @@
     </None>
     <None Include="Documentation\license.diku" />
     <None Include="Documentation\license.merc" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CCode\Header\bet.h" />
@@ -993,6 +997,10 @@
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
       <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.DAL\SmaugCS.DAL.csproj">
+      <Project>{157b6b68-68f7-414b-ae04-9cb80b9c68b4}</Project>
+      <Name>SmaugCS.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
       <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>

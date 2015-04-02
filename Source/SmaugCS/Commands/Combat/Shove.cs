@@ -21,10 +21,10 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.PKilled), "You can't shove a player right now."))
                 return;
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Shove whom?")) return;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
+            var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You shove yourself around, to no avail.")) return;
             if (CheckFunctions.CheckIfTrue(ch, victim.IsNpc() || !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly),
@@ -40,7 +40,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Shove them in which direction?")) return;
             if (CheckFunctions.CheckIfTrue(ch,
                 victim.CurrentRoom.Flags.IsSet(RoomFlags.Safe) && !ch.HasTimer(TimerTypes.ShoveDrag),
@@ -48,8 +48,8 @@ namespace SmaugCS.Commands.Combat
 
             victim.CurrentPosition = PositionTypes.Shove;
             
-            DirectionTypes exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
-            ExitData exit = ch.CurrentRoom.GetExit(exitDir);
+            var exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
+            var exit = ch.CurrentRoom.GetExit(exitDir);
             if (CheckFunctions.CheckIfNullObject(ch, exit, "There's no exit in that direction."))
             {
                 victim.CurrentPosition = PositionTypes.Standing;
@@ -64,7 +64,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            RoomTemplate toRoom = exit.GetDestination();
+            var toRoom = exit.GetDestination();
             if (CheckFunctions.CheckIfSet(ch, toRoom.Flags, RoomFlags.Death,
                 "You cannot shove someone into a death trap."))
             {
@@ -79,7 +79,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            int chance = GetChanceByCharacterClass(ch);
+            var chance = GetChanceByCharacterClass(ch);
             chance += ((ch.GetCurrentStrength() - 15)*3);
             chance += ch.Level - victim.Level;
             chance += GetBonusByCharacterRace(ch);
@@ -105,13 +105,13 @@ namespace SmaugCS.Commands.Combat
 
         private static int GetChanceByCharacterClass(CharacterInstance ch)
         {
-            ShoveValueAttribute attrib = ch.CurrentClass.GetAttribute<ShoveValueAttribute>();
+            var attrib = ch.CurrentClass.GetAttribute<ShoveValueAttribute>();
             return attrib == null ? 0 : attrib.ModValue;
         }
 
         private static int GetBonusByCharacterRace(CharacterInstance ch)
         {
-            ShoveValueAttribute attrib = ch.CurrentRace.GetAttribute<ShoveValueAttribute>();
+            var attrib = ch.CurrentRace.GetAttribute<ShoveValueAttribute>();
             return attrib == null ? 0 : attrib.ModValue;
         }
     }

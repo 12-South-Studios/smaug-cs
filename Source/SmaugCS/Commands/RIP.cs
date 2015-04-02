@@ -11,7 +11,7 @@ namespace SmaugCS.Commands
     {
         public static void do_rip(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (Helpers.CheckFunctions.CheckIfEmptyString(ch, firstArg, "Rip ON or OFF?")) return;
 
             if (firstArg.EqualsIgnoreCase("on"))

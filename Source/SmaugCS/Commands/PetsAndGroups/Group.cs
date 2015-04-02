@@ -15,7 +15,7 @@ namespace SmaugCS.Commands.PetsAndGroups
     {
         public static void do_group(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (string.IsNullOrWhiteSpace(firstArg))
                 display_group(ch);
             else if (firstArg.Equals("disband"))
@@ -28,15 +28,15 @@ namespace SmaugCS.Commands.PetsAndGroups
 
         private static void display_group(CharacterInstance ch)
         {
-            CharacterInstance leader = ch.Leader ?? ch;
+            var leader = ch.Leader ?? ch;
             ch.SetColor(ATTypes.AT_DGREEN);
             ch.Printf("\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                             Macros.PERS(leader, ch), ch.Level < LevelConstants.AvatarLevel ? " [to lvl]" : "");
 
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
+            foreach (var gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
                 ch.SetColor(ATTypes.AT_DGREEN);
-                string buffer = string.Empty;
+                var buffer = string.Empty;
 
                 if (gch.IsAffected(AffectedByTypes.Possess))
                 {
@@ -138,8 +138,8 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            int count = 0;
-            foreach (CharacterInstance gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch) && x != ch))
+            var count = 0;
+            foreach (var gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch) && x != ch))
             {
                 gch.Leader = null;
                 gch.Master = null;
@@ -154,8 +154,8 @@ namespace SmaugCS.Commands.PetsAndGroups
 
         private static void group_all(CharacterInstance ch)
         {
-            int count = 0;
-            foreach (CharacterInstance rch in ch.CurrentRoom.Persons.Where(x =>
+            var count = 0;
+            foreach (var rch in ch.CurrentRoom.Persons.Where(x =>
                 x != ch
                 && !x.IsNpc()
                 && ch.CanSee(x)
@@ -181,7 +181,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 
         private static void group_player(CharacterInstance ch, string argument)
         {
-            CharacterInstance victim = ch.GetCharacterInRoom(argument);
+            var victim = ch.GetCharacterInRoom(argument);
             if (victim == null)
             {
                 ch.SendTo("They aren't here.");

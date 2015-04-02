@@ -13,10 +13,10 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_blindness(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = (CharacterInstance) vo;
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var victim = (CharacterInstance) vo;
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
-            int tmp = skill.Flags.IsSet(SkillFlags.PKSensitive) ? level/2 : level;
+            var tmp = skill.Flags.IsSet(SkillFlags.PKSensitive) ? level/2 : level;
 
             if (victim.IsImmune(ResistanceTypes.Magic))
             {
@@ -30,7 +30,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 SkillNumber = sn,
                 Location = ApplyTypes.HitRoll,

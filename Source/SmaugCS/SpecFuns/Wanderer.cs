@@ -20,17 +20,17 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake())
                 return false;
 
-            bool thrown = false;
-            bool noExit = true;
+            var thrown = false;
+            var noExit = true;
 
-            ExitData exit = ch.CurrentRoom.Exits.First();
+            var exit = ch.CurrentRoom.Exits.First();
             if (exit != null)
                 noExit = false;
 
             if (SmaugRandom.D100() <= 50)
                 return false;
 
-            foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
+            foreach (var obj in ch.CurrentRoom.Contents)
             {
                 if (!obj.WearFlags.IsSet(ItemWearFlags.Take)
                     || obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
@@ -45,7 +45,7 @@ namespace SmaugCS.SpecFuns
                 comm.act(ATTypes.AT_ACTION, "$n leans over and gets $p.", ch, obj, null, ToTypes.Room);
                 ch.CurrentRoom.RemoveFrom(obj);
 
-                ObjectInstance trash = obj.AddTo(ch);
+                var trash = obj.AddTo(ch);
                 if (ch.Level < trash.Level)
                 {
                     comm.act(ATTypes.AT_ACTION, "$n tries to use $p, but is too inexperienced.", ch, trash, null, ToTypes.Room);
@@ -55,10 +55,10 @@ namespace SmaugCS.SpecFuns
                 if (!thrown)
                     ch.WearItem(trash, false, ItemWearFlags.None);
 
-                bool found = false;
+                var found = false;
                 if (!thrown)
                 {
-                    foreach (ObjectInstance obj2 in ch.Carrying.Where(obj2 => obj2.WearLocation == WearLocations.None))
+                    foreach (var obj2 in ch.Carrying.Where(obj2 => obj2.WearLocation == WearLocations.None))
                     {
                         Say.do_say(ch, "Hmm, I can't use this.");
                         trash = obj2;
@@ -70,12 +70,12 @@ namespace SmaugCS.SpecFuns
                 {
                     while (!found && !noExit)
                     {
-                        int door = db.number_door();
+                        var door = db.number_door();
                         exit = ch.CurrentRoom.GetExitNumber(door);
                         
                         if (exit != null)
                         {
-                            RoomTemplate destRoom = exit.GetDestination(DatabaseManager.Instance);
+                            var destRoom = exit.GetDestination(DatabaseManager.Instance);
                             if (destRoom != null && !exit.Flags.IsSet(ExitFlags.Closed)
                                 && !destRoom.Flags.IsSet(RoomFlags.NoDrop))
                             {
@@ -113,8 +113,8 @@ namespace SmaugCS.SpecFuns
                 ToTypes.Room);
             trash.RemoveFrom();
 
-            RoomTemplate oldRoom = ch.CurrentRoom;
-            RoomTemplate room = exit.GetDestination(DatabaseManager.Instance);
+            var oldRoom = ch.CurrentRoom;
+            var room = exit.GetDestination(DatabaseManager.Instance);
             room.AddTo(trash);
             ch.CurrentRoom.RemoveFrom(ch);
             room.AddTo(ch);

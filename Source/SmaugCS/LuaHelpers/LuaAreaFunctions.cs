@@ -38,9 +38,9 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateArea", "Creates a new Area", "Id of the Area", "Name of the Area")]
         public static AreaData LuaCreateArea(int id, string name)
         {
-            long areaId = Convert.ToInt64(id);
+            var areaId = Convert.ToInt64(id);
 
-            AreaData newArea = new AreaData(areaId, name);
+            var newArea = new AreaData(areaId, name);
             _luaManager.Proxy.CreateTable("area");
             LastObject = newArea;
             _dbManager.AREAS.Add(areaId, newArea);

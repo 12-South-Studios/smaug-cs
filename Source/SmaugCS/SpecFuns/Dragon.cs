@@ -14,14 +14,14 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsInCombatPosition())
                 return false;
 
-            CharacterInstance victim =
+            var victim =
                 ch.CurrentRoom.Persons.Where(v => v != ch)
                   .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && vch.GetMyTarget() == ch);
 
             if (victim == null)
                 return false;
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
             if (skill == null || skill.SpellFunction == null)
                 return false;
 

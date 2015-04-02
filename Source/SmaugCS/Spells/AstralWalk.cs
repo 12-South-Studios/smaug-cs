@@ -16,8 +16,8 @@ namespace SmaugCS.Spells
         SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
-            CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var victim = ch.GetCharacterInWorld(Cast.TargetName);
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null
                                                   || !ch.CanAstral(victim)

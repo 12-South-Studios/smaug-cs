@@ -24,14 +24,14 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Deity);
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Deity);
 
-            string deities = GameConstants.GetAppSetting("Deities");
+            var deities = GameConstants.GetAppSetting("Deities");
             if (string.IsNullOrEmpty(deities))
                 return;
 
             IEnumerable<string> deityList = deities.Split(new[] { ',' });
-            foreach (string deityName in deityList)
+            foreach (var deityName in deityList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + deityName + ".lua");
             }

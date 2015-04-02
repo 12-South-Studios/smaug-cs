@@ -33,9 +33,9 @@ namespace SmaugCS.Managers
 
         public int AddTimer(double duration, ElapsedEventHandler callback)
         {
-            int newId = GetNextId;
+            var newId = GetNextId;
 
-            CommonTimer newTimer = new CommonTimer(newId) {Interval = duration};
+            var newTimer = new CommonTimer(newId) {Interval = duration};
             newTimer.Elapsed += callback;
 
             TimerTable.GetOrAdd(newId, newTimer);

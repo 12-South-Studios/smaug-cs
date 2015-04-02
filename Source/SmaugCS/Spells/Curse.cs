@@ -14,8 +14,8 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_curse(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = (CharacterInstance) vo;
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var victim = (CharacterInstance) vo;
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(victim.Immunity.IsSet(ResistanceTypes.Magic), skill, ch,
                 CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
@@ -47,7 +47,7 @@ namespace SmaugCS.Spells
                 duration = (4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue");
             }
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 SkillNumber = sn,
                 Duration = duration,

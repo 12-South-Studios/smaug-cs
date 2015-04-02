@@ -15,13 +15,13 @@ namespace SmaugCS.Commands.Movement
     {
         public static ReturnTypes move_char(CharacterInstance ch, ExitData pexit, int fall)
         {
-            bool drunk = false;
-            bool nuisance = false;
+            var drunk = false;
+            var nuisance = false;
             string txt;
 
             if (!ch.IsNpc())
             {
-                PlayerInstance pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance) ch;
 
                 if (ch.IsDrunk(2) && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag)
@@ -54,8 +54,8 @@ namespace SmaugCS.Commands.Movement
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Mounted))
                 return ReturnTypes.None;
 
-            RoomTemplate inRoom = ch.CurrentRoom;
-            RoomTemplate fromRoom = inRoom;
+            var inRoom = ch.CurrentRoom;
+            var fromRoom = inRoom;
             RoomTemplate toRoom = null;
 
             if (exit == null || exit.Destination == null)
@@ -98,7 +98,7 @@ namespace SmaugCS.Commands.Movement
             }
 
             door = (int)exit.Direction;
-            int distance = exit.Distance;
+            var distance = exit.Distance;
 
             // Exit is only a "window", there is no way to travel in that direction unless it's a door with a window in it 
             if (CheckFunctions.CheckIfTrue(ch, exit.Flags.IsSet(ExitFlags.Window) && !exit.Flags.IsSet(ExitFlags.IsDoor),
@@ -224,7 +224,7 @@ namespace SmaugCS.Commands.Movement
                     if ((ch.CurrentMount != null && !ch.CurrentMount.IsFloating()) || !ch.IsFloating())
                     {
                         // Look for a boat. We can use the boat obj for a more detailed description.
-                        ObjectInstance boat = ch.GetObjectOfType(ItemTypes.Boat);
+                        var boat = ch.GetObjectOfType(ItemTypes.Boat);
                         if (CheckFunctions.CheckIfNullObject(ch, boat,
                             ch.CurrentMount != null ? "Your mount would drown!" : "You'd need a boat to go there."))
                             return ReturnTypes.None;
@@ -235,7 +235,7 @@ namespace SmaugCS.Commands.Movement
 
                 if (exit.Flags.IsSet(ExitFlags.Climb))
                 {
-                    bool found = false;
+                    var found = false;
                     if (ch.CurrentMount != null && ch.CurrentMount.IsAffected(AffectedByTypes.Flying))
                         found = true;
                     else if (ch.IsAffected(AffectedByTypes.Flying))

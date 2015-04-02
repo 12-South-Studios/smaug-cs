@@ -12,7 +12,7 @@ namespace SmaugCS.Extensions
     {
         public static void WriteToPager(this DescriptorData d, string txt, int length)
         {
-            int len = length <= 0 ? txt.Length : length;
+            var len = length <= 0 ? txt.Length : length;
             if (len == 0)
                 return;
 
@@ -29,7 +29,7 @@ namespace SmaugCS.Extensions
             }
             if (d.PageTop == 0 && !d.fcommand)
             {
-                char[] bufferArray = d.PageBuffer.ToCharArray();
+                var bufferArray = d.PageBuffer.ToCharArray();
                 bufferArray[0] = '\r';
                 bufferArray[1] = '\n';
                 d.PageTop = 2;
@@ -66,7 +66,7 @@ namespace SmaugCS.Extensions
 
         public static void ShowTitle(this DescriptorData d)
         {
-            PlayerInstance ch = d.Character;
+            var ch = d.Character;
             if (ch.PlayerData.Flags.IsSet(PCFlags.NoIntro))
                 d.WriteToBuffer("Press enter...", 0);
             else
@@ -90,7 +90,7 @@ namespace SmaugCS.Extensions
             if (string.IsNullOrEmpty(d.outbuf))
                 return;
 
-            int len = length;
+            var len = length;
             if (len <= 0)
                 len = txt.Length;
 

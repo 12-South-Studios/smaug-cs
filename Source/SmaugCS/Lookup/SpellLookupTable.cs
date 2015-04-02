@@ -23,7 +23,7 @@ namespace SmaugCS.Lookup
 
         public override void UpdateFunctionReferences(IEnumerable<SkillData> values)
         {
-            foreach (SkillData skill in values.Where(x => !x.SpellFunctionName.IsNullOrEmpty()))
+            foreach (var skill in values.Where(x => !x.SpellFunctionName.IsNullOrEmpty()))
             {
                 if (skill.SpellFunction == null)
                     skill.SpellFunction = new SpellFunction();

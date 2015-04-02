@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Social
         public static void do_say(CharacterInstance ch, string argument)
         {
 #if !SCRAMBLE
-            int speaking = -1;
+            var speaking = -1;
             /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
@@ -30,13 +30,13 @@ namespace SmaugCS.Commands.Social
                 args => ((CharacterInstance) args[0]).CurrentRoom.Flags.IsSet((int) RoomFlags.Silence),
                 "You can't do that here.", new List<object> {ch})) return;
 
-            int actflags = ch.Act;
+            var actflags = ch.Act;
             if (ch.IsNpc())
                 ch.Act.RemoveBit(ActFlags.Secretive);
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
+            foreach (var vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {
-                string sbuf = argument;
+                var sbuf = argument;
                 if (vch.IsIgnoring(ch))
                 {
                     if (!ch.IsImmortal() || vch.Trust > ch.Trust)

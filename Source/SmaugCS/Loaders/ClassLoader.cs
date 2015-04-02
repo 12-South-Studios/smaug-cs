@@ -22,14 +22,14 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Class);
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Class);
 
-            string classes = GameConstants.GetAppSetting("Classes");
+            var classes = GameConstants.GetAppSetting("Classes");
             if (string.IsNullOrEmpty(classes))
                 throw new EntryNotFoundException("Classes not found in app.config");
 
             IEnumerable<string> classList = classes.Split(new[] { ',' });
-            foreach (string className in classList)
+            foreach (var className in classList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + className + ".lua");
 

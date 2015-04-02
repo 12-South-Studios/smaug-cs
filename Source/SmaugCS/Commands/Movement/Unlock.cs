@@ -14,17 +14,17 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_unlock(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Unlock what?")) return;
 
-            ExitData exit = ch.FindExit(firstArg, true);
+            var exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 UnlockDoor(ch, exit, firstArg);
                 return;
             }
 
-            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
+            var obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj != null)
             {
                 UnlockObject(ch, obj);
@@ -40,13 +40,13 @@ namespace SmaugCS.Commands.Movement
             if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ContainerFlags.Closed, "It's not closed.")) return;
             if (CheckFunctions.CheckIfTrue(ch, obj.Value[2] < 0, "It can't be unlocked.")) return;
 
-            ObjectInstance key = ch.HasKey(obj.Value[2]);
+            var key = ch.HasKey(obj.Value[2]);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
             if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ExitFlags.Locked, "It's already unlocked.")) return;
 
             obj.Value[1].RemoveBit(ContainerFlags.Locked);
             ch.SendTo("*Click*");
-            int count = key.Count;
+            var count = key.Count;
             key.Count = 1;
             comm.act(ATTypes.AT_ACTION, "$n unlocks $p with $P.", ch, obj, key, ToTypes.Room);
             key.Count = count;
@@ -70,14 +70,14 @@ namespace SmaugCS.Commands.Movement
             if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.Closed, "It's not closed.")) return;
             if (CheckFunctions.CheckIfTrue(ch, exit.Key < 0, "It can't be unlocked.")) return;
 
-            ObjectInstance key = ch.HasKey(exit.Key);
+            var key = ch.HasKey(exit.Key);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
             if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.Locked, "It's already unlocked.")) return;
 
             if (!exit.Flags.IsSet(ExitFlags.Secret) || exit.Keywords.IsAnyEqual(firstArg))
             {
                 ch.SendTo("*Click*");
-                int count = key.Count;
+                var count = key.Count;
                 key.Count = 1;
                 comm.act(ATTypes.AT_ACTION, "$n unlocks the $d with $p.", ch, key, exit.Keywords, ToTypes.Room);
                 key.Count = count;

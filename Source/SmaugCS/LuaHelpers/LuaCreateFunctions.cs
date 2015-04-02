@@ -48,7 +48,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateMudProg", "Creates a new mudprog", "Type of Prog")]
         public static MudProgData LuaCreateMudProg(string progType)
         {
-            MudProgData newMudProg = new MudProgData
+            var newMudProg = new MudProgData
             {
                 Type = EnumerationExtensions.GetEnumByName<MudProgTypes>(progType)
             };
@@ -60,8 +60,8 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateExit", "Creates a new Exit", "Exit Direction", "Exit Destination", "Exit Name")]
         public static ExitData LuaCreateExit(string direction, long destination, string name)
         {
-            DirectionTypes dir = EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
-            ExitData newExit = new ExitData((int)dir, name)
+            var dir = EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
+            var newExit = new ExitData((int)dir, name)
             {
                 Destination = destination,
                 Direction = dir,
@@ -78,7 +78,7 @@ namespace SmaugCS.LuaHelpers
             "Shop Close Hour")]
         public static ShopData LuaCreateShop(int buyRate, int sellRate, int openHour, int closeHour)
         {
-            ItemShopData newShop = new ItemShopData
+            var newShop = new ItemShopData
                                        {
                                            ShopType = ShopTypes.Item,
                                            OpenHour = openHour,
@@ -95,7 +95,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateReset", "Creates a new Reset", "Reset Type", "Extra", "Arg1", "Arg2", "Arg3")]
         public static ResetData LuaCreateReset(string resetType, int extra, int arg1, int arg2, int arg3)
         {
-            ResetData newReset = new ResetData
+            var newReset = new ResetData
             {
                 Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(resetType),
                 Extra = extra
@@ -112,7 +112,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateLiquid", "Creates a new Liquid", "Liquid ID", "Liquid Name")]
         public static LiquidData LuaCreateLiquid(int id, string name)
         {
-            LiquidData newLiquid = new LiquidData(id, name);
+            var newLiquid = new LiquidData(id, name);
 
             _luaManager.Proxy.CreateTable("liquid");
             AddLastObject(newLiquid);
@@ -125,7 +125,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSkill", "Creates a new skill", "ID of the skill", "Skill Name", "Skill Type")]
         public static SkillData LuaCreateSkill(int id, string name, string type)
         {
-            SkillData newSkill = new SkillData(id, name)
+            var newSkill = new SkillData(id, name)
             {
                 Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type)
             };
@@ -144,7 +144,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateHerb", "Creates a new herb", "ID of the herb", "Herb Name", "Herb Type")]
         public static HerbData LuaCreateHerb(int id, string name, string type)
         {
-            HerbData newHerb = new HerbData(id, name) { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
+            var newHerb = new HerbData(id, name) { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
 
             if (!type.EqualsIgnoreCase("herb"))
                 throw new InvalidOperationException(string.Format("Use of LCreateHerb for Non-Herbs is not supported"));
@@ -160,7 +160,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSmaugAffect", "Creates a new Smaug Affect", "duration", "location", "modifier", "flags")]
         public static SmaugAffect LuaCreateSmaugAffect(string duration, int location, string modifier, int flags)
         {
-            SmaugAffect newAffect = new SmaugAffect
+            var newAffect = new SmaugAffect
                 {
                     Duration = duration,
                     Location = location,
@@ -177,7 +177,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSpecFun", "Creates a new special function", "Name of the function")]
         public static SpecialFunction LuaCreateSpecialFunction(string name)
         {
-            SpecialFunction newSpecFun = new SpecialFunction(_dbManager.GenerateNewId<SpecialFunction>(),
+            var newSpecFun = new SpecialFunction(_dbManager.GenerateNewId<SpecialFunction>(),
                                                              name) {Value = SpecFunHandler.GetSpecFunReference(name)};
 
             if (newSpecFun.Value == null)
@@ -195,7 +195,7 @@ namespace SmaugCS.LuaHelpers
         public static CommandData LuaCreateCommand(string name, string function, int position, int level, int log,
                                                    int flags)
         {
-            CommandData newCommand = new CommandData(_dbManager.GenerateNewId<CommandData>(), name)
+            var newCommand = new CommandData(_dbManager.GenerateNewId<CommandData>(), name)
                 {
                     Flags = flags,
                     Position = position,
@@ -216,7 +216,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateSocial", "Creates a new Social", "Name of the social")]
         public static SocialData LuaCreateSocial(string name)
         {
-            SocialData newSocial = new SocialData(_dbManager.GenerateNewId<SocialData>(), name);
+            var newSocial = new SocialData(_dbManager.GenerateNewId<SocialData>(), name);
 
             _luaManager.Proxy.CreateTable("social");
             AddLastObject(newSocial);
@@ -230,7 +230,7 @@ namespace SmaugCS.LuaHelpers
             "Component Data", "Component Operator Type")]
         public static SpellComponent LuaCreateSpellComponent(string requiredType, string data, string operatorType)
         {
-            SpellComponent newComponent = new SpellComponent
+            var newComponent = new SpellComponent
                 {
                     RequiredType = EnumerationExtensions.GetEnumByName<ComponentRequiredTypes>(requiredType),
                     RequiredData = data
@@ -247,7 +247,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateClass", "Creates a new class", "Name of the class", "Numeric type of the class")]
         public static ClassData LuaCreateClass(string name, int type)
         {
-            ClassData newClass = new ClassData(_dbManager.GenerateNewId<ClassData>(), name)
+            var newClass = new ClassData(_dbManager.GenerateNewId<ClassData>(), name)
                 {
                     Type = EnumerationExtensions.GetEnum<ClassTypes>(type)
                 };
@@ -263,7 +263,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateRace", "Creates a new Race", "Name of the Race", "Numeric type of the race")]
         public static RaceData LuaCreateRace(string name, int type)
         {
-            RaceData newRace = new RaceData(_dbManager.GenerateNewId<RaceData>(), name)
+            var newRace = new RaceData(_dbManager.GenerateNewId<RaceData>(), name)
                 {
                     Type = EnumerationExtensions.GetEnum<RaceTypes>(type)
                 };
@@ -279,7 +279,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateClan", "Creates a new Clan", "Name of the clan")]
         public static ClanData LuaCreateClan(string name)
         {
-            ClanData newClan = new ClanData(_dbManager.GenerateNewId<ClanData>(), name);
+            var newClan = new ClanData(_dbManager.GenerateNewId<ClanData>(), name);
 
             _luaManager.Proxy.CreateTable("clan");
             AddLastObject(newClan);
@@ -292,7 +292,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateDeity", "Creates a new Deity", "Name of the Deity")]
         public static DeityData LuaCreateDeity(string name)
         {
-            DeityData newDeity = new DeityData(_dbManager.GenerateNewId<DeityData>(), name);
+            var newDeity = new DeityData(_dbManager.GenerateNewId<DeityData>(), name);
 
             _luaManager.Proxy.CreateTable("deity");
             AddLastObject(newDeity);
@@ -305,7 +305,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LCreateLanguage", "Creates a new Language", "Name of the language", "Language Type")]
         public static LanguageData LuaCreateLanguage(string name, string type)
         {
-            LanguageData newLang = new LanguageData(_dbManager.GenerateNewId<LanguageData>(), name,
+            var newLang = new LanguageData(_dbManager.GenerateNewId<LanguageData>(), name,
                                                     EnumerationExtensions.GetEnumIgnoreCase<LanguageTypes>(type));
 
             _luaManager.Proxy.CreateTable("lang");

@@ -24,7 +24,7 @@ using log4net;
 
 namespace SmaugCS
 {
-    public class Program
+    public static class Program
     {
         private static readonly ILog Logger =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -110,7 +110,7 @@ namespace SmaugCS
 
             DatabaseManager = Kernel.Get<IDatabaseManager>();
 
-            IInitializer luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
+            var luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
             if (luaInitializer == null)
                 throw new ApplicationException(string.Format("LuaInitializer failed to start"));
 
@@ -137,7 +137,7 @@ namespace SmaugCS
 
         private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
         {
-            ITcpUser user = (ITcpUser) sender;
+            var user = (ITcpUser) sender;
 
             if (networkEventArgs.SocketStatus == TcpSocketStatus.Disconnected)
                 DisconnectUser(user);
@@ -147,16 +147,16 @@ namespace SmaugCS
 
         private static void ConnectUser(ITcpUser user)
         {
-            DescriptorData descrip = new DescriptorData(9999, 9999, 9999) {User = user};
+            var descrip = new DescriptorData(9999, 9999, 9999) {User = user};
             db.DESCRIPTORS.Add(descrip);
         }
 
         private static void DisconnectUser(ITcpClientWrapper user)
         {
-            PlayerInstance character = DatabaseManager.CHARACTERS.Values.OfType<PlayerInstance>().FirstOrDefault(x => x.Descriptor.User == user);
+            var character = DatabaseManager.CHARACTERS.Values.OfType<PlayerInstance>().FirstOrDefault(x => x.Descriptor.User == user);
             if (character == null)
             {
-                DescriptorData descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);
+                var descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);
                 if (descrip == null)
                     throw new ObjectNotFoundException(string.Format("Character not found matching user {0}",
                     user.IpAddress));
@@ -332,9 +332,9 @@ namespace SmaugCS
         public static int MAX_MSG = 18;
         public static int MAX_OINVOKE_QUANTITY = 20;
 
-        public int MAX_PC_RACE { get; set; }
-        public int MAX_PC_CLASS { get; set; }
-        public bool mud_down { get; set; }
+        public static int MAX_PC_RACE { get; set; }
+        public static int MAX_PC_CLASS { get; set; }
+        public static bool mud_down { get; set; }
 
 
 
@@ -347,7 +347,7 @@ namespace SmaugCS
         public static int MAX_WHERE_NAME = 29;
 
 
-        public bool DONT_UPPER { get; set; }
+        public static bool DONT_UPPER { get; set; }
 
         /*public static int SECONDS_PER_TICK = SystemData.SecondsPerTick;
 
@@ -390,7 +390,7 @@ namespace SmaugCS
         public static int DO_ELSE = 3;
         public static int MAX_PROG_NEST = 20;
 
-        public bool MOBtrigger { get; set; }
+        public static bool MOBtrigger { get; set; }
 
 
         public static int AREA_DELETED = BV00;
@@ -541,12 +541,12 @@ namespace SmaugCS
         #region Automated Auction
         public static int advatoi(string s)
         {
-            int number = 0;
-            int multiplier = 0;
+            var number = 0;
+            var multiplier = 0;
 
-            StringBuilder sb = new StringBuilder(s);
+            var sb = new StringBuilder(s);
 
-            int i = 0;
+            var i = 0;
             while (Char.IsDigit(sb[i]))
             {
                 number = (number * 10) + Convert.ToInt32(sb[i]);
@@ -580,7 +580,7 @@ namespace SmaugCS
 
         public static int parsebet(int currentbet, string s)
         {
-            StringBuilder sb = new StringBuilder(s);
+            var sb = new StringBuilder(s);
             if (Char.IsDigit(sb[0]))
                 return advatoi(s);
             if (sb[0] == '+')

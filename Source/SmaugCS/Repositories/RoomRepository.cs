@@ -27,7 +27,7 @@ namespace SmaugCS.Repositories
                         throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                 });
 
-            RoomTemplate newRoom = new RoomTemplate(id, name.IsNullOrEmpty() ? "Floating in a Void" : name);
+            var newRoom = new RoomTemplate(id, name.IsNullOrEmpty() ? "Floating in a Void" : name);
             newRoom.Flags.SetBit(RoomFlags.Prototype);
 
             Add(id, newRoom);

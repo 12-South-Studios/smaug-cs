@@ -20,14 +20,14 @@ namespace SmaugCS.Commands.Social
 
           ch.SetColor(ATTypes.AT_ACTION);
 
-           string firstWord = argument.FirstWord();
+           var firstWord = argument.FirstWord();
            if (string.IsNullOrEmpty(firstWord))
            {
                GlanceAtRoom(ch);
                return;
            }
 
-           CharacterInstance victim = ch.GetCharacterInRoom(firstWord);
+           var victim = ch.GetCharacterInRoom(firstWord);
            if (CheckFunctions.CheckIfNullObject(ch, victim, "They're not here.")) return;
 
            if (victim.CanSee(ch))
@@ -42,7 +42,7 @@ namespace SmaugCS.Commands.Social
 
        private static void GlanceAtRoom(CharacterInstance ch)
        {
-           bool brief = ch.Act.IsSet(PlayerFlags.Brief);
+           var brief = ch.Act.IsSet(PlayerFlags.Brief);
 
            ch.Act.SetBit(PlayerFlags.Brief);
            Look.do_look(ch, "auto");

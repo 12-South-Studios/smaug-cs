@@ -15,7 +15,7 @@ namespace SmaugCS.Behavior.Shopkeeper
     {
         public static CharacterInstance GetShopkeep(CharacterInstance ch, IGameManager gameManager = null)
         {
-            MobileInstance keeper =
+            var keeper =
                 ch.CurrentRoom.Persons.OfType<MobileInstance>()
                     .FirstOrDefault(mob => mob.IsNpc() && mob.MobIndex.Shop != null);
 
@@ -31,7 +31,7 @@ namespace SmaugCS.Behavior.Shopkeeper
                 "I don't think they can hear you...")) return null;
             if (IsVisibleToKeeper(keeper, ch)) return null;
 
-            int speakswell = keeper.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, keeper));
+            var speakswell = keeper.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, keeper));
             if ((SmaugRandom.D100() % 65) > speakswell)
             {
                 string buffer;
@@ -79,7 +79,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool IsKeeperFighting(CharacterInstance keeper, CharacterInstance ch)
         {
-            CharacterInstance whof = keeper.GetMyTarget();
+            var whof = keeper.GetMyTarget();
             if (whof == null) return false;
 
             if (!CheckFunctions.CheckIfEquivalent(ch, whof, ch, "I don't think that's a good idea..."))
@@ -89,7 +89,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool IsShopClosed(MobileInstance keeper, CharacterInstance ch, int gameHour)
         {
-            ShopData shop = keeper.MobIndex.Shop;
+            var shop = keeper.MobIndex.Shop;
             if (gameHour < shop.OpenHour)
             {
                 Say.do_say(keeper, "Sorry, come back later.");

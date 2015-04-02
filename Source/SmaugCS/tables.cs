@@ -69,12 +69,12 @@ namespace SmaugCS
         /// <returns></returns>
         public static string ConvertStringSyllables(string sourceString)
         {
-            string buffer = string.Empty;
-            string oldStr = sourceString;
+            var buffer = string.Empty;
+            var oldStr = sourceString;
 
-            for (int i = 0; i < sourceString.Length; i++)
+            for (var i = 0; i < sourceString.Length; i++)
             {
-                foreach (Tuple<string, string> tuple in SyllableTable)
+                foreach (var tuple in SyllableTable)
                 {
                     if (oldStr.StartsWithIgnoreCase(tuple.Item1))
                     {

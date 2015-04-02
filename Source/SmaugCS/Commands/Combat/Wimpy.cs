@@ -12,7 +12,7 @@ namespace SmaugCS.Commands.Combat
         {
             ch.SetColor(ATTypes.AT_YELLOW);
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
 
             int wimpy;
             if (firstArg.IsNullOrEmpty())

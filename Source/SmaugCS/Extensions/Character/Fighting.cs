@@ -38,7 +38,7 @@ namespace SmaugCS.Extensions.Character
             if (victim.CharDied())
                 return null;
 
-            ObjectInstance corpse = ObjectFactory.CreateCorpse(victim, ch);
+            var corpse = ObjectFactory.CreateCorpse(victim, ch);
             if (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor
                 || victim.CurrentRoom.SectorType == SectorTypes.Underwater
                 || victim.CurrentRoom.SectorType == SectorTypes.ShallowWater
@@ -78,7 +78,7 @@ namespace SmaugCS.Extensions.Character
 
         public static int ModifyDamageWithResistance(this CharacterInstance ch, int dam, ResistanceTypes ris)
         {
-            int modifier = 10;
+            var modifier = 10;
             if (ch.Immunity.IsSet(ris) && !ch.NoImmunity.IsSet(ris))
                 modifier -= 10;
             if (ch.Resistance.IsSet(ris) && !ch.NoResistance.IsSet(ris))
@@ -132,7 +132,7 @@ namespace SmaugCS.Extensions.Character
             ch.UpdatePositionByCurrentHealth();
 
             if (!includeMyTargetsTarget) return;
-            foreach (CharacterInstance fch in DatabaseManager.Instance.CHARACTERS.Values
+            foreach (var fch in DatabaseManager.Instance.CHARACTERS.Values
                 .Where(fch => fch.GetMyTarget() == ch))
                 fch.StopFighting(false);
         }
@@ -200,8 +200,8 @@ namespace SmaugCS.Extensions.Character
 
         public static int ComputeAlignmentChange(this CharacterInstance ch, CharacterInstance victim)
         {
-            int align = ch.CurrentAlignment - victim.CurrentAlignment;
-            int divalign = (ch.CurrentAlignment > -350 && ch.CurrentAlignment < 350) ? 4 : 20;
+            var align = ch.CurrentAlignment - victim.CurrentAlignment;
+            var divalign = (ch.CurrentAlignment > -350 && ch.CurrentAlignment < 350) ? 4 : 20;
             int newAlign;
 
             if (align > 500)
@@ -216,8 +216,8 @@ namespace SmaugCS.Extensions.Character
 
         public static int ComputeExperienceGain(this CharacterInstance ch, CharacterInstance victim)
         {
-            int xp = (victim.GetExperienceWorth() * 0.GetNumberThatIsBetween((victim.Level - ch.Level) + 10, 13)) / 10;
-            int align = ch.CurrentAlignment - victim.CurrentAlignment;
+            var xp = (victim.GetExperienceWorth() * 0.GetNumberThatIsBetween((victim.Level - ch.Level) + 10, 13)) / 10;
+            var align = ch.CurrentAlignment - victim.CurrentAlignment;
 
             if (align > 990 || align < -990)
                 xp = ModifyXPForAttackingOppositeAlignment(xp);
@@ -241,20 +241,20 @@ namespace SmaugCS.Extensions.Character
 
         private static int ModifyXPForAttackingOppositeAlignment(int xp)
         {
-            int modXp = xp;
+            var modXp = xp;
             return (modXp * 5) >> 2;
         }
 
         private static int ModifyXPForGoodPlayerAttackingSameAlignment(int xp)
         {
-            int modXp = xp;
+            var modXp = xp;
             return (modXp * 3) >> 2;
         }
 
         private static int ModifyXPForExperiencedVsNovicePlayer(CharacterInstance ch, int xp)
         {
-            int modXp = xp;
-            int xpRatio = ((PlayerInstance)ch).PlayedDuration / ch.Level;
+            var modXp = xp;
+            var xpRatio = ((PlayerInstance)ch).PlayedDuration / ch.Level;
 
             if (xpRatio > 20000)
                 modXp = (modXp*5)/4; //// 5/4
@@ -274,8 +274,8 @@ namespace SmaugCS.Extensions.Character
 
         private static int ReduceXPForKillingSameMobRepeatedly(CharacterInstance ch, MobileInstance victim, int xp)
         {
-            int modXp = xp;
-            int times = ((PlayerInstance)ch).TimesKilled(victim);
+            var modXp = xp;
+            var times = ((PlayerInstance)ch).TimesKilled(victim);
 
             if (times > 0 && times < 20)
             {

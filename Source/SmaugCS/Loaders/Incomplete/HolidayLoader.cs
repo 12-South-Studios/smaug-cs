@@ -20,9 +20,9 @@ namespace SmaugCS.Loaders
 
         public override void Save()
         {
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
+            using (var proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
-                foreach (HolidayData day in db.HOLIDAYS)
+                foreach (var day in db.HOLIDAYS)
                 {
                     proxy.Write("#HOLIDAY\n");
                     proxy.Write("Name     {0}~\n", day.Name);
@@ -37,11 +37,11 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
-                int dayCount = 0;
+                var dayCount = 0;
                 IEnumerable<TextSection> sections = proxy.ReadSections(new[] { "#HOLIDAY" }, new[] { "*" }, null, "END");
-                foreach (TextSection section in sections)
+                foreach (var section in sections)
                 {
                     if (dayCount >= GameManager.Instance.SystemData.MaxHolidays)
                     {
@@ -49,7 +49,7 @@ namespace SmaugCS.Loaders
                         return;
                     }
 
-                    HolidayData newHoliday = new HolidayData();
+                    var newHoliday = new HolidayData();
                     newHoliday.Load(section);
                     dayCount++;
                     db.HOLIDAYS.Add(newHoliday);

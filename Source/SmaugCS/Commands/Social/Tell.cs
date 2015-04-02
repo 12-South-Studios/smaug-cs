@@ -15,7 +15,7 @@ namespace SmaugCS.Commands.Social
         public static void do_tell(CharacterInstance ch, string argument)
         {
 #if !SCRAMBLE
-            int speaking = -1;
+            var speaking = -1;
             /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
@@ -38,15 +38,15 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            string firstArgument = argument.FirstWord();
-            string argumentString = argument.RemoveWord(1);
+            var firstArgument = argument.FirstWord();
+            var argumentString = argument.RemoveWord(1);
             if (string.IsNullOrWhiteSpace(argumentString))
             {
                 ch.SendTo("Tell whom what?\r\n");
                 return;
             }
 
-            CharacterInstance victim = ch.GetCharacterInWorld(firstArgument);
+            var victim = ch.GetCharacterInWorld(firstArgument);
             if (victim == null ||
                 (victim.IsNpc() && victim.CurrentRoom != ch.CurrentRoom)
                 || (!ch.IsNotAuthorized() && victim.IsNotAuthorized() && !ch.IsImmortal()))
@@ -140,7 +140,7 @@ namespace SmaugCS.Commands.Social
                 && ((PlayerInstance)victim).PlayerData.TellHistory != null
                 && Char.IsLetter(ch.IsNpc() ? ch.ShortDescription.ToCharArray()[0] : ch.Name.ToCharArray()[0]))
             {
-                string buffer = string.Format("{0} told you '{1}'\r\n",
+                var buffer = string.Format("{0} told you '{1}'\r\n",
                                               ch.IsNpc()
                                                   ? ch.ShortDescription.CapitalizeFirst()
                                                   : ch.Name.CapitalizeFirst(),
@@ -154,7 +154,7 @@ namespace SmaugCS.Commands.Social
             //MOBTrigger = false;
 
             comm.act(ATTypes.AT_TELL, "You tell $N '$t'", ch, argumentString, victim, ToTypes.Character);
-            PositionTypes position = victim.CurrentPosition;
+            var position = victim.CurrentPosition;
             victim.CurrentPosition = PositionTypes.Standing;
 
             /*if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
@@ -176,7 +176,7 @@ namespace SmaugCS.Commands.Social
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {
-                string buffer = string.Format("{0}: {1} (tell to) {2}",
+                var buffer = string.Format("{0}: {1} (tell to) {2}",
                                               ch.IsNpc() ? ch.ShortDescription : ch.Name,
                                               argumentString,
                                               victim.IsNpc() ? victim.ShortDescription : victim.Name);

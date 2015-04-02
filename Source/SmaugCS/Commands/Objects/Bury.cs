@@ -14,12 +14,12 @@ namespace SmaugCS.Commands.Objects
     {
         public static void do_bury(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "What do you wish to bury?")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;
 
-            ObjectInstance shovel = ch.Carrying.FirstOrDefault(x => x.ItemType == ItemTypes.Shovel);
-            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
+            var shovel = ch.Carrying.FirstOrDefault(x => x.ItemType == ItemTypes.Shovel);
+            var obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You can't find it.")) return;
 
             obj.Split();
@@ -33,7 +33,7 @@ namespace SmaugCS.Commands.Objects
                 }
             }
 
-            SectorTypes sectorType = ch.CurrentRoom.SectorType;
+            var sectorType = ch.CurrentRoom.SectorType;
             if (CheckFunctions.CheckIfTrue(ch, sectorType == SectorTypes.City || sectorType == SectorTypes.Inside,
                 "The floor is too hard to dig through.")) return;
             if (CheckFunctions.CheckIfTrue(ch,
@@ -41,11 +41,11 @@ namespace SmaugCS.Commands.Objects
                 sectorType == SectorTypes.Underwater, "you cannot bury something here.")) return;
             if (CheckFunctions.CheckIfTrue(ch, sectorType == SectorTypes.Air, "What?  In the air?!")) return;
 
-            int carryWeight = 5.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight()/10);
+            var carryWeight = 5.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight()/10);
             if (CheckFunctions.CheckIfTrue(ch, shovel == null && obj.GetWeight() > carryWeight,
                 "You'd need a shovel to bury something that big.")) return;
 
-            int move = (obj.GetWeight()*50*(shovel != null ? 1 : 5))/
+            var move = (obj.GetWeight()*50*(shovel != null ? 1 : 5))/
                        1.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight());
             move = 2.GetNumberThatIsBetween(move, 1000);
             if (CheckFunctions.CheckIfTrue(ch, move > ch.CurrentMovement,

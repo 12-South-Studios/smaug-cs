@@ -16,7 +16,7 @@ namespace SmaugCS.Spells.Smaug
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_area_attack(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe), skill, ch))
                 return ReturnTypes.SpellFailed;
@@ -26,25 +26,25 @@ namespace SmaugCS.Spells.Smaug
             if (string.IsNullOrEmpty(skill.HitRoomMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, null, ToTypes.Room);
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons
+            foreach (var vch in ch.CurrentRoom.Persons
                 .Where(x => x.IsNpc() || !x.Act.IsSet(PlayerFlags.WizardInvisibility) ||
                     ((PlayerInstance)x).PlayerData.WizardInvisible < LevelConstants.ImmortalLevel)
                 .Where(x => x != ch)
                 .Where(x => !fight.is_safe(ch, x, false))
                 .Where(x => ch.IsNpc() || x.IsNpc() || ch.IsInArena() || (ch.IsPKill() && x.IsPKill())))
             {
-                bool saved = skill.CheckSave(level, ch, vch);
+                var saved = skill.CheckSave(level, ch, vch);
                 if (saved &&
                     CheckFunctions.CheckIfTrueCasting(Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate,
                         skill, ch, CastingFunctionType.Failed, vch))
                     continue;
 
-                int damage = GetBaseDamage(level, ch, skill);
+                var damage = GetBaseDamage(level, ch, skill);
 
                 if (saved)
                     damage = GetDamageIfSaved(sn, level, ch, skill, vch, damage);
 
-                ReturnTypes retcode = ch.CauseDamageTo(vch, damage, sn);
+                var retcode = ch.CauseDamageTo(vch, damage, sn);
                 if (retcode == ReturnTypes.None
                     && !ch.CharDied() && !vch.CharDied()
                     &&
@@ -61,7 +61,7 @@ namespace SmaugCS.Spells.Smaug
         private static int GetDamageIfSaved(int sn, int level, CharacterInstance ch, SkillData skill, CharacterInstance vch,
             int damage)
         {
-            SpellSaveEffectTypes spellSaveType =
+            var spellSaveType =
                 Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(
                     Macros.SPELL_SAVE(skill));
             switch (spellSaveType)
@@ -117,10 +117,10 @@ namespace SmaugCS.Spells.Smaug
             if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who == vch)
                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))
             {
-                int xp = ch.CurrentFighting != null
+                var xp = ch.CurrentFighting != null
                     ? ch.CurrentFighting.Experience
                     : vch.CurrentFighting.Experience;
-                int xpGain = xp*damage*2/vch.MaximumHealth;
+                var xpGain = xp*damage*2/vch.MaximumHealth;
 
                 ((PlayerInstance)ch).GainXP(0 - xpGain);
             }

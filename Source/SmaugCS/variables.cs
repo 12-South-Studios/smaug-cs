@@ -13,7 +13,7 @@ namespace SmaugCS
     {
         public static VariableData make_variable(VariableTypes type, int vnum, string tag)
         {
-            VariableData var = new VariableData
+            var var = new VariableData
                                    {
                                        Type = type,
                                        Flags = 0,
@@ -90,7 +90,7 @@ namespace SmaugCS
 
         public static void fwrite_variables(CharacterInstance ch, TextWriterProxy proxy)
         {
-            foreach (VariableData vd in ch.Variables)
+            foreach (var vd in ch.Variables)
             {
                 proxy.Write("#VARIABLE\n");
                 proxy.Write("Type   {0}\n", vd.Type);
@@ -118,11 +118,11 @@ namespace SmaugCS
 
         public static void fread_variable(CharacterInstance ch, TextReaderProxy proxy)
         {
-            VariableData vd = new VariableData();
+            var vd = new VariableData();
 
             for (; ; )
             {
-                string word = proxy.EndOfStream ? "End" : proxy.ReadNextWord();
+                var word = proxy.EndOfStream ? "End" : proxy.ReadNextWord();
 
                 switch (Char.ToUpper(word.ToCharArray()[0]))
                 {

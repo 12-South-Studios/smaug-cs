@@ -58,11 +58,11 @@ namespace SmaugCS.Extensions.Character
             if (ch == null || ch.IsNpc() || string.IsNullOrEmpty(txt))
                 return;
 
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             if (pch.Descriptor == null)
                 return;
 
-            PlayerInstance och = pch.Descriptor.Original ?? pch.Descriptor.Character;
+            var och = pch.Descriptor.Original ?? pch.Descriptor.Character;
             if (och.IsNpc() || !och.PlayerData.Flags.IsSet(PCFlags.PagerOn))
                 pch.Descriptor.SendTo(txt);
             else
@@ -74,7 +74,7 @@ namespace SmaugCS.Extensions.Character
             if (ch == null || ch.IsNpc())
                 return;
 
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             if (pch.Descriptor == null)
                 return;
 
@@ -87,7 +87,7 @@ namespace SmaugCS.Extensions.Character
             if (ch == null || ch.IsNpc())
                 return;
 
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             if (pch.Descriptor == null)
                 return;
 
@@ -103,7 +103,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsNpc() || string.IsNullOrEmpty(txt))
                 return;
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
             if (pch.Descriptor != null && !string.IsNullOrEmpty(txt))
                 pch.Descriptor.WriteToBuffer(color.colorize(txt, pch.Descriptor), 0);
         }
@@ -115,7 +115,7 @@ namespace SmaugCS.Extensions.Character
             var instance = ch as PlayerInstance;
             if (instance == null) return false;
 
-            PlayerInstance player = instance;
+            var player = instance;
             return player.PlayerData != null && player.PlayerData.Flags.IsSet(PCFlags.Deadly);
         }
 
@@ -143,7 +143,7 @@ namespace SmaugCS.Extensions.Character
 
             handler.queue_extracted_char(ch, fPull);
 
-            foreach (RelationData relation in db.RELATIONS
+            foreach (var relation in db.RELATIONS
                                                 .Where(relation => fPull && relation.Types == RelationTypes.MSet_On))
             {
                 if (ch == relation.Subject)
@@ -173,7 +173,7 @@ namespace SmaugCS.Extensions.Character
             {
                 ch.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
                 foreach (
-                    CharacterInstance wch in
+                    var wch in
                         DatabaseManager.Instance.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
@@ -197,7 +197,7 @@ namespace SmaugCS.Extensions.Character
                 }
             }
 
-            ObjectInstance lastObj = ch.Carrying.Last();
+            var lastObj = ch.Carrying.Last();
             if (lastObj != null)
                 lastObj.Extract();
 
@@ -217,7 +217,7 @@ namespace SmaugCS.Extensions.Character
 
                 location.AddTo(ch);
 
-                CharacterInstance wch = ch.GetCharacterInRoom("healer");
+                var wch = ch.GetCharacterInRoom("healer");
                 if (wch != null)
                 {
                     comm.act(ATTypes.AT_MAGIC, "$n mutters a few incantations, waves $s hands and points $s finger.",
@@ -243,7 +243,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.Switched != null && ((PlayerInstance)ch.Switched).Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
-            foreach (CharacterInstance wch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var wch in DatabaseManager.Instance.CHARACTERS.Values)
             {
                 if (((PlayerInstance)wch).ReplyTo == ch)
                     ((PlayerInstance)wch).ReplyTo = null;
@@ -274,21 +274,21 @@ namespace SmaugCS.Extensions.Character
         {
             if (!ch.IsVampire() || !ch.IsOutside()) return 0;
 
-            ArmorClassAttribute attrib =
+            var attrib =
                 (gameManager ?? GameManager.Instance).GameTime.Sunlight.GetAttribute<ArmorClassAttribute>();
             return attrib.ModValue;
         }
 
         public static bool CanGo(this CharacterInstance ch, DirectionTypes direction)
         {
-            ExitData exit = ch.CurrentRoom.GetExit((int)direction);
+            var exit = ch.CurrentRoom.GetExit((int)direction);
             return exit != null && exit.Destination > 0 && !exit.Flags.IsSet(ExitFlags.Closed);
         }
 
         public static bool CanUseSkill(this CharacterInstance ch, int percent, int skillId,
             IDatabaseManager dbManager = null)
         {
-            SkillData skill = (dbManager ?? DatabaseManager.Instance).SKILLS.Get(skillId);
+            var skill = (dbManager ?? DatabaseManager.Instance).SKILLS.Get(skillId);
             if (skill == null)
                 throw new EntryNotFoundException("Skill {0} not found", skillId);
 
@@ -298,7 +298,7 @@ namespace SmaugCS.Extensions.Character
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static bool CanUseSkill(this CharacterInstance ch, int percent, SkillData skill)
         {
-            bool check = false;
+            var check = false;
 
             if (ch.IsNpc() && percent < 85)
                 check = true;
@@ -323,16 +323,16 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsNpc() || !mob.IsNpc())
                 return;
 
-            long id = mob.MobIndex.ID;
-            int maxTrack = GameConstants.GetConstant<int>("MaxKillTrack");
+            var id = mob.MobIndex.ID;
+            var maxTrack = GameConstants.GetConstant<int>("MaxKillTrack");
 
-            KilledData killed = ch.PlayerData.Killed.FirstOrDefault(x => x.ID == id);
+            var killed = ch.PlayerData.Killed.FirstOrDefault(x => x.ID == id);
             if (killed == null)
             {
                 if (ch.PlayerData.Killed.Count >= maxTrack)
                 {
                     KilledData oldest = null;
-                    foreach (KilledData check in ch.PlayerData.Killed)
+                    foreach (var check in ch.PlayerData.Killed)
                     {
                         if (oldest == null)
                             oldest = check;
@@ -345,7 +345,7 @@ namespace SmaugCS.Extensions.Character
 
                     ch.PlayerData.Killed.Remove(oldest);
 
-                    KilledData newKilled = new KilledData(id);
+                    var newKilled = new KilledData(id);
                     newKilled.Increment(1);
                     ch.PlayerData.Killed.Add(newKilled);
                 }
@@ -368,7 +368,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            TimerData timer = ch.GetTimer(TimerTypes.ASupressed);
+            var timer = ch.GetTimer(TimerTypes.ASupressed);
             if (timer == null) return false;
             if (timer.Value == -1) return true;
             return timer.Count >= 1;
@@ -391,8 +391,8 @@ namespace SmaugCS.Extensions.Character
 
         public static void ImproveMentalState(this CharacterInstance ch, int mod)
         {
-            int c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
-            int con = ch.GetCurrentConstitution();
+            var c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
+            var con = ch.GetCurrentConstitution();
 
             c += SmaugRandom.D100() < con ? 1 : 0;
 
@@ -404,8 +404,8 @@ namespace SmaugCS.Extensions.Character
 
         public static void WorsenMentalState(this PlayerInstance ch, int mod)
         {
-            int c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
-            int con = ch.GetCurrentConstitution();
+            var c = 0.GetNumberThatIsBetween(Math.Abs(mod), 20);
+            var con = ch.GetCurrentConstitution();
 
             c -= SmaugRandom.D100() < con ? 1 : 0;
             if (c < 1) return;
@@ -572,10 +572,10 @@ namespace SmaugCS.Extensions.Character
 
         public static bool CanWearLayer(this CharacterInstance ch, ObjectInstance obj, WearLocations location)
         {
-            int bitlayers = 0;
-            int objlayers = obj.ObjectIndex.Layers;
+            var bitlayers = 0;
+            var objlayers = obj.ObjectIndex.Layers;
 
-            foreach (ObjectInstance otmp in ch.Carrying.Where(otmp => otmp.WearLocation == location))
+            foreach (var otmp in ch.Carrying.Where(otmp => otmp.WearLocation == location))
             {
                 if (otmp.ObjectIndex.Layers == 0)
                     return false;
@@ -597,8 +597,8 @@ namespace SmaugCS.Extensions.Character
 
         public static bool CanDualWield(this CharacterInstance ch)
         {
-            bool wield = false;
-            bool nwield = false;
+            var wield = false;
+            var nwield = false;
 
             if (!CouldDualWield(ch))
                 return false;
@@ -621,7 +621,7 @@ namespace SmaugCS.Extensions.Character
 
         public static ObjectInstance HasKey(this CharacterInstance ch, int key)
         {
-            foreach (ObjectInstance obj in ch.Carrying)
+            foreach (var obj in ch.Carrying)
             {
                 if (obj.ObjectIndex.Vnum == key ||
                     (obj.ItemType == ItemTypes.Key && obj.Value[0] == key))
@@ -658,7 +658,7 @@ namespace SmaugCS.Extensions.Character
                 return false;
             if (morph.timeto != -1 && morph.timefrom != -1)
             {
-                bool found = false;
+                var found = false;
                 int tmp, i;
 
                 for (i = 0, tmp = morph.timefrom; i < 25 && tmp != morph.timeto; i++)
@@ -719,7 +719,7 @@ namespace SmaugCS.Extensions.Character
         public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type,
             ILookupManager lookupManager = null)
         {
-            ResistanceTypes resType = (lookupManager ?? LookupManager.Instance).GetResistanceType(type);
+            var resType = (lookupManager ?? LookupManager.Instance).GetResistanceType(type);
 
             return resType != ResistanceTypes.Unknown && ch.Immunity.IsSet(resType);
         }
@@ -742,7 +742,7 @@ namespace SmaugCS.Extensions.Character
 
         public static bool CanCast(this CharacterInstance ch, IDatabaseManager dbManager = null)
         {
-            ClassData cls = (dbManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
+            var cls = (dbManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
 
             return cls.IsSpellcaster;
         }
@@ -782,7 +782,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
             return SmaugRandom.D100() < (pch.GetCondition(ConditionTypes.Drunk) & 2 / drunk);
         }
 
@@ -790,7 +790,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             return pch.PlayerData.CurrentDeity != null;
         }
 
@@ -798,7 +798,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             return pch.PlayerData != null && pch.PlayerData.Flags.IsSet(PCFlags.Idle);
         }
 
@@ -806,7 +806,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             return pch.PlayerData != null && pch.PlayerData.Flags.IsSet(PCFlags.Deadly);
         }
 
@@ -814,7 +814,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
             return pch.IsPKill() && pch.Level >= 5 && pch.CalculateAge() >= 18;
         }
 
@@ -833,8 +833,8 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc())
                 return false;
-            bool hasAuthState = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.AuthState <= 3;
-            bool isUnauthed = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Unauthorized);
+            var hasAuthState = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.AuthState <= 3;
+            var isUnauthed = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Unauthorized);
             return hasAuthState && isUnauthed;
         }
 
@@ -927,7 +927,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsNpc())
                 return;
 
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
             if (add)
                 ((PlayerInstance)ch).PlayerData.Learned[sn] += mod;
             else
@@ -937,7 +937,7 @@ namespace SmaugCS.Extensions.Character
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, WearLocations location)
         {
             ObjectInstance maxObj = null;
-            foreach (ObjectInstance obj in ch.Carrying.Where(x => x.WearLocation == location))
+            foreach (var obj in ch.Carrying.Where(x => x.WearLocation == location))
             {
                 if (obj.ObjectIndex.Layers == 0)
                     return obj;
@@ -952,7 +952,7 @@ namespace SmaugCS.Extensions.Character
         {
             checked
             {
-                int max = ch.CanCarryMaxWeight();
+                var max = ch.CanCarryMaxWeight();
 
                 if (ch.CarryWeight >= max)
                     return Convert.ToInt16(movement*4);
@@ -972,17 +972,17 @@ namespace SmaugCS.Extensions.Character
 
         public static void AdvanceLevel(this PlayerInstance ch, IDatabaseManager databaseManager = null)
         {
-            string buffer = string.Format("the {0}", tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender));
+            var buffer = string.Format("the {0}", tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender));
             player.set_title(ch, buffer);
 
-            ClassData myClass = (databaseManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
+            var myClass = (databaseManager ?? DatabaseManager.Instance).GetClass(ch.CurrentClass);
 
-            int add_hp = LookupConstants.con_app[ch.GetCurrentConstitution()].hitp +
+            var add_hp = LookupConstants.con_app[ch.GetCurrentConstitution()].hitp +
                          SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
-            int add_mana = myClass.UseMana
+            var add_mana = myClass.UseMana
                                ? SmaugRandom.Between(2, (2 * ch.GetCurrentIntelligence() + ch.GetCurrentWisdom()) / 8)
                                : 0;
-            int add_move = SmaugRandom.Between(5, (ch.GetCurrentConstitution() + ch.GetCurrentDexterity()) / 4);
+            var add_move = SmaugRandom.Between(5, (ch.GetCurrentConstitution() + ch.GetCurrentDexterity()) / 4);
             int add_prac = LookupConstants.wis_app[ch.GetCurrentWisdom()].practice;
 
             add_hp = 1.GetHighestOfTwoNumbers(add_hp);
@@ -1025,10 +1025,10 @@ namespace SmaugCS.Extensions.Character
 
         private static void AdvanceLevelAvatar(this CharacterInstance ch)
         {
-            IEnumerable<DescriptorData> descriptors = db.DESCRIPTORS.
+            var descriptors = db.DESCRIPTORS.
                                                   Where(d => d.ConnectionStatus == ConnectionTypes.Playing
                                                              && d.Character != ch);
-            foreach (DescriptorData d in descriptors)
+            foreach (var d in descriptors)
             {
                 d.Character.SetColor(ATTypes.AT_WHITE);
                 d.Character.Printf("%s has just achieved Avatarhood!", ch.Name);
@@ -1068,7 +1068,7 @@ namespace SmaugCS.Extensions.Character
                 }
             }
 
-            RaceData myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+            var myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
             modgain *= (myRace.ExperienceMultiplier / 100.0f);
 
             if (ch.IsPKill() && modgain < 0)
@@ -1224,7 +1224,7 @@ namespace SmaugCS.Extensions.Character
 
         private static int GetModifiedStatGainForVampire(this CharacterInstance ch, int gain)
         {
-            int modGain = gain;
+            var modGain = gain;
             if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] <= 1)
                 modGain /= 2;
             else if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] >= (8 + ch.Level))
@@ -1337,9 +1337,9 @@ namespace SmaugCS.Extensions.Character
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight -= obj.GetWeight();
 
-            foreach (AffectData affect in obj.ObjectIndex.Affects)
+            foreach (var affect in obj.ObjectIndex.Affects)
                 ch.AddAffect(affect);
-            foreach (AffectData affect in obj.Affects)
+            foreach (var affect in obj.Affects)
                 ch.AddAffect(affect);
 
             if (obj.ItemType == ItemTypes.Light && obj.Values.HoursLeft != 0 && ch.CurrentRoom != null)
@@ -1358,11 +1358,11 @@ namespace SmaugCS.Extensions.Character
             ch.ArmorClass += obj.ApplyArmorClass;
             obj.WearLocation = WearLocations.None;
 
-            foreach (AffectData paf in obj.ObjectIndex.Affects)
+            foreach (var paf in obj.ObjectIndex.Affects)
                 ch.RemoveAffect(paf);
             if (obj.CarriedBy != null)
             {
-                foreach (AffectData paf in obj.Affects)
+                foreach (var paf in obj.Affects)
                     ch.RemoveAffect(paf);
             }
 
@@ -1388,7 +1388,7 @@ namespace SmaugCS.Extensions.Character
             if (!ch.IsNpc())
                 return ch.Name;
 
-            string name = ch.Name.FirstWord();
+            var name = ch.Name.FirstWord();
             return string.IsNullOrEmpty(name)
                        ? string.Empty
                        : string.Format("{0}.{1}", 1 + ch.CurrentRoom.Persons.Count(rch => name.IsEqual(rch.Name)), name);

@@ -103,7 +103,7 @@ namespace SmaugCS
                 return ch.CurrentClass.ToString();
             if (!ch.IsNpc())
             {
-                ClassData cls = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+                var cls = DatabaseManager.Instance.GetClass(ch.CurrentClass);
                 return cls.Name;
             }
             return "Unknown";
@@ -115,7 +115,7 @@ namespace SmaugCS
                 return ch.CurrentRace.ToString();
             if (!ch.IsNpc())
             {
-                RaceData race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
                 return race.Name;
             }
             return "Unknown";

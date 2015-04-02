@@ -15,7 +15,7 @@ namespace SmaugCS.Extensions.Character
     {
         public static bool RemoveFrom(this CharacterInstance ch, WearLocations location, bool replace)
         {
-            ObjectInstance obj = ch.GetEquippedItem(location);
+            var obj = ch.GetEquippedItem(location);
             if (obj == null) return true;
 
             if (!replace && ch.CarryNumber + obj.GetObjectNumber() > ch.CanCarryN())
@@ -34,7 +34,7 @@ namespace SmaugCS.Extensions.Character
                 return false;
             }
 
-            ObjectInstance tObj = ch.GetEquippedItem(WearLocations.DualWield);
+            var tObj = ch.GetEquippedItem(WearLocations.DualWield);
             if (obj == ch.GetEquippedItem(WearLocations.Wield) && tObj != null)
                 tObj.WearLocation = WearLocations.Wield;
 
@@ -524,11 +524,11 @@ namespace SmaugCS.Extensions.Character
             }
             else
             {
-                ObjectInstance tobj = ch.GetEquippedItem(WearLocations.Wield);
-                ObjectInstance mw = ch.GetEquippedItem(WearLocations.WieldMissile);
-                ObjectInstance dw = ch.GetEquippedItem(WearLocations.DualWield);
-                ObjectInstance hd = ch.GetEquippedItem(WearLocations.Hold);
-                ObjectInstance sd = ch.GetEquippedItem(WearLocations.Shield);
+                var tobj = ch.GetEquippedItem(WearLocations.Wield);
+                var mw = ch.GetEquippedItem(WearLocations.WieldMissile);
+                var dw = ch.GetEquippedItem(WearLocations.DualWield);
+                var hd = ch.GetEquippedItem(WearLocations.Hold);
+                var sd = ch.GetEquippedItem(WearLocations.Shield);
 
                 if (CheckFunctions.CheckIfTrue(ch, hd != null && sd != null,
                     "You are already holding something and wearing a shield.")) return;

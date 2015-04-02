@@ -15,8 +15,8 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_charm_person(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = (CharacterInstance)vo;
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var victim = (CharacterInstance)vo;
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You like yourself even better!"))
                 return ReturnTypes.SpellFailed;
@@ -32,7 +32,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
             }
 
-            int schance = victim.ModifySavingThrowWithResistance(level, ResistanceTypes.Charm);
+            var schance = victim.ModifySavingThrowWithResistance(level, ResistanceTypes.Charm);
 
             if (victim.IsAffected(AffectedByTypes.Charm)
                 || schance == 1000
@@ -50,7 +50,7 @@ namespace SmaugCS.Spells
                 victim.StopFollower();
             victim.AddFollower(ch);
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 SkillNumber = sn,
                 Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
@@ -66,7 +66,7 @@ namespace SmaugCS.Spells
                 ((PlayerInstance)ch).PlayerData.NumberOfCharmies++;
             if (victim.IsNpc())
             {
-                MobileInstance mob = (MobileInstance) victim;
+                var mob = (MobileInstance) victim;
                 mob.StartHating(ch);
                 mob.StartHunting(ch);
             }

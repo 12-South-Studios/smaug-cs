@@ -14,7 +14,7 @@ namespace SmaugCS.Commands.Social
         public static void do_whisper(CharacterInstance ch, string argument)
         {
 #if !SCRAMBLE
-            int speaking = -1;
+            var speaking = -1;
             /*foreach (int key in GameConstants.LanguageTable.Keys
                                          .Where(key => (key & ch.Speaking) > 0))
             {
@@ -24,15 +24,15 @@ namespace SmaugCS.Commands.Social
 #endif
 
             ch.Deaf.RemoveBit((int)ChannelTypes.Whisper);
-            string firstArgument = argument.FirstWord();
-            string argumentString = argument.RemoveWord(1);
+            var firstArgument = argument.FirstWord();
+            var argumentString = argument.RemoveWord(1);
             if (string.IsNullOrWhiteSpace(argumentString))
             {
                 ch.SendTo("Whisper to whom what?");
                 return;
             }
 
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArgument);
+            var victim = ch.GetCharacterInRoom(firstArgument);
             if (victim == null)
             {
                 ch.SendTo("They aren't here.");
@@ -98,7 +98,7 @@ namespace SmaugCS.Commands.Social
             }
 
             comm.act(ATTypes.AT_WHISPER, "You whisper to $N '$t'", ch, argumentString, victim, ToTypes.Character);
-            PositionTypes position = victim.CurrentPosition;
+            var position = victim.CurrentPosition;
             victim.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE

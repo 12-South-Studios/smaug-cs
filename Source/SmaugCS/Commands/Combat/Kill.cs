@@ -14,8 +14,8 @@ namespace SmaugCS.Commands.Combat
         {
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Kill whom?")) return;
 
-            string firstArg = argument.FirstWord();
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
+            var firstArg = argument.FirstWord();
+            var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfTrue(ch, victim.IsNpc() && victim.CurrentMorph != null,
                 "This creature appears strange to you. Look upon it more closely before attempting to kill it."))

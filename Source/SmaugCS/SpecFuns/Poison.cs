@@ -14,7 +14,7 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsInCombatPosition())
                 return false;
 
-            CharacterInstance victim = ch.GetMyTarget();
+            var victim = ch.GetMyTarget();
             if (victim == null || (SmaugRandom.D100() > (2*ch.Level)))
                 return false;
 

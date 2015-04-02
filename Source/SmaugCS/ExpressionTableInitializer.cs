@@ -12,7 +12,7 @@ namespace SmaugCS
     {
         public static ExpressionTable GetExpressionTable()
         {
-            ExpressionTable table = new ExpressionTable();
+            var table = new ExpressionTable();
             table.Add(new CustomExpression
             {
                 Name = "Level",

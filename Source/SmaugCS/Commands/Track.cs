@@ -11,16 +11,16 @@ namespace SmaugCS.Commands
     {
         public static void do_track(CharacterInstance ch, string argument)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("track");
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>("track");
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Learned[(int) skill.ID] <= 0,
                 "You do not know of this skill yet.")) return;
 
-            string arg = argument.FirstWord();
+            var arg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, arg, "Whom are you trying to track?")) return;
 
             Macros.WAIT_STATE(ch, skill.Rounds);
 
-            CharacterInstance victim = ch.GetCharacterInWorld(arg);
+            var victim = ch.GetCharacterInWorld(arg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "You can't find a trail of anyone like that.")) return;
 
         }

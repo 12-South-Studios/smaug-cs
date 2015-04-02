@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Liquids
         {
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Quaff what?")) return;
 
-            ObjectInstance obj = handler.FindObject(ch, argument, true);
+            var obj = handler.FindObject(ch, argument, true);
             if (CheckFunctions.CheckIfNullObject(ch, obj)) return;
 
             if (!ch.IsNpc() && ch.IsAffected(AffectedByTypes.Charm))
@@ -33,7 +33,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                PlayerInstance pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance) ch;
                 if (CheckFunctions.CheckIfTrue(ch, pch.PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
                     || pch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48,
                     "Your stomach cannot contain any more.")) return;
@@ -48,7 +48,7 @@ namespace SmaugCS.Commands.Liquids
                 comm.act(ATTypes.AT_PLAIN, "$n takes $p from $P.", ch, obj, obj.InObject, ToTypes.Room);
             }
 
-            bool hgFlag = !(!ch.IsNpc() &&
+            var hgFlag = !(!ch.IsNpc() &&
                            (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.HighGag))));
 
             if (ch.CurrentFighting != null && PotionWasFumbled(ch))
@@ -95,7 +95,7 @@ namespace SmaugCS.Commands.Liquids
                 comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null,
                     ToTypes.Character);
 
-            ReturnTypes retcode = ch.ObjectCastSpell((int) obj.Values.Skill1ID, (int) obj.Values.SpellLevel, ch);
+            var retcode = ch.ObjectCastSpell((int) obj.Values.Skill1ID, (int) obj.Values.SpellLevel, ch);
             if (retcode == ReturnTypes.None)
                 retcode = ch.ObjectCastSpell((int) obj.Values.Skill2ID, (int) obj.Values.SpellLevel, ch);
             if (retcode == ReturnTypes.None)

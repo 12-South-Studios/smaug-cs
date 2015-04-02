@@ -7,6 +7,7 @@ using SmaugCS.Constants;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
@@ -40,9 +41,8 @@ namespace SmaugCS
 
             Kernel.Bind<ICalendarManager>().To<CalendarManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
                 .WithConstructorArgument("gameManager", Kernel.Get<IGameManager>())
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>())
                 .OnActivation(x => x.Initialize());
 
             Kernel.Bind<IInitializer>().To<LuaInitializer>().InSingletonScope()

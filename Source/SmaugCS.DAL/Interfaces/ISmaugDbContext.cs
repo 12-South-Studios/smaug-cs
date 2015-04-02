@@ -13,6 +13,8 @@ namespace SmaugCS.DAL.Interfaces
         IDbSet<GameState> GameStates { get; set; }
         IDbSet<Log> Logs { get; set; }
         IDbSet<News> News { get; set; }
+        IDbSet<NewsEntry> NewsEntries { get; set; }
+        IDbSet<Note> Notes { get; set; }
         IDbSet<Organization> Organizations { get; set; }
         IDbSet<WeatherCell> Weather { get; set; } 
     }

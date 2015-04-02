@@ -21,7 +21,7 @@ namespace SmaugCS
     {
         public static void look_sky(CharacterInstance ch)
         {
-            WeatherCell cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
             ch.SendToPager("You gaze up towards the heavens and see:\r\n");
 
@@ -31,17 +31,17 @@ namespace SmaugCS
                 return;
             }
 
-            int sunpos = (Program.MAP_WIDTH * (24 - GameManager.Instance.GameTime.Hour) / 24);
-            int moonpos = (sunpos + GameManager.Instance.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
-            int moonphase = ((((Program.MAP_WIDTH + moonpos - sunpos) % Program.MAP_WIDTH) + (Program.MAP_WIDTH / 16)) * 8) /
+            var sunpos = (Program.MAP_WIDTH * (24 - GameManager.Instance.GameTime.Hour) / 24);
+            var moonpos = (sunpos + GameManager.Instance.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
+            var moonphase = ((((Program.MAP_WIDTH + moonpos - sunpos) % Program.MAP_WIDTH) + (Program.MAP_WIDTH / 16)) * 8) /
                             Program.MAP_WIDTH;
             if (moonphase > 4)
                 moonphase -= 8;
-            int starpos = (sunpos + Program.MAP_WIDTH * GameManager.Instance.GameTime.Month / Program.NUM_MONTHS) % Program.MAP_WIDTH;
+            var starpos = (sunpos + Program.MAP_WIDTH * GameManager.Instance.GameTime.Month / Program.NUM_MONTHS) % Program.MAP_WIDTH;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            for (int line = 0; line < Program.MAP_HEIGHT; line++)
+            for (var line = 0; line < Program.MAP_HEIGHT; line++)
             {
                 if ((GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
                     && (line < 3 || line >= 6))
@@ -49,7 +49,7 @@ namespace SmaugCS
 
                 sb.Append(" ");
 
-                for (int i = 0; i <= Program.MAP_WIDTH; i++)
+                for (var i = 0; i <= Program.MAP_WIDTH; i++)
                 {
                     if ((GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
                         && (moonpos >= Program.MAP_WIDTH / 4 - 2)
@@ -88,7 +88,7 @@ namespace SmaugCS
                         }
                         else
                         {
-                            char c =
+                            var c =
                                 WeatherManager.Instance.Weather.StarMap.ToList()[line].ToCharArray()[
                                     (Program.MAP_WIDTH + 1 - starpos) % Program.MAP_WIDTH];
                             sb.Append(LookupConstants.StarCharacterMap.ContainsKey(c)
@@ -107,7 +107,7 @@ namespace SmaugCS
 
         public static string hallucinated_object(int ms, bool fShort)
         {
-            int sms = ((ms + 10) / 5).GetNumberThatIsBetween(1, 20);
+            var sms = ((ms + 10) / 5).GetNumberThatIsBetween(1, 20);
 
             return fShort
                        ? LookupManager.Instance.GetLookup("HallucinatedShortNames",
@@ -135,9 +135,9 @@ namespace SmaugCS
                 return;
             }
 
-            int count = list.Count;
+            var count = list.Count;
 
-            int ms = (ch.MentalState > 0 ? ch.MentalState : 1)*
+            var ms = (ch.MentalState > 0 ? ch.MentalState : 1)*
                      (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk) > 0
                          ? (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk)/12)
                          : 1);
@@ -166,18 +166,18 @@ namespace SmaugCS
                 return;
             }
 
-            int tmp = offcount > 0 ? offcount : 0;
-            int cnt = 0;
+            var tmp = offcount > 0 ? offcount : 0;
+            var cnt = 0;
 
-            int size = count + (offcount > 0 ? offcount : 0);
-            string[] prgpstrShow = new string[size];
-            int[] prgnShow = new int[size];
-            int[] pitShow = new int[size];
-            int nShow = 0;
+            var size = count + (offcount > 0 ? offcount : 0);
+            var prgpstrShow = new string[size];
+            var prgnShow = new int[size];
+            var pitShow = new int[size];
+            var nShow = 0;
             string pstrShow;
-            bool fCombine = false;
+            var fCombine = false;
 
-            foreach (ObjectInstance obj in list)
+            foreach (var obj in list)
             {
                 if (offcount < 0 && ++cnt > (count + offcount))
                     break;
@@ -201,7 +201,7 @@ namespace SmaugCS
 
                     if (ch.Act.IsSet(PlayerFlags.Combine))
                     {
-                        for (int i = nShow - 1; i >= 0; i--)
+                        for (var i = nShow - 1; i >= 0; i--)
                         {
                             if (prgpstrShow[i] == pstrShow)
                             {
@@ -225,7 +225,7 @@ namespace SmaugCS
 
             if (tmp > 0)
             {
-                for (int i = 0; i < tmp; i++)
+                for (var i = 0; i < tmp; i++)
                 {
                     prgpstrShow[nShow] = hallucinated_object(ms, fShort);
                     prgnShow[nShow] = 1;
@@ -234,7 +234,7 @@ namespace SmaugCS
                 }
             }
 
-            for (int i = 0; i < nShow; i++)
+            for (var i = 0; i < nShow; i++)
             {
                 SetCharacterColorByItemType(ch, pitShow, i);
 
@@ -259,8 +259,8 @@ namespace SmaugCS
 
         private static void SetCharacterColorByItemType(CharacterInstance ch, IList<int> pitShow, int i)
         {
-            ItemTypes itemType = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
-            CharacterColorAttribute attrib = itemType.GetAttribute<CharacterColorAttribute>();
+            var itemType = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
+            var attrib = itemType.GetAttribute<CharacterColorAttribute>();
             ch.SetColor(attrib == null ? ATTypes.AT_OBJECT : attrib.ATType);
         }
 
@@ -296,11 +296,11 @@ namespace SmaugCS
             ch.ShowRaceOf(victim);
             ch.ShowConditionTo(victim);
 
-            bool found = false;
-            for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
+            var found = false;
+            for (var i = 0; i < GameConstants.MaximumWearLocations; i++)
             {
-                WearLocations wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(i);
-                ObjectInstance obj = victim.GetEquippedItem(wearLoc);
+                var wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(i);
+                var obj = victim.GetEquippedItem(wearLoc);
                 if (obj != null && ch.CanSee(obj))
                 {
                     if (!found)
@@ -315,7 +315,7 @@ namespace SmaugCS
 
                     if (!victim.IsNpc())
                     {
-                        RaceData race = DatabaseManager.Instance.GetRace(victim.CurrentRace);
+                        var race = DatabaseManager.Instance.GetRace(victim.CurrentRace);
                         ch.SendTo(race.WhereNames[i]);
                     }
                     else
@@ -340,7 +340,7 @@ namespace SmaugCS
                                 DatabaseManager.Instance.GetClass(victim.CurrentClass).Name);
             }
 
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("peek");
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>("peek");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'peek' not found");
 
@@ -356,7 +356,7 @@ namespace SmaugCS
 
         public static void show_char_to_char(IEnumerable<CharacterInstance> list, PlayerInstance ch)
         {
-            foreach (CharacterInstance rch in list.Where(x => x != ch))
+            foreach (var rch in list.Where(x => x != ch))
             {
                 if (ch.CanSee(rch))
                     rch.ShowToCharacter(ch);
@@ -389,9 +389,9 @@ namespace SmaugCS
         /// <returns></returns>
         public static int get_door(string arg)
         {
-            foreach (string args in StringToDoorDirection.Keys)
+            foreach (var args in StringToDoorDirection.Keys)
             {
-                string[] words = args.Split(';');
+                var words = args.Split(';');
                 if (words.Contains(arg.ToLower()))
                     return StringToDoorDirection[args];
             }
@@ -400,10 +400,10 @@ namespace SmaugCS
 
         public static void print_compass(CharacterInstance ch)
         {
-            List<int> exitInfo = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            List<string> exitColors = new List<string>() { "&w", "&Y", "&C", "&b", "&w", "&R" };
+            var exitInfo = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            var exitColors = new List<string>() { "&w", "&Y", "&C", "&b", "&w", "&R" };
 
-            foreach (ExitData exit in ch.CurrentRoom.Exits)
+            foreach (var exit in ch.CurrentRoom.Exits)
             {
                 if (exit.Destination == null || exit.Flags.IsSet((int)ExitFlags.Hidden)
                     || (exit.Flags.IsSet((int)ExitFlags.Secret)
@@ -456,7 +456,7 @@ namespace SmaugCS
 
         public static string roomdesc(CharacterInstance ch)
         {
-            string buffer = string.Empty;
+            var buffer = string.Empty;
 
             if (!ch.Act.IsSet((int)PlayerFlags.Brief))
                 if (!string.IsNullOrEmpty(ch.CurrentRoom.Description))
@@ -470,12 +470,12 @@ namespace SmaugCS
 
         public static HelpData get_help(CharacterInstance ch, string argument)
         {
-            string arg = string.Empty;
+            var arg = string.Empty;
 
             if (string.IsNullOrEmpty(argument))
                 arg = "summary";
 
-            int lev = 0;
+            var lev = 0;
             if (arg[0].IsDigit() && !arg.IsNumber())
             {
                 // TODO first part is a number
@@ -485,7 +485,7 @@ namespace SmaugCS
                 lev = -2;
 
             
-            string argall = string.Empty;
+            var argall = string.Empty;
             // TODO
 
             return db.HELPS

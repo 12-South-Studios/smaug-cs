@@ -25,8 +25,8 @@ namespace SmaugCS.Commands
             if (argument.EqualsIgnoreCase("clear now")
                 && ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Ascendant))
             {
-                string path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
-                using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path, false)))
+                var path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
+                using (var proxy = new TextWriterProxy(new StreamWriter(path, false)))
                 {
                     proxy.Write(string.Empty);
                 }

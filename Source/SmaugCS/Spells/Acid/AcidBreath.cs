@@ -11,7 +11,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_acid_breath(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = (CharacterInstance) vo;
+            var victim = (CharacterInstance) vo;
 
             int chance;
             checked
@@ -21,7 +21,7 @@ namespace SmaugCS.Spells
 
             if (ch.Chance(chance) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
             {
-                foreach (ObjectInstance obj in victim.Carrying)
+                foreach (var obj in victim.Carrying)
                 {
                     if (SmaugRandom.Bits(2) != 0) continue;
 
@@ -32,8 +32,8 @@ namespace SmaugCS.Spells
                 }
             }
 
-            int hpChange = 10.GetHighestOfTwoNumbers(ch.CurrentHealth);
-            int damage = SmaugRandom.Between(hpChange/16 + 1, hpChange/8);
+            var hpChange = 10.GetHighestOfTwoNumbers(ch.CurrentHealth);
+            var damage = SmaugRandom.Between(hpChange/16 + 1, hpChange/8);
 
             if (victim.SavingThrows.CheckSaveVsBreath(level, victim))
                 damage /= 2;
@@ -57,7 +57,7 @@ namespace SmaugCS.Spells
             obj.Split();
             comm.act(ATTypes.AT_DAMAGE, "$p is pitted and etched!", victim, obj, null, ToTypes.Character);
 
-            WearLocations wearLoc = obj.WearLocation;
+            var wearLoc = obj.WearLocation;
             if (wearLoc != WearLocations.None)
                 victim.ArmorClass += obj.ApplyArmorClass;
             obj.Value[0] -= 1;

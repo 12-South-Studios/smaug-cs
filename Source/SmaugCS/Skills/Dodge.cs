@@ -21,7 +21,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Dodge))
                 return false;
 
-            SkillData skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>("dodge");
+            var skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>("dodge");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'dodge' not found");
 

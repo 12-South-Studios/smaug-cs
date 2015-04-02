@@ -15,8 +15,8 @@ namespace SmaugCS.Commands.Combat
         {
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Murder whom?")) return;
 
-            string firstArg = argument.FirstWord();
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
+            var firstArg = argument.FirstWord();
+            var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Suicide is a mortal sin.")) return;
 
@@ -42,7 +42,7 @@ namespace SmaugCS.Commands.Combat
 
             Macros.WAIT_STATE(ch, 1 & GameConstants.GetSystemValue<int>("PulseViolence"));
 
-            string buf = string.Format("Help!  I am being attacked by {0}!", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+            var buf = string.Format("Help!  I am being attacked by {0}!", ch.IsNpc() ? ch.ShortDescription : ch.Name);
             if (victim.IsPKill())
                 Wartalk.do_wartalk(victim, buf);
             else 

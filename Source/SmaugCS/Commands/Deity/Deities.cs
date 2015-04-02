@@ -19,7 +19,7 @@ namespace SmaugCS.Commands.Deity
                 return;
             }
 
-            DeityData deity = DatabaseManager.Instance.GetEntity<DeityData>(argument);
+            var deity = DatabaseManager.Instance.GetEntity<DeityData>(argument);
             if (CheckFunctions.CheckIfNullObject(ch, deity, "&gThat deity does not exist.")) return;
 
             ch.PagerPrintfColor("&gDeity:        &G%s", deity.Name);
@@ -31,10 +31,10 @@ namespace SmaugCS.Commands.Deity
             ch.SendToPagerColor("&gFor detailed information on a deity, try 'deities <deity>' or 'help deities'");
             ch.SendToPagerColor("Deity			Worshippers");
 
-            List<DeityData> deities = DatabaseManager.Instance.DEITIES.Values.ToList();
+            var deities = DatabaseManager.Instance.DEITIES.Values.ToList();
             if (CheckFunctions.CheckIfTrue(ch, !deities.Any(), "&gThere are no deities on this world.")) return;
 
-            foreach (DeityData deity in deities)
+            foreach (var deity in deities)
                 ch.PagerPrintfColor(string.Format("&G{0}	&g{1}", deity.Name.PadRight(14), deity.Worshippers));
         }
     }

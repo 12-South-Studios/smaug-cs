@@ -16,14 +16,14 @@ namespace SmaugCS.Skills
     {
         public static void CheckDisarm(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null)
         {
-            ObjectInstance obj = victim.GetEquippedItem(WearLocations.Wield);
+            var obj = victim.GetEquippedItem(WearLocations.Wield);
             if (CheckFunctions.CheckIfNullObject(ch, obj)) return;
 
-            ObjectInstance tempObj = victim.GetEquippedItem(WearLocations.DualWield);
+            var tempObj = victim.GetEquippedItem(WearLocations.DualWield);
             if (tempObj != null && SmaugRandom.Bits(1) == 0)
                 obj = tempObj;
 
-            SkillData skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("disarm");
+            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("disarm");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'disarm' not found");
 

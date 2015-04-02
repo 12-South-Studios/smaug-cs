@@ -10,7 +10,7 @@ namespace SmaugCS.Extensions
     {
         public static bool CheckSaveVsPoisonDeath(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
-            int save = 50 + (victim.Level - level - savingThrow.SaveVsPoisonDeath) * 5;
+            var save = 50 + (victim.Level - level - savingThrow.SaveVsPoisonDeath) * 5;
             save = save.GetNumberThatIsBetween(5, 95);
             return victim.Chance(save);
         }
@@ -20,21 +20,21 @@ namespace SmaugCS.Extensions
             if (victim.Immunity.IsSet(ResistanceTypes.Magic))
                 return true;
 
-            int save = 50 + (victim.Level - level - savingThrow.SaveVsWandRod) * 5;
+            var save = 50 + (victim.Level - level - savingThrow.SaveVsWandRod) * 5;
             save = save.GetNumberThatIsBetween(5, 95);
             return victim.Chance(save);
         }
 
         public static bool CheckSaveVsParalysisPetrify(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
-            int save = 50 + (victim.Level - level - savingThrow.SaveVsParalysisPetrify) * 5;
+            var save = 50 + (victim.Level - level - savingThrow.SaveVsParalysisPetrify) * 5;
             save = save.GetNumberThatIsBetween(5, 95);
             return victim.Chance(save);
         }
 
         public static bool CheckSaveVsBreath(this SavingThrowData savingThrow, int level, CharacterInstance victim)
         {
-            int save = 50 + (victim.Level - level - savingThrow.SaveVsBreath) * 5;
+            var save = 50 + (victim.Level - level - savingThrow.SaveVsBreath) * 5;
             save = save.GetNumberThatIsBetween(5, 95);
             return victim.Chance(save);
         }
@@ -46,7 +46,7 @@ namespace SmaugCS.Extensions
             if (victim.IsNpc() && level > 10)
                 level -= 5;
 
-            int save = 50 + (victim.Level - level - savingThrow.SaveVsSpellStaff) * 5;
+            var save = 50 + (victim.Level - level - savingThrow.SaveVsSpellStaff) * 5;
             save = save.GetNumberThatIsBetween(5, 95);
             return victim.Chance(save);
         }

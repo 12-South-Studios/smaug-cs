@@ -23,7 +23,7 @@ namespace SmaugCS.Commands.Player
                 if (obj.GetType() != typeof(LookupLevel))
                     throw new InvalidCastException();
 
-                LookupLevel compareTo = (LookupLevel) obj;
+                var compareTo = (LookupLevel) obj;
 
                 if (Level < compareTo.Level)
                     return -1;
@@ -75,7 +75,7 @@ namespace SmaugCS.Commands.Player
             ch.PagerPrintf("\r\nWorth for {0}{1}.\r\n", ch.Name, ((PlayerInstance)ch).PlayerData.Title);
             ch.SendToPager(" ----------------------------------------------------------------------------\r\n");
 
-            string buffer = "|Level: {0} |Favor: {1} |Alignment: {2} |Experience: {3}|\r\n";
+            var buffer = "|Level: {0} |Favor: {1} |Alignment: {2} |Experience: {3}|\r\n";
             buffer = string.Format(buffer, ch.Level.ToString(CultureInfo.InvariantCulture).PadLeft(4),
                                    GetDeityFavor(ch).PadLeft(9),
                                    (ch.Level < 10
@@ -108,14 +108,14 @@ namespace SmaugCS.Commands.Player
                 return "N/A";
 
             DeityFavorList.Sort();
-            LookupLevel deityLookup = DeityFavorList.FirstOrDefault(level => ((PlayerInstance)ch).PlayerData.Favor > level.Level);
+            var deityLookup = DeityFavorList.FirstOrDefault(level => ((PlayerInstance)ch).PlayerData.Favor > level.Level);
             return deityLookup != null ? deityLookup.Text : "N/A";
         }
 
         private static string GetAlignment(CharacterInstance ch)
         {
             AlignmentList.Sort();
-            LookupLevel alignLookup = AlignmentList.FirstOrDefault(level => ch.CurrentAlignment > level.Level);
+            var alignLookup = AlignmentList.FirstOrDefault(level => ch.CurrentAlignment > level.Level);
             return alignLookup != null ? alignLookup.Text : "neutral";
         }
     }

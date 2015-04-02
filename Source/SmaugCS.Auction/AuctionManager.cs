@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
@@ -34,11 +33,9 @@ namespace SmaugCS.Auction
 
         ~AuctionManager()
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-                _timer.Dispose();
-            }
+            if (_timer == null) return;
+            _timer.Stop();
+            _timer.Dispose();
         }
 
         public static IAuctionManager Instance
@@ -48,7 +45,8 @@ namespace SmaugCS.Auction
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (Auction != null)
+                Save();
         }
 
         public void Initialize()
@@ -68,7 +66,7 @@ namespace SmaugCS.Auction
                     "New auction by Character {0} for Item {1} cannot be started as an auction is already in progress.",
                     seller.ID, item.ID);
 
-            AuctionData auction = new AuctionData
+            var auction = new AuctionData
             {
                 ItemForSale = item,
                 StartingBid = startingPrice,
@@ -102,7 +100,7 @@ namespace SmaugCS.Auction
             if (Auction == null)
                 throw new NoAuctionStartedException("An attempt was made to stop an auction, but one doesn't exist");
 
-            AuctionHistory history =
+            var history =
                 Repository.History.ToList()
                     .FirstOrDefault(x => x.ItemForSale == Auction.ItemForSale.ID && x.SellerName == Auction.Seller.Name);
             if (history != null)

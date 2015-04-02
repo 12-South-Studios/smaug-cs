@@ -26,10 +26,10 @@ namespace SmaugCS.Extensions.Objects
         public static string GetFormattedDescription(this ObjectInstance obj, CharacterInstance ch,
             bool isShortDescription, ILookupManager lookupManager = null)
         {
-            ILookupManager lookupMgr = lookupManager ?? LookupManager.Instance;
-            bool glowsee = IsGlowingOrCanSee(obj, ch);
+            var lookupMgr = lookupManager ?? LookupManager.Instance;
+            var glowsee = IsGlowingOrCanSee(obj, ch);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 0));
@@ -171,7 +171,7 @@ namespace SmaugCS.Extensions.Objects
             else if (obj.InObject != null)
                 obj.InObject.RemoveFrom(obj);
 
-            ObjectInstance objContent = obj.Contents.Last();
+            var objContent = obj.Contents.Last();
             if (objContent != null)
                 objContent.Extract();
 
@@ -180,7 +180,7 @@ namespace SmaugCS.Extensions.Objects
 
             //trworld_obj_check(obj);
 
-            foreach (RelationData relation in db.RELATIONS
+            foreach (var relation in db.RELATIONS
                                                 .Where(relation => relation.Types == RelationTypes.OSet_On))
             {
                 if (obj == relation.Subject)
@@ -223,22 +223,22 @@ namespace SmaugCS.Extensions.Objects
 
         public static ObjectInstance AddTo(this ObjectInstance obj, CharacterInstance ch)
         {
-            int oweight = obj.GetWeight();
-            int onum = obj.GetObjectNumber();
-            int wearLoc = (int)obj.WearLocation;
-            int extraFlags = obj.ExtraFlags;
+            var oweight = obj.GetWeight();
+            var onum = obj.GetObjectNumber();
+            var wearLoc = (int)obj.WearLocation;
+            var extraFlags = obj.ExtraFlags;
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.IsImmortal() 
                 && (!ch.IsNpc() || !ch.Act.IsSet(ActFlags.Prototype)))
                 return ch.CurrentRoom.AddTo(obj);
 
-            bool skipGroup = false;
+            var skipGroup = false;
 
             if (handler.LoadingCharacter == ch)
             {
-                for (int i = 0; i < GameConstants.MaximumWearLocations; i++)
+                for (var i = 0; i < GameConstants.MaximumWearLocations; i++)
                 {
-                    for (int j = 0; j < GameConstants.MaximumWearLayers; j++)
+                    for (var j = 0; j < GameConstants.MaximumWearLayers; j++)
                     {
                         if (ch.IsNpc())
                         {
@@ -264,10 +264,10 @@ namespace SmaugCS.Extensions.Objects
                 skipGroup = true;
 
             ObjectInstance groupObj = null;
-            bool grouped = false;
+            var grouped = false;
             if (!skipGroup)
             {
-                foreach (ObjectInstance carriedObj in ch.Carrying)
+                foreach (var carriedObj in ch.Carrying)
                 {
                     groupObj = carriedObj.GroupWith(obj);
                     if (groupObj == carriedObj)
@@ -290,7 +290,7 @@ namespace SmaugCS.Extensions.Objects
                 else
                 {
                     ObjectInstance foundObj = null;
-                    foreach (ObjectInstance carriedObj in ch.Carrying)
+                    foreach (var carriedObj in ch.Carrying)
                     {
                         if (obj.Level > carriedObj.Level)
                         {
@@ -329,7 +329,7 @@ namespace SmaugCS.Extensions.Objects
 
         public static void RemoveFrom(this ObjectInstance obj)
         {
-            CharacterInstance ch = obj.CarriedBy;
+            var ch = obj.CarriedBy;
             if (ch == null)
             {
                 LogManager.Instance.Bug("%s: null ch", "obj_from_char");
@@ -361,12 +361,12 @@ namespace SmaugCS.Extensions.Objects
                 return obj;
             }
 
-            CharacterInstance who = o.GetCarriedBy();
+            var who = o.GetCarriedBy();
 
             if (!o.IsInMagicContainer() && who != null)
                 who.CarryWeight += obj.GetWeight();
 
-            foreach (ObjectInstance otmp in o.Contents)
+            foreach (var otmp in o.Contents)
             {
                 ObjectInstance oret = otmp.GroupWith(obj);
                 if (oret == otmp)
@@ -398,7 +398,7 @@ namespace SmaugCS.Extensions.Objects
 
             if (!magic)
             {
-                ObjectInstance tmp = o;
+                var tmp = o;
                 do
                 {
                     tmp = o.InObject;
@@ -410,14 +410,14 @@ namespace SmaugCS.Extensions.Objects
 
         public static ObjectInstance Clone(this ObjectInstance obj)
         {
-            ObjInstanceRepository repo =
+            var repo =
                 (ObjInstanceRepository) Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
             return repo.Clone(obj);
         }
 
         public static void Split(this ObjectInstance obj, int number = 1)
         {
-            int count = obj.Count;
+            var count = obj.Count;
             if (count <= number || number == 0)
                 return;
 
@@ -451,7 +451,7 @@ namespace SmaugCS.Extensions.Objects
 
         public static bool Empty(this ObjectInstance obj, ObjectInstance destobj = null, RoomTemplate destroom = null)
         {
-            CharacterInstance ch = obj.CarriedBy;
+            var ch = obj.CarriedBy;
 
             if (destobj != null)
                 return EmptyInto(obj, destobj);
@@ -464,8 +464,8 @@ namespace SmaugCS.Extensions.Objects
 
             if (ch != null)
             {
-                bool retVal = false;
-                foreach (ObjectInstance cobj in obj.Contents)
+                var retVal = false;
+                foreach (var cobj in obj.Contents)
                 {
                     cobj.RemoveFrom(cobj);
                     cobj.AddTo(ch);
@@ -480,8 +480,8 @@ namespace SmaugCS.Extensions.Objects
 
         private static bool EmptyInto(ObjectInstance obj, ObjectInstance destobj)
         {
-            bool retVal = false;
-            foreach (ObjectInstance cobj in obj.Contents)
+            var retVal = false;
+            foreach (var cobj in obj.Contents)
             {
                 if (destobj.ItemType == ItemTypes.KeyRing && cobj.ItemType != ItemTypes.Key)
                     continue;
@@ -502,8 +502,8 @@ namespace SmaugCS.Extensions.Objects
 
         private static bool EmptyInto(CharacterInstance ch, ObjectInstance obj, RoomTemplate destroom)
         {
-            bool retVal = false;
-            foreach (ObjectInstance cobj in obj.Contents)
+            var retVal = false;
+            foreach (var cobj in obj.Contents)
             {
                 if (ch != null && cobj.ObjectIndex.HasProg(MudProgTypes.Drop) && cobj.Count > 1)
                 {
@@ -513,7 +513,7 @@ namespace SmaugCS.Extensions.Objects
                 else
                     cobj.RemoveFrom(cobj);
 
-                ObjectInstance tObj = destroom.AddTo(cobj);
+                var tObj = destroom.AddTo(cobj);
 
                 if (ch != null)
                 {

@@ -16,22 +16,22 @@ namespace SmaugCS.Loaders
 
         public void Load()
         {
-            DirectoryProxy dirProxy = new DirectoryProxy();
-            IEnumerable<string> files = dirProxy.GetFiles(Directory);
+            var dirProxy = new DirectoryProxy();
+            var files = dirProxy.GetFiles(Directory);
 
-            List<string> validLines = new List<string>() { "level", "roomrange", "mobrange", "objrange" };
+            var validLines = new List<string>() { "level", "roomrange", "mobrange", "objrange" };
 
-            foreach (string file in files.Where(x => !x.Equals(".")))
+            foreach (var file in files.Where(x => !x.Equals(".")))
             {
-                using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Directory + file)))
+                using (var proxy = new TextReaderProxy(new StreamReader(Directory + file)))
                 {
                     IEnumerable<string> lines = proxy.ReadIntoList();
 
                     int low = 0, hi = 0, rlow = 0, rhi = 0, mlow, mhi, olow, ohi;
-                    bool badFile = false;
+                    var badFile = false;
                     string[] words;
 
-                    foreach (string line in lines)
+                    foreach (var line in lines)
                     {
                         switch (line.ToLower())
                         {

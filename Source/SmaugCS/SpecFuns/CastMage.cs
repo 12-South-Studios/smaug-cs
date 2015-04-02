@@ -13,20 +13,20 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecCastMage(MobileInstance ch)
         {
-            ISpecFunHandler handler = Program.Kernel.Get<ISpecFunHandler>();
+            var handler = Program.Kernel.Get<ISpecFunHandler>();
             ch.SummonIfHating();
 
             if (!ch.IsInCombatPosition())
                 return false;
 
-            CharacterInstance victim =
+            var victim =
                 ch.CurrentRoom.Persons.Where(v => v != ch)
                   .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && vch.GetMyTarget() == ch);
 
             if (victim == null || victim == ch)
                 return false;
 
-            SkillData skill = handler.PickSpell(SpellLevelLookupTable, ch.Level);
+            var skill = handler.PickSpell(SpellLevelLookupTable, ch.Level);
             if (skill == null || skill.SpellFunction == null)
                 return false;
 

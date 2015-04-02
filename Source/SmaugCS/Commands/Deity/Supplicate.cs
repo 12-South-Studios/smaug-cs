@@ -32,7 +32,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || ((PlayerInstance)ch).PlayerData.CurrentDeity == null,
                 "You have no deity to supplicate to.")) return;
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Supplicate for what?")) return;
 
             if (SupplicateTable.ContainsKey(firstArg.ToLower()))
@@ -48,7 +48,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.ClanStoreroom,
                 "You cannot supplicate in a storage room.")) return;
 
-            ObjectInstance corpse =
+            var corpse =
                 ch.CurrentRoom.Contents.FirstOrDefault(
                     x => x.ShortDescription.Equals(string.Format("the corpse of {0}", ch.Name)));
             if (CheckFunctions.CheckIfNullObject(ch, corpse, "No corpse of yours litters the world...")) return;
@@ -71,8 +71,8 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateAvatarCost,
                 "You are not favored enough for that.")) return;
 
-            MobTemplate template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY);
-            CharacterInstance mob = DatabaseManager.Instance.CHARACTERS.Create(template);
+            var template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY);
+            var mob = DatabaseManager.Instance.CHARACTERS.Create(template);
 
             ch.CurrentRoom.AddTo(mob);
 
@@ -93,8 +93,8 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost,
                 "You are not favored enough for that.")) return;
 
-            ObjectTemplate template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
-            ObjectInstance obj = DatabaseManager.Instance.OBJECTS.Create(template, ch.Level,
+            var template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
+            var obj = DatabaseManager.Instance.OBJECTS.Create(template, ch.Level,
                 string.Format("sigil {0}", ch.PlayerData.CurrentDeity.Name));
             obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.AddTo(ch) : ch.CurrentRoom.AddTo(obj);
 
@@ -104,7 +104,7 @@ namespace SmaugCS.Commands.Deity
 
             // TODO Do suscept, element and affects
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 Type = AffectedByTypes.None,
                 Duration = -1,
@@ -155,7 +155,7 @@ namespace SmaugCS.Commands.Deity
 
             if (location == null)
             {
-                int raceRecallRoom = DatabaseManager.Instance.RACES.Get(ch.CurrentRace.GetValue()).RaceRecallRoom;
+                var raceRecallRoom = DatabaseManager.Instance.RACES.Get(ch.CurrentRace.GetValue()).RaceRecallRoom;
                 location = DatabaseManager.Instance.ROOMS.Get(raceRecallRoom);
             }
 
@@ -166,7 +166,7 @@ namespace SmaugCS.Commands.Deity
 
             comm.act(ATTypes.AT_MAGIC, "$n disappears in a column of divine power.", ch, null, null, ToTypes.Room);
 
-            RoomTemplate oldRoom = ch.CurrentRoom;
+            var oldRoom = ch.CurrentRoom;
             oldRoom.RemoveFrom(ch);
             location.AddTo(ch);
 

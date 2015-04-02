@@ -24,14 +24,14 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Clan);
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Clan);
 
-            string clans = GameConstants.GetAppSetting("Clans");
+            var clans = GameConstants.GetAppSetting("Clans");
             if (string.IsNullOrEmpty(clans))
                 return;
 
             IEnumerable<string> clanList = clans.Split(new[] { ',' });
-            foreach (string clanName in clanList)
+            foreach (var clanName in clanList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + clanName + ".lua");
             }

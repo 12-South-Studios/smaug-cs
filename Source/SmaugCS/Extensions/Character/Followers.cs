@@ -62,7 +62,7 @@ namespace SmaugCS.Extensions.Character
             ch.Leader = null;
 
             foreach (
-                CharacterInstance fch in
+                var fch in
                     DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (fch.Master == ch)

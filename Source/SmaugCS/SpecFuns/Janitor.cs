@@ -16,7 +16,7 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake())
                 return false;
 
-            foreach (ObjectInstance trash in ch.CurrentRoom.Contents
+            foreach (var trash in ch.CurrentRoom.Contents
                 .Where(x => x.WearFlags.IsSet(ItemWearFlags.Take))
                 .Where(x => !x.ExtraFlags.IsSet(ItemExtraFlags.Buried)))
             {

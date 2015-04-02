@@ -11,16 +11,16 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_affectchar(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
-            CharacterInstance victim = (CharacterInstance)vo;
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var victim = (CharacterInstance)vo;
 
             if (skill.Flags.IsSet(SkillFlags.ReCastable))
                 victim.StripAffects(sn);
 
-            bool first = true;
-            bool affected = false;
+            var first = true;
+            var affected = false;
 
-            foreach (SmaugAffect saf in skill.Affects)
+            foreach (var saf in skill.Affects)
             {
                 if (saf.Location >= Program.REVERSE_APPLY)
                 {

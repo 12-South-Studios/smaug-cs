@@ -14,17 +14,17 @@ namespace SmaugCS.Commands.Liquids
     {
         public static void do_empty(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Empty what?")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;
 
-            ObjectInstance obj = ch.GetCarriedObject(firstArg);
+            var obj = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You aren't carrying that.")) return;
 
             if (obj.Count > 1)
                 obj.Split();
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (secondArg.EqualsIgnoreCase("into"))
                 secondArg = argument.ThirdWord();
 
@@ -62,7 +62,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static void EmptyIntoObject(CharacterInstance ch, ObjectInstance obj, string arg)
         {
-            ObjectInstance destObj = ch.GetObjectOnMeOrInRoom(arg);
+            var destObj = ch.GetObjectOnMeOrInRoom(arg);
             if (CheckFunctions.CheckIfNullObject(ch, destObj, "You can't find it.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, destObj, obj, "You can't empty something into itself!")) return;
             if (CheckFunctions.CheckIfTrue(ch,

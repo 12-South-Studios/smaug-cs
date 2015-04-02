@@ -9,7 +9,7 @@ namespace SmaugCS.Extensions.Objects
     {
         public static int GetResistance(this ObjectInstance obj)
         {
-            int resist = SmaugRandom.Fuzzy(Program.MAX_ITEM_IMPACT);
+            var resist = SmaugRandom.Fuzzy(Program.MAX_ITEM_IMPACT);
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 resist += SmaugRandom.Fuzzy(12);
@@ -36,7 +36,7 @@ namespace SmaugCS.Extensions.Objects
 
         public static int GetWeight(this ObjectInstance obj)
         {
-            int weight = obj.Count * obj.Weight;
+            var weight = obj.Count * obj.Weight;
             if (obj.ItemType != ItemTypes.Container || !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 weight += obj.Contents.Sum(o => o.GetWeight());
 
@@ -45,7 +45,7 @@ namespace SmaugCS.Extensions.Objects
 
         public static int GetRealWeight(this ObjectInstance obj)
         {
-            int weight = obj.Count * obj.Weight;
+            var weight = obj.Count * obj.Weight;
 
             weight += obj.Contents.Sum(o => o.GetRealWeight());
 
@@ -54,7 +54,7 @@ namespace SmaugCS.Extensions.Objects
 
         public static int GetArmorRepairCost(this ObjectInstance obj, int baseCost)
         {
-            int cost = baseCost;
+            var cost = baseCost;
             if (obj.Values.CurrentAC >= obj.Values.OriginalAC)
                 cost = -2;
             else
@@ -63,7 +63,7 @@ namespace SmaugCS.Extensions.Objects
         }
         public static int GetWeaponRepairCost(this ObjectInstance obj, int baseCost, int weaponCondition)
         {
-            int cost = baseCost;
+            var cost = baseCost;
             if (weaponCondition == obj.Values.Condition)
                 cost = -2;
             else
@@ -72,7 +72,7 @@ namespace SmaugCS.Extensions.Objects
         }
         public static int GetImplementRepairCost(this ObjectInstance obj, int baseCost)
         {
-            int cost = baseCost;
+            var cost = baseCost;
             if (obj.Value[2] >= obj.Value[1])
                 cost = -2;
             else

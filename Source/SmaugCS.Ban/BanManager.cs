@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Linq;
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
-using Realm.Library.SmallDb;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
@@ -17,22 +10,18 @@ namespace SmaugCS.Ban
 {
     public sealed class BanManager : IBanManager
     {
-        private readonly List<BanData> _bans;
         private readonly ILogManager _logManager;
-        private readonly ISmallDb _smallDb;
-        private readonly IDbConnection _connection;
         private readonly ITimer _timer;
         private static IKernel _kernel;
 
-        public BanManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IKernel kernel,
-            ITimer timer)
+        public IBanRepository Repository { get; private set; }
+
+        public BanManager(IKernel kernel, ITimer timer, ILogManager logManager, IBanRepository repository)
         {
             _logManager = logManager;
-            _smallDb = smallDb;
-            _connection = connection;
+            Repository = repository;
             _kernel = kernel;
 
-            _bans = new List<BanData>();
             _timer = timer;
 
             if (_timer.Interval <= 0)
@@ -44,13 +33,9 @@ namespace SmaugCS.Ban
 
         ~BanManager()
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-                _timer.Dispose();
-            }
-            if (_connection != null)
-                _connection.Dispose();
+            if (_timer == null) return;
+            _timer.Stop();
+            _timer.Dispose();
         }
 
         public static IBanManager Instance
@@ -58,184 +43,41 @@ namespace SmaugCS.Ban
             get { return _kernel.Get<IBanManager>(); }
         }
 
-        public void ClearBans()
-        {
-            _bans.Clear();
-        }
-
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (!_bans.Any()) return;
+            //if (!_bans.Any()) return;
 
-            List<BanData> toRemove = new List<BanData>(_bans.Where(b => b.IsExpired()));
+            //List<BanData> toRemove = new List<BanData>(_bans.Where(b => b.IsExpired()));
 
-            foreach (BanData ban in toRemove)
-            {
-                // TODO Do something
+            //foreach (BanData ban in toRemove)
+            //{
+            //    // TODO Do something
 
-                DeleteBan(ban.Id);
-            }
+            //    DeleteBan(ban.Id);
+            //}
 
-            toRemove.ForEach(b => _bans.Remove(b));
+            //toRemove.ForEach(b => _bans.Remove(b));
         }
 
         public void Initialize()
         {
-            try
-            {
-                List<BanData> bans = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BanGetAll, TranslateBanData);
-
-                bans.ForEach(ban => _bans.Add(ban));
-                _logManager.Boot("Loaded {0} Bans", _bans.Count);
-            }
-            catch (DbException ex)
-            {
-                _logManager.Error(ex);
-            }
+            Repository.Load();
         }
 
-        [ExcludeFromCodeCoverage]
-        private bool SaveBans()
+        public void Save()
         {
-            IDbTransaction transaction = null;
-            try
-            {
-                transaction = _connection.BeginTransaction();
-                foreach (BanData ban in _bans)
-                {
-                    _smallDb.ExecuteNonQuery(_connection, SqlProcedureStatics.BanSave, CreateSqlParameters(ban));
-                }
-                transaction.Commit();
-                return true;
-            }
-            catch (DbException ex)
-            {
-                if (transaction != null)
-                    transaction.Rollback();
-                _logManager.Error(ex);
-                return false;
-            }
+            Repository.Save();
         }
 
-        [ExcludeFromCodeCoverage]
-        private bool SaveBan(BanData ban, bool isNew = false)
+
+        public void ClearBans()
         {
-            IDbTransaction transaction = null;
-            try
-            {
-                IEnumerable<SqlParameter> parameters = CreateSqlParameters(ban);
-                parameters.ToList().Add(new SqlParameter("@BanId", ban.Id));
-
-                transaction = _connection.BeginTransaction();
-                _smallDb.ExecuteNonQuery(_connection,
-                                         isNew ? SqlProcedureStatics.BanSave : SqlProcedureStatics.BanUpdate, parameters);
-                transaction.Commit();
-                return true;
-            }
-            catch (DbException ex)
-            {
-                if (transaction != null)
-                    transaction.Rollback();
-                _logManager.Error(ex);
-                return false;
-            }
-        }
-
-        internal static IEnumerable<SqlParameter> CreateSqlParameters(BanData ban)
-        {
-            List<SqlParameter> parameters = new List<SqlParameter>
-                {
-                    new SqlParameter("@BanTypeId", ban.Type.GetValue()),
-                    new SqlParameter("@Name", ban.Name),
-                    new SqlParameter("@Note", ban.Note),
-                    new SqlParameter("@BannedBy", ban.BannedBy),
-                    new SqlParameter("@BannedOn", ban.BannedOn),
-                    new SqlParameter("@Duration", ban.Duration),
-                    new SqlParameter("@Level", ban.Level),
-                    new SqlParameter("@Warn", ban.Warn),
-                    new SqlParameter("@Prefix", ban.Prefix),
-                    new SqlParameter("@Suffix", ban.Suffix)
-                };
-
-            return parameters;
-        }
-
-        [ExcludeFromCodeCoverage]
-        private bool DeleteBan(int id)
-        {
-            IDbTransaction transaction = null;
-            try
-            {
-                transaction = _connection.BeginTransaction();
-                _smallDb.ExecuteNonQuery(_connection, SqlProcedureStatics.BanDelete,
-                                         new List<IDataParameter> {new SqlParameter("@BanId", id)});
-                transaction.Commit();
-                return true;
-            }
-            catch (DbException ex)
-            {
-                if (transaction != null)
-                    transaction.Rollback();
-                _logManager.Error(ex);
-                return false;
-            }
-        }
-
-        public bool AddBan(BanData ban)
-        {
-            if (_bans.Contains(ban))
-                return false;
-
-            _bans.Add(ban);
-            return SaveBan(ban);
-        }
-
-        public bool RemoveBan(int id)
-        {
-            BanData ban = _bans.FirstOrDefault(x => x.Id == id);
-            if (ban == null)
-                return false;
-
-            _bans.Remove(ban);
-            return DeleteBan(id);
-        }
-
-        public BanData GetBan(string name)
-        {
-            return _bans.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-        }
-
-        public BanData GetBan(int id)
-        {
-            return _bans.FirstOrDefault(x => x.Id == id);
-        }
-
-        public IEnumerable<BanData> GetBans(string bannedBy)
-        {
-            return _bans.Where(x => x.BannedBy.EqualsIgnoreCase(bannedBy));
-        }
-
-        public IEnumerable<BanData> GetBans()
-        {
-            return _bans;
-        }
-
-        [ExcludeFromCodeCoverage]
-        private static List<BanData> TranslateBanData(IDataReader reader)
-        {
-            List<BanData> bans = new List<BanData>();
-            using (DataTable dt = new DataTable())
-            {
-                dt.Load(reader);
-                bans.AddRange(from DataRow row in dt.Rows select BanData.Translate(row));
-            }
-
-            return bans;
+            Repository.Bans.ToList().Clear();
         }
 
         public bool CheckTotalBans(string host, int supremeLevel)
         {
-            foreach (BanData ban in _bans.Where(b => b.Level == supremeLevel))
+            foreach (BanData ban in Repository.Bans.Where(b => b.Level == supremeLevel))
             {
                 if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
                     return CheckBanExpiration(ban);
@@ -290,7 +132,7 @@ namespace SmaugCS.Ban
             string host = ch.Descriptor.host.ToLower();
             bool match = false;
 
-            foreach (BanData ban in _bans.Where(x => x.Type == BanTypes.Site))
+            foreach (BanData ban in Repository.Bans.Where(x => x.Type == BanTypes.Site))
             {
                 if (ban.Prefix && ban.Suffix && host.Contains(ban.Name))
                     match = true;
@@ -309,7 +151,7 @@ namespace SmaugCS.Ban
 
         private bool CheckClassBans(PlayerInstance ch)
         {
-            return _bans.Where(x => x.Type == BanTypes.Class)
+            return Repository.Bans.Where(x => x.Type == BanTypes.Class)
                     .Where(ban => ban.Flag == (int) ch.CurrentClass)
                     .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
                     .FirstOrDefault();
@@ -317,7 +159,7 @@ namespace SmaugCS.Ban
 
         private bool CheckRaceBans(PlayerInstance ch)
         {
-            return _bans.Where(x => x.Type == BanTypes.Race)
+            return Repository.Bans.Where(x => x.Type == BanTypes.Race)
                     .Where(ban => ban.Flag == (int) ch.CurrentRace)
                     .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
                     .FirstOrDefault();

@@ -103,18 +103,18 @@ namespace SmaugCS.Extensions.Mobile
                 && !ch.Act.IsSet(ActFlags.Prototype)
                 && !ch.Act.IsSet(ActFlags.StayArea))
             {
-                int door = SmaugRandom.Bits(5);
+                var door = SmaugRandom.Bits(5);
                 if (door > 9)
                     return;
 
-                ExitData exit = ch.CurrentRoom.GetExit(door);
+                var exit = ch.CurrentRoom.GetExit(door);
                 if (exit == null)
                     return;
 
                 if (exit.Flags.IsSet(ExitFlags.Window) || exit.Flags.IsSet(ExitFlags.Closed))
                     return;
 
-                RoomTemplate room = exit.GetDestination();
+                var room = exit.GetDestination();
                 if (room == null)
                     return;
 
@@ -124,7 +124,7 @@ namespace SmaugCS.Extensions.Mobile
                 if (room.Area != ch.CurrentRoom.Area)
                     return;
 
-                ReturnTypes retcode = Commands.Movement.Move.move_char(ch, exit, 0);
+                var retcode = Commands.Movement.Move.move_char(ch, exit, 0);
                 if (ch.CharDied())
                     return;
                 if (retcode != ReturnTypes.None || ch.Act.IsSet(ActFlags.Sentinel) ||
@@ -134,30 +134,30 @@ namespace SmaugCS.Extensions.Mobile
 
             if (ch.CurrentHealth < ch.MaximumHealth/2)
             {
-                int door = SmaugRandom.Bits(4);
+                var door = SmaugRandom.Bits(4);
                 if (door > 9)
                     return;
 
-                ExitData exit = ch.CurrentRoom.GetExit(door);
+                var exit = ch.CurrentRoom.GetExit(door);
                 if (exit == null)
                     return;
 
                 if (exit.Flags.IsSet(ExitFlags.Window) || exit.Flags.IsSet(ExitFlags.Closed))
                     return;
 
-                RoomTemplate room = exit.GetDestination();
+                var room = exit.GetDestination();
                 if (room == null)
                     return;
 
                 if (room.Flags.IsSet(RoomFlags.NoMob) || room.Flags.IsSet(RoomFlags.Death))
                     return;
 
-                bool found = false;
-                foreach (CharacterInstance rch in ch.CurrentRoom.Persons)
+                var found = false;
+                foreach (var rch in ch.CurrentRoom.Persons)
                 {
                     if (ch.IsFearing(rch))
                     {
-                        string buf = string.Empty;
+                        var buf = string.Empty;
                         switch (SmaugRandom.Bits(2))
                         {
                             case 0:
@@ -187,10 +187,10 @@ namespace SmaugCS.Extensions.Mobile
 
         private static void Scavenge(CharacterInstance ch)
         {
-            int max = 1;
+            var max = 1;
             ObjectInstance best = null;
 
-            foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
+            foreach (var obj in ch.CurrentRoom.Contents)
             {
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.Act.IsSet(ActFlags.Prototype))
                     continue;

@@ -11,5 +11,11 @@ namespace SmaugCS.News
         public DateTime PostedOn { get; set; }
         public string PostedBy { get; set; }
         public bool Active { get; set; }
+        public bool Saved { get; set; }
+
+        public NewsEntryData()
+        {
+            Saved = false;
+        }
     }
 }

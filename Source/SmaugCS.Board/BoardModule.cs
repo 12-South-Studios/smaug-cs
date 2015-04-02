@@ -1,7 +1,6 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using Realm.Library.SmallDb;
-using SmaugCS.Constants;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Board
@@ -10,10 +9,14 @@ namespace SmaugCS.Board
     {
         public override void Load()
         {
+            Kernel.Bind<IBoardRepository>().To<BoardRepository>()
+                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
+
             Kernel.Bind<IBoardManager>().To<BoardManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("smallDb", Kernel.Get<ISmallDb>())
-                .WithConstructorArgument("connection", SqlConnectionProvider.Connection)
+                .WithConstructorArgument("kernel", Kernel)
+                .WithConstructorArgument("repository", Kernel.Get<IBoardRepository>())
                 .OnActivation(x => x.Initialize());
         }
     }

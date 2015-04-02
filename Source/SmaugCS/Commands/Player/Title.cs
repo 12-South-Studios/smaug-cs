@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Player
                 "The gods prohibit you from changing your title.")) return;
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Change your title to what?")) return;
 
-            string buffer = argument.Length > 50 ? argument.Substring(0, 50) : argument;
+            var buffer = argument.Length > 50 ? argument.Substring(0, 50) : argument;
 
             buffer.SmashTilde();
             player.set_title((PlayerInstance)ch, buffer);

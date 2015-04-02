@@ -38,9 +38,9 @@ namespace SmaugCS.Managers
             if (db.DESCRIPTORS.Count == 0 || string.IsNullOrEmpty(argument))
                 return;
 
-            string buf = string.Format("{0}: {1}\r\n", verb, argument);
+            var buf = string.Format("{0}: {1}\r\n", verb, argument);
 
-            foreach (DescriptorData d in db.DESCRIPTORS)
+            foreach (var d in db.DESCRIPTORS)
             {
                 CharacterInstance och = d.Original ?? d.Character;
                 CharacterInstance vch = d.Character;
@@ -75,7 +75,7 @@ namespace SmaugCS.Managers
         public static void talk_channel(CharacterInstance ch, string argument, ChannelTypes channel, string verb)
         {
 #if !SCRAMBLE
-            int speaking = -1;
+            var speaking = -1;
             /*foreach (int key in GameConstants.LanguageTable.Keys
                 .Where(key => (key & ch.Speaking) > 0))
             {
@@ -86,7 +86,7 @@ namespace SmaugCS.Managers
 
             if (ch.IsNpc())
             {
-                string message = string.Empty;
+                var message = string.Empty;
                 switch (channel)
                 {
                     case ChannelTypes.Clan:
@@ -148,7 +148,7 @@ namespace SmaugCS.Managers
 
            ch.SetColor(GetColorForChannelTalk(channel));
 
-            string buffer = string.Empty;
+            var buffer = string.Empty;
 
             switch (channel)
             {
@@ -167,7 +167,7 @@ namespace SmaugCS.Managers
                 case ChannelTypes.AvTalk:
                 case ChannelTypes.ImmTalk:
                     {
-                        PositionTypes position = ch.CurrentPosition;
+                        var position = ch.CurrentPosition;
                         comm.act(ATTypes.AT_IMMORT,
                                  string.Format("$n{0} $t", channel == ChannelTypes.ImmTalk ? '>' : ':'), ch, argument, null,
                                  ToTypes.Character);
@@ -188,15 +188,15 @@ namespace SmaugCS.Managers
                                                 verb));
             }
 
-            foreach (DescriptorData d in db.DESCRIPTORS)
+            foreach (var d in db.DESCRIPTORS)
             {
-                PlayerInstance och = d.Original ?? d.Character;
-                PlayerInstance vch = d.Character;
+                var och = d.Original ?? d.Character;
+                var vch = d.Character;
 
                 if (d.ConnectionStatus == ConnectionTypes.Playing && vch != ch &&
                     !och.Deaf.IsSet((int)channel))
                 {
-                    string sbuf = argument;
+                    var sbuf = argument;
 
                     if (och.IsIgnoring(ch) && (ch.Trust <= och.Trust))
                         continue;
@@ -237,7 +237,7 @@ namespace SmaugCS.Managers
                     if (channel == ChannelTypes.RaceTalk && vch.CurrentRace != ch.CurrentRace)
                         continue;
 
-                    string lbuf = string.Empty;
+                    var lbuf = string.Empty;
                     if (ch.Act.IsSet((int)PlayerFlags.WizardInvisibility)
                         && vch.CanSee(ch) && vch.IsImmortal())
                     {
@@ -246,7 +246,7 @@ namespace SmaugCS.Managers
                                                              : ch.MobInvisible);
                     }
 
-                    PositionTypes position = vch.CurrentPosition;
+                    var position = vch.CurrentPosition;
                     if (channel != ChannelTypes.Shout && channel != ChannelTypes.Yell)
                         vch.CurrentPosition = PositionTypes.Standing;
 
@@ -301,9 +301,9 @@ namespace SmaugCS.Managers
 
         public static void talk_auction(string argument)
         {
-            string buffer = string.Format("Auction: {0}", argument);
+            var buffer = string.Format("Auction: {0}", argument);
 
-            foreach (DescriptorData d in db.DESCRIPTORS)
+            foreach (var d in db.DESCRIPTORS)
             {
                 CharacterInstance original = d.Original ?? d.Character;
                 if (d.ConnectionStatus == ConnectionTypes.Playing

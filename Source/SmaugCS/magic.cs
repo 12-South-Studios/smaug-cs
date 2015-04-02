@@ -23,7 +23,7 @@ namespace SmaugCS
         /// </summary>
         public static int GetIDOfSkillCharacterKnows(this CharacterInstance ch, string name)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(name);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(name);
             if (skill == null) return 0;
 
             if (ch.IsNpc())
@@ -40,7 +40,7 @@ namespace SmaugCS
             if (ch.PlayerData == null)
                 return -1;
             foreach (
-                SkillData skill in
+                var skill in
                     ch.PlayerData.special_skills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
                                                                 && name.StartsWithIgnoreCase(skill.Name)))
                 return (int) skill.ID;
@@ -90,7 +90,7 @@ namespace SmaugCS
         {
             if (slot <= 0)
                 return -1;
-            foreach (SkillData skill in DatabaseManager.Instance.SKILLS.Values.Where(skill => skill.Slot == slot))
+            foreach (var skill in DatabaseManager.Instance.SKILLS.Values.Where(skill => skill.Slot == slot))
                 return (int) skill.ID;
             return -1;
         }
@@ -100,8 +100,8 @@ namespace SmaugCS
         /// </summary>
         public static int dispel_casting(AffectData paf, CharacterInstance ch, CharacterInstance victim, int affect, bool dispel)
         {
-            bool isMage = false;
-            bool hasDetect = false;
+            var isMage = false;
+            var hasDetect = false;
 
             if (ch.IsNpc() || ch.CurrentClass == ClassTypes.Mage)
                 isMage = true;
@@ -111,7 +111,7 @@ namespace SmaugCS
             string spell;
             if (paf != null)
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>((int) paf.Type);
+                var skill = DatabaseManager.Instance.GetEntity<SkillData>((int) paf.Type);
                 if (skill == null)
                     return 0;
                 spell = skill.Name;
@@ -122,7 +122,7 @@ namespace SmaugCS
            ch.SetColor(ATTypes.AT_MAGIC);
            victim.SetColor(ATTypes.AT_HITME);
 
-            string buffer = !ch.CanSee(victim)
+            var buffer = !ch.CanSee(victim)
                          ? "Someone"
                          : (victim.IsNpc()
                                 ? victim.ShortDescription
@@ -150,8 +150,8 @@ namespace SmaugCS
         public static void SuccessfulCast(this CharacterInstance ch, SkillData skill, CharacterInstance victim = null,
             ObjectInstance obj = null)
         {
-            ATTypes chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
-            ATTypes chIt = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HIT;
+            var chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
+            var chIt = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HIT;
 
             if (skill.Target != TargetTypes.OffensiveCharacter)
                 chIt = chItRoom;
@@ -193,8 +193,8 @@ namespace SmaugCS
         public static void FailedCast(this CharacterInstance ch, SkillData skill, CharacterInstance victim = null,
             ObjectInstance obj = null)
         {
-            ATTypes chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
-            ATTypes chItMe = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HITME;
+            var chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
+            var chItMe = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HITME;
 
             if (skill.Target != TargetTypes.OffensiveCharacter)
                 chItMe = chItRoom;
@@ -238,8 +238,8 @@ namespace SmaugCS
         public static void ImmuneCast(this CharacterInstance ch, SkillData skill, CharacterInstance victim = null,
             ObjectInstance obj = null)
         {
-            ATTypes chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
-            ATTypes chIt = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HIT;
+            var chItRoom = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_ACTION;
+            var chIt = skill.Type == SkillTypes.Spell ? ATTypes.AT_MAGIC : ATTypes.AT_HIT;
 
             if (skill.Target != TargetTypes.OffensiveCharacter)
                 chIt = chItRoom;
@@ -306,10 +306,10 @@ namespace SmaugCS
 
         public static void say_spell(CharacterInstance ch, int sn)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
-            string newString = tables.ConvertStringSyllables(skill.Name);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var newString = tables.ConvertStringSyllables(skill.Name);
 
-            foreach (CharacterInstance rch in ch.CurrentRoom.Persons.Where(x => x != ch))
+            foreach (var rch in ch.CurrentRoom.Persons.Where(x => x != ch))
             {
                 comm.act(ATTypes.AT_MAGIC,
                          ch.CurrentClass == rch.CurrentClass
@@ -324,7 +324,7 @@ namespace SmaugCS
         /// </summary>
         public static int ModifySavingThrowWithResistance(this CharacterInstance ch, int chance, ResistanceTypes ris)
         {
-            int modifier = 10;
+            var modifier = 10;
             if (ch.Immunity.IsSet(ris))
                 modifier -= 10;
             if (ch.Resistance.IsSet(ris))
@@ -397,19 +397,19 @@ namespace SmaugCS
         /// </remarks>
         public static bool process_spell_components(CharacterInstance ch, int sn)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
             if (skill == null || skill.Components.Count == 0)
                 return true;
 
             ObjectInstance obj = null;
-            int val = -1;
+            var val = -1;
 
-            foreach (SpellComponent component in skill.Components)
+            foreach (var component in skill.Components)
             {
-                bool found = false;
-                bool fail = false;
-                bool consume = true;
+                var found = false;
+                var fail = false;
+                var consume = true;
 
                 switch (component.OperatorType)
                 {
@@ -442,7 +442,7 @@ namespace SmaugCS
                 switch (component.RequiredType)
                 {
                     case ComponentRequiredTypes.ItemType:
-                        foreach (ObjectInstance vobj in ch.Carrying)
+                        foreach (var vobj in ch.Carrying)
                         {
                             if (vobj.ItemType ==
                                 Realm.Library.Common.EnumerationExtensions.GetEnumByName<ItemTypes>(
@@ -457,7 +457,7 @@ namespace SmaugCS
                         }
                         break;
                     case ComponentRequiredTypes.ItemVnum:
-                        foreach (ObjectInstance vobj in ch.Carrying)
+                        foreach (var vobj in ch.Carrying)
                         {
                             if (vobj.ID == component.RequiredData.ToInt32())
                             {
@@ -470,7 +470,7 @@ namespace SmaugCS
                         }
                         break;
                     case ComponentRequiredTypes.ItemKeyword:
-                        foreach (ObjectInstance vobj in ch.Carrying)
+                        foreach (var vobj in ch.Carrying)
                         {
                             if (vobj.Name.IsAnyEqual(component.RequiredData))
                             {
@@ -547,7 +547,7 @@ namespace SmaugCS
                     }
                     else
                     {
-                        int count = obj.Count;
+                        var count = obj.Count;
                         obj.Count = 1;
                         comm.act(ATTypes.AT_MAGIC, "$p glows briefly.", ch, obj, null, ToTypes.Character);
                         obj.Count = count;
@@ -560,7 +560,7 @@ namespace SmaugCS
 
         public static object locate_targets(CharacterInstance ch, string arg, int sn, CharacterInstance victim, ObjectInstance obj)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             if (skill == null)
                 return null;
 
@@ -691,7 +691,7 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfEmptyString(ch, arg, !silence ? "What should the spell be cast upon?" : ""))
                 return null;
 
-            ObjectInstance obj = ch.GetCarriedObject(arg);
+            var obj = ch.GetCarriedObject(arg);
             if (CheckFunctions.CheckIfNullObject(ch, obj, !silence ? "You are not carrying that." : "")) return null;
 
             return obj;
@@ -700,7 +700,7 @@ namespace SmaugCS
         public static ReturnTypes ObjectCastSpell(this CharacterInstance ch, int sn, int level,
             CharacterInstance victim = null, ObjectInstance obj = null)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
             if (skill == null || skill.SpellFunction == null)
                 return ReturnTypes.Error;
 
@@ -714,7 +714,7 @@ namespace SmaugCS
             }
 
             // Reduces the number of level 5 players using level 40 scrolls in battle
-            int levelDiff = ch.Level - level;
+            var levelDiff = ch.Level - level;
             if ((skill.Target == TargetTypes.OffensiveCharacter || SmaugRandom.Bits(7) == 1)
                 && skill.Type != SkillTypes.Herb
                 && ch.Chance(95 + levelDiff))
@@ -786,8 +786,8 @@ namespace SmaugCS
                     break;
             }
 
-            DateTime start = DateTime.Now;
-            ReturnTypes retcode = skill.SpellFunction.Value.Invoke(sn, level, ch, vo);
+            var start = DateTime.Now;
+            var retcode = skill.SpellFunction.Value.Invoke(sn, level, ch, vo);
             skill.UseHistory.Use(ch, DateTime.Now.Subtract(start));
 
             if (retcode == ReturnTypes.SpellFailed)
@@ -804,7 +804,7 @@ namespace SmaugCS
                 && !victim.CharDied())
             {
                 foreach (
-                    CharacterInstance vch in
+                    var vch in
                         ch.CurrentRoom.Persons.Where(
                             vch => victim == vch && vch.CurrentFighting == null && vch.Master != ch))
                 {

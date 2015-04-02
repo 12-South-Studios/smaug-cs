@@ -14,6 +14,7 @@ using Realm.Library.SmallDb;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Templates;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
@@ -57,14 +58,12 @@ namespace SmaugCS.Tests.Repositories
         public void OnSetup()
         {
             var mockKernel = new Mock<IKernel>();
-            var mockDb = new Mock<ISmallDb>();
-            var mockCnx = new Mock<IDbConnection>();
+            var mockCtx = new Mock<ISmaugDbContext>();
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 
             LuaManager luaMgr = new LuaManager(mockLogger.Object, string.Empty);
-            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockDb.Object, mockCnx.Object,
-                mockTimer.Object);
+            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object);
 
             var mockLogManager = new Mock<ILogManager>();
             DatabaseManager dbMgr = new DatabaseManager(mockLogManager.Object);

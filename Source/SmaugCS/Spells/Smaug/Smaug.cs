@@ -14,7 +14,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_smaug(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
             if (skill == null)
                 return ReturnTypes.Error;
 
@@ -52,7 +52,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (skill.Flags.IsSet(SkillFlags.Distant))
             {
-                CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
+                var victim = ch.GetCharacterInWorld(Cast.TargetName);
                 if (victim != null && !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral)
                     && skill.Flags.IsSet(SkillFlags.Character))
                     return Affect.spell_affect((int) skill.ID, level, ch, victim);
@@ -60,7 +60,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (skill.Flags.IsSet(SkillFlags.Character))
             {
-                CharacterInstance victim = ch.GetCharacterInWorld(Cast.TargetName);
+                var victim = ch.GetCharacterInWorld(Cast.TargetName);
                 if (victim != null)
                     return Affect.spell_affect((int) skill.ID, level, ch, victim);
             }
@@ -93,7 +93,7 @@ namespace SmaugCS.Spells.Smaug
             {
                 if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison)
                 {
-                    SkillData poisonSkill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
+                    var poisonSkill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
                     if (poisonSkill == null)
                         throw new ObjectNotFoundException("Skill 'poison' not found");
 
@@ -102,7 +102,7 @@ namespace SmaugCS.Spells.Smaug
 
                 if (Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Illusion)
                 {
-                    SkillData blindSkill = DatabaseManager.Instance.GetEntity<SkillData>("blindness");
+                    var blindSkill = DatabaseManager.Instance.GetEntity<SkillData>("blindness");
                     if (blindSkill == null)
                         throw new ObjectNotFoundException("Skill 'blindness' not found");
 

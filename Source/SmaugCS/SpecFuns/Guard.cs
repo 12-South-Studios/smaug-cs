@@ -14,12 +14,12 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake() || ch.CurrentFighting != null)
                 return false;
 
-            int maxEvil = 300;
-            string crime = string.Empty;
+            var maxEvil = 300;
+            var crime = string.Empty;
             CharacterInstance victim = null;
             CharacterInstance ech = null;
 
-            foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
+            foreach (var vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {
                 victim = vch;
 

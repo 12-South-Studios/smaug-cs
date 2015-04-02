@@ -24,22 +24,22 @@ namespace SmaugCS.Spells.Smaug
 
         public static ReturnTypes spell_affect(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
 
             if (!skill.Affects.Any())
                 return ReturnTypes.None;
             
-            TargetBooleanValues target = new TargetBooleanValues();
+            var target = new TargetBooleanValues();
             if (skill.Flags.IsSet(SkillFlags.GroupSpell))
                 target.GroupSpell = true;
             if (skill.Flags.IsSet(SkillFlags.Area))
                 target.AreaSpell = true;
 
-            CharacterInstance victim = (CharacterInstance)vo;
+            var victim = (CharacterInstance)vo;
 
             if (!target.GroupSpell && !target.AreaSpell)
             {
-                ReturnTypes retCode = CastSingleTargetSpell(skill, level, ch, victim);
+                var retCode = CastSingleTargetSpell(skill, level, ch, victim);
                 if (retCode == ReturnTypes.SpellFailed)
                     return retCode;
             }
@@ -74,7 +74,7 @@ namespace SmaugCS.Spells.Smaug
         {
             if (targetValues.GroupSpell || targetValues.AreaSpell)
             {
-                ResistanceTypes resType = Realm.Library.Common.EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill));
+                var resType = Realm.Library.Common.EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill));
                 if ((targetValues.GroupSpell
                      && !victim.IsSameGroup(ch))
                     || victim.Immunity.IsSet(ResistanceTypes.Magic)
@@ -106,7 +106,7 @@ namespace SmaugCS.Spells.Smaug
                     comm.act(ATTypes.AT_MAGIC, skill.HitCharacterMessage, ch, null, victim, ToTypes.Character);
             }
 
-            ReturnTypes retCode = AffectCharacter.spell_affectchar((int)skill.ID, level, ch, victim);
+            var retCode = AffectCharacter.spell_affectchar((int)skill.ID, level, ch, victim);
             if (!targetValues.GroupSpell && !targetValues.AreaSpell)
             {
                 if (retCode == ReturnTypes.VictimImmune)
@@ -132,7 +132,7 @@ namespace SmaugCS.Spells.Smaug
                     && !skill.Flags.IsSet(SkillFlags.ReCastable), skill, ch, CastingFunctionType.Failed, victim))
                 return ReturnTypes.SpellFailed;
 
-            SmaugAffect saf = skill.Affects.FirstOrDefault();
+            var saf = skill.Affects.FirstOrDefault();
             if (CheckFunctions.CheckIfTrueCasting(saf != null && saf.Location == (int) ApplyTypes.StripSN
                                                   && !victim.IsAffectedBy(magic.ParseDiceExpression(ch, saf.Modifier)),
                 skill, ch, CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;

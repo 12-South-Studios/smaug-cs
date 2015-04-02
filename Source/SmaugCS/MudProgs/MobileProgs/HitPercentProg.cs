@@ -13,7 +13,7 @@ namespace SmaugCS.MudProgs.MobileProgs
         {
             if (!mob.IsNpc() || !mob.MobIndex.HasProg(MudProgTypes.HitPercent)) return;
             
-            foreach (MudProgData mprog in mob.MobIndex.MudProgs.Where(x => x.Type == MudProgTypes.HitPercent))
+            foreach (var mprog in mob.MobIndex.MudProgs.Where(x => x.Type == MudProgTypes.HitPercent))
             {
                 int chance;
                 if (!Int32.TryParse(mprog.ArgList, out chance))

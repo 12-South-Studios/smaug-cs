@@ -13,19 +13,19 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_attack(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
-            CharacterInstance vch = (CharacterInstance) vo;
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var vch = (CharacterInstance) vo;
 
-            bool saved = skill.CheckSave(level, ch, vch);
+            var saved = skill.CheckSave(level, ch, vch);
             if (CheckFunctions.CheckIfTrueCasting(
                 saved && Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate, skill, ch,
                 CastingFunctionType.Failed, vch)) return ReturnTypes.SpellFailed;
 
-            int damage = GetBaseDamage(level, ch, skill);
+            var damage = GetBaseDamage(level, ch, skill);
 
             if (saved)
             {
-                SpellSaveEffectTypes spellSaveType =
+                var spellSaveType =
                     Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(Macros.SPELL_SAVE(skill));
                 switch (spellSaveType)
                 {
@@ -49,7 +49,7 @@ namespace SmaugCS.Spells.Smaug
                 }
             }
 
-            ReturnTypes retcode = ch.CauseDamageTo(vch, damage, sn);
+            var retcode = ch.CauseDamageTo(vch, damage, sn);
             if (retcode == ReturnTypes.None
                 && !ch.CharDied() && !vch.CharDied()
                 &&
@@ -75,10 +75,10 @@ namespace SmaugCS.Spells.Smaug
             if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who == vch)
                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))
             {
-                int xp = ch.CurrentFighting != null
+                var xp = ch.CurrentFighting != null
                     ? ch.CurrentFighting.Experience
                     : vch.CurrentFighting.Experience;
-                int xpGain = xp*damage*2/vch.MaximumHealth;
+                var xpGain = xp*damage*2/vch.MaximumHealth;
 
                 ((PlayerInstance)ch).GainXP(0 - xpGain);
             }

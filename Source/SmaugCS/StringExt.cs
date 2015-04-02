@@ -10,10 +10,10 @@ namespace SmaugCS
     {
         public static string Scramble(this string argument, int modifier)
         {
-            StringBuilder arg = new StringBuilder(argument);
+            var arg = new StringBuilder(argument);
             int position;
-            int conversion = 0;
-            int length = argument.Length;
+            var conversion = 0;
+            var length = argument.Length;
 
             modifier %= SmaugRandom.Between(80, 300);
 
@@ -63,17 +63,17 @@ namespace SmaugCS
             if (ch.IsNpc() || ((PlayerInstance)ch).PlayerData == null)
                 return argument;
 
-            int drunk = ((PlayerInstance)ch).PlayerData.ConditionTable.ContainsKey(ConditionTypes.Drunk)
+            var drunk = ((PlayerInstance)ch).PlayerData.ConditionTable.ContainsKey(ConditionTypes.Drunk)
                                    ? ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]
                                    : 0;
 
             if (drunk <= 0)
                 return argument;
 
-            string newstring = string.Empty;
-            char[] chars = argument.ToCharArray();
+            var newstring = string.Empty;
+            var chars = argument.ToCharArray();
 
-            foreach (char c in chars)
+            foreach (var c in chars)
             {
                 if (Char.ToUpper(c) == 'T' && Realm.Library.Common.Random.D100(1) < (drunk * 2))
                     newstring += c + 'h';

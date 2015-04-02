@@ -24,7 +24,7 @@ namespace SmaugCS.Loaders
             if (Character == null)
                 return;
 
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(Filename)))
+            using (var proxy = new TextWriterProxy(new StreamWriter(Filename)))
             {
                 /*foreach (NoteData note in Character.NoteList)
                 {
@@ -43,7 +43,7 @@ namespace SmaugCS.Loaders
             if (Character == null)
                 return;
 
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
                 /*List<TextSection> sections = proxy.ReadSections(new[] { "#COMMENT" }, new[] { "*" }, null, null);
                 if (sections.Count > 0 && Character.Comments == null)

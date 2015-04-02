@@ -22,12 +22,12 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.PKilled), "You can't drag a player right now."))
                 return;
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(pch, firstArg, "Drag whom?")) return;
 
-            CharacterInstance victim = pch.GetCharacterInRoom(firstArg);
+            var victim = pch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(pch, victim, "They aren't here.")) return;
             if (CheckFunctions.CheckIfEquivalent(pch, pch, victim,
                 "You take yourself by the scruff of your neck, but go nowhere.")) return;
@@ -44,7 +44,7 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !ch.IsDeadly() && (int)ch.CurrentPosition > 3, 
                 "They don't seem to need your assistance.")) return;
 
-            string secondArg = argument.SecondWord();
+            var secondArg = argument.SecondWord();
             if (CheckFunctions.CheckIfEmptyString(ch, secondArg, "Drag them in which direction?")) return;
             if (CheckFunctions.CheckIfTrue(ch, Math.Abs(ch.Level - victim.Level) > 5,
                 "There is too great an experience difference for you to even bother.")) return;
@@ -53,12 +53,12 @@ namespace SmaugCS.Commands.Combat
                 "That character cannot be dragged right now."))
                 return;
 
-            DirectionTypes exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
-            ExitData exit = ch.CurrentRoom.GetExit(exitDir);
+            var exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
+            var exit = ch.CurrentRoom.GetExit(exitDir);
             if (CheckFunctions.CheckIfNullObject(ch, exit, "There's no exit in that direction.")) return;
             if (CheckFunctions.CheckIfTrue(ch, !IsPassable(exit, victim), "There's no exit in that direction.")) return;
 
-            RoomTemplate toRoom = exit.GetDestination();
+            var toRoom = exit.GetDestination();
             if (CheckFunctions.CheckIfSet(ch, toRoom.Flags, RoomFlags.Death,
                 "You cannot drag someone into a death trap.")) return;
 
@@ -69,7 +69,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            int chance = CalculateChanceToDrag(ch, victim);
+            var chance = CalculateChanceToDrag(ch, victim);
             if (CheckFunctions.CheckIfTrue(ch, chance < SmaugRandom.D100(), "You failed."))
             {
                 victim.CurrentPosition = PositionTypes.Standing;
@@ -95,7 +95,7 @@ namespace SmaugCS.Commands.Combat
 
         private static int CalculateChanceToDrag(CharacterInstance ch, CharacterInstance victim)
         {
-            int chance = GetChanceByCharacterClass(ch);
+            var chance = GetChanceByCharacterClass(ch);
             chance += (ch.GetCurrentStrength() - 15)*3;
             chance += (ch.Level - victim.Level);
             chance += GetBonusByCharacterRace(ch);
@@ -104,7 +104,7 @@ namespace SmaugCS.Commands.Combat
 
         private static void DragIntoNextRoom(CharacterInstance ch, CharacterInstance victim, ExitData exit)
         {
-            PositionTypes temp = victim.CurrentPosition;
+            var temp = victim.CurrentPosition;
             victim.CurrentPosition = PositionTypes.Drag;
 
             comm.act(ATTypes.AT_ACTION, "You drag $M into the next room.", ch, victim, null, ToTypes.Character);
@@ -120,13 +120,13 @@ namespace SmaugCS.Commands.Combat
 
         private static int GetChanceByCharacterClass(CharacterInstance ch)
         {
-            DragValueAttribute attrib = ch.CurrentClass.GetAttribute<DragValueAttribute>();
+            var attrib = ch.CurrentClass.GetAttribute<DragValueAttribute>();
             return attrib == null ? 0 : attrib.ModValue;
         }
 
         private static int GetBonusByCharacterRace(CharacterInstance ch)
         {
-            DragValueAttribute attrib = ch.CurrentRace.GetAttribute<DragValueAttribute>();
+            var attrib = ch.CurrentRace.GetAttribute<DragValueAttribute>();
             return attrib == null ? 0 : attrib.ModValue;
         }
     }

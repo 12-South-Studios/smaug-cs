@@ -14,7 +14,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             int total = 0, cost = 0;
             string buffer;
 
-            foreach (ObjectInstance obj in ch.Carrying.Where(obj => obj.WearLocation == WearLocations.None
+            foreach (var obj in ch.Carrying.Where(obj => obj.WearLocation == WearLocations.None
                                                                     && ch.CanSee(obj)
                                                                     && (obj.ItemType.GetAttribute<ValuedAttribute>() != null)))
             {

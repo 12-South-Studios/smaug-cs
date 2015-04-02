@@ -21,9 +21,9 @@ namespace SmaugCS.Spells
 
         public static ReturnTypes spell_colour_spray(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = (CharacterInstance) vo;
+            var victim = (CharacterInstance) vo;
 
-            int modLevel = level.GetLowestOfTwoNumbers(((DamageValues.Length * 2) / 2) - 1);
+            var modLevel = level.GetLowestOfTwoNumbers(((DamageValues.Length * 2) / 2) - 1);
             modLevel = modLevel.GetHighestOfTwoNumbers(0);
 
             if (DamageValues.Length >= modLevel)
@@ -31,7 +31,7 @@ namespace SmaugCS.Spells
                     "ModLevel {0} is larger than the Damage Array size of {1}", modLevel,
                     DamageValues.Length));
 
-            int dam = SmaugRandom.Between(DamageValues[modLevel]/2, DamageValues[modLevel]*2);
+            var dam = SmaugRandom.Between(DamageValues[modLevel]/2, DamageValues[modLevel]*2);
             if (victim.SavingThrows.CheckSaveVsSpellStaff(modLevel, victim))
                 dam /= 2;
 

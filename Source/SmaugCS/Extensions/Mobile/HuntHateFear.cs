@@ -19,7 +19,7 @@ namespace SmaugCS.Extensions.Mobile
                 || ch.CurrentHunting != null)
                 return;
 
-            CharacterInstance victim =
+            var victim =
                 (dbManager ?? DatabaseManager.Instance).GetEntity<CharacterInstance>(ch.CurrentHating.Name);
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;

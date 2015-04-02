@@ -34,7 +34,7 @@ namespace SmaugCS.Commands.Combat
             if (ch.IsNpc() && (int) ch.CurrentPosition <= (int) PositionTypes.Sleeping)
                 return;
 
-            RoomTemplate wasIn = ch.CurrentRoom;
+            var wasIn = ch.CurrentRoom;
 
             comm.act(ATTypes.AT_FLEE, "You attempt to flee from combat, but can't escape!", ch, null, null, ToTypes.Character);
 
@@ -47,7 +47,7 @@ namespace SmaugCS.Commands.Combat
 
         private static void LoseExperience(PlayerInstance ch)
         {
-            int lostXp = (int) ((ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level))*0.1f);
+            var lostXp = (int) ((ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level))*0.1f);
             comm.act(ATTypes.AT_FLEE, string.Format("Curse the gods, you've lost {0} experience!", lostXp), ch, null,
                 null, ToTypes.Character);
             ch.GainXP(0 - lostXp);
@@ -55,9 +55,9 @@ namespace SmaugCS.Commands.Combat
 
         private static bool AttemptToFlee(CharacterInstance ch, RoomTemplate wasIn)
         {
-            bool success = false;
+            var success = false;
 
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
                 success = MakeFleeAttempt(ch, wasIn);
                 if (success) break;
@@ -68,8 +68,8 @@ namespace SmaugCS.Commands.Combat
 
         private static bool MakeFleeAttempt(CharacterInstance ch, RoomTemplate wasIn)
         {
-            int door = db.number_door();
-            ExitData exit = wasIn.GetExit(door);
+            var door = db.number_door();
+            var exit = wasIn.GetExit(door);
             if (exit == null
                 || exit.GetDestination() == null
                 || exit.Flags.IsSet(ExitFlags.NoFlee)
@@ -77,7 +77,7 @@ namespace SmaugCS.Commands.Combat
                 || (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
                 return false;
 
-            SkillData sneak = DatabaseManager.Instance.GetEntity<SkillData>("sneak");
+            var sneak = DatabaseManager.Instance.GetEntity<SkillData>("sneak");
             if (sneak == null) return false;
 
             ch.StripAffects((int)sneak.ID);
@@ -87,7 +87,7 @@ namespace SmaugCS.Commands.Combat
                 ch.CurrentMount.StopFighting(true);
             Move.move_char(ch, exit, 0);
 
-            RoomTemplate nowIn = ch.CurrentRoom;
+            var nowIn = ch.CurrentRoom;
             if (nowIn == wasIn) return false;
 
             ch.CurrentRoom = wasIn;
@@ -98,8 +98,8 @@ namespace SmaugCS.Commands.Combat
 
             if (!ch.IsNpc())
             {
-                CharacterInstance wf = ch.GetMyTarget();
-                PlayerInstance pch = (PlayerInstance)ch;
+                var wf = ch.GetMyTarget();
+                var pch = (PlayerInstance)ch;
 
                 comm.act(ATTypes.AT_FLEE, "You flee head over heels from combat!", pch, null, null, ToTypes.Character);
 
@@ -110,7 +110,7 @@ namespace SmaugCS.Commands.Combat
                 {
                     if (pch.PlayerData.CurrentDeity != null)
                     {
-                        int ratio = 1.GetNumberThatIsBetween(wf.Level / pch.Level, LevelConstants.MaxLevel);
+                        var ratio = 1.GetNumberThatIsBetween(wf.Level / pch.Level, LevelConstants.MaxLevel);
                         if (wf.CurrentRace == pch.PlayerData.CurrentDeity.NPCRace)
                             pch.AdjustFavor(DeityFieldTypes.FleeNPCRace, ratio);
                         else if (wf.CurrentRace == pch.PlayerData.CurrentDeity.NPCFoe)

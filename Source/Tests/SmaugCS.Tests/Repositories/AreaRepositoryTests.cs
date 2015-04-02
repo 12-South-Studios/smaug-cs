@@ -11,6 +11,7 @@ using Realm.Library.Patterns.Repository;
 using Realm.Library.SmallDb;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
@@ -50,7 +51,7 @@ namespace SmaugCS.Tests.Repositories
             DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
 
             LogManager logMgr = new LogManager(new Mock<ILogWrapper>().Object, new Mock<IKernel>().Object,
-                new Mock<ISmallDb>().Object, new Mock<IDbConnection>().Object, new Mock<ITimer>().Object);
+                new Mock<ITimer>().Object, new Mock<ISmaugDbContext>().Object);
 
             LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

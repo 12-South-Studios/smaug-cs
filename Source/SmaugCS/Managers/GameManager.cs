@@ -46,7 +46,7 @@ namespace SmaugCS.Managers
 
         private void InitializeResets()
         {
-            foreach (AreaData area in _dbManager.AREAS.Values)
+            foreach (var area in _dbManager.AREAS.Values)
                 area.OnStartup(this, new EventArgs());
         }
     }

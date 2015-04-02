@@ -15,7 +15,7 @@ namespace SmaugCS.Commands.Social
             if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
            ch.SetColor(ATTypes.AT_NOTE);
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
 
             if (string.IsNullOrEmpty(firstArg))
             {

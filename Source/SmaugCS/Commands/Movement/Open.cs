@@ -15,17 +15,17 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_open(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Open what?")) return;
 
-            ExitData exit = ch.FindExit(firstArg, true);
+            var exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 OpenDoor(ch, exit, firstArg);
                 return;
             }
 
-            ObjectInstance obj = ch.GetObjectOnMeOrInRoom(firstArg);
+            var obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj != null)
             {
                 OpenObject(ch, obj, firstArg);
@@ -91,11 +91,11 @@ namespace SmaugCS.Commands.Movement
                 comm.act(ATTypes.AT_ACTION, "$n opens the $d.", ch, null, exit.Keywords, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You open the $d.", ch, null, exit.Keywords, ToTypes.Character);
 
-                ExitData reverseExit = exit.GetReverse();
+                var reverseExit = exit.GetReverse();
                 if (reverseExit != null)
                 {
-                    RoomTemplate room = exit.GetDestination(DatabaseManager.Instance);
-                    foreach(CharacterInstance vch in room.Persons)
+                    var room = exit.GetDestination(DatabaseManager.Instance);
+                    foreach(var vch in room.Persons)
                         comm.act(ATTypes.AT_ACTION, "The $d opens.", vch, null, reverseExit.Keywords, ToTypes.Character);
                 }
 

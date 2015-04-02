@@ -117,9 +117,6 @@
     <Compile Include="TimerManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
@@ -127,6 +124,10 @@
     <ProjectReference Include="..\..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
       <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SmaugCS.DAL\SmaugCS.DAL.csproj">
+      <Project>{157b6b68-68f7-414b-ae04-9cb80b9c68b4}</Project>
+      <Name>SmaugCS.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SmaugCS.Data\SmaugCS.Data.csproj">
       <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>

@@ -10,7 +10,7 @@ namespace SmaugCS
     {
         public static void Log(this LogManager logManager, string str, LogTypes logType, int level)
         {
-            string buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
+            var buffer = string.Format("{0} :: {1}\n", DateTime.Now, str);
             logManager.Info(str);
 
             /*switch (logType)

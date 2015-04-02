@@ -11,10 +11,10 @@ namespace SmaugCS.Commands.PetsAndGroups
     {
         public static void do_dismiss(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Dismiss whom?")) return;
 
-            CharacterInstance victim = ch.GetCharacterInRoom(firstArg);
+            var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "They aren't here.")) return;
 
             if (victim.IsAffected(AffectedByTypes.Charm)

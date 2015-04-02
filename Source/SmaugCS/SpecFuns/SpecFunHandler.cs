@@ -61,8 +61,8 @@ namespace SmaugCS.SpecFuns
 
         public SkillData PickSpell(Dictionary<int, SpecFunSpell> lookupTable, int characterLevel)
         {
-            int minLevel = 0;
-            string spellName = string.Empty;
+            var minLevel = 0;
+            var spellName = string.Empty;
 
             while (minLevel < characterLevel)
             {

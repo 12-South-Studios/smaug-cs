@@ -24,13 +24,13 @@ namespace SmaugCS.Extensions.Character
             if (victim.CurrentPosition == PositionTypes.Dead)
                 return ReturnTypes.VictimDied;
 
-            int modifiedDamage = dam;
+            var modifiedDamage = dam;
             if (dam > 0 && dt != Program.TYPE_UNDEFINED)
             {
                 modifiedDamage = CheckDamageForResistances(victim, dam, dt);
                 if (modifiedDamage == -1)
                 {
-                    SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+                    var skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
                     if (skill == null)
                         modifiedDamage = 0;
                     else
@@ -47,7 +47,7 @@ namespace SmaugCS.Extensions.Character
             if (modifiedDamage > 0 && victim.IsNpc() && ch != victim)
                 DoHuntAndHate(ch, victim);
 
-            int maxDamage = ch.Level * ((dt == DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID) ? 80 : 40);
+            var maxDamage = ch.Level * ((dt == DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID) ? 80 : 40);
             if (modifiedDamage > maxDamage)
                 modifiedDamage = maxDamage;
 
@@ -120,7 +120,7 @@ namespace SmaugCS.Extensions.Character
                 && victim.CurrentHealth < victim.MaximumHealth/2) || (victim.IsAffected(AffectedByTypes.Charm) 
                 && victim.Master != null && victim.Master.CurrentRoom != victim.CurrentRoom))
             {
-                MobileInstance mob = (MobileInstance) victim;
+                var mob = (MobileInstance) victim;
                 mob.StartFearing(ch);
                 mob.StopHunting();
                 Flee.do_flee(victim, string.Empty);
@@ -131,7 +131,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (victim.CurrentFighting != null)
             {
-                MobileInstance mob = (MobileInstance)victim.CurrentFighting.Who;
+                var mob = (MobileInstance)victim.CurrentFighting.Who;
 
                 if (mob.CurrentHunting != null && mob.CurrentHunting.Who == victim)
                     mob.StopHunting();
@@ -147,7 +147,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (!victim.SavingThrows.CheckSaveVsPoisonDeath(ch.Level, victim))
             {
-                AffectData af = new AffectData
+                var af = new AffectData
                 {
                     Type = AffectedByTypes.Poison,
                     Duration = 20,
@@ -163,7 +163,7 @@ namespace SmaugCS.Extensions.Character
 
         private static void DoHuntAndHate(CharacterInstance ch, CharacterInstance victim)
         {
-            MobileInstance vict = (MobileInstance) victim;
+            var vict = (MobileInstance) victim;
             if (!vict.Act.IsSet(ActFlags.Sentinel))
             {
                 if (vict.CurrentHunting != null)
@@ -219,7 +219,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (dt >= 0)
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+                var skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
                 if (!skill.DieCharacterMessage.IsNullOrEmpty())
                     comm.act(ATTypes.AT_DEAD, skill.DieCharacterMessage, ch, null, victim, ToTypes.Character);
                 if (!skill.DieVictimMessage.IsNullOrEmpty())
@@ -304,8 +304,8 @@ namespace SmaugCS.Extensions.Character
 
         private static int ModifyDamageForEquipment(CharacterInstance victim, int dam)
         {
-            WearLocations wearLoc = GetRandomWearLocation();
-            ObjectInstance obj = victim.GetEquippedItem(wearLoc);
+            var wearLoc = GetRandomWearLocation();
+            var obj = victim.GetEquippedItem(wearLoc);
             if (obj != null && dam > obj.GetResistance() && SmaugRandom.Bits(1) == 0)
             {
                 handler.set_cur_obj(obj);
@@ -318,16 +318,16 @@ namespace SmaugCS.Extensions.Character
 
         private static WearLocations GetRandomWearLocation()
         {
-            int min = WearLocations.About.GetMinimum();
-            int max = WearLocations.WieldMissile.GetMaximum();
-            WearLocations loc =
+            var min = WearLocations.About.GetMinimum();
+            var max = WearLocations.WieldMissile.GetMaximum();
+            var loc =
                 Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(SmaugRandom.Between(min, max));
             return loc == WearLocations.None ? GetRandomWearLocation() : loc;
         }
 
         private static int CheckDamageForResistances(CharacterInstance victim, int dam, int dt)
         {
-            int modDmg = dam;
+            var modDmg = dam;
             if (Macros.IS_FIRE(dt))
                 modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Fire);
             else if (Macros.IS_COLD(dt))
@@ -342,7 +342,7 @@ namespace SmaugCS.Extensions.Character
                 modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Drain);
             else if (Macros.IS_POISON(dt))
             {
-                SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
+                var skill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
                 if (skill != null)
                     modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Poison);
             }

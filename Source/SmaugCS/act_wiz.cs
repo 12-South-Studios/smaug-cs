@@ -29,7 +29,7 @@ namespace SmaugCS
             CharacterInstance retChar = null;
             NumberOfHits = 0;
 
-            foreach (DescriptorData d in db.DESCRIPTORS.Where(d => d.Character != null
+            foreach (var d in db.DESCRIPTORS.Where(d => d.Character != null
                                                                   && d.Character.Name.EqualsIgnoreCase(name)
                                                                   && d.Character.IsWaitingForAuthorization()))
             {
@@ -54,7 +54,7 @@ namespace SmaugCS
             if (string.IsNullOrWhiteSpace(argument))
                 return;
 
-            foreach (DescriptorData d in db.DESCRIPTORS
+            foreach (var d in db.DESCRIPTORS
                 .Where(x => x.ConnectionStatus == ConnectionTypes.Playing
                     || x.ConnectionStatus == ConnectionTypes.Editing))
             {
@@ -71,7 +71,7 @@ namespace SmaugCS
 
         public static void echo_to_room(ATTypes atcolor, RoomTemplate room, string argument)
         {
-            foreach (CharacterInstance ch in room.Persons)
+            foreach (var ch in room.Persons)
             {
                ch.SetColor(atcolor);
                ch.SendTo(argument);
@@ -86,11 +86,11 @@ namespace SmaugCS
             if (arg.Equals("pk"))
                 return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
 
-            CharacterInstance victim = ch.GetCharacterInWorld(arg);
+            var victim = ch.GetCharacterInWorld(arg);
             if (victim != null)
                 return victim.CurrentRoom;
 
-            ObjectInstance obj = ch.GetObjectInWorld(arg);
+            var obj = ch.GetObjectInWorld(arg);
             if (obj != null)
                 return obj.InRoom;
 
@@ -128,7 +128,7 @@ namespace SmaugCS
             if (ch.IsNpc() && victim.IsNotAuthorized()
                 && location.Area != victim.CurrentRoom.Area)
             {
-                string buffer = string.Format("Mptransfer - unauthed char ({0})", victim.Name);
+                var buffer = string.Format("Mptransfer - unauthed char ({0})", victim.Name);
                 //progbug(buffer, ch);
                 return;
             }

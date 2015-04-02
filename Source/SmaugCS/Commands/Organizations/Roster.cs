@@ -25,11 +25,11 @@ namespace SmaugCS.Commands.Organizations
                 return;
             }
 
-            Tuple<string, string> tuple = argument.FirstArgument();
+            var tuple = argument.FirstArgument();
             argument = tuple.Item2;
-            string arg = tuple.Item1;
+            var arg = tuple.Item1;
 
-            ClanData clan = DatabaseManager.Instance.GetEntity<ClanData>(arg);
+            var clan = DatabaseManager.Instance.GetEntity<ClanData>(arg);
             if (clan == null)
             {
                 ch.Printf("No such guild or clan known as %s.\r\n", arg);
@@ -44,8 +44,8 @@ namespace SmaugCS.Commands.Organizations
                     "Name", "Class", "Level", "Kills", "Deaths", "Joined on");
                ch.SendTo("-------------------------------------------------------------------------------------\r\n");
 
-                int total = 0;
-                foreach (RosterData member in clan.Members)
+                var total = 0;
+                foreach (var member in clan.Members)
                 {
                     ch.Printf("%-15.15s  %-15.15s %-6d %-6d %-6d %s",
                                     member.Name, LookupManager.Instance.GetLookup("NPCClasses", member.Class).CapitalizeFirst(),
@@ -58,7 +58,7 @@ namespace SmaugCS.Commands.Organizations
 
             tuple = argument.FirstArgument();
             argument = tuple.Item2;
-            string arg2 = tuple.Item1;
+            var arg2 = tuple.Item1;
 
             if (arg2.EqualsIgnoreCase("remove"))
             {

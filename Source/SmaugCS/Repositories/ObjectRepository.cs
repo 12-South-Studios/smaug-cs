@@ -24,7 +24,7 @@ namespace SmaugCS.Repositories
                 });
 
 
-            ObjectTemplate newObject = new ObjectTemplate(id, name);
+            var newObject = new ObjectTemplate(id, name);
             newObject.ExtraFlags.SetBit(ItemExtraFlags.Prototype);
 
             Add(id, newObject);
@@ -43,9 +43,9 @@ namespace SmaugCS.Repositories
                         throw new InvalidDataException(string.Format("Clone ID {0} is not present", cloneId));
                 });
 
-            ObjectTemplate newObject = Create(id, name);
+            var newObject = Create(id, name);
 
-            ObjectTemplate cloneObject = Get(cloneId);
+            var cloneObject = Get(cloneId);
             if (cloneObject != null)
                 CloneObjectTemplate(newObject, cloneObject);
 

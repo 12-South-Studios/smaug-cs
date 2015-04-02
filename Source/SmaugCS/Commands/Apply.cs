@@ -11,15 +11,15 @@ namespace SmaugCS.Commands
     {
         public static void do_apply(CharacterInstance ch, string argument)
         {
-            string firstArg = Realm.Library.Common.StringExtensions.FirstWord(argument);
+            var firstArg = Realm.Library.Common.StringExtensions.FirstWord(argument);
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Apply what?")) return;
 
-            string secondArg = Realm.Library.Common.StringExtensions.SecondWord(argument);
+            var secondArg = Realm.Library.Common.StringExtensions.SecondWord(argument);
 
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You're too busy fighting...")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;
 
-            ObjectInstance salve = ch.GetCarriedObject(firstArg);
+            var salve = ch.GetCarriedObject(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, salve, "You do not have that.")) return;
 
             CharacterInstance victim;
@@ -52,7 +52,7 @@ namespace SmaugCS.Commands
                 UseSalve(salve, ch, victim);
 
             Macros.WAIT_STATE(ch, salve.Values.Delay);
-            ReturnTypes retcode = ch.ObjectCastSpell((int)salve.Values.Skill1ID, (int)salve.Values.SpellLevel, victim);
+            var retcode = ch.ObjectCastSpell((int)salve.Values.Skill1ID, (int)salve.Values.SpellLevel, victim);
             if (retcode == ReturnTypes.None)
                 retcode = ch.ObjectCastSpell((int)salve.Values.Skill2ID, (int)salve.Values.SpellLevel, victim);
             if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.BothDied)
@@ -84,38 +84,36 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            string notVictOrRoomMsg = string.Empty;
-            string victMsg = string.Empty;
-            string selfMsg = string.Empty;
+            string notVictimOrRoomMessage, victimMessage, selfMessage;
             
             if (salve.Values.Charges < 1)
             {
-                notVictOrRoomMsg = victim != actor
+                notVictimOrRoomMessage = victim != actor
                     ? "$n rubs the last of $p onto $N."
                     : "$n rubs the last of $p onto $mself.";
-                victMsg = victim != actor
+                victimMessage = victim != actor
                     ? "$n rubs the last of $p onto you." : string.Empty;
-                selfMsg = victim != actor
+                selfMessage = victim != actor
                     ? "You rub the last of $p onto $N"
                     : "You rub the last of $p onto yourself.";
             }
             else
             {
-                notVictOrRoomMsg = victim != actor
+                notVictimOrRoomMessage = victim != actor
                     ? "$n rubs $p onto $N."
                     : "$n rubs $p onto $mself.";
-                victMsg = victim != actor
+                victimMessage = victim != actor
                     ? "$n rubs $p onto you." : string.Empty;
-                selfMsg = victim != actor
+                selfMessage = victim != actor
                     ? "You rub $p onto $N."
                     : "You rub $p onto yourself.";
             }
 
-            comm.act(ATTypes.AT_ACTION, notVictOrRoomMsg, actor, salve, victim,
+            comm.act(ATTypes.AT_ACTION, notVictimOrRoomMessage, actor, salve, victim,
                 victim != actor ? ToTypes.NotVictim : ToTypes.Room);
             if (victim != actor)
-                comm.act(ATTypes.AT_ACTION, victMsg, actor, salve, victim, ToTypes.Victim);
-            comm.act(ATTypes.AT_ACTION, selfMsg, actor, salve, null, ToTypes.Character);
+                comm.act(ATTypes.AT_ACTION, victimMessage, actor, salve, victim, ToTypes.Victim);
+            comm.act(ATTypes.AT_ACTION, selfMessage, actor, salve, null, ToTypes.Character);
         }
     }
 }

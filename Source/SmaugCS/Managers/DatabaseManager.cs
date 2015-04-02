@@ -21,9 +21,9 @@ namespace SmaugCS.Managers
         {
             LogManager = logManager;
             _repositories = new Dictionary<RepositoryTypes, object>();
-            foreach (RepositoryTypes repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
+            foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
-                TypeMapAttribute attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
+                var attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
                 if (attrib == null || attrib.Repository == null)
                     continue;
 
@@ -43,7 +43,7 @@ namespace SmaugCS.Managers
         /// <param name="obj"></param>
         public void AddToRepository<T>(T obj) where T : Entity
         {
-            GenericRepository<T> repo = GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)));
+            var repo = GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)));
             if (repo.Contains(obj.ID)) return;
 
             repo.Add(obj.ID, obj);
@@ -58,7 +58,7 @@ namespace SmaugCS.Managers
         /// <returns></returns>
         public long GenerateNewId<T>() where T : Entity
         {
-            GenericRepository<T> repo = GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)));
+            var repo = GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)));
             return repo.Count == 0 ? 1 : repo.Values.Max(x => x.ID) + 1;
         }
 
@@ -69,9 +69,9 @@ namespace SmaugCS.Managers
         /// <returns></returns>
         private static RepositoryTypes ObjectTypeToRepositoryType(Type objectType)
         {
-            foreach (RepositoryTypes repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
+            foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
-                TypeMapAttribute attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
+                var attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
                 if (attrib == null || attrib.Object == null)
                     continue;
                 if (attrib.Object == objectType)

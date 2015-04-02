@@ -11,7 +11,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_earthquake(int sn, int level, CharacterInstance ch, object vo)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe), skill, ch))
                 return ReturnTypes.SpellFailed;
@@ -19,7 +19,7 @@ namespace SmaugCS.Spells
             comm.act(ATTypes.AT_MAGIC, "The earth trembles beneath your feet!", ch, null, null, ToTypes.Character);
             comm.act(ATTypes.AT_MAGIC, "$n makes the earth tremble and shiver", ch, null, null, ToTypes.Room);
 
-            bool charDied = false;
+            var charDied = false;
 
             // TODO Don't display to everyone in the world, thats dumb
 

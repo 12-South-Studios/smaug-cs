@@ -13,7 +13,7 @@ namespace SmaugCS.Extensions.Character
     {
         public static int GetExperienceWorth(this CharacterInstance ch)
         {
-            int wexp = ((int)Math.Pow(ch.Level, 3) * 5) + ch.MaximumHealth;
+            var wexp = ((int)Math.Pow(ch.Level, 3) * 5) + ch.MaximumHealth;
             wexp -= (ch.ArmorClass - 50) * 2;
             wexp += (ch.BareDice.NumberOf * ch.BareDice.SizeOf + ch.GetDamroll()) * 50;
             wexp += ch.GetHitroll() * ch.Level * 10;
@@ -41,13 +41,13 @@ namespace SmaugCS.Extensions.Character
 
         public static int GetLevelExperience(this CharacterInstance ch, int cexp)
         {
-            int x = LevelConstants.GetLevel(ImmortalTypes.Supreme);
-            int lastx = x;
-            int y = 0;
+            var x = LevelConstants.GetLevel(ImmortalTypes.Supreme);
+            var lastx = x;
+            var y = 0;
 
             while (y == 0)
             {
-                int tmp = ch.GetExperienceLevel(x);
+                var tmp = ch.GetExperienceLevel(x);
                 lastx = x;
                 if (tmp > cexp)
                     x /= 2;

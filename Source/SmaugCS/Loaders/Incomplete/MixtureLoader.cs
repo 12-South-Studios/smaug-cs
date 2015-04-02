@@ -64,8 +64,8 @@ namespace SmaugCS.Loaders
 
         private static MixtureData ReadMixture(TextReaderProxy proxy)
         {
-            string word = string.Empty;
-            MixtureData mix = new MixtureData();
+            var word = string.Empty;
+            var mix = new MixtureData();
 
             do
             {

@@ -29,17 +29,17 @@ namespace SmaugCS.Extensions
             if (!ch.IsNpc())
                 --room.Area.NumberOfPlayers;
 
-            ObjectInstance obj = ch.GetEquippedItem(WearLocations.Light);
+            var obj = ch.GetEquippedItem(WearLocations.Light);
             if (obj != null
                 && obj.ItemType == ItemTypes.Light
                 && obj.Value[2] != 0
                 && room.Light > 0)
                 --room.Light;
 
-            foreach (AffectData affect in ch.Affects)
+            foreach (var affect in ch.Affects)
                 room.RemoveAffect(affect);
 
-            foreach (AffectData affect in room.Affects
+            foreach (var affect in room.Affects
                 .Where(affect => affect.Location != ApplyTypes.WearSpell
                     && affect.Location != ApplyTypes.RemoveSpell
                     && affect.Location != ApplyTypes.StripSN))
@@ -55,7 +55,7 @@ namespace SmaugCS.Extensions
 
         public static void AddTo(this RoomTemplate room, CharacterInstance ch)
         {
-            RoomTemplate localRoom = room;
+            var localRoom = room;
 
             if (ch == null)
                 throw new ArgumentNullException("ch");
@@ -79,24 +79,24 @@ namespace SmaugCS.Extensions
                     localRoom.Area.MaximumPlayers = localRoom.Area.NumberOfPlayers;
             }
 
-            ObjectInstance light = ch.GetEquippedItem(WearLocations.Light);
+            var light = ch.GetEquippedItem(WearLocations.Light);
             if (light != null && light.ItemType == ItemTypes.Light
                 && light.Value[2] > 0)
                 localRoom.Light++;
 
-            foreach (AffectData affect in localRoom.Affects
+            foreach (var affect in localRoom.Affects
                 .Where(affect => affect.Location != ApplyTypes.WearSpell
                     && affect.Location != ApplyTypes.RemoveSpell
                     && affect.Location != ApplyTypes.StripSN))
                 ch.AddAffect(affect);
 
-            foreach (AffectData affect in localRoom.PermanentAffects
+            foreach (var affect in localRoom.PermanentAffects
                 .Where(affect => affect.Location != ApplyTypes.WearSpell
                     && affect.Location != ApplyTypes.RemoveSpell
                     && affect.Location != ApplyTypes.StripSN))
                 ch.AddAffect(affect);
 
-            foreach (AffectData affect in ch.Affects)
+            foreach (var affect in ch.Affects)
                 localRoom.AddAffect(affect);
 
             if (!ch.IsNpc() && localRoom.Flags.IsSet(RoomFlags.Safe)
@@ -136,9 +136,9 @@ namespace SmaugCS.Extensions
                 return;
             }
 
-            foreach (AffectData paf in obj.Affects)
+            foreach (var paf in obj.Affects)
                 room.RemoveAffect(paf);
-            foreach (AffectData paf in obj.ObjectIndex.Affects)
+            foreach (var paf in obj.ObjectIndex.Affects)
                 room.RemoveAffect(paf);
 
             room.Contents.Remove(obj);
@@ -159,17 +159,17 @@ namespace SmaugCS.Extensions
 
         public static ObjectInstance AddTo(this RoomTemplate room, ObjectInstance obj)
         {
-            foreach (AffectData paf in obj.Affects)
+            foreach (var paf in obj.Affects)
                 room.AddAffect(paf);
-            foreach (AffectData paf in obj.ObjectIndex.Affects)
+            foreach (var paf in obj.ObjectIndex.Affects)
                 room.AddAffect(paf);
 
-            int count = obj.Count;
-            ItemTypes itemType = obj.ItemType;
+            var count = obj.Count;
+            var itemType = obj.ItemType;
 
-            foreach (ObjectInstance otmp in room.Contents)
+            foreach (var otmp in room.Contents)
             {
-                ObjectInstance oret = otmp.GroupWith(obj);
+                var oret = otmp.GroupWith(obj);
                 if (oret == otmp)
                 {
                     if (itemType == ItemTypes.Fire)

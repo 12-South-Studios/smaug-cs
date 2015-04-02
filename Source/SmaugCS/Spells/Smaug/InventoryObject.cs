@@ -15,9 +15,9 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_obj_inv(int sn, int level, CharacterInstance ch, object vo)
         {
-            ObjectInstance obj = (ObjectInstance) vo;
-            SkillData skill = DatabaseManager.Instance.SKILLS.Get(sn);
-            WeatherCell cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var obj = (ObjectInstance) vo;
+            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
             if (CheckFunctions.CheckIfNullObjectCasting(obj, skill, ch)) return ReturnTypes.None;
 
@@ -135,9 +135,9 @@ namespace SmaugCS.Spells.Smaug
             if (CheckFunctions.CheckIfTrue(ch, obj.Value[2] != 0 && obj.Value[1] != 0, "It contains some other liquid."))
                 return ReturnTypes.SpellFailed;
 
-            int minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : level)*
+            var minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : level)*
                          (cell.Precipitation >= 0 ? 2 : 1);
-            int water = minVal.GetLowestOfTwoNumbers(obj.Value[0] - obj.Value[1]);
+            var water = minVal.GetLowestOfTwoNumbers(obj.Value[0] - obj.Value[1]);
 
             if (water > 0)
             {
@@ -156,7 +156,7 @@ namespace SmaugCS.Spells.Smaug
 
         private static ReturnTypes ObscureSpellAction(SkillData skill, int level, CharacterInstance ch, ObjectInstance obj)
         {
-            int percent = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 20;
+            var percent = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 20;
             if (CheckFunctions.CheckIfTrueCasting(
                     obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || ch.Chance(percent), skill, ch))
                 return ReturnTypes.SpellFailed;

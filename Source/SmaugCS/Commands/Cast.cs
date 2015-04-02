@@ -24,7 +24,7 @@ namespace SmaugCS.Commands
         [Descriptor(new[] { " is here chanting." })]
         public static void do_cast(CharacterInstance ch, string argument)
         {
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
             switch (pch.SubState)
             {
                 case CharacterSubStates.TimerDoAbort:
@@ -71,7 +71,7 @@ namespace SmaugCS.Commands
 
         private static void CastAbortTimer(PlayerInstance ch, string argument)
         {
-            int sn = ch.tempnum;
+            var sn = ch.tempnum;
             if (Macros.IS_VALID_SN(sn))
             {
                 _skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);

@@ -15,7 +15,7 @@ namespace SmaugCS.Extensions.Character
     {
         public static void ShowConditionTo(this CharacterInstance ch, CharacterInstance victim)
         {
-            int percent = -1;
+            var percent = -1;
             if (victim.MaximumHealth > 0)
                 percent = (int)(100.0f * (victim.CurrentHealth / (double)victim.MaximumHealth));
 
@@ -27,20 +27,20 @@ namespace SmaugCS.Extensions.Character
 
         private static string GetConditionPhrase(int percent, bool isSelf)
         {
-            HealthConditionTypes healthCond = HealthConditionTypes.PerfectHealth;
-            foreach (HealthConditionTypes cond in EnumerationFunctions.GetAllEnumValues<HealthConditionTypes>())
+            var healthCond = HealthConditionTypes.PerfectHealth;
+            foreach (var cond in EnumerationFunctions.GetAllEnumValues<HealthConditionTypes>())
             {
                 if (percent >= cond.GetValue())
                     healthCond = cond;
             }
 
-            DescriptorAttribute attrib = healthCond.GetAttribute<DescriptorAttribute>();
+            var attrib = healthCond.GetAttribute<DescriptorAttribute>();
             return isSelf ? attrib.Messages.First() : attrib.Messages.ToList()[1];
         }
 
         public static void ShowToCharacter(this CharacterInstance victim, PlayerInstance ch)
         {
-            string buffer = string.Empty;
+            var buffer = string.Empty;
 
             ch.SetColor(ATTypes.AT_PERSON);
             if (!victim.IsNpc())
@@ -72,7 +72,7 @@ namespace SmaugCS.Extensions.Character
 
             if (!victim.IsNpc())
             {
-                PlayerInstance vict = (PlayerInstance)victim;
+                var vict = (PlayerInstance)victim;
                 if (vict.IsImmortal() && vict.Level > LevelConstants.GetLevel(ImmortalTypes.Avatar))
                     ch.SendTo("&P(&WImmortal&P) ");
                 if (vict.PlayerData.Clan != null
@@ -127,11 +127,11 @@ namespace SmaugCS.Extensions.Character
             if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
                 buffer += ((PlayerInstance)victim).PlayerData.Title;
 
-            TimerData timer = ch.GetTimer(TimerTypes.DoFunction);
+            var timer = ch.GetTimer(TimerTypes.DoFunction);
             if (timer != null)
             {
-                object[] attributes = timer.Action.Value.Method.GetCustomAttributes(typeof(DescriptorAttribute), false);
-                DescriptorAttribute attrib =
+                var attributes = timer.Action.Value.Method.GetCustomAttributes(typeof(DescriptorAttribute), false);
+                var attrib =
                     (DescriptorAttribute)attributes.FirstOrDefault(x => x.GetType() == typeof(DescriptorAttribute));
                 buffer += attrib == null ? " is looking rather lost." : attrib.Messages.First();
             }
@@ -188,8 +188,8 @@ namespace SmaugCS.Extensions.Character
 
         private static string GenerateBufferDescriptorFromVictimPosition(CharacterInstance victim, CharacterInstance ch)
         {
-            PositionTypes pos = victim.CurrentPosition;
-            DescriptorAttribute attrib = pos.GetAttribute<DescriptorAttribute>();
+            var pos = victim.CurrentPosition;
+            var attrib = pos.GetAttribute<DescriptorAttribute>();
 
             switch (pos)
             {

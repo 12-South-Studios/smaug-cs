@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Timers;
@@ -10,8 +8,8 @@ using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
-using Realm.Library.SmallDb;
 using SmaugCS.Common.Enumerations;
+using SmaugCS.DAL.Interfaces;
 
 namespace SmaugCS.Logging
 {
@@ -20,20 +18,17 @@ namespace SmaugCS.Logging
         public ILogWrapper LogWrapper { get; private set; }
 
         private static IKernel _kernel;
-        private ISmallDb SmallDb { get; set; }
-        private IDbConnection Connection { get; set; }
+        private readonly ISmaugDbContext _dbcontext;
         private readonly List<LogEntry> _pendingLogs;
         private readonly ITimer _dbDumpTimer;
 
         public static ILogManager Instance { get { return _kernel.Get<ILogManager>(); } }
 
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ISmallDb smallDb, IDbConnection connection,
-            ITimer timer)
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext)
         {
             LogWrapper = logWrapper;
             _kernel = kernel;
-            SmallDb = smallDb;
-            Connection = connection;
+            _dbcontext = dbContext;
 
             _pendingLogs = new List<LogEntry>();
 
@@ -48,39 +43,32 @@ namespace SmaugCS.Logging
 
         ~LogManager()
         {
-            if (_dbDumpTimer != null)
-            {
-                _dbDumpTimer.Stop();
-                _dbDumpTimer.Dispose();
-            }
+            if (_dbDumpTimer == null) return;
+            _dbDumpTimer.Stop();
+            _dbDumpTimer.Dispose();
         }
 
         private void DbDumpTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             if (!_pendingLogs.Any()) return;
 
-            List<LogEntry> logsToDump = new List<LogEntry>(_pendingLogs);
+            var logsToDump = new List<LogEntry>(_pendingLogs);
             _pendingLogs.Clear();
 
-            IDbTransaction scope = Connection.BeginTransaction();
             try
             {
-                List<SqlParameter> parameters = new List<SqlParameter>
+                foreach (var log in logsToDump)
                 {
-                    new SqlParameter("@tvpLogTable", SqlDbType.Structured)
-                    {
-                        Value = LogEntry.GetLogEntryDataTable(logsToDump)
-                    }
-                };
-                SmallDb.ExecuteNonQuery(Connection, "cp_AddLog", parameters);
-                scope.Commit();
+                    var logToSave = _dbcontext.Logs.Create();
+                    logToSave.LogType = log.LogType;
+                    logToSave.LoggedOn = DateTime.UtcNow;
+                    logToSave.Text = log.Text;
+                }
+                _dbcontext.SaveChanges();
             }
             catch (DbException ex)
             {
                 DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
-
-                if (scope != null)
-                    scope.Rollback();
 
                 if (logsToDump.Any())
                 {
@@ -88,17 +76,11 @@ namespace SmaugCS.Logging
                     logsToDump.Clear();
                 }
             }
-            finally
-            {
-                if (scope != null)
-                    scope.Dispose();
-                logsToDump.Clear();
-            }
         }
 
         public void DatabaseFailureLog(string str, params object[] args)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendFormat(str, args);
             LogWrapper.InfoFormat("[FATAL] {0}", sb.ToString());
         }
@@ -106,7 +88,7 @@ namespace SmaugCS.Logging
         #region Boot Log
         public void Boot(string str, params object[] args)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendFormat(str, args);
             LogWrapper.InfoFormat("[BOOT] {0}", sb.ToString());
         }
@@ -119,7 +101,7 @@ namespace SmaugCS.Logging
 
         private void Log(LogTypes logType, string str, params object[] args)
         {
-            LogEntry entry = new LogEntry
+            var entry = new LogEntry
             {
                 LogType = logType, 
                 Text = string.Format(str, args)

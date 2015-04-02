@@ -8,7 +8,7 @@ namespace SmaugCS.MudProgs.MobileProgs
     {
         public static void Execute(string txt, CharacterInstance actor)
         {
-            foreach (MobileInstance mob in actor.CurrentRoom.Persons.OfType<MobileInstance>().Where(x => x.IsNpc()))
+            foreach (var mob in actor.CurrentRoom.Persons.OfType<MobileInstance>().Where(x => x.IsNpc()))
             {
                 if (mob.MobIndex.HasProg(MudProgTypes.Speech))
                 {

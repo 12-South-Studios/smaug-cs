@@ -34,7 +34,7 @@ namespace SmaugCS
         private static string GetDecorateRoom_PreAndPost_1(int iRand, int nRand, SectorTypes sector, int x)
         {
             string pre, post;
-            int result = SmaugRandom.Between(1, 2 * (iRand == (nRand - 1) ? 1 : 2));
+            var result = SmaugRandom.Between(1, 2 * (iRand == (nRand - 1) ? 1 : 2));
             if (result <= 2)
             {
                 post = ".";
@@ -51,7 +51,7 @@ namespace SmaugCS
         private static string GetDecorateRoom_PreAndPost_2(SectorTypes sector, int x)
         {
             string pre, post;
-            int random = SmaugRandom.Between(0, 3);
+            var random = SmaugRandom.Between(0, 3);
             if (random == 0 || random == 2)
             {
                 post = ".";
@@ -74,25 +74,25 @@ namespace SmaugCS
 
         public static void decorate_room(RoomTemplate room)
         {
-            string buf = string.Empty;
-            string buf2 = string.Empty;
-            int[] previous = new int[8];
+            var buf = string.Empty;
+            var buf2 = string.Empty;
+            var previous = new int[8];
 
             //room.Name = "In a virtual room";
             room.Description = "You're on a pathway.\r\n";
 
-            SectorTypes sector = room.SectorType;
+            var sector = room.SectorType;
             //room.Name = GameConstants.SectorNames[(int)sector].Key;
-            int nRand = SmaugRandom.Between(1, 8.GetLowestOfTwoNumbers(LookupConstants.SentTotals[(int)sector]));
+            var nRand = SmaugRandom.Between(1, 8.GetLowestOfTwoNumbers(LookupConstants.SentTotals[(int)sector]));
 
-            for (int iRand = 0; iRand < nRand; iRand++)
+            for (var iRand = 0; iRand < nRand; iRand++)
                 previous[iRand] = -1;
 
-            for (int iRand = 0; iRand < nRand; iRand++)
+            for (var iRand = 0; iRand < nRand; iRand++)
             {
                 while (previous[iRand] == -1)
                 {
-                    int x = SmaugRandom.Between(0, LookupConstants.SentTotals[(int)sector] - 1);
+                    var x = SmaugRandom.Between(0, LookupConstants.SentTotals[(int)sector] - 1);
 
                     int z;
                     for (z = 0; z < iRand; z++)
@@ -103,7 +103,7 @@ namespace SmaugCS
                         continue;
 
                     previous[iRand] = x;
-                    int len = buf.Length;
+                    var len = buf.Length;
                     if (len == 0)
                         buf2 = GetDecorateRoom_PreAndPost_1(iRand, nRand, sector, x);
                     else if (iRand != (nRand - 1))
@@ -140,7 +140,7 @@ namespace SmaugCS
             long brvnum;
             long distance = -1;
             RoomTemplate backroom;
-            int vdir = (int)exit.Direction;
+            var vdir = (int)exit.Direction;
 
             if (room.Vnum > 32767)
             {
@@ -162,8 +162,8 @@ namespace SmaugCS
             }
             else
             {
-                long r1 = room.Vnum;
-                long r2 = exit.vnum;
+                var r1 = room.Vnum;
+                var r2 = exit.vnum;
 
                 brvnum = r1;
                 backroom = room;
@@ -172,9 +172,9 @@ namespace SmaugCS
                 roomnum = r1 < r2 ? 1 : distance;
             }
 
-            bool found = false;
+            var found = false;
 
-            RoomTemplate foundRoom =
+            var foundRoom =
                 DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
                     x => x.Vnum == serial && x.TeleportToVnum == roomnum);
             if (foundRoom != null)
@@ -195,7 +195,7 @@ namespace SmaugCS
                 DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
             }
 
-            ExitData xit = newRoom.GetExit(vdir);
+            var xit = newRoom.GetExit(vdir);
             if (!found || xit == null)
             {
                 //xit = db.make_exit(newRoom, exit.GetDestination(), vdir);
@@ -212,7 +212,7 @@ namespace SmaugCS
                     bxit.Distance = (int)roomnum;
                 else
                 {
-                    ExitData tmp = backroom.GetExit(vdir);
+                    var tmp = backroom.GetExit(vdir);
                     bxit.Distance = tmp.Distance - (int)distance;
                 }
             }
@@ -240,7 +240,7 @@ namespace SmaugCS
                ch.SetColor(ATTypes.AT_DEAD);
                ch.SendTo("Oopsie... you're dead!");
 
-                string buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
+                var buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
                 //log_string(buffer);
                 ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
                 ch.Extract(false);
@@ -249,14 +249,14 @@ namespace SmaugCS
 
         public static void teleport(CharacterInstance ch, int room, int flags)
         {
-            RoomTemplate dest = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
+            var dest = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
             if (dest == null)
             {
                 LogManager.Instance.Bug("bad room vnum {0}", room);
                 return;
             }
 
-            bool show = flags.IsSet(TeleportTriggerFlags.ShowDescription);
+            var show = flags.IsSet(TeleportTriggerFlags.ShowDescription);
 
             if (!flags.IsSet(TeleportTriggerFlags.TransportAll))
             {
@@ -264,13 +264,13 @@ namespace SmaugCS
                 return;
             }
 
-            RoomTemplate start = ch.CurrentRoom;
-            foreach (CharacterInstance nch in start.Persons)
+            var start = ch.CurrentRoom;
+            foreach (var nch in start.Persons)
                 teleportch(nch, dest, show);
 
             if (flags.IsSet(TeleportTriggerFlags.TransportAllPlus))
             {
-                foreach (ObjectInstance obj in start.Contents)
+                foreach (var obj in start.Contents)
                 {
                     obj.InRoom.RemoveFrom(obj);
                     dest.AddTo(obj);
@@ -287,7 +287,7 @@ namespace SmaugCS
             }
 
             ExitData xit = null;
-            foreach (ExitData exit in ch.CurrentRoom.Exits)
+            foreach (var exit in ch.CurrentRoom.Exits)
             {
                 if (exit.Pull > 0 && exit.Destination != null
                     && (xit == null || Math.Abs(exit.Pull) > Math.Abs(xit.Pull)))
@@ -297,12 +297,12 @@ namespace SmaugCS
             if (xit == null)
                 return ReturnTypes.None;
 
-            int pull = xit.Pull;
-            int pullfact = (20 - (Math.Abs(pull) / 5)).GetNumberThatIsBetween(1, 20);
+            var pull = xit.Pull;
+            var pullfact = (20 - (Math.Abs(pull) / 5)).GetNumberThatIsBetween(1, 20);
 
             if ((pulse % pullfact) != 0)
             {
-                foreach (ExitData exit in ch.CurrentRoom.Exits
+                foreach (var exit in ch.CurrentRoom.Exits
                     .Where(exit => exit.Pull > 0 && exit.Destination != null))
                 {
                     pull = exit.Pull;
@@ -317,7 +317,7 @@ namespace SmaugCS
 
             if (xit.GetDestination().Tunnel > 0)
             {
-                int count = ch.CurrentMount != null ? 1 : 0;
+                var count = ch.CurrentMount != null ? 1 : 0;
 
                 if (xit.GetDestination().Persons.Any(ctmp => ++count >= xit.GetDestination().Tunnel))
                     return ReturnTypes.None;
@@ -330,11 +330,11 @@ namespace SmaugCS
                     return ReturnTypes.None;
             }
 
-            string dtxt = rev_exit((int)xit.Direction);
+            var dtxt = rev_exit((int)xit.Direction);
 
             // First determine if the player should be moved or not Check various flags, spells, 
             // the players position and strength vs. the pull, etc... any kind of checks you like.
-            bool move = false;
+            var move = false;
             switch (xit.PullType)
             {
                 case DirectionPullTypes.Current:
@@ -399,8 +399,8 @@ namespace SmaugCS
                     break;
             }
 
-            bool showroom = xit.PullType == DirectionPullTypes.Mysterious;
-            PullcheckMessages msg = GetPullcheckMessages(pull, xit.PullType);
+            var showroom = xit.PullType == DirectionPullTypes.Mysterious;
+            var msg = GetPullcheckMessages(pull, xit.PullType);
 
             if (move)
             {
@@ -439,13 +439,13 @@ namespace SmaugCS
                 }
             }
 
-            foreach (ObjectInstance obj in ch.CurrentRoom.Contents)
+            foreach (var obj in ch.CurrentRoom.Contents)
             {
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried)
                     || !obj.WearFlags.IsSet(ItemWearFlags.Take))
                     continue;
 
-                int resistance = obj.GetWeight();
+                var resistance = obj.GetWeight();
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
                     resistance = (resistance * 6) / 5;
 
@@ -499,7 +499,7 @@ namespace SmaugCS
 
         private static PullcheckMessages GetPullcheckMessages(int pull, DirectionPullTypes pulltype)
         {
-            PullcheckAttribute attrib = pulltype.GetAttribute<PullcheckAttribute>();
+            var attrib = pulltype.GetAttribute<PullcheckAttribute>();
             if (attrib != null)
                 return new PullcheckMessages
                 {

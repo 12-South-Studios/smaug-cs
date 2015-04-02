@@ -22,14 +22,14 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Race);
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Race);
 
-            string races = GameConstants.GetAppSetting("Races");
+            var races = GameConstants.GetAppSetting("Races");
             if (string.IsNullOrEmpty(races))
                 throw new EntryNotFoundException("Races not found in app.config");
 
             IEnumerable<string> raceList = races.Split(new[] { ',' });
-            foreach (string raceName in raceList)
+            foreach (var raceName in raceList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + raceName + ".lua");
             }

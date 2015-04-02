@@ -18,7 +18,7 @@ namespace SmaugCS.Commands
             else 
                 ch.Act.SetBit(PlayerFlags.AwayFromKeyboard);
 
-            bool isAfkSet = ch.Act.IsSet(PlayerFlags.AwayFromKeyboard);
+            var isAfkSet = ch.Act.IsSet(PlayerFlags.AwayFromKeyboard);
             ch.SendTo(isAfkSet ? "You are no longer afk." : "You are now afk.");
             comm.act(ATTypes.AT_GREY, isAfkSet ? "$n is no longer afk." : "$n is now afk.", ch, null, null,
                 ToTypes.CanSee);

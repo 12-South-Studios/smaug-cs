@@ -19,7 +19,7 @@ namespace SmaugCS.Lookup
 
         public override void UpdateFunctionReferences(IEnumerable<CommandData> values)
         {
-            foreach (CommandData command in values.Where(x => !x.FunctionName.IsNullOrEmpty()))
+            foreach (var command in values.Where(x => !x.FunctionName.IsNullOrEmpty()))
             {
                 if (command.DoFunction == null)
                     command.DoFunction = new DoFunction();

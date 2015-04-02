@@ -30,7 +30,7 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsAwake() || ch.CurrentFighting != null)
                 return false;
 
-            CharacterInstance victim =
+            var victim =
                 ch.CurrentRoom.Persons.Where(vch => vch != ch)
                   .Where(ch.CanSee)
                   .FirstOrDefault(vch => SmaugRandom.Bits(1) != 0);
@@ -38,8 +38,8 @@ namespace SmaugCS.SpecFuns
             if (victim == null)
                 return false;
 
-            int bits = SmaugRandom.Bits(3);
-            Tuple<string, string> actLookupValue = ActLookupTable[bits];
+            var bits = SmaugRandom.Bits(3);
+            var actLookupValue = ActLookupTable[bits];
 
             comm.act(ATTypes.AT_MAGIC, 
                 string.Format("$n utters the word '{0}'.", actLookupValue.Item1), 
@@ -49,7 +49,7 @@ namespace SmaugCS.SpecFuns
 
         private static bool CastSpell(MobileInstance ch, CharacterInstance victim, int bitFlag, string spellName)
         {
-            SkillData skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
+            var skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
             
             switch (bitFlag)
             {

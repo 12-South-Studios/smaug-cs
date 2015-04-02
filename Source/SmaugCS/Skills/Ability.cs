@@ -20,11 +20,11 @@ namespace SmaugCS.Skills
         public static bool CheckAbility(CharacterInstance ch, string command, string argument, 
             IDatabaseManager databaseManager = null)
         {
-            int sn = ch.GetIDOfSkillCharacterKnows(command);
+            var sn = ch.GetIDOfSkillCharacterKnows(command);
             if (sn == -1)
                 return false;
 
-            SkillData skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>(sn);
+            var skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>(sn);
             if (skill.SkillFunction == null || skill.SpellFunction == null
                 || ch.CanUseSkill(0, sn))
                 return false;
@@ -65,7 +65,7 @@ namespace SmaugCS.Skills
             {
                 CharacterInstance victim = null;
                 ObjectInstance obj = null;
-                string targetName = string.Empty;
+                var targetName = string.Empty;
                 object vo;
 
                 switch (skill.Target)
@@ -168,7 +168,7 @@ namespace SmaugCS.Skills
                 }
 
                 start = DateTime.Now;
-                ReturnTypes retcode = skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, vo);
+                var retcode = skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, vo);
                 end = DateTime.Now;
                 skill.UseHistory.Use(ch, end.Subtract(start));
 
@@ -187,7 +187,7 @@ namespace SmaugCS.Skills
                     && victim != ch
                     && !victim.CharDied())
                 {
-                    foreach (CharacterInstance vch in ch.CurrentRoom.Persons)
+                    foreach (var vch in ch.CurrentRoom.Persons)
                     {
                         if (victim == vch && victim.CurrentFighting == null && victim.Master != ch)
                         {

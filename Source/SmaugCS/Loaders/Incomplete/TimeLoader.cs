@@ -30,12 +30,12 @@ namespace SmaugCS.Loaders
 
         public TimeInfoData LoadTimeInfo()
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
-                TimeInfoData timeInfo = new TimeInfoData();
+                var timeInfo = new TimeInfoData();
 
                 IEnumerable<string> lines = proxy.ReadIntoList();
-                foreach (string line in lines.Where(x => !x.StartsWith("*")))
+                foreach (var line in lines.Where(x => !x.StartsWith("*")))
                 {
                     if (line.StartsWithIgnoreCase("#time"))
                     {

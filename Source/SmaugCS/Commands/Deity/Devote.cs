@@ -17,7 +17,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < GameConstants.GetSystemValue<int>("MinimumDevotionLevel"),
                 "You are not yet prepared for such devotion.")) return;
 
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Devote yourself to which deity?")) return;
 
             if (firstArg.EqualsIgnoreCase("none"))
@@ -26,7 +26,7 @@ namespace SmaugCS.Commands.Deity
                 return;
             }
 
-            DeityData deity = DatabaseManager.Instance.GetEntity<DeityData>(firstArg);
+            var deity = DatabaseManager.Instance.GetEntity<DeityData>(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, deity, "No such deity holds weight on this world.")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ((PlayerInstance)ch).PlayerData.CurrentDeity,
                 "You are already devoted to a deity.")) return;
@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, WillDeityDenyPlayerRace(ch, deity),
                 "That deity will not accept worshippers of your race.")) return;
 
-            PlayerInstance pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance) ch;
             pch.PlayerData.CurrentDeity = deity;
 
             if (pch.PlayerData.Favor > deity.AffectedNum)
@@ -83,7 +83,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfNullObject(ch, ch.PlayerData.CurrentDeity,
                 "You have already chosen to worship no deities.")) return;
 
-            DeityData deity = ch.PlayerData.CurrentDeity;
+            var deity = ch.PlayerData.CurrentDeity;
 
             --deity.Worshippers;
             if (deity.Worshippers < 0)
@@ -97,7 +97,7 @@ namespace SmaugCS.Commands.Deity
             // TODO Remove deity resistances from player
             // TODO Remove deity susceptibles from player
 
-            AffectData af = new AffectData
+            var af = new AffectData
             {
                 Type = AffectedByTypes.Blind,
                 Location = ApplyTypes.HitRoll,

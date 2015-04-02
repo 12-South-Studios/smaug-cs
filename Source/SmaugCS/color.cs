@@ -20,12 +20,12 @@ namespace SmaugCS
         {
             ch.SendToPager("&Ythe following themes are available:\r\n");
 
-            DirectoryProxy proxy = new DirectoryProxy();
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color);
+            var proxy = new DirectoryProxy();
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color);
 
-            int count = 0;
-            int col = 0;
-            foreach (string file in proxy.GetFiles(path).ToList()
+            var count = 0;
+            var col = 0;
+            foreach (var file in proxy.GetFiles(path).ToList()
                                          .Where(x => !x.EqualsIgnoreCase("cvs") && !x.StartsWith(".")))
             {
                 ++count;
@@ -50,31 +50,31 @@ namespace SmaugCS
 
             ch.SendToPager("&W********************************[ COLORS ]*********************************\r\n");
 
-            for (int count = 0; count < 16; ++count)
+            for (var count = 0; count < 16; ++count)
             {
                 if ((count % 8) == 0 && count != 0)
                     ch.SendToPager("\r\n");
 
-                ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
+                var atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
                 ch.PagerPrintf("%s%-10s", color_str(atType, ch), LookupConstants.pc_displays[count]);
             }
 
             ch.SendToPager("\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n");
 
-            for (int count = 32; count < (int)ATTypes.MAX_COLORS; ++count)
+            for (var count = 32; count < (int)ATTypes.MAX_COLORS; ++count)
             {
                 if ((count % 8) == 0 && count != 32)
                     ch.SendToPager("\r\n");
 
-                ATTypes atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
+                var atType = Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(count);
                 ch.PagerPrintf("%s%-10s%s", color_str(atType, ch), LookupConstants.pc_displays[count], AnsiCodes.Reset);
             }
 
             ch.SendToPager("\r\n\r\n");
             ch.SendToPager("&YAvailable colors are:\r\n");
 
-            int numColors = 0;
-            foreach (string color in LookupManager.Instance.GetLookups("ValidColors"))
+            var numColors = 0;
+            foreach (var color in LookupManager.Instance.GetLookups("ValidColors"))
             {
                 if ((numColors % 8) == 0 && numColors != 0)
                     ch.SendToPager("\r\n");
@@ -89,20 +89,20 @@ namespace SmaugCS
 
         public static void reset_colors(PlayerInstance ch)
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color) + "default";
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(path)))
+            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color) + "default";
+            using (var proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 IEnumerable<string> lines = proxy.ReadIntoList();
-                foreach (string line in lines.Where(l => !l.EqualsIgnoreCase("#colortheme")
+                foreach (var line in lines.Where(l => !l.EqualsIgnoreCase("#colortheme")
                                                          && !l.StartsWithIgnoreCase("name") &&
                                                          !l.EqualsIgnoreCase("maxcolors")))
                 {
-                    Tuple<string, string> tuple = line.FirstArgument();
+                    var tuple = line.FirstArgument();
                     switch (tuple.Item1.ToLower())
                     {
                         case "colors":
-                            string[] colors = tuple.Item2.Split(new[] { ' ' });
-                            for (int i = 0; i < colors.Length; i++)
+                            var colors = tuple.Item2.Split(new[] { ' ' });
+                            for (var i = 0; i < colors.Length; i++)
                             {
                                 ch.Colors[Realm.Library.Common.EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
                             }
@@ -119,7 +119,7 @@ namespace SmaugCS
             if (ch.IsNpc() || ch.Act.IsSet(PlayerFlags.Ansi))
                 return string.Empty;
 
-            AnsiCodes code = Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>((int)attype);
+            var code = Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>((int)attype);
             return code.GetName();
         }
 
@@ -130,7 +130,7 @@ namespace SmaugCS
                 default:
                     return Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15)).GetName();
                 case 2:
-                    AnsiCodes code = Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15));
+                    var code = Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(1, 15));
                     return code.MakeBlink();
                 case 3:
                     return Realm.Library.Common.EnumerationExtensions.GetEnum<AnsiCodes>(SmaugRandom.Between(16, 31)).GetName();
@@ -153,12 +153,12 @@ namespace SmaugCS
             if (string.IsNullOrEmpty(src))
                 return 0;
 
-            int len = 0;
+            var len = 0;
             int vislen;
-            string dst = string.Empty;
+            var dst = string.Empty;
 
-            char[] chars = src.ToCharArray();
-            for (int i = 0; i < chars.Length; i++)
+            var chars = src.ToCharArray();
+            for (var i = 0; i < chars.Length; i++)
             {
                 switch (chars[i])
                 {
@@ -180,9 +180,9 @@ namespace SmaugCS
 
         public static string color_align(string argument, int size, int align)
         {
-            int len = color_strlen(argument);
-            int space = size - len;
-            string buffer = string.Empty;
+            var len = color_strlen(argument);
+            var space = size - len;
+            var buffer = string.Empty;
             const char c = ' ';
 
             switch (align)
@@ -275,8 +275,8 @@ namespace SmaugCS
         /// <returns></returns>
         public static int get_color(string argument)
         {
-            Tuple<string, string> tuple = argument.FirstArgument();
-            string color = tuple.Item1;
+            var tuple = argument.FirstArgument();
+            var color = tuple.Item1;
 
             if (color[0] != '_' && color[0] != '*')
                 return 0;

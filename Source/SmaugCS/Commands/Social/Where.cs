@@ -15,7 +15,7 @@ namespace SmaugCS.Commands
     {
         public static void do_where(CharacterInstance ch, string argument)
         {
-            string firstArg = argument.FirstWord();
+            var firstArg = argument.FirstWord();
             if (string.IsNullOrEmpty(firstArg))
                 ViewPlayersNearby(ch);
             else
@@ -24,7 +24,7 @@ namespace SmaugCS.Commands
 
         private static void ViewIndividualPlayer(CharacterInstance ch, string firstArg)
         {
-            CharacterInstance victim = ch.GetCharacterInWorld(firstArg);
+            var victim = ch.GetCharacterInWorld(firstArg);
             if (victim != null)
             {
                 if (victim.CurrentRoom != null
@@ -45,14 +45,14 @@ namespace SmaugCS.Commands
         {
             ch.PagerPrintf("Players near you in {0}:", ch.CurrentRoom.Area.Name);
 
-            IEnumerable<CharacterInstance> victimList = GetVisiblePlayersInArea(ch);
+            var victimList = GetVisiblePlayersInArea(ch);
             if (!victimList.Any())
             {
                 ch.SendTo("None");
                 return;
             }
 
-            foreach (CharacterInstance victim in victimList)
+            foreach (var victim in victimList)
             {
                 ch.PagerPrintfColor("&P{0}  ", victim.Name.PadRight(13, ' '));
                 if (victim.IsImmortal() && victim.Level > LevelConstants.AvatarLevel)
@@ -72,10 +72,10 @@ namespace SmaugCS.Commands
 
         private static IEnumerable<CharacterInstance> GetVisiblePlayersInArea(CharacterInstance ch)
         {
-            List<CharacterInstance> list = new List<CharacterInstance>();
-            foreach (RoomTemplate room in ch.CurrentRoom.Area.Rooms)
+            var list = new List<CharacterInstance>();
+            foreach (var room in ch.CurrentRoom.Area.Rooms)
             {
-                foreach (CharacterInstance victim in room.Persons.Where(x => !x.IsNpc()))
+                foreach (var victim in room.Persons.Where(x => !x.IsNpc()))
                 {
                     if (((PlayerInstance)victim).PlayerData != null && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb))
                         continue;

@@ -15,15 +15,15 @@ namespace SmaugCS.Extensions
         {
             if (ch.IsNpc()) return;
             
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             if (pch.PlayerData == null) return;
 
-            int val = pch.GetLearned((int)skill.ID);
+            var val = pch.GetLearned((int)skill.ID);
             if (val <= 0)
                 return;
 
             int mastery = skill.GetMasteryLevel(pch);
-            int skillLevel = skill.SkillLevels.ToList()[(int) ch.CurrentClass];
+            var skillLevel = skill.SkillLevels.ToList()[(int) ch.CurrentClass];
             if (skillLevel == 0)
                 skillLevel = ch.Level;
 
@@ -36,7 +36,7 @@ namespace SmaugCS.Extensions
 
         private static void GainExperienceFromSkill(SkillData skill, PlayerInstance ch, int mastery, int skillLevel)
         {
-            int gain = ch.PlayerData.Learned[(int) skill.ID] == mastery
+            var gain = ch.PlayerData.Learned[(int) skill.ID] == mastery
                 ? GainMasteryOfSkill(skill, ch, skillLevel)
                 : GainExperienceInSkill(ch, skillLevel);
 
@@ -45,7 +45,7 @@ namespace SmaugCS.Extensions
 
         private static int GainExperienceInSkill(CharacterInstance ch, int skillLevel)
         {
-            int gain = 20*skillLevel;
+            var gain = 20*skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
                 gain *= 6;
             if (ch.CurrentClass == ClassTypes.Cleric)
@@ -58,7 +58,7 @@ namespace SmaugCS.Extensions
 
         private static int GainMasteryOfSkill(SkillData skill, CharacterInstance ch, int skillLevel)
         {
-            int gain = 1000*skillLevel;
+            var gain = 1000*skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
                 gain *= 5;
             if (ch.CurrentClass == ClassTypes.Cleric)
@@ -71,8 +71,8 @@ namespace SmaugCS.Extensions
 
         private static void GainLearningInSkill(SkillData skill, PlayerInstance ch, int mastery)
         {
-            int chance = ch.GetLearned((int) skill.ID) + (5*skill.difficulty);
-            int percent = SmaugRandom.D100();
+            var chance = ch.GetLearned((int) skill.ID) + (5*skill.difficulty);
+            var percent = SmaugRandom.D100();
             int learn;
 
             if (percent >= chance)
@@ -89,13 +89,13 @@ namespace SmaugCS.Extensions
         {
             if (ch.IsNpc()) return;
             
-            PlayerInstance pch = (PlayerInstance)ch;
+            var pch = (PlayerInstance)ch;
             if (pch.PlayerData == null) return;
 
-            int val = pch.GetLearned((int) skill.ID);
+            var val = pch.GetLearned((int) skill.ID);
             if (val <= 0) return;
 
-            int chance = pch.GetLearned((int) skill.ID) + (5*skill.difficulty);
+            var chance = pch.GetLearned((int) skill.ID) + (5*skill.difficulty);
             if ((chance - SmaugRandom.D100()) > 25) return;
 
             int mastery = skill.GetMasteryLevel(pch);
@@ -106,7 +106,7 @@ namespace SmaugCS.Extensions
 
         public static int GetMasteryLevel(this SkillData skill, PlayerInstance ch)
         {
-            SkillMasteryData mastery = skill.SkillMasteries.FirstOrDefault(x => x.ClassType == ch.CurrentClass);
+            var mastery = skill.SkillMasteries.FirstOrDefault(x => x.ClassType == ch.CurrentClass);
             if (mastery == null)
                 throw new EntryNotFoundException("Mastery value for Class {0} not found in Skill {1}", ch.CurrentClass,
                     skill.ID);
@@ -116,8 +116,8 @@ namespace SmaugCS.Extensions
 
         public static bool CheckSave(this SkillData skill, int level, CharacterInstance ch, CharacterInstance victim)
         {
-            bool saved = false;
-            int localLevel = level;
+            var saved = false;
+            var localLevel = level;
 
             if (skill.Flags.IsSet(SkillFlags.PKSensitive) && !ch.IsNpc() && !victim.IsNpc())
                 localLevel /= 2;
@@ -146,22 +146,22 @@ namespace SmaugCS.Extensions
 
         public static void AbilityLearnFromSuccess(this SkillData skill, PlayerInstance ch)
         {
-            int sn = (int) skill.ID;
+            var sn = (int) skill.ID;
 
             if (ch.IsNpc() || ch.PlayerData.Learned[sn] <= 0)
                 return;
 
-            int adept = skill.RaceAdept[(int)ch.CurrentRace];
-            int skillLevel = skill.RaceLevel[(int)ch.CurrentRace];
+            var adept = skill.RaceAdept[(int)ch.CurrentRace];
+            var skillLevel = skill.RaceLevel[(int)ch.CurrentRace];
 
             if (skillLevel == 0)
                 skillLevel = ch.Level;
             if (ch.PlayerData.Learned[sn] < adept)
             {
-                int schance = ch.PlayerData.Learned[sn] + (5 * skill.difficulty);
-                int percent = SmaugRandom.D100();
+                var schance = ch.PlayerData.Learned[sn] + (5 * skill.difficulty);
+                var percent = SmaugRandom.D100();
 
-                int learn = 1;
+                var learn = 1;
                 if (percent >= schance)
                     learn = 2;
                 else if (schance - percent > 25)

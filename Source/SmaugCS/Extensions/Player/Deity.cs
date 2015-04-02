@@ -10,7 +10,7 @@ namespace SmaugCS.Extensions.Player
     {
         public static void CheckForExtremeFavor(this PlayerInstance ch, int oldfavor)
         {
-            DeityData deity = ch.PlayerData.CurrentDeity;
+            var deity = ch.PlayerData.CurrentDeity;
             if ((oldfavor > deity.AffectedNum && ch.PlayerData.Favor <= deity.AffectedNum)
                 || (oldfavor > deity.ElementNum && ch.PlayerData.Favor <= deity.Element)
                 || (oldfavor < deity.SusceptNum && ch.PlayerData.Favor >= deity.SusceptNum))
@@ -22,8 +22,8 @@ namespace SmaugCS.Extensions.Player
             if (ch.IsNpc() || ch.PlayerData.CurrentDeity == null)
                 return;
 
-            int oldfavor = ch.PlayerData.Favor;
-            DeityData deity = ch.PlayerData.CurrentDeity;
+            var oldfavor = ch.PlayerData.Favor;
+            var deity = ch.PlayerData.CurrentDeity;
 
             if (((ch.CurrentAlignment - deity.Alignment) > 650)
                  || ((ch.CurrentAlignment - deity.Alignment) < -650)

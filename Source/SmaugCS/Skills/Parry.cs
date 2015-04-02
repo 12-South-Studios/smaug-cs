@@ -23,7 +23,7 @@ namespace SmaugCS.Skills
 
             int chances;
 
-            SkillData skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("parry");
+            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("parry");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'parry' not found");
 

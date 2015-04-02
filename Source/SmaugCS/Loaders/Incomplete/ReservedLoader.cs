@@ -20,9 +20,9 @@ namespace SmaugCS.Loaders
 
         public override void Load()
         {
-            using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(Filename)))
+            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
             {
-                string reservedName = proxy.ReadString();
+                var reservedName = proxy.ReadString();
                 if (reservedName.Equals("$"))
                     return;
 

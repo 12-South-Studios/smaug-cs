@@ -21,7 +21,7 @@ namespace SmaugCS.Repositories
             Validation.IsNotNull(parent, "parent");
             Validation.Validate(parent is MobTemplate, "Invalid Template Type");
 
-            MobTemplate mobParent = parent.CastAs<MobTemplate>();
+            var mobParent = parent.CastAs<MobTemplate>();
 
             long id;
             if (args != null && args.Length > 0)
@@ -29,15 +29,15 @@ namespace SmaugCS.Repositories
             else
                 id = GetNextId;
 
-            string name = parent.Name;
+            var name = parent.Name;
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            bool isMobile = false;
+            var isMobile = false;
             if (args != null && args.Length > 2)
                 isMobile = (bool) args[2];
 
-            CharacterInstance mob = new CharacterInstance(id, name)
+            var mob = new CharacterInstance(id, name)
             {
                 Parent = parent,
                 ShortDescription = mobParent.ShortDescription,
@@ -55,7 +55,7 @@ namespace SmaugCS.Repositories
 
             if (isMobile)
             {
-                MobileInstance mi = (MobileInstance) mob;
+                var mi = (MobileInstance) mob;
                 mi.SpecialFunction = mobParent.SpecialFunction;
 
                 if (!string.IsNullOrEmpty(mobParent.SpecFun))

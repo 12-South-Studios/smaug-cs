@@ -10,9 +10,9 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_acid_blast(int sn, int level, CharacterInstance ch, object vo)
         {
-            CharacterInstance victim = vo.CastAs<CharacterInstance>();
+            var victim = vo.CastAs<CharacterInstance>();
 
-            int damage = Common.SmaugRandom.D6(level);
+            var damage = Common.SmaugRandom.D6(level);
 
             if (victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
                 damage /= 2;

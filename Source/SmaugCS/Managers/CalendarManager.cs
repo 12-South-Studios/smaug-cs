@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
-using Realm.Library.SmallDb;
-using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Objects;
@@ -24,17 +22,15 @@ namespace SmaugCS.Managers
 
         private readonly ILogManager _logManager;
         private readonly IGameManager _gameManager;
-                private readonly ISmallDb _smallDb;
-        private readonly IDbConnection _connection;
+        private readonly ISmaugDbContext _dbContext;
 
         public TimeInfoData GameTime { get; private set; }
 
-        public CalendarManager(ILogManager logManager, ISmallDb smallDb, IDbConnection connection, IGameManager gameManager)
+        public CalendarManager(ILogManager logManager, IGameManager gameManager, ISmaugDbContext dbContext)
         {
             _logManager = logManager;
-            _smallDb = smallDb;
-            _connection = connection;
             _gameManager = gameManager;
+            _dbContext = dbContext;
         }
 
         public static ICalendarManager Instance
@@ -49,19 +45,19 @@ namespace SmaugCS.Managers
 
             try
             {
-                DataTable dt = _smallDb.ExecuteQuery(_connection, "live.cp_GetGameState");
                 TimeInfoData timeInfo;
-                if (dt.Rows.Count == 0)
+
+                var gameState = _dbContext.GameStates.FirstOrDefault();
+                if (gameState == null)
                     timeInfo = new TimeInfoData {Day = 28, Hour = 0, Month = 6, Year = 628};
                 else
                 {
-                    DataRow row = dt.Rows.OfType<DataRow>().FirstOrDefault();
                     timeInfo = new TimeInfoData
                     {
-                        Year = row.GetDataValue("GameYear", 628),
-                        Month = row.GetDataValue("GameMonth", 6),
-                        Day = row.GetDataValue("GameDay", 28),
-                        Hour = row.GetDataValue("GameHour", 0)
+                        Year = gameState.GameYear,
+                        Month = gameState.GameMonth,
+                        Day = gameState.GameDay,
+                        Hour = gameState.GameHour
                     };
                 }
 
@@ -79,14 +75,14 @@ namespace SmaugCS.Managers
             _gameManager.SetGameTime(timeInfo);
 
             _logManager.Boot("Resetting mud time based on current system time.");
-            long lhour = (DateTime.Now.ToFileTimeUtc() - 650336715) /
+            var lhour = (DateTime.Now.ToFileTimeUtc() - 650336715) /
                          (GameConstants.GetSystemValue<int>("PulseTick") / GameConstants.GetSystemValue<int>("PulsesPerSecond"));
             _gameManager.GameTime.Hour = (int)(lhour % GameConstants.GetSystemValue<int>("HoursPerDay"));
 
-            long lday = lhour / GameConstants.GetSystemValue<int>("HoursPerDay");
+            var lday = lhour / GameConstants.GetSystemValue<int>("HoursPerDay");
             _gameManager.GameTime.Day = (int)(lday % GameConstants.GetSystemValue<int>("DaysPerMonth"));
 
-            long lmonth = lday / GameConstants.GetSystemValue<int>("DaysPerMonth");
+            var lmonth = lday / GameConstants.GetSystemValue<int>("DaysPerMonth");
             _gameManager.GameTime.Month = (int)(lmonth % GameConstants.GetSystemValue<int>("MonthsPerYear"));
 
             _gameManager.GameTime.Year = (int)(lmonth % GameConstants.GetSystemValue<int>("MonthsPerYear"));
@@ -123,8 +119,8 @@ namespace SmaugCS.Managers
 
         public static int GetTimezone(string arg)
         {
-            int count = 0;
-            foreach (TimezoneData tz in TimezoneTable)
+            var count = 0;
+            foreach (var tz in TimezoneTable)
             {
                 if (tz.Name.EqualsIgnoreCase(arg) || tz.Zone.EqualsIgnoreCase(arg))
                     return count;
@@ -139,7 +135,7 @@ namespace SmaugCS.Managers
             act_wiz.echo_to_all(ATTypes.AT_CYAN, "Freshwater bodies everywhere have frozen over.\r\n", (int)EchoTypes.All);
 
             _winterFreeze = true;
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.DeepWater
                     || x.SectorType == SectorTypes.ShallowWater))
             {
@@ -156,7 +152,7 @@ namespace SmaugCS.Managers
                                 (int) EchoTypes.All);
 
             _winterFreeze = true;
-            foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.Ice
                     && x.SectorType != SectorTypes.Unknown))
             {
@@ -179,7 +175,7 @@ namespace SmaugCS.Managers
 
         private static void UpdateSeason(TimeInfoData gameTime)
         {
-            HolidayData day = db.GetHoliday(gameTime.Month, gameTime.Day);
+            var day = db.GetHoliday(gameTime.Month, gameTime.Day);
             if (day != null)
             {
                 if (gameTime.Day + 1 == day.Day && gameTime.Hour == 0)
@@ -189,7 +185,7 @@ namespace SmaugCS.Managers
             if (gameTime.Season == SeasonTypes.Winter && !_winterFreeze)
             {
                 _winterFreeze = true;
-                foreach (RoomTemplate room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+                foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                     .Where(x => x.SectorType == SectorTypes.DeepWater
                         || x.SectorType == SectorTypes.ShallowWater))
                 {
@@ -201,8 +197,8 @@ namespace SmaugCS.Managers
 
         public void CalculateSeason(TimeInfoData gameTime)
         {
-            int day = gameTime.Month * GameConstants.GetSystemValue<int>("DaysPerMonth") + gameTime.Day;
-            int daysPerYear = GameConstants.GetSystemValue<int>("DaysPerYear");
+            var day = gameTime.Month * GameConstants.GetSystemValue<int>("DaysPerMonth") + gameTime.Day;
+            var daysPerYear = GameConstants.GetSystemValue<int>("DaysPerYear");
 
             if (day < daysPerYear / 4)
             {

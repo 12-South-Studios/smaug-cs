@@ -130,7 +130,7 @@ namespace SmaugCS.Weather
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    var cell = new WeatherCell
+                    var cell = new WeatherCell(0)
                     {
                         Hemisphere =
                             EnumerationExtensions.GetEnum<HemisphereTypes>(SmaugRandom.Between(0, 1))
