@@ -13,6 +13,7 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
 {
@@ -30,7 +31,7 @@ namespace SmaugCS
                 return (int)skill.ID;
             if (((PlayerInstance)ch).GetLearned((int)skill.ID) > 0
                 && (ch.Level >= skill.SkillLevels.ToList()[(int)ch.CurrentClass]
-                    || ch.Level >= skill.RaceLevel[(int)ch.CurrentRace]))
+                    || ch.Level >= skill.RaceLevel.ToList()[(int)ch.CurrentRace]))
                 return (int)skill.ID;
             return 0;
         }
@@ -41,7 +42,7 @@ namespace SmaugCS
                 return -1;
             foreach (
                 var skill in
-                    ch.PlayerData.special_skills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
+                    ch.PlayerData.SpecialSkills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
                                                                 && name.StartsWithIgnoreCase(skill.Name)))
                 return (int) skill.ID;
             return -1;
@@ -117,7 +118,7 @@ namespace SmaugCS
                 spell = skill.Name;
             }
             else
-                spell = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>(affect).GetName().ToLower();
+                spell = EnumerationExtensions.GetEnum<AffectedByTypes>(affect).GetName().ToLower();
 
            ch.SetColor(ATTypes.AT_MAGIC);
            victim.SetColor(ATTypes.AT_HITME);
@@ -445,7 +446,7 @@ namespace SmaugCS
                         foreach (var vobj in ch.Carrying)
                         {
                             if (vobj.ItemType ==
-                                Realm.Library.Common.EnumerationExtensions.GetEnumByName<ItemTypes>(
+                                EnumerationExtensions.GetEnumByName<ItemTypes>(
                                     component.RequiredData))
                             {
                                 if (CheckFunctions.CheckIfTrue(ch, fail,
@@ -520,7 +521,7 @@ namespace SmaugCS
                     if (val >= 0 && val < 6)
                     {
                         obj.Split();
-                        if (obj.Value[val] <= 0)
+                        if (obj.Value.ToList()[val] <= 0)
                         {
                             comm.act(ATTypes.AT_MAGIC, "$p dispapears in a puff of smoke!", ch, obj, null, ToTypes.Character);
                             comm.act(ATTypes.AT_MAGIC, "$p disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);
@@ -528,7 +529,7 @@ namespace SmaugCS
                             return false;
                         }
 
-                        if (--obj.Value[val] == 0)
+                        if (--obj.Value.ToList()[val] == 0)
                         {
                             comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Character);
                             comm.act(ATTypes.AT_MAGIC, "$p glows briefly, then disappears in a puff of smoke!", ch, obj, null, ToTypes.Room);

@@ -28,7 +28,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc())
                 chance = 60.GetLowestOfTwoNumbers(2*victim.Level);
             else
-                chance = Macros.LEARNED(victim, (int) skill.ID)/2;
+                chance =(int) Macros.LEARNED(victim, (int) skill.ID)/2;
 
             chance += 2*(victim.GetCurrentLuck()-13);
 

@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using System.Linq;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
@@ -23,7 +24,7 @@ namespace SmaugCS
                     return;
 
                 case ItemTypes.DrinkContainer:
-                    var liq = DatabaseManager.Instance.GetEntity<LiquidData>(obj.Value[2]);
+                    var liq = DatabaseManager.Instance.GetEntity<LiquidData>(obj.Value.ToList()[2]);
                     comm.act(ATTypes.AT_ACTION, charbuf, ch, obj, liq.Name, ToTypes.Character);
                     comm.act(ATTypes.AT_ACTION, roombuf, ch, obj, liq.Name, ToTypes.Room);
                     return;

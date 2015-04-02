@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using LuaInterface;
+using Realm.Library.Lua;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using Realm.Library.Lua;
 
 namespace SmaugCS.LuaHelpers
 {

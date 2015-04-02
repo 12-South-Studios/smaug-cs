@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -37,21 +38,21 @@ namespace SmaugCS.Commands.Movement
         private static void UnlockObject(CharacterInstance ch, ObjectInstance obj)
         {
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType != ItemTypes.Container, "That's not a container.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ContainerFlags.Closed, "It's not closed.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, obj.Value[2] < 0, "It can't be unlocked.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, obj.Value.ToList()[1], ContainerFlags.Closed, "It's not closed.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.Value.ToList()[2] < 0, "It can't be unlocked.")) return;
 
-            var key = ch.HasKey(obj.Value[2]);
+            var key = ch.HasKey(obj.Value.ToList()[2]);
             if (CheckFunctions.CheckIfNullObject(ch, key, "You lack the key.")) return;
-            if (CheckFunctions.CheckIfNotSet(ch, obj.Value[1], ExitFlags.Locked, "It's already unlocked.")) return;
+            if (CheckFunctions.CheckIfNotSet(ch, obj.Value.ToList()[1], ExitFlags.Locked, "It's already unlocked.")) return;
 
-            obj.Value[1].RemoveBit(ContainerFlags.Locked);
+            obj.Value.ToList()[1].RemoveBit(ContainerFlags.Locked);
             ch.SendTo("*Click*");
             var count = key.Count;
             key.Count = 1;
             comm.act(ATTypes.AT_ACTION, "$n unlocks $p with $P.", ch, obj, key, ToTypes.Room);
             key.Count = count;
 
-            if (obj.Value[1].IsSet(ContainerFlags.EatKey))
+            if (obj.Value.ToList()[1].IsSet(ContainerFlags.EatKey))
             {
                 key.Split();
                 key.Extract();

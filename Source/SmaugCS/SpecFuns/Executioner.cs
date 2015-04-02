@@ -15,8 +15,7 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecExecutioner(MobileInstance ch)
         {
-            if (!ch.IsAwake() || ch.CurrentFighting != null)
-                return false;
+            if (!ch.IsAwake() || ch.CurrentFighting != null) return false;
 
             var crime = string.Empty;
             CharacterInstance victim = null;
@@ -28,9 +27,7 @@ namespace SmaugCS.SpecFuns
                 if (!string.IsNullOrEmpty(crime))
                     break;
             }
-
-            if (victim == null)
-                return false;
+            if (victim == null) return false;
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
             {
@@ -41,8 +38,7 @@ namespace SmaugCS.SpecFuns
             Shout.do_shout(ch, string.Format("{0} is a {1}! PROTECT THE INNOCENT! MORE BLOOOOD!!!", victim.Name, crime));
             fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
 
-            if (ch.CharDied())
-                return true;
+            if (ch.CharDied()) return true;
 
             var vnum = GameConstants.GetVnum("MobileCityGuard");
             var cityguard = DatabaseManager.Instance.GetEntity<MobTemplate>(vnum);
@@ -52,18 +48,13 @@ namespace SmaugCS.SpecFuns
 
             newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
             ch.CurrentRoom.AddTo(newGuard);
-            
             return true;
         }
 
         private static string GetCrime(CharacterInstance victim)
         {
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Killer))
-                return "KILLER";
-
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Thief))
-                return "THIEF";
-
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Killer)) return "KILLER";
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Thief)) return "THIEF";
             return string.Empty;
         }
     }

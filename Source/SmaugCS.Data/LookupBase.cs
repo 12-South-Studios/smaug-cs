@@ -7,7 +7,7 @@ namespace SmaugCS.Data
         where T : Entity
         where TK : class, new()
     {
-        protected readonly Dictionary<string, TK> LookupTable;
+        protected Dictionary<string, TK> LookupTable { get; private set; }
         private readonly TK _defaultFunc;
 
         protected LookupBase(TK defaultFunc)

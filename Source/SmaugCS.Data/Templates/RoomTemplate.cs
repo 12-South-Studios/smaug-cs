@@ -9,18 +9,18 @@ namespace SmaugCS.Data.Templates
 {
     public class RoomTemplate : Template, IHasExtraDescriptions
     {
-        public List<ResetData> Resets { get; set; }
+        public ICollection<ResetData> Resets { get; private set; }
         public ResetData LastMobReset { get; set; }
         public ResetData LastObjectReset { get; set; }
-        public List<CharacterInstance> Persons { get; set; }
-        public List<ObjectInstance> Contents { get; set; }
-        public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
+        public ICollection<CharacterInstance> Persons { get; private set; }
+        public ICollection<ObjectInstance> Contents { get; private set; }
+        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; private set; }
         public AreaData Area { get; set; }
-        public List<ExitData> Exits { get; set; }
-        public List<AffectData> PermanentAffects { get; set; }
-        public List<AffectData> Affects { get; set; }
+        public ICollection<ExitData> Exits { get; private set; }
+        public ICollection<AffectData> PermanentAffects { get; private set; }
+        public ICollection<AffectData> Affects { get; private set; }
         public PlaneData plane { get; set; }
-        public List<MudProgActData> MudProgActs { get; set; }
+        public ICollection<MudProgActData> MudProgActs { get; private set; }
         public int Flags { get; set; }
 
         public int mpactnum { get; set; }
@@ -161,16 +161,13 @@ namespace SmaugCS.Data.Templates
 
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
         {
-            ResetTypes resetType = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type);
-            ResetData newReset = new ResetData
+            var newReset = new ResetData
             {
-                Type = resetType,
+                Type = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
                 Extra = extra,
                 Command = type[0].ToString()
             };
-            newReset.Args[0] = arg1;
-            newReset.Args[1] = arg2;
-            newReset.Args[2] = arg3;
+            newReset.SetArgs(arg1, arg2, arg3);
             Resets.Add(newReset);
         }
 
@@ -181,8 +178,8 @@ namespace SmaugCS.Data.Templates
 
         public void SetFlags(string flags)
         {
-            string[] words = flags.Split(new[] { ' ' });
-            foreach (string word in words)
+            var words = flags.Split(' ');
+            foreach (var word in words)
             {
                 Flags += (int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<RoomFlags>(word);
             }

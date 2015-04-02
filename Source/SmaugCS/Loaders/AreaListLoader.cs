@@ -5,8 +5,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
-
+using SmaugCS.Lua;
 namespace SmaugCS.Loaders
 {
     public class AreaListLoader : ListLoader
@@ -29,7 +28,7 @@ namespace SmaugCS.Loaders
             if (string.IsNullOrEmpty(areas))
                 throw new EntryNotFoundException("Areas list not found in app.config");
 
-            IEnumerable<string> areaList = areas.Split(new[] { ',' });
+            IEnumerable<string> areaList = areas.Split(',');
             foreach (var areaName in areaList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + areaName + ".lua");

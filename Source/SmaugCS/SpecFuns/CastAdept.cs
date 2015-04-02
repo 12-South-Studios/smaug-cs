@@ -7,6 +7,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Spells;
+using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS.SpecFuns
 {
@@ -27,16 +29,12 @@ namespace SmaugCS.SpecFuns
 
         public static bool DoSpecCastAdept(MobileInstance ch)
         {
-            if (!ch.IsAwake() || ch.CurrentFighting != null)
-                return false;
+            if (!ch.IsAwake() || ch.CurrentFighting != null) return false;
 
-            var victim =
-                ch.CurrentRoom.Persons.Where(vch => vch != ch)
+            var victim = ch.CurrentRoom.Persons.Where(vch => vch != ch)
                   .Where(ch.CanSee)
                   .FirstOrDefault(vch => SmaugRandom.Bits(1) != 0);
-
-            if (victim == null)
-                return false;
+            if (victim == null) return false;
 
             var bits = SmaugRandom.Bits(3);
             var actLookupValue = ActLookupTable[bits];
@@ -58,16 +56,16 @@ namespace SmaugCS.SpecFuns
                 case 3:
                 case 5:
                 case 6:
-                    Spells.Smaug.Smaug.spell_smaug((int)skill.ID, ch.Level, ch, victim);
+                    Smaug.spell_smaug((int)skill.ID, ch.Level, ch, victim);
                     return true;
                 case 2:
-                    Spells.CureBlindness.spell_cure_blindness((int)skill.ID, ch.Level, ch, victim);
+                    CureBlindness.spell_cure_blindness((int)skill.ID, ch.Level, ch, victim);
                     return true;
                 case 4:
-                    Spells.CurePoison.spell_cure_poison((int)skill.ID, ch.Level, ch, victim);
+                    CurePoison.spell_cure_poison((int)skill.ID, ch.Level, ch, victim);
                     return true;
                 case 7:
-                    Spells.RemoveCurse.spell_remove_curse((int)skill.ID, ch.Level, ch, victim);
+                    RemoveCurse.spell_remove_curse((int)skill.ID, ch.Level, ch, victim);
                     return true;
             }
 

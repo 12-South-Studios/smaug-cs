@@ -9,12 +9,10 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecBreathGas(CharacterInstance ch)
         {
-            if (!ch.IsInCombatPosition())
-                return false;
+            if (!ch.IsInCombatPosition()) return false;
 
             var skill = DatabaseManager.Instance.GetEntity<SkillData>("gas breath");
-            if (skill == null || skill.SpellFunction == null)
-                return false;
+            if (skill == null || skill.SpellFunction == null) return false;
 
             skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, null);
             return true;

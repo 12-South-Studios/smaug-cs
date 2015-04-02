@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Text;
 using Moq;
 using Ninject;
@@ -15,6 +16,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
@@ -60,7 +62,7 @@ namespace SmaugCS.Tests.Repositories
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(mockLogger.Object, string.Empty);
+            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object, string.Empty);
             LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object);
 
             var mockLogMgr = new Mock<ILogManager>();
@@ -97,12 +99,12 @@ namespace SmaugCS.Tests.Repositories
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Exits.Count, Is.EqualTo(2));
-            Assert.That(result.Exits[0].Direction, Is.EqualTo(DirectionTypes.Up));
-            Assert.That(result.Exits[0].Destination, Is.EqualTo(802));
-            Assert.That(result.Exits[0].Keywords, Is.EqualTo("gate"));
-            Assert.That(result.Exits[0].Key, Is.EqualTo(800));
-            Assert.That(result.Exits[1].Direction, Is.EqualTo(DirectionTypes.Down));
-            Assert.That(result.Exits[1].Destination, Is.EqualTo(800));
+            Assert.That(result.Exits.ToList()[0].Direction, Is.EqualTo(DirectionTypes.Up));
+            Assert.That(result.Exits.ToList()[0].Destination, Is.EqualTo(802));
+            Assert.That(result.Exits.ToList()[0].Keywords, Is.EqualTo("gate"));
+            Assert.That(result.Exits.ToList()[0].Key, Is.EqualTo(800));
+            Assert.That(result.Exits.ToList()[1].Direction, Is.EqualTo(DirectionTypes.Down));
+            Assert.That(result.Exits.ToList()[1].Destination, Is.EqualTo(800));
         }
 
         [Test]
@@ -112,7 +114,7 @@ namespace SmaugCS.Tests.Repositories
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.ExtraDescriptions.Count, Is.EqualTo(1));
-            Assert.That(result.ExtraDescriptions.Find(x => x.Keyword.Equals("rainbow")), Is.Not.Null);
+            Assert.That(result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("rainbow")), Is.Not.Null);
         }
 
         [Test]
@@ -121,9 +123,9 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Exits[0].Flags.IsSet(ExitFlags.IsDoor), Is.True);
-            Assert.That(result.Exits[0].Flags.IsSet(ExitFlags.Locked), Is.True);
-            Assert.That(result.Exits[0].Flags.IsSet(ExitFlags.Hidden), Is.False);
+            Assert.That(result.Exits.ToList()[0].Flags.IsSet(ExitFlags.IsDoor), Is.True);
+            Assert.That(result.Exits.ToList()[0].Flags.IsSet(ExitFlags.Locked), Is.True);
+            Assert.That(result.Exits.ToList()[0].Flags.IsSet(ExitFlags.Hidden), Is.False);
         }
 
         [Test]
@@ -133,11 +135,11 @@ namespace SmaugCS.Tests.Repositories
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Resets.Count, Is.EqualTo(2));
-            Assert.That(result.Resets[0].Type, Is.EqualTo(ResetTypes.Door));
-            Assert.That(result.Resets[0].Extra, Is.EqualTo(15));
-            Assert.That(result.Resets[0].Args[0], Is.EqualTo(807));
-            Assert.That(result.Resets[0].Args[1], Is.EqualTo(2));
-            Assert.That(result.Resets[0].Args[2], Is.EqualTo(2));
+            Assert.That(result.Resets.ToList()[0].Type, Is.EqualTo(ResetTypes.Door));
+            Assert.That(result.Resets.ToList()[0].Extra, Is.EqualTo(15));
+            Assert.That(result.Resets.ToList()[0].Args.ToList()[0], Is.EqualTo(807));
+            Assert.That(result.Resets.ToList()[0].Args.ToList()[1], Is.EqualTo(2));
+            Assert.That(result.Resets.ToList()[0].Args.ToList()[2], Is.EqualTo(2));
         }
 
         /*[Test]

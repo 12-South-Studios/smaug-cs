@@ -753,111 +753,6 @@ namespace SmaugCS.Constants
                                                            new lck_app_type(-120)
                                                        };
 
-        public static List<string> p_blunt_messages = new List<string>()
-                                                          {
-                                                              "misses",
-                                                              "barely scuffs",
-                                                              "scuffs",
-                                                              "pelts",
-                                                              "bruises",
-                                                              "strikes",
-                                                              "thrashes",
-                                                              "batters",
-                                                              "flogs",
-                                                              "pummels",
-                                                              "smashes",
-                                                              "mauls",
-                                                              "bludgeons",
-                                                              "decimates",
-                                                              "_shatters_",
-                                                              "_devastates_",
-                                                              "_maims_",
-                                                              "_cripples_",
-                                                              "MUTILATES",
-                                                              "DISFIGURES",
-                                                              "MASSACRES",
-                                                              "PULVERIZES",
-                                                              "* OBLITERATES *",
-                                                              "*** ANNIHILATES ***"
-                                                          };
-
-        public static List<string> s_generic_messages = new List<string>()
-                                                            {
-                                                                "miss",
-                                                                "brush",
-                                                                "scratch",
-                                                                "graze",
-                                                                "nick",
-                                                                "jolt",
-                                                                "wound",
-                                                                "injure",
-                                                                "hit",
-                                                                "jar",
-                                                                "thrash",
-                                                                "maul",
-                                                                "decimate",
-                                                                "_traumatize_",
-                                                                "_devastate_",
-                                                                "_maim_",
-                                                                "_demolish_",
-                                                                "MUTILATE",
-                                                                "MASSACRE",
-                                                                "PULVERIZE",
-                                                                "DESTROY",
-                                                                "* OBLITERATE *",
-                                                                "*** ANNIHILATE ***",
-                                                                "**** SMITE ****"
-                                                            };
-
-        public static List<string> p_generic_messages = new List<string>()
-                                                            {
-                                                                "misses",
-                                                                "brushes",
-                                                                "scratches",
-                                                                "grazes",
-                                                                "nicks",
-                                                                "jolts",
-                                                                "wounds",
-                                                                "injures",
-                                                                "hits",
-                                                                "jars",
-                                                                "thrashes",
-                                                                "mauls",
-                                                                "decimates",
-                                                                "_traumatizes_",
-                                                                "_devastates_",
-                                                                "_maims_",
-                                                                "_demolishes_",
-                                                                "MUTILATES",
-                                                                "MASSACRES",
-                                                                "PULVERIZES",
-                                                                "DESTROYS",
-                                                                "* OBLITERATES *",
-                                                                "*** ANNIHILATES ***",
-                                                                "**** SMITES ****"
-                                                            };
-
-        public static IEnumerable<string> AttackTable = new List<string>()
-        {
-            "hit",
-            "slice",
-            "stab",
-            "slash",
-            "whip",
-            "claw",
-            "blast",
-            "pound",
-            "crush",
-            "grep",
-            "bite",
-            "pierce",
-            "suction",
-            "bolt",
-            "arrow",
-            "dart",
-            "stone",
-            "pea"
-        };
 
         public static IEnumerable<string> s_message_table(string type)
         {
@@ -876,7 +771,7 @@ namespace SmaugCS.Constants
                 case "suction":
                     return LookupManager.Instance.GetLookups("SlashBluntMessages");
                 default:
-                    return s_generic_messages;
+                    return LookupManager.Instance.GetLookups("SlashGenericMessages");
             }
         }
 
@@ -895,9 +790,9 @@ namespace SmaugCS.Constants
                 case "pound":
                 case "crush":
                 case "suction":
-                    return p_blunt_messages;
+                    return LookupManager.Instance.GetLookups("PierceBluntMessages");
                 default:
-                    return p_generic_messages;
+                    return LookupManager.Instance.GetLookups("PierceGenericMessages");
             }
         }
 

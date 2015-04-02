@@ -5,6 +5,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands
 {
@@ -14,7 +15,7 @@ namespace SmaugCS.Commands
         {
            ch.SetColor(ATTypes.AT_PLAIN);
 
-            if (Helpers.CheckFunctions.CheckIfEmptyString(ch, argument,
+            if (CheckFunctions.CheckIfEmptyString(ch, argument,
                 "Usage:  'typo <message>'  (your location is automatically recorded)"))
             {
                 if (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Ascendant))

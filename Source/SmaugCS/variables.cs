@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
 {
@@ -174,7 +175,7 @@ namespace SmaugCS
                     case 'T':
                         vd.Tag = proxy.ReadString("~");
                         vd.Timer = proxy.ReadNumber();
-                        vd.Type = Realm.Library.Common.EnumerationExtensions.GetEnum<VariableTypes>(proxy.ReadNumber());
+                        vd.Type = EnumerationExtensions.GetEnum<VariableTypes>(proxy.ReadNumber());
                         break;
                     case 'V':
                         vd.vnum = proxy.ReadNumber();

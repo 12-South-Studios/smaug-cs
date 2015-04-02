@@ -161,6 +161,7 @@
     <Compile Include="TeleportData.cs" />
     <Compile Include="Templates\MobTemplate.cs" />
     <Compile Include="Templates\ObjectTemplate.cs" />
+    <Compile Include="Templates\ObjectTemplateValueFunctions.cs" />
     <Compile Include="Templates\RoomTemplate.cs" />
     <Compile Include="Templates\Template.cs" />
     <Compile Include="TimeInfoData.cs" />

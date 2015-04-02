@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
@@ -13,7 +14,7 @@ namespace SmaugCS.Commands.Objects
 {
     public static class Brandish
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_brandish(CharacterInstance ch, string argument)
         {
             var obj = ch.GetEquippedItem(WearLocations.Hold);
@@ -21,15 +22,15 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType != ItemTypes.Staff, "You can brandish only with a staff."))
                 return;
 
-            if (obj.Value[3] <= 0)
+            if (obj.Value.ToList()[3] <= 0)
                 throw new InvalidDataException(string.Format("Object {0} has no skill ID assigned to Value[3]", obj.ID));
 
             Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
 
-            if (obj.Value[2] > 0)
+            if (obj.Value.ToList()[2] > 0)
                 BrandishStaff(ch, obj);
 
-            if (--obj.Value[2] <= 0)
+            if (--obj.Value.ToList()[2] <= 0)
             {
                 comm.act(ATTypes.AT_MAGIC, "$p blazes bright and vanishes from $n's hands!", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_MAGIC, "$p blazes bright and is gone!", ch, obj, null, ToTypes.Character);
@@ -55,7 +56,7 @@ namespace SmaugCS.Commands.Objects
                         continue;
                 }
   
-                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
+                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 switch (skill.Target)
                 {
                     case TargetTypes.Ignore:
@@ -77,7 +78,7 @@ namespace SmaugCS.Commands.Objects
                             skill.Target, skill.ID, obj.ID));
                 }
 
-                var retcode = ch.ObjectCastSpell((int)skill.ID, obj.Value[0], vch);
+                var retcode = ch.ObjectCastSpell((int)skill.ID, obj.Value.ToList()[0], vch);
                 if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.BothDied)
                     throw new InvalidDataException(string.Format("Character {0} died using Skill {1} from Object {2}",
                         ch.ID, skill.ID, obj.ID));

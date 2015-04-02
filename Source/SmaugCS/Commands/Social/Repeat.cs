@@ -26,11 +26,11 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (CheckFunctions.CheckIfEmptyString(ch, ((PlayerInstance)ch).PlayerData.TellHistory[tellIndex],
+            if (CheckFunctions.CheckIfEmptyString(ch, ((PlayerInstance)ch).PlayerData.TellHistory.ToList()[tellIndex],
                 "No one like that has sent you a tell.")) return;
 
            ch.SetColor(ATTypes.AT_TELL);
-           ch.SendTo(((PlayerInstance)ch).PlayerData.TellHistory[tellIndex]);
+           ch.SendTo(((PlayerInstance)ch).PlayerData.TellHistory.ToList()[tellIndex]);
         }
     }
 }

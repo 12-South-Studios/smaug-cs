@@ -19,6 +19,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
@@ -86,7 +87,7 @@ namespace SmaugCS.Tests.Repositories
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(mockLogger.Object, string.Empty);
+            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object, string.Empty);
             LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object);
             DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
 

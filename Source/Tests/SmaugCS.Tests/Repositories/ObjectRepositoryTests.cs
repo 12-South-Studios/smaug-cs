@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,12 +9,12 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
-using Realm.Library.SmallDb;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Templates;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
@@ -62,7 +61,7 @@ namespace SmaugCS.Tests.Repositories
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(mockLogger.Object, string.Empty);
+            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object, string.Empty);
             LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object);
 
             var mockLogManager = new Mock<ILogManager>();
@@ -96,7 +95,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Flags, Is.EqualTo("magic antigood antievil"));
             Assert.That(result.WearFlags, Is.EqualTo("take wield"));
             Assert.That(result.Spells.Count, Is.GreaterThanOrEqualTo(1));
-            Assert.That(result.Spells[0], Is.EqualTo("armor"));
+            Assert.That(result.Spells.ToList()[0], Is.EqualTo("armor"));
             Assert.That(result.Weight, Is.EqualTo(1));
             Assert.That(result.Cost, Is.EqualTo(2500));
             Assert.That(result.Rent, Is.EqualTo(250));
@@ -124,11 +123,11 @@ namespace SmaugCS.Tests.Repositories
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Affects.Count, Is.GreaterThanOrEqualTo(1));
-            Assert.That(result.Affects[0].Type, Is.EqualTo(AffectedByTypes.None));
-            Assert.That(result.Affects[0].Duration, Is.EqualTo(-1));
-            Assert.That(result.Affects[0].Modifier, Is.EqualTo(60));
-            Assert.That(result.Affects[0].Location, Is.EqualTo(ApplyTypes.Hit));
-            Assert.That(result.Affects[0].Flags, Is.EqualTo(32));
+            Assert.That(result.Affects.ToList()[0].Type, Is.EqualTo(AffectedByTypes.None));
+            Assert.That(result.Affects.ToList()[0].Duration, Is.EqualTo(-1));
+            Assert.That(result.Affects.ToList()[0].Modifier, Is.EqualTo(60));
+            Assert.That(result.Affects.ToList()[0].Location, Is.EqualTo(ApplyTypes.Hit));
+            Assert.That(result.Affects.ToList()[0].Flags, Is.EqualTo(32));
         }
 
         [Test]
@@ -138,8 +137,8 @@ namespace SmaugCS.Tests.Repositories
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.ExtraDescriptions.Count, Is.GreaterThanOrEqualTo(1));
-            Assert.That(result.ExtraDescriptions.Find(x => x.Keyword.Equals("wand")), Is.Not.Null);
-            Assert.That(result.ExtraDescriptions.Find(x => x.Keyword.Equals("pearl")), Is.Not.Null);
+            Assert.That(result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("wand")), Is.Not.Null);
+            Assert.That(result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("pearl")), Is.Not.Null);
         }
 
         [Test]

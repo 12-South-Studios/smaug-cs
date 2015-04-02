@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
@@ -52,7 +53,7 @@ namespace SmaugCS.Spells
 
         private static void CheckDamageArmor(ObjectInstance obj, CharacterInstance victim)
         {
-            if (obj.Value[0] <= 0) return;
+            if (obj.Value.ToList()[0] <= 0) return;
             
             obj.Split();
             comm.act(ATTypes.AT_DAMAGE, "$p is pitted and etched!", victim, obj, null, ToTypes.Character);
@@ -60,7 +61,7 @@ namespace SmaugCS.Spells
             var wearLoc = obj.WearLocation;
             if (wearLoc != WearLocations.None)
                 victim.ArmorClass += obj.ApplyArmorClass;
-            obj.Value[0] -= 1;
+            obj.Value.ToList()[0] -= 1;
             obj.Cost = 0;
             if (wearLoc != WearLocations.None)
                 victim.ArmorClass -= obj.ApplyArmorClass;

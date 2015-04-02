@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using SmaugCS.Commands;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -24,7 +25,7 @@ namespace SmaugCS.Extensions.Mobile
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;
 
-            Commands.Cast.do_cast(ch,
+            Cast.do_cast(ch,
                                   string.Format("summon {0}{1}", victim.IsNpc() ? string.Empty : "0.",
                                                 ch.CurrentHating.Name));
         }

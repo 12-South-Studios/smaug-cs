@@ -3,6 +3,7 @@ using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
+using NumberExtensions = SmaugCS.Common.NumberExtensions;
 
 namespace SmaugCS.Extensions.Objects
 {
@@ -14,7 +15,7 @@ namespace SmaugCS.Extensions.Objects
                 return new List<WearLocations>();
 
             var words = template.WearFlags.Split(new[] {' '});
-            return words.Select(EnumerationExtensions.GetEnum<WearLocations>).ToList();
+            return Enumerable.ToList(words.Select(EnumerationExtensions.GetEnum<WearLocations>));
         }
 
         public static void SetExtraFlags(this ObjectTemplate template, string extraFlags)
@@ -22,7 +23,7 @@ namespace SmaugCS.Extensions.Objects
             var words = template.Flags.Split(new[] {' '});
             foreach (var word in words)
             {
-                Common.NumberExtensions.SetBit(template.ExtraFlags, EnumerationExtensions.GetEnum<ItemExtraFlags>(word));
+                NumberExtensions.SetBit(template.ExtraFlags, EnumerationExtensions.GetEnum<ItemExtraFlags>(word));
             }
         }
     }

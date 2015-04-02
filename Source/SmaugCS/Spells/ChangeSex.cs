@@ -1,11 +1,11 @@
-﻿using SmaugCS.Constants;
+﻿using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
-using SmaugCS.Common;
 
 namespace SmaugCS.Spells
 {

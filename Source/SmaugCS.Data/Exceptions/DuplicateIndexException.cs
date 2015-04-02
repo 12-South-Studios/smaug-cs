@@ -15,7 +15,7 @@ namespace SmaugCS.Data.Exceptions
         public DuplicateIndexException(string message, params object[] args)
             : base(string.Format(message, args)) { }
 
-        public DuplicateIndexException(SerializationInfo info, StreamingContext context) 
+        protected DuplicateIndexException(SerializationInfo info, StreamingContext context) 
             : base(info, context) { }
 
         public DuplicateIndexException(string message, Exception inner) : base(message, inner) { }

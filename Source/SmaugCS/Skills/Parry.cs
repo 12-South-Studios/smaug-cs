@@ -33,7 +33,7 @@ namespace SmaugCS.Skills
             {
                 if (victim.GetEquippedItem(WearLocations.Wield) == null)
                     return false;
-                chances = Macros.LEARNED(victim, (int) skill.ID)/
+                chances = (int)Macros.LEARNED(victim, (int) skill.ID)/
                           (gameManager ?? GameManager.Instance).SystemData.ParryMod;
             }
 

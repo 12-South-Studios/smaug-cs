@@ -7,10 +7,10 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Commands.Combat
 {
@@ -53,7 +53,7 @@ namespace SmaugCS.Commands.Combat
                 "That character cannot be dragged right now."))
                 return;
 
-            var exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
+            var exitDir = EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
             var exit = ch.CurrentRoom.GetExit(exitDir);
             if (CheckFunctions.CheckIfNullObject(ch, exit, "There's no exit in that direction.")) return;
             if (CheckFunctions.CheckIfTrue(ch, !IsPassable(exit, victim), "There's no exit in that direction.")) return;

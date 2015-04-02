@@ -13,6 +13,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
@@ -46,7 +47,7 @@ namespace SmaugCS.Tests.Repositories
         [SetUp]
         public void OnSetup()
         {
-            LuaManager luaMgr = new LuaManager(new Mock<ILogWrapper>().Object, string.Empty);
+            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, new Mock<ILogWrapper>().Object, string.Empty);
 
             DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
 

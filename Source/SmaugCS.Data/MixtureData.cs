@@ -1,10 +1,17 @@
 ﻿
+using System.Collections.Generic;
+
 namespace SmaugCS.Data
 {
     public class MixtureData
     {
         public string Name { get; set; }
-        public int[] Data { get; set; }
+        public IEnumerable<int> Data { get; private set; }
         public bool Object { get; set; }
+
+        public MixtureData()
+        {
+            Data = new List<int>();
+        }
     }
 }

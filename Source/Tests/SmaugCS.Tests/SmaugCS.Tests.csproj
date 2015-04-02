@@ -141,6 +141,14 @@
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
       <Name>SmaugCS.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SmaugCS.Lua\SmaugCS.Lua.csproj">
+      <Project>{55dcebc5-8647-40f3-9fea-2886a9fa7396}</Project>
+      <Name>SmaugCS.Lua</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SmaugCS.Time\SmaugCS.Time.csproj">
+      <Project>{f68d623f-3c9d-4dee-9c5c-d9673e3aba9f}</Project>
+      <Name>SmaugCS.Time</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SmaugCS\SmaugCS.csproj">
       <Project>{30198591-fff9-488c-ab88-2b02d58900d4}</Project>
       <Name>SmaugCS</Name>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -46,7 +47,7 @@ namespace SmaugCS.Skills
             if (skill.MinimumMana > 0)
             {
                 mana = ch.IsNpc() ? 0 : skill.MinimumMana
-                        .GetHighestOfTwoNumbers(100 / (2 + ch.Level - skill.RaceLevel[(int)ch.CurrentRace]));
+                        .GetHighestOfTwoNumbers(100 / (2 + ch.Level - skill.RaceLevel.ToList()[(int)ch.CurrentRace]));
 
                 if (CheckFunctions.CheckIf(ch, HelperFunctions.HasSufficientBloodPower,
                     "You don't have enough blood power.",

@@ -12,10 +12,17 @@ namespace SmaugCS.Data.Instances
     public class ObjectInstance : Instance, IHasExtraFlags, IHasExtraDescriptions
     {
         public new string Name { get; set; }
-        public List<ObjectInstance> Contents { get; set; }
+        public ICollection<ObjectInstance> Contents { get; private set; }
         public ObjectInstance InObject { get; set; }
-        public CharacterInstance CarriedBy { get; set; }
-        public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
+
+        private CharacterInstance _carriedBy;
+        public CharacterInstance CarriedBy
+        {
+            get { return InObject != null ? InObject.CarriedBy : _carriedBy; }
+            set { _carriedBy = value; }
+        }
+
+        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; private set; }
         public RoomTemplate InRoom { get; set; }
         public string Action { get; set; }
         public string Owner { get; set; }
@@ -29,7 +36,7 @@ namespace SmaugCS.Data.Instances
         public WearLocations WearLocation { get; set; }
         public int Weight { get; set; }
         public int Cost { get; set; }
-        public int[] Value { get; set; }
+        public IEnumerable<int> Value { get; set; }
         public dynamic Values { get; set; }
         public int Count { get; set; }
 
@@ -45,6 +52,7 @@ namespace SmaugCS.Data.Instances
 
             PlayerEq = new ObjectInstance[maxWear, maxLayers];
             MobEq = new ObjectInstance[maxWear, maxLayers];
+            Value = new List<int>();
         }
 
         public ObjectTemplate ObjectIndex
@@ -73,20 +81,18 @@ namespace SmaugCS.Data.Instances
             }
         }
 
-        public int GetObjectNumber()
+        public int ObjectNumber
         {
-            return Count;
+            get { return Count; }
         }
 
-        public CharacterInstance GetCarriedBy()
+        public int HitRoll
         {
-            return InObject != null ? InObject.CarriedBy : CarriedBy;
-        }
-
-        public int GetHitRoll()
-        {
-            return ObjectIndex.Affects.Where(paf => paf.Location == ApplyTypes.HitRoll).Sum(paf => paf.Modifier) +
-                   Affects.Where(paf => paf.Location == ApplyTypes.HitRoll).Sum(paf => paf.Modifier);
+            get
+            {
+                return ObjectIndex.Affects.Where(paf => paf.Location == ApplyTypes.HitRoll).Sum(paf => paf.Modifier) +
+                       Affects.Where(paf => paf.Location == ApplyTypes.HitRoll).Sum(paf => paf.Modifier);
+            }
         }
 
         #region IHasExtraDescriptions Implementation

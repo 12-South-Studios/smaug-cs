@@ -2,10 +2,8 @@
 using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
@@ -28,14 +26,14 @@ namespace SmaugCS
                 var timer = ch.GetTimer(TimerTypes.PKilled);
                 if (ch.CanPKill() && timer == null)
                 {
-                    if (ch.Level - obj.Value[5] > 5 || obj.Value[5] - ch.Level > 5)
+                    if (ch.Level - obj.Value.ToList()[5] > 5 || obj.Value.ToList()[5] - ch.Level > 5)
                     {
                         ch.SendTo("\r\n&bA godly force freezes your outstretched hand.");
                         return;
                     }
 
                     obj.MagicFlags.RemoveBit(ItemMagicFlags.PKDisarmed);
-                    obj.Value[5] = 0;
+                    obj.Value.ToList()[5] = 0;
                 }
             }
             else
@@ -47,7 +45,7 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfTrue(ch, obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.CanTakePrototype(),
                 "A godly force prevents you from getting close to it.")) return;
             
-            if (ch.CarryNumber + obj.GetObjectNumber() > ch.CanCarryN())
+            if (ch.CarryNumber + obj.ObjectNumber > ch.CanCarryN())
             {
                 comm.act(ATTypes.AT_PLAIN, "$d: you can't carry that many items.", ch, null, obj.ShortDescription, ToTypes.Character);
                 return;
@@ -153,7 +151,7 @@ namespace SmaugCS
 
             if (container.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse)
                 && !ch.IsNpc() && container.Name.Contains(ch.Name))
-                container.Value[5]++;
+                container.Value.ToList()[5]++;
             obj.InObject.RemoveFrom(obj);
         }
 

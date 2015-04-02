@@ -1,4 +1,5 @@
-﻿using SmaugCS.Commands;
+﻿using System.Diagnostics.CodeAnalysis;
+using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -14,7 +15,7 @@ namespace SmaugCS.Spells
 {
     public static class SolarFlight
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_solar_flight(int sn, int level, CharacterInstance ch, object vo)
         {
             var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);

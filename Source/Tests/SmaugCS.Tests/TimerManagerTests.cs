@@ -2,8 +2,7 @@
 using Moq;
 using Ninject;
 using NUnit.Framework;
-using SmaugCS.Interfaces;
-using SmaugCS.Managers;
+using SmaugCS.Time;
 
 namespace SmaugCS.Tests
 {

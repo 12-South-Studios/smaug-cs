@@ -1,11 +1,10 @@
 ﻿using System.Linq;
+using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 
@@ -124,7 +123,7 @@ namespace SmaugCS.Extensions.Mobile
                 if (room.Area != ch.CurrentRoom.Area)
                     return;
 
-                var retcode = Commands.Movement.Move.move_char(ch, exit, 0);
+                var retcode = Move.move_char(ch, exit, 0);
                 if (ch.CharDied())
                     return;
                 if (retcode != ReturnTypes.None || ch.Act.IsSet(ActFlags.Sentinel) ||
@@ -181,7 +180,7 @@ namespace SmaugCS.Extensions.Mobile
                 }
 
                 if (found)
-                    Commands.Movement.Move.move_char(ch, exit, 0);
+                    Move.move_char(ch, exit, 0);
             }
         }
 

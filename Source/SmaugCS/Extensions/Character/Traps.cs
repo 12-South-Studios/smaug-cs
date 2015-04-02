@@ -7,6 +7,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -16,13 +17,13 @@ namespace SmaugCS.Extensions.Character
 
         public static ReturnTypes SpringTheTrap(this CharacterInstance ch, ObjectInstance obj)
         {
-            var level = obj.Value[2];
+            var level = obj.Value.ToList()[2];
             var txt = string.Empty;
             var trapType = TrapTypes.None;
             DescriptorAttribute attrib = null;
             try
             {
-                trapType = Realm.Library.Common.EnumerationExtensions.GetEnum<TrapTypes>(obj.Value[1]);
+                trapType = EnumerationExtensions.GetEnum<TrapTypes>(obj.Value.ToList()[1]);
                 attrib = trapType.GetAttribute<DescriptorAttribute>();
                 txt = attrib.Messages.FirstOrDefault();
             }
@@ -31,13 +32,13 @@ namespace SmaugCS.Extensions.Character
                 txt = TrapTypeLookupDefault;
             }
 
-            var dam = SmaugRandom.Between(obj.Value[2], obj.Value[2] * 2);
+            var dam = SmaugRandom.Between(obj.Value.ToList()[2], obj.Value.ToList()[2] * 2);
 
             comm.act(ATTypes.AT_HITME, string.Format("You are {0}!", txt), ch, null, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, string.Format("$n is {0}.", txt), ch, null, null, ToTypes.Room);
 
-            --obj.Value[0];
-            if (obj.Value[0] <= 0)
+            --obj.Value.ToList()[0];
+            if (obj.Value.ToList()[0] <= 0)
                 obj.Extract();
 
             var returnCode = ReturnTypes.None;
@@ -67,7 +68,7 @@ namespace SmaugCS.Extensions.Character
             var returnCode = ReturnTypes.None;
 
             foreach (var check in obj.Contents.Where(check => check.ItemType == ItemTypes.Trap
-                                                                         && check.Value[3].IsSet(flag)))
+                                                                         && check.Value.ToList()[3].IsSet(flag)))
             {
                 returnCode = ch.SpringTheTrap(check);
                 if (returnCode != ReturnTypes.None)
@@ -85,7 +86,7 @@ namespace SmaugCS.Extensions.Character
             var returnCode = ReturnTypes.None;
 
             foreach (var check in ch.CurrentRoom.Contents.Where(check => check.ItemType == ItemTypes.Trap
-                                                                         && check.Value[3].IsSet(flag)))
+                                                                         && check.Value.ToList()[3].IsSet(flag)))
             {
                 returnCode = ch.SpringTheTrap(check);
                 if (returnCode != ReturnTypes.None)

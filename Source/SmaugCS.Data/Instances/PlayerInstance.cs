@@ -15,7 +15,7 @@ namespace SmaugCS.Data.Instances
         public DateTime LoggedOn { get { return Descriptor.User.ConnectedOn; } }
         public int TotalPlayedTime { get; set; }
         public DateTime save_time { get; set; }
-        public Dictionary<ATTypes, char> Colors { get; set; }
+        public Dictionary<ATTypes, char> Colors { get; private set; }
         public CharacterInstance ReplyTo { get; set; }
         public CharacterInstance RetellTo { get; set; }
 

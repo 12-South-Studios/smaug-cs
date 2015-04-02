@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
@@ -11,10 +12,10 @@ namespace SmaugCS.Commands
     {
         public static void do_apply(CharacterInstance ch, string argument)
         {
-            var firstArg = Realm.Library.Common.StringExtensions.FirstWord(argument);
+            var firstArg = StringExtensions.FirstWord(argument);
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Apply what?")) return;
 
-            var secondArg = Realm.Library.Common.StringExtensions.SecondWord(argument);
+            var secondArg = StringExtensions.SecondWord(argument);
 
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You're too busy fighting...")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;

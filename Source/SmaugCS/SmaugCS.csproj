@@ -83,7 +83,10 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Libraries\log4net.dll</HintPath>
@@ -123,6 +126,7 @@
       <HintPath>..\..\Libraries\Realm.Library.SmallDb.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -166,9 +170,19 @@
     <Compile Include="Extensions\Character\Traps.cs" />
     <Compile Include="Extensions\Player\PlayerInstanceExtensions.cs" />
     <Compile Include="Extensions\GameManagerExtensions.cs" />
-    <Compile Include="LuaHelpers\LuaMudProgFunctions.cs" />
     <Compile Include="Exceptions\ObjectNotCarriedByCharacterException.cs" />
     <Compile Include="Exceptions\ObjectAlreadyExtractedException.cs" />
+    <Compile Include="Interfaces\IDatabaseManager.cs" />
+    <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaInitializer.cs" />
+    <Compile Include="LuaHelpers\LuaLookupFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaManagerFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaMobFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaMudProgFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
+    <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
     <Compile Include="Repositories\TypeMapAttribute.cs" />
     <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
     <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
@@ -284,21 +298,9 @@
     <Compile Include="Lookup\CommandLookupTable.cs" />
     <Compile Include="Lookup\SkillLookupTable.cs" />
     <Compile Include="Lookup\SpellLookupTable.cs" />
-    <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaInitializer.cs" />
-    <Compile Include="LuaHelpers\LuaLookupFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaManagerFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaMobFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
     <Compile Include="Managers\CalendarManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Interfaces\ICalendarManager.cs" />
-    <Compile Include="Interfaces\IDatabaseManager.cs" />
-    <Compile Include="Interfaces\ITimerManager.cs" />
-    <Compile Include="Managers\LuaManager.cs" />
     <Compile Include="Repositories\RepositoryTypes.cs" />
     <Compile Include="MudProgs\MobileProgs\DeathProg.cs" />
     <Compile Include="MudProgs\MobileProgs\FightProg.cs" />
@@ -715,7 +717,6 @@
     <Compile Include="Loaders\Incomplete\WatchListLoader.cs" />
     <Compile Include="Managers\ChatManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
-    <Compile Include="Managers\TimerManager.cs" />
     <Compile Include="Spells\Acid\AcetumPrimus.cs" />
     <Compile Include="Spells\Acid\AcidBlast.cs" />
     <Compile Include="Spells\Acid\AcidBreath.cs" />
@@ -894,6 +895,7 @@
     </None>
     <None Include="Documentation\license.diku" />
     <None Include="Documentation\license.merc" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CCode\Header\bet.h" />
@@ -1014,9 +1016,17 @@
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
       <Name>SmaugCS.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj">
+      <Project>{55dcebc5-8647-40f3-9fea-2886a9fa7396}</Project>
+      <Name>SmaugCS.Lua</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.News\SmaugCS.News.csproj">
       <Project>{6f43c8d6-b168-4e77-b12a-ebb49dce8019}</Project>
       <Name>SmaugCS.News</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Time\SmaugCS.Time.csproj">
+      <Project>{f68d623f-3c9d-4dee-9c5c-d9673e3aba9f}</Project>
+      <Name>SmaugCS.Time</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj">
       <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>

@@ -11,16 +11,13 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecThief(MobileInstance ch)
         {
-            if (ch.CurrentPosition != PositionTypes.Standing)
-                return false;
+            if (ch.CurrentPosition != PositionTypes.Standing) return false;
 
-            foreach (
-                var victim in
-                    ch.CurrentRoom.Persons.Where(victim => victim != ch)
-                      .Where(
-                          victim =>
-                          !victim.IsNpc() && victim.Level < LevelConstants.ImmortalLevel && SmaugRandom.Bits(2) == 0 &&
-                          ch.CanSee(victim)))
+            foreach (var victim in ch.CurrentRoom.Persons.Where(victim => victim != ch)
+                      .Where(victim => !victim.IsNpc() 
+                          && victim.Level < LevelConstants.ImmortalLevel 
+                          && SmaugRandom.Bits(2) == 0 
+                          && ch.CanSee(victim)))
             {
                 if (victim.IsAwake() && SmaugRandom.Between(0, ch.Level) == 0)
                 {

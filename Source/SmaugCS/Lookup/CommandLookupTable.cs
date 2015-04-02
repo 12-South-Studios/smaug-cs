@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Commands.Social;
 using SmaugCS.Data;
-using Realm.Library.Common;
 using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Lookup

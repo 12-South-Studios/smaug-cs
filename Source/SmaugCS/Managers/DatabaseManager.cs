@@ -9,6 +9,7 @@ using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Repositories;
+using EnumerationExtensions = SmaugCS.Common.EnumerationExtensions;
 
 namespace SmaugCS.Managers
 {
@@ -23,7 +24,7 @@ namespace SmaugCS.Managers
             _repositories = new Dictionary<RepositoryTypes, object>();
             foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
-                var attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
+                var attrib = EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
                 if (attrib == null || attrib.Repository == null)
                     continue;
 
@@ -71,7 +72,7 @@ namespace SmaugCS.Managers
         {
             foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
-                var attrib = Common.EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
+                var attrib = EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
                 if (attrib == null || attrib.Object == null)
                     continue;
                 if (attrib.Object == objectType)

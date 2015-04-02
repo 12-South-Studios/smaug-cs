@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
@@ -22,7 +22,6 @@ using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -295,7 +294,7 @@ namespace SmaugCS.Extensions.Character
             return CanUseSkill(ch, percent, skill);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static bool CanUseSkill(this CharacterInstance ch, int percent, SkillData skill)
         {
             var check = false;
@@ -464,7 +463,7 @@ namespace SmaugCS.Extensions.Character
                 return false;
 
             //// Can see lights in the dark
-            if (obj.ItemType == ItemTypes.Light && obj.Value[2] != 0)
+            if (obj.ItemType == ItemTypes.Light && obj.Value.ToList()[2] != 0)
                 return true;
 
             if (ch.CurrentRoom.IsDark())
@@ -591,8 +590,7 @@ namespace SmaugCS.Extensions.Character
         public static bool CouldDualWield(this CharacterInstance ch)
         {
             return ch.IsNpc() ||
-                   ((PlayerInstance) ch).PlayerData.Learned[
-                       DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID] > 0;
+                   ((PlayerInstance)ch).PlayerData.Learned.ToList().FirstOrDefault(x => x == DatabaseManager.Instance.GetEntity<SkillData>("dual wield").ID) > 0;
         }
 
         public static bool CanDualWield(this CharacterInstance ch)
@@ -624,10 +622,10 @@ namespace SmaugCS.Extensions.Character
             foreach (var obj in ch.Carrying)
             {
                 if (obj.ObjectIndex.Vnum == key ||
-                    (obj.ItemType == ItemTypes.Key && obj.Value[0] == key))
+                    (obj.ItemType == ItemTypes.Key && obj.Value.ToList()[0] == key))
                     return obj;
                 if (obj.ItemType != ItemTypes.KeyRing) continue;
-                if (obj.Contents.Any(obj2 => obj.ObjectIndex.Vnum == key || obj2.Value[0] == key))
+                if (obj.Contents.Any(obj2 => obj.ObjectIndex.Vnum == key || obj2.Value.ToList()[0] == key))
                     return obj;
             }
             return null;
@@ -823,10 +821,10 @@ namespace SmaugCS.Extensions.Character
             return (ch.ExtraFlags == 0 || ch.ExtraFlags.IsSet(part));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static bool IsAffectedBy(this CharacterInstance ch, int sn)
         {
-            return ch.Affects.Exists(x => x.SkillNumber == sn);
+            return ch.Affects.ToList().Exists(x => x.SkillNumber == sn);
         }
 
         public static bool IsNotAuthorized(this CharacterInstance ch)
@@ -929,9 +927,9 @@ namespace SmaugCS.Extensions.Character
 
             var skill = DatabaseManager.Instance.SKILLS.Get(sn);
             if (add)
-                ((PlayerInstance)ch).PlayerData.Learned[sn] += mod;
+                ((PlayerInstance)ch).PlayerData.Learned.ToList()[sn] += mod;
             else
-                ((PlayerInstance)ch).PlayerData.Learned[sn] = (((PlayerInstance)ch).PlayerData.Learned[sn] + mod).GetNumberThatIsBetween(0, skill.GetMasteryLevel((PlayerInstance)ch));
+                ((PlayerInstance)ch).PlayerData.Learned.ToList()[sn] = (((PlayerInstance)ch).PlayerData.Learned.ToList()[sn] + mod).GetNumberThatIsBetween(0, skill.GetMasteryLevel((PlayerInstance)ch));
         }
 
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, WearLocations location)
@@ -1333,7 +1331,7 @@ namespace SmaugCS.Extensions.Character
 
             ch.ArmorClass -= obj.ApplyArmorClass;
             obj.WearLocation = wearLoc;
-            ch.CarryNumber -= obj.GetObjectNumber();
+            ch.CarryNumber -= obj.ObjectNumber;
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight -= obj.GetWeight();
 
@@ -1351,7 +1349,7 @@ namespace SmaugCS.Extensions.Character
             if (obj.WearLocation == WearLocations.None)
                 return;
 
-            ch.CarryNumber += obj.GetObjectNumber();
+            ch.CarryNumber += obj.ObjectNumber;
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                 ch.CarryWeight += obj.GetWeight();
 
@@ -1372,7 +1370,7 @@ namespace SmaugCS.Extensions.Character
                 return;
 
             if (obj.ItemType == ItemTypes.Light
-                && obj.Value[2] != 0
+                && obj.Value.ToList()[2] != 0
                 && ch.CurrentRoom != null
                 && ch.CurrentRoom.Light > 0)
                 --ch.CurrentRoom.Light;

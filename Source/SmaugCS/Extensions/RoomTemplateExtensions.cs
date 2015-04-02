@@ -5,7 +5,6 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
@@ -32,7 +31,7 @@ namespace SmaugCS.Extensions
             var obj = ch.GetEquippedItem(WearLocations.Light);
             if (obj != null
                 && obj.ItemType == ItemTypes.Light
-                && obj.Value[2] != 0
+                && obj.Value.ToList()[2] != 0
                 && room.Light > 0)
                 --room.Light;
 
@@ -81,7 +80,7 @@ namespace SmaugCS.Extensions
 
             var light = ch.GetEquippedItem(WearLocations.Light);
             if (light != null && light.ItemType == ItemTypes.Light
-                && light.Value[2] > 0)
+                && light.Value.ToList()[2] > 0)
                 localRoom.Light++;
 
             foreach (var affect in localRoom.Affects

@@ -6,7 +6,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 
@@ -37,12 +36,12 @@ namespace SmaugCS.Extensions.Player
             comm.act(ATTypes.AT_ACTION, "$n has returned from the world.", ch, null, null, ToTypes.Room);
         }
 
-        public static int GetLearned(this PlayerInstance ch, int skillId)
+        public static long GetLearned(this PlayerInstance ch, long skillId)
         {
             if (ch.PlayerData == null) return 0;
             if (ch.PlayerData.Learned == null) return 0;
             if (!ch.PlayerData.Learned.Contains(skillId)) return 0;
-            return ch.PlayerData.Learned[skillId];
+            return ch.PlayerData.Learned.ToList().FirstOrDefault(x => x == skillId);
         }
 
         public static int CalculateAge(this PlayerInstance ch)

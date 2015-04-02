@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using Realm.Library.Common;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS.Lookup
 {
@@ -16,7 +17,7 @@ namespace SmaugCS.Lookup
                     return ReturnTypes.None;
                 }})
         {
-            LookupTable.Add("spell_smaug", new SpellFunction {Value = Spells.Smaug.Smaug.spell_smaug});
+            LookupTable.Add("spell_smaug", new SpellFunction {Value = Smaug.spell_smaug});
 
             // TODO Add spells here
         }

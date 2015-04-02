@@ -5,7 +5,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
@@ -17,18 +16,15 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecWanderer(CharacterInstance ch)
         {
-            if (!ch.IsAwake())
-                return false;
+            if (!ch.IsAwake()) return false;
 
             var thrown = false;
             var noExit = true;
 
             var exit = ch.CurrentRoom.Exits.First();
-            if (exit != null)
-                noExit = false;
+            if (exit != null) noExit = false;
 
-            if (SmaugRandom.D100() <= 50)
-                return false;
+            if (SmaugRandom.D100() <= 50) return false;
 
             foreach (var obj in ch.CurrentRoom.Contents)
             {

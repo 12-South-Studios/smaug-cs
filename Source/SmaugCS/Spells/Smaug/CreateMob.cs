@@ -4,11 +4,11 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -49,7 +49,7 @@ namespace SmaugCS.Spells.Smaug
 
             var af = new AffectData
             {
-                Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID),
+                Type = EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID),
                 Duration = (SmaugRandom.Fuzzy((level + 1)/3) + 1)*
                            GameConstants.GetConstant<int>("AffectDurationConversionValue")
             };

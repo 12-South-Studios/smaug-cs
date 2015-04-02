@@ -3,12 +3,11 @@ using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Commands.Combat
 {
@@ -48,7 +47,7 @@ namespace SmaugCS.Commands.Combat
 
             victim.CurrentPosition = PositionTypes.Shove;
             
-            var exitDir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
+            var exitDir = EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
             var exit = ch.CurrentRoom.GetExit(exitDir);
             if (CheckFunctions.CheckIfNullObject(ch, exit, "There's no exit in that direction."))
             {

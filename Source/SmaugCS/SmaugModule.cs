@@ -14,6 +14,7 @@ using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 using SmaugCS.Repositories;
 using SmaugCS.SpecFuns;
+using SmaugCS.Time;
 
 namespace SmaugCS
 {
@@ -24,10 +25,6 @@ namespace SmaugCS
             Kernel.Bind<ISmallDb>().To<SmallDb>();
 
             Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
-
-            Kernel.Bind<ILuaManager>().To<LuaManager>().InSingletonScope()
-                .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
-                .WithConstructorArgument("path", GameConstants.DataPath);
 
             Kernel.Bind<ITcpUserRepository>().To<TcpUserRepository>();
             Kernel.Bind<ITcpServer>().To<TcpServer>().InSingletonScope()

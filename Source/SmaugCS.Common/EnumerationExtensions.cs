@@ -28,5 +28,12 @@ namespace SmaugCS.Common
         {
             return value.HasFlag(bit);
         }
+
+        public static T GetEnum<T>(long value)
+        {
+            if (Enum.IsDefined(typeof(T), value))
+                return (T)Enum.ToObject(typeof(T), value);
+            throw new ArgumentException();
+        }
     }
 }

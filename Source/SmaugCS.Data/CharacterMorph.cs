@@ -20,7 +20,7 @@ namespace SmaugCS.Data
         public int suscept { get; set; }
         public int timer { get; set; }
 
-        public Dictionary<StatisticTypes, int> Statistics { get; set; }
+        public Dictionary<StatisticTypes, int> Statistics { get; private set; }
         public SavingThrowData SavingThrows { get; set; }
         
         public CharacterMorph()

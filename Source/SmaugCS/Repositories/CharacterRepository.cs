@@ -8,6 +8,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Repositories
 {
@@ -50,7 +51,7 @@ namespace SmaugCS.Repositories
                 ResetNum = -1,
                 AffectedBy = mobParent.GetAffected(),
                 CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment),
-                Gender = Realm.Library.Common.EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
+                Gender = EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
             };
 
             if (isMobile)
@@ -100,8 +101,8 @@ namespace SmaugCS.Repositories
             mob.PermanentConstitution = mobParent.GetStatistic(StatisticTypes.PermanentConstitution);
             mob.PermanentCharisma = mobParent.GetStatistic(StatisticTypes.PermanentCharisma);
             mob.PermanentLuck = mobParent.GetStatistic(StatisticTypes.PermanentLuck);
-            mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
-            mob.CurrentClass = Realm.Library.Common.EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
+            mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
+            mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;
             mob.SavingThrows = new SavingThrowData(mobParent.SavingThrows);
             mob.Height = mobParent.Height;
@@ -125,7 +126,7 @@ namespace SmaugCS.Repositories
 
         public CharacterInstance Clone(CharacterInstance source, params object[] args)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

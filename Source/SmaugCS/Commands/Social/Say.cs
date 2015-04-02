@@ -8,7 +8,6 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.MudProgs.MobileProgs;
 
-
 namespace SmaugCS.Commands.Social
 {
     public static class Say

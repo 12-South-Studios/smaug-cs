@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Managers;
+using SmaugCS.Lua;
 
 namespace SmaugCS.Loaders
 {
@@ -19,7 +20,7 @@ namespace SmaugCS.Loaders
 
         public override void Save()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Load()

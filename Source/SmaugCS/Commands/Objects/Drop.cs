@@ -4,7 +4,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
@@ -74,7 +73,7 @@ namespace SmaugCS.Commands.Objects
                 obj = ch.CurrentRoom.Contents.FirstOrDefault(x => x.ID == VnumConstants.OBJ_VNUM_MONEY_SOME);
                 if (obj != null)
                 {
-                    num += obj.Value[0];
+                    num += obj.Value.ToList()[0];
                     obj.Extract();
                 }
             }

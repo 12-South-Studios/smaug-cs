@@ -1,6 +1,5 @@
 ﻿using SmaugCS.Data;
 
-
 namespace SmaugCS.Loaders
 {
     // ReSharper disable InconsistentNaming
@@ -633,21 +632,21 @@ namespace SmaugCS.Loaders
                             || obj.Type == ItemTypes.Potion
                             || obj.Type == ItemTypes.Scroll)
                         {
-                            obj.Value[1] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
-                            obj.Value[2] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
-                            obj.Value[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[1] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[2] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
                             break;
                         }
                         if (obj.Type == ItemTypes.Staff
                             || obj.Type == ItemTypes.Wand)
                         {
-                            obj.Value[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
                             break;
                         }
                         if (obj.Type == ItemTypes.Salve)
                         {
-                            obj.Value[4] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
-                            obj.Value[5] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[4] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[5] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
                         }
                         break;
                     case "stats":
@@ -669,12 +668,12 @@ namespace SmaugCS.Loaders
                         break;
                     case "values":
                         words = proxy.ReadString().Split(new[] { ' ' });
-                        obj.Value[0] = words[0].ToInt32();
-                        obj.Value[1] = words[1].ToInt32();
-                        obj.Value[2] = words[2].ToInt32();
-                        obj.Value[3] = words[3].ToInt32();
-                        obj.Value[4] = words[4].ToInt32();
-                        obj.Value[5] = words[5].ToInt32();
+                        obj.Value.ToList()[0] = words[0].ToInt32();
+                        obj.Value.ToList()[1] = words[1].ToInt32();
+                        obj.Value.ToList()[2] = words[2].ToInt32();
+                        obj.Value.ToList()[3] = words[3].ToInt32();
+                        obj.Value.ToList()[4] = words[4].ToInt32();
+                        obj.Value.ToList()[5] = words[5].ToInt32();
                         break;
                     case "vnum":
                        // bool tmpBootDb = DatabaseManager.BootDb;

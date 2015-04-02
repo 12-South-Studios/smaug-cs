@@ -1,4 +1,5 @@
-﻿using SmaugCS.Data;
+﻿using System;
+using SmaugCS.Data;
 
 namespace SmaugCS.Loaders
 {
@@ -11,7 +12,7 @@ namespace SmaugCS.Loaders
 
         public override AreaData LoadArea(AreaData area)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

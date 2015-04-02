@@ -12,6 +12,7 @@ using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -321,7 +322,7 @@ namespace SmaugCS.Extensions.Character
             var min = WearLocations.About.GetMinimum();
             var max = WearLocations.WieldMissile.GetMaximum();
             var loc =
-                Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(SmaugRandom.Between(min, max));
+                EnumerationExtensions.GetEnum<WearLocations>(SmaugRandom.Between(min, max));
             return loc == WearLocations.None ? GetRandomWearLocation() : loc;
         }
 

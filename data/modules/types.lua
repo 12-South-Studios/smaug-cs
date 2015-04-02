@@ -1,21 +1,27 @@
 -- TYPES.LUA
 -- Imports all MUD types
--- Revised: 2013.11.25
+-- Revised: 2015.04.02
 -- Author: Jason Murdick
 
 -- Namespaces
 luanet.load_assembly("SmaugCS");
+luanet.load_assembly("SmaugCS.Auction");
 luanet.load_assembly("SmaugCS.Ban");
 luanet.load_assembly("SmaugCS.Board");
 luanet.load_assembly("SmaugCS.Common");
 luanet.load_assembly("SmaugCS.Communication");
+luanet.load_assembly("SmaugCS.Config");
 luanet.load_assembly("SmaugCS.Constants");
+luanet.load_assembly("SmaugCS.DAL");
 luanet.load_assembly("SmaugCS.Data");
 luanet.load_assembly("SmaugCS.Language");
 luanet.load_assembly("SmaugCS.Logging");
 luanet.load_assembly("SmaugCS.News");
 luanet.load_assembly("SmaugCS.Weather");
+luanet.load_assembly("Realm.Library.Ai");
 luanet.load_assembly("Realm.Library.Common");
+luanet.load_assembly("Realm.Library.Controls");
+luanet.load_assembly("Realm.Library.Database");
 luanet.load_assembly("Realm.Library.Lua");
 luanet.load_assembly("Realm.Library.NCalcExt");
 luanet.load_assembly("Realm.Library.Network");
@@ -24,7 +30,8 @@ luanet.load_assembly("Realm.Library.Patterns.Decorator");
 luanet.load_assembly("Realm.Library.Patterns.Factory");
 luanet.load_assembly("Realm.Library.Patterns.Repository");
 luanet.load_assembly("Realm.Library.Patterns.Singleton");
-luanet.load_assembly("SmallDBConnectivity");
+luanet.load_assembly("Realm.Library.SmallDb");
+luanet.load_assembly("Realm.Library.XML");
 
 -- Objects
 luanet.import_type("Realm.Library.Common.ICell");

@@ -4,6 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands
 {
@@ -12,7 +13,7 @@ namespace SmaugCS.Commands
         public static void do_rip(CharacterInstance ch, string argument)
         {
             var firstArg = argument.FirstWord();
-            if (Helpers.CheckFunctions.CheckIfEmptyString(ch, firstArg, "Rip ON or OFF?")) return;
+            if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Rip ON or OFF?")) return;
 
             if (firstArg.EqualsIgnoreCase("on"))
                 EnableRip(((PlayerInstance)ch));

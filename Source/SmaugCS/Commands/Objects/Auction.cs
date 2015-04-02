@@ -189,7 +189,7 @@ namespace SmaugCS.Commands.Objects
             {
                 ch.SetColor(ATTypes.AT_OBJECT);
                 ch.SendTo("Contents:");
-                act_info.show_list_to_char(auction.ItemForSale.Contents, (PlayerInstance)ch, true, false);
+                act_info.show_list_to_char(auction.ItemForSale.Contents.ToList(), (PlayerInstance)ch, true, false);
             }
 
             if (ch.IsImmortal())
@@ -219,7 +219,7 @@ namespace SmaugCS.Commands.Objects
         private static void DisplayContainerDetails(CharacterInstance ch, ObjectInstance obj)
         {
             ch.Printf("%s appears to %s.", obj.ShortDescription.CapitalizeFirst(), 
-                GetObjectValueText(obj.Value[0]));
+                GetObjectValueText(obj.Value.ToList()[0]));
         }
 
         private static string GetObjectValueText(int value)
@@ -245,26 +245,26 @@ namespace SmaugCS.Commands.Objects
 
         private static void DisplayConsumableDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            ch.Printf("Level %d spells of: ", obj.Value[0]);
+            ch.Printf("Level %d spells of: ", obj.Value.ToList()[0]);
 
             SkillData skill;
-            if (obj.Value[1] >= 0)
+            if (obj.Value.ToList()[1] >= 0)
             {
-                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[1]);
+                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[1]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
 
-            if (obj.Value[2] >= 0)
+            if (obj.Value.ToList()[2] >= 0)
             {
-                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[2]);
+                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[2]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
 
-            if (obj.Value[3] >= 0)
+            if (obj.Value.ToList()[3] >= 0)
             {
-                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
+                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
@@ -273,11 +273,11 @@ namespace SmaugCS.Commands.Objects
 
         private static void DisplayMagicImplementDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            ch.Printf("Has %d(%d) charges of level %d", obj.Value[1], obj.Value[2], obj.Value[0]);
+            ch.Printf("Has %d(%d) charges of level %d", obj.Value.ToList()[1], obj.Value.ToList()[2], obj.Value.ToList()[0]);
 
-            if (obj.Value[3] >= 0)
+            if (obj.Value.ToList()[3] >= 0)
             {
-                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value[3]);
+                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
@@ -287,13 +287,13 @@ namespace SmaugCS.Commands.Objects
         private static void DisplayWeaponDetails(CharacterInstance ch, ObjectInstance obj)
         {
             ch.Printf("Damage is %d to %d (Average %d).%s",
-                obj.Value[1], obj.Value[2], (obj.Value[1] + obj.Value[2])/2,
+                obj.Value.ToList()[1], obj.Value.ToList()[2], (obj.Value.ToList()[1] + obj.Value.ToList()[2])/2,
                 obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned) ? "This weapon is poisoned." : string.Empty);
         }
 
         private static void DisplayArmorDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            ch.Printf("Armor class is %d.", obj.Value[0]);
+            ch.Printf("Armor class is %d.", obj.Value.ToList()[0]);
         }
     }
 }

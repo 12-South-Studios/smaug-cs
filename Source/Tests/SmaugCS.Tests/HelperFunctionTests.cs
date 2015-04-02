@@ -18,13 +18,9 @@ namespace SmaugCS.Tests
             {
                 CurrentRace = RaceTypes.Vampire,
                 PlayerData = new PlayerData(1, 1)
-                {
-                    ConditionTable = new Dictionary<ConditionTypes, int>
-                    {
-                        {ConditionTypes.Bloodthirsty, currentBlood}
-                    }
-                }
             };
+            actor.PlayerData.ConditionTable.Clear();
+            actor.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = currentBlood;
 
             var list = new List<object> {actor, useBlood};
 

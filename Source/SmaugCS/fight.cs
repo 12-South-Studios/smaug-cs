@@ -22,6 +22,7 @@ using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
 using SmaugCS.Spells.Smaug;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
 {
@@ -54,7 +55,7 @@ namespace SmaugCS
                 if (ch.CharDied())
                     return false;
 
-                ch.CurrentCoin += content.Value[0]*content.Count;
+                ch.CurrentCoin += content.Value.ToList()[0] * content.Count;
                 content.Extract();
             }
 
@@ -195,7 +196,7 @@ namespace SmaugCS
                 }
 
                 var atkType =
-                    Realm.Library.Common.EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
+                    EnumerationExtensions.GetEnum<AttackTypes>(attacktype);
                 switch (atkType)
                 {
                     case AttackTypes.Bash:
@@ -233,7 +234,7 @@ namespace SmaugCS
                     break;
                 case TimerTypes.DoFunction:
                     var tempsub = ch.SubState;
-                    ch.SubState = Realm.Library.Common.EnumerationExtensions.GetEnum<CharacterSubStates>(timer.Value);
+                    ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(timer.Value);
                     timer.Action.Value.Invoke(ch, string.Empty);
                     if (ch.CharDied())
                         break;
@@ -284,7 +285,7 @@ namespace SmaugCS
             if (ch.GetEquippedItem(WearLocations.DualWield) != null)
             {
                 var dualWield = DatabaseManager.Instance.GetEntity<SkillData>("dual wield");
-                dualBonus = ch.IsNpc() ? ch.Level/10 : Macros.LEARNED(ch, (int) dualWield.ID)/10;
+                dualBonus = ch.IsNpc() ? ch.Level/10 : (int) Macros.LEARNED(ch, (int) dualWield.ID)/10;
                 chance = ch.IsNpc() ? ch.Level : Macros.LEARNED(ch, (int) dualWield.ID);
 
                 if (SmaugRandom.D100() < chance)
@@ -392,12 +393,12 @@ namespace SmaugCS
 
             var bonus = 0;
 
-            var damageType = Realm.Library.Common.EnumerationExtensions.GetEnum<DamageTypes>(wield.Value[3]);
+            var damageType = EnumerationExtensions.GetEnum<DamageTypes>(wield.Value.ToList()[3]);
             var attrib = damageType.GetAttribute<LookupSkillAttribute>();
             var sn = (int) DatabaseManager.Instance.GetEntity<SkillData>(attrib.Skill).ID;
 
             if (sn != -1)
-                bonus = (Macros.LEARNED(ch, sn) - 50)/10;
+                bonus = ((int)Macros.LEARNED(ch, sn) - 50)/10;
 
             if (ch.IsDevoted())
                 bonus -= ((PlayerInstance)ch).PlayerData.Favor / -400;
@@ -523,7 +524,7 @@ namespace SmaugCS
             {
                 damageType = (int) DamageTypes.Hit;
                 if (wield != null && wield.ItemType == ItemTypes.Weapon)
-                    damageType += wield.Value[3];
+                    damageType += wield.Value.ToList()[3];
             }
 
             // Calculate thac0 vs armor
@@ -573,7 +574,7 @@ namespace SmaugCS
 
             var damage = wield == null
                 ? SmaugRandom.Roll(ch.BareDice.NumberOf, ch.BareDice.SizeOf) + ch.DamageRoll.Bonus
-                : SmaugRandom.Between(wield.Value[1], wield.Value[2]);
+                : SmaugRandom.Between(wield.Value.ToList()[1], wield.Value.ToList()[2]);
 
             // Bonuses
             damage += ch.GetDamroll();
@@ -718,7 +719,7 @@ namespace SmaugCS
                     : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
 
                 // Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
-                plusRIS = wield.GetHitRoll();
+                plusRIS = wield.HitRoll;
             }
             else
                 damage = victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
@@ -767,7 +768,7 @@ namespace SmaugCS
 
             if (!ch.IsNpc() && ((PlayerInstance) ch).GetLearned((int) dmgSkill.ID) > 0)
             {
-                damage += damage*Macros.LEARNED(ch, (int) dmgSkill.ID);
+                damage += damage* (int)Macros.LEARNED(ch, (int) dmgSkill.ID);
                 dmgSkill.LearnFromSuccess(ch);
             }
             return damage;
@@ -811,7 +812,7 @@ namespace SmaugCS
             {
                 dt = (int) SkillNumberTypes.Hit;
                 if (wield != null && wield.ItemType == ItemTypes.MissileWeapon)
-                    dt += wield.Value[3];
+                    dt += wield.Value.ToList()[3];
             }
 
             //// Calculate to-hit-AC0 versus armor
@@ -832,8 +833,8 @@ namespace SmaugCS
             if (projectile.ItemType == ItemTypes.Projectile
                 || projectile.ItemType == ItemTypes.Weapon)
             {
-                dt = (int) SkillNumberTypes.Hit + projectile.Value[3];
-                bonus = SmaugRandom.Between(projectile.Value[1], projectile.Value[2]);
+                dt = (int)SkillNumberTypes.Hit + projectile.Value.ToList()[3];
+                bonus = SmaugRandom.Between(projectile.Value.ToList()[1], projectile.Value.ToList()[2]);
             }
             else
             {
@@ -905,7 +906,7 @@ namespace SmaugCS
         private static ReturnTypes ProjectileHit(CharacterInstance ch, CharacterInstance victim,
             ObjectInstance projectile, ObjectInstance wield, int bonus, int proficiencySkillNumber, int dt)
         {
-            var damage = wield == null ? bonus : SmaugRandom.Between(wield.Value[1], wield.Value[2]) + (bonus/10);
+            var damage = wield == null ? bonus : SmaugRandom.Between(wield.Value.ToList()[1], wield.Value.ToList()[2]) + (bonus / 10);
             damage += ch.GetDamroll();
             if (bonus > 0)
                 damage += bonus/4;
@@ -914,9 +915,9 @@ namespace SmaugCS
             if (!ch.IsNpc())
             {
                 var skill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
-                if (((PlayerInstance)ch).PlayerData.Learned[skill.ID] > 0)
+                if (((PlayerInstance)ch).PlayerData.Learned.ToList().FirstOrDefault(x => x == skill.ID) > 0)
                 {
-                    damage += damage*Macros.LEARNED(ch, (int) skill.ID);
+                    damage += damage* (int)Macros.LEARNED(ch, (int) skill.ID);
                     skill.LearnFromSuccess(ch);
                 }
             }
@@ -934,7 +935,7 @@ namespace SmaugCS
 
             //// Handle PLUS1 - PLUS6 ris bits vs weapon hitroll
             if (wield != null)
-                plusris = wield.GetHitRoll();
+                plusris = wield.HitRoll;
 
             ResistanceTypes imm, res, sus;
             if (damage > 0)
@@ -1191,19 +1192,19 @@ namespace SmaugCS
                     if (ch.PlayerData.Clan != null)
                     {
                         if (victim.Level < 10)
-                            ch.PlayerData.Clan.PvPKillTable[0]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[0]++;
                         else if (victim.Level < 15)
-                            ch.PlayerData.Clan.PvPKillTable[1]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[1]++;
                         else if (victim.Level < 20)
-                            ch.PlayerData.Clan.PvPKillTable[2]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[2]++;
                         else if (victim.Level < 30)
-                            ch.PlayerData.Clan.PvPKillTable[3]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[3]++;
                         else if (victim.Level < 40)
-                            ch.PlayerData.Clan.PvPKillTable[4]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[4]++;
                         else if (victim.Level < 50)
-                            ch.PlayerData.Clan.PvPKillTable[5]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[5]++;
                         else
-                            ch.PlayerData.Clan.PvPKillTable[6]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[6]++;
                     }
 
                     ch.PlayerData.PvPKills++;
@@ -1226,19 +1227,19 @@ namespace SmaugCS
                     if (ch.PlayerData.Clan != null)
                     {
                         if (victim.Level < 10)
-                            ch.PlayerData.Clan.PvPKillTable[0]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[0]++;
                         else if (victim.Level < 15)
-                            ch.PlayerData.Clan.PvPKillTable[1]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[1]++;
                         else if (victim.Level < 20)
-                            ch.PlayerData.Clan.PvPKillTable[2]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[2]++;
                         else if (victim.Level < 30)
-                            ch.PlayerData.Clan.PvPKillTable[3]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[3]++;
                         else if (victim.Level < 40)
-                            ch.PlayerData.Clan.PvPKillTable[4]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[4]++;
                         else if (victim.Level < 50)
-                            ch.PlayerData.Clan.PvPKillTable[5]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[5]++;
                         else
-                            ch.PlayerData.Clan.PvPKillTable[6]++;
+                            ch.PlayerData.Clan.PvPKillTable.ToList()[6]++;
                     }
 
                     ch.PlayerData.PvPKills++;
@@ -1257,19 +1258,19 @@ namespace SmaugCS
                     if (((PlayerInstance)victim).PlayerData.Clan != null)
                     {
                         if (victim.Level < 10)
-                            ch.PlayerData.Clan.PvPDeathTable[0]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[0]++;
                         else if (victim.Level < 15)
-                            ch.PlayerData.Clan.PvPDeathTable[1]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[1]++;
                         else if (victim.Level < 20)
-                            ch.PlayerData.Clan.PvPDeathTable[2]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[2]++;
                         else if (victim.Level < 30)
-                            ch.PlayerData.Clan.PvPDeathTable[3]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[3]++;
                         else if (victim.Level < 40)
-                            ch.PlayerData.Clan.PvPDeathTable[4]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[4]++;
                         else if (victim.Level < 50)
-                            ch.PlayerData.Clan.PvPDeathTable[5]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[5]++;
                         else
-                            ch.PlayerData.Clan.PvPDeathTable[6]++;
+                            ch.PlayerData.Clan.PvPDeathTable.ToList()[6]++;
                     }
 
                     ((PlayerInstance)victim).PlayerData.PvPDeaths++;
@@ -1332,19 +1333,19 @@ namespace SmaugCS
                 if (((PlayerInstance)victim).PlayerData.Clan != null)
                 {
                     if (victim.Level < 10)
-                        ch.PlayerData.Clan.PvPDeathTable[0]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[0]++;
                     else if (victim.Level < 15)
-                        ch.PlayerData.Clan.PvPDeathTable[1]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[1]++;
                     else if (victim.Level < 20)
-                        ch.PlayerData.Clan.PvPDeathTable[2]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[2]++;
                     else if (victim.Level < 30)
-                        ch.PlayerData.Clan.PvPDeathTable[3]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[3]++;
                     else if (victim.Level < 40)
-                        ch.PlayerData.Clan.PvPDeathTable[4]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[4]++;
                     else if (victim.Level < 50)
-                        ch.PlayerData.Clan.PvPDeathTable[5]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[5]++;
                     else
-                        ch.PlayerData.Clan.PvPDeathTable[6]++;
+                        ch.PlayerData.Clan.PvPDeathTable.ToList()[6]++;
                 }
 
                 ((PlayerInstance)victim).PlayerData.PvPDeaths++;
@@ -1487,7 +1488,7 @@ namespace SmaugCS
                 var obj = DatabaseManager.Instance.OBJECTS.Create(template, 0);
                 obj.Timer = SmaugRandom.Between(4, 7);
                 if (ch.IsAffected(AffectedByTypes.Poison))
-                    obj.Value[3] = 10;
+                    obj.Value.ToList()[3] = 10;
 
                 obj.ShortDescription = string.Format(obj.ShortDescription, name);
                 obj.Description = string.Format(obj.Description, name);
@@ -1604,6 +1605,8 @@ namespace SmaugCS
             string victMsg;
             string attack;
 
+            var attackTypes = LookupManager.Instance.GetLookups("AttackTable");
+
             if (dt == Program.TYPE_HIT)
             {
                 roomMsg = string.Format("$n {0} $N{1}", vp, punct);
@@ -1612,12 +1615,12 @@ namespace SmaugCS
             }
             else if (dt > Program.TYPE_HIT && ch.IsWieldedWeaponPoisoned())
             {
-                if (dt < Program.TYPE_HIT + LookupConstants.AttackTable.Count())
-                    attack = LookupConstants.AttackTable.ToList()[dt - Program.TYPE_HIT];
+                if (dt < Program.TYPE_HIT + attackTypes.Count())
+                    attack = attackTypes.ToList()[dt - Program.TYPE_HIT];
                 else
                 {
                     dt = Program.TYPE_HIT;
-                    attack = LookupConstants.AttackTable.ToList()[0];
+                    attack = attackTypes.First();
                 }
 
                 roomMsg = string.Format("$n's poisoned {0} {1} $N{2}", attack, vp, punct);
@@ -1659,16 +1662,16 @@ namespace SmaugCS
                             comm.act(ATTypes.AT_ACTION, skill.HitRoomMessage, ch, null, victim, ToTypes.Room);
                     }
                 }
-                else if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + LookupConstants.AttackTable.Count()))
+                else if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + attackTypes.Count()))
                 {
                     attack = obj != null
                         ? obj.ShortDescription
-                        : LookupConstants.AttackTable.ToList()[dt - Program.TYPE_HIT];
+                        : attackTypes.ToList()[dt - Program.TYPE_HIT];
                 }
                 else
                 {
                     dt = Program.TYPE_HIT;
-                    attack = LookupConstants.AttackTable.ToList()[0];
+                    attack = attackTypes.First();
                 }
 
                 roomMsg = string.Format("$n's {0} {1} $N{2}", attack, vp, punct);
@@ -1708,7 +1711,8 @@ namespace SmaugCS
         {
             if (dt > 0)
                 return 0;
-            if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + LookupConstants.AttackTable.Count()))
+            var attackTypes = LookupManager.Instance.GetLookups("AttackTable");
+            if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + attackTypes.Count()))
                 return dt - Program.TYPE_HIT;
             return 0;
         }

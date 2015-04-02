@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Realm.Library.Common;
 using SmaugCS.Common;
+using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
@@ -13,7 +14,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
-using SmaugCS.Constants;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
 {
@@ -259,7 +260,7 @@ namespace SmaugCS
 
         private static void SetCharacterColorByItemType(CharacterInstance ch, IList<int> pitShow, int i)
         {
-            var itemType = Realm.Library.Common.EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
+            var itemType = EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
             var attrib = itemType.GetAttribute<CharacterColorAttribute>();
             ch.SetColor(attrib == null ? ATTypes.AT_OBJECT : attrib.ATType);
         }
@@ -299,7 +300,7 @@ namespace SmaugCS
             var found = false;
             for (var i = 0; i < GameConstants.MaximumWearLocations; i++)
             {
-                var wearLoc = Realm.Library.Common.EnumerationExtensions.GetEnum<WearLocations>(i);
+                var wearLoc = EnumerationExtensions.GetEnum<WearLocations>(i);
                 var obj = victim.GetEquippedItem(wearLoc);
                 if (obj != null && ch.CanSee(obj))
                 {
@@ -316,7 +317,7 @@ namespace SmaugCS
                     if (!victim.IsNpc())
                     {
                         var race = DatabaseManager.Instance.GetRace(victim.CurrentRace);
-                        ch.SendTo(race.WhereNames[i]);
+                        ch.SendTo(race.WhereNames.ToList()[i]);
                     }
                     else
                         ch.SendTo(LookupManager.Instance.GetLookup("WhereNames", i));
@@ -350,7 +351,7 @@ namespace SmaugCS
                 show_list_to_char(victim.Carrying.ToList(), ch, true, true);
                 skill.LearnFromSuccess(ch);
             }
-            else if (ch.PlayerData.Learned[0] > (int)skill.ID)
+            else if (ch.PlayerData.Learned.ToList()[0] > (int)skill.ID)
                 skill.LearnFromFailure(ch);
         }
 

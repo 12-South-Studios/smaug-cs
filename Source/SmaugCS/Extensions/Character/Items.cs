@@ -18,7 +18,7 @@ namespace SmaugCS.Extensions.Character
             var obj = ch.GetEquippedItem(location);
             if (obj == null) return true;
 
-            if (!replace && ch.CarryNumber + obj.GetObjectNumber() > ch.CanCarryN())
+            if (!replace && ch.CarryNumber + obj.ObjectNumber > ch.CanCarryN())
             {
                 comm.act(ATTypes.AT_PLAIN, "$d: you can't carry that many items.", ch, null, obj.ShortDescription,
                     ToTypes.Character);

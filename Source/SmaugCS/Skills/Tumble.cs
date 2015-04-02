@@ -30,7 +30,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc())
                 chances = 60.GetLowestOfTwoNumbers(2*victim.Level);
             else
-                chances = Macros.LEARNED(victim, (int) skill.ID)/
+                chances = (int)Macros.LEARNED(victim, (int) skill.ID)/
                           (gameManager ?? GameManager.Instance).SystemData.TumbleMod +
                           (victim.GetCurrentDexterity() - 13);
 

@@ -56,7 +56,7 @@ namespace SmaugCS.Data
         public int HungerMod { get; set; }
         public int ThirstMod { get; set; }
         public SavingThrowData SavingThrows { get; set; }
-        public List<string> WhereNames { get; set; }
+        public ICollection<string> WhereNames { get; private set; }
         public int HitrollBonus { get; set; }
 
         [XmlElement]

@@ -2,6 +2,8 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Helpers;
+using SmaugCS.Managers;
 
 namespace SmaugCS.Commands
 {
@@ -10,11 +12,11 @@ namespace SmaugCS.Commands
         public static void do_consider(CharacterInstance ch, string argument)
         {
             var arg = argument.FirstWord();
-            if (Helpers.CheckFunctions.CheckIfEmptyString(ch, arg, "Consider killing whom?")) return;
+            if (CheckFunctions.CheckIfEmptyString(ch, arg, "Consider killing whom?")) return;
 
             var victim = ch.GetCharacterInRoom(arg);
-            if (Helpers.CheckFunctions.CheckIfNullObject(ch, victim, "They're not here.")) return;
-            if (Helpers.CheckFunctions.CheckIfEquivalent(ch, ch, victim,
+            if (CheckFunctions.CheckIfNullObject(ch, victim, "They're not here.")) return;
+            if (CheckFunctions.CheckIfEquivalent(ch, ch, victim,
                 "You decide you're pretty sure you could take yourself in a fight.")) return;
 
             var levelDiff = victim.Level - ch.Level;
@@ -29,42 +31,42 @@ namespace SmaugCS.Commands
 
         private static string GetHealthConsiderMessage(int diff)
         {
+            const string lookupName = "HealthConsider";
+
             if (diff <= -200)
-                return "$N looks like a feather!";
+                return LookupManager.Instance.GetLookup(lookupName, 0);
             if (diff <= -150)
-                return "You could kill $N with your hands tied!";
+                return LookupManager.Instance.GetLookup(lookupName, 1);
             if (diff <= -100)
-                return "Hey! Where'd $N go?";
+                return LookupManager.Instance.GetLookup(lookupName, 2);
             if (diff <= -50)
-                return "$N is a wimp.";
+                return LookupManager.Instance.GetLookup(lookupName, 3);
             if (diff <= 0)
-                return "$N looks weaker than you.";
+                return LookupManager.Instance.GetLookup(lookupName, 4);
             if (diff <= 50)
-                return "$N looks about as strong as you.";
+                return LookupManager.Instance.GetLookup(lookupName, 5);
             if (diff <= 100)
-                return "It would take a bit of luck...";
-            if (diff <= 150)
-                return "It would take a lot of luck, and equipment!";
-            if (diff <= 200)
-                return "Why don't you dig a grave for yourself first!";
-            return "$N is built like a TANK!";
+                return LookupManager.Instance.GetLookup(lookupName, 6);
+            return diff <= 150
+                ? LookupManager.Instance.GetLookup(lookupName, 7)
+                : LookupManager.Instance.GetLookup(lookupName, diff <= 200 ? 8 : 9);
         }
 
         private static string GetLevelConsiderMessage(int diff)
         {
+            const string lookupName = "LevelConsider";
+
             if (diff <= -10)
-                return "You are far more experienced than $N.";
+                return LookupManager.Instance.GetLookup(lookupName, 0);
             if (diff <= -5)
-                return "$n is not nearly as experienced as you.";
+                return LookupManager.Instance.GetLookup(lookupName, 1);
             if (diff <= -2)
-                return "You are more experienced than $n.";
+                return LookupManager.Instance.GetLookup(lookupName, 2);
             if (diff <= 1)
-                return "You are just about as experienced as $N.";
-            if (diff <= 4)
-                return "You are not nearly as experienced as $N.";
-            if (diff <= 9)
-                return "$N is far more experienced than you!";
-            return "$N would make a great teacher for you!";
+                return LookupManager.Instance.GetLookup(lookupName, 3);
+            return diff <= 4
+                ? LookupManager.Instance.GetLookup(lookupName, 4)
+                : LookupManager.Instance.GetLookup(lookupName, diff <= 9 ? 5 : 6);
         }
     }
 }

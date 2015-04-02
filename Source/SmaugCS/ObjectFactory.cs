@@ -128,7 +128,7 @@ namespace SmaugCS
                 }
 
                 corpse.Cost = -1 * (int)((MobileInstance)ch).MobIndex.Vnum;
-                corpse.Value[2] = corpse.Timer;
+                corpse.Value.ToList()[2] = corpse.Timer;
             }
             else
             {
@@ -138,12 +138,12 @@ namespace SmaugCS
                         (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
 
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
-                corpse.Value[2] = corpse.Timer / 8;
-                corpse.Value[4] = ch.Level;
+                corpse.Value.ToList()[2] = corpse.Timer / 8;
+                corpse.Value.ToList()[4] = ch.Level;
                 if (ch.CanPKill() && GameManager.Instance.SystemData.PlayerKillLoot > 0)
                     corpse.ExtraFlags.SetBit((int)ItemExtraFlags.ClanCorpse);
 
-                corpse.Value[3] = (!ch.IsNpc() && !killer.IsNpc()) ? 1 : 0;
+                corpse.Value.ToList()[3] = (!ch.IsNpc() && !killer.IsNpc()) ? 1 : 0;
             }
 
             if (ch.CanPKill() && killer.CanPKill() && ch != killer)
@@ -173,7 +173,7 @@ namespace SmaugCS
                                                        .Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
 
             obj.Timer = (short)SmaugRandom.Between(2, 4);
-            obj.Value[1] = SmaugRandom.Between(3, 5.GetLowestOfTwoNumbers(ch.Level));
+            obj.Value.ToList()[1] = SmaugRandom.Between(3, 5.GetLowestOfTwoNumbers(ch.Level));
             ch.CurrentRoom.AddTo(obj);
         }
 
@@ -200,7 +200,7 @@ namespace SmaugCS
             if (coinAmt > 1)
             {
                 obj.ShortDescription = string.Format(obj.ShortDescription, coinAmt);
-                obj.Value[0] = coinAmt;
+                obj.Value.ToList()[0] = coinAmt;
             }
 
             return obj;

@@ -9,26 +9,24 @@ namespace SmaugCS.Data
         public ResetTypes Type { get; set; }
         public string Command { get; set; }
         public int Extra { get; set; }
-        public int[] Args { get; set; }
+        public IEnumerable<int> Args { get; private set; }
         public bool sreset { get; set; }
-        public List<ResetData> Resets { get; set; }
+        public ICollection<ResetData> Resets { get; private set; }
 
         public ResetData()
         {
-            Args = new int[3];
+            Args = new List<int>();
             Resets = new List<ResetData>();
         }
 
         public void SetArgs(int v1, int v2, int v3)
         {
-            Args[0] = v1;
-            Args[1] = v2;
-            Args[2] = v3;
+            Args = new List<int> {v1, v2, v3};
         }
 
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
         {
-            ResetData newReset = new ResetData
+            var newReset = new ResetData
             {
                 Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
                 Extra = extra

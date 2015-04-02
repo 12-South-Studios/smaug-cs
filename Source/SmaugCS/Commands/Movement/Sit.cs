@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
@@ -7,7 +8,7 @@ namespace SmaugCS.Commands.Movement
 {
     public static class Sit
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_sit(CharacterInstance ch, string argument)
         {
             if (ch.CurrentPosition == PositionTypes.Sleeping)

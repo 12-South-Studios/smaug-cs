@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -80,12 +81,12 @@ namespace SmaugCS.Loaders
                     case "end":
                         break;
                     case "data":
-                        mix.Data[0] = proxy.ReadNumber();
-                        mix.Data[1] = proxy.ReadNumber();
-                        mix.Data[2] = proxy.ReadNumber();
+                        mix.Data.ToList()[0] = proxy.ReadNumber();
+                        mix.Data.ToList()[1] = proxy.ReadNumber();
+                        mix.Data.ToList()[2] = proxy.ReadNumber();
                         break;
                     case "into":
-                        mix.Data[2] = proxy.ReadNumber();
+                        mix.Data.ToList()[2] = proxy.ReadNumber();
                         break;
                     case "name":
                         mix.Name = proxy.ReadString().TrimHash();
@@ -94,8 +95,8 @@ namespace SmaugCS.Loaders
                         mix.Object = proxy.ReadNumber() > 0;
                         break;
                     case "with":
-                        mix.Data[0] = proxy.ReadNumber();
-                        mix.Data[1] = proxy.ReadNumber();
+                        mix.Data.ToList()[0] = proxy.ReadNumber();
+                        mix.Data.ToList()[1] = proxy.ReadNumber();
                         break;
                 }
             } while (!proxy.EndOfStream && !word.EqualsIgnoreCase("end"));

@@ -17,10 +17,10 @@ namespace SmaugCS.Data
         public string SkillFunctionName { get; set; }
         public SpellFunction SpellFunction { get; set; }
 
-        public IEnumerable<int> SkillLevels { get; set; }
-        public IEnumerable<SkillMasteryData> SkillMasteries { get; set; }
-        public int[] RaceLevel { get; set; }
-        public int[] RaceAdept { get; set; }
+        public IEnumerable<int> SkillLevels { get; private set; }
+        public IEnumerable<SkillMasteryData> SkillMasteries { get; private set; }
+        public IEnumerable<int> RaceLevel { get; private set; }
+        public IEnumerable<int> RaceAdept { get; private set; }
 
         private int _minimumPosition;
         public int MinimumPosition
@@ -59,15 +59,18 @@ namespace SmaugCS.Data
         public int spell_sector { get; set; }
         public SaveVsTypes SaveVs { get; set; }
         public char difficulty { get; set; }
-        public List<SmaugAffect> Affects { get; set; }
-        public List<SpellComponent> Components { get; set; }
-        public List<string> Teachers { get; set; } 
+        public ICollection<SmaugAffect> Affects { get; private set; }
+        public ICollection<SpellComponent> Components { get; private set; }
+        public ICollection<string> Teachers { get; private set; } 
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
         public string NounDamage { get; set; }
 
         public SkillData(long id, string name) : base(id, name)
         {
+            RaceLevel = new List<int>();
+            RaceAdept = new List<int>();
+            SkillLevels = new List<int>();
             Affects = new List<SmaugAffect>();
             Components = new List<SpellComponent>();
             Teachers = new List<string>();

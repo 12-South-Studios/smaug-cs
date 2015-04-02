@@ -1,4 +1,6 @@
-﻿using SmaugCS.Common;
+﻿using System.Linq;
+using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -6,8 +8,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
-using System.Linq;
-using SmaugCS.Common.Enumerations;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -65,7 +66,7 @@ namespace SmaugCS.Spells.Smaug
             if (!target.GroupSpell && !target.AreaSpell)
                 CastTargetSpellAtVictim(ch, victim.CurrentRoom.Persons.First(), skill, target, level);
             else
-                victim.CurrentRoom.Persons.ForEach(vch => CastTargetSpellAtVictim(ch, vch, skill, target, level));
+                victim.CurrentRoom.Persons.ToList().ForEach(vch => CastTargetSpellAtVictim(ch, vch, skill, target, level));
             
             return ReturnTypes.None;
         }
@@ -74,7 +75,7 @@ namespace SmaugCS.Spells.Smaug
         {
             if (targetValues.GroupSpell || targetValues.AreaSpell)
             {
-                var resType = Realm.Library.Common.EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill));
+                var resType = EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill));
                 if ((targetValues.GroupSpell
                      && !victim.IsSameGroup(ch))
                     || victim.Immunity.IsSet(ResistanceTypes.Magic)
@@ -124,7 +125,7 @@ namespace SmaugCS.Spells.Smaug
                     (skill.Type != SkillTypes.Herb && victim.Immunity.IsSet(ResistanceTypes.Magic))
                     ||
                     victim.IsImmune(
-                        Realm.Library.Common.EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill))),
+                        EnumerationExtensions.GetEnum<ResistanceTypes>(Macros.SPELL_DAMAGE(skill))),
                     skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
             if (CheckFunctions.CheckIfTrueCasting(

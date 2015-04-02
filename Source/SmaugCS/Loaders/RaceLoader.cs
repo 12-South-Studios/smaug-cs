@@ -4,7 +4,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
-using SmaugCS.Managers;
+using SmaugCS.Lua;
 
 namespace SmaugCS.Loaders
 {
@@ -28,7 +28,7 @@ namespace SmaugCS.Loaders
             if (string.IsNullOrEmpty(races))
                 throw new EntryNotFoundException("Races not found in app.config");
 
-            IEnumerable<string> raceList = races.Split(new[] { ',' });
+            IEnumerable<string> raceList = races.Split(',');
             foreach (var raceName in raceList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + raceName + ".lua");

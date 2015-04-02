@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
@@ -62,12 +63,13 @@ namespace SmaugCS.Repositories
             newObject.ExtraFlags = cloneObject.ExtraFlags;
             newObject.Flags = cloneObject.Flags;
             newObject.WearFlags = cloneObject.WearFlags;
-            //Array.Copy(cloneObject.Value, newObject.Value, cloneObject.Value.Length);
             newObject.Values = cloneObject.Values;
             newObject.Weight = cloneObject.Weight;
             newObject.Cost = cloneObject.Cost;
-            newObject.ExtraDescriptions = new List<ExtraDescriptionData>(cloneObject.ExtraDescriptions);
-            newObject.Affects = new List<AffectData>(cloneObject.Affects);
+            newObject.ExtraDescriptions.Clear();
+            newObject.ExtraDescriptions.ToList().AddRange(cloneObject.ExtraDescriptions);
+            newObject.Affects.Clear();
+            newObject.Affects.ToList().AddRange(cloneObject.Affects);
         }
     }
 }

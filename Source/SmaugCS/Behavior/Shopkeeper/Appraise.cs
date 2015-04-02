@@ -54,15 +54,10 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         public static int GetAdjustedRepairCost(MobileInstance keeper, ObjectInstance obj)
         {
-            if (obj == null || keeper.MobIndex.Shop == null)
-                return 0;
+            if (obj == null || keeper.MobIndex.Shop == null) return 0;
 
             var shop = keeper.MobIndex.RepairShop;
-            var cost = 0;
-
-            if (shop.ItemTypes.ToList().Any(x => x == obj.ItemType))
-                cost = (obj.Cost * shop.ProfitFix / 1000);
-            
+            var cost = (shop.ItemTypes.ToList().Any(x => x == obj.ItemType)) ? (obj.Cost*shop.ProfitFix/1000) : 0;
             if (cost <= 0)
                 cost = 1;
 

@@ -29,7 +29,7 @@ namespace SmaugCS.Extensions.Objects
             resist += (obj.Level / 10) - 2;
 
             if (obj.ItemType == ItemTypes.Armor || obj.ItemType == ItemTypes.Weapon)
-                resist += (obj.Value[0] / 2) - 2;
+                resist += (obj.Value.ToList()[0] / 2) - 2;
 
             return resist.GetNumberThatIsBetween(10, 99);
         }
@@ -73,10 +73,10 @@ namespace SmaugCS.Extensions.Objects
         public static int GetImplementRepairCost(this ObjectInstance obj, int baseCost)
         {
             var cost = baseCost;
-            if (obj.Value[2] >= obj.Value[1])
+            if (obj.Value.ToList()[2] >= obj.Value.ToList()[1])
                 cost = -2;
             else
-                cost *= (obj.Value[1] - obj.Value[2]);
+                cost *= (obj.Value.ToList()[1] - obj.Value.ToList()[2]);
             return cost;
         }
     }

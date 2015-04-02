@@ -11,8 +11,7 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecGuard(MobileInstance ch)
         {
-            if (!ch.IsAwake() || ch.CurrentFighting != null)
-                return false;
+            if (!ch.IsAwake() || ch.CurrentFighting != null) return false;
 
             var maxEvil = 300;
             var crime = string.Empty;
@@ -27,13 +26,10 @@ namespace SmaugCS.SpecFuns
                 if (!string.IsNullOrEmpty(crime))
                     break;
 
-                if (vch.CurrentFighting != null 
-                    && vch.GetMyTarget() != ch
-                    && vch.CurrentAlignment < maxEvil)
-                {
-                    maxEvil = vch.CurrentAlignment;
-                    ech = victim;
-                }
+                if (vch.CurrentFighting == null || vch.GetMyTarget() == ch || vch.CurrentAlignment >= maxEvil) continue;
+
+                maxEvil = vch.CurrentAlignment;
+                ech = victim;
             }
 
             if (victim != null && ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
@@ -61,12 +57,8 @@ namespace SmaugCS.SpecFuns
 
         private static string GetCrime(CharacterInstance victim)
         {
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Killer))
-                return "KILLER";
-
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Thief))
-                return "THIEF";
-
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Killer)) return "KILLER";
+            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Thief)) return "THIEF";
             return string.Empty;
         }
     }

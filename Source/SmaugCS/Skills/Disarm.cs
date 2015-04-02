@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
@@ -56,7 +57,7 @@ namespace SmaugCS.Skills
             if (!victim.IsNpc() && victim.CanPKill() && !obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal))
             {
                 obj.MagicFlags.SetBit(ItemMagicFlags.PKDisarmed);
-                obj.Value[5] = victim.Level;
+                obj.Value.ToList()[5] = victim.Level;
             }
 
             if (victim.IsNpc() || (obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal) && victim.IsPKill() && !ch.IsNpc()))

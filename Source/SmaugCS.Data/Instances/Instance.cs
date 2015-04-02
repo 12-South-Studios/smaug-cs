@@ -10,7 +10,7 @@ namespace SmaugCS.Data.Instances
         public string Description { get; set; }
 
         public Template Parent { get; set; }
-        public List<AffectData> Affects { get; set; }
+        public ICollection<AffectData> Affects { get; private set; }
 
         public int Level { get; set; }
         public int Timer { get; set; }

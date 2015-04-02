@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -60,7 +61,7 @@ namespace SmaugCS.Spells.Smaug
                 case ItemTypes.Food:
                 case ItemTypes.DrinkContainer:
                     obj.Split();
-                    obj.Value[3] = 0;
+                    obj.Value.ToList()[3] = 0;
                     ch.SuccessfulCast(skill, null, obj);
                     break;
                 default:
@@ -112,7 +113,7 @@ namespace SmaugCS.Spells.Smaug
                 case ItemTypes.Food:
                 case ItemTypes.DrinkContainer:
                     obj.Split();
-                    obj.Value[3] = 1;
+                    obj.Value.ToList()[3] = 1;
                     ch.SuccessfulCast(skill, null, obj);
                     break;
                 default:
@@ -132,18 +133,18 @@ namespace SmaugCS.Spells.Smaug
         {
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType != ItemTypes.DrinkContainer, "It is unable to hold water."))
                 return ReturnTypes.SpellFailed;
-            if (CheckFunctions.CheckIfTrue(ch, obj.Value[2] != 0 && obj.Value[1] != 0, "It contains some other liquid."))
+            if (CheckFunctions.CheckIfTrue(ch, obj.Value.ToList()[2] != 0 && obj.Value.ToList()[1] != 0, "It contains some other liquid."))
                 return ReturnTypes.SpellFailed;
 
             var minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : level)*
                          (cell.Precipitation >= 0 ? 2 : 1);
-            var water = minVal.GetLowestOfTwoNumbers(obj.Value[0] - obj.Value[1]);
+            var water = minVal.GetLowestOfTwoNumbers(obj.Value.ToList()[0] - obj.Value.ToList()[1]);
 
             if (water > 0)
             {
                 obj.Split();
-                obj.Value[2] = 0;
-                obj.Value[1] += water;
+                obj.Value.ToList()[2] = 0;
+                obj.Value.ToList()[1] += water;
                 if (obj.Name.EqualsIgnoreCase("water"))
                 {
                     // TODO Set name to:  string.format("{0} water", obj.Name)
@@ -174,9 +175,9 @@ namespace SmaugCS.Spells.Smaug
                     obj.ItemType != ItemTypes.DrinkContainer && obj.ItemType != ItemTypes.Food &&
                     obj.ItemType != ItemTypes.Cook, "It doesn't look poisoned.")) return ReturnTypes.None;
 
-                if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.Cook && obj.Value[2] == 0,
+                if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.Cook && obj.Value.ToList()[2] == 0,
                     "It looks undercooked.")) return ReturnTypes.None;
-                if (CheckFunctions.CheckIfTrue(ch, obj.Value[3] != 0, "You smell poisonous fumes."))
+                if (CheckFunctions.CheckIfTrue(ch, obj.Value.ToList()[3] != 0, "You smell poisonous fumes."))
                     return ReturnTypes.None;
 
                 ch.SendTo("It looks very delicious.");

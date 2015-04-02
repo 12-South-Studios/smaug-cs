@@ -2,6 +2,7 @@
 {
     public enum StatisticTypes
     {
+        None = 0,
         CurrentHealth = 1,
         MaximumHealth = 2,
         CurrentMana = 3,

@@ -16,7 +16,6 @@ using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 using SmaugCS.Repositories;
 
 namespace SmaugCS.Extensions.Objects
@@ -133,12 +132,12 @@ namespace SmaugCS.Extensions.Objects
                 && obj1.Cost == obj2.Cost
                 && obj1.Level == obj2.Level
                 && obj1.Timer == obj2.Timer
-                && obj1.Value[0] == obj2.Value[0]
-                && obj1.Value[1] == obj2.Value[1]
-                && obj1.Value[2] == obj2.Value[2]
-                && obj1.Value[3] == obj2.Value[3]
-                && obj1.Value[4] == obj2.Value[4]
-                && obj1.Value[5] == obj2.Value[5]
+                && obj1.Value.ToList()[0] == obj2.Value.ToList()[0]
+                && obj1.Value.ToList()[1] == obj2.Value.ToList()[1]
+                && obj1.Value.ToList()[2] == obj2.Value.ToList()[2]
+                && obj1.Value.ToList()[3] == obj2.Value.ToList()[3]
+                && obj1.Value.ToList()[4] == obj2.Value.ToList()[4]
+                && obj1.Value.ToList()[5] == obj2.Value.ToList()[5]
                 && obj1.ExtraDescriptions.SequenceEqual(obj2.ExtraDescriptions)
                 && obj1.Affects.SequenceEqual(obj2.Affects)
                 && obj1.Contents.SequenceEqual(obj2.Contents)
@@ -224,7 +223,7 @@ namespace SmaugCS.Extensions.Objects
         public static ObjectInstance AddTo(this ObjectInstance obj, CharacterInstance ch)
         {
             var oweight = obj.GetWeight();
-            var onum = obj.GetObjectNumber();
+            var onum = obj.ObjectNumber;
             var wearLoc = (int)obj.WearLocation;
             var extraFlags = obj.ExtraFlags;
 
@@ -349,7 +348,7 @@ namespace SmaugCS.Extensions.Objects
 
             obj.InRoom = null;
             obj.CarriedBy = null;
-            ch.CarryNumber -= obj.GetObjectNumber();
+            ch.CarryNumber -= obj.ObjectNumber;
             ch.CarryWeight -= obj.GetWeight();
         }
 
@@ -361,7 +360,7 @@ namespace SmaugCS.Extensions.Objects
                 return obj;
             }
 
-            var who = o.GetCarriedBy();
+            var who = o.CarriedBy;
 
             if (!o.IsInMagicContainer() && who != null)
                 who.CarryWeight += obj.GetWeight();
@@ -490,7 +489,7 @@ namespace SmaugCS.Extensions.Objects
                 if ((destobj.ItemType == ItemTypes.Container
                      || destobj.ItemType == ItemTypes.KeyRing
                      || destobj.ItemType == ItemTypes.Quiver)
-                    && (cobj.GetRealWeight() + destobj.GetRealWeight() > destobj.Value[0]))
+                    && (cobj.GetRealWeight() + destobj.GetRealWeight() > destobj.Value.ToList()[0]))
                     continue;
 
                 cobj.RemoveFrom(cobj);

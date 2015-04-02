@@ -24,8 +24,8 @@ namespace SmaugCS.Data.Organizations
         public string LeaderRank { get; set; }
         public string NumberOneRank { get; set; }
         public string NumberTwoRank { get; set; }
-        public int[] PvPKillTable { get; set; }
-        public int[] PvPDeathTable { get; set; }
+        public IEnumerable<int> PvPKillTable { get; set; }
+        public IEnumerable<int> PvPDeathTable { get; set; }
         public int PvEKills { get; set; }
         public int PvEDeaths { get; set; }
         public int IllegalPvPKill { get; set; }
@@ -38,7 +38,7 @@ namespace SmaugCS.Data.Organizations
         public int Strikes { get; set; }
         public int MemberLimit { get; set; }
         public int Alignment { get; set; }
-        public int[] ClanObjects { get; set; }
+        public IEnumerable<int> ClanObjects { get; set; }
 
         [XmlElement]
         public int RecallRoom { get; set; }
@@ -50,9 +50,9 @@ namespace SmaugCS.Data.Organizations
 
         public ClanData(long id, string name) : base(id, name)
         {
-            PvPKillTable = new int[7];
-            PvPDeathTable = new int[7];
-            ClanObjects = new int[5];
+            PvPKillTable = new List<int>(7);
+            PvPDeathTable = new List<int>(7);
+            ClanObjects = new List<int>(5);
         }
 
         public bool CanOutcast(CharacterInstance ch, CharacterInstance victim)

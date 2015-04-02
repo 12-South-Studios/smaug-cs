@@ -3,7 +3,6 @@ using SmaugCS.Common;
 using SmaugCS.Communication;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
@@ -265,13 +264,13 @@ namespace SmaugCS.Managers
                     if (!ch.IsNpc()
                         && ((PlayerInstance)ch).PlayerData.Nuisance != null
                         && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 7
-                        && (SmaugCS.Common.SmaugRandom.D100() < ((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 7) * 10 * ((PlayerInstance)ch).PlayerData.Nuisance.Power)))
-                        sbuf = argument.Scramble(SmaugCS.Common.SmaugRandom.Between(1, 10));
+                        && (SmaugRandom.D100() < ((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 7) * 10 * ((PlayerInstance)ch).PlayerData.Nuisance.Power)))
+                        sbuf = argument.Scramble(SmaugRandom.Between(1, 10));
 
                     if (!vch.IsNpc() && vch.PlayerData.Nuisance != null
                         && vch.PlayerData.Nuisance.Flags > 7
-                        && (SmaugCS.Common.SmaugRandom.D100() < ((vch.PlayerData.Nuisance.Flags - 7) * 10 * vch.PlayerData.Nuisance.Power)))
-                        sbuf = argument.Scramble(SmaugCS.Common.SmaugRandom.Between(1, 10));
+                        && (SmaugRandom.D100() < ((vch.PlayerData.Nuisance.Flags - 7) * 10 * vch.PlayerData.Nuisance.Power)))
+                        sbuf = argument.Scramble(SmaugRandom.Between(1, 10));
 
                     // TODO Toggle global mobtrigger flag
                     lbuf = lbuf + buffer;

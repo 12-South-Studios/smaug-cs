@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
@@ -86,7 +87,7 @@ namespace SmaugCS.Repositories
                 Values = source.Values
             };
 
-            Array.Copy(source.Value, obj.Value, 5);
+            source.Value = new List<int>(obj.Value);
 
             if (ObjectActionTable.ContainsKey(obj.ItemType))
                 ObjectActionTable[obj.ItemType].Invoke(obj);
@@ -115,48 +116,48 @@ namespace SmaugCS.Repositories
 
         private static void UpdateFood(ObjectInstance obj)
         {
-            obj.Timer = (obj.Value[4] > 0) ? obj.Value[4] : obj.Value[1];
+            obj.Timer = (obj.Value.ToList()[4] > 0) ? obj.Value.ToList()[4] : obj.Value.ToList()[1];
         }
         private static void UpdateSalve(ObjectInstance obj)
         {
-            obj.Value[3] = SmaugRandom.Fuzzy(obj.Value[3]);
+            obj.Value.ToList()[3] = SmaugRandom.Fuzzy(obj.Value.ToList()[3]);
         }
         private static void UpdateScroll(ObjectInstance obj)
         {
-            obj.Value[0] = SmaugRandom.Fuzzy(obj.Value[0]);
+            obj.Value.ToList()[0] = SmaugRandom.Fuzzy(obj.Value.ToList()[0]);
         }
         private static void UpdateMagicalImplement(ObjectInstance obj)
         {
-            obj.Value[0] = SmaugRandom.Fuzzy(obj.Value[0]);
-            obj.Value[1] = SmaugRandom.Fuzzy(obj.Value[1]);
-            obj.Value[2] = obj.Value[1];
+            obj.Value.ToList()[0] = SmaugRandom.Fuzzy(obj.Value.ToList()[0]);
+            obj.Value.ToList()[1] = SmaugRandom.Fuzzy(obj.Value.ToList()[1]);
+            obj.Value.ToList()[2] = obj.Value.ToList()[1];
         }
         private static void UpdateWeapon(ObjectInstance obj)
         {
-            if (obj.Value[1] > 0 && obj.Value[2] > 0)
-                obj.Value[2] = obj.Value[1];
+            if (obj.Value.ToList()[1] > 0 && obj.Value.ToList()[2] > 0)
+                obj.Value.ToList()[2] = obj.Value.ToList()[1];
             else
             {
-                obj.Value[1] = SmaugRandom.Fuzzy(1 * obj.Level / 4 + 2);
-                obj.Value[2] = SmaugRandom.Fuzzy(3 * obj.Level / 4 + 6);
+                obj.Value.ToList()[1] = SmaugRandom.Fuzzy(1 * obj.Level / 4 + 2);
+                obj.Value.ToList()[2] = SmaugRandom.Fuzzy(3 * obj.Level / 4 + 6);
             }
-            if (obj.Value[0] == 0)
-                obj.Value[0] = GameConstants.GetConstant<int>("InitWeaponCondition");
+            if (obj.Value.ToList()[0] == 0)
+                obj.Value.ToList()[0] = GameConstants.GetConstant<int>("InitWeaponCondition");
         }
         private static void UpdateArmor(ObjectInstance obj)
         {
-            if (obj.Value[0] == 0)
-                obj.Value[0] = SmaugRandom.Fuzzy(obj.Level / 4 + 2);
-            if (obj.Value[1] == 0)
-                obj.Value[1] = obj.Value[0];
+            if (obj.Value.ToList()[0] == 0)
+                obj.Value.ToList()[0] = SmaugRandom.Fuzzy(obj.Level / 4 + 2);
+            if (obj.Value.ToList()[1] == 0)
+                obj.Value.ToList()[1] = obj.Value.ToList()[0];
         }
         private static void UpdatePotion(ObjectInstance obj)
         {
-            obj.Value[0] = SmaugRandom.Fuzzy(obj.Value[0]);
+            obj.Value.ToList()[0] = SmaugRandom.Fuzzy(obj.Value.ToList()[0]);
         }
         private static void UpdateMoney(ObjectInstance obj)
         {
-            obj.Value[0] = obj.Cost > 0 ? obj.Cost : 1;
+            obj.Value.ToList()[0] = obj.Cost > 0 ? obj.Cost : 1;
         }
     }
 }

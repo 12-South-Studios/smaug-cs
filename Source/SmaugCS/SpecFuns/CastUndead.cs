@@ -2,7 +2,6 @@
 using System.Linq;
 using Ninject;
 using SmaugCS.Common;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Mobile;

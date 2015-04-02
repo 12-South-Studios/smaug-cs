@@ -3,7 +3,6 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Shops;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;

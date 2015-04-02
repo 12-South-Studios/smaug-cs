@@ -114,13 +114,13 @@ namespace SmaugCS.Commands.Movement
             if (!obj.Values.Flags.IsSet(TriggerFlags.Passage))
                 throw new InvalidDataException(string.Format("Object {0} is not a passage", obj.ID));
 
-            var sourceRoom = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
+            var sourceRoom = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (sourceRoom == null)
-                throw new InvalidDataException(string.Format("Source Room {0} was null", obj.Value[1]));
+                throw new InvalidDataException(string.Format("Source Room {0} was null", obj.Value.ToList()[1]));
             
-            var destRoom = DatabaseManager.Instance.ROOMS.Get(obj.Value[2]);
+            var destRoom = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
             if (destRoom == null)
-                throw new InvalidDataException(string.Format("Destination Room {0} was null", obj.Value[2]));
+                throw new InvalidDataException(string.Format("Destination Room {0} was null", obj.Value.ToList()[2]));
 
             var exit = db.make_exit(sourceRoom, destRoom, (int)exitDir);
             exit.Key = -1;
@@ -148,9 +148,9 @@ namespace SmaugCS.Commands.Movement
         {
             exit.Flags = exit.Flags.RemoveBit(ExitFlags.Closed);
 
-            var room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
+            var room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (room == null)
-                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value[1]));
+                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value.ToList()[1]));
 
             foreach(var rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, exit.Keywords, ToTypes.Character);
@@ -172,9 +172,9 @@ namespace SmaugCS.Commands.Movement
         {
             exit.Flags = exit.Flags.SetBit(ExitFlags.Closed);
 
-            var room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
+            var room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (room == null)
-                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value[1]));
+                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value.ToList()[1]));
 
             foreach (var rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d closes.", rch, null, exit.Keywords, ToTypes.Character);
@@ -196,29 +196,29 @@ namespace SmaugCS.Commands.Movement
         {
             if (obj.Values.Flags.IsSet(TriggerFlags.Container))
             {
-                var room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]) ?? obj.InRoom;
+                var room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[1]) ?? obj.InRoom;
                 if (room == null)
-                    throw new InvalidDataException(string.Format("Room {0} was null", obj.Value[1]));
+                    throw new InvalidDataException(string.Format("Room {0} was null", obj.Value.ToList()[1]));
 
                 var container =
-                    ch.CurrentRoom.Contents.FirstOrDefault(foundObj => foundObj.ObjectIndex.ID == obj.Value[2]);
+                    ch.CurrentRoom.Contents.FirstOrDefault(foundObj => foundObj.ObjectIndex.ID == obj.Value.ToList()[2]);
 
                 if (container == null)
-                    throw new InvalidDataException(string.Format("Container {0} was null", obj.Value[2]));
+                    throw new InvalidDataException(string.Format("Container {0} was null", obj.Value.ToList()[2]));
 
                 if (container.ItemType != ItemTypes.Container)
                     throw new InvalidDataException(string.Format("Container {0} is not of type 'Container'", container.ID));
 
-                if (obj.Value[3].IsSet( ContainerFlags.Closeable))
-                    container.Value[1].ToggleBit( ContainerFlags.Closeable);
-                if (obj.Value[3].IsSet(ContainerFlags.PickProof))
-                    container.Value[1].ToggleBit(ContainerFlags.PickProof);
-                if (obj.Value[3].IsSet(ContainerFlags.Closed))
-                    container.Value[1].ToggleBit(ContainerFlags.Closed);
-                if (obj.Value[3].IsSet(ContainerFlags.Locked))
-                    container.Value[1].ToggleBit(ContainerFlags.Locked);
-                if (obj.Value[3].IsSet(ContainerFlags.EatKey))
-                    container.Value[1].ToggleBit(ContainerFlags.EatKey);
+                if (obj.Value.ToList()[3].IsSet( ContainerFlags.Closeable))
+                    container.Value.ToList()[1].ToggleBit(ContainerFlags.Closeable);
+                if (obj.Value.ToList()[3].IsSet(ContainerFlags.PickProof))
+                    container.Value.ToList()[1].ToggleBit(ContainerFlags.PickProof);
+                if (obj.Value.ToList()[3].IsSet(ContainerFlags.Closed))
+                    container.Value.ToList()[1].ToggleBit(ContainerFlags.Closed);
+                if (obj.Value.ToList()[3].IsSet(ContainerFlags.Locked))
+                    container.Value.ToList()[1].ToggleBit(ContainerFlags.Locked);
+                if (obj.Value.ToList()[3].IsSet(ContainerFlags.EatKey))
+                    container.Value.ToList()[1].ToggleBit(ContainerFlags.EatKey);
 
                 return true;
             }
@@ -227,16 +227,16 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireSpell(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet(TriggerFlags.Cast))
+            if (obj.Value.ToList()[0].IsSet(TriggerFlags.Cast))
             {
-                if (obj.Value[1] <= 0 || !Macros.IS_VALID_SN(obj.Value[1]))
+                if (obj.Value.ToList()[1] <= 0 || !Macros.IS_VALID_SN(obj.Value.ToList()[1]))
                 {
                     // TODO Exception, log it!
                     return true;
                 }
 
-                var minLevel = obj.Value[2] > 0 ? obj.Value[2] : ch.Level;
-                ch.ObjectCastSpell(obj.Value[1], 1.GetNumberThatIsBetween(minLevel, LevelConstants.MaxLevel), ch);
+                var minLevel = obj.Value.ToList()[2] > 0 ? obj.Value.ToList()[2] : ch.Level;
+                ch.ObjectCastSpell(obj.Value.ToList()[1], 1.GetNumberThatIsBetween(minLevel, LevelConstants.MaxLevel), ch);
                 return true;
             }
             return false;
@@ -244,9 +244,9 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireMobLoading(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet(TriggerFlags.MobileLoad))
+            if (obj.Value.ToList()[0].IsSet(TriggerFlags.MobileLoad))
             {
-                var template = DatabaseManager.Instance.MOBILETEMPLATES.Get(obj.Value[1]);
+                var template = DatabaseManager.Instance.MOBILETEMPLATES.Get(obj.Value.ToList()[1]);
                 if (template == null)
                 {
                     // TODO Exception, log it!
@@ -254,9 +254,9 @@ namespace SmaugCS.Commands.Movement
                 }
 
                 var room = ch.CurrentRoom;
-                if (obj.Value[2] > 0)
+                if (obj.Value.ToList()[2] > 0)
                 {
-                    room = DatabaseManager.Instance.ROOMS.Get(obj.Value[2]);
+                    room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
                     if (room == null)
                     {
                         // TODO Exception, log it!
@@ -305,9 +305,9 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireObjectLoading(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet((int) TriggerFlags.ObjectLoad))
+            if (obj.Value.ToList()[0].IsSet((int) TriggerFlags.ObjectLoad))
             {
-                var template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(obj.Value[1]);
+                var template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(obj.Value.ToList()[1]);
                 if (template == null)
                 {
                     // TODO Exception, log it!
@@ -315,9 +315,9 @@ namespace SmaugCS.Commands.Movement
                 }
 
                 RoomTemplate room = null;
-                if (obj.Value[2] > 0)
+                if (obj.Value.ToList()[2] > 0)
                 {
-                    room = DatabaseManager.Instance.ROOMS.Get(obj.Value[2]);
+                    room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
                     if (room == null)
                     {
                         // TODO Exception, log it!
@@ -325,7 +325,7 @@ namespace SmaugCS.Commands.Movement
                     }
                 }
 
-                var level = 0.GetNumberThatIsBetween(obj.Value[3], LevelConstants.MaxLevel);
+                var level = 0.GetNumberThatIsBetween(obj.Value.ToList()[3], LevelConstants.MaxLevel);
                 var instance = DatabaseManager.Instance.OBJECTS.Create(template, level);
                 if (instance == null)
                 {
@@ -349,7 +349,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireDeathTrigger(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet(TriggerFlags.Death))
+            if (obj.Value.ToList()[0].IsSet(TriggerFlags.Death))
             {
                 comm.act(ATTypes.AT_DEAD, "$n falls prey to a terrible death!", ch, null, null, ToTypes.Room);
                 comm.act(ATTypes.AT_DEAD, "Oopsie... you're dead!", ch, null, null, ToTypes.Character);
@@ -365,16 +365,16 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireRandom(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet(TriggerFlags.Rand4) || obj.Value[0].IsSet(TriggerFlags.Rand6))
+            if (obj.Value.ToList()[0].IsSet(TriggerFlags.Rand4) || obj.Value.ToList()[0].IsSet(TriggerFlags.Rand6))
             {
-                var room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
+                var room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
                 if (room == null)
                 {
                     // TODO Exception, log it!
                     return true;
                 }
 
-                var maxd = obj.Value[0].IsSet(TriggerFlags.Rand4) ? 3 : 5;
+                var maxd = obj.Value.ToList()[0].IsSet(TriggerFlags.Rand4) ? 3 : 5;
 
                 db.randomize_exits(room, maxd);
                 foreach (var rch in room.Persons)
@@ -389,9 +389,9 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireTeleportTrigger(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value[0].IsSet(TriggerFlags.Teleport) || obj.Value[0].IsSet(TriggerFlags.TeleportAll))
+            if (obj.Value.ToList()[0].IsSet(TriggerFlags.Teleport) || obj.Value.ToList()[0].IsSet(TriggerFlags.TeleportAll))
             {
-                var room = DatabaseManager.Instance.ROOMS.Get(obj.Value[1]);
+                var room = DatabaseManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
                 if (room == null)
                 {
                     // TODO Exception, log it!
@@ -399,14 +399,14 @@ namespace SmaugCS.Commands.Movement
                 }
 
                 var flags = 0;
-                if (obj.Value[0].IsSet(TriggerFlags.ShowRoomDescription))
+                if (obj.Value.ToList()[0].IsSet(TriggerFlags.ShowRoomDescription))
                     flags.SetBit(TeleportTriggerFlags.ShowDescription);
-                if (obj.Value[0].IsSet(TriggerFlags.TeleportAll))
+                if (obj.Value.ToList()[0].IsSet(TriggerFlags.TeleportAll))
                     flags.SetBit(TeleportTriggerFlags.TransportAll);
-                if (obj.Value[0].IsSet(TriggerFlags.TeleportPlus))
+                if (obj.Value.ToList()[0].IsSet(TriggerFlags.TeleportPlus))
                     flags.SetBit(TeleportTriggerFlags.TransportAllPlus);
 
-               act_move.teleport(ch, obj.Value[1], flags);
+               act_move.teleport(ch, obj.Value.ToList()[1], flags);
                 return true;
             }
             return false;
@@ -416,8 +416,8 @@ namespace SmaugCS.Commands.Movement
         {
             if (pull && obj.ObjectIndex.HasProg(MudProgTypes.Pull))
             {
-                if (obj.Value[0].IsSet(TriggerFlags.AutoReturn))
-                    obj.Value[0].RemoveBit(TriggerFlags.Up);
+                if (obj.Value.ToList()[0].IsSet(TriggerFlags.AutoReturn))
+                    obj.Value.ToList()[0].RemoveBit(TriggerFlags.Up);
                 mud_prog.oprog_pull_trigger(ch, obj);
                 return true;
             }
@@ -428,8 +428,8 @@ namespace SmaugCS.Commands.Movement
         {
             if (!push && obj.ObjectIndex.HasProg(MudProgTypes.Push))
             {
-                if (obj.Value[0].IsSet(TriggerFlags.AutoReturn))
-                    obj.Value[0].SetBit(TriggerFlags.Up);
+                if (obj.Value.ToList()[0].IsSet(TriggerFlags.AutoReturn))
+                    obj.Value.ToList()[0].SetBit(TriggerFlags.Up);
                 mud_prog.oprog_push_trigger(ch, obj);
                 return true;
             }

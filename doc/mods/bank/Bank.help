@@ -1,0 +1,18 @@
+0 BANK BALANCE DEPOSIT WITHDRAW~
+Syntax:  balance
+Syntax:  deposit <amount>
+Syntax:  withdraw <amount>
+ 
+The banking commands allow you to manage your funds more effeciently.
+Funds deposited in banks are safe from thieves, and are saved even if
+you die, so storing some cash in the bank is a wise precaution.
+ 
+To DEPOSIT, simply find a bank, and deposit any amount of gold you wish.
+ 
+To WITHDRAW, simply go to the bank and withdraw what you need.
+ 
+To see how much you have, type BALANCE, it will show you how much you
+have on hand, and how much is in the bank.
+ 
+Code for banks courtesy of Minas Ravenblood of The Apocalypse Theatre.
+~

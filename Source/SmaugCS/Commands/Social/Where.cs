@@ -6,7 +6,6 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.Commands

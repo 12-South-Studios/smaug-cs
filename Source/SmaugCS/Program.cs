@@ -2,7 +2,10 @@
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using log4net;
+using log4net.Config;
 using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
@@ -20,14 +23,13 @@ using SmaugCS.Logging;
 using SmaugCS.News;
 using SmaugCS.Repositories;
 using SmaugCS.Weather;
-using log4net;
 
 namespace SmaugCS
 {
     public static class Program
     {
         private static readonly ILog Logger =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static ITcpServer NetworkManager { get; private set; }
         public static IKernel Kernel { get; private set; }
@@ -73,7 +75,7 @@ namespace SmaugCS
             GlobalContext.Properties["SmaugLogName"] = string.Format("{0}\\{1}.log",
                                                                      GameConstants.LogPath, "Smaug");
 
-            log4net.Config.XmlConfigurator.Configure();
+            XmlConfigurator.Configure();
         }
 
         private static void InitializeNinjectKernel()

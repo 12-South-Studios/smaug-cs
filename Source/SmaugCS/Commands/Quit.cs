@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
@@ -15,15 +16,15 @@ namespace SmaugCS.Commands
 {
     public static class Quit
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_quit(CharacterInstance ch, string argument)
         {
-            if (Helpers.CheckFunctions.CheckIfNpc(ch, ch)) return;
+            if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
-            if (Helpers.CheckFunctions.CheckIf(ch, Helpers.HelperFunctions.IsInFightingPosition,
+            if (CheckFunctions.CheckIf(ch, HelperFunctions.IsInFightingPosition,
                 "No way! You are fighting.", new List<object> {ch}, ATTypes.AT_RED)) return;
 
-            if (Helpers.CheckFunctions.CheckIf(ch, args => ((CharacterInstance)args[0]).CurrentPosition == PositionTypes.Stunned,
+            if (CheckFunctions.CheckIf(ch, args => ((CharacterInstance)args[0]).CurrentPosition == PositionTypes.Stunned,
                 "You're not DEAD yet.", new List<object> {ch}, ATTypes.AT_BLOOD)) return;
 
             var timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
@@ -35,7 +36,7 @@ namespace SmaugCS.Commands
             }
 
             // TODO: auction
-            if (Helpers.CheckFunctions.CheckIf(ch, args =>
+            if (CheckFunctions.CheckIf(ch, args =>
             {
                 var actor = (CharacterInstance) args[0];
                 return actor.IsPKill() && actor.wimpy > (actor.MaximumHealth/2.25f);

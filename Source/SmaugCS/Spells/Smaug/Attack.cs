@@ -6,6 +6,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -26,7 +27,7 @@ namespace SmaugCS.Spells.Smaug
             if (saved)
             {
                 var spellSaveType =
-                    Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(Macros.SPELL_SAVE(skill));
+                    EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(Macros.SPELL_SAVE(skill));
                 switch (spellSaveType)
                 {
                     case SpellSaveEffectTypes.ThreeQuartersDamage:

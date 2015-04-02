@@ -4,7 +4,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
-using SmaugCS.Managers;
+using SmaugCS.Lua;
 
 namespace SmaugCS.Loaders
 {

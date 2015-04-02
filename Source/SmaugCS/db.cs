@@ -17,6 +17,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
 {
@@ -39,7 +40,7 @@ namespace SmaugCS
         public static List<string> ReservedNames = new List<string>();
         public static bool IsReservedName(string name)
         {
-            return db.ReservedNames.Any(reservedName => reservedName.EqualsIgnoreCase(name)
+            return ReservedNames.Any(reservedName => reservedName.EqualsIgnoreCase(name)
                 || (reservedName.StartsWithIgnoreCase("*")
                 && reservedName.ContainsIgnoreCase(name)));
         }
@@ -829,7 +830,7 @@ namespace SmaugCS
         {
             var newExit = new ExitData(door, "An exit")
             {
-                Direction = Realm.Library.Common.EnumerationExtensions.GetEnum<DirectionTypes>(door),
+                Direction = EnumerationExtensions.GetEnum<DirectionTypes>(door),
                 Room_vnum = room.Vnum,
                 Destination = to_room.ID,
                 Distance = 1,
@@ -850,7 +851,7 @@ namespace SmaugCS
             {
                 if (broke && reverseExit != null)
                 {
-                    room.Exits.Insert(room.Exits.First() == reverseExit ? 0 : 1, newExit);
+                    room.Exits.ToList().Insert(room.Exits.First() == reverseExit ? 0 : 1, newExit);
                     return newExit;
                 }
             }

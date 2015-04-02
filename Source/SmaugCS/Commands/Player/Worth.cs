@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Realm.Library.Common;
@@ -7,7 +8,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
-
 
 namespace SmaugCS.Commands.Player
 {
@@ -65,7 +65,7 @@ namespace SmaugCS.Commands.Player
                 new LookupLevel {Level = -1001, Text = "fiendish"}
             };
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_worth(CharacterInstance ch, string argument)
         {
             if (ch.IsNpc())

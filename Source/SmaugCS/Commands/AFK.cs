@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Helpers;
 
 namespace SmaugCS.Commands
 {
@@ -11,7 +12,7 @@ namespace SmaugCS.Commands
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_afk(CharacterInstance ch, string argument)
         {
-            if (Helpers.CheckFunctions.CheckIfNpc(ch, ch)) return;
+            if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
             if (ch.Act.IsSet(PlayerFlags.AwayFromKeyboard))
                 ch.Act.RemoveBit(PlayerFlags.AwayFromKeyboard);

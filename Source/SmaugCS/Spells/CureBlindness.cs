@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
@@ -9,7 +10,7 @@ namespace SmaugCS.Spells
 {
     public static class CureBlindness
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
         public static ReturnTypes spell_cure_blindness(int sn, int level, CharacterInstance ch, object vo)
         {
             var victim = (CharacterInstance)vo;

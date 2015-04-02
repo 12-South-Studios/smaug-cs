@@ -36,7 +36,7 @@ namespace SmaugCS.Extensions
 
         private static void GainExperienceFromSkill(SkillData skill, PlayerInstance ch, int mastery, int skillLevel)
         {
-            var gain = ch.PlayerData.Learned[(int) skill.ID] == mastery
+            var gain = ch.PlayerData.Learned.ToList().FirstOrDefault(x => x == skill.ID) == mastery
                 ? GainMasteryOfSkill(skill, ch, skillLevel)
                 : GainExperienceInSkill(ch, skillLevel);
 
@@ -82,7 +82,7 @@ namespace SmaugCS.Extensions
             else
                 learn = 1;
 
-            mastery.GetLowestOfTwoNumbers(ch.GetLearned((int) skill.ID) + learn);
+            mastery.GetLowestOfTwoNumbers((int)(ch.GetLearned(skill.ID) + learn));
         }
 
         public static void LearnFromFailure(this SkillData skill, CharacterInstance ch)
@@ -100,8 +100,10 @@ namespace SmaugCS.Extensions
 
             int mastery = skill.GetMasteryLevel(pch);
             if (pch.GetLearned((int) skill.ID) < (mastery - 1))
-                pch.PlayerData.Learned[(int) skill.ID] =
-                    mastery.GetLowestOfTwoNumbers(pch.GetLearned((int) skill.ID) + 1);
+            {
+                //pch.PlayerData.Learned.ToList().First(x => x == skill.ID) =
+                //    mastery.GetLowestOfTwoNumbers((int)(pch.GetLearned(skill.ID) + 1));
+            }
         }
 
         public static int GetMasteryLevel(this SkillData skill, PlayerInstance ch)
@@ -148,17 +150,17 @@ namespace SmaugCS.Extensions
         {
             var sn = (int) skill.ID;
 
-            if (ch.IsNpc() || ch.PlayerData.Learned[sn] <= 0)
+            if (ch.IsNpc() || ch.PlayerData.Learned.ToList()[sn] <= 0)
                 return;
 
-            var adept = skill.RaceAdept[(int)ch.CurrentRace];
-            var skillLevel = skill.RaceLevel[(int)ch.CurrentRace];
+            var adept = skill.RaceAdept.ToList()[(int)ch.CurrentRace];
+            var skillLevel = skill.RaceLevel.ToList()[(int)ch.CurrentRace];
 
             if (skillLevel == 0)
                 skillLevel = ch.Level;
-            if (ch.PlayerData.Learned[sn] < adept)
+            if (ch.PlayerData.Learned.ToList()[sn] < adept)
             {
-                var schance = ch.PlayerData.Learned[sn] + (5 * skill.difficulty);
+                var schance = ch.PlayerData.Learned.ToList()[sn] + (5 * skill.difficulty);
                 var percent = SmaugRandom.D100();
 
                 var learn = 1;
@@ -167,10 +169,10 @@ namespace SmaugCS.Extensions
                 else if (schance - percent > 25)
                     return;
 
-                ch.PlayerData.Learned[sn] = adept.GetLowestOfTwoNumbers(ch.PlayerData.Learned[sn] + learn);
+                ch.PlayerData.Learned.ToList()[sn] = adept.GetLowestOfTwoNumbers((int)ch.PlayerData.Learned.ToList()[sn] + learn);
 
                 int gain;
-                if (ch.PlayerData.Learned[sn] == adept)
+                if (ch.PlayerData.Learned.ToList()[sn] == adept)
                 {
                     gain = 1000 * skillLevel;
                    ch.SetColor(ATTypes.AT_WHITE);

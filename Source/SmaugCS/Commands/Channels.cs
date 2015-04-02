@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Realm.Library.Common;
+using SmaugCS.Common;
+using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using Realm.Library.Common;
-using SmaugCS.Communication;
-using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Commands
 {
@@ -39,7 +40,7 @@ namespace SmaugCS.Commands
 
             ch.SendTo(" %gChannels  %G:\r\n  ");
 
-            foreach(var channelType in Realm.Library.Common.EnumerationExtensions.GetValues<ChannelTypes>())
+            foreach(var channelType in EnumerationExtensions.GetValues<ChannelTypes>())
             {
                 var msg = GetChannelText(channelType, ch);
                 if (!string.IsNullOrEmpty(msg))
@@ -105,7 +106,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            var channelType = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ChannelTypes>(argument);
+            var channelType = EnumerationExtensions.GetEnumByName<ChannelTypes>(argument);
 
             var attrib = channelType.GetAttribute<ChannelAttribute>();
             if (attrib == null)

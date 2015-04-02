@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -9,8 +11,8 @@ namespace SmaugCS.Data.Templates
 {
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
-        public List<ExtraDescriptionData> ExtraDescriptions { get; set; }
-        public List<AffectData> Affects { get; set; }
+        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; private set; }
+        public ICollection<AffectData> Affects { get; private set; }
         public int ExtraFlags { get; set; }
         public string Flags { get; set; }
         public string ShortDescription { get; set; }
@@ -26,7 +28,7 @@ namespace SmaugCS.Data.Templates
         public int Layers { get; set; }
         public int Level { get; set; }
         public ItemTypes Type { get; set; }
-        public List<string> Spells { get; set; }
+        public ICollection<string> Spells { get; private set; }
 
         public ObjectTemplate(long id, string name)
             : base(id, name)
@@ -44,177 +46,15 @@ namespace SmaugCS.Data.Templates
 
         public void SetType(string type)
         {
-            Type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ItemTypes>(type);
+            Type = EnumerationExtensions.GetEnumByName<ItemTypes>(type);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray", 
+            Justification = "This function is required by LUA and cannot handle lists or parameter arrays")]
         public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
         {
-            Values.Val0 = v1;
-            Values.Val1 = v2;
-            Values.Val2 = v3;
-            Values.Val3 = v4;
-            Values.Val4 = v5;
-            Values.Val5 = v6;
-
-            if (Type == ItemTypes.Armor)
-            {
-                Values.CurrentAC = v1;
-                Values.OriginalAC = v2;
-            }
-            else if (Type == ItemTypes.Container)
-            {
-                Values.Capacity = v1;
-                Values.Flags = v2;
-                Values.KeyID = v3;
-                Values.Condition = v4;
-            }
-            else if (Type == ItemTypes.DrinkContainer)
-            {
-                Values.Capacity = v1;
-                Values.Quantity = v2;
-                Values.LiquidID = v3;
-                Values.Poison = v4;
-            }
-            else if (Type == ItemTypes.Food)
-            {
-                Values.FoodValue = v1;
-                Values.Condition = v2;
-                Values.Poison = v3;
-            }
-            else if (Type == ItemTypes.Herb)
-            {
-                Values.Charges = v1;
-                Values.HerbID = v2;
-            }
-            else if (Type == ItemTypes.Key)
-            {
-                Values.LockID = v1;
-            }
-            else if (Type == ItemTypes.KeyRing)
-            {
-                Values.Capacity = v1;
-
-                Values.Condition = v4;
-            }
-            else if (Type == ItemTypes.Lever)
-            {
-                Values.Flags = v1;
-                Values.SkillID = v2;
-                Values.ID = v3;
-                Values.Val = v4;
-            }
-            else if (Type == ItemTypes.Light)
-            {
-                Values.CurrentAC = v1;
-                Values.Lightable = v2;
-                Values.HoursLeft = v3;
-                Values.Flags = v4;
-            }
-            else if (Type == ItemTypes.Missile)
-            {
-                Values.Condition = v1;
-                Values.DamageBonus = v2;
-                Values.WeaponType = v3;
-                Values.Range = v4;
-            }
-            else if (Type == ItemTypes.Money)
-            {
-                Values.NumberOfCoins = v1;
-                Values.CoinType = v2;
-            }
-            else if (Type == ItemTypes.Pill)
-            {
-                Values.SpellLevel = v1;
-                Values.Skill1ID = v2;
-                Values.Skill2ID = v3;
-                Values.Skill3ID = v4;
-                Values.FoodValue = v5;
-            }
-            else if (Type == ItemTypes.Pipe)
-            {
-                Values.Capacity = v1;
-                Values.NumberOfDraws = v2;
-                Values.HerbSkillID = v3;
-                Values.Flags = v4;
-            }
-            else if (Type == ItemTypes.Potion)
-            {
-                Values.SpellLevel = v1;
-                Values.Skill1ID = v2;
-                Values.Skill2ID = v3;
-                Values.Skill3ID = v4;
-            }
-            else if (Type == ItemTypes.Quiver)
-            {
-                Values.Capacity = v1;
-                Values.Flags = v2;
-                Values.KeyID = v3;
-                Values.Condition = v4;
-            }
-            else if (Type == ItemTypes.Salve)
-            {
-                Values.SpellLevel = v1;
-                Values.Charges = v2;
-                Values.MaxCharges = v3;
-                Values.Delay = v4;
-                Values.Skill1ID = v5;
-                Values.Skill2ID = v6;
-            }
-            else if (Type == ItemTypes.Scroll)
-            {
-                Values.SpellLevel = v1;
-                Values.Skill1ID = v2;
-                Values.Skill2ID = v3;
-                Values.Skill3ID = v4;
-            }
-            else if (Type == ItemTypes.Staff)
-            {
-                Values.SpellLevel = v1;
-                Values.MaxCharges = v2;
-                Values.Charges = v3;
-                Values.SkillID = v4;
-            }
-            else if (Type == ItemTypes.Switch)
-            {
-                Values.Flags = v1;
-                Values.SkillID = v2;
-                Values.ID = v3;
-                Values.Val = v4;
-            }
-            else if (Type == ItemTypes.Trap)
-            {
-                Values.Charges = v1;
-                Values.Type = v2;
-                Values.Level = v3;
-                Values.Flags = v4;
-            }
-            else if (Type == ItemTypes.Treasure)
-            {
-                Values.Type = v1;
-                Values.Condition = v2;
-            }
-            else if (Type == ItemTypes.Wand)
-            {
-                Values.Level = v1;
-                Values.MaxCharges = v2;
-                Values.Charges = v3;
-                Values.SkillID = v4;
-            }
-            else if (Type == ItemTypes.Weapon)
-            {
-                Values.Condition = v1;
-                Values.NumberOfDice = v2;
-                Values.SizeOfDice = v3;
-                Values.WeaponType = v4;
-            }
-            else if (Type == ItemTypes.Furniture)
-            {
-                Values.FurniturePositionFlags = v1;
-                Values.MaxPeople = v2;
-                Values.MaxWeight = v3;
-            }
-            else
-                throw new InvalidDataException(string.Format("SetValues called with an invalid item type {0}", Type));
+            var valuesToSet = new List<int> {v1, v2, v3, v4, v5, v6};
+            ObjectTemplateValueFunctions.SetObjectTemplateValues(this, valuesToSet);
         }
 
         public void AddSpell(string spell)
@@ -227,10 +67,10 @@ namespace SmaugCS.Data.Templates
         {
             AffectData newAffect = new AffectData
             {
-                Type = Realm.Library.Common.EnumerationExtensions.GetEnum<AffectedByTypes>((int)type),
+                Type = Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type),
                 Duration = duration,
                 Modifier = modifier,
-                Location = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location),
+                Location = EnumerationExtensions.GetEnum<ApplyTypes>(location),
                 Flags = flags
             };
             Affects.Add(newAffect);

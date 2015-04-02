@@ -1,10 +1,11 @@
-﻿using SmaugCS.Data.Instances;
+﻿using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Spells
 {
-    class DispelMagic
+    public static class DispelMagic
     {
-        public static int spell_dispel_magic(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes spell_dispel_magic(int sn, int level, CharacterInstance ch, object vo)
         {
             // TODO
             return 0;

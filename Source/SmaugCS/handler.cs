@@ -16,6 +16,8 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Spells;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
 {
@@ -121,7 +123,7 @@ namespace SmaugCS
                 return null;
             }
 
-            if (!container.ExtraFlags.IsSet(ItemExtraFlags.Covering) && container.Value[1].IsSet(ContainerFlags.Closed))
+            if (!container.ExtraFlags.IsSet(ItemExtraFlags.Covering) && container.Value.ToList()[1].IsSet(ContainerFlags.Closed))
             {
                 comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, container.Name, ToTypes.Character);
                 return null;
@@ -138,7 +140,7 @@ namespace SmaugCS
 
         public static string affect_loc_name(int location)
         {
-            var type = Realm.Library.Common.EnumerationExtensions.GetEnum<ApplyTypes>(location);
+            var type = EnumerationExtensions.GetEnum<ApplyTypes>(location);
             return type.GetName();
         }
 
@@ -328,7 +330,7 @@ namespace SmaugCS
             foreach (var obj in ch.Carrying)
             {
                 if (obj.WearLocation == WearLocations.None)
-                    ch.CarryNumber += obj.GetObjectNumber();
+                    ch.CarryNumber += obj.ObjectNumber;
                 if (!obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
                     ch.CarryWeight += obj.GetWeight();
             }
@@ -477,7 +479,7 @@ namespace SmaugCS
 
                     var skill = DatabaseManager.Instance.SKILLS.Get((int) af.Type);
                     if (af.Type != AffectedByTypes.None && skill != null &&
-                        skill.SpellFunction.Value == Spells.Possess.spell_possess)
+                        skill.SpellFunction.Value == Possess.spell_possess)
                         return;
                 }
             }

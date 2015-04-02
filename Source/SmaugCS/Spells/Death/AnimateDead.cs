@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -12,12 +13,13 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells
 {
     public static class AnimateDead
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_animate_dead(int sn, int level, CharacterInstance ch, object vo)
         {
             var corpse =
@@ -85,12 +87,12 @@ namespace SmaugCS.Spells
 
             ch.CurrentRoom.AddTo(mob);
             mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
-            mob.CurrentRace = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
+            mob.CurrentRace = EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
 
             mob.MaximumHealth = template.Level*8 +
                                 SmaugRandom.Between(template.Level*template.Level/4, template.Level*template.Level);
             mob.MaximumHealth = (mob.MaximumHealth/4).GetNumberThatIsBetween(
-                (mob.MaximumHealth*corpse.Value[3])/100, ch.Level*SmaugRandom.D20(10));
+                (mob.MaximumHealth * corpse.Value.ToList()[3]) / 100, ch.Level * SmaugRandom.D20(10));
             mob.MaximumHealth = mob.MaximumHealth.GetHighestOfTwoNumbers(1);
             mob.CurrentHealth = mob.MaximumHealth;
             mob.DamageRoll = new DiceData {SizeOf = ch.Level/8};

@@ -45,8 +45,8 @@ namespace SmaugCS.Data
         public int Susceptibility { get; set; }
         public int Immunity { get; set; }
 
-        public List<ClassSkillAdeptData> Skills { get; set; }
-        public Dictionary<int, Tuple<string, string>> Titles { get; set; }
+        public ICollection<ClassSkillAdeptData> Skills { get; private set; }
+        public Dictionary<int, Tuple<string, string>> Titles { get; private set; }
  
         public ClassData(long id, string name) : base(id, name)
         {

@@ -1,29 +1,29 @@
-﻿using SmaugCS.Data.Instances;
+﻿using System.Collections.Generic;
+using SmaugCS.Common;
+using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 
 namespace SmaugCS.SpecFuns
 {
     public static class BreathAny
     {
+        private static readonly Dictionary<int, string> BreathTable = new Dictionary<int, string>
+        {
+            {0, "fire breath"},
+            {1, "lightning breath"},
+            {2, "lightning breath"},
+            {4, "acid breath"}
+        };
+
         public static bool DoSpecBreathAny(MobileInstance ch)
         {
             if (!ch.IsInCombatPosition())
                 return false;
 
-            switch (Common.SmaugRandom.Bits(3))
-            {
-                case 0:
-                    return Dragon.DoSpecDragon(ch, "fire breath");
-                case 1:
-                case 2:
-                    return Dragon.DoSpecDragon(ch, "lightning breath");
-                case 3:
-                    return BreathGas.DoSpecBreathGas(ch);
-                case 4:
-                    return Dragon.DoSpecDragon(ch, "acid breath");
-                default:
-                    return Dragon.DoSpecDragon(ch, "frost breath");
-            }
+            var bits = SmaugRandom.Bits(3);
+            return bits == 2
+                ? Dragon.DoSpecDragon(ch, "lightning breath")
+                : Dragon.DoSpecDragon(ch, BreathTable.ContainsKey(bits) ? BreathTable[bits] : "frost breath");
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 using SmaugCS.Weather;

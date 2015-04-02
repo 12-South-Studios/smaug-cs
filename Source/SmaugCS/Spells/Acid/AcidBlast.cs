@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
@@ -12,7 +13,7 @@ namespace SmaugCS.Spells
         {
             var victim = vo.CastAs<CharacterInstance>();
 
-            var damage = Common.SmaugRandom.D6(level);
+            var damage = SmaugRandom.D6(level);
 
             if (victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
                 damage /= 2;

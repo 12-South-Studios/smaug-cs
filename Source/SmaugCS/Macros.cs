@@ -139,9 +139,9 @@ namespace SmaugCS
             fight.new_dam_message(ch, victim, dam, dt, null);
         }
 
-        public static int LEARNED(CharacterInstance ch, int sn)
+        public static long LEARNED(CharacterInstance ch, int sn)
         {
-            return ch.IsNpc() ? 80 : ((PlayerInstance)ch).PlayerData.Learned[sn].GetNumberThatIsBetween(0, 101);
+            return ch.IsNpc() ? 80 : ((PlayerInstance)ch).PlayerData.Learned.ToList()[sn].GetNumberThatIsBetween(0, 101);
         }
     }
 }

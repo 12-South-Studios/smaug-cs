@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Realm.Library.Common;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Polymorph;
-using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
@@ -123,7 +120,7 @@ namespace SmaugCS
                 if (!ch.IsNpc() && ch.Level < LevelConstants.ImmortalLevel)
                 {
                     var obj = ch.GetEquippedItem(WearLocations.Light);
-                    if (obj != null && obj.ItemType == ItemTypes.Light && obj.Value[2] > 0)
+                    if (obj != null && obj.ItemType == ItemTypes.Light && obj.Value.ToList()[2] > 0)
                         ProcessLightObject(ch, obj);
 
                     if (++ch.Timer >= 12)
@@ -264,7 +261,7 @@ namespace SmaugCS
                                     if ((ch.CurrentPosition == PositionTypes.Standing ||
                                          (int) ch.CurrentPosition < (int) PositionTypes.Fighting) &&
                                         (SmaugRandom.D100() + ((100 - (val*10)) + 10) < Math.Abs(ch.MentalState)))
-                                        Commands.Movement.Sleep.do_sleep(ch, string.Empty);
+                                        Sleep.do_sleep(ch, string.Empty);
                                     else
                                         ch.SendTo(LowMentalStateTable[val]);
                                 }
@@ -278,7 +275,7 @@ namespace SmaugCS
                     }
 
                     if (ch.Timer > 24)
-                        Commands.Quit.do_quit(ch, string.Empty);
+                        Quit.do_quit(ch, string.Empty);
                     else if (ch == ch_save && GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auto))
                         save.save_char_obj(ch);
                 }
@@ -348,7 +345,7 @@ namespace SmaugCS
 
         private static void ProcessLightObject(CharacterInstance ch, ObjectInstance obj)
         {
-            if (--obj.Value[2] == 0 && ch.CurrentRoom != null)
+            if (--obj.Value.ToList()[2] == 0 && ch.CurrentRoom != null)
             {
                 ch.CurrentRoom.Light -= obj.Count;
                 if (ch.CurrentRoom.Light < 0)
@@ -453,10 +450,10 @@ namespace SmaugCS
             if (obj.ItemType == ItemTypes.PlayerCorpse)
                 timer = obj.Timer/8 + 1;
 
-            if (obj.Timer > 0 && obj.Value[2] > timer)
+            if (obj.Timer > 0 && obj.Value.ToList()[2] > timer)
             {
                 obj.Split();
-                obj.Value[2] = timer;
+                obj.Value.ToList()[2] = timer;
 
                 var buf =
                     string.Format(
@@ -468,32 +465,32 @@ namespace SmaugCS
 
         private static void UpdatePipe(ObjectInstance obj)
         {
-            if (!obj.Value[3].IsSet(PipeFlags.Lit))
+            if (!obj.Value.ToList()[3].IsSet(PipeFlags.Lit))
             {
-                obj.Value[3].RemoveBit(PipeFlags.Hot);
+                obj.Value.ToList()[3].RemoveBit(PipeFlags.Hot);
                 return;
             }
 
-            if (--obj.Value[1] <= 0)
+            if (--obj.Value.ToList()[1] <= 0)
             {
-                obj.Value[1] = 0;
-                obj.Value[3].RemoveBit(PipeFlags.Lit);
+                obj.Value.ToList()[1] = 0;
+                obj.Value.ToList()[3].RemoveBit(PipeFlags.Lit);
             }
-            else if (obj.Value[3].IsSet(PipeFlags.Hot))
-                obj.Value[3].RemoveBit(PipeFlags.Hot);
+            else if (obj.Value.ToList()[3].IsSet(PipeFlags.Hot))
+                obj.Value.ToList()[3].RemoveBit(PipeFlags.Hot);
             else
             {
-                if (obj.Value[3].IsSet(PipeFlags.GoingOut))
+                if (obj.Value.ToList()[3].IsSet(PipeFlags.GoingOut))
                 {
-                    obj.Value[3].RemoveBit(PipeFlags.Lit);
-                    obj.Value[3].RemoveBit(PipeFlags.GoingOut);
+                    obj.Value.ToList()[3].RemoveBit(PipeFlags.Lit);
+                    obj.Value.ToList()[3].RemoveBit(PipeFlags.GoingOut);
                 }
                 else
-                    obj.Value[3].RemoveBit(PipeFlags.GoingOut);
+                    obj.Value.ToList()[3].RemoveBit(PipeFlags.GoingOut);
             }
 
-            if (!obj.Value[3].IsSet(PipeFlags.Lit))
-                obj.Value[3].SetBit(PipeFlags.FullOfAsh);
+            if (!obj.Value.ToList()[3].IsSet(PipeFlags.Lit))
+                obj.Value.ToList()[3].SetBit(PipeFlags.FullOfAsh);
         }
 
         private static int _charCounter = 0;

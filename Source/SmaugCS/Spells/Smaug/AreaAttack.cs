@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -8,12 +9,13 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
 {
     public static class AreaAttack
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_area_attack(int sn, int level, CharacterInstance ch, object vo)
         {
             var skill = DatabaseManager.Instance.SKILLS.Get(sn);
@@ -62,7 +64,7 @@ namespace SmaugCS.Spells.Smaug
             int damage)
         {
             var spellSaveType =
-                Realm.Library.Common.EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(
+                EnumerationExtensions.GetEnum<SpellSaveEffectTypes>(
                     Macros.SPELL_SAVE(skill));
             switch (spellSaveType)
             {

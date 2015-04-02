@@ -3,6 +3,7 @@ using System.Text;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using Random = Realm.Library.Common.Random;
 
 namespace SmaugCS
 {
@@ -75,11 +76,11 @@ namespace SmaugCS
 
             foreach (var c in chars)
             {
-                if (Char.ToUpper(c) == 'T' && Realm.Library.Common.Random.D100(1) < (drunk * 2))
+                if (Char.ToUpper(c) == 'T' && Random.D100(1) < (drunk * 2))
                     newstring += c + 'h';
-                else if (Char.ToUpper(c) == 'X' && Realm.Library.Common.Random.D100(1) < (drunk * 2 / 5))
+                else if (Char.ToUpper(c) == 'X' && Random.D100(1) < (drunk * 2 / 5))
                     newstring += c + "csh";
-                else if (Realm.Library.Common.Random.D100(1) < (drunk * 2 / 5))
+                else if (Random.D100(1) < (drunk * 2 / 5))
                 {
 
                 }

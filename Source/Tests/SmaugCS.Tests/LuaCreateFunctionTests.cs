@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Moq;
+using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Lua;
@@ -13,6 +14,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
 using SmaugCS.Logging;
+using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
 
@@ -31,7 +33,9 @@ namespace SmaugCS.Tests
 			
 			const string dataPath = "D://Projects//SmaugCS//trunk//data";
 
-            LuaMgr = new LuaManager(mockLogManager.Object.LogWrapper, dataPath);
+            Mock<IKernel> mockKernel = new Mock<IKernel>();
+
+            LuaMgr = new LuaManager(mockKernel.Object, mockLogManager.Object.LogWrapper, dataPath);
 
 			DatabaseManager dbMgr = new DatabaseManager(mockLogManager.Object);
 
@@ -120,9 +124,9 @@ namespace SmaugCS.Tests
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Type, Is.EqualTo(ResetTypes.Mob));
-			Assert.That(result.Args[0], Is.EqualTo(100));
-			Assert.That(result.Args[1], Is.EqualTo(104));
-			Assert.That(result.Args[2], Is.EqualTo(1));
+            Assert.That(result.Args.ToList()[0], Is.EqualTo(100));
+            Assert.That(result.Args.ToList()[1], Is.EqualTo(104));
+            Assert.That(result.Args.ToList()[2], Is.EqualTo(1));
 		}
 
 		[Test]
@@ -133,8 +137,8 @@ namespace SmaugCS.Tests
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Resets.Count, Is.EqualTo(1));
-			Assert.That(result.Resets[0].Type, Is.EqualTo(ResetTypes.Give));
-			Assert.That(result.Resets[0].Args[0], Is.EqualTo(110));
+            Assert.That(result.Resets.ToList()[0].Type, Is.EqualTo(ResetTypes.Give));
+            Assert.That(result.Resets.ToList()[0].Args.ToList()[0], Is.EqualTo(110));
 		}
 		#endregion
 
@@ -366,9 +370,9 @@ namespace SmaugCS.Tests
 			sb.Append("class.this.MinimumHealthGain = 11;");
 			sb.Append("class.this.MaximumHealthGain = 15;");
 			sb.Append("class.this.BaseExperience = 1150;");
-			sb.Append("class.this:SetPrimaryAttribute(\"strength\");");
-			sb.Append("class.this:SetSecondaryAttribute(\"constitution\");");
-			sb.Append("class.this:SetDeficientAttribute(\"charisma\");");
+			sb.Append("class.this:SetPrimaryAttribute(\"permanentstrength\");");
+			sb.Append("class.this:SetSecondaryAttribute(\"permanentconstitution\");");
+			sb.Append("class.this:SetDeficientAttribute(\"permanentcharisma\");");
 			sb.Append("class.this:SetType(\"warrior\");");
 			sb.Append("class.this:AddSkill(\"aggressive style\", 20, 50);");
 			return sb.ToString();
@@ -496,8 +500,8 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
 			Assert.That(result, Is.Not.Null);
-			Assert.That(result.WhereNames[0], Is.EqualTo("<used as light>     "));
-			Assert.That(result.WhereNames[1], Is.EqualTo("<worn on finger>    "));
+            Assert.That(result.WhereNames.ToList()[0], Is.EqualTo("<used as light>     "));
+            Assert.That(result.WhereNames.ToList()[1], Is.EqualTo("<worn on finger>    "));
 		}
 
 		[Test]

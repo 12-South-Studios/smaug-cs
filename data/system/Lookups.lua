@@ -597,9 +597,111 @@ function LoadSlashBluntMessages()
 end
 LoadSlashBluntMessages();
 
--- PierceBluntMessages
--- SlashGenericMessages
--- PierceGenericMessages
+function LoadPierceBluntMessages()
+    LAddLookup("PierceBluntMessages", "misses");
+    LAddLookup("PierceBluntMessages", "barely scuffs");
+    LAddLookup("PierceBluntMessages", "scuffs");
+    LAddLookup("PierceBluntMessages", "pelts");
+    LAddLookup("PierceBluntMessages", "bruises");
+    LAddLookup("PierceBluntMessages", "strikes");
+    LAddLookup("PierceBluntMessages", "thrashes");
+    LAddLookup("PierceBluntMessages", "batters");
+    LAddLookup("PierceBluntMessages", "flogs");
+    LAddLookup("PierceBluntMessages", "pummels");
+    LAddLookup("PierceBluntMessages", "smashes");
+    LAddLookup("PierceBluntMessages", "mauls");
+    LAddLookup("PierceBluntMessages", "bludgeons");
+    LAddLookup("PierceBluntMessages", "decimates");
+    LAddLookup("PierceBluntMessages", "_shatters");
+    LAddLookup("PierceBluntMessages", "_devastates");
+    LAddLookup("PierceBluntMessages", "_maims_");
+    LAddLookup("PierceBluntMessages", "_cripples_");
+    LAddLookup("PierceBluntMessages", "MUTILATES");
+    LAddLookup("PierceBluntMessages", "DISFIGURES");
+    LAddLookup("PierceBluntMessages", "MASSACRES");
+    LAddLookup("PierceBluntMessages", "PULVERIZES");
+    LAddLookup("PierceBluntMessages", "* OBLIERATES *");
+    LAddLookup("PierceBluntMessages", "*** ANNIHILATES ***");
+end
+LoadPierceBluntMessages();
+
+function LoadSlashGenericMessages()
+    LAddLookup("SlashGenericMessages", "miss");
+    LAddLookup("SlashGenericMessages", "brush");
+    LAddLookup("SlashGenericMessages", "scratch");
+    LAddLookup("SlashGenericMessages", "graze");
+    LAddLookup("SlashGenericMessages", "nick");
+    LAddLookup("SlashGenericMessages", "jolt");
+    LAddLookup("SlashGenericMessages", "wound");
+    LAddLookup("SlashGenericMessages", "injure");
+    LAddLookup("SlashGenericMessages", "hit");
+    LAddLookup("SlashGenericMessages", "jar");
+    LAddLookup("SlashGenericMessages", "thrash");
+    LAddLookup("SlashGenericMessages", "maul");
+    LAddLookup("SlashGenericMessages", "decimate");
+    LAddLookup("SlashGenericMessages", "_traumatize_");
+    LAddLookup("SlashGenericMessages", "_devastate_");
+    LAddLookup("SlashGenericMessages", "_maim__");
+    LAddLookup("SlashGenericMessages", "_demolish_");
+    LAddLookup("SlashGenericMessages", "MUTILATE");
+    LAddLookup("SlashGenericMessages", "MASSACRE");
+    LAddLookup("SlashGenericMessages", "PULVERIZE");
+    LAddLookup("SlashGenericMessages", "DESTROY");
+    LAddLookup("SlashGenericMessages", "* OBLITERATE *");
+    LAddLookup("SlashGenericMessages", "*** ANNIHILATE ***");
+    LAddLookup("SlashGenericMessages", "**** SMITE ****");
+end
+LoadSlashGenericMessages();
+
+function LoadPierceGenericMessages()
+    LAddLookup("PierceGenericMessages", "misses");
+    LAddLookup("PierceGenericMessages", "brushes");
+    LAddLookup("PierceGenericMessages", "scratches");
+    LAddLookup("PierceGenericMessages", "grazes");
+    LAddLookup("PierceGenericMessages", "nicks");
+    LAddLookup("PierceGenericMessages", "jolts");
+    LAddLookup("PierceGenericMessages", "wounds");
+    LAddLookup("PierceGenericMessages", "injures");
+    LAddLookup("PierceGenericMessages", "hits");
+    LAddLookup("PierceGenericMessages", "jarts");
+    LAddLookup("PierceGenericMessages", "thrashes");
+    LAddLookup("PierceGenericMessages", "mauls");
+    LAddLookup("PierceGenericMessages", "decimates");
+    LAddLookup("PierceGenericMessages", "_traumatizes_");
+    LAddLookup("PierceGenericMessages", "_devastates_");
+    LAddLookup("PierceGenericMessages", "_maims_");
+    LAddLookup("PierceGenericMessages", "_demolishes_");
+    LAddLookup("PierceGenericMessages", "MUTILATES");
+    LAddLookup("PierceGenericMessages", "MASSACRES");
+    LAddLookup("PierceGenericMessages", "PULVERIZES");
+    LAddLookup("PierceGenericMessages", "DESTROYS");
+    LAddLookup("PierceGenericMessages", "* OBLITERATES *");
+    LAddLookup("PierceGenericMessages", "*** ANNIHILATES ***");
+    LAddLookup("PierceGenericMessages", "**** SMITES ****");
+end
+LoadPierceGenericMessages();
+
+function LoadAttackTable() 
+    LAddLookup("AttackTable", "hit");
+    LAddLookup("AttackTable", "slice");
+    LAddLookup("AttackTable", "stab");
+    LAddLookup("AttackTable", "slash");
+    LAddLookup("AttackTable", "whip");
+    LAddLookup("AttackTable", "claw");
+    LAddLookup("AttackTable", "blast");
+    LAddLookup("AttackTable", "pound");
+    LAddLookup("AttackTable", "crush");
+    LAddLookup("AttackTable", "grep");
+    LAddLookup("AttackTable", "bite");
+    LAddLookup("AttackTable", "pierce");
+    LAddLookup("AttackTable", "suction");
+    LAddLookup("AttackTable", "bolt");
+    LAddLookup("AttackTable", "arrow");
+    LAddLookup("AttackTable", "dart");
+    LAddLookup("AttackTable", "stone");
+    LAddLookup("AttackTable", "pea");
+end
+LoadAttackTable();
 
 function LoadTemperatureSettings()
 	LAddLookup("TemperatureSettings", "cold");
@@ -644,6 +746,31 @@ function LoadCorpseDescriptions()
 	LAddLookup("CorpseDescs", "The corpse of {0} lies here.");
 end
 LoadCorpseDescriptions();
+
+function LoadHealthConsiderMessages()
+    LAddLookup("HealthConsider", "$N looks like a feather!");
+    LAddLookup("HealthConsider", "You could kill $N with your hands tied!");
+    LAddLookup("HealthConsider", "Hey! Where'd $N go?");
+    LAddLookup("HealthConsider", "$N is a wimp.");
+    LAddLookup("HealthConsider", "$N looks weaker than you.");
+    LAddLookup("HealthConsider", "$N looks about as strong as you.");
+    LAddLookup("HealthConsider", "It would take a bit of luck...");
+    LAddLookup("HealthConsider", "It would take a lot of luck, and equipment!");
+    LAddLookup("HealthConsider", "Why don't you dig a grave for yourself first!");
+    LAddLookup("HealthConsider", "$N is built like a TANK!");
+end
+LoadHealthConsiderMessages();
+
+function LoadLevelConsiderMessages()
+    LAddLookup("LevelConsider", "You are far more experienced than $N.");
+    LAddLookup("LevelConsider", "$n is not nearly as experienced as you.");
+    LAddLookup("LevelConsider", "You are more experienced than $n.");
+    LAddLookup("LevelConsider", "You are just about as experienced as $N.");
+    LAddLookup("LevelConsider", "You are not nearly as experienced as $N.");
+    LAddLookup("LevelConsider", "$N is far more experienced than you!");
+    LAddLookup("LevelConsider", "$N would make a great teacher for you!");
+end
+LoadLevelConsiderMessages();
 
 --"\r\n&GYou have successfully received your new residence.\r\n",
 --"\r\n&GYou have successfully sold your residence.\r\n",

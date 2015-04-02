@@ -13,8 +13,7 @@ namespace SmaugCS.SpecFuns
     {
         public static bool DoSpecJanitor(CharacterInstance ch)
         {
-            if (!ch.IsAwake())
-                return false;
+            if (!ch.IsAwake()) return false;
 
             foreach (var trash in ch.CurrentRoom.Contents
                 .Where(x => x.WearFlags.IsSet(ItemWearFlags.Take))
