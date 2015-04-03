@@ -6,14 +6,14 @@
 f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 
 function LoadSpells()
-	skill = CreateSkill("reserved", "spell", 112, 95, 51);
+	skill = LCreateSkill("reserved", "spell", 112, 95, 51);
 	skill.WearOffMessage = "???";
 	skill.SpellFunctionName = "spell_null";
 	
-	skill = CreateSkill("venomshield", "unknown", 0, 0, 51);
+	skill = LCreateSkill("venomshield", "unknown", 0, 0, 51);
 	skill.SpellFunctionName = "spell_smaug";
 	
-	skill = CreateSkill("wrath of dominus", "spell", 109, 246, 51);
+	skill = LCreateSkill("wrath of dominus", "spell", 109, 246, 51);
 	skill:SetFlags("secretskill noscribe");
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 10;
@@ -21,13 +21,13 @@ function LoadSpells()
 	skill:AddAffect(CreateSmaugAffect("10", 13, "-75", -1));
 	skill:AddAffect(CreateSmaugAffect("10", 31, "-3", -1));	
 	
-	skill = CreateSkill("astral walk", "spell", 112, 90, 30);
+	skill = LCreateSkill("astral walk", "spell", 112, 90, 30);
 	skill.MinimumMana = 60;
 	skill.Rounds = 12;
 	skill.WearOffMessage = "!Astral Walk!";
 	skill.SpellFunctionName = "spell_astral_walk";
 
-	skill = CreateSkill("acetum primus", "spell", 105, 302, 37);
+	skill = LCreateSkill("acetum primus", "spell", 105, 302, 37);
 	skill.Info = 909;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 15;
@@ -36,7 +36,7 @@ function LoadSpells()
 	skill.WearOffMessage = "!WEAROFF!";
 	skill.SpellFunctionName = "spell_acetum_primus";
 	
-	skill = CreateSkill("acid blast", "spell", 109, 70, 20);
+	skill = LCreateSkill("acid blast", "spell", 109, 70, 20);
 	skill.Info = 5;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 20;
@@ -45,7 +45,7 @@ function LoadSpells()
 	skill.WearOffMessage = "!Acid Blast!";
 	skill.SpellFunctionName = "spell_acid_blast";
 	
-	skill = CreateSkill("acid breath", "spell", 109, 200, 43);
+	skill = LCreateSkill("acid breath", "spell", 109, 200, 43);
 	skill.Info = 2053;
 	skill:SetFlags("stoponfail");
 	skill:SetTargetByValue(1);
@@ -56,13 +56,13 @@ function LoadSpells()
 	skill.WearOffMessage = "!Acid Breath!";
 	skill.SpellFunctionName = "spell_acid_breath";
 	
-	skill = CreateSkill("acidmist", "spell", 0, 256, 51);
+	skill = LCreateSkill("acidmist", "spell", 0, 256, 51);
 	skill.Info = 397;
 	skill:SetTargetByValue(1);
 	skill.Rounds = 20;
 	skill.SpellFunctionName = "spell_smaug";
 	
-	skill = CreateSkill("alertness", "spell", 111, 102, 23);
+	skill = LCreateSkill("alertness", "spell", 111, 102, 23);
 	skill:SetTargetByValue(3);
 	skill.MinimumMana = 60;
 	skill.Rounds = 15;
@@ -72,7 +72,7 @@ function LoadSpells()
 	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*15", 27, "1024", -1));
 
-	skill = CreateSkill("antimagic shell", "spell", 111, 224, 17);
+	skill = LCreateSkill("antimagic shell", "spell", 111, 224, 17);
 	skill:SetTargetByValue(3);
 	skill.MinimumMana = 40;
 	skill.Rounds = 12;
@@ -82,7 +82,7 @@ function LoadSpells()
 	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*23", 27, "1048576", -1));
 	
-	skill = CreateSkill("aqua breath", "spell", 112, 236, 14);
+	skill = LCreateSkill("aqua breath", "spell", 112, 236, 14);
 	skill:SetFlags("noscribe");
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 50;
@@ -94,7 +94,7 @@ function LoadSpells()
 	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*23", 26, "aqua breath", 31));
 	
-	skill = CreateSkill("armor", "spell", 111, 1, 1);
+	skill = LCreateSkill("armor", "spell", 111, 1, 1);
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 5;
 	skill.Rounds = 12;
@@ -105,7 +105,7 @@ function LoadSpells()
 	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l*10", 17, "-20", -1));
 	
-	skill = CreateSkill("benediction", "spell", 110, 95, 19);
+	skill = LCreateSkill("benediction", "spell", 110, 95, 19);
 	skill:SetTargetByValue(2);
 	skill.Info = 840;
 	skill.MinimumMana = 15;
@@ -118,7 +118,7 @@ function LoadSpells()
 	skill.SpellFunctionName = "spell_smaug";
 	skill:AddAffect(CreateSmaugAffect("l", 26, "protection", 13));
 	
-	skill = CreateSkill("benefic aura", "spell", 111, 342, 30);
+	skill = LCreateSkill("benefic aura", "spell", 111, 342, 30);
 	skill:SetTargetByValue(3);
 	skill.MinimumMana = 50;
 	skill.Rounds = 12;
@@ -129,13 +129,13 @@ function LoadSpells()
 	skill:AddAffect(CreateSmaugAffect("l*7", 26, "protect", 13));
 	skill:AddComponent(CreateSpellComponent("V", "65", "@"));
 	
-	skill = CreateSkill("bethsaidean touch", "spell", 111, 343, 9);
+	skill = LCreateSkill("bethsaidean touch", "spell", 111, 343, 9);
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 30;
 	skill.Rounds = 12;
 	skill.SpellFunctionName = "spell_bethsaidean_touch";
 	
-	skill = CreateSkill("bless", "spell", 109, 3, 5);
+	skill = LCreateSkill("bless", "spell", 109, 3, 5);
 	skill:SetTargetByValue(2);
 	skill.MinimumMana = 5;
 	skill.Rounds = 12;
@@ -148,27 +148,27 @@ function LoadSpells()
 	skill:AddAffect(CreateSmaugAffect("1*23", 24, "-(1/8)", -1));
 	skill:AddAffect(CreateSmaugAffect("1*23", 18, "1/8", -1));
 	
-	skill = CreateSkill("blindness", "spell", 105, 4, 5);
+	skill = LCreateSkill("blindness", "spell", 105, 4, 5);
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 5;
 	skill.Rounds = 12;
 	skill.SpellFunctionName = "spell_blindness";
 	skill.WearOffMessage = "You can see again.";
 	
-	skill = CreateSkill("animate dead", "spell", 110, 231, 23);
+	skill = LCreateSkill("animate dead", "spell", 110, 231, 23);
 	skill.MinimumMana = 220;
 	skill.Rounds = 12;
 	skill.WearOffMessage = "!Animate Dead!";
 	skill.SpellFunctionName = "spell_animate_dead";
 	
-	skill = CreateSkill("black breath", "spell", 109, 403, 51);
+	skill = LCreateSkill("black breath", "spell", 109, 403, 51);
 	skill.Info = 2440.
 	skill.DamageMessage = "black breath";
 	skill.SpellFunctionName = "spell_smaug";
 	skill:SetFlags("area");
 	skill:AddAffect(CreateSmaugAffect("5", 26, "blind", 0));
 	
-	skill = CreateSkill("black fist", "spell", 109, 310, 23);
+	skill = LCreateSkill("black fist", "spell", 109, 310, 23);
 	skill.Info = 911;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 15;
@@ -177,7 +177,7 @@ function LoadSpells()
 	skill.DamageMessage = "Black Fist";
 	skill.WearOffMessage = "!WEAROFF!";
 	
-	skill = CreateSkill("black hand", "spell", 109, 301, 2);
+	skill = LCreateSkill("black hand", "spell", 109, 301, 2);
 	skill.Info = 9;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 8;
@@ -187,7 +187,7 @@ function LoadSpells()
 	skill.WearOffMessage = "!WEAROFF!";
 	skill:AddTeacher(10340);
 	
-	skill = CreateSkill("black lightning", "spell", 109, 303, 46);
+	skill = LCreateSkill("black lightning", "spell", 109, 303, 46);
 	skill.Info = 908;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 15;
@@ -196,7 +196,7 @@ function LoadSpells()
 	skill.DamageMessage = "Black Lightning";
 	skill.WearOffMessage = "!WEAROFF!";
 
-	skill = CreateSkill("blasphemy", "spell", 110, 94, 30);
+	skill = LCreateSkill("blasphemy", "spell", 110, 94, 30);
 	skill.Info = 1928;
 	skill.Flags = 38912;
 	skill:SetTargetByValue(1);
@@ -214,7 +214,7 @@ function LoadSpells()
 	skill:AddAffect(CreateSmaugAffect("l*10", 31, "-3", -1));
 	skill:AddAffect(CreateSmaugAffect("l*3", 26, "curse", -1));
 	
-	skill = CreateSkill("call lightning", "spell", 109, 6, 12);
+	skill = LCreateSkill("call lightning", "spell", 109, 6, 12);
 	skill.Info = 3;
 	skill.Flags = 6144;
 	skill.MinimumMana = 15;
@@ -223,7 +223,7 @@ function LoadSpells()
 	skill.DamageMessage = "lightning bolt";
 	skill.WearOffMessage = "!Call Lightning!";
 	
-	skill = CreateSkill("blazebane", "spell", 110, 216, 30);
+	skill = LCreateSkill("blazebane", "spell", 110, 216, 30);
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 70;
 	skill.Rounds = 15;
@@ -235,7 +235,7 @@ function LoadSpells()
 	skill.ImmuneCharacterMessage = "Mysteriously, $N was not affected by your spell.";
 	skill:AddAffect(CreateSmaugAffect("l*23", 29, "1", -1));
 
-	skill = CreateSkill("blazeward", "spell", 112, 215, 27);
+	skill = LCreateSkill("blazeward", "spell", 112, 215, 27);
 	skill:SetTargetByValue(3);
 	skill.MinimumMana = 70;
 	skill.Rounds = 15;
@@ -245,7 +245,7 @@ function LoadSpells()
 	skill.HitVictimMessage = "$N begins to radiate a yellow light which repels intense heat.";
 	skill:AddAffect(CreateSmaugAffect("l*23", 27, "1", -1));
 	
-	skill = CreateSkill("burning hands", "spell", 109, 5, 5);
+	skill = LCreateSkill("burning hands", "spell", 109, 5, 5);
 	skill:SetTargetByValue(1);
 	skill.Info = 1;
 	skill.MinimumMana = 15;
@@ -254,7 +254,7 @@ function LoadSpells()
 	skill.DamageMessage = "burning hand";
 	skill.WearOffMessage = "!Burning Hands!";
 	
-	skill = CreateSkill("cause critical", "spell", 109, 63, 9);
+	skill = LCreateSkill("cause critical", "spell", 109, 63, 9);
 	skill.Info = 4;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 20;
@@ -263,7 +263,7 @@ function LoadSpells()
 	skill.DamageMessage = "spell";
 	skill.WearOffMessage = "!Cause Critical!";
 	
-	skill = CreateSkill("cause light", "spell", 110, 62, 1);
+	skill = LCreateSkill("cause light", "spell", 110, 62, 1);
 	skill.Info = 4;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 15;
@@ -272,7 +272,7 @@ function LoadSpells()
 	skill.DamageMessage = "spell";
 	skill.WearOffMessage = "!Cause Light!";
 	
-	skill = CreateSkill("cause serious", "spell", 107, 64, 5);
+	skill = LCreateSkill("cause serious", "spell", 107, 64, 5);
 	skill.Info = 4;
 	skill:SetTargetByValue(1);
 	skill.MinimumMana = 17;
@@ -3455,38 +3455,38 @@ End
 end
 
 function LoadSkills()
-	skill = CreateSkill("aggressive style", "skill", 107, 0, 1);
+	skill = LCreateSkill("aggressive style", "skill", 107, 0, 1);
 	skill.Rounds = 4;
 	skill.WearOffMessage = "!aggressive style!";
 	skill:AddTeacher(10340);
 	skill:AddTeacher(3004);
 	
-	skill = CreateSkill("aid", "skill", 107, 0, 4);
+	skill = LCreateSkill("aid", "skill", 107, 0, 4);
 	skill.Rounds = 12;
 	skill.SkillFunctionName = "do_aid";
 	skill.WearOffMessage = "!Aid!";
 	
-	skill = CreateSkill("backstab", "skill", 112, 0, 1);
+	skill = LCreateSkill("backstab", "skill", 112, 0, 1);
 	skill.Rounds = 12;
 	skill.SkillFunctionName = "do_backstab";
 	skill.DamageMessage = "backstab";
 	skill.WearOffMessage = "!Backstab!";
 	
-	skill = CreateSkill("bash", "skill", 105, 0, 12);
+	skill = LCreateSkill("bash", "skill", 105, 0, 12);
 	skill:SetTargetByValue(1);
 	skill.rounds = 26;
 	skill.SkillFunctionName = "do_bash";
 	skill.DamageMessage = "bash";
 	skill.WearOffMessage = "!Bash!";
 	
-	skill = CreateSkill("berserk", "skill", 111, 0, 51);
+	skill = LCreateSkill("berserk", "skill", 111, 0, 51);
 	skill:SetTargetByValue(1);
 	skill.Rounds = 4;
 	skill.SkillFunctionName = "do_berserk";
 	skill.WearOffMessage = "You regain your composure...";
 	skill:AddTeacher(1);
 	
-	skill = CreateSkill("berserk style", "skill", 110, 0, 5);
+	skill = LCreateSkill("berserk style", "skill", 110, 0, 5);
 	skill.Rounds = 4;
 	skill.WearOffMessage = "!berserk style!";
 	skill:AddTeacher(10340);
@@ -4705,7 +4705,7 @@ End
 end
 
 function LoadWeapons()
-	skill = CreateSkill("bludgeons", "weapon", 0, 0, 1);
+	skill = LCreateSkill("bludgeons", "weapon", 0, 0, 1);
 	skill.WearOffMessage = "!Bludgeons!";
 	
 	CreateSkill("flexible arms", "weapon", 0, 0, 1);
