@@ -15,14 +15,14 @@ namespace SmaugCS.SpecFuns
         {
             if (!ch.IsAwake()) return false;
 
+            var shoppingBagId = GameConstants.GetVnum("ObjectShoppingBag");
+
             foreach (var trash in ch.CurrentRoom.Contents
                 .Where(x => x.WearFlags.IsSet(ItemWearFlags.Take))
-                .Where(x => !x.ExtraFlags.IsSet(ItemExtraFlags.Buried)))
+                .Where(x => !x.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                .Where(trash => trash.ItemType == ItemTypes.DrinkContainer || trash.ItemType == ItemTypes.Trash
+                    || trash.Cost < 10 || (trash.ObjectIndex.Vnum == shoppingBagId && trash.Contents.First() == null)))
             {
-                if (trash.ItemType != ItemTypes.DrinkContainer && trash.ItemType != ItemTypes.Trash && trash.Cost >= 10 &&
-                    (trash.ObjectIndex.Vnum != GameConstants.GetVnum("ObjectShoppingBag") ||
-                     trash.Contents.First() != null)) continue;
-
                 comm.act(ATTypes.AT_ACTION, "$n picks up some trash.", ch, null, null, ToTypes.Room);
                 ch.CurrentRoom.RemoveFrom(trash);
                 trash.AddTo(ch);

@@ -12,10 +12,10 @@ namespace SmaugCS.Commands
     {
         public static void do_apply(CharacterInstance ch, string argument)
         {
-            var firstArg = StringExtensions.FirstWord(argument);
+            var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Apply what?")) return;
 
-            var secondArg = StringExtensions.SecondWord(argument);
+            var secondArg = argument.SecondWord();
 
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentFighting, "You're too busy fighting...")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;

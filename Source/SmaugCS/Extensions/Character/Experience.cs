@@ -4,8 +4,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Interfaces;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character

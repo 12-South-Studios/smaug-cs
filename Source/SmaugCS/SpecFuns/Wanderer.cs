@@ -8,7 +8,6 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
@@ -27,17 +26,10 @@ namespace SmaugCS.SpecFuns
 
             if (SmaugRandom.D100() <= 50) return false;
 
-            foreach (var obj in ch.CurrentRoom.Contents)
+            foreach (var obj in ch.CurrentRoom.Contents
+                .Where(obj => obj.WearFlags.IsSet(ItemWearFlags.Take) && !obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                .Where(obj => obj.ItemType == ItemTypes.Weapon || obj.ItemType == ItemTypes.Armor || obj.ItemType == ItemTypes.Light))
             {
-                if (!obj.WearFlags.IsSet(ItemWearFlags.Take)
-                    || obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
-                    continue;
-
-                if (obj.ItemType != ItemTypes.Weapon
-                    && obj.ItemType != ItemTypes.Armor
-                    && obj.ItemType != ItemTypes.Light)
-                    continue;
-
                 obj.Split();
                 comm.act(ATTypes.AT_ACTION, "$n leans over and gets $p.", ch, obj, null, ToTypes.Room);
                 ch.CurrentRoom.RemoveFrom(obj);
@@ -69,34 +61,27 @@ namespace SmaugCS.SpecFuns
                     {
                         var door = db.number_door();
                         exit = ch.CurrentRoom.GetExitNumber(door);
-                        
-                        if (exit != null)
-                        {
-                            var destRoom = exit.GetDestination(RepositoryManager.Instance);
-                            if (destRoom != null && !exit.Flags.IsSet(ExitFlags.Closed)
-                                && !destRoom.Flags.IsSet(RoomFlags.NoDrop))
-                            {
-                                if (destRoom.Persons.OfType<MobileInstance>().Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))
-                                    return false;
-                                found = true;
-                            }
-                        }    
+
+                        if (exit == null) continue;
+                        var destRoom = exit.GetDestination(RepositoryManager.Instance);
+                        if (destRoom == null || exit.Flags.IsSet(ExitFlags.Closed) ||
+                            destRoom.Flags.IsSet(RoomFlags.NoDrop)) continue;
+                        if (destRoom.Persons.OfType<MobileInstance>().Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))
+                            return false;
+                        found = true;
                     }
                 }
 
-                if (!noExit && thrown)
+                if (noExit || !thrown) return true;
+
+                handler.set_cur_obj(trash);
+                if (trash.CauseDamageTo() != ReturnTypes.ObjectScrapped)
+                    ThrowScrapAtDirection(ch, trash, exit);
+                else
                 {
-                    handler.set_cur_obj(trash);
-                    if (trash.CauseDamageTo() != ReturnTypes.ObjectScrapped)
-                        ThrowScrapAtDirection(ch, trash, exit);
-                    else
-                    {
-                        Say.do_say(ch, "This thing is junk!");
-                        comm.act(ATTypes.AT_ACTION, "$n growls and breaks $p.", ch, trash, null, ToTypes.Room);
-                    }
-                    return true;
+                    Say.do_say(ch, "This thing is junk!");
+                    comm.act(ATTypes.AT_ACTION, "$n growls and breaks $p.", ch, trash, null, ToTypes.Room);
                 }
-
                 return true;
             }
 

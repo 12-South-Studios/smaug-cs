@@ -40,13 +40,42 @@ namespace SmaugCS.Data
 
         public void SetFlags(string flags)
         {
-            string[] words = flags.Split(new[] { ' ' });
-            foreach (string word in words)
+            var words = flags.Split(' ');
+            foreach (var word in words)
             {
-                ExitFlags flag = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>(word);
-                int flagValue = (int)flag;
+                var flag = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>(word);
+                var flagValue = (int)flag;
                 Flags = Flags.SetBit(flagValue);
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != GetType()) return false;
+
+            var objToCheck = (ExitData)obj;
+            return ((objToCheck.ID == ID) && (objToCheck.Name.Equals(Name)));
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            hash = (hash * 7) + ID.GetHashCode();
+            hash = (hash * 7) + Name.GetHashCode();
+            return hash;
+        }
+
+        public static bool operator ==(ExitData a, ExitData b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (((object)a == null) || ((object)b == null)) return false;
+            return a.ID == b.ID && a.Name.Equals(b.Name);
+        }
+
+        public static bool operator !=(ExitData a, ExitData b)
+        {
+            return !(a == b);
         }
     }
 }

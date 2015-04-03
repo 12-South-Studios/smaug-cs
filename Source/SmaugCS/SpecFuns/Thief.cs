@@ -12,12 +12,12 @@ namespace SmaugCS.SpecFuns
         public static bool DoSpecThief(MobileInstance ch)
         {
             if (ch.CurrentPosition != PositionTypes.Standing) return false;
+            if (SmaugRandom.Bits(2) != 0) return false;
 
             foreach (var victim in ch.CurrentRoom.Persons.Where(victim => victim != ch)
-                      .Where(victim => !victim.IsNpc() 
-                          && victim.Level < LevelConstants.ImmortalLevel 
-                          && SmaugRandom.Bits(2) == 0 
-                          && ch.CanSee(victim)))
+                      .Where(victim => !victim.IsNpc())
+                      .Where(victim => victim.Level < LevelConstants.ImmortalLevel)
+                      .Where(ch.CanSee))
             {
                 if (victim.IsAwake() && SmaugRandom.Between(0, ch.Level) == 0)
                 {
@@ -34,11 +34,10 @@ namespace SmaugCS.SpecFuns
 
                 ch.CurrentCoin += 9*gold/10;
                 victim.CurrentCoin -= gold;
-                if (ch.CurrentCoin > maxgold)
-                {
-                    ch.CurrentRoom.Area.BoostEconomy(ch.CurrentCoin - maxgold/2);
-                    ch.CurrentCoin = maxgold/2;
-                }
+                if (ch.CurrentCoin <= maxgold) return true;
+
+                ch.CurrentRoom.Area.BoostEconomy(ch.CurrentCoin - maxgold/2);
+                ch.CurrentCoin = maxgold/2;
                 return true;
             }
             return false;

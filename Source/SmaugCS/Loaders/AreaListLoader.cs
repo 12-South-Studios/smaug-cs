@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
+
 namespace SmaugCS.Loaders
 {
     public class AreaListLoader : ListLoader

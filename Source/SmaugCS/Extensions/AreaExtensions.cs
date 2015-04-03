@@ -9,16 +9,14 @@ namespace SmaugCS.Extensions
         {
             if (ch.IsImmortal()) return true;
             if (ch.IsNpc()) return true;
-            if (ch.Level >= area.LowSoftRange && ch.Level <= area.HighSoftRange) return true;
-            return false;
+            return ch.Level >= area.LowSoftRange && ch.Level <= area.HighSoftRange;
         }
 
         public static bool IsInHardRange(this AreaData area, CharacterInstance ch)
         {
             if (ch.IsImmortal()) return true;
             if (ch.IsNpc()) return true;
-            if (ch.Level >= area.LowHardRange && ch.Level <= area.HighHardRange) return true;
-            return false;
+            return ch.Level >= area.LowHardRange && ch.Level <= area.HighHardRange;
         }
     }
 }

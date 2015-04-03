@@ -45,14 +45,11 @@ namespace SmaugCS.SpecFuns
                 return true;
             }
 
-            if (ech != null)
-            {
-                comm.act(ATTypes.AT_YELL, "$n screams 'PROTECT THE INNOCENT!! BANZAI!!", ch, null, null, ToTypes.Room);
-                fight.multi_hit(ch, ech, Program.TYPE_UNDEFINED);
-                return true;
-            }
+            if (ech == null) return false;
 
-            return false;
+            comm.act(ATTypes.AT_YELL, "$n screams 'PROTECT THE INNOCENT!! BANZAI!!", ch, null, null, ToTypes.Room);
+            fight.multi_hit(ch, ech, Program.TYPE_UNDEFINED);
+            return true;
         }
 
         private static string GetCrime(CharacterInstance victim)

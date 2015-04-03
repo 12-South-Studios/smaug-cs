@@ -4,7 +4,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Spells

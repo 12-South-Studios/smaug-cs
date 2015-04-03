@@ -12,7 +12,6 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Deity

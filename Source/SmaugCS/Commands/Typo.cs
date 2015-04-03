@@ -23,16 +23,12 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            if (argument.EqualsIgnoreCase("clear now")
-                && ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Ascendant))
-            {
-                var path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
-                using (var proxy = new TextWriterProxy(new StreamWriter(path, false)))
-                {
-                    proxy.Write(string.Empty);
-                }
-                ch.SendTo("Typo file cleared.");
-            }
+            if (!argument.EqualsIgnoreCase("clear now") || ch.Trust < LevelConstants.GetLevel(ImmortalTypes.Ascendant))
+                return;
+            var path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
+            using (var proxy = new TextWriterProxy(new StreamWriter(path, false)))
+                proxy.Write(string.Empty);
+            ch.SendTo("Typo file cleared.");
         }
     }
 }

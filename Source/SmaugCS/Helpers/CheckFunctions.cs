@@ -26,111 +26,82 @@ namespace SmaugCS.Helpers
 
         public static bool CheckIfNpc(CharacterInstance actor, CharacterInstance chToCheck, string message = "")
         {
-            if (chToCheck.IsNpc())
-                return SendToChar(actor, message);
-            return false;
+            return chToCheck.IsNpc() && SendToChar(actor, message);
         }
 
         public static bool CheckIfEmptyString(CharacterInstance actor, string value, string message = "")
         {
-            if (string.IsNullOrEmpty(value))
-                return SendToChar(actor, message);
-            return false;
+            return string.IsNullOrEmpty(value) && SendToChar(actor, message);
         }
 
         public static bool CheckIfNullObject(CharacterInstance actor, object objToCheck, string message = "")
         {
-            if (objToCheck == null)
-                return SendToChar(actor, message);
-            return false;
+            return objToCheck == null && SendToChar(actor, message);
         }
 
         public static bool CheckIfNotNullObject(CharacterInstance actor, object objToCheck, string message = "")
         {
-            if (objToCheck != null)
-                return SendToChar(actor, message);
-            return false;
+            return objToCheck != null && SendToChar(actor, message);
         }
 
         public static bool CheckIfEquivalent(CharacterInstance actor, object firstObj, object secondObj,
             string message = "")
         {
-            if (firstObj == secondObj)
-                return SendToChar(actor, message);
-            return false;
+            return firstObj == secondObj && SendToChar(actor, message);
         }
 
         public static bool CheckIfNotEquivalent(CharacterInstance actor, object firstObj, object secondObj,
             string message = "")
         {
-            if (firstObj != secondObj)
-                return SendToChar(actor, message);
-            return false;
+            return firstObj != secondObj && SendToChar(actor, message);
         }
 
         public static bool CheckIf(CharacterInstance actor, Func<object[], bool> funcToCheck, string message = "", 
             IEnumerable<object> args = null, ATTypes atType = ATTypes.AT_PLAIN)
         {
-            if (funcToCheck.Invoke(args != null ? args.ToArray() : null))
-                return SendToChar(actor, message, atType);
-            return false;
+            return funcToCheck.Invoke(args != null ? args.ToArray() : null) && SendToChar(actor, message, atType);
         }
 
         public static bool CheckIf(CharacterInstance actor, Func<bool> funcToCheck, string message = "")
         {
-            if (funcToCheck.Invoke())
-                return SendToChar(actor, message);
-            return false;
+            return funcToCheck.Invoke() && SendToChar(actor, message);
         }
 
         public static bool CheckIfNotAuthorized(CharacterInstance actor, CharacterInstance chToCheck, string message = "")
         {
-            if (chToCheck.IsNotAuthorized())
-                return SendToChar(actor, message);
-            return false;
+            return chToCheck.IsNotAuthorized() && SendToChar(actor, message);
         }
 
         public static bool CheckIfBlind(CharacterInstance ch, string message = "")
         {
-            if (ch.IsBlind())
-                return SendToChar(ch, message);
-            return false;
+            return ch.IsBlind() && SendToChar(ch, message);
         }
 
         public static bool CheckIfSet(CharacterInstance ch, int bitField, int bitToCheck, string message = "")
         {
-            if (bitField.IsSet(bitToCheck))
-                return SendToChar(ch, message);
-            return false;
+            return bitField.IsSet(bitToCheck) && SendToChar(ch, message);
         }
 
         public static bool CheckIfSet(CharacterInstance ch, int bitField, Enum bitToCheck, string message = "")
         {
-            if (bitField.IsSet(bitToCheck))
-                return SendToChar(ch, message);
-            return false;
+            return bitField.IsSet(bitToCheck) && SendToChar(ch, message);
         }
 
         public static bool CheckIfNotSet(CharacterInstance ch, int bitField, int bitToCheck, string message = "")
         {
-            if (!bitField.IsSet(bitToCheck))
-                return SendToChar(ch, message);
-            return false;
+            return !bitField.IsSet(bitToCheck) && SendToChar(ch, message);
         }
 
         public static bool CheckIfNotSet(CharacterInstance ch, int bitField, Enum bitToCheck, string message = "")
         {
-            if (!bitField.IsSet(bitToCheck))
-                return SendToChar(ch, message);
-            return false;
+            return !bitField.IsSet(bitToCheck) && SendToChar(ch, message);
         }
 
         public static bool CheckIfTrue(CharacterInstance ch, bool value, string message = "")
         {
-            if (value)
-                return SendToChar(ch, message);
-            return false;
+            return value && SendToChar(ch, message);
         }
+
         #endregion
 
         #region Check Casting Functions
@@ -156,24 +127,18 @@ namespace SmaugCS.Helpers
             CastingFunctionType castingType = CastingFunctionType.Failed, CharacterInstance victim = null,
             ObjectInstance obj = null)
         {
-            if (value)
-            {
-                ExecuteCastingType(castingType, skill, ch, victim, obj);
-                return true;
-            }
-            return false;
+            if (!value) return false;
+            ExecuteCastingType(castingType, skill, ch, victim, obj);
+            return true;
         }
 
         public static bool CheckIfNullObjectCasting(object objToCheck, SkillData skill, CharacterInstance ch,
             CastingFunctionType castingType = CastingFunctionType.Failed, CharacterInstance victim = null,
             ObjectInstance obj = null)
         {
-            if (objToCheck == null)
-            {
-                ExecuteCastingType(castingType, skill, ch, victim, obj);
-                return true;
-            }
-            return false;
+            if (objToCheck != null) return false;
+            ExecuteCastingType(castingType, skill, ch, victim, obj);
+            return true;
         }
         #endregion
     }

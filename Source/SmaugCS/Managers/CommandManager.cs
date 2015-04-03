@@ -4,7 +4,6 @@ using SmaugCS.Constants;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Interfaces;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Managers

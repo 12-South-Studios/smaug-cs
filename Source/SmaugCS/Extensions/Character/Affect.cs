@@ -9,7 +9,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character

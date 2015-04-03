@@ -63,15 +63,13 @@ namespace SmaugCS.Extensions.Objects
 
         private static ReturnTypes CauseDamageToWeapon(ObjectInstance obj, CharacterInstance ch)
         {
-            if (--obj.Values.Condition <= 0)
+            if (--obj.Values.Condition > 0) return ReturnTypes.None;
+            if (!ch.IsPKill() && !ch.IsInArena())
             {
-                if (!ch.IsPKill() && !ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-                obj.Values.Condition = 1;
+                ObjectFactory.CreateScraps(obj);
+                return ReturnTypes.ObjectScrapped;
             }
+            obj.Values.Condition = 1;
             return ReturnTypes.None;
         }
 
@@ -99,29 +97,25 @@ namespace SmaugCS.Extensions.Objects
 
         private static ReturnTypes CauseDamageToLight(ObjectInstance obj, CharacterInstance ch)
         {
-            if (--obj.Values.CurrentAC <= 0)
+            if (--obj.Values.CurrentAC > 0) return ReturnTypes.None;
+            if (!ch.IsInArena())
             {
-                if (!ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-                obj.Values.CurrentAC = 1;
+                ObjectFactory.CreateScraps(obj);
+                return ReturnTypes.ObjectScrapped;
             }
+            obj.Values.CurrentAC = 1;
             return ReturnTypes.None;
         }
 
         private static ReturnTypes CauseDamageToContainer(ObjectInstance obj, CharacterInstance ch)
         {
-            if (--obj.Values.Condition <= 0)
+            if (--obj.Values.Condition > 0) return ReturnTypes.None;
+            if (!ch.IsInArena())
             {
-                if (!ch.IsInArena())
-                {
-                    ObjectFactory.CreateScraps(obj);
-                    return ReturnTypes.ObjectScrapped;
-                }
-                obj.Values.Condition = 1;
+                ObjectFactory.CreateScraps(obj);
+                return ReturnTypes.ObjectScrapped;
             }
+            obj.Values.Condition = 1;
             return ReturnTypes.None;
         }
     }

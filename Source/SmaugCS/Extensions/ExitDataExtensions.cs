@@ -5,8 +5,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
-using SmaugCS.Interfaces;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions
@@ -17,7 +15,7 @@ namespace SmaugCS.Extensions
         {
             var room = RepositoryManager.Instance.ROOMS.Get(exit.Room_vnum);
             room.Exits.Remove(exit);
-            ExitData rexit = exit.GetReverse();
+            var rexit = exit.GetReverse();
             rexit.Reverse = 0;
         }
 
@@ -25,9 +23,7 @@ namespace SmaugCS.Extensions
         {
             if (exit.Reverse == 0)
                 return null;
-            if (exit.GetDestination() == null)
-                return null;
-            return exit.GetDestination().GetExit((int)exit.Reverse);
+            return exit.GetDestination() == null ? null : exit.GetDestination().GetExit((int)exit.Reverse);
         }
 
         public static RoomTemplate GetDestination(this ExitData exit, IRepositoryManager dbManager = null)
@@ -46,7 +42,7 @@ namespace SmaugCS.Extensions
         {
             exit.Flags = exit.Flags.SetBit(flag);
 
-            ExitData reverseExit = exit.GetReverse();
+            var reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit != exit)
                 reverseExit.Flags = reverseExit.Flags.SetBit(flag);
         }
@@ -60,7 +56,7 @@ namespace SmaugCS.Extensions
         {
             exit.Flags = exit.Flags.RemoveBit(flag);
 
-            ExitData reverseExit = exit.GetReverse();
+            var reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit != exit)
                 reverseExit.Flags = reverseExit.Flags.RemoveBit(flag);
         }
@@ -74,7 +70,7 @@ namespace SmaugCS.Extensions
         {
             exit.Flags = exit.Flags.ToggleBit(flag);
 
-            ExitData reverseExit = exit.GetReverse();
+            var reverseExit = exit.GetReverse();
             if (reverseExit != null && reverseExit != exit)
                 reverseExit.Flags = reverseExit.Flags.ToggleBit(flag);
         }

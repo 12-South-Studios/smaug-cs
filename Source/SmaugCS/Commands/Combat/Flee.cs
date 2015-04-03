@@ -9,7 +9,6 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Combat

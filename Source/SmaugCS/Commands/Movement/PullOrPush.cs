@@ -10,7 +10,6 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement

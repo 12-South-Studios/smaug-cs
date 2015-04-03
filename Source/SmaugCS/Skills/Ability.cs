@@ -10,9 +10,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
-using SmaugCS.Interfaces;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Skills

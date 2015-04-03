@@ -13,8 +13,8 @@ namespace SmaugCS.SpecFuns
         private static string _path;
         private static int _index;
 
-        private const string openPath = "W3a3003b33000c111d0d111Oe333333Oe22c222112212111a1S.";
-        private const string closePath = "W3a3003b33000c111d0d111CE333333CE22c222112212111a1S.";
+        private const string OpenPath = "W3a3003b33000c111d0d111Oe333333Oe22c222112212111a1S.";
+        private const string ClosePath = "W3a3003b33000c111d0d111CE333333CE22c222112212111a1S.";
         
         public static bool DoSpecMayor(MobileInstance ch)
         {
@@ -26,7 +26,7 @@ namespace SmaugCS.SpecFuns
                     _index = 0;
                 }
 
-                _path = (GameManager.Instance.GameTime.Hour == 6 ? openPath : (GameManager.Instance.GameTime.Hour == 20 ? closePath : string.Empty));
+                _path = (GameManager.Instance.GameTime.Hour == 6 ? OpenPath : (GameManager.Instance.GameTime.Hour == 20 ? ClosePath : string.Empty));
             }
 
             if (ch.CurrentFighting != null)

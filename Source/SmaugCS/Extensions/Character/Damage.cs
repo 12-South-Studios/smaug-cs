@@ -11,7 +11,6 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 

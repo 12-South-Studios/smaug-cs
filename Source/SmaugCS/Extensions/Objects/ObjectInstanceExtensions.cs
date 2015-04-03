@@ -195,12 +195,11 @@ namespace SmaugCS.Extensions.Objects
 
             obj.ObjectIndex.Count -= obj.Count;
 
-            if (obj == handler.CurrentObject)
-            {
-                handler.CurrentObjectExtracted = true;
-                if (handler.GlobalObjectCode == ReturnTypes.None)
-                    handler.GlobalObjectCode = ReturnTypes.ObjectExtracted;
-            }
+            if (obj != handler.CurrentObject) return;
+
+            handler.CurrentObjectExtracted = true;
+            if (handler.GlobalObjectCode == ReturnTypes.None)
+                handler.GlobalObjectCode = ReturnTypes.ObjectExtracted;
         }
 
         public static bool IsTrapped(this ObjectInstance obj)
@@ -241,20 +240,14 @@ namespace SmaugCS.Extensions.Objects
                     {
                         if (ch.IsNpc())
                         {
-                            if (obj.MobEq[i, j] == obj)
-                            {
-                                skipGroup = true;
-                                break;
-                            }
+                            if (obj.MobEq[i, j] != obj) continue;
+                            skipGroup = true;
+                            break;
                         }
-                        else
-                        {
-                            if (obj.PlayerEq[i, j] == obj)
-                            {
-                                skipGroup = true;
-                                break;
-                            }
-                        }
+
+                        if (obj.PlayerEq[i, j] != obj) continue;
+                        skipGroup = true;
+                        break;
                     }
                 }
             }
@@ -269,11 +262,9 @@ namespace SmaugCS.Extensions.Objects
                 foreach (var carriedObj in ch.Carrying)
                 {
                     groupObj = carriedObj.GroupWith(obj);
-                    if (groupObj == carriedObj)
-                    {
-                        grouped = true;
-                        break;
-                    }
+                    if (groupObj != carriedObj) continue;
+                    grouped = true;
+                    break;
                 }
             }
 
@@ -297,13 +288,11 @@ namespace SmaugCS.Extensions.Objects
                             foundObj = carriedObj;
                             break;
                         }
-                        if (obj.Level == carriedObj.Level
-                            && obj.ShortDescription.Equals(carriedObj.ShortDescription))
-                        {
-                            ch.Carrying.ToList().Insert(0, carriedObj);
-                            foundObj = carriedObj;
-                            break;
-                        }
+                        if (obj.Level != carriedObj.Level || !obj.ShortDescription.Equals(carriedObj.ShortDescription))
+                            continue;
+                        ch.Carrying.ToList().Insert(0, carriedObj);
+                        foundObj = carriedObj;
+                        break;
                     }
 
                     if (foundObj == null)

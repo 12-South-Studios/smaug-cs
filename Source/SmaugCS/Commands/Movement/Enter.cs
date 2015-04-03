@@ -4,7 +4,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement

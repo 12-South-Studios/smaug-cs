@@ -6,7 +6,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
 using SmaugCS.Spells.Smaug;

@@ -78,7 +78,7 @@ namespace SmaugCS.Commands
                 string.Format("{0} has quit (Room {1}).", ch.Name, ch.CurrentRoom != null ? ch.CurrentRoom.Vnum : -1),
                 LogTypes.Info, ch.Trust);
 
-            CharacterInstanceExtensions.Extract(ch, true);
+            ch.Extract(true);
         }
     }
 }

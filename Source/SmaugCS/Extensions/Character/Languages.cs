@@ -1,7 +1,6 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Language;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
