@@ -28,7 +28,7 @@ namespace SmaugCS.Loaders
             if (string.IsNullOrEmpty(classes))
                 throw new EntryNotFoundException("Classes not found in app.config");
 
-            IEnumerable<string> classList = classes.Split(new[] { ',' });
+            IEnumerable<string> classList = classes.Split(',');
             foreach (var className in classList)
             {
                 LuaManager.Instance.DoLuaScript(path + "\\" + className + ".lua");

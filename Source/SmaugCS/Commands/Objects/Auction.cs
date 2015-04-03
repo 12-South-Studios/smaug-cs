@@ -12,6 +12,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Objects
 {
@@ -250,21 +251,21 @@ namespace SmaugCS.Commands.Objects
             SkillData skill;
             if (obj.Value.ToList()[1] >= 0)
             {
-                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[1]);
+                skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[1]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
 
             if (obj.Value.ToList()[2] >= 0)
             {
-                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[2]);
+                skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[2]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
 
             if (obj.Value.ToList()[3] >= 0)
             {
-                skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
+                skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }
@@ -277,7 +278,7 @@ namespace SmaugCS.Commands.Objects
 
             if (obj.Value.ToList()[3] >= 0)
             {
-                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
+                var skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
                     ch.SendTo(string.Format(" '{0}'", skill.Name));
             }

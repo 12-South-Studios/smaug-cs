@@ -6,6 +6,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Loaders
 {
@@ -55,7 +56,7 @@ namespace SmaugCS.Loaders
                     throw new InvalidDataException(string.Format("Watch PlayerSite {0} is too short", watch.PlayerSite));
 
                 //// Check for command watches
-                foreach (var command in DatabaseManager.Instance.COMMANDS.Values
+                foreach (var command in RepositoryManager.Instance.COMMANDS.Values
                     .Where(command => command.Name.EqualsIgnoreCase(watch.TargetName)))
                 {
                     command.Flags.SetBit((int)CommandFlags.Watch);

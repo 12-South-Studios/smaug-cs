@@ -10,6 +10,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -29,7 +30,7 @@ namespace SmaugCS.Extensions.Character
                 if ((int) affect.Location%Program.REVERSE_APPLY == (int) ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    var skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
+                    var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         throw new InvalidDataException(string.Format("RecurringSpell with bad SN {0}", mod));
@@ -196,7 +197,7 @@ namespace SmaugCS.Extensions.Character
                         return;
 
                     mod = Math.Abs(mod);
-                    var skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
+                    var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
@@ -213,7 +214,7 @@ namespace SmaugCS.Extensions.Character
                     break;
 
                 case (int)ApplyTypes.Track:
-                    ch.ModifySkill((int)DatabaseManager.Instance.GetEntity<SkillData>("track").Type, mod, add);
+                    ch.ModifySkill((int)RepositoryManager.Instance.GetEntity<SkillData>("track").Type, mod, add);
                     break;
 
                 // TODO Add the rest
@@ -245,7 +246,7 @@ namespace SmaugCS.Extensions.Character
             if ((int) affect.Location%Program.REVERSE_APPLY == (int) ApplyTypes.RecurringSpell)
             {
                 mod = Math.Abs(mod);
-                var skill = DatabaseManager.Instance.SKILLS.Values.ToList()[mod];
+                var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
 
                 if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     ch.AffectedBy.SetBit(AffectedByTypes.RecurringSpell);
@@ -348,12 +349,12 @@ namespace SmaugCS.Extensions.Character
             ch.NoImmunity = 0;
             ch.NoSusceptibility = 0;
 
-            var myRace = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+            var myRace = RepositoryManager.Instance.GetRace(ch.CurrentRace);
             //ch.AffectedBy.SetBits(myRace.AffectedBy);
             ch.Resistance.SetBit(myRace.Resistance);
             ch.Susceptibility.SetBit(myRace.Susceptibility);
 
-            var myClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+            var myClass = RepositoryManager.Instance.GetClass(ch.CurrentClass);
             //ch.AffectedBy.SetBits(myClass.AffectedBy);
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);

@@ -11,11 +11,11 @@ namespace SmaugCS.Managers
 {
     public sealed class LookupManager : ILookupManager
     {
-        private static Dictionary<string, List<string>> LookupTable;
+        private static Dictionary<string, List<string>> _lookupTable;
          
         public LookupManager()
         {
-            LookupTable = new Dictionary<string, List<string>>();
+            _lookupTable = new Dictionary<string, List<string>>();
             CommandLookup = new CommandLookupTable();
             SkillLookup = new SkillLookupTable();
             SpellLookup = new SpellLookupTable();
@@ -38,25 +38,25 @@ namespace SmaugCS.Managers
 
         public void AddLookup(string table, string entry)
         {
-            if (!LookupTable.ContainsKey(table.ToLower()))
-                LookupTable[table.ToLower()] = new List<string>();
+            if (!_lookupTable.ContainsKey(table.ToLower()))
+                _lookupTable[table.ToLower()] = new List<string>();
 
-            var lookups = LookupTable[table.ToLower()];
+            var lookups = _lookupTable[table.ToLower()];
             if (!lookups.Contains(entry))
                 lookups.Add(entry);
         }
 
         public void RemoveLookup(string table, string entry)
         {
-            if (LookupTable.ContainsKey(table.ToLower()) && LookupTable[table.ToLower()].Contains(entry))
-                LookupTable[table.ToLower()].Remove(entry);
+            if (_lookupTable.ContainsKey(table.ToLower()) && _lookupTable[table.ToLower()].Contains(entry))
+                _lookupTable[table.ToLower()].Remove(entry);
         }
 
         public bool HasLookup(string table, string entry)
         {
-            if (LookupTable.ContainsKey(table.ToLower()))
+            if (_lookupTable.ContainsKey(table.ToLower()))
             {
-                if (LookupTable[table.ToLower()].Contains(entry))
+                if (_lookupTable[table.ToLower()].Contains(entry))
                     return true;
             }
             return false;
@@ -64,7 +64,7 @@ namespace SmaugCS.Managers
 
         public IEnumerable<string> GetLookups(string table)
         {
-            return LookupTable.ContainsKey(table.ToLower()) ? LookupTable[table.ToLower()] : new List<string>();
+            return _lookupTable.ContainsKey(table.ToLower()) ? _lookupTable[table.ToLower()] : new List<string>();
         }
 
         public string GetLookup(string table, int index)

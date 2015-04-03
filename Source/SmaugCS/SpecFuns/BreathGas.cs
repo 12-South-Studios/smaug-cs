@@ -2,6 +2,7 @@
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
 {
@@ -11,7 +12,7 @@ namespace SmaugCS.SpecFuns
         {
             if (!ch.IsInCombatPosition()) return false;
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>("gas breath");
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>("gas breath");
             if (skill == null || skill.SpellFunction == null) return false;
 
             skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, null);

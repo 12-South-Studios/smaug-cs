@@ -6,6 +6,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Deity
 {
@@ -26,7 +27,7 @@ namespace SmaugCS.Commands.Deity
                 return;
             }
 
-            var deity = DatabaseManager.Instance.GetEntity<DeityData>(firstArg);
+            var deity = RepositoryManager.Instance.GetEntity<DeityData>(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, deity, "No such deity holds weight on this world.")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ((PlayerInstance)ch).PlayerData.CurrentDeity,
                 "You are already devoted to a deity.")) return;

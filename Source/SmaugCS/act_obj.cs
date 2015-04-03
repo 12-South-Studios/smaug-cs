@@ -10,6 +10,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS
 {
@@ -97,7 +98,7 @@ namespace SmaugCS
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom)
                 && (container == null || container.CarriedBy == null))
             {
-                foreach (var clan in DatabaseManager.Instance.CLANS.Values)
+                foreach (var clan in RepositoryManager.Instance.CLANS.Values)
                 {
                     //if (clan.StoreRoom == ch.CurrentRoom.Vnum)
                     //     clan.SaveStoreroom(ch);

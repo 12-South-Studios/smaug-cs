@@ -9,6 +9,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Objects
 {
@@ -56,7 +57,7 @@ namespace SmaugCS.Commands.Objects
                         continue;
                 }
   
-                var skill = DatabaseManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
+                var skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 switch (skill.Target)
                 {
                     case TargetTypes.Ignore:

@@ -68,7 +68,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -172,7 +172,6 @@
     <Compile Include="Extensions\GameManagerExtensions.cs" />
     <Compile Include="Exceptions\ObjectNotCarriedByCharacterException.cs" />
     <Compile Include="Exceptions\ObjectAlreadyExtractedException.cs" />
-    <Compile Include="Interfaces\IDatabaseManager.cs" />
     <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
     <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
     <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
@@ -183,7 +182,6 @@
     <Compile Include="LuaHelpers\LuaMudProgFunctions.cs" />
     <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
     <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
-    <Compile Include="Repositories\TypeMapAttribute.cs" />
     <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
     <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
     <Compile Include="Behavior\Shopkeeper\Interact.cs" />
@@ -214,12 +212,9 @@
     <Compile Include="ExpressionTableInitializer.cs" />
     <Compile Include="Extensions\AreaExtensions.cs" />
     <Compile Include="Extensions\Character\CharacterInstanceExtensions.cs" />
-    <Compile Include="Extensions\DatabaseManagerExtensions.cs" />
     <Compile Include="Extensions\ExitDataExtensions.cs" />
     <Compile Include="Extensions\LogManagerExtensions.cs" />
-    <Compile Include="Extensions\MobTemplateExtensions.cs" />
     <Compile Include="Extensions\Objects\ObjectInstanceExtensions.cs" />
-    <Compile Include="Extensions\Objects\ObjectTemplateExtensions.cs" />
     <Compile Include="Extensions\RoomTemplateExtensions.cs" />
     <Compile Include="Commands\Apply.cs" />
     <Compile Include="Commands\MudProgs\MPAdvance.cs" />
@@ -301,12 +296,10 @@
     <Compile Include="Managers\CalendarManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Interfaces\ICalendarManager.cs" />
-    <Compile Include="Repositories\RepositoryTypes.cs" />
     <Compile Include="MudProgs\MobileProgs\DeathProg.cs" />
     <Compile Include="MudProgs\MobileProgs\FightProg.cs" />
     <Compile Include="MudProgs\MobileProgs\HitPercentProg.cs" />
     <Compile Include="MudProgs\MobileProgs\SpeechProg.cs" />
-    <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -696,12 +689,6 @@
     <Compile Include="Commands\Social\Where.cs" />
     <Compile Include="Commands\Social\Who.cs" />
     <Compile Include="Commands\WizList.cs" />
-    <Compile Include="Repositories\AreaRepository.cs" />
-    <Compile Include="Repositories\CharacterRepository.cs" />
-    <Compile Include="Repositories\MobileRepository.cs" />
-    <Compile Include="Repositories\ObjectRepository.cs" />
-    <Compile Include="Repositories\ObjInstanceRepository.cs" />
-    <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Loaders\AreaListLoader.cs" />
     <Compile Include="Loaders\ClanLoader.cs" />
     <Compile Include="Loaders\Incomplete\CommentLoader.cs" />
@@ -819,7 +806,6 @@
     <Compile Include="Loaders\Incomplete\HelpAreaLoader.cs" />
     <Compile Include="Loaders\Obsolete\SmaugAreaLoader.cs" />
     <Compile Include="Managers\LookupManager.cs" />
-    <Compile Include="Managers\DatabaseManager.cs" />
     <Compile Include="Objects\BFSQueueData.cs" />
     <Compile Include="track.cs" />
     <Compile Include="Extensions\Player\Comm.cs" />
@@ -1023,6 +1009,10 @@
     <ProjectReference Include="..\SmaugCS.News\SmaugCS.News.csproj">
       <Project>{6f43c8d6-b168-4e77-b12a-ebb49dce8019}</Project>
       <Name>SmaugCS.News</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Repository\SmaugCS.Repository.csproj">
+      <Project>{97267dbc-9414-497b-ade8-9e3437da6a7f}</Project>
+      <Name>SmaugCS.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Time\SmaugCS.Time.csproj">
       <Project>{f68d623f-3c9d-4dee-9c5c-d9673e3aba9f}</Project>

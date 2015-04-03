@@ -13,6 +13,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using SmaugCS.Weather;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
@@ -316,7 +317,7 @@ namespace SmaugCS
 
                     if (!victim.IsNpc())
                     {
-                        var race = DatabaseManager.Instance.GetRace(victim.CurrentRace);
+                        var race = RepositoryManager.Instance.GetRace(victim.CurrentRace);
                         ch.SendTo(race.WhereNames.ToList()[i]);
                     }
                     else
@@ -337,11 +338,11 @@ namespace SmaugCS
                     ch.Printf("\r\n%s ", victim.Name);
 
                 ch.Printf("is a level %d %s %s.\r\n", victim.Level,
-                                DatabaseManager.Instance.GetRace(victim.CurrentRace).Name,
-                                DatabaseManager.Instance.GetClass(victim.CurrentClass).Name);
+                                RepositoryManager.Instance.GetRace(victim.CurrentRace).Name,
+                                RepositoryManager.Instance.GetClass(victim.CurrentClass).Name);
             }
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>("peek");
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>("peek");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'peek' not found");
 

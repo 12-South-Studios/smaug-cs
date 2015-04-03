@@ -12,6 +12,7 @@ using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Objects;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Managers
 {
@@ -135,7 +136,7 @@ namespace SmaugCS.Managers
             act_wiz.echo_to_all(ATTypes.AT_CYAN, "Freshwater bodies everywhere have frozen over.\r\n", (int)EchoTypes.All);
 
             _winterFreeze = true;
-            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.DeepWater
                     || x.SectorType == SectorTypes.ShallowWater))
             {
@@ -152,7 +153,7 @@ namespace SmaugCS.Managers
                                 (int) EchoTypes.All);
 
             _winterFreeze = true;
-            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.Ice
                     && x.SectorType != SectorTypes.Unknown))
             {
@@ -185,7 +186,7 @@ namespace SmaugCS.Managers
             if (gameTime.Season == SeasonTypes.Winter && !_winterFreeze)
             {
                 _winterFreeze = true;
-                foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+                foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                     .Where(x => x.SectorType == SectorTypes.DeepWater
                         || x.SectorType == SectorTypes.ShallowWater))
                 {

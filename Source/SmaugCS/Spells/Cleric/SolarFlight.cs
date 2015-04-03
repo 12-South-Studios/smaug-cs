@@ -9,6 +9,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using SmaugCS.Weather;
 
 namespace SmaugCS.Spells
@@ -18,7 +19,7 @@ namespace SmaugCS.Spells
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_solar_flight(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
             var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
             var victim = ch.GetCharacterInWorld(Cast.TargetName);

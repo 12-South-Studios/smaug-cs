@@ -4,6 +4,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS
 {
@@ -102,7 +103,7 @@ namespace SmaugCS
                 return ch.CurrentClass.ToString();
             if (!ch.IsNpc())
             {
-                var cls = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+                var cls = RepositoryManager.Instance.GetClass(ch.CurrentClass);
                 return cls.Name;
             }
             return "Unknown";
@@ -114,7 +115,7 @@ namespace SmaugCS
                 return ch.CurrentRace.ToString();
             if (!ch.IsNpc())
             {
-                var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
                 return race.Name;
             }
             return "Unknown";

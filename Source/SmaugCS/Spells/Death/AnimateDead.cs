@@ -13,6 +13,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells
@@ -27,16 +28,16 @@ namespace SmaugCS.Spells
             if (CheckFunctions.CheckIfNullObject(ch, corpse, "You cannot find a suitable corpse here"))
                 return ReturnTypes.SpellFailed;
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
-            var template = DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
+            var template = RepositoryManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
             if (template == null)
                 throw new ObjectNotFoundException("Animated Corpse VNUM template was not found.");
 
             // TODO Get the template using the corpse cost?  huh?
 
             if (CheckFunctions.CheckIfEquivalent(ch, template,
-                DatabaseManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY),
+                RepositoryManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY),
                 "You can't animate the corpse of a deity's Avatar.")) return ReturnTypes.SpellFailed;
 
             if (!ch.IsNpc())
@@ -82,7 +83,7 @@ namespace SmaugCS.Spells
 
         private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobTemplate template, ObjectInstance corpse)
         {
-            var mob = DatabaseManager.Instance.CHARACTERS.Create(template, 0,
+            var mob = RepositoryManager.Instance.CHARACTERS.Create(template, 0,
                 string.Format("animated corpse {0}", template.PlayerName));
 
             ch.CurrentRoom.AddTo(mob);

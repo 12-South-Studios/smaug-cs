@@ -17,6 +17,7 @@ using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS
 {
@@ -26,7 +27,7 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
             {
                 if (ch is PlayerInstance)
                     ((PlayerInstance)ch).ProcessUpdate();
@@ -41,7 +42,7 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
             {
                 if (ch.IsNpc() || ch.IsImmortal())
                     continue;
@@ -50,7 +51,7 @@ namespace SmaugCS
 
                 if (ch.CurrentRoom != null && ch.Level > 3)
                 {
-                    var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                    var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     var attrib = ch.CurrentRoom.SectorType.GetAttribute<ThirstAttribute>();
@@ -67,7 +68,7 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK)
 
-            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
             {
                 handler.CurrentCharacter = ch;
 
@@ -158,7 +159,7 @@ namespace SmaugCS
                     ch.CheckAlignment();
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
-                    var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+                    var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     if (ch.IsVampire() && ch.Level >= 10)
@@ -178,9 +179,9 @@ namespace SmaugCS
                 {
                     RoomTemplate location;
                     if (((PlayerInstance)ch).PlayerData.Clan != null)
-                        location = DatabaseManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
+                        location = RepositoryManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
                     else
-                        location = DatabaseManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
+                        location = RepositoryManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
 
                     if (location == null)
                         location = ch.CurrentRoom;
@@ -203,7 +204,7 @@ namespace SmaugCS
 
                         var minMentalState = CalculateMinMentalStateWhilePoisoned(ch);
                         ch.MentalState = 20.GetNumberThatIsBetween(minMentalState, 100);
-                        ch.CauseDamageTo(ch, 6, DatabaseManager.Instance.LookupSkill("poison"));
+                        ch.CauseDamageTo(ch, 6, RepositoryManager.Instance.LookupSkill("poison"));
                     }
                     else if (ch.CurrentPosition == PositionTypes.Incapacitated)
                         ch.CauseDamageTo(ch, 1, Program.TYPE_UNDEFINED);
@@ -221,7 +222,7 @@ namespace SmaugCS
                             found = true;
                             if (Macros.IS_VALID_SN(paf.Modifier))
                             {
-                                var skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
+                                var skill = RepositoryManager.Instance.SKILLS.Get(paf.Modifier);
                                 if (skill == null || skill.Type != SkillTypes.Spell)
                                     continue;
 
@@ -338,7 +339,7 @@ namespace SmaugCS
                 ((PlayerInstance)ch).PlayerData.Flags.SetBit(PCFlags.Idle);
                 ch.CurrentRoom.RemoveFrom(ch);
 
-                var room = DatabaseManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
+                var room = RepositoryManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
                 room.AddTo(ch);
             }
         }
@@ -369,7 +370,7 @@ namespace SmaugCS
         {
             // lc = trworld_create(TR_OBJ_WORLD_BACK);
 
-            foreach (var obj in DatabaseManager.Instance.OBJECTS.Values)
+            foreach (var obj in RepositoryManager.Instance.OBJECTS.Values)
             {
                 handler.CurrentObject = obj;
 
@@ -500,7 +501,7 @@ namespace SmaugCS
 
             // lc1 = trworld_create(TR_CHAR_WORLD_FORW);
 
-            foreach (var ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
             {
                 handler.set_cur_char(ch);
                 ch.WillFall(0);
@@ -629,7 +630,7 @@ namespace SmaugCS
                 // TODO Exception, log it
             }
 
-            if (exit.GetDestination(DatabaseManager.Instance) == null)
+            if (exit.GetDestination(RepositoryManager.Instance) == null)
             {
                 // TODO Exception, log it
             }

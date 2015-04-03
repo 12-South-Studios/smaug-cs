@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,19 +9,16 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
-using Realm.Library.SmallDb;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Shops;
-using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
-using SmaugCS.Managers;
-using SmaugCS.Repositories;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Tests.Repositories
 {
@@ -87,9 +83,9 @@ namespace SmaugCS.Tests.Repositories
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object, string.Empty);
+            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object);
             LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object);
-            DatabaseManager dbMgr = new DatabaseManager(new Mock<ILogManager>().Object);
+            RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, new Mock<ILogManager>().Object);
 
             LuaMobFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

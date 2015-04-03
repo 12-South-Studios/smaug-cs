@@ -4,6 +4,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells
 {
@@ -11,7 +12,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_earthquake(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe), skill, ch))
                 return ReturnTypes.SpellFailed;

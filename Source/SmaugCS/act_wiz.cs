@@ -11,6 +11,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS
 {
@@ -82,9 +83,9 @@ namespace SmaugCS
         public static RoomTemplate find_location(CharacterInstance ch, string arg)
         {
             if (arg.IsNumber())
-                return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(arg.ToInt32());
+                return RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(arg.ToInt32());
             if (arg.Equals("pk"))
-                return DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
+                return RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
 
             var victim = ch.GetCharacterInWorld(arg);
             if (victim != null)
@@ -217,8 +218,8 @@ namespace SmaugCS
 
         public static bool check_area_conflicts(int lo, int hi)
         {
-            return (DatabaseManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
-                    || DatabaseManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi)));
+            return (RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
+                    || RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi)));
         }
     }
 }

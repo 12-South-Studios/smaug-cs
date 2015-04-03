@@ -7,6 +7,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
@@ -44,7 +45,7 @@ namespace SmaugCS.Extensions.Character
             var returnCode = ReturnTypes.None;
             if (attrib != null && !string.IsNullOrEmpty(attrib.Messages.ToList()[1]))
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>(attrib.Messages.ToList()[1]);
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>(attrib.Messages.ToList()[1]);
                 returnCode = ch.ObjectCastSpell((int)skill.ID, level, ch);
             }
 

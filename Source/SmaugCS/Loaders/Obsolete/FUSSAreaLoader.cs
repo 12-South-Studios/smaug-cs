@@ -114,7 +114,7 @@ namespace SmaugCS.Loaders
             else
             {
                 string skillName = proxy.ReadNextWord();
-                int sn = DatabaseManager.Instance.LookupSkill(skillName);
+                int sn = RepositoryManager.Instance.LookupSkill(skillName);
                 if (sn < 0)
                     LogManager.Instance.Bug("Unknown skill {0}", skillName);
                 else
@@ -323,7 +323,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endmobile":
-                        DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Add(mob.Vnum, mob);
+                        RepositoryManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Add(mob.Vnum, mob);
                         break;
                     case "#mudprog":
                         MudProgData prog = ReadMudProg(proxy, mob);
@@ -474,7 +474,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endroom":
-                        DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(room.Vnum, room);
+                        RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(room.Vnum, room);
                         return;
                     case "#exit":
                         ReadExit(proxy, room);
@@ -535,7 +535,7 @@ namespace SmaugCS.Loaders
                     case "vnum":
                         //bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
-                        if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum) != null)
+                        if (RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum) != null)
                         {
                             //if (tmpBootDb)
                             //{
@@ -544,7 +544,7 @@ namespace SmaugCS.Loaders
                             //}
                             //else
                             //{
-                                room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum);
+                                room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(vnum);
                                 LogManager.Instance.Log(LogTypes.Build,
                                                GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning room {0}", vnum);
@@ -585,7 +585,7 @@ namespace SmaugCS.Loaders
                 switch (word.ToLower())
                 {
                     case "#endobject":
-                        DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Add(obj.Vnum, obj);
+                        RepositoryManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Add(obj.Vnum, obj);
                         return;
                     case "#exdesc":
                         ExtraDescriptionData ed = ReadExtraDescription(proxy);
@@ -632,21 +632,21 @@ namespace SmaugCS.Loaders
                             || obj.Type == ItemTypes.Potion
                             || obj.Type == ItemTypes.Scroll)
                         {
-                            obj.Value.ToList()[1] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
-                            obj.Value.ToList()[2] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
-                            obj.Value.ToList()[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[1] = RepositoryManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[2] = RepositoryManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[3] = RepositoryManager.Instance.LookupSkill(proxy.ReadNextWord());
                             break;
                         }
                         if (obj.Type == ItemTypes.Staff
                             || obj.Type == ItemTypes.Wand)
                         {
-                            obj.Value.ToList()[3] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[3] = RepositoryManager.Instance.LookupSkill(proxy.ReadNextWord());
                             break;
                         }
                         if (obj.Type == ItemTypes.Salve)
                         {
-                            obj.Value.ToList()[4] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
-                            obj.Value.ToList()[5] = DatabaseManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[4] = RepositoryManager.Instance.LookupSkill(proxy.ReadNextWord());
+                            obj.Value.ToList()[5] = RepositoryManager.Instance.LookupSkill(proxy.ReadNextWord());
                         }
                         break;
                     case "stats":
@@ -678,7 +678,7 @@ namespace SmaugCS.Loaders
                     case "vnum":
                        // bool tmpBootDb = DatabaseManager.BootDb;
                         int vnum = proxy.ReadNumber();
-                        if (DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum) != null)
+                        if (RepositoryManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum) != null)
                         {
                             //if (tmpBootDb)
                             //{
@@ -687,7 +687,7 @@ namespace SmaugCS.Loaders
                             //}
                             //else
                             //{
-                                obj = DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum);
+                                obj = RepositoryManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Get(vnum);
                                 LogManager.Instance.Log(LogTypes.Build,
                                                GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel),
                                                "Cleaning object {0}", vnum);

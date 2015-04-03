@@ -7,6 +7,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Templates;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions
 {
@@ -14,7 +15,7 @@ namespace SmaugCS.Extensions
     {
         public static void Extract(this ExitData exit)
         {
-            var room = DatabaseManager.Instance.ROOMS.Get(exit.Room_vnum);
+            var room = RepositoryManager.Instance.ROOMS.Get(exit.Room_vnum);
             room.Exits.Remove(exit);
             ExitData rexit = exit.GetReverse();
             rexit.Reverse = 0;
@@ -29,9 +30,9 @@ namespace SmaugCS.Extensions
             return exit.GetDestination().GetExit((int)exit.Reverse);
         }
 
-        public static RoomTemplate GetDestination(this ExitData exit, IDatabaseManager dbManager = null)
+        public static RoomTemplate GetDestination(this ExitData exit, IRepositoryManager dbManager = null)
         {
-            return (dbManager ?? DatabaseManager.Instance).ROOMS.CastAs<Repository<long, RoomTemplate>>()
+            return (dbManager ?? RepositoryManager.Instance).ROOMS.CastAs<Repository<long, RoomTemplate>>()
                                                           .Values.ToList()
                                                           .Find(x => x.Vnum == exit.Destination);
         }

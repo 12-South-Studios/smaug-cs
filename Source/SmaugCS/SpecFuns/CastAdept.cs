@@ -7,6 +7,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using SmaugCS.Spells;
 using SmaugCS.Spells.Smaug;
 
@@ -47,7 +48,7 @@ namespace SmaugCS.SpecFuns
 
         private static bool CastSpell(MobileInstance ch, CharacterInstance victim, int bitFlag, string spellName)
         {
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(spellName);
             
             switch (bitFlag)
             {

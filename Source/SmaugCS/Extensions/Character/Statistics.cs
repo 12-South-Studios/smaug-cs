@@ -4,6 +4,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -11,7 +12,7 @@ namespace SmaugCS.Extensions.Character
     {
         public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
-            var currentClass = DatabaseManager.Instance.GetClass(ch.CurrentClass);
+            var currentClass = RepositoryManager.Instance.GetClass(ch.CurrentClass);
             var max = 20;
 
             if (ch.IsNpc() || currentClass.PrimaryAttribute == statistic)

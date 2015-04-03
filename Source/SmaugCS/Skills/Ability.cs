@@ -13,19 +13,20 @@ using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Skills
 {
     public static class Ability
     {
         public static bool CheckAbility(CharacterInstance ch, string command, string argument, 
-            IDatabaseManager databaseManager = null)
+            IRepositoryManager databaseManager = null)
         {
             var sn = ch.GetIDOfSkillCharacterKnows(command);
             if (sn == -1)
                 return false;
 
-            var skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>(sn);
+            var skill = (databaseManager ?? RepositoryManager.Instance).GetEntity<SkillData>(sn);
             if (skill.SkillFunction == null || skill.SpellFunction == null
                 || ch.CanUseSkill(0, sn))
                 return false;

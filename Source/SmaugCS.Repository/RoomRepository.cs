@@ -4,10 +4,9 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public class RoomRepository : Repository<long, RoomTemplate>, ITemplateRepository<RoomTemplate>
     {

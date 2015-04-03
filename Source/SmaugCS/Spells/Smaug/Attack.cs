@@ -6,6 +6,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
@@ -14,7 +15,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_attack(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             var vch = (CharacterInstance) vo;
 
             var saved = skill.CheckSave(level, ch, vch);

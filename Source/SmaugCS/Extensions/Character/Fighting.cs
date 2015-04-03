@@ -9,6 +9,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -132,7 +133,7 @@ namespace SmaugCS.Extensions.Character
             ch.UpdatePositionByCurrentHealth();
 
             if (!includeMyTargetsTarget) return;
-            foreach (var fch in DatabaseManager.Instance.CHARACTERS.Values
+            foreach (var fch in RepositoryManager.Instance.CHARACTERS.Values
                 .Where(fch => fch.GetMyTarget() == ch))
                 fch.StopFighting(false);
         }
@@ -151,7 +152,7 @@ namespace SmaugCS.Extensions.Character
             {
                 // TODO affect_strip
                ch.SetColor(ATTypes.AT_WEAROFF);
-               ch.SendTo(DatabaseManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage);
+               ch.SendTo(RepositoryManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage);
                ch.SendTo("\r\n");
             }
         }

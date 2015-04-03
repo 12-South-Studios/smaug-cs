@@ -5,12 +5,12 @@ using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public class CharacterRepository : Repository<long, CharacterInstance>, IInstanceRepository<CharacterInstance>
     {

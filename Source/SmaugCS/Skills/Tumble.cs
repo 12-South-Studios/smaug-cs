@@ -8,18 +8,19 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Skills
 {
     public static class Tumble
     {
-        public static bool CheckTumble(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null, 
+        public static bool CheckTumble(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null, 
             IGameManager gameManager = null)
         {
             if (victim.CurrentClass != ClassTypes.Thief || !victim.IsAwake())
                 return false;
 
-            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("tumble");
+            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("tumble");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'tumble' not found");
 

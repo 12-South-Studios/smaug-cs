@@ -21,6 +21,7 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs.MobileProgs;
+using SmaugCS.Repository;
 using SmaugCS.Spells.Smaug;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
@@ -73,7 +74,7 @@ namespace SmaugCS
 
             foreach (
                 var ch in
-                    DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
+                    RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                         .Where(ch => !ch.CharDied()))
             {
                 //// Experience gained during battle decreases as the battle drags on
@@ -106,7 +107,7 @@ namespace SmaugCS
                         if (pafNext == null || pafNext.Type != paf.Type
                             || pafNext.Duration > 0)
                         {
-                            var skill = DatabaseManager.Instance.GetEntity<SkillData>((int) paf.Type);
+                            var skill = RepositoryManager.Instance.GetEntity<SkillData>((int) paf.Type);
                             if (paf.Type > 0 && skill != null && !string.IsNullOrEmpty(skill.WearOffMessage))
                             {
                                ch.SetColor(ATTypes.AT_WEAROFF);
@@ -115,7 +116,7 @@ namespace SmaugCS
                             }
                         }
 
-                        if ((int) paf.Type == (int) DatabaseManager.Instance.GetEntity<SkillData>("possess").ID)
+                        if ((int) paf.Type == (int) RepositoryManager.Instance.GetEntity<SkillData>("possess").ID)
                         {
                             var pch = (PlayerInstance) ch;
                             pch.Descriptor.Character = pch.Descriptor.Original;
@@ -266,13 +267,13 @@ namespace SmaugCS
             if (retcode != ReturnTypes.None)
                 return retcode;
 
-            var backstab = DatabaseManager.Instance.GetEntity<SkillData>("backstab");
-            var circle = DatabaseManager.Instance.GetEntity<SkillData>("circle");
+            var backstab = RepositoryManager.Instance.GetEntity<SkillData>("backstab");
+            var circle = RepositoryManager.Instance.GetEntity<SkillData>("circle");
 
             if (ch.GetMyTarget() != victim || dt == backstab.ID || dt == circle.ID)
                 return ReturnTypes.None;
 
-            var berserk = DatabaseManager.Instance.GetEntity<SkillData>("berserk");
+            var berserk = RepositoryManager.Instance.GetEntity<SkillData>("berserk");
             var chance = ch.IsNpc() ? 100 : (Macros.LEARNED(ch, (int) berserk.ID)*5/2);
             if (ch.IsAffected(AffectedByTypes.Berserk) && SmaugRandom.D100() < chance)
             {
@@ -284,7 +285,7 @@ namespace SmaugCS
             var dualBonus = 0;
             if (ch.GetEquippedItem(WearLocations.DualWield) != null)
             {
-                var dualWield = DatabaseManager.Instance.GetEntity<SkillData>("dual wield");
+                var dualWield = RepositoryManager.Instance.GetEntity<SkillData>("dual wield");
                 dualBonus = ch.IsNpc() ? ch.Level/10 : (int) Macros.LEARNED(ch, (int) dualWield.ID)/10;
                 chance = ch.IsNpc() ? ch.Level : Macros.LEARNED(ch, (int) dualWield.ID);
 
@@ -313,7 +314,7 @@ namespace SmaugCS
                 return retcode;
             }
 
-            var secondAttack = DatabaseManager.Instance.GetEntity<SkillData>("second attack");
+            var secondAttack = RepositoryManager.Instance.GetEntity<SkillData>("second attack");
             chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int) secondAttack.ID) + dualBonus)/1.5f);
             if (SmaugRandom.D100() < chance)
             {
@@ -325,7 +326,7 @@ namespace SmaugCS
             else 
                 secondAttack.LearnFromFailure(ch);
 
-            var thirdAttack = DatabaseManager.Instance.GetEntity<SkillData>("third attack");
+            var thirdAttack = RepositoryManager.Instance.GetEntity<SkillData>("third attack");
             chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int)thirdAttack.ID) + (dualBonus*1.5f)) / 2);
             if (SmaugRandom.D100() < chance)
             {
@@ -337,7 +338,7 @@ namespace SmaugCS
             else
                 thirdAttack.LearnFromFailure(ch);
 
-            var fourthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fourth attack");
+            var fourthAttack = RepositoryManager.Instance.GetEntity<SkillData>("fourth attack");
             chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fourthAttack.ID) + (dualBonus*2)) / 3;
             if (SmaugRandom.D100() < chance)
             {
@@ -349,7 +350,7 @@ namespace SmaugCS
             else
                 fourthAttack.LearnFromFailure(ch);
 
-            var fifthAttack = DatabaseManager.Instance.GetEntity<SkillData>("fifth attack");
+            var fifthAttack = RepositoryManager.Instance.GetEntity<SkillData>("fifth attack");
             chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fifthAttack.ID) + (dualBonus*3)) / 4;
             if (SmaugRandom.D100() < chance)
             {
@@ -395,7 +396,7 @@ namespace SmaugCS
 
             var damageType = EnumerationExtensions.GetEnum<DamageTypes>(wield.Value.ToList()[3]);
             var attrib = damageType.GetAttribute<LookupSkillAttribute>();
-            var sn = (int) DatabaseManager.Instance.GetEntity<SkillData>(attrib.Skill).ID;
+            var sn = (int) RepositoryManager.Instance.GetEntity<SkillData>(attrib.Skill).ID;
 
             if (sn != -1)
                 bonus = ((int)Macros.LEARNED(ch, sn) - 50)/10;
@@ -537,8 +538,8 @@ namespace SmaugCS
             }
             else
             {
-                thac0_00 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass0;
-                thac0_32 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
+                thac0_00 = RepositoryManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass0;
+                thac0_32 = RepositoryManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
             }
             thac0_00 = ch.Level.Interpolate(thac0_00, thac0_32) - ch.GetHitroll();
             var victimArmorClass = -19.GetHighestOfTwoNumbers(victim.GetArmorClass()/10);
@@ -587,9 +588,9 @@ namespace SmaugCS
 
             if (!victim.IsAwake())
                 damage *= 2;
-            if (dt == (int) DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID)
+            if (dt == (int) RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID)
                 damage *= (2 + (ch.Level - (victim.Level/4)).GetNumberThatIsBetween(2, 30)/8);
-            if (dt == (int) DatabaseManager.Instance.GetEntity<SkillData>("circle").ID)
+            if (dt == (int) RepositoryManager.Instance.GetEntity<SkillData>("circle").ID)
                 damage *= (2 + (ch.Level - (victim.Level/4)).GetNumberThatIsBetween(2, 30)/16);
             if (damage <= 0)
                 damage = 1;
@@ -598,7 +599,7 @@ namespace SmaugCS
 
             if (sn != -1)
             {
-                var sk = DatabaseManager.Instance.SKILLS.Get(sn);
+                var sk = RepositoryManager.Instance.SKILLS.Get(sn);
                 if (damage > 0)
                     sk.LearnFromSuccess(ch);
                 else 
@@ -607,7 +608,7 @@ namespace SmaugCS
 
             if (damage == -1)
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
                 if (skill != null)
                 {
                     if (!skill.ImmuneCharacterMessage.IsNullOrEmpty())
@@ -643,8 +644,8 @@ namespace SmaugCS
                 {
                     if (aff.Location == ApplyTypes.WeaponSpell
                         && Macros.IS_VALID_SN(aff.Modifier)
-                        && DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier).SpellFunction != null)
-                        retcode = DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier)
+                        && RepositoryManager.Instance.GetEntity<SkillData>(aff.Modifier).SpellFunction != null)
+                        retcode = RepositoryManager.Instance.GetEntity<SkillData>(aff.Modifier)
                             .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3)/3, ch, victim);
                 }
 
@@ -657,8 +658,8 @@ namespace SmaugCS
                 {
                     if (aff.Location == ApplyTypes.WeaponSpell
                         && Macros.IS_VALID_SN(aff.Modifier)
-                        && DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier).SpellFunction != null)
-                        retcode = DatabaseManager.Instance.GetEntity<SkillData>(aff.Modifier)
+                        && RepositoryManager.Instance.GetEntity<SkillData>(aff.Modifier).SpellFunction != null)
+                        retcode = RepositoryManager.Instance.GetEntity<SkillData>(aff.Modifier)
                             .SpellFunction.Value.Invoke(aff.Modifier, (wield.Level + 3)/3, ch, victim);
                 }
 
@@ -671,35 +672,35 @@ namespace SmaugCS
             // Magic shields that retaliate
             if (victim.IsAffected(AffectedByTypes.FireShield)
                 && !ch.IsAffected(AffectedByTypes.FireShield))
-                retcode = Smaug.spell_smaug((int) DatabaseManager.Instance.GetEntity<SkillData>("flare").ID,
+                retcode = Smaug.spell_smaug((int) RepositoryManager.Instance.GetEntity<SkillData>("flare").ID,
                     off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.IceShield)
                 && !ch.IsAffected(AffectedByTypes.IceShield))
-                retcode = Smaug.spell_smaug((int) DatabaseManager.Instance.GetEntity<SkillData>("iceshard").ID,
+                retcode = Smaug.spell_smaug((int) RepositoryManager.Instance.GetEntity<SkillData>("iceshard").ID,
                     off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.ShockShield)
                 && !ch.IsAffected(AffectedByTypes.ShockShield))
-                retcode = Smaug.spell_smaug((int) DatabaseManager.Instance.GetEntity<SkillData>("torrent").ID,
+                retcode = Smaug.spell_smaug((int) RepositoryManager.Instance.GetEntity<SkillData>("torrent").ID,
                     off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.AcidMist)
                 && !ch.IsAffected(AffectedByTypes.AcidMist))
-                retcode = Smaug.spell_smaug((int) DatabaseManager.Instance.GetEntity<SkillData>("acidshot").ID,
+                retcode = Smaug.spell_smaug((int) RepositoryManager.Instance.GetEntity<SkillData>("acidshot").ID,
                     off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
 
             if (victim.IsAffected(AffectedByTypes.VenomShield)
                 && !ch.IsAffected(AffectedByTypes.VenomShield))
-                retcode = Smaug.spell_smaug((int) DatabaseManager.Instance.GetEntity<SkillData>("venomshot").ID,
+                retcode = Smaug.spell_smaug((int) RepositoryManager.Instance.GetEntity<SkillData>("venomshot").ID,
                     off_shld_lvl(victim, ch), victim, ch);
             if (retcode != ReturnTypes.None || ch.CharDied() || victim.CharDied())
                 return retcode;
@@ -762,7 +763,7 @@ namespace SmaugCS
 
         private static int CalculateEnhancedDamage(CharacterInstance ch, int damage)
         {
-            var dmgSkill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
+            var dmgSkill = RepositoryManager.Instance.GetEntity<SkillData>("enhanced damage");
             if (dmgSkill == null)
                 throw new ObjectNotFoundException("Skill 'enhanced damage' not found");
 
@@ -776,7 +777,7 @@ namespace SmaugCS
 
         private static ReturnTypes OneHitMiss(CharacterInstance ch, CharacterInstance victim, int sn, int damageType)
         {
-            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             if (skill == null)
                 throw new ObjectNotFoundException(string.Format("Skill {0} not found", sn));
 
@@ -852,8 +853,8 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                thac0_0 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass0;
-                thac0_32 = DatabaseManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
+                thac0_0 = RepositoryManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass0;
+                thac0_32 = RepositoryManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
             }
 
             thac0_0 = ch.Level.Interpolate(thac0_0, thac0_32) - ch.GetHitroll() + (distance*2);
@@ -883,7 +884,7 @@ namespace SmaugCS
         {
             if (proficiencySkillNumber > 0)
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>(proficiencySkillNumber);
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>(proficiencySkillNumber);
                 skill.LearnFromFailure(ch);
             }
 
@@ -914,7 +915,7 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>("enhanced damage");
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>("enhanced damage");
                 if (((PlayerInstance)ch).PlayerData.Learned.ToList().FirstOrDefault(x => x == skill.ID) > 0)
                 {
                     damage += damage* (int)Macros.LEARNED(ch, (int) skill.ID);
@@ -946,7 +947,7 @@ namespace SmaugCS
 
             if (proficiencySkillNumber > 0)
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>(proficiencySkillNumber);
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>(proficiencySkillNumber);
                 if (damage > 0)
                     skill.LearnFromSuccess(ch);
                 else 
@@ -1477,7 +1478,7 @@ namespace SmaugCS
 
             if (vnum > 0)
             {
-                var template = DatabaseManager.Instance.OBJECTTEMPLATES.Get(vnum);
+                var template = RepositoryManager.Instance.OBJECTTEMPLATES.Get(vnum);
                 if (template == null)
                 {
                     LogManager.Instance.Bug("Invalid vnum");
@@ -1485,7 +1486,7 @@ namespace SmaugCS
                 }
 
                 var name = ch.IsNpc() ? ch.ShortDescription : ch.Name;
-                var obj = DatabaseManager.Instance.OBJECTS.Create(template, 0);
+                var obj = RepositoryManager.Instance.OBJECTS.Create(template, 0);
                 obj.Timer = SmaugRandom.Between(4, 7);
                 if (ch.IsAffected(AffectedByTypes.Poison))
                     obj.Value.ToList()[3] = 10;
@@ -1598,7 +1599,7 @@ namespace SmaugCS
             var gcflag = (dam == 0 && (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag)));
             var gvflag = (dam == 0 && (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Gag)));
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
 
             string roomMsg;
             string youMsg;

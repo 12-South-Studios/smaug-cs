@@ -9,6 +9,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
 {
@@ -71,7 +72,7 @@ namespace SmaugCS.SpecFuns
                         
                         if (exit != null)
                         {
-                            var destRoom = exit.GetDestination(DatabaseManager.Instance);
+                            var destRoom = exit.GetDestination(RepositoryManager.Instance);
                             if (destRoom != null && !exit.Flags.IsSet(ExitFlags.Closed)
                                 && !destRoom.Flags.IsSet(RoomFlags.NoDrop))
                             {
@@ -110,7 +111,7 @@ namespace SmaugCS.SpecFuns
             trash.RemoveFrom();
 
             var oldRoom = ch.CurrentRoom;
-            var room = exit.GetDestination(DatabaseManager.Instance);
+            var room = exit.GetDestination(RepositoryManager.Instance);
             room.AddTo(trash);
             ch.CurrentRoom.RemoveFrom(ch);
             room.AddTo(ch);

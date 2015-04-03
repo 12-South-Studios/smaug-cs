@@ -7,6 +7,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -14,7 +15,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_smaug(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             if (skill == null)
                 return ReturnTypes.Error;
 
@@ -93,7 +94,7 @@ namespace SmaugCS.Spells.Smaug
             {
                 if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison)
                 {
-                    var poisonSkill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
+                    var poisonSkill = RepositoryManager.Instance.GetEntity<SkillData>("poison");
                     if (poisonSkill == null)
                         throw new ObjectNotFoundException("Skill 'poison' not found");
 
@@ -102,7 +103,7 @@ namespace SmaugCS.Spells.Smaug
 
                 if (Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Illusion)
                 {
-                    var blindSkill = DatabaseManager.Instance.GetEntity<SkillData>("blindness");
+                    var blindSkill = RepositoryManager.Instance.GetEntity<SkillData>("blindness");
                     if (blindSkill == null)
                         throw new ObjectNotFoundException("Skill 'blindness' not found");
 

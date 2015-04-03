@@ -1,6 +1,6 @@
 ﻿using Realm.Library.Patterns.Repository;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public class GenericRepository<T> : Repository<long, T> where T : class
     {

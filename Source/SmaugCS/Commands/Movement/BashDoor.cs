@@ -8,6 +8,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -15,7 +16,7 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_bashdoor(CharacterInstance ch, string argument)
         {
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>("bashdoor");
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>("bashdoor");
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Level < skill.SkillLevels.ToList()[(int) ch.CurrentClass],
                 "You're not enough of a warrior to bash doors!")) return;
 
@@ -75,7 +76,7 @@ namespace SmaugCS.Commands.Movement
             var reverseExit = exit.GetReverse();
             BashExit(reverseExit);
 
-            var destination = exit.GetDestination(DatabaseManager.Instance);
+            var destination = exit.GetDestination(RepositoryManager.Instance);
             foreach(var ch in destination.Persons)
                 comm.act(ATTypes.AT_SKILL, "The $d crashes open!", ch, null, reverseExit.Keywords, ToTypes.Character);
             

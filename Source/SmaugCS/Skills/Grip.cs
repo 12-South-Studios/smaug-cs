@@ -7,12 +7,13 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Skills
 {
     public static class Grip
     {
-        public static bool CheckGrip(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null)
+        public static bool CheckGrip(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null)
         {
             if (!victim.IsAwake())
                 return false;
@@ -20,7 +21,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Grip))
                 return false;
 
-            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("grip");
+            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("grip");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'grip' not found");
 

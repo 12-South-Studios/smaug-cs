@@ -21,7 +21,7 @@ namespace SmaugCS.Loaders
 
         protected AreaData CreateArea()
         {
-            /*AreaData newArea = new AreaData(DatabaseManager.Instance.AREAS.Count + db.BUILD_AREAS.Count + 1, AreaName)
+            /*AreaData newArea = new AreaData(RepositoryManager.Instance.AREAS.Count + db.BUILD_AREAS.Count + 1, AreaName)
             {
                 Age = 15,
                 HighSoftRange = LevelConstants.MaxLevel,
@@ -30,7 +30,7 @@ namespace SmaugCS.Loaders
                 Filename = AreaName
             };
 
-            DatabaseManager.Instance.AREAS.Add(newArea.ID, newArea);
+            RepositoryManager.Instance.AREAS.Add(newArea.ID, newArea);
             ++db.TopArea;
             return newArea;*/
             return null;

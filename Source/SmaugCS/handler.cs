@@ -16,6 +16,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Repository;
 using SmaugCS.Spells;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
@@ -288,7 +289,7 @@ namespace SmaugCS
 
             ch.AffectedBy = 0;
 
-            var race = DatabaseManager.Instance.GetRace(ch.CurrentRace);
+            var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
             ch.AffectedBy.SetBit(race.AffectedBy);
             ch.MentalState = -10;
             ch.CurrentHealth = 1.GetHighestOfTwoNumbers(ch.CurrentHealth);
@@ -367,7 +368,7 @@ namespace SmaugCS
                     var name = "unknown";
                     if (Macros.IS_VALID_SN(paf.Modifier))
                     {
-                        var skill = DatabaseManager.Instance.SKILLS.Get(paf.Modifier);
+                        var skill = RepositoryManager.Instance.SKILLS.Get(paf.Modifier);
                         name = skill.Name;
                     }
                     buf = string.Format("Casts spell '{0}'", name);
@@ -463,7 +464,7 @@ namespace SmaugCS
 
         public static void check_switches(bool possess)
         {
-            foreach(var ch in DatabaseManager.Instance.CHARACTERS.Values)
+            foreach(var ch in RepositoryManager.Instance.CHARACTERS.Values)
                 check_switch(ch, possess);
         }
 
@@ -477,14 +478,14 @@ namespace SmaugCS
                     if (af.Duration == -1)
                         continue;
 
-                    var skill = DatabaseManager.Instance.SKILLS.Get((int) af.Type);
+                    var skill = RepositoryManager.Instance.SKILLS.Get((int) af.Type);
                     if (af.Type != AffectedByTypes.None && skill != null &&
                         skill.SpellFunction.Value == Possess.spell_possess)
                         return;
                 }
             }
 
-            foreach (var cmd in DatabaseManager.Instance.COMMANDS.Values)
+            foreach (var cmd in RepositoryManager.Instance.COMMANDS.Values)
             {
                 if (cmd.DoFunction.Value != Switch.do_switch)
                     continue;

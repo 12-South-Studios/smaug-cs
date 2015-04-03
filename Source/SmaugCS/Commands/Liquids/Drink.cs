@@ -11,6 +11,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Liquids
 {
@@ -94,8 +95,8 @@ namespace SmaugCS.Commands.Liquids
                     "Your stomach is too full to drink more!")) return;
             }
 
-            LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
-                                DatabaseManager.Instance.LIQUIDS.Get(0);
+            LiquidData liquid = RepositoryManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
+                                RepositoryManager.Instance.LIQUIDS.Get(0);
 
             if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
             {
@@ -203,8 +204,8 @@ namespace SmaugCS.Commands.Liquids
             if (obj.Values.Quantity <= 0)
                 obj.Values.QUantity = GetMaximumCondition();
 
-            LiquidData liquid = DatabaseManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
-                                DatabaseManager.Instance.LIQUIDS.Get(0);
+            LiquidData liquid = RepositoryManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
+                                RepositoryManager.Instance.LIQUIDS.Get(0);
 
             if (!ch.IsNpc())
             {
@@ -277,7 +278,7 @@ namespace SmaugCS.Commands.Liquids
             if ((obj.Values.Quantity - 1) <= 0)
             {
                 obj.Extract();
-                ObjectFactory.CreateBloodstain(ch, DatabaseManager.Instance);
+                ObjectFactory.CreateBloodstain(ch, RepositoryManager.Instance);
             }
         }
     }

@@ -8,6 +8,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Mobile;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells
 {
@@ -16,7 +17,7 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_charm_person(int sn, int level, CharacterInstance ch, object vo)
         {
             var victim = (CharacterInstance)vo;
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You like yourself even better!"))
                 return ReturnTypes.SpellFailed;

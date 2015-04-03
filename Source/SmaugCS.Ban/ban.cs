@@ -47,7 +47,7 @@
 //                            else
 //                            {
 //                                int count = 0;
-//                                foreach (ClassData cls in DatabaseManager.Instance.CLASSES)
+//                                foreach (ClassData cls in RepositoryManager.Instance.CLASSES)
 //                                {
 //                                    if (cls.Name.EqualsIgnoreCase(arg))
 //                                        break;
@@ -56,7 +56,7 @@
 //                                value = count;
 //                            }
 
-//                            if (value < 0 || value >= DatabaseManager.Instance.CLASSES.Count())
+//                            if (value < 0 || value >= RepositoryManager.Instance.CLASSES.Count())
 //                            {
 //                                color.send_to_char("Unknown class.\r\n", ch);
 //                                return 0;
@@ -84,7 +84,7 @@
 //                                return 1;
 //                            }
 
-//                            newBan.Name = DatabaseManager.Instance.CLASSES.ToList()[value].Name;
+//                            newBan.Name = RepositoryManager.Instance.CLASSES.ToList()[value].Name;
 //                            newBan.Flag = value;
 //                            newBan.Level = level;
 //                            newBan.BannedBy = ch.Name;
@@ -96,7 +96,7 @@
 //                            else
 //                            {
 //                                int count = 0;
-//                                foreach (RaceData race in DatabaseManager.Instance.RACES)
+//                                foreach (RaceData race in RepositoryManager.Instance.RACES)
 //                                {
 //                                    if (race.Name.EqualsIgnoreCase(arg))
 //                                        break;
@@ -105,7 +105,7 @@
 //                                value = count;
 //                            }
 
-//                            if (value < 0 || value >= DatabaseManager.Instance.RACES.Count())
+//                            if (value < 0 || value >= RepositoryManager.Instance.RACES.Count())
 //                            {
 //                                color.send_to_char("Unknown race.\r\n", ch);
 //                                return 0;
@@ -132,7 +132,7 @@
 //                                color.send_to_char("Updated entry.\r\n", ch);
 //                                return 1;
 //                            }
-//                            newBan.Name = DatabaseManager.Instance.RACES.ToList()[value].Name;
+//                            newBan.Name = RepositoryManager.Instance.RACES.ToList()[value].Name;
 //                            newBan.Flag = value;
 //                            newBan.Level = level;
 //                            newBan.BannedBy = ch.Name;

@@ -6,6 +6,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Social
 {
@@ -84,7 +85,7 @@ namespace SmaugCS.Commands.Social
             }
 
             var victim =
-                DatabaseManager.Instance.CHARACTERS.Values.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+                RepositoryManager.Instance.CHARACTERS.Values.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
             if (victim == null)
             {
                ch.SetColor(ATTypes.AT_IGNORE);

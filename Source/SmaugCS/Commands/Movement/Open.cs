@@ -7,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -93,7 +94,7 @@ namespace SmaugCS.Commands.Movement
                 var reverseExit = exit.GetReverse();
                 if (reverseExit != null)
                 {
-                    var room = exit.GetDestination(DatabaseManager.Instance);
+                    var room = exit.GetDestination(RepositoryManager.Instance);
                     foreach(var vch in room.Persons)
                         comm.act(ATTypes.AT_ACTION, "The $d opens.", vch, null, reverseExit.Keywords, ToTypes.Character);
                 }

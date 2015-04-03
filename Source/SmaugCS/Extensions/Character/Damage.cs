@@ -12,6 +12,7 @@ using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
@@ -31,7 +32,7 @@ namespace SmaugCS.Extensions.Character
                 modifiedDamage = CheckDamageForResistances(victim, dam, dt);
                 if (modifiedDamage == -1)
                 {
-                    var skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+                    var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
                     if (skill == null)
                         modifiedDamage = 0;
                     else
@@ -48,7 +49,7 @@ namespace SmaugCS.Extensions.Character
             if (modifiedDamage > 0 && victim.IsNpc() && ch != victim)
                 DoHuntAndHate(ch, victim);
 
-            var maxDamage = ch.Level * ((dt == DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID) ? 80 : 40);
+            var maxDamage = ch.Level * ((dt == RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID) ? 80 : 40);
             if (modifiedDamage > maxDamage)
                 modifiedDamage = maxDamage;
 
@@ -220,7 +221,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (dt >= 0)
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>(dt);
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
                 if (!skill.DieCharacterMessage.IsNullOrEmpty())
                     comm.act(ATTypes.AT_DEAD, skill.DieCharacterMessage, ch, null, victim, ToTypes.Character);
                 if (!skill.DieVictimMessage.IsNullOrEmpty())
@@ -296,8 +297,8 @@ namespace SmaugCS.Extensions.Character
             else
                 xpGain = (int)(ch.ComputeExperienceGain(victim) * 0.85f * dam) / victim.MaximumHealth;
 
-            if (dt == DatabaseManager.Instance.GetEntity<SkillData>("backstab").ID
-                || dt == DatabaseManager.Instance.GetEntity<SkillData>("circle").ID)
+            if (dt == RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID
+                || dt == RepositoryManager.Instance.GetEntity<SkillData>("circle").ID)
                 xpGain = 0;
 
             ((PlayerInstance)ch).GainXP(xpGain);
@@ -343,7 +344,7 @@ namespace SmaugCS.Extensions.Character
                 modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Drain);
             else if (Macros.IS_POISON(dt))
             {
-                var skill = DatabaseManager.Instance.GetEntity<SkillData>("poison");
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>("poison");
                 if (skill != null)
                     modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Poison);
             }

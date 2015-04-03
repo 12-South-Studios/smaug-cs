@@ -9,6 +9,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Objects
 {
@@ -105,7 +106,7 @@ namespace SmaugCS.Commands.Objects
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom))
             {
-                foreach (var clan in DatabaseManager.Instance.CLANS.Values)
+                foreach (var clan in RepositoryManager.Instance.CLANS.Values)
                 {
                     if (clan.StoreRoom == ch.CurrentRoom.ID)
                         act_obj.save_clan_storeroom(ch, clan);

@@ -7,12 +7,13 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Skills
 {
     public static class Parry
     {
-        public static bool CheckParry(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null, 
+        public static bool CheckParry(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null, 
             IGameManager gameManager = null)
         {
             if (!victim.IsAwake())
@@ -23,7 +24,7 @@ namespace SmaugCS.Skills
 
             int chances;
 
-            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("parry");
+            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("parry");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'parry' not found");
 

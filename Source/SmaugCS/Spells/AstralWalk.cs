@@ -7,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells
 {
@@ -16,7 +17,7 @@ namespace SmaugCS.Spells
         SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
             var victim = ch.GetCharacterInWorld(Cast.TargetName);
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null

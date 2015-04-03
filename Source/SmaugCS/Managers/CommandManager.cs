@@ -5,6 +5,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Managers
 {
@@ -13,7 +14,7 @@ namespace SmaugCS.Managers
         private static CommandManager _instance;
         private static readonly object Padlock = new object();
 
-        private IDatabaseManager _dbManager;
+        private IRepositoryManager _dbManager;
 
         private CommandManager()
         {
@@ -30,7 +31,7 @@ namespace SmaugCS.Managers
             }
         }
 
-        public void Initialize(IDatabaseManager dbManager) 
+        public void Initialize(IRepositoryManager dbManager) 
         {
             _dbManager = dbManager;
         }

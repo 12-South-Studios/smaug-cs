@@ -21,7 +21,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.News;
-using SmaugCS.Repositories;
+using SmaugCS.Repository;
 using SmaugCS.Weather;
 
 namespace SmaugCS
@@ -36,7 +36,7 @@ namespace SmaugCS
         public static ILogManager LogManager { get; private set; }
         public static ILookupManager LookupManager { get; private set; }
         public static ILuaManager LuaManager { get; private set; }
-        public static IDatabaseManager DatabaseManager { get; private set; }
+        public static IRepositoryManager RepositoryManager { get; private set; }
         public static IGameManager GameManager { get; private set; }
         public static IBanManager BanManager { get; private set; }
         public static IBoardManager BoardManager { get; private set; }
@@ -110,7 +110,7 @@ namespace SmaugCS
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
             NetworkManager.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
 
-            DatabaseManager = Kernel.Get<IDatabaseManager>();
+            RepositoryManager = Kernel.Get<IRepositoryManager>();
 
             var luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
             if (luaInitializer == null)
@@ -155,7 +155,7 @@ namespace SmaugCS
 
         private static void DisconnectUser(ITcpClientWrapper user)
         {
-            var character = DatabaseManager.CHARACTERS.Values.OfType<PlayerInstance>().FirstOrDefault(x => x.Descriptor.User == user);
+            var character = RepositoryManager.CHARACTERS.Values.OfType<PlayerInstance>().FirstOrDefault(x => x.Descriptor.User == user);
             if (character == null)
             {
                 var descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);
@@ -167,7 +167,7 @@ namespace SmaugCS
                 return;
             }
 
-            DatabaseManager.CHARACTERS.Delete(character.ID);
+            RepositoryManager.CHARACTERS.Delete(character.ID);
         }
 
         private static void OnServerStop()
@@ -198,43 +198,43 @@ namespace SmaugCS
         private static void ExecuteLuaScripts()
         {
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
-            LogManager.Boot("{0} Commands loaded.", DatabaseManager.COMMANDS.Count);
+            LogManager.Boot("{0} Commands loaded.", RepositoryManager.COMMANDS.Count);
 
-            LookupManager.CommandLookup.UpdateFunctionReferences(DatabaseManager.COMMANDS.Values);
+            LookupManager.CommandLookup.UpdateFunctionReferences(RepositoryManager.COMMANDS.Values);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
-            LogManager.Boot("{0} SpecFuns loaded.", DatabaseManager.SPEC_FUNS.Count);
-            //SpecFunLookupTable.UpdateCommandFunctionReferences(DatabaseManager.Instance.SPEC_FUNS.Values);
+            LogManager.Boot("{0} SpecFuns loaded.", RepositoryManager.SPEC_FUNS.Count);
+            //SpecFunLookupTable.UpdateCommandFunctionReferences(RepositoryManager.Instance.SPEC_FUNS.Values);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
-            LogManager.Boot("{0} Socials loaded.", DatabaseManager.SOCIALS.Count);
+            LogManager.Boot("{0} Socials loaded.", RepositoryManager.SOCIALS.Count);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
-            LogManager.Boot("{0} Skills loaded.", DatabaseManager.SKILLS.Count);
+            LogManager.Boot("{0} Skills loaded.", RepositoryManager.SKILLS.Count);
 
-            LookupManager.SkillLookup.UpdateFunctionReferences(DatabaseManager.SKILLS.Values);
-            LookupManager.SpellLookup.UpdateFunctionReferences(DatabaseManager.SKILLS.Values);
+            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
+            LookupManager.SpellLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
-            LogManager.Boot("{0} Liquids loaded.", DatabaseManager.LIQUIDS.Count);
+            LogManager.Boot("{0} Liquids loaded.", RepositoryManager.LIQUIDS.Count);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
             LogManager.Boot("{0} Mixtures loaded.",
-                                     DatabaseManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
+                                     RepositoryManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
             // TODO: Update function references
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
-            LogManager.Boot("{0} Herbs loaded.", DatabaseManager.HERBS.Count);
-            LookupManager.SkillLookup.UpdateFunctionReferences(DatabaseManager.HERBS.Values);
+            LogManager.Boot("{0} Herbs loaded.", RepositoryManager.HERBS.Count);
+            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.HERBS.Values);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
-            LogManager.Boot("{0} Tongues loaded.", DatabaseManager.LANGUAGES.Count);
+            LogManager.Boot("{0} Tongues loaded.", RepositoryManager.LANGUAGES.Count);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
-            LogManager.Boot("{0} Planes loaded.", DatabaseManager.PLANES.Count);
+            LogManager.Boot("{0} Planes loaded.", RepositoryManager.PLANES.Count);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
-            LogManager.Boot("{0} Morphs loaded.", DatabaseManager.MORPHS.Count);
+            LogManager.Boot("{0} Morphs loaded.", RepositoryManager.MORPHS.Count);
 
         }
 

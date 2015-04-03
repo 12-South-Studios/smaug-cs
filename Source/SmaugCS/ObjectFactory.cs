@@ -12,37 +12,38 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS
 {
     public static class ObjectFactory
     {
-        public static void CreateFire(RoomTemplate inRoom, int duration, IDatabaseManager dbManager = null)
+        public static void CreateFire(RoomTemplate inRoom, int duration, IRepositoryManager dbManager = null)
         {
             var fire =
-                (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                    (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+                (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                    (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                    .Get(VnumConstants.OBJ_VNUM_FIRE), 0);
             fire.Timer = (short)SmaugRandom.Fuzzy(duration);
             inRoom.AddTo(fire);
         }
 
-        public static ObjectInstance CreateTrap(IEnumerable<int> values, IDatabaseManager dbManager = null)
+        public static ObjectInstance CreateTrap(IEnumerable<int> values, IRepositoryManager dbManager = null)
         {
-            var trap = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+            var trap = (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_TRAP), 0);
             trap.Timer = 0;
             trap.Value = values.ToArray();
             return trap;
         }
 
-        public static void CreateScraps(ObjectInstance obj, IDatabaseManager dbManager = null)
+        public static void CreateScraps(ObjectInstance obj, IRepositoryManager dbManager = null)
         {
             obj.Split();
             var scraps =
-                (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                    (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+                (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                    (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                            .Get(VnumConstants.OBJ_VNUM_SCRAPS), 0);
 
             scraps.Timer = SmaugRandom.Between(5, 15);
@@ -100,7 +101,7 @@ namespace SmaugCS
             obj.Extract();
         }
 
-        public static ObjectInstance CreateCorpse(CharacterInstance ch, CharacterInstance killer, IDatabaseManager dbManager = null)
+        public static ObjectInstance CreateCorpse(CharacterInstance ch, CharacterInstance killer, IRepositoryManager dbManager = null)
         {
             string name;
             ObjectInstance corpse;
@@ -109,8 +110,8 @@ namespace SmaugCS
             {
                 name = ch.ShortDescription;
                 corpse =
-                    (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                        (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+                    (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                        (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                                .Get(VnumConstants.OBJ_VNUM_CORPSE_NPC), 0);
 
                 corpse.Timer = 6;
@@ -134,8 +135,8 @@ namespace SmaugCS
             {
                 name = ch.Name;
                 corpse =
-                    (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                        (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
+                    (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                        (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_CORPSE_PC), 0);
 
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value.ToList()[2] = corpse.Timer / 8;
@@ -166,10 +167,10 @@ namespace SmaugCS
             return ch.CurrentRoom.AddTo(corpse);
         }
 
-        public static void CreateBlood(CharacterInstance ch, IDatabaseManager dbManager = null)
+        public static void CreateBlood(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+            var obj = (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
 
             obj.Timer = (short)SmaugRandom.Between(2, 4);
@@ -177,22 +178,22 @@ namespace SmaugCS
             ch.CurrentRoom.AddTo(obj);
         }
 
-        public static void CreateBloodstain(CharacterInstance ch, IDatabaseManager dbManager = null)
+        public static void CreateBloodstain(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+            var obj = (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
 
             obj.Timer = (short)SmaugRandom.Between(1, 2);
             ch.CurrentRoom.AddTo(obj);
         }
 
-        public static ObjectInstance CreateMoney(int amount, IDatabaseManager dbManager = null)
+        public static ObjectInstance CreateMoney(int amount, IRepositoryManager dbManager = null)
         {
             var coinAmt = amount <= 0 ? 1 : amount;
 
-            var obj = (dbManager ?? DatabaseManager.Instance).OBJECTS.Create(
-                (dbManager ?? DatabaseManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
+            var obj = (dbManager ?? RepositoryManager.Instance).OBJECTS.Create(
+                (dbManager ?? RepositoryManager.Instance).OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(coinAmt == 1
                                                                 ? VnumConstants.OBJ_VNUM_MONEY_ONE
                                                                 : VnumConstants.OBJ_VNUM_MONEY_SOME), 0);

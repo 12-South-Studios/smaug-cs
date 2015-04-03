@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class TypeMapAttribute : Attribute

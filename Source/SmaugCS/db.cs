@@ -17,6 +17,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS
@@ -138,13 +139,13 @@ namespace SmaugCS
 
         public static void FixExits()
         {
-            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
+            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
                 var fexit = false;
                 foreach (var exit in room.Exits)
                 {
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
+                    exit.Destination = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                     if (exit.vnum <= 0 || exit.Destination <= 0)
                     {
                         /*if (DatabaseManager.BootDb)
@@ -165,7 +166,7 @@ namespace SmaugCS
                     room.Flags.SetBit((int)RoomFlags.NoMob);
             }
 
-            foreach (var room in DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
+            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
                 foreach (var exit in room.Exits)
                 {
@@ -285,7 +286,7 @@ namespace SmaugCS
 
         public static void initialize_economy()
         {
-            foreach (var area in DatabaseManager.Instance.AREAS.Values)
+            foreach (var area in RepositoryManager.Instance.AREAS.Values)
             {
                 if (area.HighEconomy > 0 || area.LowMobNumber > 10000)
                     continue;
@@ -298,7 +299,7 @@ namespace SmaugCS
 
                 for (var x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    var mob = DatabaseManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
+                    var mob = RepositoryManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.Gold * 10);
                 }
@@ -323,7 +324,7 @@ namespace SmaugCS
 
         public static void area_update()
         {
-            foreach (var area in DatabaseManager.Instance.AREAS.Values)
+            foreach (var area in RepositoryManager.Instance.AREAS.Values)
             {
                 var resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
                 if ((resetAge == -1 && area.Age == -1)
@@ -337,7 +338,7 @@ namespace SmaugCS
                                         ? area.ResetMessage + "\r\n"
                                         : "You hear some squeaking sounds...\r\n";
 
-                    foreach (var pch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
+                    foreach (var pch in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                         .Where(pch => !pch.IsNpc()
                             && pch.IsAwake()
                             && pch.CurrentRoom != null
@@ -355,7 +356,7 @@ namespace SmaugCS
                     area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
-                    var room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
+                    var room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
                     if (room != null && room.Area == area && area.ResetFrequency == 0)
                         area.Age = 15 - 3;
                 }
@@ -459,7 +460,7 @@ namespace SmaugCS
             }
 
             //ch.Comments.Clear();
-            DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
+            RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
         }*/
 
         public static string get_extra_descr(string name, IEnumerable<ExtraDescriptionData> extraDescriptions)
@@ -734,7 +735,7 @@ namespace SmaugCS
 
         /*public static void delete_room(RoomTemplate room)
         {
-            RoomTemplate limbo = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
+            RoomTemplate limbo = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
 
             CharacterInstance ch;
             while ((ch = room.Persons.FirstOrDefault()) != null)
@@ -748,7 +749,7 @@ namespace SmaugCS
                     CharacterInstanceExtensions.Extract(ch, true);
             }
 
-            foreach (CharacterInstance och in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+            foreach (CharacterInstance och in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (och.PreviousRoom == room)
                     och.PreviousRoom = och.CurrentRoom;
@@ -781,25 +782,25 @@ namespace SmaugCS
             room.Exits.ForEach(x => handler.extract_exit(room, x));
             room.MudProgActs.Clear();
             room.MudProgs.Clear();
-            DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Delete(room.Vnum);
+            RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Delete(room.Vnum);
 
             // TODO: Room hash stuff here, but can be removed?
         }
 
         public static void delete_obj(ObjectTemplate obj)
         {
-            DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
+            RepositoryManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
             obj.ExtraDescriptions.Clear();
             obj.Affects.Clear();
             obj.MudProgs.Clear();
-            DatabaseManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Delete(obj.Vnum);
+            RepositoryManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Delete(obj.Vnum);
 
             // TODO Object hash stuff here, but can be removed?
         }
 
         public static void delete_mob(MobTemplate mob)
         {
-            foreach (CharacterInstance ch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+            foreach (CharacterInstance ch in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (ch.MobIndex == mob)
                     CharacterInstanceExtensions.Extract(ch, true);
@@ -821,7 +822,7 @@ namespace SmaugCS
                 SHOP.Remove(mob.Shop);
             if (mob.RepairShop != null)
                 REPAIR.Remove(mob.RepairShop);
-            DatabaseManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Delete(mob.Vnum);
+            RepositoryManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Delete(mob.Vnum);
 
             // TODO Mob hash stuff here, but can be removed?
         }*/
@@ -863,7 +864,7 @@ namespace SmaugCS
         {
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
-                RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
+                RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
                 if (room == null)
                     continue;
 
@@ -872,7 +873,7 @@ namespace SmaugCS
                 {
                     fexit = true;
                     exit.Room_vnum = room.Vnum;
-                    exit.Destination = exit.vnum <= 0 ? 0 : DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
+                    exit.Destination = exit.vnum <= 0 ? 0 : RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                 }
                 if (!fexit)
                     room.Flags.SetBit((int)RoomFlags.NoMob);
@@ -880,7 +881,7 @@ namespace SmaugCS
 
             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
             {
-                RoomTemplate room = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
+                RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
                 if (room == null)
                     continue;
 

@@ -3,6 +3,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -10,7 +11,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_affectchar(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             var victim = (CharacterInstance)vo;
 
             if (skill.Flags.IsSet(SkillFlags.ReCastable))

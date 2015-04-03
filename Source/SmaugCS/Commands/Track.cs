@@ -5,6 +5,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands
 {
@@ -12,7 +13,7 @@ namespace SmaugCS.Commands
     {
         public static void do_track(CharacterInstance ch, string argument)
         {
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>("track");
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>("track");
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Learned.ToList().FirstOrDefault(x => x == skill.ID) <= 0,
                 "You do not know of this skill yet.")) return;
 

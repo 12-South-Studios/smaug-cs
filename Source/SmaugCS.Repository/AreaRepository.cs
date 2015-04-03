@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Patterns.Repository;
 using SmaugCS.Data;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public class AreaRepository : Repository<long, AreaData>
     {

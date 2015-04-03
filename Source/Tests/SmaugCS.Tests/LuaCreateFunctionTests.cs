@@ -17,6 +17,7 @@ using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Tests
 {
@@ -35,9 +36,9 @@ namespace SmaugCS.Tests
 
             Mock<IKernel> mockKernel = new Mock<IKernel>();
 
-            LuaMgr = new LuaManager(mockKernel.Object, mockLogManager.Object.LogWrapper, dataPath);
+            LuaMgr = new LuaManager(mockKernel.Object, mockLogManager.Object.LogWrapper);
 
-			DatabaseManager dbMgr = new DatabaseManager(mockLogManager.Object);
+			RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, mockLogManager.Object);
 
             LuaGetFunctions.InitializeReferences(LuaMgr, dbMgr, dataPath);
             LuaCreateFunctions.InitializeReferences(LuaMgr, dbMgr, mockLogManager.Object);

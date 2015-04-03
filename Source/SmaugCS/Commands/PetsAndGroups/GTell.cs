@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -37,7 +38,7 @@ namespace SmaugCS.Commands.PetsAndGroups
 
             foreach (
                 var gch in
-                    DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
+                    RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
                         .Values.Where(x => x.IsSameGroup(ch)))
             {
                 gch.SetColor(ATTypes.AT_GTELL);

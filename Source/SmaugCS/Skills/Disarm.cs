@@ -10,12 +10,13 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Skills
 {
     public static class Disarm
     {
-        public static void CheckDisarm(CharacterInstance ch, CharacterInstance victim, IDatabaseManager dbManager = null)
+        public static void CheckDisarm(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null)
         {
             var obj = victim.GetEquippedItem(WearLocations.Wield);
             if (CheckFunctions.CheckIfNullObject(ch, obj)) return;
@@ -24,7 +25,7 @@ namespace SmaugCS.Skills
             if (tempObj != null && SmaugRandom.Bits(1) == 0)
                 obj = tempObj;
 
-            var skill = (dbManager ?? DatabaseManager.Instance).GetEntity<SkillData>("disarm");
+            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("disarm");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'disarm' not found");
 

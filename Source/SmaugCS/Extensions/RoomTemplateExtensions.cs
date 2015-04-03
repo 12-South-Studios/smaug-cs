@@ -12,6 +12,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions
 {
@@ -59,11 +60,11 @@ namespace SmaugCS.Extensions
             if (ch == null)
                 throw new ArgumentNullException("ch");
 
-            if (DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
+            if (RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {
                 LogManager.Instance.Bug("%s: %s -> NULL room! Putting char in limbo (%d)",
                     "char_to_room", ch.Name, VnumConstants.ROOM_VNUM_LIMBO);
-                localRoom = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
+                localRoom = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
             }
 
             ch.CurrentRoom = localRoom;

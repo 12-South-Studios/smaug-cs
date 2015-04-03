@@ -8,6 +8,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -15,7 +16,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_create_obj(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
 
             var targetName = Cast.TargetName;
 
@@ -30,10 +31,10 @@ namespace SmaugCS.Spells.Smaug
                     id = GameConstants.GetVnum("shield");
             }
 
-            var oi = DatabaseManager.Instance.OBJECTTEMPLATES.Get(id);
+            var oi = RepositoryManager.Instance.OBJECTTEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(oi, skill, ch)) return ReturnTypes.None;
 
-            var obj = DatabaseManager.Instance.OBJECTS.Create(oi);
+            var obj = RepositoryManager.Instance.OBJECTS.Create(oi);
             obj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 0;
             obj.Level = lvl;
 

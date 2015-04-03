@@ -1,9 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using SmaugCS.Data;
-using SmaugCS.Interfaces;
-using SmaugCS.Managers;
-using SmaugCS.Repositories;
+using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS.Tests.SpecFuns
@@ -12,14 +10,14 @@ namespace SmaugCS.Tests.SpecFuns
     public class SpecFunLookupTests
     {
         private GenericRepository<SpecialFunction> SpecFunRepository;
-        private Mock<IDatabaseManager> MockDbManager;
+        private Mock<IRepositoryManager> MockDbManager;
         private SpecFunHandler Handler;
 
         [SetUp]
         public void OnSetup()
         {
             SpecFunRepository = new GenericRepository<SpecialFunction>();
-            MockDbManager = new Mock<IDatabaseManager>();
+            MockDbManager = new Mock<IRepositoryManager>();
             Handler = new SpecFunHandler(MockDbManager.Object);
         }
 

@@ -10,6 +10,7 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Properties;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Skills
 {
@@ -43,7 +44,7 @@ namespace SmaugCS.Commands.Skills
 
             var percent = SmaugRandom.D100() - ch.GetCurrentLuck() - 13;
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>("aid");
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>("aid");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'aid' was not found.");
 

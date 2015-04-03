@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using SmaugCS.Repositories;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Tests.Repositories
 {

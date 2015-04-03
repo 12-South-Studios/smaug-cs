@@ -5,7 +5,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS.Data.Extensions
 {
     public static class MobTemplateExtensions
     {

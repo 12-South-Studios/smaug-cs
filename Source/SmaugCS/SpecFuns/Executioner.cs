@@ -8,6 +8,7 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
 {
@@ -41,12 +42,12 @@ namespace SmaugCS.SpecFuns
             if (ch.CharDied()) return true;
 
             var vnum = GameConstants.GetVnum("MobileCityGuard");
-            var cityguard = DatabaseManager.Instance.GetEntity<MobTemplate>(vnum);
+            var cityguard = RepositoryManager.Instance.GetEntity<MobTemplate>(vnum);
 
-            var newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
+            var newGuard = RepositoryManager.Instance.CHARACTERS.Create(cityguard, null);
             ch.CurrentRoom.AddTo(newGuard);
 
-            newGuard = DatabaseManager.Instance.CHARACTERS.Create(cityguard, null);
+            newGuard = RepositoryManager.Instance.CHARACTERS.Create(cityguard, null);
             ch.CurrentRoom.AddTo(newGuard);
             return true;
         }

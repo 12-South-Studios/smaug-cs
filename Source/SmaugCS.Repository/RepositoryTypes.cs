@@ -4,7 +4,7 @@ using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Language;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public enum RepositoryTypes
     {

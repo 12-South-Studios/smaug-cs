@@ -8,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -33,7 +34,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             ch.Printf("\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                             Macros.PERS(leader, ch), ch.Level < LevelConstants.AvatarLevel ? " [to lvl]" : "");
 
-            foreach (var gch in DatabaseManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
+            foreach (var gch in RepositoryManager.Instance.CHARACTERS.Values.Where(x => x.IsSameGroup(ch)))
             {
                 ch.SetColor(ATTypes.AT_DGREEN);
                 var buffer = string.Empty;
@@ -42,7 +43,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 {
                     ch.Printf("[%2d %s] %-16s %4s/%4s hp %4s/%4s %s %4s/%4s mv %5s xp\r\n",
                                     gch.Level,
-                                    gch.IsNpc() ? "Mob" : DatabaseManager.Instance.GetClass(gch.CurrentClass).Name,
+                                    gch.IsNpc() ? "Mob" : RepositoryManager.Instance.GetClass(gch.CurrentClass).Name,
                                     Macros.PERS(gch, ch).CapitalizeFirst(),
                                     "????", "????", "????", "????", gch.IsVampire() ? "bp" : "mana", "????",
                                     "????", "?????");
@@ -54,7 +55,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 ch.SendTo("[");
                 ch.SetColor(ATTypes.AT_DGREEN);
                 ch.Printf("%-2d %2.2s %3.3s", gch.Level, buffer,
-                                gch.IsNpc() ? "Mob" : DatabaseManager.Instance.GetClass(gch.CurrentClass).Name);
+                                gch.IsNpc() ? "Mob" : RepositoryManager.Instance.GetClass(gch.CurrentClass).Name);
                 ch.SetColor(ATTypes.AT_DGREEN);
                 ch.SendTo("]  ");
                 ch.SetColor(ATTypes.AT_DGREEN);
@@ -139,7 +140,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             }
 
             var count = 0;
-            foreach (var gch in DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch) && x != ch))
+            foreach (var gch in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values.Where(x => x.IsSameGroup(ch) && x != ch))
             {
                 gch.Leader = null;
                 gch.Master = null;

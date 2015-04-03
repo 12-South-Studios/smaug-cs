@@ -8,6 +8,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using SmaugCS.Weather;
 
 namespace SmaugCS.Spells.Smaug
@@ -17,7 +18,7 @@ namespace SmaugCS.Spells.Smaug
         public static ReturnTypes spell_obj_inv(int sn, int level, CharacterInstance ch, object vo)
         {
             var obj = (ObjectInstance) vo;
-            var skill = DatabaseManager.Instance.SKILLS.Get(sn);
+            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
             if (CheckFunctions.CheckIfNullObjectCasting(obj, skill, ch)) return ReturnTypes.None;

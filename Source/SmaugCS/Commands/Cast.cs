@@ -8,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands
 {
@@ -74,7 +75,7 @@ namespace SmaugCS.Commands
             var sn = ch.tempnum;
             if (Macros.IS_VALID_SN(sn))
             {
-                _skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+                _skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
                 if (_skill == null)
                 {
                     

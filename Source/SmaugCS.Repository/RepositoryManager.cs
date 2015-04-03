@@ -5,22 +5,23 @@ using Ninject;
 using Realm.Library.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
-using SmaugCS.Repositories;
 using EnumerationExtensions = SmaugCS.Common.EnumerationExtensions;
 
-namespace SmaugCS.Managers
+namespace SmaugCS.Repository
 {
-    public sealed class DatabaseManager : IDatabaseManager
+    public sealed class RepositoryManager : IRepositoryManager
     {
         private readonly Dictionary<RepositoryTypes, object> _repositories;
         public ILogManager LogManager { get; private set; }
+        public static IKernel Kernel { get; private set; }
 
-        public DatabaseManager(ILogManager logManager)
+        public RepositoryManager(IKernel kernel, ILogManager logManager)
         {
             LogManager = logManager;
+            Kernel = kernel;
+
             _repositories = new Dictionary<RepositoryTypes, object>();
             foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
@@ -32,9 +33,9 @@ namespace SmaugCS.Managers
             }
         }
 
-        public static IDatabaseManager Instance
+        public static IRepositoryManager Instance
         {
-            get { return Program.Kernel.Get<IDatabaseManager>(); }
+            get { return Kernel.Get<IRepositoryManager>(); }
         }
 
         /// <summary>

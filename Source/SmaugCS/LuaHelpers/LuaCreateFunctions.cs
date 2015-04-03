@@ -12,6 +12,7 @@ using SmaugCS.Data.Shops;
 using SmaugCS.Interfaces;
 using SmaugCS.Language;
 using SmaugCS.Logging;
+using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS.LuaHelpers
@@ -19,7 +20,7 @@ namespace SmaugCS.LuaHelpers
     public static class LuaCreateFunctions
     {
         private static ILuaManager _luaManager;
-        private static IDatabaseManager _dbManager;
+        private static IRepositoryManager _dbManager;
         private static ILogManager _logManager;
 
         #region LastObject
@@ -37,7 +38,7 @@ namespace SmaugCS.LuaHelpers
         }
         #endregion
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager,
+        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager,
             ILogManager logManager)
         {
             _luaManager = luaManager;

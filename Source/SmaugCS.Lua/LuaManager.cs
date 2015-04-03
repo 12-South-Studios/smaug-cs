@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using System;
+using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Data;
@@ -7,18 +8,16 @@ namespace SmaugCS.Lua
 {
     public sealed class LuaManager : ILuaManager
     {
-        private string _dataPath;
         private static ILogWrapper _logWrapper;
         private static IKernel _kernel;
 
         public LuaVirtualMachine LUA { get; private set; }
         public LuaInterfaceProxy Proxy { get; private set; }
 
-        public LuaManager(IKernel kernel, ILogWrapper logWrapper, string path)
+        public LuaManager(IKernel kernel, ILogWrapper logWrapper)
         {
             _kernel = kernel;
             _logWrapper = logWrapper;
-            _dataPath = path;
         }
 
         public static ILuaManager Instance
@@ -40,7 +39,14 @@ namespace SmaugCS.Lua
 
         public void DoLuaScript(string file)
         {
-            Proxy.DoFile(file);
+            try
+            {
+                Proxy.DoFile(file);
+            }
+            catch (Exception ex)
+            {
+                _logWrapper.Error(ex.ToString(), ex);
+            }
         }
     }
 }

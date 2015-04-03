@@ -10,6 +10,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Combat
 {
@@ -77,7 +78,7 @@ namespace SmaugCS.Commands.Combat
                 || (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
                 return false;
 
-            var sneak = DatabaseManager.Instance.GetEntity<SkillData>("sneak");
+            var sneak = RepositoryManager.Instance.GetEntity<SkillData>("sneak");
             if (sneak == null) return false;
 
             ch.StripAffects((int)sneak.ID);

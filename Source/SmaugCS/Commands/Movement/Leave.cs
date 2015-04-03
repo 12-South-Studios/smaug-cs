@@ -6,6 +6,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -42,7 +43,7 @@ namespace SmaugCS.Commands.Movement
             {
                 foreach (var xit in ch.CurrentRoom.Exits)
                 {
-                    var room = xit.GetDestination(DatabaseManager.Instance);
+                    var room = xit.GetDestination(RepositoryManager.Instance);
                     if (room == null ||
                         (room.SectorType != SectorTypes.Inside && !room.Flags.IsSet(RoomFlags.Indoors))) continue;
 

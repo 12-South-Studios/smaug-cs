@@ -4,14 +4,15 @@ using Realm.Library.NCalcExt;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Managers
 {
     public sealed class GameManager : IGameManager
     {
-        private static IDatabaseManager _dbManager;
+        private static IRepositoryManager _dbManager;
 
-        public GameManager(IDatabaseManager databaseManager)
+        public GameManager(IRepositoryManager databaseManager)
         {
             _dbManager = databaseManager;
 

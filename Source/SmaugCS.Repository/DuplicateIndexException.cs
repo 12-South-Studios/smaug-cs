@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Realm.Library.Common;
 
-namespace SmaugCS.Data.Exceptions
+namespace SmaugCS.Repository
 {
     [Serializable]
     public class DuplicateIndexException : BaseException

@@ -7,13 +7,14 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Skills
 {
     public static class Dodge
     {
         public static bool CheckDodge(CharacterInstance ch, CharacterInstance victim, 
-            IDatabaseManager databaseManager = null, IGameManager gameManager = null)
+            IRepositoryManager databaseManager = null, IGameManager gameManager = null)
         {
             if (!victim.IsAwake())
                 return false;
@@ -21,7 +22,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Dodge))
                 return false;
 
-            var skill = (databaseManager ?? DatabaseManager.Instance).GetEntity<SkillData>("dodge");
+            var skill = (databaseManager ?? RepositoryManager.Instance).GetEntity<SkillData>("dodge");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'dodge' not found");
 

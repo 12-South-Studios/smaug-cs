@@ -7,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -79,7 +80,7 @@ namespace SmaugCS.Commands.Movement
             if (reverseExit != null)
             {
                 reverseExit.Flags.SetBit(ExitFlags.Closed);
-                foreach(var vch in exit.GetDestination(DatabaseManager.Instance).Persons)
+                foreach(var vch in exit.GetDestination(RepositoryManager.Instance).Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d closes.", vch, null, reverseExit.Keywords, ToTypes.Character);
             }
 

@@ -8,6 +8,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using SmaugCS.Weather;
 
 namespace SmaugCS.Spells
@@ -38,7 +39,7 @@ namespace SmaugCS.Spells
             
             WeatherChangeTable[Cast.TargetName.ToLower()].Invoke(cell, change);
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
             ch.SuccessfulCast(skill);
             
             return ReturnTypes.None;

@@ -6,6 +6,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -26,11 +27,11 @@ namespace SmaugCS.Extensions.Character
             return wexp.GetNumberThatIsBetween(GameConstants.MinimumExperienceWorth, GameConstants.MaximumExperienceWorth);
         }
 
-        public static int GetExperienceBase(this CharacterInstance ch, IDatabaseManager databaseManager = null)
+        public static int GetExperienceBase(this CharacterInstance ch, IRepositoryManager databaseManager = null)
         {
             return ch.IsNpc()
                 ? 1000
-                : (databaseManager ?? DatabaseManager.Instance).CLASSES.Values.First(
+                : (databaseManager ?? RepositoryManager.Instance).CLASSES.Values.First(
                     x => x.Type == ch.CurrentClass).BaseExperience;
         }
 

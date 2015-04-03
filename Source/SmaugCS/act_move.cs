@@ -16,6 +16,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS
 {
@@ -158,7 +159,7 @@ namespace SmaugCS
                     ++roomnum;
                     distance = exit.Distance - 1;
                 }
-                backroom = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(brvnum);
+                backroom = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(brvnum);
             }
             else
             {
@@ -175,7 +176,7 @@ namespace SmaugCS
             var found = false;
 
             var foundRoom =
-                DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
+                RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
                     x => x.Vnum == serial && x.TeleportToVnum == roomnum);
             if (foundRoom != null)
                 found = true;
@@ -192,7 +193,7 @@ namespace SmaugCS
                     Flags = room.Flags
                 };
                 decorate_room(newRoom);
-                DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
+                RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
             }
 
             var xit = newRoom.GetExit(vdir);
@@ -249,7 +250,7 @@ namespace SmaugCS
 
         public static void teleport(CharacterInstance ch, int room, int flags)
         {
-            var dest = DatabaseManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
+            var dest = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
             if (dest == null)
             {
                 LogManager.Instance.Bug("bad room vnum {0}", room);

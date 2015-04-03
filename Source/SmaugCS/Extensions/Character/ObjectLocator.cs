@@ -9,6 +9,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -116,12 +117,12 @@ namespace SmaugCS.Extensions.Character
         }
 
         public static ObjectInstance GetObjectInWorld(this CharacterInstance ch, string argument,
-            IDatabaseManager dbManager = null)
+            IRepositoryManager dbManager = null)
         {
             var number = argument.IsNumberArgument() ? argument.GetNumberArgument() : 1;
             var arg = argument.IsNumberArgument() ? argument.StripNumberArgument() : argument;
 
-            var items = (dbManager ?? DatabaseManager.Instance).OBJECTS.Values.Where(ch.CanSee);
+            var items = (dbManager ?? RepositoryManager.Instance).OBJECTS.Values.Where(ch.CanSee);
 
             var vnum = GetVnumFromArgumentIfImmortal(ch, arg);
             return vnum > 0
@@ -147,7 +148,7 @@ namespace SmaugCS.Extensions.Character
         }
 
         public static CharacterInstance GetCharacterInWorld(this CharacterInstance ch, string argument,
-            IDatabaseManager dbManager = null)
+            IRepositoryManager dbManager = null)
         {
             var number = argument.IsNumberArgument() ? argument.GetNumberArgument() : 1;
             var arg = argument.IsNumberArgument() ? argument.StripNumberArgument() : argument;
@@ -156,7 +157,7 @@ namespace SmaugCS.Extensions.Character
                 return ch;
 
             var chars =
-                (dbManager ?? DatabaseManager.Instance).CHARACTERS.Values.Where(ch.CanSee);
+                (dbManager ?? RepositoryManager.Instance).CHARACTERS.Values.Where(ch.CanSee);
 
             var vnum = GetVnumFromArgumentIfImmortal(ch, arg);
             return vnum > 0

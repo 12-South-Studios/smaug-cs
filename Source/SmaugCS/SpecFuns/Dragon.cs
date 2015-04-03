@@ -4,6 +4,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
 {
@@ -17,7 +18,7 @@ namespace SmaugCS.SpecFuns
                   .FirstOrDefault(vch => SmaugRandom.Bits(2) == 0 && vch.GetMyTarget() == ch);
             if (victim == null) return false;
 
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(spellName);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(spellName);
             if (skill == null || skill.SpellFunction == null) return false;
 
             skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, victim);

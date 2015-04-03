@@ -16,7 +16,7 @@ using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Repositories;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Objects
 {
@@ -189,7 +189,7 @@ namespace SmaugCS.Extensions.Objects
                 db.RELATIONS.Remove(relation);
             }
 
-            DatabaseManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
+            RepositoryManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
 
             handler.queue_extracted_obj(obj);
 

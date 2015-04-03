@@ -4,10 +4,9 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public class MobileRepository : Repository<long, MobTemplate>, ITemplateRepository<MobTemplate>
     {

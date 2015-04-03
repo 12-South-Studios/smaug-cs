@@ -6,10 +6,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
-using SmaugCS.Interfaces;
-using SmaugCS.Repositories;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Tests.Extensions
 {
@@ -230,7 +228,7 @@ namespace SmaugCS.Tests.Extensions
             var classRepo = new GenericRepository<ClassData>();
             classRepo.Add(1, new ClassData(1, "Test") {IsSpellcaster = isSpellcaster, Type = clsType});
 
-            var mockDb = new Mock<IDatabaseManager>();
+            var mockDb = new Mock<IRepositoryManager>();
             mockDb.SetupGet(x => x.CLASSES).Returns(classRepo);
 
             _ch.CurrentClass = clsType;

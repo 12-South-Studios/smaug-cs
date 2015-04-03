@@ -3,18 +3,19 @@ using Realm.Library.Lua;
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.Repository;
 
 namespace SmaugCS.LuaHelpers
 {
     public static class LuaAreaFunctions
     {
         private static ILuaManager _luaManager;
-        private static IDatabaseManager _dbManager;
+        private static IRepositoryManager _dbManager;
         private static ILogManager _logManager;
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, 
+        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager, 
             ILogManager logManager)
         {
             _luaManager = luaManager;

@@ -8,16 +8,17 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Interfaces;
+using SmaugCS.Repository;
 
 namespace SmaugCS.LuaHelpers
 {
     public static class LuaGetFunctions
     {
         private static ILuaManager _luaManager;
-        private static IDatabaseManager _dbManager;
+        private static IRepositoryManager _dbManager;
         private static string _dataPath;
 
-        public static void InitializeReferences(ILuaManager luaManager, IDatabaseManager dbManager, string dataPath)
+        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager, string dataPath)
         {
             _luaManager = luaManager;
             _dbManager = dbManager;

@@ -5,7 +5,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
 using NumberExtensions = SmaugCS.Common.NumberExtensions;
 
-namespace SmaugCS.Extensions.Objects
+namespace SmaugCS.Data.Extensions
 {
     public static class ObjectTemplateExtensions
     {

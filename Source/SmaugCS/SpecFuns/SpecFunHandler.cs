@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Interfaces;
+using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
 {
     public sealed class SpecFunHandler : ISpecFunHandler
     {
-        private readonly IDatabaseManager _dbManager;
+        private readonly IRepositoryManager _dbManager;
 
-        public SpecFunHandler(IDatabaseManager dbManager)
+        public SpecFunHandler(IRepositoryManager dbManager)
         {
             _dbManager = dbManager;
         }

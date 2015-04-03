@@ -5,12 +5,13 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Mobile
 {
     public static class HuntHateFear
     {
-        public static void SummonIfHating(this MobileInstance ch, IDatabaseManager dbManager = null)
+        public static void SummonIfHating(this MobileInstance ch, IRepositoryManager dbManager = null)
         {
             if ((int)ch.CurrentPosition <= (int)PositionTypes.Sleeping
                 || ch.CurrentFighting != null
@@ -21,7 +22,7 @@ namespace SmaugCS.Extensions.Mobile
                 return;
 
             var victim =
-                (dbManager ?? DatabaseManager.Instance).GetEntity<CharacterInstance>(ch.CurrentHating.Name);
+                (dbManager ?? RepositoryManager.Instance).GetEntity<CharacterInstance>(ch.CurrentHating.Name);
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;
 

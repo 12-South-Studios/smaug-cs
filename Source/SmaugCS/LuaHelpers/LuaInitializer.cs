@@ -2,17 +2,18 @@
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.Repository;
 
 namespace SmaugCS.LuaHelpers
 {
     public class LuaInitializer : IInitializer
     {
         private readonly ILuaManager _luaManager;
-        private readonly IDatabaseManager _dbManager;
+        private readonly IRepositoryManager _dbManager;
         private readonly ILogManager _logManager;
         private readonly ILookupManager _lookupManager;
 
-        public LuaInitializer(ILuaManager luaManager, IDatabaseManager dbManager, ILogManager logManager,
+        public LuaInitializer(ILuaManager luaManager, IRepositoryManager dbManager, ILogManager logManager,
             ILookupManager lookupManager)
         {
             _luaManager = luaManager;

@@ -4,6 +4,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -63,7 +64,7 @@ namespace SmaugCS.Extensions.Character
 
             foreach (
                 var fch in
-                    DatabaseManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+                    RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (fch.Master == ch)
                     ch.StopFollower();

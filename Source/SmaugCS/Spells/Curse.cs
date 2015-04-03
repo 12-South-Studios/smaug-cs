@@ -7,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Spells
 {
@@ -15,7 +16,7 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_curse(int sn, int level, CharacterInstance ch, object vo)
         {
             var victim = (CharacterInstance) vo;
-            var skill = DatabaseManager.Instance.GetEntity<SkillData>(sn);
+            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(victim.Immunity.IsSet(ResistanceTypes.Magic), skill, ch,
                 CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;

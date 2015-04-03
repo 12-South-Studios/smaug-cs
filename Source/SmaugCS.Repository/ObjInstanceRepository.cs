@@ -7,11 +7,11 @@ using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions.Objects;
 
-namespace SmaugCS.Repositories
+namespace SmaugCS.Repository
 {
     public class ObjInstanceRepository : Repository<long, ObjectInstance>, IInstanceRepository<ObjectInstance>
     {
