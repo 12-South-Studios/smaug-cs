@@ -12,9 +12,10 @@ The project uses the following third-party libraries:
  * EntityFramework (v6.1.3) https://msdn.microsoft.com/en-us/data/ef.aspx
  * Lua (v5.1) http://www.lua.org/
  * LuaInterface (v2.0.3) https://code.google.com/p/luainterface/
-
+ * EF-PRS Infrastructure https://github.com/huyrua/efprs
+ 
 Details of the project tools and specs:
- * Language: C# (.NET 4.5.1)
+ * Language: C# (.NET 4.5.3)
  * Microsoft Visual Studio 2013
  * JetBrains Resharper 7.1.2 http://www.jetbrains.com/resharper/
  * Remco Software NCrunch 2.4.0.2 http://www.ncrunch.net/

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using Infrastructure.Data;
 using Ninject;
 using SmaugCS.Data;
-using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Weather
@@ -14,13 +14,13 @@ namespace SmaugCS.Weather
 
         private static ILogManager _logManager;
         private static IKernel _kernel;
-        private static ISmaugDbContext _dbContext;
+        private static IRepository _repository;
 
-        public WeatherManager(ILogManager logManager, IKernel kernel, ISmaugDbContext dbContext)
+        public WeatherManager(ILogManager logManager, IKernel kernel, IRepository repository)
         {
             _logManager = logManager;
             _kernel = kernel;
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public static IWeatherManager Instance
@@ -48,7 +48,8 @@ namespace SmaugCS.Weather
             try
             {
                 var cells = new List<WeatherCell>();
-                foreach (var cell in _dbContext.Weather)
+
+                foreach (var cell in _repository.GetQuery<DAL.Models.WeatherCell>())
                 {
                     var newCell = new WeatherCell(cell.Id)
                     {

@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using Infrastructure.Data;
+using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
@@ -19,6 +20,9 @@ namespace SmaugCS
         public override void Load()
         {
             Kernel.Bind<ISmallDb>().To<SmallDb>();
+
+            Kernel.Bind<IRepository>().To<GenericRepository>()
+                .WithConstructorArgument(Kernel.Get<ISmaugDbContext>());
 
             Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
 

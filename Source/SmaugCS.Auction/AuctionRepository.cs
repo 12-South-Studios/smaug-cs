@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using SmaugCS.DAL.Interfaces;
+using Infrastructure.Data;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Auction
@@ -13,13 +12,13 @@ namespace SmaugCS.Auction
     {
         public IEnumerable<AuctionHistory> History { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public AuctionRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public AuctionRepository(ILogManager logManager, IRepository repository)
         {
             History = new List<AuctionHistory>();
             _logManager = logManager;
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public void Add(AuctionData auction)
@@ -40,7 +39,7 @@ namespace SmaugCS.Auction
         {
             try
             {
-                foreach (var history in _dbContext.Auctions.Select(auction => new AuctionHistory
+                foreach (var history in _repository.GetQuery<DAL.Models.Auction>().Select(auction => new AuctionHistory
                 {
                     BuyerName = auction.BuyerName,
                     ItemForSale = auction.ItemSoldId,
@@ -63,20 +62,25 @@ namespace SmaugCS.Auction
         {
             try
             {
+                _repository.UnitOfWork.BeginTransaction();
                 foreach (var history in History.Where(x => !x.Saved).ToList())
                 {
-                    var auction = _dbContext.Auctions.Create();
-                    auction.BuyerName = history.BuyerName;
-                    auction.ItemSoldId = history.ItemForSale;
-                    auction.SellerName = history.SellerName;
-                    auction.SoldFor = history.SoldFor;
-                    auction.SoldOn = history.SoldOn;
+                    var auction = new DAL.Models.Auction
+                    {
+                        BuyerName = history.BuyerName,
+                        ItemSoldId = history.ItemForSale,
+                        SellerName = history.SellerName,
+                        SoldFor = history.SoldFor,
+                        SoldOn = history.SoldOn
+                    };
+                    _repository.Attach(auction);
                     history.Saved = true;
                 }
-                _dbContext.SaveChanges();
+                _repository.UnitOfWork.CommitTransaction();
             }
             catch (DbException ex)
             {
+                _repository.UnitOfWork.RollBackTransaction();
                 _logManager.Error(ex);
             }
         }

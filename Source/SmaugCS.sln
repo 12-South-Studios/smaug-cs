@@ -61,6 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 		..\Libraries\EntityFramework.dll = ..\Libraries\EntityFramework.dll
 		..\Libraries\EntityFramework.SqlServer.dll = ..\Libraries\EntityFramework.SqlServer.dll
 		..\Libraries\EntityFramework.xml = ..\Libraries\EntityFramework.xml
+		..\Libraries\Infrastructure.Data.dll = ..\Libraries\Infrastructure.Data.dll
 		..\Libraries\log4net.dll = ..\Libraries\log4net.dll
 		..\Libraries\log4net.xml = ..\Libraries\log4net.xml
 		..\Libraries\lua51.dll = ..\Libraries\lua51.dll

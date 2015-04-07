@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using SmaugCS.DAL.Interfaces;
+using Infrastructure.Data;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
@@ -11,13 +11,13 @@ namespace SmaugCS.Ban
     {
         public IEnumerable<BanData> Bans { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public BanRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public BanRepository(ILogManager logManager, IRepository repository)
         {
             Bans = new List<BanData>();
             _logManager = logManager;
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public void Add(BanData ban)
@@ -29,7 +29,7 @@ namespace SmaugCS.Ban
         {
             try
             {
-                foreach (var newBan in _dbContext.Bans.Select(ban => new BanData(ban.Id, ban.BanType)
+                foreach (var newBan in _repository.GetQuery<DAL.Models.Ban>().Select(ban => new BanData(ban.Id, ban.BanType)
                 {
                     BannedBy = ban.BannedBy,
                     BannedOn = ban.BannedOn,
@@ -55,24 +55,29 @@ namespace SmaugCS.Ban
         {
             try
             {
+                _repository.UnitOfWork.BeginTransaction();
                 foreach (var ban in Bans.Where(x => !x.Saved).ToList())
                 {
-                    var banToSave = _dbContext.Bans.Create();
-                    banToSave.BannedBy = ban.BannedBy;
-                    banToSave.BannedOn = ban.BannedOn;
-                    banToSave.Duration = ban.Duration;
-                    banToSave.Level = ban.Level;
-                    banToSave.BanType = ban.Type;
-                    banToSave.IsPrefix = ban.Prefix;
-                    banToSave.IsSuffix = ban.Suffix;
-                    banToSave.Name = ban.Name;
-                    banToSave.Note = ban.Note;
+                    var banToSave = new DAL.Models.Ban
+                    {
+                        BannedBy = ban.BannedBy,
+                        BannedOn = ban.BannedOn,
+                        Duration = ban.Duration,
+                        Level = ban.Level,
+                        BanType = ban.Type,
+                        IsPrefix = ban.Prefix,
+                        IsSuffix = ban.Suffix,
+                        Name = ban.Name,
+                        Note = ban.Note
+                    };
                     ban.Saved = true;
+                    _repository.Attach(banToSave);
                 }
-                _dbContext.SaveChanges();
+                _repository.UnitOfWork.CommitTransaction();
             }
             catch (DbException ex)
             {
+                _repository.UnitOfWork.RollBackTransaction();
                 _logManager.Error(ex);
             }
         }
@@ -85,14 +90,16 @@ namespace SmaugCS.Ban
                 if (localBan == null) return;
                 Bans.ToList().Remove(localBan);
 
-                var ban = _dbContext.Bans.FirstOrDefault(x => x.Id == id);
+                var ban = _repository.GetQuery<DAL.Models.Ban>().FirstOrDefault(x => x.Id == id);
                 if (ban == null) return;
 
-                _dbContext.Bans.Remove(ban);
-                _dbContext.SaveChanges();
+                _repository.UnitOfWork.BeginTransaction();
+                _repository.Delete(ban);
+                _repository.UnitOfWork.CommitTransaction();
             }
             catch (DbException ex)
             {
+                _repository.UnitOfWork.RollBackTransaction();
                 _logManager.Error(ex);
             }
         }

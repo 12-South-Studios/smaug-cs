@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Infrastructure.Data;
 using Moq;
 using Ninject;
 using NUnit.Framework;
@@ -54,7 +55,7 @@ namespace SmaugCS.Tests.Repositories
         public void OnSetup()
         {
             var mockKernel = new Mock<IKernel>();
-            var mockCtx = new Mock<ISmaugDbContext>();
+            var mockCtx = new Mock<IRepository>();
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 

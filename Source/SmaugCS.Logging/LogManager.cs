@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using Infrastructure.Data;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
@@ -18,17 +19,17 @@ namespace SmaugCS.Logging
         public ILogWrapper LogWrapper { get; private set; }
 
         private static IKernel _kernel;
-        private readonly ISmaugDbContext _dbcontext;
+        private readonly IRepository _repository;
         private readonly List<LogEntry> _pendingLogs;
         private readonly ITimer _dbDumpTimer;
 
         public static ILogManager Instance { get { return _kernel.Get<ILogManager>(); } }
 
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext)
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, IRepository repository)
         {
             LogWrapper = logWrapper;
             _kernel = kernel;
-            _dbcontext = dbContext;
+            _repository = repository;
 
             _pendingLogs = new List<LogEntry>();
 
@@ -57,17 +58,22 @@ namespace SmaugCS.Logging
 
             try
             {
+                _repository.UnitOfWork.BeginTransaction();
                 foreach (var log in logsToDump)
                 {
-                    var logToSave = _dbcontext.Logs.Create();
-                    logToSave.LogType = log.LogType;
-                    logToSave.LoggedOn = DateTime.UtcNow;
-                    logToSave.Text = log.Text;
+                    var logToSave = new DAL.Models.Log
+                    {
+                        LogType = log.LogType,
+                        LoggedOn = DateTime.UtcNow,
+                        Text = log.Text
+                    };
+                    _repository.Attach(logToSave);
                 }
-                _dbcontext.SaveChanges();
+                _repository.UnitOfWork.CommitTransaction();
             }
             catch (DbException ex)
             {
+                _repository.UnitOfWork.RollBackTransaction();
                 DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
 
                 if (logsToDump.Any())
