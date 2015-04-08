@@ -36,8 +36,8 @@ namespace SmaugCS.Repository
         {
             newMob.LongDescription = cloneMob.LongDescription;
             newMob.Description = cloneMob.Description;
-            newMob.ActFlags = cloneMob.ActFlags;
-            newMob.AffectedBy = cloneMob.AffectedBy;
+            newMob.Statistics[StatisticTypes.ActFlags] = cloneMob.GetProperty(StatisticTypes.ActFlags);
+            newMob.Statistics[StatisticTypes.AffectedByFlags] = cloneMob.GetProperty(StatisticTypes.AffectedByFlags);
             newMob.SpecialFunction = cloneMob.SpecialFunction;
             newMob.Statistics[StatisticTypes.Alignment] = cloneMob.GetStatistic(StatisticTypes.Alignment);
             newMob.Level = cloneMob.Level;
@@ -45,8 +45,8 @@ namespace SmaugCS.Repository
             newMob.Statistics[StatisticTypes.ArmorClass] = cloneMob.GetStatistic(StatisticTypes.ArmorClass);
             newMob.HitDice = new DiceData(cloneMob.HitDice);
             newMob.DamageDice = new DiceData(cloneMob.DamageDice);
-            newMob.Gold = cloneMob.Gold;
-            newMob.Experience = cloneMob.Experience;
+            newMob.Statistics[StatisticTypes.Coin] = cloneMob.GetStatistic(StatisticTypes.Coin);
+            newMob.Statistics[StatisticTypes.Experience] = cloneMob.GetStatistic(StatisticTypes.Experience);
             newMob.Position = cloneMob.Position;
             newMob.DefensivePosition = cloneMob.DefensivePosition;
             newMob.Gender = cloneMob.Gender;
@@ -85,7 +85,7 @@ namespace SmaugCS.Repository
             newMob.Statistics[StatisticTypes.PermanentCharisma] = 13;
             newMob.Statistics[StatisticTypes.PermanentConstitution] = 13;
             newMob.Statistics[StatisticTypes.PermanentLuck] = 13;
-            newMob.ActFlags = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
+            newMob.Statistics[StatisticTypes.ActFlags] = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
 
             Add(id, newMob);
             LastMob = newMob;

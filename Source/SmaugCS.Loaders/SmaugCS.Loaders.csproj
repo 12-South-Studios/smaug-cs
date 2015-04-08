@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{94200936-C954-4E8C-B703-C0A183F58244}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmaugCS.Loaders</RootNamespace>
+    <AssemblyName>SmaugCS.Loaders</AssemblyName>
+    <TargetFrameworkVersion>v4.5.3</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Realm.Library.Common">
+      <HintPath>..\..\Libraries\Realm.Library.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AreaListLoader.cs" />
+    <Compile Include="ClanLoader.cs" />
+    <Compile Include="ClassLoader.cs" />
+    <Compile Include="CouncilLoader.cs" />
+    <Compile Include="DeityListLoader.cs" />
+    <Compile Include="Incomplete\CommentLoader.cs" />
+    <Compile Include="Incomplete\HelpAreaLoader.cs" />
+    <Compile Include="Incomplete\HintLoader.cs" />
+    <Compile Include="Incomplete\HolidayLoader.cs" />
+    <Compile Include="Incomplete\MixtureLoader.cs" />
+    <Compile Include="Incomplete\ReservedLoader.cs" />
+    <Compile Include="Incomplete\TimeLoader.cs" />
+    <Compile Include="Incomplete\WatchListLoader.cs" />
+    <Compile Include="ListLoader.cs" />
+    <Compile Include="LoaderInitializer.cs" />
+    <Compile Include="Obsolete\AreaLoader.cs" />
+    <Compile Include="Obsolete\FUSSAreaLoader.cs" />
+    <Compile Include="Obsolete\PrototypeAreaLoader.cs" />
+    <Compile Include="Obsolete\SmaugAreaLoader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RaceLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
+      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
+      <Name>SmaugCS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
+      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
+      <Name>SmaugCS.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
+      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
+      <Name>SmaugCS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
+      <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
+      <Name>SmaugCS.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj">
+      <Project>{55dcebc5-8647-40f3-9fea-2886a9fa7396}</Project>
+      <Name>SmaugCS.Lua</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

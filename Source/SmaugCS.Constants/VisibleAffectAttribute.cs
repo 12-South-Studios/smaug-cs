@@ -2,7 +2,7 @@
 
 namespace SmaugCS.Constants
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class VisibleAffectAttribute : Attribute
     {
         public Enums.ATTypes ATType { get; set; }

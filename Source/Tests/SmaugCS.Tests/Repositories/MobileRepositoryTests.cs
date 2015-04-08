@@ -12,10 +12,8 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
-using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
@@ -139,8 +137,8 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Level, Is.EqualTo(18));
             Assert.That(result.GetStatistic(StatisticTypes.ToHitArmorClass0), Is.EqualTo(2));
             Assert.That(result.GetStatistic(StatisticTypes.ArmorClass), Is.EqualTo(-2));
-            Assert.That(result.Gold, Is.EqualTo(6000));
-            Assert.That(result.Experience, Is.EqualTo(32000));
+            Assert.That(result.GetStatistic(StatisticTypes.Coin), Is.EqualTo(6000));
+            Assert.That(result.GetStatistic(StatisticTypes.Experience), Is.EqualTo(32000));
         }
 
         [Test]
@@ -173,8 +171,8 @@ namespace SmaugCS.Tests.Repositories
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Height, Is.EqualTo(50));
-            Assert.That(result.Weight, Is.EqualTo(100));
+            Assert.That(result.GetStatistic(StatisticTypes.Height), Is.EqualTo(50));
+            Assert.That(result.GetStatistic(StatisticTypes.Weight), Is.EqualTo(100));
             Assert.That(result.NumberOfAttacks, Is.EqualTo(2));
             Assert.That(result.GetStatistic(StatisticTypes.Hitroll), Is.EqualTo(5));
             Assert.That(result.GetStatistic(StatisticTypes.Damroll), Is.EqualTo(6));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
@@ -32,7 +33,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetResistance(this MobTemplate template)
         {
             var value = 0;
-            var words = template.Resistance.Split(new[] { ' ' });
+            var words = template.Resistance.Split(' ');
             foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
                 value = NumberExtensions.SetBit(value, (Enum) resType);
@@ -43,7 +44,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetSusceptibility(this MobTemplate template)
         {
             var value = 0;
-            var words = template.Susceptibility.Split(new[] { ' ' });
+            var words = template.Susceptibility.Split(' ');
             foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
                 value = NumberExtensions.SetBit(value, (Enum) resType);
@@ -54,7 +55,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetImmunity(this MobTemplate template)
         {
             var value = 0;
-            var words = template.Immunity.Split(new[] { ' ' });
+            var words = template.Immunity.Split(' ');
             foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
                 value = NumberExtensions.SetBit(value, (Enum) resType);
@@ -65,7 +66,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetActFlags(this MobTemplate template)
         {
             var bv = 0;
-            var words = template.ActFlags.Split(new[] { ' ' });
+            var words = template.GetProperty(StatisticTypes.ActFlags).Split(' ');
             foreach (var word in words)
             {
                 bv.SetBit(EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
@@ -76,7 +77,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetAffected(this MobTemplate template)
         {
             var bv = 0;
-            var words = template.AffectedBy.Split(new[] { ' ' });
+            var words = template.GetProperty(StatisticTypes.AffectedByFlags).Split(' ');
             foreach (var word in words)
             {
                 bv.SetBit(EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
@@ -87,7 +88,7 @@ namespace SmaugCS.Data.Extensions
         public static ExtendedBitvector GetAttacks(this MobTemplate template)
         {
             var bv = new ExtendedBitvector();
-            var words = template.Attacks.Split(new[] { ' ' });
+            var words = template.Attacks.Split(' ');
             foreach (var word in words)
             {
                 bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<AttackTypes>(word));
@@ -98,7 +99,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetDefenses(this MobTemplate template)
         {
             var flags = 0;
-            var words = template.Defenses.Split(new[] { ' ' });
+            var words = template.Defenses.Split(' ');
 
             foreach (var word in words)
             {

@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Infrastructure.Data;
 using Moq;
@@ -9,14 +8,10 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
-using Realm.Library.SmallDb;
-using SmaugCS.Data;
 using SmaugCS.Data.Templates;
-using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Tests.Repositories

@@ -76,8 +76,8 @@ namespace SmaugCS.Repository
                 mob.MaximumHealth = mobParent.HitDice.NumberOf*SmaugRandom.Between(1, mobParent.HitDice.SizeOf) +
                                     mobParent.HitDice.Bonus;
 
-            mob.CurrentCoin = mobParent.Gold;
-            mob.Experience = mobParent.Experience;
+            mob.CurrentCoin = mobParent.GetStatistic(StatisticTypes.Coin);
+            mob.Experience = mobParent.GetStatistic(StatisticTypes.Experience);
             mob.CurrentPosition = mobParent.GetPosition();
             mob.CurrentDefensivePosition = mobParent.GetDefensivePosition();
             mob.BareDice = new DiceData
@@ -105,8 +105,8 @@ namespace SmaugCS.Repository
             mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;
             mob.SavingThrows = new SavingThrowData(mobParent.SavingThrows);
-            mob.Height = mobParent.Height;
-            mob.Weight = mobParent.Weight;
+            mob.Height = mobParent.GetStatistic(StatisticTypes.Height);
+            mob.Weight = mobParent.GetStatistic(StatisticTypes.Weight);
             mob.Resistance = mobParent.GetResistance();
             mob.Immunity = mobParent.GetImmunity();
             mob.Susceptibility = mobParent.GetSusceptibility();

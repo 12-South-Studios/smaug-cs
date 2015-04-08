@@ -290,9 +290,6 @@
     <Compile Include="Constants\LookupConstants.cs" />
     <Compile Include="Helpers\HelperFunctions.cs" />
     <Compile Include="Interfaces\IInitializer.cs" />
-    <Compile Include="LoaderInitializer.cs" />
-    <Compile Include="Loaders\ClassLoader.cs" />
-    <Compile Include="Loaders\RaceLoader.cs" />
     <Compile Include="Lookup\CommandLookupTable.cs" />
     <Compile Include="Lookup\SkillLookupTable.cs" />
     <Compile Include="Lookup\SpellLookupTable.cs" />
@@ -692,19 +689,6 @@
     <Compile Include="Commands\Social\Where.cs" />
     <Compile Include="Commands\Social\Who.cs" />
     <Compile Include="Commands\WizList.cs" />
-    <Compile Include="Loaders\AreaListLoader.cs" />
-    <Compile Include="Loaders\ClanLoader.cs" />
-    <Compile Include="Loaders\Incomplete\CommentLoader.cs" />
-    <Compile Include="Loaders\CouncilLoader.cs" />
-    <Compile Include="Loaders\DeityListLoader.cs" />
-    <Compile Include="Loaders\Incomplete\HintLoader.cs" />
-    <Compile Include="Loaders\Incomplete\HolidayLoader.cs" />
-    <Compile Include="Loaders\ListLoader.cs" />
-    <Compile Include="Loaders\Incomplete\MixtureLoader.cs" />
-    <Compile Include="Loaders\Obsolete\PrototypeAreaLoader.cs" />
-    <Compile Include="Loaders\Incomplete\ReservedLoader.cs" />
-    <Compile Include="Loaders\Incomplete\TimeLoader.cs" />
-    <Compile Include="Loaders\Incomplete\WatchListLoader.cs" />
     <Compile Include="Managers\ChatManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Spells\Acid\AcetumPrimus.cs" />
@@ -804,10 +788,6 @@
     <Compile Include="Spells\WordOfRecall.cs" />
     <Compile Include="SqlQueries.cs" />
     <Compile Include="StringExt.cs" />
-    <Compile Include="Loaders\Obsolete\AreaLoader.cs" />
-    <Compile Include="Loaders\Obsolete\FUSSAreaLoader.cs" />
-    <Compile Include="Loaders\Incomplete\HelpAreaLoader.cs" />
-    <Compile Include="Loaders\Obsolete\SmaugAreaLoader.cs" />
     <Compile Include="Managers\LookupManager.cs" />
     <Compile Include="Objects\BFSQueueData.cs" />
     <Compile Include="track.cs" />
@@ -1000,6 +980,10 @@
     <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj">
       <Project>{0e01a79f-5582-4797-af09-12de27901885}</Project>
       <Name>SmaugCS.Language</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Loaders\SmaugCS.Loaders.csproj">
+      <Project>{94200936-c954-4e8c-b703-c0a183f58244}</Project>
+      <Name>SmaugCS.Loaders</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
       <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>

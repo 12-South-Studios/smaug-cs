@@ -5,6 +5,7 @@ using System.Linq;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -301,7 +302,7 @@ namespace SmaugCS
                 {
                     var mob = RepositoryManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
                     if (mob != null)
-                        area.BoostEconomy(mob.Gold * 10);
+                        area.BoostEconomy(mob.GetStatistic(StatisticTypes.Coin) * 10);
                 }
             }
         }

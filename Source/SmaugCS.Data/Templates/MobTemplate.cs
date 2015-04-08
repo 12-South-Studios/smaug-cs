@@ -17,14 +17,10 @@ namespace SmaugCS.Data.Templates
         public int TimesKilled { get; set; }
         public string Gender { get; set; }
         public int Level { get; set; }
-        public string ActFlags { get; set; }
-        public string AffectedBy { get; set; }
         public string BodyParts { get; set; }
         public DiceData HitDice { get; set; }
         public DiceData DamageDice { get; set; }
         public int NumberOfAttacks { get; set; }
-        public int Gold { get; set; }
-        public int Experience { get; set; }
         public int ExtraFlags { get; set; }
         public string Immunity { get; set; }
         public string Susceptibility { get; set; }
@@ -35,12 +31,10 @@ namespace SmaugCS.Data.Templates
         public string Speaking { get; set; }
         public string Position { get; set; }
         public string DefensivePosition { get; set; }
-        public int Height { get; set; }
-        public int Weight { get; set; }
         public string Race { get; set; }
         public string Class { get; set; }
         public SavingThrowData SavingThrows { get; set; }
-        public Dictionary<StatisticTypes, int> Statistics { get; private set; }
+        public Dictionary<StatisticTypes, object> Statistics { get; private set; }
         public string PlayerName { get; set; }
 
         public MobTemplate(long id, string name)
@@ -49,7 +43,7 @@ namespace SmaugCS.Data.Templates
             SavingThrows = new SavingThrowData();
             HitDice = new DiceData();
             DamageDice = new DiceData();
-            Statistics = new Dictionary<StatisticTypes, int>();
+            Statistics = new Dictionary<StatisticTypes, object>();
 
             ShortDescription = string.Format("A newly created {0}", name);
             LongDescription = string.Format("Somebody abandoned a newly created {0} here.", name);
@@ -63,7 +57,12 @@ namespace SmaugCS.Data.Templates
 
         public int GetStatistic(StatisticTypes type)
         {
-            return Statistics.ContainsKey(type) ? Statistics[type] : 0;
+            return Statistics.ContainsKey(type) ? (int)Statistics[type] : 0;
+        }
+
+        public string GetProperty(StatisticTypes type)
+        {
+            return Statistics.ContainsKey(type) ? Statistics[type].ToString() : string.Empty;
         }
 
         public void SetStats1(int align, int level, int thac0, int ac, int gold, int xp)
@@ -72,8 +71,8 @@ namespace SmaugCS.Data.Templates
             Level = level;
             Statistics[StatisticTypes.ToHitArmorClass0] = thac0;
             Statistics[StatisticTypes.ArmorClass] = ac;
-            Gold = gold;
-            Experience = xp;
+            Statistics[StatisticTypes.Coin] = gold;
+            Statistics[StatisticTypes.Experience] = xp;
         }
 
         public void SetStats2(int numberHitDice, int sizeHitDice, int bonusHitDice)
@@ -98,8 +97,8 @@ namespace SmaugCS.Data.Templates
 
         public void SetStats4(int height, int weight, int numberAttacks, int hitRoll, int dmgRoll)
         {
-            Height = height;
-            Weight = weight;
+            Statistics[StatisticTypes.Height] = height;
+            Statistics[StatisticTypes.Weight] = weight;
             NumberOfAttacks = numberAttacks;
             Statistics[StatisticTypes.Hitroll] = hitRoll;
             Statistics[StatisticTypes.Damroll] = dmgRoll;

@@ -2,7 +2,7 @@
 
 namespace SmaugCS.Constants
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     public sealed class CommandAttribute : Attribute
     {
         public bool NoNpc { get; set; }

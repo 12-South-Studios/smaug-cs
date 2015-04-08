@@ -12,7 +12,6 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
-using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
