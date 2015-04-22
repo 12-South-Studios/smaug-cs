@@ -27,7 +27,7 @@ namespace SmaugCS.Data.Extensions
 
         public static GenderTypes GetGender(this MobTemplate template)
         {
-            return EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.Gender);
+            return EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.GetStatistic<string>(StatisticTypes.Gender));
         }
 
         public static int GetResistance(this MobTemplate template)
@@ -66,7 +66,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetActFlags(this MobTemplate template)
         {
             var bv = 0;
-            var words = template.GetProperty(StatisticTypes.ActFlags).Split(' ');
+            var words = template.GetStatistic<string>(StatisticTypes.ActFlags).Split(' ');
             foreach (var word in words)
             {
                 bv.SetBit(EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
@@ -77,7 +77,7 @@ namespace SmaugCS.Data.Extensions
         public static int GetAffected(this MobTemplate template)
         {
             var bv = 0;
-            var words = template.GetProperty(StatisticTypes.AffectedByFlags).Split(' ');
+            var words = template.GetStatistic<string>(StatisticTypes.AffectedByFlags).Split(' ');
             foreach (var word in words)
             {
                 bv.SetBit(EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));

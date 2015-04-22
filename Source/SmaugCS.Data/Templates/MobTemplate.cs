@@ -15,12 +15,10 @@ namespace SmaugCS.Data.Templates
         public string SpecFun { get; set; }
         public int Count { get; set; }
         public int TimesKilled { get; set; }
-        public string Gender { get; set; }
         public int Level { get; set; }
         public string BodyParts { get; set; }
         public DiceData HitDice { get; set; }
         public DiceData DamageDice { get; set; }
-        public int NumberOfAttacks { get; set; }
         public int ExtraFlags { get; set; }
         public string Immunity { get; set; }
         public string Susceptibility { get; set; }
@@ -52,17 +50,12 @@ namespace SmaugCS.Data.Templates
             DefensivePosition = "standing";
             Class = "warrior";
             Race = "human";
-            Gender = "male";
+            Statistics[StatisticTypes.Gender] = "male";
         }
 
-        public int GetStatistic(StatisticTypes type)
+        public T GetStatistic<T>(StatisticTypes type)
         {
-            return Statistics.ContainsKey(type) ? (int)Statistics[type] : 0;
-        }
-
-        public string GetProperty(StatisticTypes type)
-        {
-            return Statistics.ContainsKey(type) ? Statistics[type].ToString() : string.Empty;
+            return Statistics.ContainsKey(type) ? (T)Statistics[type] : default(T);
         }
 
         public void SetStats1(int align, int level, int thac0, int ac, int gold, int xp)
@@ -99,7 +92,7 @@ namespace SmaugCS.Data.Templates
         {
             Statistics[StatisticTypes.Height] = height;
             Statistics[StatisticTypes.Weight] = weight;
-            NumberOfAttacks = numberAttacks;
+            Statistics[StatisticTypes.NumberOfAttacks] = numberAttacks;
             Statistics[StatisticTypes.Hitroll] = hitRoll;
             Statistics[StatisticTypes.Damroll] = dmgRoll;
         }

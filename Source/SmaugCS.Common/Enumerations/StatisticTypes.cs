@@ -63,6 +63,8 @@
         Full = 58,
         Drunkeness = 59,
         Bloodthirst = 60,
-        ToHitArmorClass0 = 61
+        ToHitArmorClass0 = 61,
+        Gender = 62,
+        NumberOfAttacks = 63
     }
 }

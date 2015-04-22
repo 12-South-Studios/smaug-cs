@@ -302,7 +302,7 @@ namespace SmaugCS
                 {
                     var mob = RepositoryManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
                     if (mob != null)
-                        area.BoostEconomy(mob.GetStatistic(StatisticTypes.Coin) * 10);
+                        area.BoostEconomy(mob.GetStatistic<int>(StatisticTypes.Coin) * 10);
                 }
             }
         }

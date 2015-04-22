@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Extensions;
@@ -41,7 +42,7 @@ namespace SmaugCS.Tests.Extensions
         public void GetGenderTest()
         {
             var template = new MobTemplate(1, "Test");
-            template.Gender = "neuter";
+            template.Statistics[StatisticTypes.Gender] = "neuter";
 
             Assert.That(template.GetGender(), Is.EqualTo(GenderTypes.Neuter));
         }

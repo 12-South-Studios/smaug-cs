@@ -50,8 +50,8 @@ namespace SmaugCS.Repository
                 ResetVnum = -1,
                 ResetNum = -1,
                 AffectedBy = mobParent.GetAffected(),
-                CurrentAlignment = mobParent.GetStatistic(StatisticTypes.Alignment),
-                Gender = EnumerationExtensions.GetEnum<GenderTypes>(mobParent.Gender)
+                CurrentAlignment = mobParent.GetStatistic<int>(StatisticTypes.Alignment),
+                Gender = EnumerationExtensions.GetEnum<GenderTypes>(mobParent.GetStatistic<string>(StatisticTypes.Gender))
             };
 
             if (isMobile)
@@ -66,8 +66,8 @@ namespace SmaugCS.Repository
             if (mob.Act.IsSet(ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;
 
-            mob.ArmorClass = mobParent.GetStatistic(StatisticTypes.ArmorClass) > 0
-                                 ? mobParent.GetStatistic(StatisticTypes.ArmorClass)
+            mob.ArmorClass = mobParent.GetStatistic<int>(StatisticTypes.ArmorClass) > 0
+                                 ? mobParent.GetStatistic<int>(StatisticTypes.ArmorClass)
                                  : mob.Level.Interpolate(100, -100);
 
             if (mobParent.HitDice == null || mobParent.HitDice.NumberOf == 0)
@@ -76,8 +76,8 @@ namespace SmaugCS.Repository
                 mob.MaximumHealth = mobParent.HitDice.NumberOf*SmaugRandom.Between(1, mobParent.HitDice.SizeOf) +
                                     mobParent.HitDice.Bonus;
 
-            mob.CurrentCoin = mobParent.GetStatistic(StatisticTypes.Coin);
-            mob.Experience = mobParent.GetStatistic(StatisticTypes.Experience);
+            mob.CurrentCoin = mobParent.GetStatistic<int>(StatisticTypes.Coin);
+            mob.Experience = mobParent.GetStatistic<int>(StatisticTypes.Experience);
             mob.CurrentPosition = mobParent.GetPosition();
             mob.CurrentDefensivePosition = mobParent.GetDefensivePosition();
             mob.BareDice = new DiceData
@@ -85,7 +85,7 @@ namespace SmaugCS.Repository
                 NumberOf = mobParent.DamageDice.NumberOf, 
                 SizeOf = mobParent.DamageDice.SizeOf
             };
-            mob.ToHitArmorClass0 = mobParent.GetStatistic(StatisticTypes.ToHitArmorClass0);
+            mob.ToHitArmorClass0 = mobParent.GetStatistic<int>(StatisticTypes.ToHitArmorClass0);
             mob.HitRoll = new DiceData
             {
                 Bonus = mobParent.HitDice.Bonus
@@ -94,19 +94,19 @@ namespace SmaugCS.Repository
             {
                 Bonus = mobParent.DamageDice.Bonus
             };
-            mob.PermanentStrength = mobParent.GetStatistic(StatisticTypes.PermanentStrength);
-            mob.PermanentDexterity = mobParent.GetStatistic(StatisticTypes.PermanentDexterity);
-            mob.PermanentWisdom = mobParent.GetStatistic(StatisticTypes.PermanentWisdom);
-            mob.PermanentIntelligence = mobParent.GetStatistic(StatisticTypes.PermanentIntelligence);
-            mob.PermanentConstitution = mobParent.GetStatistic(StatisticTypes.PermanentConstitution);
-            mob.PermanentCharisma = mobParent.GetStatistic(StatisticTypes.PermanentCharisma);
-            mob.PermanentLuck = mobParent.GetStatistic(StatisticTypes.PermanentLuck);
+            mob.PermanentStrength = mobParent.GetStatistic<int>(StatisticTypes.PermanentStrength);
+            mob.PermanentDexterity = mobParent.GetStatistic<int>(StatisticTypes.PermanentDexterity);
+            mob.PermanentWisdom = mobParent.GetStatistic<int>(StatisticTypes.PermanentWisdom);
+            mob.PermanentIntelligence = mobParent.GetStatistic<int>(StatisticTypes.PermanentIntelligence);
+            mob.PermanentConstitution = mobParent.GetStatistic<int>(StatisticTypes.PermanentConstitution);
+            mob.PermanentCharisma = mobParent.GetStatistic<int>(StatisticTypes.PermanentCharisma);
+            mob.PermanentLuck = mobParent.GetStatistic<int>(StatisticTypes.PermanentLuck);
             mob.CurrentRace = EnumerationExtensions.GetEnum<RaceTypes>(mobParent.GetRace());
             mob.CurrentClass = EnumerationExtensions.GetEnum<ClassTypes>(mobParent.Class);
             mob.ExtraFlags = mobParent.ExtraFlags;
             mob.SavingThrows = new SavingThrowData(mobParent.SavingThrows);
-            mob.Height = mobParent.GetStatistic(StatisticTypes.Height);
-            mob.Weight = mobParent.GetStatistic(StatisticTypes.Weight);
+            mob.Height = mobParent.GetStatistic<int>(StatisticTypes.Height);
+            mob.Weight = mobParent.GetStatistic<int>(StatisticTypes.Weight);
             mob.Resistance = mobParent.GetResistance();
             mob.Immunity = mobParent.GetImmunity();
             mob.Susceptibility = mobParent.GetSusceptibility();
@@ -115,7 +115,7 @@ namespace SmaugCS.Repository
                 ((MobileInstance)mob).Attacks = new ExtendedBitvector(mobParent.GetAttacks());
 
             mob.Defenses = mobParent.GetDefenses();
-            mob.NumberOfAttacks = mobParent.NumberOfAttacks;
+            mob.NumberOfAttacks = mobParent.GetStatistic<int>(StatisticTypes.NumberOfAttacks);
             //mob.Speaks = build.get_langflag(mobParent.Speaks);
             //mob.Speaking = build.get_langflag(mobParent.Speaking);
 
