@@ -10,13 +10,13 @@ namespace SmaugCS.MudProgs.MobileProgs
         {
             foreach (var mob in actor.CurrentRoom.Persons.OfType<MobileInstance>().Where(x => x.IsNpc()))
             {
-                if (mob.MobIndex.HasProg(MudProgTypes.Speech))
-                {
-                    if (actor.IsNpc() && ((MobileInstance)actor).MobIndex == mob.MobIndex)
-                        continue;
+                var mudProg = mob.MobIndex.MudProgs.FirstOrDefault(x => x.Type == MudProgTypes.Speech);
+                if (mudProg == null) continue;
 
-                    // TODO: Trigger on words or phrases?
-                }
+                if (actor.IsNpc() && ((MobileInstance)actor).MobIndex == mob.MobIndex)
+                    continue;
+
+                mud_prog.CheckIfExecuteText(mob, mudProg, txt);
             }
         }
     }

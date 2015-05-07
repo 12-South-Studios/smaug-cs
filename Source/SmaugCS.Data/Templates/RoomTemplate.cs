@@ -65,6 +65,15 @@ namespace SmaugCS.Data.Templates
 
         #region Exits
 
+        public ExitData GetExit(string arg)
+        {
+            var exit = Exits.FirstOrDefault(x => x.Keywords.ContainsIgnoreCase(arg));
+            if (exit != null) return exit;
+            var dir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(arg);
+            exit = GetExit(dir);
+            return exit;
+        }
+
         public ExitData GetExit(int dir)
         {
             return Exits.FirstOrDefault(exit => (int)exit.Direction == dir);

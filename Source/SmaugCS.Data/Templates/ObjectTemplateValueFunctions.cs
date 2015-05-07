@@ -26,6 +26,7 @@ namespace SmaugCS.Data.Templates
             {ItemTypes.Pill, SetPillDynamicValues},
             {ItemTypes.Pipe, SetPipeDynamicValues},
             {ItemTypes.Potion, SetPotionDynamicValues},
+            {ItemTypes.Projectile, SetProjectileDynamicValues},
             {ItemTypes.Quiver, SetQuiverDynamicValues},
             {ItemTypes.Salve, SetSalveDynamicValues},
             {ItemTypes.Scroll, SetScrollDynamicValues},
@@ -160,6 +161,14 @@ namespace SmaugCS.Data.Templates
             valueProperty.Skill3ID = list[3];
         }
 
+        private static void SetProjectileDynamicValues(dynamic valueProperty, IEnumerable<int> values)
+        {
+            var list = values.ToList();
+            valueProperty.MinimumBonus = list[1];
+            valueProperty.MaximumBonus = list[2];
+            valueProperty.SkillID = list[3];
+            valueProperty.ProjectileType = list[4];
+        } 
         private static void SetQuiverDynamicValues(dynamic valueProperty, IEnumerable<int> values)
         {
             var list = values.ToList();

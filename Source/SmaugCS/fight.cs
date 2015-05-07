@@ -788,7 +788,7 @@ namespace SmaugCS
         }
 
         public static ReturnTypes projectile_hit(CharacterInstance ch, CharacterInstance victim, ObjectInstance wield,
-            ObjectInstance projectile, short dist)
+            ObjectInstance projectile, int dist)
         {
             if (projectile == null)
                 return (int) ReturnTypes.None;

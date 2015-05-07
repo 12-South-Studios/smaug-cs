@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
@@ -323,6 +326,21 @@ namespace SmaugCS
 
                 if (type != MudProgTypes.Greet && type != MudProgTypes.GreetAll)
                     break;
+            }
+        }
+
+        public static void CheckIfExecuteText(MobileInstance mob, MudProgData mudProg, string txt)
+        {
+            if (mudProg.ArgList.StartsWith("p "))
+            {
+                if (txt.ContainsIgnoreCase(mudProg.ArgList))
+                    CheckIfExecute(mob, mudProg.Type);
+            }
+            else
+            {
+                var words = mudProg.ArgList.Split(' ');
+                foreach (var word in words.Where(txt.ContainsIgnoreCase))
+                    CheckIfExecute(mob, mudProg.Type);
             }
         }
 

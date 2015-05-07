@@ -146,8 +146,24 @@ namespace SmaugCS.LuaHelpers
             return !obj.Values.Flags.IsSet(ContainerFlags.Locked);
         }
         
-        // IsPKill
-        // IsDevoted
+        [LuaFunction("LIsPKil", "Gets if the player is PKill", "Character")]
+        public static bool LuaIsPKill(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsPKill();
+        }
+
+        [LuaFunction("LIsDevoted", "Gets if the player is devoted", "Character")]
+        public static bool LuaIsDevoted(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsDevoted();
+        }
+
         // CanPKill
         // IsMounted
         // IsMorphed

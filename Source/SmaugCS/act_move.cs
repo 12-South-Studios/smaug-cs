@@ -129,9 +129,9 @@ namespace SmaugCS
             room.Description = string.Format("{0}\r\n", wordwrap(buf, 78));
         }
 
-        public static string rev_exit(int vdir)
+        public static string rev_exit(DirectionTypes vdir)
         {
-            return LookupManager.Instance.GetLookup("ReverseDirectionNames", vdir);
+            return LookupManager.Instance.GetLookup("ReverseDirectionNames", (int)vdir);
         }
 
         public static RoomTemplate generate_exit(RoomTemplate room, ExitData exit)
