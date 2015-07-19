@@ -38,6 +38,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static bool CheckMixture(ObjectInstance firstObj, ObjectInstance secondObj)
         {
+            // todo finish
             /*if (firstObj.ItemType == ItemTypes.DrinkContainer
                 && secondObj.ItemType == ItemTypes.DrinkContainer)
                 return liquids.MixFullyWith(firstObj, secondObj) != null;

@@ -146,7 +146,7 @@ namespace SmaugCS.Commands.Liquids
             else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
                 ch.SendTo("&RThe thirst for blood begins to leave you...");
             else if (cond >= (maxCond * 0.9f) && cond < maxCond)
-                ch.SendTo("&RYou drinnk the last drop of the fluid, the thirst for more leaves your body.");
+                ch.SendTo("&RYou drink the last drop of the fluid, the thirst for more leaves your body.");
         }
 
         private static void EvaluateThirstCondition(PlayerInstance ch)

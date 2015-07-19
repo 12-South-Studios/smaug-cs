@@ -331,7 +331,7 @@ namespace SmaugCS
                     return ReturnTypes.None;
             }
 
-            var dtxt = rev_exit((int)xit.Direction);
+            var dtxt = rev_exit(xit.Direction);
 
             // First determine if the player should be moved or not Check various flags, spells, 
             // the players position and strength vs. the pull, etc... any kind of checks you like.

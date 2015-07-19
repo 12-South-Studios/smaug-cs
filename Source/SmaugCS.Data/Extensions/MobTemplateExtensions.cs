@@ -36,7 +36,7 @@ namespace SmaugCS.Data.Extensions
             var words = template.Resistance.Split(' ');
             foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
-                value = NumberExtensions.SetBit(value, (Enum) resType);
+                value = value.SetBit(resType);
             }
             return value;
         }
@@ -47,7 +47,7 @@ namespace SmaugCS.Data.Extensions
             var words = template.Susceptibility.Split(' ');
             foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
-                value = NumberExtensions.SetBit(value, (Enum) resType);
+                value = value.SetBit(resType);
             }
             return value;
         }
@@ -58,7 +58,7 @@ namespace SmaugCS.Data.Extensions
             var words = template.Immunity.Split(' ');
             foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
             {
-                value = NumberExtensions.SetBit(value, (Enum) resType);
+                value = value.SetBit(resType);
             }
             return value;
         }

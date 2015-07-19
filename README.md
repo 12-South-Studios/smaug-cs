@@ -1,32 +1,25 @@
-# smaug-cs
-Automatically exported from code.google.com/p/smaug-cs
+SmaugCS - A multi-user dungeon application
 
-SmaugCS is based on SmaugFUSS 1.9 which was obtained from Nick Gammon's website (http://www.mushclient.com/downloads/dlsmaug.htm).
+SmaugCS is based on SmaugFUSS 1.9 which was obtained from Nick Gammon's website (http://www.mushclient.com/downloads/dlsmaug.htm). See SmaugFUSSLicense.txt for more about licensing of this application and code
 
-The project uses the following third-party libraries:
- * NCalc (v1.3.8) http://ncalc.codeplex.com/
- * Log4net (v2.0.3) http://logging.apache.org/log4net/
- * VikingErik.LuaInterface? (v1.0.42) http://www.nuget.org/packages/VikingErik.LuaInterface
- * NUnit (v2.6.3) http://nunit.org/
- * Moq (v4.2.13) https://code.google.com/p/moq/
- * EntityFramework (v6.1.3) https://msdn.microsoft.com/en-us/data/ef.aspx
- * Lua (v5.1) http://www.lua.org/
- * LuaInterface (v2.0.3) https://code.google.com/p/luainterface/
- * EF-PRS Infrastructure https://github.com/huyrua/efprs
- 
-Details of the project tools and specs:
- * Language: C# (.NET 4.5.3)
- * Microsoft Visual Studio 2013
- * JetBrains Resharper 7.1.2 http://www.jetbrains.com/resharper/
- * Remco Software NCrunch 2.4.0.2 http://www.ncrunch.net/
- * Notepad++ (for Lua development) http://notepad-plus-plus.org/
- * Microsoft Sql Server 2012 Express http://www.microsoft.com/en-us/download/details.aspx?id=29062
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-The goals of this project are:
- * Make the SmaugFUSS code easier to maintain for non-C developers
- * Organize and clean-up much of the codebase
- * Replaced out-dated code (list and string handling in particular) with .NET Library code or extensions
- * Replaced out-dated #defines and structs with class objects and enums
- * Use Windows sockets instead of the existing network layer
- * Replace file-handling with a more robust file handling system
- * Lastly, get the code back into working (and running) order
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see www.gnu.org/licenses.
+-----------------------------------------------------------------------------------------------------------------------------
+
+SmaugCS utilizes numerous third-party libraries including:
+ * Ninject - https://github.com/ninject/ninject/blob/master/LICENSE.txt
+ * NCalc - https://ncalc.codeplex.com/license
+ * Log4Net - http://logging.apache.org/log4net/license.html
+ * Lua - http://www.lua.org/license.html
+ * MOQ - https://code.google.com/p/moq/source/browse/trunk/License.txt
+ * NUnit - http://nunit.org/index.php?p=license&r=2.6.2
+ * LuaInterface - https://code.google.com/p/luainterface/ 
+
+Relevant License files are also included in the main repository folder.
+
+Obsolete Folders/Files - Because of the long-term nature of this project and the fact that its grown and evolved so much over the years (C, C++, C#, flat-files, Lua, database, etc) there are numerous legacy files remaining in the structure.  For example, nearly every file in the /Data/ folder is obsolete but has been left in place for reference.  
+
+Documentation Files - Some files within the /doc/ folder are also obsolete, from a day before the project was under source control. 

@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Communication;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -24,7 +25,7 @@ namespace SmaugCS.Commands.MudProgs
             if (CheckFunctions.CheckIfNullObject(ch, !victim.IsNpc() && ((PlayerInstance)victim).Descriptor != null, "Not on link-dead players")) return;
 
             if (!victim.IsNotAuthorized()) return;
-            if (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.AuthState >= -1) return;
+            if (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.AuthState != AuthorizationStates.None) return;
 
             var buf = string.Format("{0}@{1} new {2} {3} {4} applying...",
                 victim.Name, victim.IsNpc() ? string.Empty : ((PlayerInstance)victim).Descriptor.host, victim.CurrentRace.GetName(),
@@ -32,7 +33,7 @@ namespace SmaugCS.Commands.MudProgs
 
             ChatManager.to_channel(buf, ChannelTypes.Auth, "Auth", LevelConstants.ImmortalLevel);
             if (!victim.IsNpc())
-                ((PlayerInstance)victim).PlayerData.AuthState = -1;
+                ((PlayerInstance)victim).PlayerData.AuthState = AuthorizationStates.None;
         }
     }
 }

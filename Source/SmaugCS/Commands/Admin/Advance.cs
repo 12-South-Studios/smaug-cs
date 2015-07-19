@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using NumberExtensions = SmaugCS.Common.NumberExtensions;
 
 namespace SmaugCS.Commands.Admin
 {
-    class Advance
+    public static class Advance
     {
         public static void do_advance(CharacterInstance ch, string argument)
         {
@@ -43,7 +45,8 @@ namespace SmaugCS.Commands.Admin
                 if (level < LevelConstants.ImmortalLevel)
                     victim.SendTo("You raise a level!");
                 victim.Level += 1;
-                //todo advance_level(victim);
+                if (victim is PlayerInstance)
+                    ((PlayerInstance)victim).AdvanceLevel();
             }
 
             victim.Experience = victim.GetExperienceLevel(victim.Level);
@@ -79,8 +82,12 @@ namespace SmaugCS.Commands.Admin
 
                 victim.SetColor(ATTypes.AT_WHITE);
                 victim.SendTo("You awake... all your possessions are gone.");
-                   
-                //todo remove objects in inventory
+                while (victim.Carrying.Any())
+                {
+                    var objInstance = victim.Carrying.FirstOrDefault();
+                    if (objInstance == null) continue;
+                    objInstance.Extract();
+                }
             }
             catch (ArgumentException)
             {
@@ -101,6 +108,10 @@ namespace SmaugCS.Commands.Admin
                 if (!((PlayerInstance) victim).IsRetired())
                 {
                     // todo remove immortal data
+                    // snprintf(buf, MAX_INPUT_LENGTH, "%s%s", GOD_DIR, capitalize(victim->name));
+
+                    //if (!remove(buf))
+                    //    send_to_char("Player's immortal data destroyed.\r\n", ch);
                 }
             }
 
@@ -127,21 +138,24 @@ namespace SmaugCS.Commands.Admin
             victim.MaximumMovement = GameConstants.GetConstant<int>("DefaultMaximumMovement");
 
             // todo zero skills
+            //for (sn = 0; sn < num_skills; ++sn)
+            //    victim->pcdata->learned[sn] = 0;
 
             victim.Practice = 0;
             victim.CurrentHealth = victim.MaximumHealth;
             victim.CurrentMana = victim.MaximumMana;
             victim.CurrentMovement = victim.MaximumMovement;
-            //todo advance_level(victim);
 
-            ((PlayerInstance) victim).PlayerData.rank = string.Empty;
-            ((PlayerInstance) victim).PlayerData.WizardInvisible = victim.Trust;
+            if (!(victim is PlayerInstance)) return;
 
-            if (victim.Level <= LevelConstants.AvatarLevel)
-            {
-                NumberExtensions.RemoveBit(victim.Act, PlayerFlags.WizardInvisibility);
-                ((PlayerInstance) victim).PlayerData.WizardInvisible = 0;
-            }
+            PlayerInstance playerVictim = (PlayerInstance) victim;
+            playerVictim.AdvanceLevel();
+            playerVictim.PlayerData.rank = string.Empty;
+            playerVictim.PlayerData.WizardInvisible = playerVictim.Trust;
+            if (playerVictim.Level > LevelConstants.AvatarLevel) return;
+
+            NumberExtensions.RemoveBit(playerVictim.Act, PlayerFlags.WizardInvisibility);
+            playerVictim.PlayerData.WizardInvisible = 0;
         }
     }
 }

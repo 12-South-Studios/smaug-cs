@@ -41,7 +41,8 @@ namespace SmaugCS.News
                     };
                     News.ToList().Add(newNews);
 
-                    foreach (var n in _repository.GetQuery<DAL.Models.NewsEntry>().Where(x => x.NewsId == newNews.Id))
+                    foreach (var n in _repository.GetQuery<DAL.Models.NewsEntry>()
+                        .Where(x => x.NewsId == newNews.Id))
                     {
                         var newEntry = new NewsEntryData
                         {

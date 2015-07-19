@@ -38,11 +38,11 @@ namespace SmaugCS.Tests.Repositories
             sb.Append("mobile.this.Class = \"warrior\"");
             sb.Append("mobile.this.Position = \"standing\"");
             sb.Append("mobile.this.DefensivePosition = \"standing\"");
-            sb.Append("mobile.this.Gender = \"neuter\"");
+            sb.Append("mobile.this:SetStatistic(\"gender\", \"neuter\");");
             sb.Append("mobile.this.SpecFun = \"DoSpecCastMage\"");
-            sb.Append("mobile.this.ActFlags = \"npc stayarea mountable\"");
+            sb.Append("mobile.this:SetStatistic(\"actflags\", \"npc stayarea mountable\");");
             sb.Append(
-                "mobile.this.AffectedBy = \"detect_evil detect_magic\"");
+                "mobile.this:SetStatistic(\"affectedbyflags\", \"detect_evil detect_magic\");");
             sb.Append("mobile.this:SetStats1(-950, 18, 2, -2, 6000, 32000);");
             sb.Append("mobile.this:SetStats2(18, 18, 180);");
             sb.Append("mobile.this:SetStats3(5, 3, 10);");
@@ -116,7 +116,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Class, Is.EqualTo("warrior"));
             Assert.That(result.Position, Is.EqualTo("standing"));
             Assert.That(result.DefensivePosition, Is.EqualTo("standing"));
-            Assert.That(result.GetGender(), Is.EqualTo("neuter"));
+            Assert.That(result.GetGender(), Is.EqualTo(GenderTypes.Neuter));
             Assert.That(result.SpecFun, Is.EqualTo("DoSpecCastMage"));
             Assert.That(result.Speaks, Is.EqualTo("magical"));
             Assert.That(result.Speaking, Is.EqualTo("magical"));

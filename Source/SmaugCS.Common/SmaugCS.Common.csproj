@@ -71,6 +71,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\AuthorizationStates.cs" />
     <Compile Include="Enumerations\BanTypes.cs" />
     <Compile Include="Enumerations\BoardTypes.cs" />
     <Compile Include="Enumerations\ClimateTypes.cs" />

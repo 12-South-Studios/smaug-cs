@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -82,27 +83,13 @@ namespace SmaugCS.Tests
         }
 
         [Test]
-        public void CheckIfNotAuthorized_HasInvalidAuthState()
-        {
-            var actor = new PlayerInstance(1, "TestNpc")
-            {
-                PlayerData = new PlayerData(1, 1)
-                {
-                    AuthState = 5
-                }
-            };
-
-            Assert.That(CheckFunctions.CheckIfNotAuthorized(actor, actor), Is.False);
-        }
-
-        [Test]
         public void CheckIfNotAuthorized_IsUnauthorized()
         {
             var actor = new PlayerInstance(1, "TestNpc")
             {
                 PlayerData = new PlayerData(1, 1)
                 {
-                    AuthState = 2
+                    AuthState = AuthorizationStates.Denied
                 }
             };
             actor.PlayerData.Flags = actor.PlayerData.Flags.SetBit(PCFlags.Unauthorized);

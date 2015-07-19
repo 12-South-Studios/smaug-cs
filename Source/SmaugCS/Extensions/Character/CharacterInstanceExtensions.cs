@@ -8,6 +8,7 @@ using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -832,7 +833,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc())
                 return false;
-            var hasAuthState = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.AuthState <= 3;
+            var hasAuthState = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.AuthState != AuthorizationStates.Authorized;
             var isUnauthed = ((PlayerInstance)ch).PlayerData == null || ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Unauthorized);
             return hasAuthState && isUnauthed;
         }
@@ -841,7 +842,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc())
                 return false;
-            return ((PlayerInstance)ch).Descriptor != null && ((PlayerInstance)ch).PlayerData.AuthState == 1
+            return ((PlayerInstance)ch).Descriptor != null && ((PlayerInstance)ch).PlayerData.AuthState == AuthorizationStates.Waiting
                    && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Unauthorized);
         }
 

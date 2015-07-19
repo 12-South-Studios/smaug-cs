@@ -5,7 +5,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Combat
 {
     public static class Consider
     {

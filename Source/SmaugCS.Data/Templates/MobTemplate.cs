@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
@@ -56,6 +57,12 @@ namespace SmaugCS.Data.Templates
         public T GetStatistic<T>(StatisticTypes type)
         {
             return Statistics.ContainsKey(type) ? (T)Statistics[type] : default(T);
+        }
+
+        public void SetStatistic(string name, object value)
+        {
+            StatisticTypes stat = (StatisticTypes)EnumerationFunctions.GetEnumByName<StatisticTypes>(name);
+            Statistics[stat] = value;
         }
 
         public void SetStats1(int align, int level, int thac0, int ac, int gold, int xp)

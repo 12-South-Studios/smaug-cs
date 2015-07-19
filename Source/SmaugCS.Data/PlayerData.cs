@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
@@ -15,6 +16,8 @@ namespace SmaugCS.Data
         public DeityData CurrentDeity { get; set; }
         public nuisance_data Nuisance { get; set; }
         public ICollection<KilledData> Killed { get; private set; }
+        public AuthorizationStates AuthState { get; set; }
+        public string AuthorizedBy { get; set; }
 
         public string homepage { get; set; }
         public string clan_name { get; set; }
@@ -50,11 +53,10 @@ namespace SmaugCS.Data
         public int quest_accum { get; set; }
         public int Favor { get; set; }
         public int NumberOfCharmies { get; set; }
-        public int AuthState { get; set; }
         public DateTime release_date { get; set; }
         public string helled_by { get; set; }
         public string bio { get; set; }
-        public string authed_by { get; set; }
+        
         public ICollection<SkillData> SpecialSkills { get; private set; }
         public string Prompt { get; set; }
         public string FPrompt { get; set; }
