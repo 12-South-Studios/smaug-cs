@@ -8,6 +8,7 @@ using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;

@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SmaugCS.Logging</RootNamespace>
     <AssemblyName>SmaugCS.Logging</AssemblyName>
-    <TargetFrameworkVersion>v4.5.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -59,9 +59,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Infrastructure.Data">
-      <HintPath>..\..\Libraries\Infrastructure.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\Libraries\Ninject.dll</HintPath>
     </Reference>
@@ -90,6 +87,10 @@
     <Compile Include="LoggingModule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj">
+      <Project>{83ce8910-37aa-415a-954b-3e36f9701d17}</Project>
+      <Name>Infrastructure.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>

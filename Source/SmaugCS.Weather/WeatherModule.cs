@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Data;
 using Ninject;
 using Ninject.Modules;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 

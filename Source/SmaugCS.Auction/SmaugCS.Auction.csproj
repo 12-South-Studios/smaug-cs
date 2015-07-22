@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SmaugCS.Auction</RootNamespace>
     <AssemblyName>SmaugCS.Auction</AssemblyName>
-    <TargetFrameworkVersion>v4.5.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -56,9 +56,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Infrastructure.Data">
-      <HintPath>..\..\Libraries\Infrastructure.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\Libraries\Ninject.dll</HintPath>
     </Reference>
@@ -83,6 +80,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj">
+      <Project>{83ce8910-37aa-415a-954b-3e36f9701d17}</Project>
+      <Name>Infrastructure.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
       <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
       <Name>SmaugCS.Constants</Name>

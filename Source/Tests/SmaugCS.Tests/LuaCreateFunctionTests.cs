@@ -16,7 +16,6 @@ using SmaugCS.Data.Shops;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Tests
@@ -24,7 +23,7 @@ namespace SmaugCS.Tests
 	[TestFixture]
 	public class LuaCreateFunctionTests
 	{
-        public static LuaManager LuaMgr { get; set; }
+	    private static LuaManager LuaMgr { get; set; }
 
 		[SetUp]
 		public void OnSetup()

@@ -4,7 +4,7 @@ using Ninject.Modules;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using Realm.Library.SmallDb;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Data;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;

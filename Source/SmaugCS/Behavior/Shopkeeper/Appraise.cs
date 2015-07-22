@@ -2,6 +2,7 @@
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;

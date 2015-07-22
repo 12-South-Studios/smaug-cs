@@ -57,7 +57,7 @@ namespace SmaugCS.Tests.Repositories
             dbMgr.AREAS.Clear();
             dbMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Clear();
 
-            var luaProxy = new LuaInterfaceProxy();;
+            var luaProxy = new LuaInterfaceProxy();
 
             var luaFuncRepo = LuaHelper.Register( typeof(LuaAreaFunctions), null);
             luaFuncRepo = LuaHelper.Register(typeof(LuaRoomFunctions), luaFuncRepo);

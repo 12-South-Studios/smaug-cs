@@ -10,7 +10,7 @@ namespace SmaugCS.Tests
     [TestFixture]
     public class LuaLookupFunctionTests
     {
-        public LookupManager LookupMgr { get; set; }
+        private LookupManager LookupMgr { get; set; }
 
         [SetUp]
         public void OnSetup()

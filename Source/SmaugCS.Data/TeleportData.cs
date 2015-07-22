@@ -1,5 +1,4 @@
-﻿using SmaugCS.Data;
-using SmaugCS.Data.Templates;
+﻿using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Objects
 {

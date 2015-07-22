@@ -56,8 +56,7 @@ namespace SmaugCS.Tests
         [Test]
         public void CheckIf_NoArgs()
         {
-            var actor = new CharacterInstance(1, "TestNpc");
-            actor.PermanentStrength = 25;
+            var actor = new CharacterInstance(1, "TestNpc") {PermanentStrength = 25};
 
             Assert.That(CheckFunctions.CheckIf(actor, () => (5 * 10) == 50, string.Empty), Is.True);
         }
@@ -65,8 +64,7 @@ namespace SmaugCS.Tests
         [Test]
         public void CheckIf_WithArgs()
         {
-            var actor = new CharacterInstance(1, "TestNpc");
-            actor.PermanentStrength = 25;
+            var actor = new CharacterInstance(1, "TestNpc") {PermanentStrength = 25};
 
             Assert.That(
                 CheckFunctions.CheckIf(actor, args => ((CharacterInstance)args[0]).PermanentStrength == 25, string.Empty,

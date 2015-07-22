@@ -3,7 +3,7 @@ using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 
 namespace SmaugCS.Logging
 {

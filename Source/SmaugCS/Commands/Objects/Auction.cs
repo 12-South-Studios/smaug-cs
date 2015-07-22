@@ -5,6 +5,7 @@ using Realm.Library.Common;
 using SmaugCS.Auction;
 using SmaugCS.Common;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;

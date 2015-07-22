@@ -2,7 +2,7 @@
 using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban

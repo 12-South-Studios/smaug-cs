@@ -60,10 +60,12 @@ namespace SmaugCS.Tests
         {
             var defender = new CharacterInstance(2, "TestNpc");
 
-            var actor = new CharacterInstance(1, "TestNpc");
-            actor.CurrentFighting = new FightingData
+            var actor = new CharacterInstance(1, "TestNpc")
             {
-                Who = defender
+                CurrentFighting = new FightingData
+                {
+                    Who = defender
+                }
             };
 
             var list = new List<object> {actor};
@@ -79,8 +81,7 @@ namespace SmaugCS.Tests
         [TestCase(PositionTypes.Dead, false)]
         public void IsInFightingPosition(PositionTypes position, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc");
-            actor.CurrentPosition = position;
+            var actor = new CharacterInstance(1, "TestNpc") {CurrentPosition = position};
 
             var list = new List<object> {actor};
 

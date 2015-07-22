@@ -1,6 +1,4 @@
-﻿using System.Data;
-using NUnit.Framework;
-using SmaugCS.Common.Enumerations;
+﻿using NUnit.Framework;
 
 namespace SmaugCS.Board.Tests
 {

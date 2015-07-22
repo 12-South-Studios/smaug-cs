@@ -92,7 +92,7 @@ namespace SmaugCS.Tests.Repositories
 
             dbMgr.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Clear();
 
-            _proxy = new LuaInterfaceProxy();;
+            _proxy = new LuaInterfaceProxy();
 
             var luaFuncRepo = LuaHelper.Register(typeof(LuaMobFunctions), null);
             luaFuncRepo = LuaHelper.Register(typeof(LuaCreateFunctions), luaFuncRepo);

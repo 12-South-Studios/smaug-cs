@@ -4,7 +4,7 @@ using System.Linq;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Patterns.Repository;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;

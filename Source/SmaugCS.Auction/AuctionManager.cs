@@ -2,7 +2,7 @@
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Auction

@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using SmaugCS.Constants.Constants;
 
 namespace SmaugCS.Constants
 {

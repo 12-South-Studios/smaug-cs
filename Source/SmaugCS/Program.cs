@@ -12,7 +12,6 @@ using Realm.Library.Network;
 using SmaugCS.Auction;
 using SmaugCS.Ban;
 using SmaugCS.Board;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -61,7 +60,7 @@ namespace SmaugCS
             }
             catch (Exception ex)
             {
-                LogManager.Boot(ex);
+                Logger.Error(ex.ToString());
                 Environment.Exit(0);
             }
         }
