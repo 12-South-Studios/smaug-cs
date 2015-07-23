@@ -3,7 +3,6 @@ using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
-using Realm.Library.SmallDb;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Data;
 using SmaugCS.DAL.Interfaces;
@@ -19,8 +18,6 @@ namespace SmaugCS
     {
         public override void Load()
         {
-            Kernel.Bind<ISmallDb>().To<SmallDb>();
-
             Kernel.Bind<IRepository>().To<GenericRepository>()
                 .WithConstructorArgument(Kernel.Get<ISmaugDbContext>());
 
