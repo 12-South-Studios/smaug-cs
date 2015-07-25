@@ -71,7 +71,6 @@
     <Compile Include="MovementLossAttribute.cs" />
     <Compile Include="PlayerAttribute.cs" />
     <Compile Include="MentalStateAttribute.cs" />
-    <Compile Include="SqlConnectionProvider.cs" />
     <Compile Include="ThirstAttribute.cs" />
     <Compile Include="ShoveValueAttribute.cs" />
     <Compile Include="DragValueAttribute.cs" />

@@ -1,6 +1,6 @@
 ﻿using Realm.Library.Common;
 
-namespace SmaugCS.Weather
+namespace SmaugCS.Weather.Enums
 {
     public enum WindSpeedTypes
     {

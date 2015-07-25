@@ -7,7 +7,7 @@ f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
 
 function LoadArea()
 	LBootLog("=================== AREA 'THE VOID' INITIALIZING ===================");
-    newArea = LCreateArea(1, "The Void");
+	newArea = LCreateArea(1, "The Void");
 	area.this = newArea;
 	area.this.Author = "RoD";
 	area.this.HighSoftRange = 60;
@@ -970,47 +970,47 @@ function Objects()
 	object:SetValues(15, 15, 0, 0, 0, 0);
 	object:SetStats(2, 2000, 200, 0, 0);
 	
-    object = CreateObject(38, "boots travel traveling", "armor");
-    object.ShortDescription = "weathered boots";
-    object.LongDescription = "A pair of weathered traveling boots lie here.";
-    object.Flags = "glow hum magic antievil antineutral antivampire";
-    object.WearFlags = "take feet";
-    object:SetValues(11, 11, 0, 0, 0, 0);
-    object:SetStats(2, 325400, 32540, 0, 0);
-    object:AddAffect(-1, -1, 5, 19, 0);
-    object:AddAffect(-1, -1, 1, 18, 0);
-    object:AddAffect(-1, -1, 100, 14, 0);
-    object:AddAffect(-1, -1, 1, 2, 0);
+	object = CreateObject(38, "boots travel traveling", "armor");
+	object.ShortDescription = "weathered boots";
+	object.LongDescription = "A pair of weathered traveling boots lie here.";
+	object.Flags = "glow hum magic antievil antineutral antivampire";
+	object.WearFlags = "take feet";
+	object:SetValues(11, 11, 0, 0, 0, 0);
+	object:SetStats(2, 325400, 32540, 0, 0);
+	object:AddAffect(-1, -1, 5, 19, 0);
+	object:AddAffect(-1, -1, 1, 18, 0);
+	object:AddAffect(-1, -1, 100, 14, 0);
+	object:AddAffect(-1, -1, 1, 2, 0);
 
-    object = CreateObject(39, "key gate", "key");
-    object.ShortDescription = "a gate key";
-    object.LongDescription = "A largish key lies here.";
-    object.Flags = "metal";
-    object.WearFlags = "take";
-    object:SetStats(1, 0, 0, 0, 0);
+	object = CreateObject(39, "key gate", "key");
+	object.ShortDescription = "a gate key";
+	object.LongDescription = "A largish key lies here.";
+	object.Flags = "metal";
+	object.WearFlags = "take";
+	object:SetStats(1, 0, 0, 0, 0);
 
-    object = CreateObject(41, "orb", "lever");
-    object.ShortDescription = "the orb";
-    object.LongDescription = "A small orb tops a slender pedestal of glowing crystal.";
-    object:SetStats(1, 0, 0, 0, 0);
-    object:AddExtraDescription("orb", [[Pulsing atop the crystal column, it seems as though 
-    it could be pushed to turn it ever so slightly.]]);
+	object = CreateObject(41, "orb", "lever");
+	object.ShortDescription = "the orb";
+	object.LongDescription = "A small orb tops a slender pedestal of glowing crystal.";
+	object:SetStats(1, 0, 0, 0, 0);
+	object:AddExtraDescription("orb", [[Pulsing atop the crystal column, it seems as though 
+	it could be pushed to turn it ever so slightly.]]);
 	object:AddMudProg(CreateMudProg("push_prog", "100", 
 	[[
 		local ch = LGetCurrentCharacter();
 		MPEchoAt(ch, "The instant your hand touches the orb, your surroundings change.");
 		MPEchoAt(ch, "The sights and busy sounds of Darkhaven surround you...");
 
-        if (LIsPKill(ch)) then
-            MPTransfer(ch, 3009);
-        else
-            MPTransfer(ch, 21001);
-            MPEchoAround(ch, "$n materializes in the center of the great rune.");
-        end
+		if (LIsPKill(ch)) then
+			MPTransfer(ch, 3009);
+		else
+			MPTransfer(ch, 21001);
+			MPEchoAround(ch, "$n materializes in the center of the great rune.");
+		end
 
-        MPAt(99, "pull orb");
+		MPAt(99, "pull orb");
 	]]));
-    
+	
 --[[
 
 
@@ -1269,19 +1269,19 @@ function Objects()
 --#EXDESC
 --ExDescKey    griffon lever~
 --ExDesc       &w       _____,    _..-=-=-=-=-====--,
-        --_.'a   /  .-',___,..=--=--==-'`
-       --( _     \ /  //___/-=---=----'
-        --` `\    /  //---/--==----=-'
-     --,-.    | / \_//-_.'==-==---='
-    --(.-.`\  | |'../-'=-=-=-=--'
-     --(' `\`\| //_|-\.`;--````-,        _ 
-          --\ | \_,_,_\.'        \     .'_`\
-           --`\            ,    , \    || `\\
-             --\    /   _.--\    \ '._.'/  / |
-             --/  /`---'   \ \   |`'---'   \/
-            --/ /'          \ ;-. \
-         --__/ /           __) \ ) `|
-       --((='--;)         (,___/(,_/ 
+		--_.'a   /  .-',___,..=--=--==-'`
+	   --( _     \ /  //___/-=---=----'
+		--` `\    /  //---/--==----=-'
+	 --,-.    | / \_//-_.'==-==---='
+	--(.-.`\  | |'../-'=-=-=-=--'
+	 --(' `\`\| //_|-\.`;--````-,        _ 
+		  --\ | \_,_,_\.'        \     .'_`\
+		   --`\            ,    , \    || `\\
+			 --\    /   _.--\    \ '._.'/  / |
+			 --/  /`---'   \ \   |`'---'   \/
+			--/ /'          \ ;-. \
+		 --__/ /           __) \ ) `|
+	   --((='--;)         (,___/(,_/ 
 --A Majestic Griffon awaits to transport you to the wedding of
 --Mokshonian and Delphya. 
 --~
@@ -2325,20 +2325,20 @@ function Arena()
 --ExDesc       Arena Combat Rules
 --%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 --1)  All duels between peaceful characters must be run by an immortal of
-    --Acolyte or higher.
+	--Acolyte or higher.
  --
 --2)  All duels between deadly characters must be run by an immortal of
-    --Acolyte or higher.
+	--Acolyte or higher.
  --
 --2)  Combat must be agreed upon by both parties.
  --
 --3)  Any looting must be agreed upon before-hand by both parties.
-    --(The overseeing immortal will enforce this)
+	--(The overseeing immortal will enforce this)
  --
 --4)  Once you have entered your combatant room, there is no restarting.
  --
 --5)  Any rules on the fight must be stated clearly by both parties prior
-    --to the commencement of battle.
+	--to the commencement of battle.
  --
 --6)  The decision of the immortal overseeing the duel is final.
  --
@@ -2424,25 +2424,25 @@ function Arena()
   --mpechoat $n You bow deeply to the dangerous crowd.
   --mpechoaround $n $n bows deeply to the assembled throng.
   --if class($n) == warrior
-    --mpforce $n yell Your blood will flow upon the cold stone!
+	--mpforce $n yell Your blood will flow upon the cold stone!
   --endif
   --if class($n) == thief
-    --mpforce $n yell Soon will my blade find its mark!
+	--mpforce $n yell Soon will my blade find its mark!
   --endif
   --if class($n) == mage
-    --mpforce $n yell Now will the spellfire swell within and consume thee!
+	--mpforce $n yell Now will the spellfire swell within and consume thee!
   --endif
   --if class($n) == druid
-    --mpforce $n yell Let the melee begin!
+	--mpforce $n yell Let the melee begin!
   --endif
   --if class($n) == ranger
-    --mpforce $n yell Let the melee begin!
+	--mpforce $n yell Let the melee begin!
   --endif
   --if class($n) == vampire
-    --mpforce $n yell Bring your damnable hunt!  We shall see who survives!
+	--mpforce $n yell Bring your damnable hunt!  We shall see who survives!
   --endif
   --if class($n) == cleric
-    --mpforce $n yell Let the melee begin!
+	--mpforce $n yell Let the melee begin!
   --endif
 --endif
 --~
@@ -2502,25 +2502,25 @@ function Arena()
   --mpechoat $n You bow deeply to the dangerous crowd.
   --mpechoaround $n $n bows deeply to the assembled throng.
   --if class($n) == warrior
-    --mpforce $n yell Your blood will flow upon the cold stone!
+	--mpforce $n yell Your blood will flow upon the cold stone!
   --endif
   --if class($n) == thief
-    --mpforce $n yell Soon will my blade find its mark!
+	--mpforce $n yell Soon will my blade find its mark!
   --endif
   --if class($n) == mage
-    --mpforce $n yell Now will the spellfire swell within and consume thee!
+	--mpforce $n yell Now will the spellfire swell within and consume thee!
   --endif
   --if class($n) == druid
-    --mpforce $n yell Let the melee begin!
+	--mpforce $n yell Let the melee begin!
   --endif
   --if class($n) == ranger
-    --mpforce $n yell Let the melee begin!
+	--mpforce $n yell Let the melee begin!
   --endif
   --if class($n) == vampire
-    --mpforce $n yell Bring your damnable hunt!  We shall see who survives!
+	--mpforce $n yell Bring your damnable hunt!  We shall see who survives!
   --endif
   --if class($n) == cleric
-    --mpforce $n yell Let the melee begin!
+	--mpforce $n yell Let the melee begin!
   --endif
 --endif
 --~
@@ -2792,19 +2792,19 @@ function OtherRooms()
 --#EXDESC
 --ExDescKey    couple~
 --ExDesc       /:""|                 .****,
-             --(\/)   |:`66|_                @@@@@\ `,
-              --\/    C`    _)               aa`@@@\  \
-                     --\ ._|        _ _     (_   ?@@|  \
-                      --)_/        ( Y )     =' @@@@|   |
-                     --/`\8\        \ /       \ (``/    |
-                    --|| |8|      ___Y___     /^^\ |    /
-                    --|| |8|     {-@- -@-}   /\::/||    |  (\/)
-                    --|| |8|     {_______}   \ | |||    \   \/
-                    --|| |-|    ____)_(____   \| |||     \
-     --(\/)           :| |=:   {-@- -@- -@-}   |:|\\.:.:.::.
-      --\/      _____ ||_|,|   {___________}   |:| \ ':':':`
-             --{ -@- } ))) |_______)___(______/(((  \{ -@- }
-             --{_____} |   {-@- -@- -@- -@- -@-}     {_____}
+			 --(\/)   |:`66|_                @@@@@\ `,
+			  --\/    C`    _)               aa`@@@\  \
+					 --\ ._|        _ _     (_   ?@@|  \
+					  --)_/        ( Y )     =' @@@@|   |
+					 --/`\8\        \ /       \ (``/    |
+					--|| |8|      ___Y___     /^^\ |    /
+					--|| |8|     {-@- -@-}   /\::/||    |  (\/)
+					--|| |8|     {_______}   \ | |||    \   \/
+					--|| |-|    ____)_(____   \| |||     \
+	 --(\/)           :| |=:   {-@- -@- -@-}   |:|\\.:.:.::.
+	  --\/      _____ ||_|,|   {___________}   |:| \ ':':':`
+			 --{ -@- } ))) |_______)___(______/(((  \{ -@- }
+			 --{_____} |   {-@- -@- -@- -@- -@-}     {_____}
 --~
 --#ENDEXDESC
 --
@@ -2879,11 +2879,11 @@ function OtherRooms()
 --Comlist   if isimmort($n)
 --else
   --if ispkill($n)
-    --mptrans $n 3001
-    --mpat 0.$n mpforce $n look
+	--mptrans $n 3001
+	--mpat 0.$n mpforce $n look
   --else
-    --mptrans $n 21001
-    --mpat 0.$n mpforce $n look
+	--mptrans $n 21001
+	--mpat 0.$n mpforce $n look
   --endif
 --endif
 --~

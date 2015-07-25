@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using SmaugCS.Weather.Enums;
 
 namespace SmaugCS.Weather.Tests
 {

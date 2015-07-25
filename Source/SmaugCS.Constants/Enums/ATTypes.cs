@@ -120,8 +120,5 @@ namespace SmaugCS.Constants.Enums
         AT_BOARD = 108,
         AT_BOARD2 = 109,
         AT_BOARD3 = 110,
-
-        // Should ALWAYS be one more than the last numerical value in the list 
-        MAX_COLORS = 111
     };
 }

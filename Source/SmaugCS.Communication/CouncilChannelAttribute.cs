@@ -13,10 +13,7 @@ namespace SmaugCS.Communication
             if (ch.PlayerData.Council == null)
                 return false;
 
-            if (NoNpc && ch.IsNpc())
-                return false;
-
-            return true;
+            return !NoNpc || !ch.IsNpc();
         }
     }
 }

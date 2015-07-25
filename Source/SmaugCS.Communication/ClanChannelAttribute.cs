@@ -18,10 +18,7 @@ namespace SmaugCS.Communication
             if (NoNpc && ch.IsNpc())
                 return false;
 
-            if (ClanType != ch.PlayerData.Clan.ClanType)
-                return false;
-
-            return true;
+            return ClanType == ch.PlayerData.Clan.ClanType;
         }
     }
 }

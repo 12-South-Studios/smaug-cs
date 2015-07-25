@@ -5,14 +5,14 @@
 
 -- Does the table contain the value
 function SetContains(set, key)
-    return set[key] ~= nil
+	return set[key] ~= nil
 end
 
 function table.contains(table, element)
   for _, value in pairs(table) do
-    if value == element then
-      return true
-    end
+	if value == element then
+	  return true
+	end
   end
   return false
 end
@@ -27,7 +27,7 @@ end
 function executeScript(script, isfile)
 	
 	if (isfile == true) then
-        n = loadfile(script)
+		n = loadfile(script)
 		
 		local status, err = pcall(n)
 		if status == false then
@@ -39,30 +39,30 @@ function executeScript(script, isfile)
 				return false;
 			end
 		end
-    else
+	else
 		--errorLog('base.lua:executeScript() -> called to execute script ' .. script .. '.');
 		return false;
-    end
+	end
 
 	return true;
 end
 
 function padStringToLeft( str, chr, wid )
-    local n = wid - string.len( str )
-    while( n > 0 ) do
-        str = chr .. str
-        n = n - 1
-    end
-    return str
+	local n = wid - string.len( str )
+	while( n > 0 ) do
+		str = chr .. str
+		n = n - 1
+	end
+	return str
 end
 
 function padStringToRight( str, chr, wid )
-    local n = wid - string.len( str )
-    while( n > 0 ) do
-        str = str .. chr
-        n = n - 1
-    end
-    return str
+	local n = wid - string.len( str )
+	while( n > 0 ) do
+		str = str .. chr
+		n = n - 1
+	end
+	return str
 end
 
 -- EOF

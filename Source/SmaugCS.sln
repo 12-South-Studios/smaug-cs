@@ -191,7 +191,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Classes", "Classes", "{112A74B0-47E3-4744-8CEE-DD18D742E5C1}"
 	ProjectSection(SolutionItems) = preProject
 		..\data\classes\Augurer.lua = ..\data\classes\Augurer.lua
-		..\data\classes\class.lst = ..\data\classes\class.lst
 		..\data\classes\Cleric.lua = ..\data\classes\Cleric.lua
 		..\data\classes\Druid.lua = ..\data\classes\Druid.lua
 		..\data\classes\Mage.lua = ..\data\classes\Mage.lua

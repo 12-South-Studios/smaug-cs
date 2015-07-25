@@ -114,7 +114,7 @@ function DirectionToNumber(direction)
 	directions["somewhere"] = 10;
 	
 	local val;
-    if (directions[direction] == nil) then
+	if (directions[direction] == nil) then
 		val = 10;
 	else 
 		val = directions[direction];

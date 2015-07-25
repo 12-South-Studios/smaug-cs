@@ -1,4 +1,4 @@
-﻿namespace SmaugCS.Weather
+﻿namespace SmaugCS.Weather.Enums
 {
     public enum WeatherThresholdTypes
     {

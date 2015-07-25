@@ -409,7 +409,7 @@ function FirstFloorRooms()
 	a host of servers attempt to deliver food and drink to out-stretched hands and thirsty mouths.  A large bar 
 	dominates one side of the room, tables and booths fill much of the rest.  To the north an arched doorway 
 	leads into the back of the Inn, likely to the kitchens and storerooms.]];
-    AddExitToRoom(room, "east", 10002, "A path amongst the tables leads east");
+	AddExitToRoom(room, "east", 10002, "A path amongst the tables leads east");
 	AddExitToRoom(room, "south", 10003, "A path amongst the tables leads south");
 	AddExitToRoom(room, "north", 10004, "An arched doorway leads out of the Common Room");
 	AddExitToRoom(room, "west", 10000, "A wooden door leads west out of the room");

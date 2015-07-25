@@ -8,9 +8,7 @@ namespace SmaugCS.Communication
     {
         public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
         {
-            if (!ch.IsImmortal())
-                return false;
-            return base.Verify(channelType, ch, minTrust);
+            return ch.IsImmortal() && base.Verify(channelType, ch, minTrust);
         }
     }
 }

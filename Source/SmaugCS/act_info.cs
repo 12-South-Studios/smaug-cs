@@ -16,6 +16,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
+using SmaugCS.Weather.Enums;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
 namespace SmaugCS

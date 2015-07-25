@@ -8,6 +8,7 @@ using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Weather.Enums;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 using HemisphereTypes = SmaugCS.Common.Enumerations.HemisphereTypes;
 

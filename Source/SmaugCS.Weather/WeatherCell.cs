@@ -1,5 +1,6 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
+using SmaugCS.Weather.Enums;
 
 namespace SmaugCS.Weather
 {

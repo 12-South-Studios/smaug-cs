@@ -4732,7 +4732,7 @@ end
 
 ObjectID = 0;
 function CreateSkill(name, skillType, minPosition, slot, minLevel)
-    ObjectID = ObjectID + 1;
+	ObjectID = ObjectID + 1;
 
 	newSkill = LCreateSkill(ObjectID, name, skillType);
 	skill.this = newSkill;

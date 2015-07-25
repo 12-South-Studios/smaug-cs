@@ -48,8 +48,8 @@ imm.brd  Vnum: 1200 Read: 50 Post: 51 Rmv: 55 Max: 50 Posts: 1 Type: 0
 
 The first column lists the board's filename (imm.brd)
 Vnum   - object vnum to which the board is attached (object vnum must
-         be present to read the board, allowing a board to be placed in
-         one or many places by simply placing that object where needed)
+		 be present to read the board, allowing a board to be placed in
+		 one or many places by simply placing that object where needed)
 Read   - minimum level required to read that board
 Post   - minumum level required to post to that board
 Remove - minumum level required to remove notes not addressed to 'All'
@@ -72,7 +72,7 @@ Vnum     - object vnum assigned to the board (see 'help boards')
 Read     - the mininum level required to read the board
 Post     - the minimum level required to post to the board
 Remove   - the minumum level required to remove notes from the board
-           NOTE: notes addressed to 'all' can be removed by anyone
+		   NOTE: notes addressed to 'all' can be removed by anyone
 Maxpost  - maximum number of posts the board can hold
 Filename - filename to store the board's information
 Type     - 0 = note board         1 = mail board
@@ -82,7 +82,7 @@ read_group    - group that may read that board, regardless of level
 post_group    - group that may post to that board, regardless of level
 extra_readers - char. who may read the board regardless of their level
 extra_removers- char. who may remove notes from this board regardless
-                  of their level or membership in a reader_group
+				  of their level or membership in a reader_group
 
 See Also: BOARDS  MAKEBOARD  BSET
 ~
@@ -134,14 +134,14 @@ extremely modern, you should probably accept it.
 
 51 2COMMAND~
 .&w^b
-                         &z __====-_  _-====___
-                &z_--^^^. &p#####&z     //    \\      &p#####&z.^^^--_
-               &z-.&p##########&z   //&g(   ) &z\\    &p##########&z.-_
-               &z-&p############ &z//&g |\^^/| &z\\    &p############&z-
-            &z/&p###########&z   //  (&R^B@::@ &z^b) \\  &p##########&z\_
-          /&p#############&z   ((  &g \\// &z  ))      &p#############&z\
-          -&p###############&z  \\ &g (oo) &z //     &p###############&z-
-        -&p#################&z   \\&g/&w VV&g  \&z//  &p################-
+						 &z __====-_  _-====___
+				&z_--^^^. &p#####&z     //    \\      &p#####&z.^^^--_
+			   &z-.&p##########&z   //&g(   ) &z\\    &p##########&z.-_
+			   &z-&p############ &z//&g |\^^/| &z\\    &p############&z-
+			&z/&p###########&z   //  (&R^B@::@ &z^b) \\  &p##########&z\_
+		  /&p#############&z   ((  &g \\// &z  ))      &p#############&z\
+		  -&p###############&z  \\ &g (oo) &z //     &p###############&z-
+		-&p#################&z   \\&g/&w VV&g  \&z//  &p################-
   &O|-/  1.&w Thou shalt not kill they fellow adventurer.  &O        \-|
   |-|  &w   (see help deadly for exceptions.)  &O                   |-|
   |-|  2.&w Thou shalt not stake. (See laws stake)  &O              |-|
@@ -156,15 +156,15 @@ extremely modern, you should probably accept it.
   |-| 10.&w Thou shalt respect immortals and their laws.      &O    |-|
   ) ( &r Violation of any commandment subjects you to death,  &O    ) (
    \ |      &rbanishment,torture, hell, demotion, or worse. &O      | /
-    (%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%)
-      &z-&p###################&g  \\/       \//&p###################&z-
-      _#/|&p##########/\######&g(     /\    )&p######/ \##########|\#&z_
-          |/&p|#/\#/\#/\/\#/\##&g\   |  |  /&p##/\#/ \/\#/\#/\#|&z \|
-          `  |/  V  V  `   V\#&g\| |  | |/&z#/  V   '  V  V  \|  '&g
-             `   `  `      `&g / | |  | | \   '      '  '   '
-                         &g   (  | |  | |  )
-                          &g __\ | |  | | /__
-                       &0   (vvv(VVV)(VVV)vvv)  &w^x
+	(%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%)
+	  &z-&p###################&g  \\/       \//&p###################&z-
+	  _#/|&p##########/\######&g(     /\    )&p######/ \##########|\#&z_
+		  |/&p|#/\#/\#/\/\#/\##&g\   |  |  /&p##/\#/ \/\#/\#/\#|&z \|
+		  `  |/  V  V  `   V\#&g\| |  | |/&z#/  V   '  V  V  \|  '&g
+			 `   `  `      `&g / | |  | | \   '      '  '   '
+						 &g   (  | |  | |  )
+						  &g __\ | |  | | /__
+					   &0   (vvv(VVV)(VVV)vvv)  &w^x
  
  
  
@@ -494,15 +494,15 @@ the ban list.  This also can be allowed by using # syntax.
  _\_,/_  \ \|-,   |   &gasunder, a slew of changes   &R|   ,-|/ / ,_\,_/_
 (_  ,__`  |    `\ | &grain down on you - the victims.&R| /'    |   __,  _)
   `--._`-;'      \|                                |/      `;-`_.--`
-     __/ /        |     &gSome of these changes &R.....          \ \__
+	 __/ /        |     &gSome of these changes &R.....          \ \__
    ''&B,-,&R'                                                    `&B,-,&R``
-    &B((|)) &R<&w*&R> &wNew ways to kick some arse have been added.    &B((|))
-     |||  &R<&w*&R> &wShort of practices? Suffer: &GHelp AvPrac         &B|||
-     |||  &R<&w*&R> &wPets are more pet-like again: &GHelp PetSave      &B|||
-     |||  &R<&w*&R> &wEvil this way comes: &GNephandi &whas spawned.      &B|||
-     |||  &R<&w*&R> &wRangers can now raise some cane: &GHelp Missile   &B|||
-     |||  &R<&w*&R> &wFlint has been added: &GHelp Fletch               &B|||
-    //|\\ &R<&w*&R> &wIdirect is throwing a party! &GHelp Picnic       &B//|\\
+	&B((|)) &R<&w*&R> &wNew ways to kick some arse have been added.    &B((|))
+	 |||  &R<&w*&R> &wShort of practices? Suffer: &GHelp AvPrac         &B|||
+	 |||  &R<&w*&R> &wPets are more pet-like again: &GHelp PetSave      &B|||
+	 |||  &R<&w*&R> &wEvil this way comes: &GNephandi &whas spawned.      &B|||
+	 |||  &R<&w*&R> &wRangers can now raise some cane: &GHelp Missile   &B|||
+	 |||  &R<&w*&R> &wFlint has been added: &GHelp Fletch               &B|||
+	//|\\ &R<&w*&R> &wIdirect is throwing a party! &GHelp Picnic       &B//|\\
    |||||||&R<&w*&R> &wMagic from afar! &GHelp Magic_Missile           &B|||||||
    |||||||&R<&w*&R> &wNew commands added, worship a Coder today!    &B|||||||
    |||||||&R<&w*&R> &wSee help: &Gfindnote, 'note date', 'who leader' &B|||||||
@@ -654,7 +654,7 @@ types) of magic.
 
 0 APPRAISE~
 Syntax: appraise <item>
-        appraise all
+		appraise all
 
 Appraise, when at a repairshop type mob, will tell you the condition of 
 your equipment in question.  The mob will tell you if it needs repair or 
@@ -686,7 +686,7 @@ of a dragon housed deep within the area, answering to the name of Yevaud.
 
 1 ARCANES~
 .
-                * * * As One, We Are Strong * * *
+				* * * As One, We Are Strong * * *
 
 That is our motto, and for it we fight.   The Ancient Order of Arcanes is
 an elite group of practitioners of the Magicks with a long and honorable
@@ -803,9 +803,9 @@ the values returned for Value0 based on level:
  
 &GLevel Invoked   Value0   Level Invoked   Value0   Level Invoked   Value0 
 -------------   ------   -------------   ------   -------------   ------   
-      1           1-3         10           3-5         20           6-8
-     30           8-10        40          11-13        50          13-15
-     
+	  1           1-3         10           3-5         20           6-8
+	 30           8-10        40          11-13        50          13-15
+	 
 &gThe amount that Value0 is set to determines the amount the player's A.C. will
 be adjusted. Different wear locations have a different multiplying affect:
  
@@ -999,7 +999,7 @@ au bid x5        - multiplies by 5, making the bet 50000.
  
 It is illegal to auction <or barter, sell, trade> clan, order, or guild items.
 Exception: Old clan equipment that was converted to be worn by both peaceful
-           and deadly players.
+		   and deadly players.
  
 Also see: 'HELP AUCTION' for more information.
 ~
@@ -1163,7 +1163,7 @@ This allows you to use the avtalk (level 50+) channel.
    | / |&Gones patience when seeking them out, as well.    &Y| \ |
    |___|                                                 &Y|___|
   (_____)&r-----------------------------------------------&Y(_____)
-     &r*                                                     *&w
+	 &r*                                                     *&w
 ~
 
 1 BACKFIRE~
@@ -1193,23 +1193,23 @@ victim when they are unaware of your presence.
 
 1 BALZHUR~
 .               ,                   \,       '-,-`,'-.' | ._
-               /|           \    ,   |\         }  )/  / `-,',
-               [ ,          |\  /|   | |        /  \|  |/`  ,`
-               | |       ,.`  `,` `, | |  _,...(   (      _',
-               \  \  __ ,-` `  ,  , `/ |,'      Y     (   \_L\
-                \  \_\,``,   ` , ,  /  |         )         _,/
-                \  '  `  ,_ _`_,-,<._.<        /         /
-                  ', `>.,`  `  `   ,., |_      |         /
-                    \/`  `,   `   ,`  | /__,.-`    _,   `\
-                -,-..\  _  \  `  /  ,  / `._) _,-\`       \
-    Balzhur-     \_,,.) /\    ` /  / ) (-,, ``    ,        |
+			   /|           \    ,   |\         }  )/  / `-,',
+			   [ ,          |\  /|   | |        /  \|  |/`  ,`
+			   | |       ,.`  `,` `, | |  _,...(   (      _',
+			   \  \  __ ,-` `  ,  , `/ |,'      Y     (   \_L\
+				\  \_\,``,   ` , ,  /  |         )         _,/
+				\  '  `  ,_ _`_,-,<._.<        /         /
+				  ', `>.,`  `  `   ,., |_      |         /
+					\/`  `,   `   ,`  | /__,.-`    _,   `\
+				-,-..\  _  \  `  /  ,  / `._) _,-\`       \
+	Balzhur-     \_,,.) /\    ` /  / ) (-,, ``    ,        |
    the pet demon,` )  | \_\       '-`  |  `(               \
-               /  /```(   , --, ,' \   |`<`    ,            |
-              /  /_,--`\   <\  V /> ,` )<_/)  | \      _____)
-        ,-, ,`   `   (_,\ \    |   /) / __/  /   `----`
-       (-, \           ) \ ('_.-._)/ /,`    /
-       | /  `          `/ \\ V   V, /`     /
-    ,--\(        ,     <_/`\\     ||      /
+			   /  /```(   , --, ,' \   |`<`    ,            |
+			  /  /_,--`\   <\  V /> ,` )<_/)  | \      _____)
+		,-, ,`   `   (_,\ \    |   /) / __/  /   `----`
+	   (-, \           ) \ ('_.-._)/ /,`    /
+	   | /  `          `/ \\ V   V, /`     /
+	,--\(        ,     <_/`\\     ||      /
    (   ,``-     \/|         \-A.A-`|     /
   ,>,_ )_,..(    )\          -,,_-`  _--`
  (_ \|`   _,/_  /  \_            ,--`
@@ -1249,19 +1249,19 @@ See also: 'BAN ALLOW' 'BAN NEWBIE' 'BAN DURATION'
 The standard set for ban durations are as follows:
  
 Newbie Ban:          1) One week on first instance.
-                     2) Two weeks for the second.
-                     3) One month at newbie, or level 50 for third.
-                     4) Permanent at newbie, or level 50 for 4th offense.
+					 2) Two weeks for the second.
+					 3) One month at newbie, or level 50 for third.
+					 4) Permanent at newbie, or level 50 for 4th offense.
  
 Bans for level 2-50: 1) One month for first instance.
-                     2) Two months, or permanent for 2nd.
-                     3) Permanent for 3rd offense.
+					 2) Two months, or permanent for 2nd.
+					 3) Permanent for 3rd offense.
  
 All bans above level 50 should be permanent by their very nature.
  
 &WReminder - Without documenting each time we ban a site, we will have no
-           source of history on sites. Always remember to post a note
-           detailing the reasons for the ban.&w
+		   source of history on sites. Always remember to post a note
+		   detailing the reasons for the ban.&w
  
 See also: 'BAN ALLOW' 'BAN NEWBIE' 'BAN 50'
 ~
@@ -1567,7 +1567,7 @@ That should put us in the range of 70 boards
 
 51 BODYBAG~
 Syntax: &Wbodybag <name> <bag/yes>
-          bodybag <name> will show the status of the corpse.
+		  bodybag <name> will show the status of the corpse.
 &w
 BODYBAG gets all of <character's> corpses and puts them in your inventory
 to do with as you wish.
@@ -1592,7 +1592,7 @@ at creation and gain 1/1 bp for each subsequent level.
 0 BRANDISH QUAFF RECITE ZAP~
 Syntax:  brandish                       (to invoke a staff)
 Syntax:  quaff  <potion>                (to quaff potions)
-         quaff  <potion> <container>    (quaff directly from container)
+		 quaff  <potion> <container>    (quaff directly from container)
 Syntax:  recite <scroll> <target>       (to recite a scroll)
 Syntax:  zap    <target>                (to use a wand on a target)
  
@@ -1778,27 +1778,27 @@ This spell changes the sex of the victim (temporarily).
 -1 CHANGES~
 &WA brief summary of some of the significant older code changes:&w
  *> The experience system has changed significantly.  You now receive exp
-    with every hit based on the damage you inflict.  (includes spells)
+	with every hit based on the damage you inflict.  (includes spells)
  *> You will only be able to practice your skills and spells so much, the
-    rest must be learned through use of the spell or skill.
+	rest must be learned through use of the spell or skill.
  *> Warning:  depending on your dexterity, drinking potions and eating in
-    combat may be difficult.  Potions also count as a drink.
+	combat may be difficult.  Potions also count as a drink.
  *> Corpses are saved across crashes and reboots, eliminating the need
-    for most reimbursements for lost corpses. -- see 'help reimbursement'
+	for most reimbursements for lost corpses. -- see 'help reimbursement'
  *> Type 'help mail' and 'help note' for information on these functions.
  *> Config +gag coded by Swordbearer, gags out all extraneous combat info
-    between primary combatants (misses, dodges, parries)
+	between primary combatants (misses, dodges, parries)
  *> Lots of new socials are now in place! (Special thanks to KaVir for
-    sending them our way) (thanks to Scryn for adding them to the file)
+	sending them our way) (thanks to Scryn for adding them to the file)
  *> New commands:  who guild/order/clan and remove all - coded by Swordbearer
  *> Extreme changes to the way the code handles objects has drastically
-    reduced load on the machine all the way around
+	reduced load on the machine all the way around
  *> The ruins of old Darkhaven are now home to deadly characters
  *> Minor healing items in New Darkhaven are now more powerful and cheaper
  *> Bash has changed, see the helpfile.
  *> Equipment no longer scraps in the Arena, or for deadly characters
  *> Retaliatory shields no longer send any message to anyone unless they
-    actually strike
+	actually strike
  *> Healer mobs won't heal you if you're fighting
  *> Shopkeepers refuse customers in combat
  
@@ -1918,24 +1918,24 @@ by one point for a short period of time.
 
 1 CIRCE~
 .            ,       ,
-            /(       )`
-            \ \__   / |
-            /- _ `-/  '
-           (/\/ \ \   /\
-           / /   | `    \
-           O O   )      |
-           `-^--'`<     '
-          (_.)  _ )    /
-           `.___/`    /
-             `-----' /
+			/(       )`
+			\ \__   / |
+			/- _ `-/  '
+		   (/\/ \ \   /\
+		   / /   | `    \
+		   O O   )      |
+		   `-^--'`<     '
+		  (_.)  _ )    /
+		   `.___/`    /
+			 `-----' /
 <----.     __ / __   \
 <----|====O)))==) \) /=============
 <----'    `--' `.__,' \
-             |         |
-              \       /
-          ____( (_   / \______
-        ,'  ,----'   |        \
-        `--{__________)       \/
+			 |         |
+			  \       /
+		  ____( (_   / \______
+		,'  ,----'   |        \
+		`--{__________)       \/
 ~
 
 1 'CIRCLE'~
@@ -1953,7 +1953,7 @@ first to attack in the battle, or be grouped with whoever was.
 
 0 CLANS~
 Syntax:  clans
-    or:  clans <clan name>
+	or:  clans <clan name>
  
 The 'clans' displays a list of all current clans, the clan deity and its
 leader, as well as the clan pkills (victories) and pdeaths (losses).
@@ -2013,35 +2013,35 @@ them a desirable asset for any group.
 51 CLERICSPELLS~
 .          alertness  68%         animate dead[m<1hp 30048m 736mv> <#21530>
 Astrix% m  85%      antimagic shell  61%
-         aqua breath  95%                armor  95%          benediction  95%
-               bless  95%            blindness  95%       call lightning  40%
-      cause critical  95%          cause light  95%        cause serious  95%
-      charged beacon  45%     <1hp 30048m 736mv> <#21530>
+		 aqua breath  95%                armor  95%          benediction  95%
+			   bless  95%            blindness  95%       call lightning  40%
+	  cause critical  95%          cause light  95%        cause serious  95%
+	  charged beacon  45%     <1hp 30048m 736mv> <#21530>
 Astrix%  continual light  95%      control weather  26%
-         create food  95%        create symbol  95%         create water  95%
-      cure blindness  95%        cure critical  95%           cure light  95%
-         cure poison  90%         cure serious  95%                curse  80%
-         detect evil[m<1hp 30048m 736mv> <#21530>
+		 create food  95%        create symbol  95%         create water  95%
+	  cure blindness  95%        cure critical  95%           cure light  95%
+		 cure poison  90%         cure serious  95%                curse  80%
+		 detect evil[m<1hp 30048m 736mv> <#21530>
 Astrix% 1;36m  44%        detect hidden  75%         detect invis  95%
-        detect magic  76%        detect poison  95%         detect traps  52%
-         dispel evil  21%         dispel magic  94%             divinity  56%
-               dream  19%           earthquake  95%      ethereal funnel  30%
-          faerie fire  95%           faerie fog  95%              fatigue
+		detect magic  76%        detect poison  95%         detect traps  52%
+		 dispel evil  21%         dispel magic  94%             divinity  56%
+			   dream  19%           earthquake  95%      ethereal funnel  30%
+		  faerie fire  95%           faerie fog  95%              fatigue
   92%
-          feebleness  56%           fireshield  95%          flamestrike  52%
-               float  95%                  fly  95%              fortify  95%
-           grounding  60%                 harm  95%                 heal  95%
-       holy sanctity  83%             identify  95%          ill fortune  87%
-         indignation  95%          infravision  80%                knock  56%
-      know alignment  95%             lethargy  69%        locate object  95%
-    major invocation  72%           mass invis  95%          midas touch  93%
-    minor invocation  95%    necromantic touch  95%               poison  95%
-          protection  70%             recharge  19%              refresh  95%
-        remove curse  95%          remove trap  19%           resilience  95%
-         restoration  20%            sanctuary  95%                 scry  79%
-         shockshield  95%         solar flight  50%      spiritual wrath  19%
-              summon  95%            transport  26%           true sight  95%
-     unravel defense  95%               uplift  95%       word of recall  95%
+		  feebleness  56%           fireshield  95%          flamestrike  52%
+			   float  95%                  fly  95%              fortify  95%
+		   grounding  60%                 harm  95%                 heal  95%
+	   holy sanctity  83%             identify  95%          ill fortune  87%
+		 indignation  95%          infravision  80%                knock  56%
+	  know alignment  95%             lethargy  69%        locate object  95%
+	major invocation  72%           mass invis  95%          midas touch  93%
+	minor invocation  95%    necromantic touch  95%               poison  95%
+		  protection  70%             recharge  19%              refresh  95%
+		remove curse  95%          remove trap  19%           resilience  95%
+		 restoration  20%            sanctuary  95%                 scry  79%
+		 shockshield  95%         solar flight  50%      spiritual wrath  19%
+			  summon  95%            transport  26%           true sight  95%
+	 unravel defense  95%               uplift  95%       word of recall  95%
  
 ~
 
@@ -2110,7 +2110,7 @@ skill forage approved 2 0 1
 COINDUCT COOUTCAST COIN COOUT
  
 Syntax:  coinduct <playername>
-         cooutcast <playername>
+		 cooutcast <playername>
  
 Coinduct inducts an player into a council.  Cooutcast removes a player
 from a council.
@@ -2368,16 +2368,16 @@ Of course, it's only a rough estimate.
 52 CONSTATES~
 State | Description
 -----------------------------------------------------------
-    0 | Player is playing.
-    1 | Player is prompted for his or her name.
-    2 | Player is prompted for his or her password.
-    3 | Player is prompted to confirm his or her name.
-    4 | Player is prompted to select a password.
-    5 | Player is prompted to confirm the password.
-    6 | Player is prompted to select his or her sex.
-    7 | Player is prompted to select a class.
-    8 | Player is reading the message of the day.
-    9 | Player is prompted to select a race.
+	0 | Player is playing.
+	1 | Player is prompted for his or her name.
+	2 | Player is prompted for his or her password.
+	3 | Player is prompted to confirm his or her name.
+	4 | Player is prompted to select a password.
+	5 | Player is prompted to confirm the password.
+	6 | Player is prompted to select his or her sex.
+	7 | Player is prompted to select a class.
+	8 | Player is reading the message of the day.
+	9 | Player is prompted to select a race.
    10 | Unused.
    11 | Player is in the line editor.
    12 | Player is prompted to select RIP, ANSI or NONE.
@@ -2414,11 +2414,11 @@ EMPTY <container> <different container> will transfer the contents.
 
 53 CONTAINER_FLAGS~
 Container flag values:
-     Closeable = 1
-     Pickproof = 2
-     Closed    = 4
-     Locked    = 8
-     Eatkey    = 16
+	 Closeable = 1
+	 Pickproof = 2
+	 Closed    = 4
+	 Locked    = 8
+	 Eatkey    = 16
 ~
 
 0 'CONTINUAL LIGHT'~
@@ -2443,41 +2443,41 @@ take effect until the next tick.
 Cset is used to set the system's 'control panel' settings.
 Syntax: cset <field> <level>
 Fields: save - saves the control panel settings
-        dodge_mod - divide dodge chance (% learned) by this (default 2)
-        parry_mod - same as above, for parry                (default 2)
-        tumble_mod - same as above, for tumble              (default 4)
-        stun - sets normal (mob vs. player / player vs. mob) stun modifier
-        stun_pvp - as above, for player vs. player
-        bash_pvp - bash modifier player versus player
-        bash_nontank - modifier if basher is not tanking the victim
-        gouge_pvp - gouge modifier player versus player
-        gouge_nontank - gouge modifier if gouger is not tanking the victim
-        dam_pvp - percentage adjustment for player vs. player fighting
-        dam_pvm - as above, for player vs. mob
-        dam_mvp - as above, for mob vs. player
-        dam_mvm - as above, for mob vs. mob
-        get_notake - level to pick up notake flagged items
-        read_all - level to read all mail
-        read_free - level to read mail for free
-        write_free - level to write mail for free (no items necessary)
-        take_all - level to take all mail
-        muse - level to see/use muse channel
-        think - level to see/use think channel
-        log - level to see log channel
-        build - level to see build channel
-        proto_modify - level to modify prototype objects
-        mset_player - level to allow mset to operate on a player
-        override_private - level to override private/solitary rooms
-        forcepc - level to force pc's
-        guild_overseer - name of the Overseer of Guilds
-        guild_advisor - name of the Advisor to Guilds
-        saveflag - flags/actions on which to save a pfile (drop, give, get,
-                   receive, auction, zap, death, auction, auto, password)
-        ban_site_level -  level able to ban sites
-        ban_class_level - level able to ban classes
-        ban_race_level -  level able to ban races
-        bestow_dif - max lvl dif between bestowed cmd level and char lvl
-        checkimmhost - imm host checking on or off
+		dodge_mod - divide dodge chance (% learned) by this (default 2)
+		parry_mod - same as above, for parry                (default 2)
+		tumble_mod - same as above, for tumble              (default 4)
+		stun - sets normal (mob vs. player / player vs. mob) stun modifier
+		stun_pvp - as above, for player vs. player
+		bash_pvp - bash modifier player versus player
+		bash_nontank - modifier if basher is not tanking the victim
+		gouge_pvp - gouge modifier player versus player
+		gouge_nontank - gouge modifier if gouger is not tanking the victim
+		dam_pvp - percentage adjustment for player vs. player fighting
+		dam_pvm - as above, for player vs. mob
+		dam_mvp - as above, for mob vs. player
+		dam_mvm - as above, for mob vs. mob
+		get_notake - level to pick up notake flagged items
+		read_all - level to read all mail
+		read_free - level to read mail for free
+		write_free - level to write mail for free (no items necessary)
+		take_all - level to take all mail
+		muse - level to see/use muse channel
+		think - level to see/use think channel
+		log - level to see log channel
+		build - level to see build channel
+		proto_modify - level to modify prototype objects
+		mset_player - level to allow mset to operate on a player
+		override_private - level to override private/solitary rooms
+		forcepc - level to force pc's
+		guild_overseer - name of the Overseer of Guilds
+		guild_advisor - name of the Advisor to Guilds
+		saveflag - flags/actions on which to save a pfile (drop, give, get,
+				   receive, auction, zap, death, auction, auto, password)
+		ban_site_level -  level able to ban sites
+		ban_class_level - level able to ban classes
+		ban_race_level -  level able to ban races
+		bestow_dif - max lvl dif between bestowed cmd level and char lvl
+		checkimmhost - imm host checking on or off
  
 ~
 
@@ -2513,22 +2513,22 @@ the Merfolk completely...
 52 COUNCILNUMS~
 . &r--------------------------------------------------------------------
   
-                     &GNUMBER           COUNCIL
+					 &GNUMBER           COUNCIL
    
-                       &c1              CoE - Council of Elders
-                       2              TS  - The Symposium
-                       3              NC  - Newbie Council
-                       4              Pro - Primordial Circle
-                       5              PK  - Pkill Conclave
-                       6              QC  - Quest Council
-                       7              Neo - Neophyte Council
-                       8              CC  - Code Council
-                       9              AC  - Area Council
+					   &c1              CoE - Council of Elders
+					   2              TS  - The Symposium
+					   3              NC  - Newbie Council
+					   4              Pro - Primordial Circle
+					   5              PK  - Pkill Conclave
+					   6              QC  - Quest Council
+					   7              Neo - Neophyte Council
+					   8              CC  - Code Council
+					   9              AC  - Area Council
  
    &r--------------------------------------------------------------------
  
-       &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
-                   ITEMVALUES, OBJECTTYPES, VARIABLES,  
+	   &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+				   ITEMVALUES, OBJECTTYPES, VARIABLES,  
 
 ~
 
@@ -2536,19 +2536,19 @@ the Merfolk completely...
 The following councils exist to administrate various areas of the mud:
  
 Council of Elders -- responsible for complete mud administration, with each
-                     member working independently in other areas as well.
+					 member working independently in other areas as well.
 The Symposium     -- responsible for immortalization of avatars, mortal
-                     immortal communications, and idea/project management.
+					 immortal communications, and idea/project management.
 Pkill Conclave    -- responsible for administration and development of the
-                     deadly combat system, clans and other pkill matters.
+					 deadly combat system, clans and other pkill matters.
 Quest Council     -- responsible for creating, running and overseeing quests
-                     as well as evolution of the quest system itself.
+					 as well as evolution of the quest system itself.
 Newbie Council    -- primarily oversees concerns dealing with new, low-level
-                     characters (areas, equipment, etc.), this council also
-                     employs many mortals who assist new players in need.
+					 characters (areas, equipment, etc.), this council also
+					 employs many mortals who assist new players in need.
 Code Council      -- responsible for all code-related matters
 Neophyte Council   -- Overseer of level 51-53 immortals and inactivity 
-                      demotions.
+					  demotions.
 See also HELP '<council name>' for further information.
 Typing <councils> <council name> will show membership numbers and a brief
 description of what the council does.
@@ -2566,17 +2566,17 @@ characters in your council, should you be a member of one.
 Before asking an immortal for a corpse retrieval, you &r-must-:&w
  
 &r    -&w Attempt to get your corpse yourself, &rand
-    -&w Use invis and hidden, this will get you past a lot of mobiles,&r and
-    -&w Seek mortal assistance to retrieve your corpse.&r
-    -&g If all else fails, wait at least 20 minutes after death to ask for an
-      Immortal corpse retrieval.&w
+	-&w Use invis and hidden, this will get you past a lot of mobiles,&r and
+	-&w Seek mortal assistance to retrieve your corpse.&r
+	-&g If all else fails, wait at least 20 minutes after death to ask for an
+	  Immortal corpse retrieval.&w
 
 **  "I need to leave now!" is not grounds for an early Immortal CR.
 **  Corpses last approximately 40 - 60 minutes after the time of death.
 **  Corpse decay will happen even while you are linkdead or after you quit.
 **  Characters listed under 'who deadly' are not eligible for Immortal CR.
 **  Corpses _will_ save over crashes and reboots, but will continue to decay
-    once the Realms comes back online.  Log back on quickly to get corpse.
+	once the Realms comes back online.  Log back on quickly to get corpse.
 
 The cost for CRs is usually one item from your corpse.  An Immortal may
 choose to charge MORE or LESS. 
@@ -2636,16 +2636,16 @@ This spell replenishes a drink container with water.
 The following is a guideline of level 53 responsibilities:
  
    - An Immortal must spend at least 5-7 hours per week or at least
-     25 hours per month online to remain active and productive
+	 25 hours per month online to remain active and productive
    - Must be visible to all mortals, unless involved in running a
-     quest, watching someone or building.
+	 quest, watching someone or building.
    - Authorization of new characters
    - Channel monitoring -- should keep all channels on
    - Appraising higher Immortals of Mortal rule violations
    - Advise a 55+ of all reimbursement requests from mortals
    - Cr's at discretion, monitoring note boards, remaining VISIBLE
    - Learning proper mortal discipline techniques and punishments
-    - Helping 51 and 52 level immortals as needed.
+	- Helping 51 and 52 level immortals as needed.
    - Possible room building work
    - Possible work at 5500 if interested in building or coding
    - Possible council work
@@ -2715,36 +2715,36 @@ mazes.
 Cset is used to set the system's 'control panel' settings.
 Syntax: cset <field> <level>
 Fields: save - saves the control panel settings
-        dodge_mod - divide dodge chance (% learned) by this (default 2)
-        parry_mod - same as above, for parry                (default 2)
-        tumble_mod - same as above, for tumble              (default 4)
-        stun - sets normal (mob vs. player / player vs. mob) stun modifier
-        stun_pvp - as above, for player vs. player
-        bash_pvp - bash modifier player versus player
-        bash_nontank - modifier if basher is not tanking the victim
-        gouge_pvp - gouge modifier player versus player
-        gouge_nontank - gouge modifier if gouger is not tanking the victim
-        dam_pvp - percentage adjustment for player vs. player fighting
-        dam_pvm - as above, for player vs. mob
-        dam_mvp - as above, for mob vs. player
-        dam_mvm - as above, for mob vs. mob
-        get_notake - level to pick up notake flagged items
-        read_all - level to read all mail
-        read_free - level to read mail for free
-        write_free - level to write mail for free (no items necessary)
-        take_all - level to take all mail
-        muse - level to see/use muse channel
-        think - level to see/use think channel
-        log - level to see log channel
-        build - level to see build channel
-        proto_modify - level to modify prototype objects
-        mset_player - level to allow mset to operate on a player
-        override_private - level to override private/solitary rooms
-        forcepc - level to force pc's
-        guild_overseer - name of the Overseer of Guilds
-        guild_advisor - name of the Advisor to Guilds
-        saveflag - flags/actions on which to save a pfile (drop, give, get,
-                   receive, auction, zap, death, auction, auto, password)
+		dodge_mod - divide dodge chance (% learned) by this (default 2)
+		parry_mod - same as above, for parry                (default 2)
+		tumble_mod - same as above, for tumble              (default 4)
+		stun - sets normal (mob vs. player / player vs. mob) stun modifier
+		stun_pvp - as above, for player vs. player
+		bash_pvp - bash modifier player versus player
+		bash_nontank - modifier if basher is not tanking the victim
+		gouge_pvp - gouge modifier player versus player
+		gouge_nontank - gouge modifier if gouger is not tanking the victim
+		dam_pvp - percentage adjustment for player vs. player fighting
+		dam_pvm - as above, for player vs. mob
+		dam_mvp - as above, for mob vs. player
+		dam_mvm - as above, for mob vs. mob
+		get_notake - level to pick up notake flagged items
+		read_all - level to read all mail
+		read_free - level to read mail for free
+		write_free - level to write mail for free (no items necessary)
+		take_all - level to take all mail
+		muse - level to see/use muse channel
+		think - level to see/use think channel
+		log - level to see log channel
+		build - level to see build channel
+		proto_modify - level to modify prototype objects
+		mset_player - level to allow mset to operate on a player
+		override_private - level to override private/solitary rooms
+		forcepc - level to force pc's
+		guild_overseer - name of the Overseer of Guilds
+		guild_advisor - name of the Advisor to Guilds
+		saveflag - flags/actions on which to save a pfile (drop, give, get,
+				   receive, auction, zap, death, auction, auto, password)
  
 ~
 
@@ -2801,7 +2801,7 @@ unable to RECALL.
 
 2 DAILY2~
 .       &YThe Corner of Wisdom
-                   &Gby The Sage of Despair
+				   &Gby The Sage of Despair
 &W
 Dear SoD,
 I can't get into any orders because (order name withheld) blackened my
@@ -2981,17 +2981,17 @@ distant places...
 
 1 DARKUR~
 .            __                                                    _
-         _.-"--"-._         .-----------        _____          _.:(_):._
-       ."  _____   ".       |###########|     .'_____'.      .':::::::::'.
-      (==="  Y  "====)      |88888888888|   .' /__ __\ '.    |:=========:|
-      :  | @ | @ |   :     /#/:   Y   :\#\  | |   V   | |    | .'  Y  '. |
-     .`   '-'_'-'    '.   (_/ ' @ | @ ' \_) | | @ | @ | |    | ' @ | @ ' |
+		 _.-"--"-._         .-----------        _____          _.:(_):._
+	   ."  _____   ".       |###########|     .'_____'.      .':::::::::'.
+	  (==="  Y  "====)      |88888888888|   .' /__ __\ '.    |:=========:|
+	  :  | @ | @ |   :     /#/:   Y   :\#\  | |   V   | |    | .'  Y  '. |
+	 .`   '-'_'-'    '.   (_/ ' @ | @ ' \_) | | @ | @ | |    | ' @ | @ ' |
    .'  `._  (_)   _.'  `.   '  `-' `-'  '   `. \-' '-/ .'    .  `-'_`-'  .
   :-.     "======"    .-".   `.  -=-  .'      `.`---'.'       `-. (_) .-'
  :..:        |:       :...'  .'`- - -'`.     .'   |   '.     .'  `---'  '.
    :         |:         /   :  M  |  M  :   :     |     :   :      #      :
-    `.______./\_______.'   (_).___|___.(_) (_)____|____(_) (_).____#____.(_)
-     `._____./\_____.'        /___.___\       |___|___|       _'_______'_
+	`.______./\_______.'   (_).___|___.(_) (_)____|____(_) (_).____#____.(_)
+	 `._____./\_____.'        /___.___\       |___|___|       _'_______'_
  
 ~
 
@@ -3111,7 +3111,7 @@ as their life is slowly sucked away.
 
 1 DEITIES DEITY~
 Syntax: 'deities'
-        'deities <deity>'
+		'deities <deity>'
  
 The deities command displays all the deities of the world.  Using an
 argument will display the target deity's description.
@@ -3252,7 +3252,7 @@ To see available members, type:  who 'the symposium'
 
 0 DESCRIPTION BIO~
 Syntax: description
-        bio
+		bio
 
 The DESCRIPTION command puts you into an editor to edit your long character
 description (what people see when they look at you).
@@ -3277,12 +3277,12 @@ wrought with poison.
 65 DESTROY~
 -----------------------------------------------------------
  
-     SYNTAX:  destroy <target>
+	 SYNTAX:  destroy <target>
  
 DESCRIPTION: The DESTROY command does exactly as it suggests: 
-             destroys player files. Caution, the command 
-             destroys the pfile in use, leaving only the 
-             backup of the pfile, if there is one.
+			 destroys player files. Caution, the command 
+			 destroys the pfile in use, leaving only the 
+			 backup of the pfile, if there is one.
  
  
 -----------------------------------------------------------
@@ -3340,7 +3340,7 @@ Use it with care.
 
 0 DEVOTE~
 Syntax: 'devote <deity>'
-        'devote none'
+		'devote none'
  
 Devote allows you to devote yourself to a deity.  If you leave your deity
 for another, your favor is set to -2500 and you are blinded for a period
@@ -3422,27 +3422,27 @@ this skill for storage of items you wish to keep.
 
 -1 DIKU~
 .         SMAUG was originally based on the Merc 2.1 code which was
-              based on the orignal DIKUMud code created by:
+			  based on the orignal DIKUMud code created by:
 
-                       The Original DIKUMud Team:
+					   The Original DIKUMud Team:
 
-          Katja Nyboe               [Superwoman] (katz@freja.diku.dk)
-          Tom Madsen              [Stormbringer] (noop@freja.diku.dk)
-          Hans Henrik Staerfeldt           [God] (bombman@freja.diku.dk)
-          Michael Seifert                 [Papi] (seifert@freja.diku.dk)
-          Sebastian Hammer               [Quinn] (quinn@freja.diku.dk)
+		  Katja Nyboe               [Superwoman] (katz@freja.diku.dk)
+		  Tom Madsen              [Stormbringer] (noop@freja.diku.dk)
+		  Hans Henrik Staerfeldt           [God] (bombman@freja.diku.dk)
+		  Michael Seifert                 [Papi] (seifert@freja.diku.dk)
+		  Sebastian Hammer               [Quinn] (quinn@freja.diku.dk)
 
-                     Additional contributions from:
+					 Additional contributions from:
 
  Michael Curran  - the player title collection and additional locations.
  Bill Wisner     - for being the first to successfully port the game,
-                   uncovering several old bugs, uh, inconsistencies,
-                   in the process.
+				   uncovering several old bugs, uh, inconsistencies,
+				   in the process.
 
-         And: Mads Haar and Stephan Dahl for additional locations.
+		 And: Mads Haar and Stephan Dahl for additional locations.
 
   The Original DIKUMud was Developed at the Department of Computer Science
-                     at the University of Copenhagen.
+					 at the University of Copenhagen.
 ~
 
 1 DISARM~
@@ -3464,7 +3464,7 @@ By continuing to play this MUD you are acknowledging that:
 (1)  you are willing to abide by the decisions of the Immortals concerning
 all issues involved in the game, and
 (2)  conversation and situations may arise during the course of play that 
-     may not be suitable for young children.
+	 may not be suitable for young children.
 
 By these acknowledgments you hereby save and except this MUD and it's
 Administrators from any and all liability that may arise during gameplay.
@@ -3697,11 +3697,11 @@ This spell enables you to cast a dream or message on a sleeping player.
 
 0 DROP GET GIVE PUT TAKE~
 Syntax:  drop <object>
-         drop <amount>  coins
+		 drop <amount>  coins
 Syntax:  get  <object>
-         get  <object>  <container>
+		 get  <object>  <container>
 Syntax:  give <object>  <character>
-         give <amount>  coins <character>
+		 give <amount>  coins <character>
 Syntax:  put  <object>  <container>
 Syntax:  get/put/drop   <# amount>  <object>
 Syntax:  get/put        <# amount>  <object> <container>
@@ -3863,7 +3863,7 @@ including pets, mounts and charmed creatures.
 0 EAT DRINK~
 Syntax:  drink <object>                  (drink liquid from a drink container)
 Syntax:  eat   <object>                  (eat food or a magical pill)
-         eat   <object> <container>      (eat directly from a container)
+		 eat   <object> <container>      (eat directly from a container)
  
 Drink instructs your character to drink from a fountain or a drink container
 to alleviate thirst.
@@ -3906,8 +3906,8 @@ rapid negative affect on your mental state.
 
 52 ECHO RECHO~
 Syntax:  echo      <color> <message>
-         echo  imm <color> <message>
-         echo  pc  <color> <message>
+		 echo  imm <color> <message>
+		 echo  pc  <color> <message>
 Syntax:  recho     <color> <message>
  
 ECHO sends a message to all players in the game, without any prefix indicating
@@ -3960,15 +3960,15 @@ Omit the space when using the commands in your notes):
 / l              Lists the current contents of the note.
 / c              Clears the current contents of the note.
 / d [line]       Delete line. If no line number is given, the most
-                  recent line is deleted.
+				  recent line is deleted.
 / g <line>       Goto line. This is useful for inserting lines,
-                  deleting and fixing lines, etc.
+				  deleting and fixing lines, etc.
 / i <line>       Insert line. Inserts a new blank line where specified.
 / r <old> <new>  Global replace. '/g' to the line you want to start
-                  replacing at first, or no occurences will be found.
+				  replacing at first, or no occurences will be found.
 / a              Abort editing. No changes you made are kept.
 / ! <command>    Execute mud command. '/! smile' sends the smile
-                  command, without exiting the editor.
+				  command, without exiting the editor.
 / s              Save buffer, and exit the editor.
  
 ~
@@ -3983,22 +3983,22 @@ lands, it inflicts damage on your opponent.
 
 1 ELCID~
 .             (_)          _
-          _         .=.   (_)
-         (_)   _   //(`)_
-              //`\/ |\ 0`\\
-              ||-.\_|_/.-||
-              )/ |_____| \(    _
-             0   #/\ /\#  0   (_)
-                _| o o |_
-         _     ((|, ^ ,|))
-        (_)     `||\_/||`
-                 || _ ||      _
-                 | \_/ |     (_)
-             0.__.\   /.__.0
-              `._  `"`  _.'
-       Elcid     / ;  \ \
-               0'-' )/`'-0
-                   0`
+		  _         .=.   (_)
+		 (_)   _   //(`)_
+			  //`\/ |\ 0`\\
+			  ||-.\_|_/.-||
+			  )/ |_____| \(    _
+			 0   #/\ /\#  0   (_)
+				_| o o |_
+		 _     ((|, ^ ,|))
+		(_)     `||\_/||`
+				 || _ ||      _
+				 | \_/ |     (_)
+			 0.__.\   /.__.0
+			  `._  `"`  _.'
+	   Elcid     / ;  \ \
+			   0'-' )/`'-0
+				   0`
 ~
 
 0 'ELDRITCH SPHERE'~
@@ -4252,21 +4252,21 @@ certain direction and see what you bump into).
 
 51 EXITTYPES~
 These are the currently valid exit-types:
-      0 - Plain exit
-      1 - Door exists         (Required to be closed or locked)
-      2 - Door is Closed
-      4 - Door is Locked
-      8 - Door is Secret      (Trying to go that way won't reveal door)
-     32 - Door is Pickproof   (Door can't be picked by spell or skill)
-     64 - Need to be able to fly to go that way
-    128 - Need to be able to climb to go that way
+	  0 - Plain exit
+	  1 - Door exists         (Required to be closed or locked)
+	  2 - Door is Closed
+	  4 - Door is Locked
+	  8 - Door is Secret      (Trying to go that way won't reveal door)
+	 32 - Door is Pickproof   (Door can't be picked by spell or skill)
+	 64 - Need to be able to fly to go that way
+	128 - Need to be able to climb to go that way
    1024 - Door is Passdoor proof
 
 NOTE: You must ADD the values together to generate an exit-type:
-        3 = a closed door
-        7 = a closed and locked door
-       11 = a closed secret door
-       15 = a closed, locked and secret door
+		3 = a closed door
+		7 = a closed and locked door
+	   11 = a closed secret door
+	   15 = a closed, locked and secret door
 
 -- Use the 'redit exflags' command to change these flags, and to set the
    advanced exit flags, most of which are not shown above.
@@ -4281,15 +4281,15 @@ Your character advances in power by gaining experience.  Type LEVEL to see
 how many experience points you'll need for the next few levels.
  
 You gain experience by:
-    inflicting damage upon an opponent
-    being part of a group that kills an opponent
-    succeeding while learning a skill or a spell through real world usage
+	inflicting damage upon an opponent
+	being part of a group that kills an opponent
+	succeeding while learning a skill or a spell through real world usage
  
 You lose experience by:
-    fleeing from combat
-    recalling out of combat
-    being the target of some spells (energy drain, etc.)
-    dying
+	fleeing from combat
+	recalling out of combat
+	being the target of some spells (energy drain, etc.)
+	dying
  
 The experience you get from a kill depends on several things:  how many 
 players are in your group; your level versus the level of the monster;
@@ -4441,7 +4441,7 @@ type missileweapons, a bow wielded and a quiver or arrows in your inventory.
 
 51 FIXED~
 Syntax:  fixed <message>
-         fixed list
+		 fixed list
  
 This command records your message (250 chars or so max) to a permanent
 record file.  All changes made to live areas, made with foldarea, etc.
@@ -4609,13 +4609,13 @@ forcing them to quit before using FQUIT.
 58 FSHOW~
 -----------------------------------------------------------
  
-     SYNTAX: fshow <moblog | plevel>
+	 SYNTAX: fshow <moblog | plevel>
  
 DESCRIPTION: The FSHOW command when used with the MOBLOG
-             variable, displays the current log of MPLOG. When
-             FSHOW is used with the PLEVEL variable, it will
-             display the current log of all character levels
-             that have occurred since the last reboot.
+			 variable, displays the current log of MPLOG. When
+			 FSHOW is used with the PLEVEL variable, it will
+			 display the current log of all character levels
+			 that have occurred since the last reboot.
  
 -----------------------------------------------------------
 ~
@@ -4652,22 +4652,22 @@ for it, but high demons, and guardian vampires themselves, like it a lot.
 61 GFIGHTING~
 -----------------------------------------------------------
  
-     SYNTAX: gfighting
-             gfighting <low> <high>
-             gfighting <low> <high> mobs
+	 SYNTAX: gfighting
+			 gfighting <low> <high>
+			 gfighting <low> <high> mobs
  
 DESCRIPTION: The GFIGHTING command does a global search 
-             for the fighting targets specified, where 
-             <low> <high> indicates the target's level.
+			 for the fighting targets specified, where 
+			 <low> <high> indicates the target's level.
  
-    EXAMPLE: gfighting 1 5 would display a list of PCs 
-             levels one through five that are fighting, 
-             who they are fighting and their level, what 
-             vnum/room name they are fighting in, and the 
-             name of the area they are fighting in. By 
-             adding the 'mobs' variable, the command 
-             would display the same information for mobs 
-             of the levels specified.
+	EXAMPLE: gfighting 1 5 would display a list of PCs 
+			 levels one through five that are fighting, 
+			 who they are fighting and their level, what 
+			 vnum/room name they are fighting in, and the 
+			 name of the area they are fighting in. By 
+			 adding the 'mobs' variable, the command 
+			 would display the same information for mobs 
+			 of the levels specified.
  
 -----------------------------------------------------------
 ~
@@ -4707,7 +4707,7 @@ Glory is a measure of how valiant you are, and is accumulated by taking part
 in quests (mostly) and possibly in a few other ways in the near to distant
 future.  It appears on your score screen as:
  
-                    Glory: 264(430)
+					Glory: 264(430)
  
   The number in parentheses is the total lifetime glory attained by your
 character, and the other number is your current glory.  Glory can be "spent"
@@ -4767,49 +4767,49 @@ See also GLORY, GLORY RATES
 Somethings to keep in mind when giving/taking Glory:
  
   - Glory is UNtradable between mortals.  (Please do not facilitate trades of
-         Glory between mortals.
+		 Glory between mortals.
   - It is allowed for a player to use his Glory to affect items for another
-         player.
+		 player.
   - Currently, appropriate prizes to be awarded for quests are as follows:
  
   Avatar quests (lvl 40+):
-         Suggested Maximum:  50 Glory  (For playing an integral part)
-         Suggested Minimum:   5 Glory  (For making a notable effort)
-    - Then Glory of appropriate amounts (use your judgement) can be given out
-         for intermediate efforts between winning and participating.
+		 Suggested Maximum:  50 Glory  (For playing an integral part)
+		 Suggested Minimum:   5 Glory  (For making a notable effort)
+	- Then Glory of appropriate amounts (use your judgement) can be given out
+		 for intermediate efforts between winning and participating.
  
   NOTE:  Being integral doesn't neccessarily mean landing the killing blow on
-         the supermob, it might also mean the person who solved the riddle
-         leading to the mob (if it was a difficult riddle).
+		 the supermob, it might also mean the person who solved the riddle
+		 leading to the mob (if it was a difficult riddle).
   NOTE:  Prizes should be scaled up or down to reflect the difficulty and
-         participation of the quest.  For example a difficult quest would be
-         one that takes more than 2 hours to complete.
+		 participation of the quest.  For example a difficult quest would be
+		 one that takes more than 2 hours to complete.
  
   Non-Avatar quests (lvl < 40):
-         Suggested Maximum:  35 Glory  (For an integral part)
-         Suggested Minimum:   5 Glory  (For a notable effort)
+		 Suggested Maximum:  35 Glory  (For an integral part)
+		 Suggested Minimum:   5 Glory  (For a notable effort)
 See also: GLORYIMM2, QPSET, GLORY, GLORY RATES.
 ~
 
 51 GLORYIMM2~
 .    Glory does not neccessarily have to be the only prize given out.  In fact
-     for the lower level quests it is preferred if a combination of Glory and
-     minorly affected/renamed objects are given out as prizes.  i.e. a weapon
-     renamed to something related to the quest that has a couple +1's or +2's
-     on it (that will be useful for a couple levels, but then discarded).
+	 for the lower level quests it is preferred if a combination of Glory and
+	 minorly affected/renamed objects are given out as prizes.  i.e. a weapon
+	 renamed to something related to the quest that has a couple +1's or +2's
+	 on it (that will be useful for a couple levels, but then discarded).
  
-     NOTE:  It is suggested for Guild and Order quests that the prizes be
-            scaled down slightly as participation is limited from the entire
-            mud - and open exclusively to guild/order members.  The quests they
-            recieve from the guild/order are supplemental to the mud-wide ones
-            they can participate in.
+	 NOTE:  It is suggested for Guild and Order quests that the prizes be
+			scaled down slightly as participation is limited from the entire
+			mud - and open exclusively to guild/order members.  The quests they
+			recieve from the guild/order are supplemental to the mud-wide ones
+			they can participate in.
  
  
-     DISCLAIMER:  These numbers are not set in stone, they are guidelines.  The
-                  QC is counting on the good judgement of the immortals to
-                  make sure the prizes they are giving out are appropriate.
-                  The QC reserves the right to change the guidelines as well
-                  the right to set them in stone if we find it is being abused.
+	 DISCLAIMER:  These numbers are not set in stone, they are guidelines.  The
+				  QC is counting on the good judgement of the immortals to
+				  make sure the prizes they are giving out are appropriate.
+				  The QC reserves the right to change the guidelines as well
+				  the right to set them in stone if we find it is being abused.
  
 See Also: GLORYIMM, GLORY, GLORY RATES, QPSET.
 ~
@@ -4834,12 +4834,12 @@ Gnomes gain experience on a scale of normal rate * 1.2
 
 51 GODMAP~
 .                      1208--1217
-     1219               |/            1228           N
-       |               1207     1202 /             E + W
-       |                |         |/                 S
+	 1219               |/            1228           N
+	   |               1207     1202 /             E + W
+	   |                |         |/                 S
 1221-1204--------------1225-----1200-----1212
-       |                          |        |
-     1209-----1230              1215     1222
+	   |                          |        |
+	 1209-----1230              1215     1222
  
  
 ---> @1200 up once to 1214
@@ -4847,7 +4847,7 @@ Gnomes gain experience on a scale of normal rate * 1.2
 ---> @1200 down once to 1213
 ---> @1225 down once to 1224
 ---> @1224 east once to 1213
-                   --------
+				   --------
 1200 Chat Room                             1201 Thoric's Den
 1202 Reading Room                          1204 Clan Council Meeting Room
 1207 Quest Council Board                   1208 Quest Talley Room
@@ -4874,18 +4874,18 @@ Displays the current total amount of gold you are carrying.
 
 1 GOROG~
 . &C
-                     _/(        ) (        )\_
-                  _/'  `\      ((_))      /'  `\_
-               _/'       `\    \-,-/    /'       `\_
-            _/'            `\__/\=/\__/'            `\_
-          /'               /'   ,`,   `\               `\
-        /'     /'  /      |   ,{MIM},   |     \   `\     `\
-      /'     /'    |       \  |/ | \|  /       |    `\     `\
-    /'     /'      |    .,._\ '  |  ` /_.,.    |      `\     `\
+					 _/(        ) (        )\_
+				  _/'  `\      ((_))      /'  `\_
+			   _/'       `\    \-,-/    /'       `\_
+			_/'            `\__/\=/\__/'            `\_
+		  /'               /'   ,`,   `\               `\
+		/'     /'  /      |   ,{MIM},   |     \   `\     `\
+	  /'     /'    |       \  |/ | \|  /       |    `\     `\
+	/'     /'      |    .,._\ '  |  ` /_.,.    |      `\     `\
   /'      / ,-'--, | ,-(_  ,_`--'--'_,  _)-, | ,--`-, \      `\
  /_,-'-`-/-'      `|'    ---._`-,_,-'_.---    `|'      `-\-'-`-,_\
 /                             | | | |
-                               &B Gorogoyle &w
+							   &B Gorogoyle &w
 ~
 
 51 GOTO~
@@ -4958,16 +4958,16 @@ resides in a chamber which prevents the usage of magic...
 
 -1 GREETING~
 .
-         /     _      _            _      _    _____
-        /      |\    /|     /\     |      |   /     \     ***************
-       /       | \  / |    /  \    |      |  |            *   \\._.//   *
-      /        |  \/  |   /    \   |      |  |            *   (0...0)   *
-     /_______  |      |  |______|  |      |  |            *    ).:.(    *
-            /  |      |  |      |  |      |  |            *    {o o}    *
-           /   |      |  |      |  |      |  |     __     *   / ' ' \   *
-          /    |      |  |      |  |      |  |       |    *-'^^.VxvxV.^^'-*
-         /     |      |  |      |   \____/    \_____/     ***************
-        / 
+		 /     _      _            _      _    _____
+		/      |\    /|     /\     |      |   /     \     ***************
+	   /       | \  / |    /  \    |      |  |            *   \\._.//   *
+	  /        |  \/  |   /    \   |      |  |            *   (0...0)   *
+	 /_______  |      |  |______|  |      |  |            *    ).:.(    *
+			/  |      |  |      |  |      |  |            *    {o o}    *
+		   /   |      |  |      |  |      |  |     __     *   / ' ' \   *
+		  /    |      |  |      |  |      |  |       |    *-'^^.VxvxV.^^'-*
+		 /     |      |  |      |   \____/    \_____/     ***************
+		/ 
 
 SmaugFUSS 1.9 changes by Samson. Other bugfixes and changes provided by
 various members of the SMAUG community. Their contributions are greatly
@@ -5005,18 +5005,18 @@ Classes are displayed by their first three letters.  Alignment reads:
    A... 750+          -a... 350 to  749  +n...  150 to  349   N...-149 to 149
   -n...-349 to -150   +s...-749 to -350   S...-1000 to -750
 &w[hitpnts]&g lists current hps followed by maximum hps for each character.
-          Current hitpoints under 40% of maximum will be displayed in yellow,
-          while current hitpoints under 25% will be displayed in flashing red.
+		  Current hitpoints under 40% of maximum will be displayed in yellow,
+		  while current hitpoints under 25% will be displayed in flashing red.
 &w[ magic ]&g lists current magic points (mana or blood) followed by maximum
-          magic points for each character.  Warrior mana is not displayed.
+		  magic points for each character.  Warrior mana is not displayed.
 &w[mvs]&g     lists current moves only.
 &w[mst]&g     tracks mentalstate.  A normal or near-normal state, where the
-          char is neither tired (negative mentalstate) or delirious (high),
-          is represented by a === bar.  As mentalstate lifts into delirium,
-          sections are replaced with +, the greater the number of +'s the more
-          delirious the char.  As mentalstate sinks below into exhaustion,
-          sections of the bar are replaced with -, the more -'s the greater
-          the greater the character's exhaustion.
+		  char is neither tired (negative mentalstate) or delirious (high),
+		  is represented by a === bar.  As mentalstate lifts into delirium,
+		  sections are replaced with +, the greater the number of +'s the more
+		  delirious the char.  As mentalstate sinks below into exhaustion,
+		  sections of the bar are replaced with -, the more -'s the greater
+		  the greater the character's exhaustion.
 &w[race]&g    is the character's race.
 &w[to lvl]  &gdisplays exp required to attain the next level (non-Avatars only)
 ~
@@ -5032,17 +5032,17 @@ are displayed by their first three letters.  Alignment reads:
 -N...-349 to -150   +S...-749 to -350   S...-1000 to -750
 
 &w[hitpnts]&g lists current hitpoints for each character:
-          Current hitpoints under 40% of maximum will be displayed in yellow,
-          while current hitpoints under 25% will be displayed in flashing red.
+		  Current hitpoints under 40% of maximum will be displayed in yellow,
+		  while current hitpoints under 25% will be displayed in flashing red.
 &w[ magic ]&g lists current magic points (mana or blood) followed by maximum
-          magic points for each character.  Warrior mana is not displayed.
+		  magic points for each character.  Warrior mana is not displayed.
 &w[mst]&g     tracks mentalstate.  A normal or near-normal state, where the
-          char is neither tired (negative mentalstate) or delirious (high),
-          is represented by a === bar.  As mentalstate lifts into delirium,
-          sections are replaced with +, the greater the number of +'s the more
-          delirious the char.  As mentalstate sinks below into exhaustion,
-          sections of the bar are replaced with -, the more -'s the greater
-          the character's exhaustion.
+		  char is neither tired (negative mentalstate) or delirious (high),
+		  is represented by a === bar.  As mentalstate lifts into delirium,
+		  sections are replaced with +, the greater the number of +'s the more
+		  delirious the char.  As mentalstate sinks below into exhaustion,
+		  sections of the bar are replaced with -, the more -'s the greater
+		  the character's exhaustion.
 &w[mvs]&g     lists current moves only
 &w[race]&g    is the character's race.
 &w[to lvl]  &gdisplays exp required to attain the next level (non-Avatars only)
@@ -5084,19 +5084,19 @@ See also GROUP DISPLAY
  0 Neutral  0 Mage      0 Human        Name     1 Guild  1 CoE
  1 Male     1 Cleric    1 Elf          Sex      2 DS     2 MC
  2 Female   2 Thief     2 Dwarf        Class    3 MS     3 NC
-            3 Warrior   3 Halfling     Race     4 RB     4 Pro
-            4 Vampire   4 Pixie        Level    5 AR     5 PK
-            5 Druid     5 Vampire      Room     6 Bru    6 QC
-            6 Ranger    6 Half Ogre    Gold     7 Las    7 Neo
-            7 Augurer   7 Half Orc     Clan     8 Nos    8 CC
-            8 Paladin   8 Half Troll   Council  9 Tre    9 AC
-            9 Nephandi  9 Half Elf     Site    10 Ven   10 TS
-                            10 Gith         Last    11 Inc
-                             11 Drow     Pkill
-                             12 Sea-elf
-                             13 Lizard
-                             14 Gnome
-                                      Pkill
+			3 Warrior   3 Halfling     Race     4 RB     4 Pro
+			4 Vampire   4 Pixie        Level    5 AR     5 PK
+			5 Druid     5 Vampire      Room     6 Bru    6 QC
+			6 Ranger    6 Half Ogre    Gold     7 Las    7 Neo
+			7 Augurer   7 Half Orc     Clan     8 Nos    8 CC
+			8 Paladin   8 Half Troll   Council  9 Tre    9 AC
+			9 Nephandi  9 Half Elf     Site    10 Ven   10 TS
+							10 Gith         Last    11 Inc
+							 11 Drow     Pkill
+							 12 Sea-elf
+							 13 Lizard
+							 14 Gnome
+									  Pkill
  
 Here are some sample uses of GRUB:
  
@@ -5171,26 +5171,26 @@ last quit the mud somewhere in New Darkhaven.
 54 GRUB2~
 Syntax: grub # <or> field operator ## <field operator ##>
 Where:  &g#         &GAny valid number.
-        &g<or>      &GUsed with multiple expressions to denote that only one of
-                  them need be true.
-        &gField     &GName, Sex, Class, Race, Level, Room, Gold, Hitroll,
-                  Damroll, Site, Last, Pkill.
-        &gOperator  &GValid operators are:   =   !=   >   <   >=   <=
-        &g##        &GNumeric except for Name and Pkill. For name it is a full
-                  or partial name. For Pkill it is a Y or N.
+		&g<or>      &GUsed with multiple expressions to denote that only one of
+				  them need be true.
+		&gField     &GName, Sex, Class, Race, Level, Room, Gold, Hitroll,
+				  Damroll, Site, Last, Pkill.
+		&gOperator  &GValid operators are:   =   !=   >   <   >=   <=
+		&g##        &GNumeric except for Name and Pkill. For name it is a full
+				  or partial name. For Pkill it is a Y or N.
  
 &GLast is:  &WExpressed as "YYMMDD". ie, 970122 is Jan. 22/97.
 &GSex is:   &W0 Neutral  1 Male       2 Female 
 &GClass is: &W0 Mage     1 Cleric     2 Thief     3 Warrior     4 Vampire
-          5 Druid    6 Ranger     7 Augurer
+		  5 Druid    6 Ranger     7 Augurer
 &GRace is:  &W0 Human    1 Elf        2 Dwarf     3 Halfling    4 Pixie   
-          5 Vampire  6 Half Ogre  7 Half Orc  8 Half Troll  9 Half Elf
-         10 Gith&w
+		  5 Vampire  6 Half Ogre  7 Half Orc  8 Half Troll  9 Half Elf
+		 10 Gith&w
 &GYou can have more than one conditional expression in a Grub search. "And" is
 assumed unless "or" is placed before the arguements. ie:
 &W    Grub 10    class=3 sex=2    (Gives back a list of 10 female warriors)
-    Grub 10 or class=3 sex=2    (Gives back a list of 10 characters that
-                                 are either female, or warriors).
+	Grub 10 or class=3 sex=2    (Gives back a list of 10 characters that
+								 are either female, or warriors).
 You must always specify how many lines the Grub will produce. This prevents
 your getting a list 15000+ lines long.
  
@@ -5284,16 +5284,16 @@ all members currently online.
 63 GWHERE~
 -----------------------------------------------------------
  
-     SYNTAX: gwhere
-             gwhere <low> <high>
-             gwhere <low> <high> mobs
+	 SYNTAX: gwhere
+			 gwhere <low> <high>
+			 gwhere <low> <high> mobs
  
 DESCRIPTION: The GWHERE command displays a global location
-             list of the targets specified; name of target
-             and level, vnum/name of room, and name of area
-             are all displayed, where <low><high> indicates
-             the level of the players or MOBs. If level
-             criterias are note defined, all will be displayed.
+			 list of the targets specified; name of target
+			 and level, vnum/name of room, and name of area
+			 are all displayed, where <low><high> indicates
+			 the level of the players or MOBs. If level
+			 criterias are note defined, all will be displayed.
  
 -----------------------------------------------------------
  
@@ -5427,15 +5427,15 @@ adventurers who are brave (or foolish) enough to enter.
 
 1 HAUS~
 .&y
-                               .___. 
-                 ==(W{========-) * ( 
-                   ||  (.--.)  | * |
-                   | \_,|**|,_/| * |  
-                   `\ ' `--'   /\_/
-                    /`\__..__/'\  
-                   (   | .  |   )                
-                   )  /==00==\  (               
-        __________/__/--\__/--\__\_____________   
+							   .___. 
+				 ==(W{========-) * ( 
+				   ||  (.--.)  | * |
+				   | \_,|**|,_/| * |  
+				   `\ ' `--'   /\_/
+					/`\__..__/'\  
+				   (   | .  |   )                
+				   )  /==00==\  (               
+		__________/__/--\__/--\__\_____________   
 ~
 
 1 HEADBUTT~
@@ -5454,20 +5454,20 @@ does not exist, it will be created for you. The default help page (summary)
 will be selected if you do not specify a page.
  
 NOTE - Always, when creating a new help entry, type Help <new entry name> 
-       prior to creating your entry. A pre-existing help file associated 
-       with that keyword may already exist.
+	   prior to creating your entry. A pre-existing help file associated 
+	   with that keyword may already exist.
 &Y
 Colors &wcan now be added to help files using the same command set that changes
 a player's prompt. &bMultiple &Ycolor &wcombinations can be set on a given line
 including ^bbackground^x colors. However there are a couple of quirks to take 
 note of:
 &Y
-    1) At the very least, the first character of a help file cannot be
-       either the symbol '&&' or the symbol '^^'.
-    2) Color changes have to be separated by at least one character. ie,
-       '&&Y.^^r' will work, '&&Y^^r' will cause problems. 
-    3) Color codes are imbedded within text and _do_ count in note buffers
-       for line length. ie, watch out for <Long Line Trimmed>.
+	1) At the very least, the first character of a help file cannot be
+	   either the symbol '&&' or the symbol '^^'.
+	2) Color changes have to be separated by at least one character. ie,
+	   '&&Y.^^r' will work, '&&Y^^r' will cause problems. 
+	3) Color codes are imbedded within text and _do_ count in note buffers
+	   for line length. ie, watch out for <Long Line Trimmed>.
 &w
 Colors should be used to &Yenhance &wthe help file, or specific parts of the 
 help file. Tact and restraint should be used if considering the use of colors.
@@ -5525,7 +5525,7 @@ clear white herbs - ringwort
 
 1 HEZEKIAH HEZEKIAHS 'HEZEKIAHS CURE' HEZEKIAH'S~
 Syntax:  c 'hezekiahs cure' <target>
-          c hezekiahs        <target>
+		  c hezekiahs        <target>
  
 Hezekiah was a great Paladin for whom the Gods showed great pleasure.
 As a reminder of his greatness, the Gods granted a spell in his honor.
@@ -5596,11 +5596,11 @@ track help files, it is also available to players so that they can
 capture a listing of the help files available to them. 
  
 Note - You may only view help files that are coded for viewing by your
-       level or lower.
+	   level or lower.
  
 Note - The list of help files is quite extensive, and the command does
-       not as yet have a way to filter/shorten the list. Screen capture
-       is, at present, your only recourse.
+	   not as yet have a way to filter/shorten the list. Screen capture
+	   is, at present, your only recourse.
 ~
 
 0 HOLD REMOVE WEAR WIELD~
@@ -5698,14 +5698,14 @@ Syntax: hset  <command> [value] [help topic]
  remove <level.><help topic>     Removes the specified help page
  
 Note:  If you wish to set more than one keyword to a help topic, enclose all
-       the keywords, space separated inside quotes.  (Like in spellcasting)
+	   the keywords, space separated inside quotes.  (Like in spellcasting)
 Note:  If you have instances of multiple help files with the same keyname,
-       using Hset Remove without a level designation will remove the one with
-       the lowest level of access. ie:
+	   using Hset Remove without a level designation will remove the one with
+	   the lowest level of access. ie:
  
-       Help file XYZZY at level 57, and help file 'SAVE XYZZY' at level 58.
-       Typing 'HSET REMOVE XYZZY' will remove the level 57 XYZZY.
-       Typing 'HSET REMOVE 58.XYZZY' will remove the level 58 'SAVE XYZZY'.
+	   Help file XYZZY at level 57, and help file 'SAVE XYZZY' at level 58.
+	   Typing 'HSET REMOVE XYZZY' will remove the level 57 XYZZY.
+	   Typing 'HSET REMOVE 58.XYZZY' will remove the level 58 'SAVE XYZZY'.
 
 Setting a help entry level to -1 prevents the header from showing up 
 when you view the help with the help command.
@@ -5769,13 +5769,13 @@ This spell reveals information about the object.
 51 'IFCHECK CANPKILL'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:     &cif canpkill($n)
-                  mpechoat 0.$n Your fate awaits, $n.
+	 &GEXAMPLE:     &cif canpkill($n)
+				  mpechoat 0.$n Your fate awaits, $n.
  &GDESCRIPTION:     &cThe CANPKILL ifcheck is used to determine
-                  if the target is a:
-                     - Minimum age of 18,
-                     - Minimum level of 5, and
-                     - pkiller.
+				  if the target is a:
+					 - Minimum age of 18,
+					 - Minimum level of 5, and
+					 - pkiller.
 
 &r*-------------------------------------------------------------------*&w
 
@@ -5786,69 +5786,69 @@ This spell reveals information about the object.
 52 'IFCHECK CANSEE'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif cansee($n)
-                          '$n can see just fine!
+			  &GEXAMPLE:    &cif cansee($n)
+						  '$n can see just fine!
 
-          &GDESCRIPTION:    &cThe CANSEE ifcheck is used to determine if
-                          the target is able to see.
+		  &GDESCRIPTION:    &cThe CANSEE ifcheck is used to determine if
+						  the target is able to see.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK CHA'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif cha($n) > 18
-                         'You're very charismatic, $n! 
+			&GEXAMPLE:     &cif cha($n) > 18
+						 'You're very charismatic, $n! 
 
-        &GDESCRIPTION:     &cThe CHA ifcheck is used to direct a command
-                         based on the charisma stat of the target.
+		&GDESCRIPTION:     &cThe CHA ifcheck is used to direct a command
+						 based on the charisma stat of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK CHARCOUNT'~
 &r*-------------------------------------------------------------------*
  
-          &GEXAMPLE:    &cif charcount(21000) > 10
+		  &GEXAMPLE:    &cif charcount(21000) > 10
  
-      &GDESCRIPTION:    &cCHARCOUNT ifcheck counts the number of chars
-                      in the specified room. This example returns TRUE if
-                      there are more than 10 chars in room 21000.
-                      You can use this form in room or mob programs and
-                      you can have one room program check the number of
-                      chars in a different room.
-                      Note the number of characters is defined as the
-                      number of mortals plus the number of mobs.
+	  &GDESCRIPTION:    &cCHARCOUNT ifcheck counts the number of chars
+					  in the specified room. This example returns TRUE if
+					  there are more than 10 chars in room 21000.
+					  You can use this form in room or mob programs and
+					  you can have one room program check the number of
+					  chars in a different room.
+					  Note the number of characters is defined as the
+					  number of mortals plus the number of mobs.
  
-          &GEXAMPLE:    &cif charcount(0) > 10
+		  &GEXAMPLE:    &cif charcount(0) > 10
  
-      &GDESCRIPTION:    &cUse a zero room number if you want to have
-                      a mob check the number of chars in its room.
-                      Note that if the mob changes rooms, the ifcheck
-                      applies to whatever room the mob is in.
-                      You should use this form in mob programs only.
+	  &GDESCRIPTION:    &cUse a zero room number if you want to have
+					  a mob check the number of chars in its room.
+					  Note that if the mob changes rooms, the ifcheck
+					  applies to whatever room the mob is in.
+					  You should use this form in mob programs only.
  
 &r*-------------------------------------------------------------------*
  
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
  
 ~
 
 51 'IFCHECK CLAN'~
 &r*-------------------------------------------------------------------*
 
-      &GEXAMPLE:   &cif clan($n) == inconnu
-                 tell 0.$n You're an Inconnu!
+	  &GEXAMPLE:   &cif clan($n) == inconnu
+				 tell 0.$n You're an Inconnu!
 
   &GDESCRIPTION:   &cThe CLAN ifcheck is used to determine if the
-                 target belongs to a Clan or Order.
+				 target belongs to a Clan or Order.
 
 &r*-------------------------------------------------------------------*
 
@@ -5859,25 +5859,25 @@ This spell reveals information about the object.
 51 'IFCHECK CLANTYPE'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif clantype($n) == 15
-                          '$n belongs to an Order.
+			  &GEXAMPLE:    &cif clantype($n) == 15
+						  '$n belongs to an Order.
 
-          &GDESCRIPTION:    &cThe CLANTYPE is used to determine what
-                          type of clan the target belongs to.
+		  &GDESCRIPTION:    &cThe CLANTYPE is used to determine what
+						  type of clan the target belongs to.
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK CLASS'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:        &cif class($n) == 0
-                     t 0.$n You're a mage!
+	 &GEXAMPLE:        &cif class($n) == 0
+					 t 0.$n You're a mage!
 
  &GDESCRIPTION:        &cThe CLASS ifcheck is used to determine the
-                     class of the target. (HELP NPCCLASSES)   
+					 class of the target. (HELP NPCCLASSES)   
 
  &r*-------------------------------------------------------------------*
 
@@ -5888,60 +5888,60 @@ This spell reveals information about the object.
 52 'IFCHECK CON'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif con($n) < 5
-                         'You're constitution is low, $n.
+			&GEXAMPLE:     &cif con($n) < 5
+						 'You're constitution is low, $n.
 
-        &GDESCRIPTION:     &cThe CON ifcheck is used to direct a command
-                         based on the constitution stat of the target.
+		&GDESCRIPTION:     &cThe CON ifcheck is used to direct a command
+						 based on the constitution stat of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK COUNCIL~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:   &cif council($n) == 1
-                     '$n is from the Council of Elders. 
+		  &GEXAMPLE:   &cif council($n) == 1
+					 '$n is from the Council of Elders. 
 
-      &GDESCRIPTION:   &cThe COUNCIL ifcheck determines what
-                     council the target belongs to.(HELP COUNCILNUMS)
+	  &GDESCRIPTION:   &cThe COUNCIL ifcheck determines what
+					 council the target belongs to.(HELP COUNCILNUMS)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK DEITY'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:      &cif deity($n) == vl'arescht
-                      'May Thoric save your evil soul!
+		&GEXAMPLE:      &cif deity($n) == vl'arescht
+					  'May Thoric save your evil soul!
 
-    &GDESCRIPTION:      &cThe DEITY ifcheck is used to determine who
-                      the target is devoted to.
+	&GDESCRIPTION:      &cThe DEITY ifcheck is used to determine who
+					  the target is devoted to.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK DEX'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif dex($n) > 20
-                         'You're pretty nimble, $n
+			&GEXAMPLE:     &cif dex($n) > 20
+						 'You're pretty nimble, $n
 
-        &GDESCRIPTION:     &cThe DEX ifcheck is used to direct a command
-                         based on the dexterity stat of the target.
+		&GDESCRIPTION:     &cThe DEX ifcheck is used to direct a command
+						 based on the dexterity stat of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
@@ -5954,43 +5954,43 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 51 'IFCHECK ECONOMY'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif economy(21001) > 10000000
-                          mpecho DH economy is booming!
+			  &GEXAMPLE:    &cif economy(21001) > 10000000
+						  mpecho DH economy is booming!
 
-          &GDESCRIPTION:    &cThe ECONOMY(rvnum) ifcheck is used to base
-                          a command on the economy of the area the
-                          checker is in. NOTE: area will be specified
-                          by default to area the MOB is in, via rvnum.
+		  &GDESCRIPTION:    &cThe ECONOMY(rvnum) ifcheck is used to base
+						  a command on the economy of the area the
+						  checker is in. NOTE: area will be specified
+						  by default to area the MOB is in, via rvnum.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK FAVOR'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif favor($n) == 2500
-                         'You're well loved by your deity, $n.
+			&GEXAMPLE:     &cif favor($n) == 2500
+						 'You're well loved by your deity, $n.
 
-        &GDESCRIPTION:     &cThe FAVOR ifcheck is used to determine the
-                         amount of favor held by the target.
+		&GDESCRIPTION:     &cThe FAVOR ifcheck is used to determine the
+						 amount of favor held by the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK GOLDAMT'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:        &cif goldamt($i) > 10000
-                    'I'm rich!
+	 &GEXAMPLE:        &cif goldamt($i) > 10000
+					'I'm rich!
 
  &GDESCRIPTION:        &cThe GOLDAMT ifcheck determines the specified
-                     amount of coins carried by the target.
+					 amount of coins carried by the target.
 
  &r*-------------------------------------------------------------------*
 
@@ -6001,56 +6001,56 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK GUILD'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:       &cif guild($n) == guild of thieves
-                       'You belong to the GoT!
+		&GEXAMPLE:       &cif guild($n) == guild of thieves
+					   'You belong to the GoT!
 
-    &GDESCRIPTION:       &cThe GUILD ifcheck is used to determine
-                       what guild the target belongs to, if any.
+	&GDESCRIPTION:       &cThe GUILD ifcheck is used to determine
+					   what guild the target belongs to, if any.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK HITPRCNT'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:   &cif hitprcnt($n) < 10
-                         'You're going to dieeeeeee!
+			  &GEXAMPLE:   &cif hitprcnt($n) < 10
+						 'You're going to dieeeeeee!
 
-          &GDESCRIPTION:   &cThe HITPRCNT ifcheck is used to base a
-                         command on the targets current hit points.
+		  &GDESCRIPTION:   &cThe HITPRCNT ifcheck is used to base a
+						 command on the targets current hit points.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK HPS'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif hps($n) > 1900
-                         'You're buff, $n!!
+			&GEXAMPLE:     &cif hps($n) > 1900
+						 'You're buff, $n!!
 
-        &GDESCRIPTION:     &cThe HPS ifcheck is used to base a command
-                         on the target's current hit points.
+		&GDESCRIPTION:     &cThe HPS ifcheck is used to base a command
+						 on the target's current hit points.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK INROOM'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:         &cif inroom($i) == 1200
-                      'Look at all the notes to read!
+	 &GEXAMPLE:         &cif inroom($i) == 1200
+					  'Look at all the notes to read!
 
  &GDESCRIPTION:         &cThe INROOM(target) ifcheck is used to
-                      determine the target's rvnum location.
+					  determine the target's rvnum location.
 
  &r*-------------------------------------------------------------------*
 
@@ -6061,42 +6061,42 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK INT'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:    &cif int($i) == 25
-                        'I'm smart!
+			&GEXAMPLE:    &cif int($i) == 25
+						'I'm smart!
 
-        &GDESCRIPTION:    &cThe INT ifcheck is used to direct a command
-                        based on the intelligence of the target.
+		&GDESCRIPTION:    &cThe INT ifcheck is used to direct a command
+						based on the intelligence of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISASUPRESSED'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif isasupressed($n) > 10
-                          '$n's got a bit of wait ahead of them!
+			  &GEXAMPLE:    &cif isasupressed($n) > 10
+						  '$n's got a bit of wait ahead of them!
 
-          &GDESCRIPTION:    &cThe ISASUPRESSED ifcheck checks the 
-                          target's asupress timer.
+		  &GDESCRIPTION:    &cThe ISASUPRESSED ifcheck checks the 
+						  target's asupress timer.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK ISATTACKER' 'IFCHECK ISKILLER' 'IFCHECK ISTHIEF'~
 -----------------------------------------------------------
  
-     SYNTAX: if isattacker($n)
-             say Didn't quite pull it off, did you?
+	 SYNTAX: if isattacker($n)
+			 say Didn't quite pull it off, did you?
  
 DESCRIPTION: The ISATTACKER, ISTHIEF, and ISKILLER, if
-             checks are used to determine if the target
-             is flagged as an attacker/killer/thief.
+			 checks are used to determine if the target
+			 is flagged as an attacker/killer/thief.
  
 -----------------------------------------------------------
  
@@ -6106,11 +6106,11 @@ SEE ALSO: MPPARDON, FLAGS, PARDON
 51 'IFCHECK ISCHARMED'~
 &r *-------------------------------------------------------------------*
 
-     &GEXAMPLE:         &cif ischarmed($n)
-                      'Wake up!
+	 &GEXAMPLE:         &cif ischarmed($n)
+					  'Wake up!
 
  &GDESCRIPTION:         &cThe ISCHARMED ifcheck determines if the 
-                      target is charmed.   
+					  target is charmed.   
 
  &r*-------------------------------------------------------------------*
 
@@ -6121,41 +6121,41 @@ SEE ALSO: MPPARDON, FLAGS, PARDON
 52 'IFCHECK ISDEVOTED'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif isdevoted($n)
-                         'I see you have devoted your soul, $n.
+			&GEXAMPLE:     &cif isdevoted($n)
+						 'I see you have devoted your soul, $n.
 
-        &GDESCRIPTION:     &cThe ISDEVOTED ifcheck is used to determine
-                         if the target is devoted to a Deity.
+		&GDESCRIPTION:     &cThe ISDEVOTED ifcheck is used to determine
+						 if the target is devoted to a Deity.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISEVIL'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:    &cif isevil($n)
-                      'Greetings, evil one.
+		  &GEXAMPLE:    &cif isevil($n)
+					  'Greetings, evil one.
 
-      &GDESCRIPTION:    &cThe ISEVIL ifcheck is used to determine if
-                      the targets alignment is lower than -350.
+	  &GDESCRIPTION:    &cThe ISEVIL ifcheck is used to determine if
+					  the targets alignment is lower than -350.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK ISFIGHT'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:         &cif isfight($i)  
-                      yell Lookie Mom! I'm fighting!
+	 &GEXAMPLE:         &cif isfight($i)  
+					  yell Lookie Mom! I'm fighting!
 
  &GDESCRIPTION:         &cThe ISFIGHT ifcheck determines if the target
-                      is fighting.
+					  is fighting.
 
  &r*-------------------------------------------------------------------*
 
@@ -6173,26 +6173,26 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK ISGOOD'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:    &cif isgood($n)
-                      'Always a pleasure, $n.
+		  &GEXAMPLE:    &cif isgood($n)
+					  'Always a pleasure, $n.
 
-      &GDESCRIPTION:    &cThe ISGOOD ifcheck is used to determine if 
-                      the target's alignment is +350 or higher.
+	  &GDESCRIPTION:    &cThe ISGOOD ifcheck is used to determine if 
+					  the target's alignment is +350 or higher.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK ISIMMORT'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:        &cif isimmort($n)
-                     bow 0.$n
+	 &GEXAMPLE:        &cif isimmort($n)
+					 bow 0.$n
 
  &GDESCRIPTION:        &cThe ISIMMORT ifcheck determines if the 
-                     target is an Immortal.
+					 target is an Immortal.
 
  &r*-------------------------------------------------------------------*
 
@@ -6203,57 +6203,57 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK ISLEADER'~
 &r*-------------------------------------------------------------------*
    
-        &GEXAMPLE:      &cif isleader($n)
-                      '$n is an Order, Guild, or Clan leader.
+		&GEXAMPLE:      &cif isleader($n)
+					  '$n is an Order, Guild, or Clan leader.
 
-    &GDESCRIPTION:      &cThe ISLEADER ifcheck is used to determine if the 
-                      target is a leader of an Order, Guild, or Clan.
+	&GDESCRIPTION:      &cThe ISLEADER ifcheck is used to determine if the 
+					  target is a leader of an Order, Guild, or Clan.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISLOCKED'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif islocked($n) == 6
-                         'The northeast exit is locked.
+			&GEXAMPLE:     &cif islocked($n) == 6
+						 'The northeast exit is locked.
 
-        &GDESCRIPTION:     &cThe ISLOCKED(dir) ifcheck is used to
-                         determine if a specified exit is locked.
-                         (HELP DOORDIRS)
+		&GDESCRIPTION:     &cThe ISLOCKED(dir) ifcheck is used to
+						 determine if a specified exit is locked.
+						 (HELP DOORDIRS)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISMORPHED'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif ismorphed($n)
-                          '$n is not as they appear!
+			  &GEXAMPLE:    &cif ismorphed($n)
+						  '$n is not as they appear!
 
-          &GDESCRIPTION:    &cThe ISMORPHED ifcheck is used to determine
-                          if the target is morphed. (HELP MORPHTYPES)
+		  &GDESCRIPTION:    &cThe ISMORPHED ifcheck is used to determine
+						  if the target is morphed. (HELP MORPHTYPES)
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK ISMOUNTED'~
 &r*-------------------------------------------------------------------*
 
-      &GEXAMPLE:        &cif ismounted($n)
-                      mpforce 0.$n dismount
+	  &GEXAMPLE:        &cif ismounted($n)
+					  mpforce 0.$n dismount
 
   &GDESCRIPTION:        &cThe ISMOUNTED ifcheck determines if the
-                      target is mounted.
+					  target is mounted.
 
  &r*-------------------------------------------------------------------*
 
@@ -6264,401 +6264,401 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK ISNEUTRAL'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:    &cif isneutral($n)
-                      'Make up your mind, $n.
+		  &GEXAMPLE:    &cif isneutral($n)
+					  'Make up your mind, $n.
 
-      &GDESCRIPTION:    &cThe ISNEUTRAL ifcheck is used to determine if
-                      the target's alignment is:
-                      - less than +350 and
-                      - greater than -350
+	  &GDESCRIPTION:    &cThe ISNEUTRAL ifcheck is used to determine if
+					  the target's alignment is:
+					  - less than +350 and
+					  - greater than -350
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISNPC'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif isnpc($n)
-                         '$N is a Non-player character.
+			&GEXAMPLE:     &cif isnpc($n)
+						 '$N is a Non-player character.
 
-        &GDESCRIPTION:     &cThe ISNPC ifcheck is used to determine if
-                         the target is a Non-player character. (MOB)
+		&GDESCRIPTION:     &cThe ISNPC ifcheck is used to determine if
+						 the target is a Non-player character. (MOB)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISNUISANCE'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif isnuisance($n)
-                          '$n is a bit of a pest.
+			  &GEXAMPLE:    &cif isnuisance($n)
+						  '$n is a bit of a pest.
 
-          &GDESCRIPTION:    &cThe ISNUISANCE ifcheck is used to determine
-                          if the PC is nuisanced.
+		  &GDESCRIPTION:    &cThe ISNUISANCE ifcheck is used to determine
+						  if the PC is nuisanced.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISOPEN'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:      &cif isopen($n) == 6
-                        'The northeast exit is open.
+		  &GEXAMPLE:      &cif isopen($n) == 6
+						'The northeast exit is open.
 
-      &GDESCRIPTION:      &cThe ISOPEN ifcheck is used to determine if
-                        an exit is open in the specified direction.
-                        (HELP DOORDIRS)
+	  &GDESCRIPTION:      &cThe ISOPEN ifcheck is used to determine if
+						an exit is open in the specified direction.
+						(HELP DOORDIRS)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISPACIFIST'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif ispacifist($n)
-                         '$n will not fight.
+			&GEXAMPLE:     &cif ispacifist($n)
+						 '$n will not fight.
 
-        &GDESCRIPTION:     &cThe ISPACIFIST ifcheck is used to determine
-                         if the target is flagged pacifist. (MOB)
+		&GDESCRIPTION:     &cThe ISPACIFIST ifcheck is used to determine
+						 if the target is flagged pacifist. (MOB)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISPASSAGE'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif ispassage($n) == northeast
-                         'There is a passage leading northeast.
+			&GEXAMPLE:     &cif ispassage($n) == northeast
+						 'There is a passage leading northeast.
 
-        &GDESCRIPTION:     &cThe ISPASSAGE(dir) ifcheck is used to
-                         determine if there is an exit in the 
-                         specified direction. (HELP EXITS)
-                         Do NOT use doordirs. Use the exit name.
+		&GDESCRIPTION:     &cThe ISPASSAGE(dir) ifcheck is used to
+						 determine if there is an exit in the 
+						 specified direction. (HELP EXITS)
+						 Do NOT use doordirs. Use the exit name.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISPC'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif ispc($n)
-                         '$n is a Player Character.
+			&GEXAMPLE:     &cif ispc($n)
+						 '$n is a Player Character.
 
-        &GDESCRIPTION:     &cThe ISPC ifcheck is used to determine if
-                         the target is a Player Character. (PC)
+		&GDESCRIPTION:     &cThe ISPC ifcheck is used to determine if
+						 the target is a Player Character. (PC)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK ISPKILL'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif ispkill($n)
-                         '$n is a deadly character.
+			&GEXAMPLE:     &cif ispkill($n)
+						 '$n is a deadly character.
 
-        &GDESCRIPTION:     &cThe ISPKILL ifcheck is used to determine
-                         if the target is a deadly character. (pkiller)
+		&GDESCRIPTION:     &cThe ISPKILL ifcheck is used to determine
+						 if the target is a deadly character. (pkiller)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK ISSHELLED'~
 &r*-------------------------------------------------------------------*
-        
-        &GEXAMPLE:       &cif isshelled($n)
-                       mpat 0.$n 'Tsk, tsk.
+		
+		&GEXAMPLE:       &cif isshelled($n)
+					   mpat 0.$n 'Tsk, tsk.
 
-    &GDESCRIPTION:       &cThe ISSHELLED ifcheck is used to determine 
-                       if the target is helled.
+	&GDESCRIPTION:       &cThe ISSHELLED ifcheck is used to determine 
+					   if the target is helled.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK LCK'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif lck($n) < 5
-                         'Betcha don't feel very lucky, $n.
+			&GEXAMPLE:     &cif lck($n) < 5
+						 'Betcha don't feel very lucky, $n.
 
-        &GDESCRIPTION:     &cThe LCK ifcheck is used to direct a command
-                         based on the luck stat of the target.
+		&GDESCRIPTION:     &cThe LCK ifcheck is used to direct a command
+						 based on the luck stat of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK LEADER'~
 EXAMPLE:         if isleader($n)
-                 $ is an order, guild, or clan leader
+				 $ is an order, guild, or clan leader
 SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 ~
 
 52 'IFCHECK LEVEL'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:      &cif level($n) < 5
-                      'You're just a wee baby, $n!
+		&GEXAMPLE:      &cif level($n) < 5
+					  'You're just a wee baby, $n!
 
-    &GDESCRIPTION:      &cThe LEVEL ifcheck is used to determine the
-                      level of the target.
+	&GDESCRIPTION:      &cThe LEVEL ifcheck is used to determine the
+					  level of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK MANA'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:   &cif mana($n) > 100
-                     'You're low on mana, $n.
+		  &GEXAMPLE:   &cif mana($n) > 100
+					 'You're low on mana, $n.
 
-      &GDESCRIPTION:   &cThe MANA ifcheck is used to determine the
-                     amount of mana the target has.
+	  &GDESCRIPTION:   &cThe MANA ifcheck is used to determine the
+					 amount of mana the target has.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK MOBCOUNT'~
 &r*-------------------------------------------------------------------*
  
-          &GEXAMPLE:    &cif mobcount(21000) > 10
+		  &GEXAMPLE:    &cif mobcount(21000) > 10
  
-      &GDESCRIPTION:    &cMOBCOUNT ifcheck counts the number of mobs
-                      in the specified room. This example returns TRUE if
-                      there are more than 10 mobs in room 21000.
-                      You can use this form in room or mob programs and
-                      you can have one room program check the number of
-                      mobs in a different room.
+	  &GDESCRIPTION:    &cMOBCOUNT ifcheck counts the number of mobs
+					  in the specified room. This example returns TRUE if
+					  there are more than 10 mobs in room 21000.
+					  You can use this form in room or mob programs and
+					  you can have one room program check the number of
+					  mobs in a different room.
  
  
-          &GEXAMPLE:    &cif mobcount(0) > 10
+		  &GEXAMPLE:    &cif mobcount(0) > 10
  
-      &GDESCRIPTION:    &cUse a zero room number if you want to have
-                      a mob check the number of mobs in its room.
-                      Note that if the mob changes rooms, the ifcheck
-                      applies to whatever room the mob is in.
-                      You should use this form in mob programs only.
+	  &GDESCRIPTION:    &cUse a zero room number if you want to have
+					  a mob check the number of mobs in its room.
+					  Note that if the mob changes rooms, the ifcheck
+					  applies to whatever room the mob is in.
+					  You should use this form in mob programs only.
  
 &r*-------------------------------------------------------------------*
  
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
  
 ~
 
 51 'IFCHECK MOBINAREA'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:         &cif mobinarea(3) == 1
-                         'The SuperMob is here working.  
+		&GEXAMPLE:         &cif mobinarea(3) == 1
+						 'The SuperMob is here working.  
 
-    &GDESCRIPTION:         &cThe MOBINAREA(vnum) ifcheck is used to
-                         determine if the target is in the area.
+	&GDESCRIPTION:         &cThe MOBINAREA(vnum) ifcheck is used to
+						 determine if the target is in the area.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK MOBINROOM'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:         &cif mobinroom(3) > 1
-                         'We only need one SuperMob!
+		&GEXAMPLE:         &cif mobinroom(3) > 1
+						 'We only need one SuperMob!
 
-    &GDESCRIPTION:         &cThe MOBINROOM(vnum) ifcheck is used to 
-                         determine if, and/or how many, of target
-                         are present in the room.
+	&GDESCRIPTION:         &cThe MOBINROOM(vnum) ifcheck is used to 
+						 determine if, and/or how many, of target
+						 are present in the room.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK MOBINVIS'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif ismobinvis($n)
-                          '$N is mobinvis
+			  &GEXAMPLE:    &cif ismobinvis($n)
+						  '$N is mobinvis
 
-          &GDESCRIPTION:    &cThe ISMOBINVIS ifcheck determines if the
-                          target MOB is flagged mobinvis.
+		  &GDESCRIPTION:    &cThe ISMOBINVIS ifcheck determines if the
+						  target MOB is flagged mobinvis.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK MOBINVISLEVEL'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:       &cif mobinvislevel($i) == 50
-                       'I'm invisible to all under lvl 50 
+		&GEXAMPLE:       &cif mobinvislevel($i) == 50
+					   'I'm invisible to all under lvl 50 
 
-    &GDESCRIPTION:       &cThe MOBINVISLEVEL is used to determine
-                       the level the target is invisible to. 
+	&GDESCRIPTION:       &cThe MOBINVISLEVEL is used to determine
+					   the level the target is invisible to. 
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK MOBINWORLD'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif mobinworld(21044) < 1
-                         'Who killed Harakiem?
+			&GEXAMPLE:     &cif mobinworld(21044) < 1
+						 'Who killed Harakiem?
 
-        &GDESCRIPTION:     &cThe MOBINWORLD(vnum) ifcheck is used to
-                         determine if the specified MOB is anywhere
-                         in the realms.
+		&GDESCRIPTION:     &cThe MOBINWORLD(vnum) ifcheck is used to
+						 determine if the specified MOB is anywhere
+						 in the realms.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK MORTAL'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif mortal($n)
-                         'Greetings Mortal.
+			&GEXAMPLE:     &cif mortal($n)
+						 'Greetings Mortal.
 
-        &GDESCRIPTION:     &cThe MORTAL ifcheck is used to determine
-                         if the target is level 50 or lower.
+		&GDESCRIPTION:     &cThe MORTAL ifcheck is used to determine
+						 if the target is level 50 or lower.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK MORTCOUNT'~
 &r*-------------------------------------------------------------------*
  
-          &GEXAMPLE:    &cif mortcount(21000) > 10
+		  &GEXAMPLE:    &cif mortcount(21000) > 10
  
-      &GDESCRIPTION:    &cMORTCOUNT ifcheck counts the number of mortals
-                      in the specified room. This example returns TRUE if
-                      there are more than 10 mortals in room 21000.
-                      You can use this form in room or mob programs and
-                      you can have one room program check the number of
-                      mortals in a different room.
+	  &GDESCRIPTION:    &cMORTCOUNT ifcheck counts the number of mortals
+					  in the specified room. This example returns TRUE if
+					  there are more than 10 mortals in room 21000.
+					  You can use this form in room or mob programs and
+					  you can have one room program check the number of
+					  mortals in a different room.
  
  
-          &GEXAMPLE:    &cif mortcount(0) > 10
+		  &GEXAMPLE:    &cif mortcount(0) > 10
  
-      &GDESCRIPTION:    &cUse a zero room number if you want to have
-                      a mob check the number of mortals in its room.
-                      Note that if the mob changes rooms, the ifcheck
-                      applies to whatever room the mob is in.
-                      You should use this form in mob programs only.
+	  &GDESCRIPTION:    &cUse a zero room number if you want to have
+					  a mob check the number of mortals in its room.
+					  Note that if the mob changes rooms, the ifcheck
+					  applies to whatever room the mob is in.
+					  You should use this form in mob programs only.
  
 &r*-------------------------------------------------------------------*
  
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
  
 ~
 
 51 'IFCHECK MORTINROOM'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif mortinroom(Fred)
-                          ruffle fred
+			  &GEXAMPLE:    &cif mortinroom(Fred)
+						  ruffle fred
 
-          &GDESCRIPTION:    &cThe MORTINROOM ifcheck returns true everytime
-                          the mortal is in the room. MORTINROOM will
-                          work for link dead as well as link live players.
+		  &GDESCRIPTION:    &cThe MORTINROOM ifcheck returns true everytime
+						  the mortal is in the room. MORTINROOM will
+						  work for link dead as well as link live players.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK MORTINWORLD'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif mortinworld(Fred)
-                          mpat 0.Fred say Hi Fred!
+			  &GEXAMPLE:    &cif mortinworld(Fred)
+						  mpat 0.Fred say Hi Fred!
  
-          &GDESCRIPTION:    &cMORTINWORLD ifcheck returns true if the
-                          mortal is in the game. MORTINWORLD will
-                          work for both link dead as well as link 
-                          live players.
+		  &GDESCRIPTION:    &cMORTINWORLD ifcheck returns true if the
+						  mortal is in the game. MORTINWORLD will
+						  work for both link dead as well as link 
+						  live players.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK MULTI'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif multi($n) > 4
-                          '$n has more than four characters logged in.
+			  &GEXAMPLE:    &cif multi($n) > 4
+						  '$n has more than four characters logged in.
 
-          &GDESCRIPTION:    &cThe MULTI ifcheck is used to determine if/
-                          how many PCs the target has logged in. Also
-                          applies to MOBs, objects, rooms.
+		  &GDESCRIPTION:    &cThe MULTI ifcheck is used to determine if/
+						  how many PCs the target has logged in. Also
+						  applies to MOBs, objects, rooms.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK NAME'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:      &cif name($n) == haus
-                        bow 0.$n
+		  &GEXAMPLE:      &cif name($n) == haus
+						bow 0.$n
 
-      &GDESCRIPTION:      &cthe NAME ifcheck is used to determine
-                        the name of the target.
+	  &GDESCRIPTION:      &cthe NAME ifcheck is used to determine
+						the name of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
@@ -6671,15 +6671,15 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK NUISANCE'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif nuisance($n)
-                          'How much of a pest are you....
+			  &GEXAMPLE:    &cif nuisance($n)
+						  'How much of a pest are you....
 
-          &GDESCRIPTION:    &cThe NUISANCE ifcheck is used to determine
-                          at what level the target is nuisanced.
+		  &GDESCRIPTION:    &cThe NUISANCE ifcheck is used to determine
+						  at what level the target is nuisanced.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
@@ -6696,123 +6696,123 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 51 'IFCHECK OBJTYPE'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:      &cif objtype($o) == 19
-                      'Yummy! Food!
+		&GEXAMPLE:      &cif objtype($o) == 19
+					  'Yummy! Food!
  
-    &GDESCRIPTION:      &cThe OBJTYPE ifcheck is used to determine the
-                      type of object the target is. (HELP OBJTYPENUMS)
+	&GDESCRIPTION:      &cThe OBJTYPE ifcheck is used to determine the
+					  type of object the target is. (HELP OBJTYPENUMS)
  
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OBJVAL0'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif objval($0) = 10
-                          (and the object is a drink container)
-                          This container has 10 units of fluid in it
+			  &GEXAMPLE:    &cif objval($0) = 10
+						  (and the object is a drink container)
+						  This container has 10 units of fluid in it
 
-          &GDESCRIPTION:    &cThe OBJVAL0(name) ifcheck returns the numeric
-                          value of the val0 field of the object referenced
-                          by name.  See 'help ITEMVALUES' for what val0 
-                          can be used for.
+		  &GDESCRIPTION:    &cThe OBJVAL0(name) ifcheck returns the numeric
+						  value of the val0 field of the object referenced
+						  by name.  See 'help ITEMVALUES' for what val0 
+						  can be used for.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OBJVAL1'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif objval($1) == 20
-                          (and the object is an armor)
-                          The AC of the armor is 20 
+			  &GEXAMPLE:    &cif objval($1) == 20
+						  (and the object is an armor)
+						  The AC of the armor is 20 
 
-          &GDESCRIPTION:    &cThe OBJVAL1(name) ifcheck returns the numeric
-                          value of the val1 field of the object referenced
-                          by name.  See 'help ITEMVALUES' for what val1
-                          can be used for.
+		  &GDESCRIPTION:    &cThe OBJVAL1(name) ifcheck returns the numeric
+						  value of the val1 field of the object referenced
+						  by name.  See 'help ITEMVALUES' for what val1
+						  can be used for.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OBJVAL2'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif objval($2) == 12
-                          (And the item is a drinkcon)
-                          This container holds coffee 
+			  &GEXAMPLE:    &cif objval($2) == 12
+						  (And the item is a drinkcon)
+						  This container holds coffee 
 
-          &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
-                          value of the val2 field of the object referenced
-                          by name. See 'help ITEMVALUES' for what val2
-                          can be used for.
+		  &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
+						  value of the val2 field of the object referenced
+						  by name. See 'help ITEMVALUES' for what val2
+						  can be used for.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OBJVAL3'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif objval($3) == 12
-                          (And the object is a weapon)
-                          This is a suction type weapon
+			  &GEXAMPLE:    &cif objval($3) == 12
+						  (And the object is a weapon)
+						  This is a suction type weapon
 
-          &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
-                          value of the val3 field of the object referenced
-                          by name. See 'help ITEMVALUES' for what val3
-                          can be used for.
+		  &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
+						  value of the val3 field of the object referenced
+						  by name. See 'help ITEMVALUES' for what val3
+						  can be used for.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OBJVAL4'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif objval($4) == 135
-                          (And the object is a salve)
-                          The 1st spell this salve casts is poison
+			  &GEXAMPLE:    &cif objval($4) == 135
+						  (And the object is a salve)
+						  The 1st spell this salve casts is poison
 
-          &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
-                          value of the val3 field of the object referenced
-                          by name. See 'help ITEMVALUES' for what val4
-                          can be used for.
+		  &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
+						  value of the val3 field of the object referenced
+						  by name. See 'help ITEMVALUES' for what val4
+						  can be used for.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OBJVAL5'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif objval($4) == 135
-                          (And the object is a salve)
-                          The 2nd spell this salve casts is poison
+			  &GEXAMPLE:    &cif objval($4) == 135
+						  (And the object is a salve)
+						  The 2nd spell this salve casts is poison
 
-          &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
-                          value of the val3 field of the object referenced
-                          by name. See 'help ITEMVALUES' for what val4
-                          can be used for.
+		  &GDESCRIPTION:    &cThe OBJVAL(name) ifcheck returns the numeric
+						  value of the val3 field of the object referenced
+						  by name. See 'help ITEMVALUES' for what val4
+						  can be used for.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
@@ -6873,219 +6873,219 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 51 'IFCHECK OVNUMCARRY'~
 &r*-------------------------------------------------------------------*
  
-      &GEXAMPLE:   &cif ovnumcarry(1200) > 1
-                 'Why do you have so many general imm boards?
+	  &GEXAMPLE:   &cif ovnumcarry(1200) > 1
+				 'Why do you have so many general imm boards?
  
   &GDESCRIPTION:   &cThe OVNUMCARRY(vnum) ifcheck is used to determine
-                 if an object with the given vnum is worn OR carried
-                 by the CHECKER.
+				 if an object with the given vnum is worn OR carried
+				 by the CHECKER.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OVNUMHERE'~
 &r*-------------------------------------------------------------------*
 
-      &GEXAMPLE:         &cif ovnumhere(1200)
-                       'Reading Imm Sam, I see.
+	  &GEXAMPLE:         &cif ovnumhere(1200)
+					   'Reading Imm Sam, I see.
 
   &GDESCRIPTION:         &cThe OVNUMHERE(vnum) ifcheck is used to
-                       determine if an object is:
-                       - in the room of the checker
-                       - in the inventory of the checker
-                       - being worn by the checker
-                       - carried by the checker
+					   determine if an object is:
+					   - in the room of the checker
+					   - in the inventory of the checker
+					   - being worn by the checker
+					   - carried by the checker
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OVNUMINV'~
 &r*-------------------------------------------------------------------*
 
-      &GEXAMPLE:         &cif ovnuminv(1200) < 1
-                       'Where's my Imm board?
+	  &GEXAMPLE:         &cif ovnuminv(1200) < 1
+					   'Where's my Imm board?
 
   &GDESCRIPTION:         &cThe OVNUMINV(vnum) ifcheck is used to
-                       determine if an object is in the checker's
-                       inventory.
+					   determine if an object is in the checker's
+					   inventory.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OVNUMROOM'~
 &r*-------------------------------------------------------------------*
  
-      &GEXAMPLE:         &cif ovnumroom(1200) > 1
-                       'Why are there so many general Imm boards here?
+	  &GEXAMPLE:         &cif ovnumroom(1200) > 1
+					   'Why are there so many general Imm boards here?
 
   &GDESCRIPTION:         &cThe OVNUMROOM(vnum) ifcheck is used to determine
-                       if an object is in the room the checker is in.
+					   if an object is in the room the checker is in.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK OVNUMWEAR'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:   &cif ovnumwear(1200)
-                         'Why am I wearing the general imm board?
+			  &GEXAMPLE:   &cif ovnumwear(1200)
+						 'Why am I wearing the general imm board?
 
-          &GDESCRIPTION:   &cThe OVNUMWEAR(vnum) ifcheck is used to
-                         determine if the specified object is being
-                         worn by the checker.
+		  &GDESCRIPTION:   &cThe OVNUMWEAR(vnum) ifcheck is used to
+						 determine if the specified object is being
+						 worn by the checker.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK POSITION'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:         &cif position($i) == 6
-                         stand 
+		&GEXAMPLE:         &cif position($i) == 6
+						 stand 
 
-    &GDESCRIPTION:         &cThe POSITION ifcheck is used to determine 
-                         the position of the target.
+	&GDESCRIPTION:         &cThe POSITION ifcheck is used to determine 
+						 the position of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK RACE'~
 &r*-------------------------------------------------------------------*
 
-        &GEXAMPLE:           &cif race($n) == drow
-                           ,eyes the Drow suspiciously
+		&GEXAMPLE:           &cif race($n) == drow
+						   ,eyes the Drow suspiciously
 
-    &GDESCRIPTION:           &cThe RACE ifcheck is used to determine the
-                           race of the target.(HELP NPCRACES)
+	&GDESCRIPTION:           &cThe RACE ifcheck is used to determine the
+						   race of the target.(HELP NPCRACES)
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK RAND'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:    &cif rand(25)
-                      'I will say this 25% of the time, or less.
+		  &GEXAMPLE:    &cif rand(25)
+					  'I will say this 25% of the time, or less.
 
-      &GDESCRIPTION:    &cThe RAND ifcheck is used to vary command
-                      strings given to the same trigger.
+	  &GDESCRIPTION:    &cThe RAND ifcheck is used to vary command
+					  strings given to the same trigger.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK SEX'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:      &cif sex($n) == 2
-                        'Greetings M'Lady!
+		  &GEXAMPLE:      &cif sex($n) == 2
+						'Greetings M'Lady!
 
-      &GDESCRIPTION:      &cThe SEX ifcheck is used to determine the
-                        gender of the target.
+	  &GDESCRIPTION:      &cThe SEX ifcheck is used to determine the
+						gender of the target.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK STR'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:    &cif str($n) < 5
-                        'You need to work out, $n.
+			&GEXAMPLE:    &cif str($n) < 5
+						'You need to work out, $n.
 
-        &GDESCRIPTION:    &cThe STR ifcheck is used to direct a command
-                        based on the target's strength stat.
+		&GDESCRIPTION:    &cThe STR ifcheck is used to direct a command
+						based on the target's strength stat.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK TIME'~
 &r*-------------------------------------------------------------------*
 
-          &GEXAMPLE:      &cif time($n) == 1201
-                        'Noon, and all is well.
+		  &GEXAMPLE:      &cif time($n) == 1201
+						'Noon, and all is well.
 
-      &GDESCRIPTION:      &cThe TIME ifcheck is used to determine the
-                        time of day in military time. <,>, ! and ==
-                        also apply in any combination.
+	  &GDESCRIPTION:      &cThe TIME ifcheck is used to determine the
+						time of day in military time. <,>, ! and ==
+						also apply in any combination.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK TIMESKILLED'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif timeskilled($n) > 200
-                         'Try an easier MUD, $n :)
+			&GEXAMPLE:     &cif timeskilled($n) > 200
+						 'Try an easier MUD, $n :)
 
-        &GDESCRIPTION:     &cThe TIMESKILLED(name) ifcheck is used
-                         to base a command on the specified number of
-                         times the target has been killed.
+		&GDESCRIPTION:     &cThe TIMESKILLED(name) ifcheck is used
+						 to base a command on the specified number of
+						 times the target has been killed.
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 52 'IFCHECK WAITSTATE'~
 &r*-------------------------------------------------------------------*
 
-              &GEXAMPLE:    &cif waitstate($n) > 5
-                          '$n is a bit lagged.
+			  &GEXAMPLE:    &cif waitstate($n) > 5
+						  '$n is a bit lagged.
 
-          &GDESCRIPTION:    &cThe WAITSTATE ifcheck is used to check
-                          the amount of "wait" a PC has. Does not
-                          apply to NPCs.
+		  &GDESCRIPTION:    &cThe WAITSTATE ifcheck is used to check
+						  the amount of "wait" a PC has. Does not
+						  apply to NPCs.
 
 &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
 51 'IFCHECK WASINROOM'~
 &r*-------------------------------------------------------------------*
 
-     &GEXAMPLE:   &centry_prog 100
-                if ispc($n)
-                if wasinroom($n) == 1200
-                mpe $n was in room 1200
+	 &GEXAMPLE:   &centry_prog 100
+				if ispc($n)
+				if wasinroom($n) == 1200
+				mpe $n was in room 1200
 
  &GDESCRIPTION:   &cThe WASINROOM ifcheck is used to determine if the
-                target was in a specified room. NOTE: wasinroom checks
-                for the 'last' room the target was in only.
+				target was in a specified room. NOTE: wasinroom checks
+				for the 'last' room the target was in only.
 
 &r*-------------------------------------------------------------------*
 
@@ -7096,15 +7096,15 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK WIS'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:    &cif wis($n) > 20
-                        'You're a wise person, $n.
+			&GEXAMPLE:    &cif wis($n) > 20
+						'You're a wise person, $n.
 
-        &GDESCRIPTION:     &cThe WIS ifcheck is used to direct a command
-                         based on the wisdom stat of the target. 
+		&GDESCRIPTION:     &cThe WIS ifcheck is used to direct a command
+						 based on the wisdom stat of the target. 
 
  &r*-------------------------------------------------------------------*
 
-    &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+	&YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
 
 ~
 
@@ -7137,8 +7137,8 @@ and ! (not).  Combine for:  != (not equal) >= (greater than or equal).
  
 &YContinued on: IFCHECKS2, IFCHECKS3 
 &rSee Also:     MPSTAT RPSTAT OPSTAT MPEDIT RPEDIT OPEDIT TRIGGER MPTRIGGERS
-              RPTRIGGERS OPTRIGGERS MPCOMMANDS RPCOMMANDS OPCOMMANDS VARIABLES
-              AFFECTEDBY (for a list of affect types)&w
+			  RPTRIGGERS OPTRIGGERS MPCOMMANDS RPCOMMANDS OPCOMMANDS VARIABLES
+			  AFFECTEDBY (for a list of affect types)&w
 ~
 
 51 IFCHECKS2~
@@ -7168,8 +7168,8 @@ and ! (not).  Combine for:  != (not equal) >= (greater than or equal).
  
 &YContinued on: IFCHECKS, IFCHECKS3
 &rSee Also:   MPSTAT RPSTAT OPSTAT MPEDIT RPEDIT OPEDIT TRIGGER MPTRIGGERS
-            RPTRIGGERS OPTRIGGERS MPCOMMANDS RPCOMMANDS OPCOMMANDS VARIABLES
-            AFFECTEDBY (for a list of affect types)&w
+			RPTRIGGERS OPTRIGGERS MPCOMMANDS RPCOMMANDS OPCOMMANDS VARIABLES
+			AFFECTEDBY (for a list of affect types)&w
 
 ~
 
@@ -7178,7 +7178,7 @@ and ! (not).  Combine for:  != (not equal) >= (greater than or equal).
 &GTimesKilled
 &c        If timeskilled($* OR vnum) == amount
 For character checks only, can use any normal mobprog operator
-           
+		   
 &GOvnumHere  OvnumRoom  OvnumCarry  OvnumWear  OvnumInv
 &c        If ovnum<place>(vnum) == amount
 For objects only, counts how many objects of vnum 'vnum' exist in <place>
@@ -7195,8 +7195,8 @@ Here  All of the above
  
 &YContinued on: IFCHECKS, IFCHECKS2 
 &rSee Also:     MPSTAT RPSTAT OPSTAT MPEDIT RPEDIT OPEDIT TRIGGER MPTRIGGERS
-              RPTRIGGERS OPTRIGGERS MPCOMMANDS RPCOMMANDS OPCOMMANDS VARIABLES
-              AFFECTEDBY (for a list of affect types)&w
+			  RPTRIGGERS OPTRIGGERS MPCOMMANDS RPCOMMANDS OPCOMMANDS VARIABLES
+			  AFFECTEDBY (for a list of affect types)&w
 ~
 
 54 IFCHECKS4~
@@ -7282,7 +7282,7 @@ You may never CR for your own mortal unless _all_ the following apply:
    - There is no other Immortal online to do it for you.
    - You have tried to get your corpse on your own, with mortal assistance.
    - Your corpse is in "the last stages of decay", meaning you cannot wait
-     any longer, i.e. a corpse timer of less than 8.
+	 any longer, i.e. a corpse timer of less than 8.
 
 If you perform a CR for one of your -own- mortal characters, you must:
    - Take at least one of the better/best items from your mortal, and eat it.
@@ -7293,13 +7293,13 @@ If you perform a CR for one of your -own- mortal characters, you must:
 
 51 'IMM DAILY' IMMDAILY~
 .
-                      &YLook, More Immspam!
+					  &YLook, More Immspam!
  
-     &WHey! No one's posted anything except Jade. What's with you people.
+	 &WHey! No one's posted anything except Jade. What's with you people.
 I want dirt, trash, filth, and good clean fun. Gimme something to work
 with. I'm dying here.
  
-     Well, in any case, you can read and enjoy Jade's version of the
+	 Well, in any case, you can read and enjoy Jade's version of the
 70's Queen hit, Bohemian Rhapsody. If you don't read it, she'll
 mess you up, bigtime.
  
@@ -7538,11 +7538,11 @@ every character in the game.
 
 51 'IMM EQUIP~
 .                       Equipment Usage
-                       ---------------
+					   ---------------
 **  All equipment worn by an immortal must be made from vnum 1222.
 **  No stats or affects may be added to vnum 1222.
 **  If you need to test your mobs, you may make a weapon with the
-    stats needed to test your mob.
+	stats needed to test your mob.
 ~
 
 51 'IMM FORCE'~
@@ -7654,9 +7654,9 @@ NOT to snoop are easily listed.
    level immortal.  All Immortals may be snooped at any time, for any reason.
 -- Do not snoop for the purpose of gaining information for personal reasons.
 -- Any incidental references learned in snoop should be disregarded.
-    ** For example, you learn someone is having a mud affair from snoop.
-    ** This information has nothing to do with the reason you are snooping
-    ** and should not affect your judgement.  It should not be passed on.
+	** For example, you learn someone is having a mud affair from snoop.
+	** This information has nothing to do with the reason you are snooping
+	** and should not affect your judgement.  It should not be passed on.
 -- Being an Immortal is a privilege and a job.  Snoop is a tool to assist
    you do your job properly.  Snoop is neither a toy nor a right.
 ~
@@ -7778,7 +7778,7 @@ immortal use only:
  
   %r  - 'vnum' of current room           %i  - '(Invis Lv) ' wizinvis 
   %R  - '<#vnum> ' of current room       %I  - 'Lv' wizinvis
-        (with config +vnum set) 
+		(with config +vnum set) 
  
 See also PROMPT
 ~
@@ -7863,7 +7863,7 @@ affords them an uncommon respect.
 
 50 INDUCT OUTCAST~
 Syntax:  induct  <player>
-         outcast <player>
+		 outcast <player>
  
 Induct and outcast are clan commands.  The leader and number 1 of the 
 clan receive the induct commands, while the deity, leader, number 1 and 
@@ -7873,14 +7873,14 @@ clan, while outcast will remove them.
 
 1 INFORMATION~
 SLIST   - a command that lists all your spells and skills and the level at
-          which you may practice them.
+		  which you may practice them.
 AREAS   - Typing AREAS will get you a list of all areas.  You may get more
-          information on each area by typing HELP <full area name>.
+		  information on each area by typing HELP <full area name>.
 WIZLIST - This is a list of all Immortals of the game.
 COMMANDS- This is a list of all commands available to you.
 SOCIALS - This is a list of all socials available. 
 TIME    - This will tell you the current times inside the Realms, the time
-          the Realms was last rebooted, and the current time in Toronto.
+		  the Realms was last rebooted, and the current time in Toronto.
 WHERE   - Where will give you a list of other players in the same area.
 SAVE    - After level two, typing SAVE will save your process.
 QUIT    - If you want to leave the game, type QUIT.
@@ -7959,8 +7959,8 @@ including the caster.
 
 65 IPCOMPARE~
 Syntax: ipcompare <name>
-        ipcompare <site>
-        ipcompare <name or site> <room|area|world> <#>
+		ipcompare <site>
+		ipcompare <name or site> <room|area|world> <#>
  
 This takes * as a wild card.
 Ipcompare will compare online users to search for multiplayers. A positive
@@ -8020,10 +8020,10 @@ lands, it inflicts damage on your opponent.
 
 1 JADE~
 .&Y
-         ::;;;;;;;;;;;;;;;;:::.
-        ::;;;;;;;;;;;;;;:::::,;;.
-      ,::;;;;;;;;;;;;;::::,;;;;;;::,
-     ::;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;::,
+		 ::;;;;;;;;;;;;;;;;:::.
+		::;;;;;;;;;;;;;;:::::,;;.
+	  ,::;;;;;;;;;;;;;::::,;;;;;;::,
+	 ::;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;::,
    ,::;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;::,
   ,::;;;;;;;;;;;;;;;;;;;;;::,&wvvvvvvvvv,&Y;;;::,
 :,;;;;;;;;;;;;;;;;;;;;::,&wvvnnnnnnnnnnnnvv,&Y;;::.
@@ -8223,8 +8223,8 @@ See also LANGUAGE , SPEAK
 
 1 LASCIVIAS~
 .
-    &O8888888888888888888888&w:::::::::M&O8888888888888888
-     8888888888888888&w::&O88888&w::::::M&O8888888888888888888
+	&O8888888888888888888888&w:::::::::M&O8888888888888888
+	 8888888888888888&w::&O88888&w::::::M&O8888888888888888888
    88888888888888888&w:::&O88888&w:::::M&O888888888888888   8888
   88888888888888888&w:::&O88888&w::::M::;&Bo*M*o;&O888888888    88
  88888888888888888&w:::&O8888&w:::::M:::::::::::&O88888888    8
@@ -8244,7 +8244,7 @@ See also LANGUAGE , SPEAK
 88  &wM::::::::::::&O8888&w:&O88888888888888888&w::::::Mm&O8   88888   888
 88  &wM::::::::::&O8888&wM::&O88888&w::&O888888888888&w:::::::Mm&O88888   88
 8   &wMM::::::::&O8888&wM:::&O8888&w:::::&O888888888888&w::::::::Mm&O8     4
-    8&wM:::::::&O8888&wM:::::&O888&w:::::::&O88&w:::&O8888888&w::::::::Mm&O
+	8&wM:::::::&O8888&wM:::::&O888&w:::::::&O88&w:::&O8888888&w::::::::Mm&O
    88&wMM:::::&O8888&wM:::::::&O88&w::::::::&O8&w:::::&O888888&w:::M:::::M
 ~
 
@@ -8252,11 +8252,11 @@ See also LANGUAGE , SPEAK
 "An excellent decision.  I applaud.  Did you actually manage to reach it all
 by yourself?"
  
-     Elegant yet predatory, the Lasombra honestly think of themselves as the
+	 Elegant yet predatory, the Lasombra honestly think of themselves as the
 apex of Cainite existence.  Firm believers in Divine Right and the rule of
 the superior, they have little patience, though often much pity, for those
 Cainites who are (through no fault of their own) inferior.
-     The Lasombra character is a curious mix of noblesse oblige and healthy
+	 The Lasombra character is a curious mix of noblesse oblige and healthy
 contempt.  They actively seek power wherever is may be found, from the halls
 of the cloisters to the corridors of palaces, yet they do not seek the titles
 and glory that come along with rule.  Instead of chasing command for its own
@@ -8264,7 +8264,7 @@ sake, Lasombra take the reins of power out of a firm belief that no one can
 hold them better.  The appearance of power is unimportant; what matters is
 that the decisions are being made by those most suited to make them.  Indeed,
 most Lasombra prefer the role of kingmaker to the title of king.
-     Hand in hand with this determination to be the final arbiters of all
+	 Hand in hand with this determination to be the final arbiters of all
 decisions comes a healthy contempt for those who the Lasombra feel are
 inferior to them in mind, body or breeding.  In essence this means the rest
 of Cainite society, and while some of the various clans have been accorded a
@@ -8272,7 +8272,7 @@ modicum of respect, there are none the Lasombra will acknowledge as equals.
 A Lasombra will work with other Cainites, and even go so far as to consider
 members of other clans to be friends, but one will never, ever consider a
 member of another clan to be an equal.
-     Unfortunately, there are those Lasombra whose delight in the great game
+	 Unfortunately, there are those Lasombra whose delight in the great game
 of politics blinds them to all but the game itself.  Master manipulators,
 these Cainites view all of the Realms as but a chessboard that they and their
 opponents play upon, the fall of kingdoms being only abstract interest to
@@ -8404,9 +8404,9 @@ online and visible, type "who 51" at any time.
  
 To read the laws, type "laws <topic>" for any of the following:
 &W 
-       |  CHANNELS      |  PKILL     |  STORES  |  HARASSMENT  |
-       |  MULTIPLAYING  |  SHARING   |  STAKE   |  CHARM       |
-       |  OBJECTS       |  CHEATING  |  MURDER  |  ASSIST      |
+	   |  CHANNELS      |  PKILL     |  STORES  |  HARASSMENT  |
+	   |  MULTIPLAYING  |  SHARING   |  STAKE   |  CHARM       |
+	   |  OBJECTS       |  CHEATING  |  MURDER  |  ASSIST      |
  
 &GFor further explanation, see section 2 of the Adventurer's Guide...
 ~
@@ -8481,15 +8481,15 @@ Deadly characters may &Wnot&G:
  c) receive help (healing, shielding, portaling, etc.) from non-deadlies
  d) receive Immortal corpse retrievals or reimbursements - no exceptions
  e) attack players more than 5 levels outside their own
-    - includes picking up disarmed weapons from someone outside your range
-    - includes healing a fighting character outside your range
-    - includes looting the corpse of someone outside your level range
+	- includes picking up disarmed weapons from someone outside your range
+	- includes healing a fighting character outside your range
+	- includes looting the corpse of someone outside your level range
  
 Deadly characters are allowed to:
  a) pkill another player who appears on the deadly
-    list (who deadly) who is within 5 levels of their own.
+	list (who deadly) who is within 5 levels of their own.
  b) loot the corpse of the fallen deadly player, provided they were
-    the tank or delt the killing blow.
+	the tank or delt the killing blow.
  c) use mobs within or lower than the pkill level range of the victim
  
 &WWarning&G:  Going AFK or link-dead in a non-safe area leaves you open to
@@ -8799,11 +8799,11 @@ SNOOP yourself to cancel all outstanding snoops.
 -- Only snoop a person talking to a higher level Immortal with the higher
    Immortals "Express Permission".
 -- If a higher level Immortal begins communication with someone you are
-     snooping, inform that higher Immortal immediately of the snoop.
+	 snooping, inform that higher Immortal immediately of the snoop.
 -- Any incidental references learned in snoop should be disregarded
-    ** For example, you hear someone is having a mud affair, it is not
-    ** important to the reason you are snooping.  Do not judge or pass
-    ** on information learned in this manner.
+	** For example, you hear someone is having a mud affair, it is not
+	** important to the reason you are snooping.  Do not judge or pass
+	** on information learned in this manner.
 -- "Spot check" snooping of lower level Immortals is part of being a higher
    level immortal.  All Immortals may be snooped at any time, for any reason.
 -- Do not snoop for the purpose of gaining information for personal reasons.
@@ -8927,11 +8927,11 @@ See SETCLAN
 MAKECLAN
 -----------------------------------------------------------
  
-     SYNTAX: makeclan <clan name>
+	 SYNTAX: makeclan <clan name>
  
 DESCRIPTION: The MAKECLAN command is used to create a
-             new clan, order, or guild which may then
-             be customized with the SETCLAN command.
+			 new clan, order, or guild which may then
+			 be customized with the SETCLAN command.
  
 -----------------------------------------------------------
  
@@ -8942,11 +8942,11 @@ SEE ALSO: SETCLAN, SHOWCLAN
 MAKECOUNCIL
 -----------------------------------------------------------
  
-     SYNTAX: makecouncil <council name>
+	 SYNTAX: makecouncil <council name>
  
 DESCRIPTION: The MAKECOUNCIL command creates a new council
-             that may then be customized with the SETCOUNCIL
-             command.
+			 that may then be customized with the SETCOUNCIL
+			 command.
  
 -----------------------------------------------------------
  
@@ -8956,11 +8956,11 @@ SEE ALSO: SETCOUNCIL, SHOWCOUNCIL
 61 MAKEDEITY~
 -----------------------------------------------------------
  
-     SYNTAX: makedeity <deity name>
+	 SYNTAX: makedeity <deity name>
  
 DESCRIPTION: The MAKEDEITY command creates a new deity
-             that may then be customized with the SETDEITY
-             command.
+			 that may then be customized with the SETDEITY
+			 command.
  
 -----------------------------------------------------------
  
@@ -9019,27 +9019,27 @@ most information about the manor and this man are mere rumors...
 Town of Darkhaven:
 Ocean                   Plains                         (Guilds Houses)
 Keep \===PATHWAY=========='`====================.    1 Clerics (Good)
-     |    (23)            ||                    |    2 Clerics (Evil)
-     |  +===JUSTICE=ST====||=================+  |    3 Druids
-     |  |                 V|                 |  |    4 Warriors
-     |  F    Notre        E|    Duke's       H  |    5 Rangers
-     |  A    Dame         R|    Castle(4)    A  |    6 Mages
+	 |    (23)            ||                    |    2 Clerics (Evil)
+	 |  +===JUSTICE=ST====||=================+  |    3 Druids
+	 |  |                 V|                 |  |    4 Warriors
+	 |  F    Notre        E|    Duke's       H  |    5 Rangers
+	 |  A    Dame         R|    Castle(4)    A  |    6 Mages
 Pixie|  L   (1)|(2)       T|      |          W  |    7 Thieves
 For.-+  C (9)  |          I|    .-+-\        K  |    8 Vampires
-     |  O  .+--+--------. C| .-/     (5)     |  |    9 Augurers
+	 |  O  .+--+--------. C| .-/     (5)     |  |    9 Augurers
 Dark |  N (3)  Portal    \||/                |  |   23 Paladins
 For.-+== =================[]===HORIZON=ST==== ==+-X-   10 Scrolls
-     |  | Bar   Inn  Hall || NOTES (6) Acad  |  |Road  11 Potions
-     |  | (10) (11) (12)  || (16) (17) (18)  |  |      12 Magic Items
-     |  +===MARKET=ST====='`=================+  |      13 Jewelry
-     |  | (13) (14) (15)  || (19) (20) (21)  |  |      14 Courier/Post Office
-     |  |       (7)  Ware ||                 |  |      15 Notes/Quills
-     |  +--thieves'-alley- |                 |  |      16 Butcher
-     |  |  (8)  (22)  Art || Cult Pawn  Pets |  |      17 Baker
-     |  +================='`===LAW=ST========+  |      18 Dairy
-     |                    ||                    |      19 Blacksmith
-     +===================='`==+==PATHWAY========'  N   20 Armour
-     |             South      |                   w+e  21 Weapons
+	 |  | Bar   Inn  Hall || NOTES (6) Acad  |  |Road  11 Potions
+	 |  | (10) (11) (12)  || (16) (17) (18)  |  |      12 Magic Items
+	 |  +===MARKET=ST====='`=================+  |      13 Jewelry
+	 |  | (13) (14) (15)  || (19) (20) (21)  |  |      14 Courier/Post Office
+	 |  |       (7)  Ware ||                 |  |      15 Notes/Quills
+	 |  +--thieves'-alley- |                 |  |      16 Butcher
+	 |  |  (8)  (22)  Art || Cult Pawn  Pets |  |      17 Baker
+	 |  +================='`===LAW=ST========+  |      18 Dairy
+	 |                    ||                    |      19 Blacksmith
+	 +===================='`==+==PATHWAY========'  N   20 Armour
+	 |             South      |                   w+e  21 Weapons
    Graveyard      Bridge    Marina-Coral Depths    S   22 Tailor
  
 NOTES: Archive second floor, all south.  Oracle second floor, all south, east.
@@ -9063,32 +9063,32 @@ while the second would have the sector type city. They would be linked east
 and west by a normal exit.
 
 [Letter to use] [Sector type given to room]
-      I         SECT_INSIDE
-      C         SECT_CITY
-      f         SECT_FIELD
-      F         SECT_FOREST
-      H         SECT_HILLS
-      M         SECT_MOUNTAIN
-      s         SECT_WATER_SWIM
-      S         SECT_WATER_NOSWIM
-      A         SECT_AIR
-      D         SECT_DESERT
-      U         SECT_DUNNO
-      O         SECT_OCEANFLOOR
-      u         SECT_UNDERGROUND
-      U         SECT_UNDERWATER
-      L         SECT_LAVA
-      W         SECT_SWAMP
-    [ELSE]      SECT_DUNNO
+	  I         SECT_INSIDE
+	  C         SECT_CITY
+	  f         SECT_FIELD
+	  F         SECT_FOREST
+	  H         SECT_HILLS
+	  M         SECT_MOUNTAIN
+	  s         SECT_WATER_SWIM
+	  S         SECT_WATER_NOSWIM
+	  A         SECT_AIR
+	  D         SECT_DESERT
+	  U         SECT_DUNNO
+	  O         SECT_OCEANFLOOR
+	  u         SECT_UNDERGROUND
+	  U         SECT_UNDERWATER
+	  L         SECT_LAVA
+	  W         SECT_SWAMP
+	[ELSE]      SECT_DUNNO
 
 [Exits to use] [Direction it gives]
-      ^        UP or DOWN
-     = :       Used in all directions except UP and DOWN
-                 Makes a closed door in the direction its used in.
-      /        NORTHEAST or SOUTHWEST
-      \        NORTHWEST or SOUTHEAST
-      |        NORTH or SOUTH
-      -        EAST or WEST
+	  ^        UP or DOWN
+	 = :       Used in all directions except UP and DOWN
+				 Makes a closed door in the direction its used in.
+	  /        NORTHEAST or SOUTHWEST
+	  \        NORTHWEST or SOUTHEAST
+	  |        NORTH or SOUTH
+	  -        EAST or WEST
 ~
 
 53 MCREATE OCREATE~
@@ -9185,9 +9185,9 @@ Merc would like to thank ...
   ... Diavolo, Grodyn, Morgenes, and others for code and bug fixes.
   ... Raff, Doctor, VampLestat, Nirrad, Tyrst, PinkF, Chris, Glop for worlds.
   ... the players and imps of Mud Dome, Final Mud, Mud Lite, Vego Mud, Rivers
-      of Mud, Ruhr Mud, and Mystic Realms for bug reports, ideas, new code,
-      and hours of enjoyment.
-                                Share and enjoy.
+	  of Mud, Ruhr Mud, and Mystic Realms for bug reports, ideas, new code,
+	  and hours of enjoyment.
+								Share and enjoy.
 ~
 
 51 MFIND OFIND~
@@ -9264,10 +9264,10 @@ See also : Help STYLE
 
 54 MINVOKE OINVOKE~
 Syntax:  minvoke <vnum>
-         minvoke <keyword of mob>
+		 minvoke <keyword of mob>
 Syntax:  oinvoke <vnum>
-         oinvoke <keyword of obj>
-         oinvoke <vnum/keyword of obj> <level>
+		 oinvoke <keyword of obj>
+		 oinvoke <vnum/keyword of obj> <level>
  
 MINVOKE invokes an instance of the mobile specified.
  
@@ -9361,8 +9361,8 @@ shall never arise from the canyon.
 
 54 MLIST~
 Syntax: mlist
-      :	mlist <first mob>
-      :	mlist <first mob> <last mob>
+	  :	mlist <first mob>
+	  :	mlist <first mob> <last mob>
 
 This command will list all of the prototype mobs in your area, when used 
 with no arguments.  When used with a single argument it will list all 
@@ -9396,12 +9396,12 @@ October 22nd through 12/19
 
 -1 MOBPROG MOBPROGRAMS OBJPROG ROOMPROG MUDPROG~
 .
-         The MOBprograms have been contributed by N'Atas-ha.
+		 The MOBprograms have been contributed by N'Atas-ha.
 
-         Haus hacked together room && obj programs 'cause
-          he got sick of failing to add lever bitvectors,
-               and cause he thought Carnage was a
-                  Trancendentally Cool Mud.
+		 Haus hacked together room && obj programs 'cause
+		  he got sick of failing to add lever bitvectors,
+			   and cause he thought Carnage was a
+				  Trancendentally Cool Mud.
 ~
 
 51 MOBTRIGGERS MUDTRIGGERS MPTRIGGERS~
@@ -9423,7 +9423,7 @@ Hour          <hour>              [loops as Script for an hour from start hour]
 
 *NOTE* {hour}/<hour> is in military time. ie, 15 hours is 3p.m. mud time.
 *NOTE* The mpcommand MPDONOTHING currently only works in Script progs,
-       NOT in Time or Hour progs.
+	   NOT in Time or Hour progs.
 
 For mobs, see also: MPSTAT, MPEDIT, TRIGGER, MPCOMMANDS, IFCHECKS, VARIABLES.
 ~
@@ -9578,7 +9578,7 @@ MPKILL           <name>                 MPGOTO <vnum>
 MPAT             <vnum> <command>
  
 See also: MPSTAT, RPSTAT, OPSTAT, MPEDIT, RPEDIT, OPEDIT, TRIGGER, MPTRIGGERS,
-          RPTRIGGERS, OPTRIGGERS, IFCHECKS, VARIABLES.
+		  RPTRIGGERS, OPTRIGGERS, IFCHECKS, VARIABLES.
 ~
 
 52 MPDAMAGE~
@@ -9636,12 +9636,12 @@ The abbreviation "mea" may be used for mpechoat.
 51 MPECHOZONE~
 -----------------------------------------------------------
  
-     SYNTAX: mpechozone <color> <string>
+	 SYNTAX: mpechozone <color> <string>
  
 DESCRIPTION: The MPECHOZONE mpcommand works much like
-             the ECHO and RECHO comands do except the
-             specified string is only displayed within
-             the area. 
+			 the ECHO and RECHO comands do except the
+			 specified string is only displayed within
+			 the area. 
  
 -----------------------------------------------------------
  
@@ -9669,12 +9669,12 @@ See MPSTAT, TRIGGER, MPTRIGGERS, MPCOMMANDS, IFCHECKS, IFCHECKS2, VARIABLES
 51 MPFAVOR~
 -----------------------------------------------------------
  
-     SYNTAX: mpfavor <target> -#
-             mpfavor <target> +#
-             mpfavor <target> #
+	 SYNTAX: mpfavor <target> -#
+			 mpfavor <target> +#
+			 mpfavor <target> #
  
 DESCRIPTION: The MPFAVOR mpcommand is used to take, give,
-             or set a PCs favor by/to the specified amount.
+			 or set a PCs favor by/to the specified amount.
  
    EXAMPLES: 
  
@@ -9682,8 +9682,8 @@ mpfavor 0.$n -10 -> decrease $n's favor by 10
 mpfavor 0.$n +10 -> increase $n's favor by 10
 mpfavor 0.$n 10  -> set $n's favor to 10
  
-       NOTE: The current high/low settings for favor
-             can not be exceeded: 2500 and -2500
+	   NOTE: The current high/low settings for favor
+			 can not be exceeded: 2500 and -2500
  
 -----------------------------------------------------------
  
@@ -9766,7 +9766,7 @@ Kills a player without using murder.
 
 53 MPMLOAD MPOLOAD~
 Syntax: MPMLOAD <vnum>
-        MPOLOAD <vnum> <level> <timer>
+		MPOLOAD <vnum> <level> <timer>
 
 Loads a mob or object. In the case of objects, the level must be set, or
 supermob will end up setting the level. Timer is optional, and is the decay
@@ -9787,24 +9787,24 @@ not created with mpopenpassage)
 51 MPPARDON~
 -----------------------------------------------------------
  
-     SYNTAX: mppardon <target> <flag>
+	 SYNTAX: mppardon <target> <flag>
  
 DESCRIPTION: The MPPARDON mpcommand works just as the
-             immortal PARDON command does.
+			 immortal PARDON command does.
  
 -----------------------------------------------------------
  
 SEE ALSO: PARDON, FLAGS, 'IFCHECK ISATTACKER', 'IFCHECK
-          ISKILLER', 'IFCHECK ISTHEIF'
+		  ISKILLER', 'IFCHECK ISTHEIF'
 ~
 
 51 MPPEACE~
 *-------------------------------------------------------------------*
  
-     SYNTAX:     MPPEACE <name>
+	 SYNTAX:     MPPEACE <name>
  
 DESCRIPTION:     Any target name within the room can be forced
-                 to cease all fighting.
+				 to cease all fighting.
  
 *-------------------------------------------------------------------*
 See Also:  MPCOMMANDS OPCOMMANDS RPCOMMANDS OPTRIGGERS MPTRIGGERS
@@ -9813,12 +9813,12 @@ See Also:  MPCOMMANDS OPCOMMANDS RPCOMMANDS OPTRIGGERS MPTRIGGERS
 51 MPPKSET~
 -----------------------------------------------------------
  
-     SYNTAX: mppkset <target> yes/no
+	 SYNTAX: mppkset <target> yes/no
  
 DESCRIPTION: The MPPKSET mpcommand will set the 
-             PC to deadly or peaceful based on what is
-             specified regardless of their present state.
-             No = peaceful Yes = deadly
+			 PC to deadly or peaceful based on what is
+			 specified regardless of their present state.
+			 No = peaceful Yes = deadly
  
 -----------------------------------------------------------
 ~
@@ -9841,14 +9841,14 @@ Syntax: MPPURGE <object/mobile>
 Purges the room, or a specified object/mobile.
 -----------------------------------------------------------
  
-     SYNTAX: mppurge
-             mppurge <item name>
-             mppurge <mob name>
+	 SYNTAX: mppurge
+			 mppurge <item name>
+			 mppurge <mob name>
  
 DESCRIPTION: The MPPURGE mpcommand works much like the
-             immortal command PURGE, but for one exception:
-             there must be something to purge. If there is
-             nothing to be purged, the command will log a bug.
+			 immortal command PURGE, but for one exception:
+			 there must be something to purge. If there is
+			 nothing to be purged, the command will log a bug.
  
 -----------------------------------------------------------
 ~
@@ -9862,14 +9862,14 @@ This command restores a specified number of hitpoints to the victim.
 51 MPSCATTER~
 *-------------------------------------------------------------------*
  
-     SYNTAX:     MPSCATTER <target name> <low vnum> <hi vnum>
+	 SYNTAX:     MPSCATTER <target name> <low vnum> <hi vnum>
  
 DESCRIPTION:     This command will send the victim to any one of
-                 the rooms specified at random.
+				 the rooms specified at random.
  
 Example: mpscatter lascivias 1 50
-         Will transfer Lascivias to a room between 1 and 50.
-         The numbers you specify are inclusive in the formula.
+		 Will transfer Lascivias to a room between 1 and 50.
+		 The numbers you specify are inclusive in the formula.
  
 *-------------------------------------------------------------------*
  
@@ -9879,12 +9879,12 @@ See also: MPCOMMANDS OPCOMMANDS RPCOMMANDS OPTRIGGERS MPTRIGGERS
 51 MPSLAY~
 -----------------------------------------------------------
  
-     SYNTAX: mpslay <target>
+	 SYNTAX: mpslay <target>
  
 DESCRIPTION: The mpcommand MPSLAY works exactly as the
-             immortal slay command does, causing the
-             PC/NPC target instant death. NOTE: This is
-             a mob program command only.
+			 immortal slay command does, causing the
+			 PC/NPC target instant death. NOTE: This is
+			 a mob program command only.
  
 -----------------------------------------------------------
  
@@ -9912,7 +9912,7 @@ Transfers one or all in the room to a specified location.
 
 54 MSET~
 Syntax: mset <character> <field> <value>
-        mset character on
+		mset character on
  
 MSET sets the properties of mobiles. If a mobile has the PROTOTYPE flag, 
 modifying an instance of this mobile will also modify the index mobile, which 
@@ -9923,13 +9923,13 @@ mset commands will imply 'mset <character>'. Hitting enter while in MSET ON
 will give you an mstat of the mob/character you are working on. To get out
 of MSET ON, simply type the word DONE. Example:
  
-        mset gracca on
-        long A large hulking figure stands here.
-        sex 1
-        done
+		mset gracca on
+		long A large hulking figure stands here.
+		sex 1
+		done
  
 See also: ACTFLAGS, SPECFUNCS, SAVINGTHROWS, RIS, NPC_RACES, ATTACKS,
-          DEFENSES, MCREATE, MMENU and MSTAT.
+		  DEFENSES, MCREATE, MMENU and MSTAT.
 ~
 
 54 MSETPKILL~
@@ -10146,7 +10146,7 @@ an identity for yourself. Simply put, your name should &YNOT &Wbe:&G
  - Comprised of various capital letters, such as 'BrACkkA' or 'CORTO'.
  - Comprised of ranks or titles, such as 'Lord' or 'Master'.
  - Composed of singular descriptive nouns, adverbs or adjectives,
-    as in 'Heart', 'Big', 'Flying', 'Broken', 'Slick' or 'Tricky'.
+	as in 'Heart', 'Big', 'Flying', 'Broken', 'Slick' or 'Tricky'.
  - Any of the above in reverse, i.e., writing Jade as 'Edaj'.
  - Any combination of singular descriptive nouns/adverbs or adjectives, as
    in 'Metaljacket Heartbound Earthstone or Softheart'.
@@ -10179,7 +10179,7 @@ an identity for yourself. Simply put, your name should &YNOT &Wbe:&G
  - Comprised of various capital letters, such as 'BrACkkA' or 'CORTO'.
  - Comprised of ranks or titles, such as 'Lord' or 'Master'.
  - Composed of singular descriptive nouns, adverbs or adjectives,
-    as in 'Heart', 'Big', 'Flying', 'Broken', 'Slick' or 'Tricky'.
+	as in 'Heart', 'Big', 'Flying', 'Broken', 'Slick' or 'Tricky'.
  - Any of the above in reverse, i.e., writing Jade as 'Edaj'.
 &W
 Please keep in mind that names which were authed in the past do
@@ -10198,22 +10198,22 @@ Nation should have.  Position names can, of course, be altered to suit the
 Nation.  Each council should consist of 3-5 people of any level.
 
 Ambassador - The Ambassador is a vital part of any Nation.  S-he is responsible
-             for the maintenance of internations relations and any commuication
-             between Nations.
+			 for the maintenance of internations relations and any commuication
+			 between Nations.
 
 WarLord    - The WarLord, also known occasionally as the BattleMaster, is the
-             Nation's fiercest and most experienced fighter.  S-he is the one
-             responsible for organizing monster runs in which the Nation
-             participates.
+			 Nation's fiercest and most experienced fighter.  S-he is the one
+			 responsible for organizing monster runs in which the Nation
+			 participates.
 
 Second     - The Second is, in effect, the Leader's apprentice.  S-he should
-             always be prepared to step into the Leader's shoes in case the
-             Leader should meet an untimely demise or have to leave the Nation.
+			 always be prepared to step into the Leader's shoes in case the
+			 Leader should meet an untimely demise or have to leave the Nation.
 
 Scout      - The Scout is the one who seeks out possible Nation members and
-             recruits them.  The Scout should always be fully aware of the
-             Nation's rules, policies and procedures so they may be conveyed
-             to the recruit.
+			 recruits them.  The Scout should always be fully aware of the
+			 Nation's rules, policies and procedures so they may be conveyed
+			 to the recruit.
  
 See also &WHelp Nations &w
 ~
@@ -10282,25 +10282,25 @@ This spell drains hitpoints from the victim and returns some to the caster.
 
 60 NEPHSPELLS~
 .----------------------------------Spells----------------------------------
-        animate dead   0%      antimagic shell   0%           black hand   0%
-           blasphemy   0%        burning hands   0%          create fire   0%
-               curse   0%            dehydrate   0%         demonic aura   0%
-           demonskin   0%            desecrate   0%          detect evil   0%
-       detect hidden   0%         detect invis   0%         detect magic   0%
-       detect poison   0%         detect traps   0%           disruption   0%
-               dream   0%       enchant weapon   0%         energy drain   0%
-       ethereal fist   0%             execrate   0%              fatigue   0%
-          feebleness   0%           fireshield   0%                flare   0%
-         flesh armor   0%        hand of chaos   0%                 harm   0%
-            identify   0%          ill fortune   0%          infravision   0%
-      know alignment   0%             levitate   0%       lightning bolt   0%
-       locate object   0%        mind fortress   0%    occular explosium   0%
-           pass door   0%            pentagram   0%           pestilence   0%
-              plague   0%               poison   0%              possess   0%
-       psionic blast   0%           quickening   0%         remove curse   0%
-       sand of Hades   0%                 scry   0%   soul petrification   0%
-            teleport   0%         umbral spear   0%      wine invocation   0%
-      word of recall   0%         zidros Wrath   0%
+		animate dead   0%      antimagic shell   0%           black hand   0%
+		   blasphemy   0%        burning hands   0%          create fire   0%
+			   curse   0%            dehydrate   0%         demonic aura   0%
+		   demonskin   0%            desecrate   0%          detect evil   0%
+	   detect hidden   0%         detect invis   0%         detect magic   0%
+	   detect poison   0%         detect traps   0%           disruption   0%
+			   dream   0%       enchant weapon   0%         energy drain   0%
+	   ethereal fist   0%             execrate   0%              fatigue   0%
+		  feebleness   0%           fireshield   0%                flare   0%
+		 flesh armor   0%        hand of chaos   0%                 harm   0%
+			identify   0%          ill fortune   0%          infravision   0%
+	  know alignment   0%             levitate   0%       lightning bolt   0%
+	   locate object   0%        mind fortress   0%    occular explosium   0%
+		   pass door   0%            pentagram   0%           pestilence   0%
+			  plague   0%               poison   0%              possess   0%
+	   psionic blast   0%           quickening   0%         remove curse   0%
+	   sand of Hades   0%                 scry   0%   soul petrification   0%
+			teleport   0%         umbral spear   0%      wine invocation   0%
+	  word of recall   0%         zidros Wrath   0%
  
 ~
 
@@ -10404,9 +10404,9 @@ In all cases new clan applications would be taken the old way:
    having a deity, but that's a completely different matter)
 
 NOTE:  This isn't to say an imm-created clan or clans may not be
-       introduced, but any such clans would have stipulations on
-       them and be for specific use, such as any assassin type of
-       clan.  This isn't being planned, just covering bases here
+	   introduced, but any such clans would have stipulations on
+	   them and be for specific use, such as any assassin type of
+	   clan.  This isn't being planned, just covering bases here
 ~
 
 50 'NEWCLAN EQ2'~
@@ -10418,18 +10418,18 @@ no affects, or perhaps a very, very low set of base stats
  - cap would be raised occasionally to allow more power to be added
    if stock item power overtakes it
    NOTE:  There are new areas coming in that are going to have stock
-          items better than existing stock items, and some will have
-          items that give unusual rewards.  The difficulty will be
-          astronomical, but the value is pretty high
+		  items better than existing stock items, and some will have
+		  items that give unusual rewards.  The difficulty will be
+		  astronomical, but the value is pretty high
  
 Affects could also be removed and replaced at the will of the clan
 (i.e. adjusting the item for a cost, remove hps and add some dr, etc.)
 or even stripped completely by the clan I suppose if it really wanted
 to screw everyone up who had their stuff.
  -  changes to affects could either be retroactive or new eq only,
-    meaning when you change a bracer every bracer out there would
-    receive that change, or that change would only affect new items
-    made.  This is something that would be decided at inception.
+	meaning when you change a bracer every bracer out there would
+	receive that change, or that change would only affect new items
+	made.  This is something that would be decided at inception.
  
 Yes, cost would be high for affects, and we have not decided on a scale
 yet.  It's very unlikely that even the existing clans could foot the
@@ -10442,22 +10442,22 @@ be more powerful when capped than the divinated eq would be.
 
 -1 NEWS~
 .&y &O
-              (O)
-              <M
+			  (O)
+			  <M
    o          <M   
   /| ......  /:M\&c--------------------------------------------&O,,,,,,
 (O)[]XXXXXX[]I:K+}=====<{H}>  Realms of Despair News=======------------>
   \| ++++++  \:W/&c--------------------------------------------&O''''''
    o          <W   
-              <W    
-              (O) &Y
+			  <W    
+			  (O) &Y
 
   &W(&G-&W)  Deadlies set to &Y+gag &Wno longer receive eq damage messages-
   &W(&G-&W)  See help &Y build &Wfor new information -
   &W(&G*&W)  Advertisment and discussion of other muds needs to be done in
-    private -- not in channels, titles, descriptions, bios, or unsolicited
-    tells.  We have been exceedingly lenient on this, but too many people
-    are taking advantage of it, aggravating us and annoying mortals-
+	private -- not in channels, titles, descriptions, bios, or unsolicited
+	tells.  We have been exceedingly lenient on this, but too many people
+	are taking advantage of it, aggravating us and annoying mortals-
   &W(&G*&W)  3 New races: &YLizardmen, Sea Elves &Wand &YDrow. &W
   &W(&G-&W)  See &YHelp Smaug &Wfor help with your personal version .
   &W(&G-&W)  Help &YFprompt &Wwill explain this new prompt option.
@@ -10501,8 +10501,8 @@ pulling sensation as strange and colorful mists swirl around you...
 
 1 NIVEK~
 .&c
-       -""\
-    .-"  .`)     (
+	   -""\
+	.-"  .`)     (
    j   .'_+     :[                )      .^--..
   i    -"       |l                ].    /      i
  ," .:j         `8o  _,,+.,.--,   d|   `:::;    b
@@ -10514,32 +10514,32 @@ i  `: ( ____  ,-::::::' ::j  [:```          [8:   )
 `. ``:.      oo.8888888888:;%%%8o.::.+888+o.:`:'  |
  `.   `        `o`88888888b`%%%%%88< Y888P""'-    ;
    "`---`.       Y`888888888;;.,"888b."""..::::'-'
-          "-....  b`8888888:::::.`8888._::-"Nivek--
-             `:::. `:::::O:::::::.`%%'|  Coder God! 
-              `.      "``::::::''    .'
-                `.                   <
+		  "-....  b`8888888:::::.`8888._::-"Nivek--
+			 `:::. `:::::O:::::::.`%%'|  Coder God! 
+			  `.      "``::::::''    .'
+				`.                   <
 ~
 
 -1 NMOTD~
 .
 &B __________________________________________________________________________
 /                                                                          \
-                   &B[&w=&B] &w February 1998, the Ill Month &B[&w=&B]
+				   &B[&w=&B] &w February 1998, the Ill Month &B[&w=&B]
 
   &W"&wYou will begin at the Spectral Gates, an area to explore while awaiting
    authorization.  You will pass into the Realms at this area's end...&W"
  
   &B[> &wConsult your Guide for detailed information on all topics
-        &BPlease type: &Wlook book&B  to consult your copy of the Guide
-     &W\> &wSee '&Whelp start&w' for a list of helpful files
-     &BIf you need help, typing: &Whelp nc &Bwill put you in touch with
-       experienced players who can offer advice and assistance.
+		&BPlease type: &Wlook book&B  to consult your copy of the Guide
+	 &W\> &wSee '&Whelp start&w' for a list of helpful files
+	 &BIf you need help, typing: &Whelp nc &Bwill put you in touch with
+	   experienced players who can offer advice and assistance.
   &B[> &wSee '&Whelp pager&w' for screen pausing information
   &B[> &wSee '&Whelp deities&w' for information on devoting ('&Wdeities&w')
   &B[> &wSee '&Wnews&w' often to keep apprised of changes in the Realms
  
   &B[> &wEnjoy your stay within the Realms, but don't ruin it for the others:
-     &W\> &wEveryone must abide by the laws - no exceptions (type '&Wlaws&w')
+	 &W\> &wEveryone must abide by the laws - no exceptions (type '&Wlaws&w')
 &B\__________________________________________________________________________/
 /                                                                          \
  &w... And in the time which passed, great tumult and misery was wreaked upon
@@ -10590,14 +10590,14 @@ Also See Help note
 1 NOTE NOTES~
 USAGE - 'note (command) [number or text]'
    (command) can be any of the following:
-    List, Read, Write, Subject, To, Show, Post, Remove, Take, Date.
+	List, Read, Write, Subject, To, Show, Post, Remove, Take, Date.
    [number or text] can be left blank, be a number, or be words
-    depending on what (command) you use.  Usage is explained below.
+	depending on what (command) you use.  Usage is explained below.
 
 LIST - Lists the notes you can read. List [number] lists all the notes
  including, and after [number]. You must be at a note board to List.
  example: 'note list'    shows all notes on the board.
-          'note list 10' shows notes 10 and later on the board.
+		  'note list 10' shows notes 10 and later on the board.
 
 READ - Displays the contents of [number]. You must be at a note board to
  Read, and you must specify a [number].
@@ -10669,7 +10669,7 @@ CLASS #      CLASS              CLASS #      CLASS
   6          RANGER               25         QUEEN
  
 See also: ACTFLAGS, SPECFUNCS, BODYPARTS, SAVINGTHROWS, RIS, NPCRACES,
-          ATTACKS, LANGUAGES, DEFENSES, MSTAT, MCREATE, MMENU.
+		  ATTACKS, LANGUAGES, DEFENSES, MSTAT, MCREATE, MMENU.
 ~
 
 53 NPCRACES NPC_RACES~
@@ -10691,7 +10691,7 @@ fish          crustacean  insect       spirit       magical      horse
 animal        humanoid    monster      god
  
 See also: ACTFLAGS, SPECFUNCS, BODYPARTS, SAVINGTHROWS, RIS, NPCCLASSES,
-          ATTACKS, LANGUAGES, DEFENSES, MSTAT, MCREATE, MMENU.
+		  ATTACKS, LANGUAGES, DEFENSES, MSTAT, MCREATE, MMENU.
 ~
 
 54 'NUISANCE STAGES'~
@@ -10706,39 +10706,39 @@ in power level 2.  And in stage 2 the affect in stage 1 may be 4% of the
 time at power level 1 and 8% of the time at power level 2.
 So with that being said here are the current stages and their affects:
 Stage 1:  The Thirst Stage 
-          This makes them become thirsty quicker.  The formula used is the
+		  This makes them become thirsty quicker.  The formula used is the
 following: <current stage>*<power level> for how much more is added to your
 following: <current stage>*<power level> for how much more is subtracted from
 your thirst each time.  With 100 being not thirsty and 0 being dehydrated.
 Stage 2:  The Hunger Stage
-          The hunger stage works exactly as above except, the formula
+		  The hunger stage works exactly as above except, the formula
 subtracts 1 from the current stage becoming: (<current stage>-1)*<power level>
 Stage 3:  The Mentalstate Stage
-          In this stage each time your mentalstate worsens nuisance exagerates
+		  In this stage each time your mentalstate worsens nuisance exagerates
 the amount you worsen by. The formula used to compute how much more it 
 adds or subtracts is: .4*(<current stage>-2)*<power level>.
 Stage 4:  The Potion Stage
-          In this stage you can not stomach as many potions as you normally
+		  In this stage you can not stomach as many potions as you normally
 could without the nuisance flag.  Normally if your thirst or hunger is above
 48 you can't quaf anymore.  Nuisance makes this a much lower number.
 The formula used is: (48-(3*<current stage>)+<power level>)
 So at power level 10, stage 10 you could only quaf 8 potions on an empty
 stomach.
 Stage 5:  The Wait Stage
-          In this stage commands start taking longer to complete.  A
+		  In this stage commands start taking longer to complete.  A
 normal spell for example takes around 8-15 rounds of wait time.  With this
 stage more wait time is added with the following formula:
 (<current stage> -4 ) + <power level>    So at Stage 6 at power level 5,
 each command would have an additionl 7 wait added to it.
 Stage 6:  The Offensive Magic Stage
-           In this stage you have a chance of targeting yourself with 
+		   In this stage you have a chance of targeting yourself with 
 offensive spells instead of whatever target is specified.  The formula
 for the percentage or the time you do it is the following:
 (<current stage>-5)*8 + <power_level>*6  So at first stage 6 with a power
 level of 5 you would have a 38% chance to target yourself with offensive
 spells.
 Stage 7:  The Defensive Magic Stage
-          In this stage, if you are fighting someone you have a chance to
+		  In this stage, if you are fighting someone you have a chance to
 target them with any defensive spells you cast.  The formula used is the
 following:  (<current stage>-6)*8 + <power_level>*6 
 Continued in help 'NUISANCE STAGES2'
@@ -10746,18 +10746,18 @@ Continued in help 'NUISANCE STAGES2'
 
 54 'NUISANCE STAGES2'~
 Stage 8:  The Speech Stage
-          In this stage you have a chance to scramble your speech and
+		  In this stage you have a chance to scramble your speech and
 scramble other peoples speech (IE what you hear from them).  This works
 on a percentage with the following formula:
 (<current stage>-7)*10*<power level>  So at stage 9 with power level 2
 speech is scrambled 40% of the time.
 Stage 9:  The Movement Stage
-            In this stage you start moving in random directions like a drunk
+			In this stage you start moving in random directions like a drunk
 does.  This is worked out in a percentage as well. Which works of the 
 following formula:  (<current stage>-8)*10*<power level>  So in stage 10
 with a power level of 4 you would randomly choose an exit 80% of the time.
 Stage 10:  The command Stage
-           In this stage your commands start failing (Like mentalstate).
+		   In this stage your commands start failing (Like mentalstate).
 This is done on a percentage of the following:
 (<current stage>-9)*10*<power level>  So at stage 10, power level 10 the
 character becomes utterly useless, as commands will fail 100% of the time.
@@ -10767,17 +10767,17 @@ see are:  'NUISANCE' 'NUISANCE STAGES' 'NUISANCE OPTIONS'
 
 51 NUISANCE UNNUISANCE~
 &WSyntax:
-      &cunnuisance  <victim>
-      &cnuisance    <victim> [options]
+	  &cunnuisance  <victim>
+	  &cnuisance    <victim> [options]
 &GUnnuisance will remove the nuisance flag from a player.
 Nuisance will add a nuisance flag to the player specified by victim.
 &wThis only works on pc's.  The optional parameters are as follows:
   &cmaxtime <#> <minutes/days/hours>&w
-         &wThe maxstage of nuisance. Default is 8 days.
+		 &wThe maxstage of nuisance. Default is 8 days.
   &ctime <#>&w:  The time in days that the nuisance flag will stay on the
-         player, once the time is expired the flag will automatically be
-         removed. If this option is not used it will default to a permenant
-         penalty.
+		 player, once the time is expired the flag will automatically be
+		 removed. If this option is not used it will default to a permenant
+		 penalty.
   &cpower <#>&w:  A number from 1 to 10, 10 being the worst for the player.
 
 &WNote the words before the options are not optional and must be used.
@@ -10809,8 +10809,8 @@ Flag        Affect                Flag        Affect
 &Gevil        &cglow on det. evil     &Ginvis       &cinvisible
 &Gmagic       &cprevents enchant      &Gnodrop      &ccannot drop
 &Gbless       &c+20% resist dam.      &Gantigood    &czap if align +350
-            &cdbl. duration poison
-            &cweapon
+			&cdbl. duration poison
+			&cweapon
 &Gantievil    &czap if align -350     &Gantineutral &czap if align -350 to +350
 &Gnoremove    &ccannot remove         &Ginventory   &cpurge upon char. death
 &Gantimage    &czap if mage           &Gantithief   &czap if thief
@@ -10823,9 +10823,9 @@ Flag        Affect                Flag        Affect
  
 &YAdditional flags:
 &Gcovering      &cItems inside this are 'covered', use 'look under <object>' to
-              see 'inside'.  The object does not have to be a container to
-              be a covering object.  Use 'reset put' to indicate objects to
-              be covered by this object.&w
+			  see 'inside'.  The object does not have to be a container to
+			  be a covering object.  Use 'reset put' to indicate objects to
+			  be covered by this object.&w
 ~
 
 1 OBJECTS~
@@ -10890,33 +10890,33 @@ For objects see also: OPSTAT, OPEDIT, TRIGGER, OPCOMMANDS, IFCHECKS, VARIABLES.
 52 OBJTYPENUMS~
 .&r--------------------------------------------------------------------
   
-                   &GNUMBER                 TYPE of OBJECT
+				   &GNUMBER                 TYPE of OBJECT
   
-                     &c1                       Light
-                     2                       Scroll
-                     3                       Wand
-                     4                       Staff
-                     5                       Weapon
-                     9                       Armor
-                    10                       Potion
-                    15                       Container
-                    16                       Note
-                    18                       Key
-                    19                       Food
-                    23                       Mcorpse
-                    24                       Pcorpse
-                    26                       Pill
-                    34                       Book
+					 &c1                       Light
+					 2                       Scroll
+					 3                       Wand
+					 4                       Staff
+					 5                       Weapon
+					 9                       Armor
+					10                       Potion
+					15                       Container
+					16                       Note
+					18                       Key
+					19                       Food
+					23                       Mcorpse
+					24                       Pcorpse
+					26                       Pill
+					34                       Book
    
  &r--------------------------------------------------------------------
  
-     &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
-                 ITEMVALUES, OBJECTTYPES, VARIABLES,
+	 &YSEE ALSO: &wMPEDIT, OPEDIT, RPEDIT, IFCHECKS, IFCHECKS2, IFCHECKS3
+				 ITEMVALUES, OBJECTTYPES, VARIABLES,
 ~
 
 1 'OCCULUTUS VISUM'~
 Syntax:  occulutus visum
-    or:  occu (or other unique abbreviation)
+	or:  occu (or other unique abbreviation)
  
 Triggers the vampire's innate ability to sense all manner of the unseen.
  
@@ -11102,19 +11102,19 @@ been lost.
 
 63 OLDCHANGES~
 .*> Online building is now implemented.  This includes rooms, mobiles,
-    objects and programs for each as well as resets.
+	objects and programs for each as well as resets.
  *> Clans are now in.
  *> Creatures will hunt you down if you flee.
  *> The experience system has changed significantly.  You now receive exp
-    with every hit based on the damage you inflict.  (includes spells)
+	with every hit based on the damage you inflict.  (includes spells)
  *> You will only be able to practice your skills and spells so much, the
-    rest must be learned through use of the spell or skill.
+	rest must be learned through use of the spell or skill.
  *> Warning:  depending on your dexterity, drinking potions during combat
-    may be difficult.  NOTE:  potions now count as a drink.
+	may be difficult.  NOTE:  potions now count as a drink.
  *> Corpses are now saved across crashes and reboots, eliminating the need
-    for most reimbursements for lost corpses. -- see 'help reimbursement'
+	for most reimbursements for lost corpses. -- see 'help reimbursement'
  *> Major changes have been made to notes, and player mail has been added.
-    Type 'help mail' and 'help note' for more information.
+	Type 'help mail' and 'help note' for more information.
 ~
 
 0 OLDSCORE~
@@ -11125,8 +11125,8 @@ Oldscore shows the score information in a different way than 'score'.
 
 53 OLIST~
 Syntax: olist
-      :	olist <first object>
-      :	olist <first object> <last object>
+	  :	olist <first object>
+	  :	olist <first object> <last object>
 
 This command will list all of the prototype objects in your area, when used 
 with no arguments.  When used with a single argument it will list all 
@@ -11221,7 +11221,7 @@ If your charmed creature engages in combat, that will break the charm.
 
 1 ORDERS~
 Syntax:  orders
-    or:  orders <order name>
+	or:  orders <order name>
  
 This command will display a list of all currently existing Orders, as
 well as their deities, leaders, mobkills and mobdeaths.
@@ -11242,7 +11242,7 @@ all members currently online, as well as the deity if they are online.
 
 51 OSET~
 Syntax:  oset <object>    <field> <value>
-         oset object on
+		 oset object on
  
 If the copy of the object you are currently modifying has the PROTOTYPE flag,
 your modifications will also modify the index of that object, which all other
@@ -11264,10 +11264,10 @@ commands will imply 'oset <object>'.  Hitting enter while in OSET ON gives
 you an ostat of the object you are working on.  To get out of OSET ON, simply
 type the word DONE. Example:
  
-        oset staff on
-        long A long gnarled staff of burnished oak lies here.
-        type staff
-        done
+		oset staff on
+		long A long gnarled staff of burnished oak lies here.
+		type staff
+		done
  
 See AFFECTTYPES, WEARFLAGS, OBJECTFLAGS, OBJECTTYPES, ARMORCLASS
 ITEMVALUES, WEAPONTYPES, VARIABLES, OMENU, LAYERS and LAYERS2
@@ -11344,12 +11344,12 @@ they suffer when they stray from the path of good.
 61 PALADINSPELLS~
 .        aqua breath  25%                armor  90%         benefic aura  85%
    bethsaidean touch  44%                bless  90%      continual light  69%
-         create food  80%         create water  71%           cure light  90%
-         detect evil  58%        detect hidden  60%        detect poison  18%
-         dispel evil  90%          expurgation  37%                float  54%
-             fortify  75%       hezekiahs cure  85%             identify  75%
-      know alignment  50%              refresh  80%         remove curse  69%
-          resilience  70%      sacral divinity  75%               shield  85%
+		 create food  80%         create water  71%           cure light  90%
+		 detect evil  58%        detect hidden  60%        detect poison  18%
+		 dispel evil  90%          expurgation  37%                float  54%
+			 fortify  75%       hezekiahs cure  85%             identify  75%
+	  know alignment  50%              refresh  80%         remove curse  69%
+		  resilience  70%      sacral divinity  75%               shield  85%
 solomonic invocation  95%           stone skin  75%       word of recall  90%
  
 ~
@@ -11526,7 +11526,7 @@ of colors for your typed text, include that at the end of your prompt set.
 Example (assuming current h.p.'s of 43 and mana of 23): 
  
 Prompt &&Y^^b<%h/&&x^^r%m>&&w^^x = <43/23>
-        {A}     {B}       {C}
+		{A}     {B}       {C}
 
 A) Yellow with blue background.
 B) Black with dark red background.
@@ -11592,26 +11592,26 @@ In no instances will pets be reimbursed. Do not even ask.
 
 2 PHHILOSTRATE~
 .             ,   .-'"'=;_  , 
-              |\.'--`-.`-`;/|
-              \.` '.'--.` './
-              (\`,__=-'__,'/)
-           _.-'-.( &Rd&W\_/&Rb&W ).-'-._
-         /'.-'   ' .---. '   '-.`\
-       /'  .' (=    (_)    =) '.  `\
-      /'  .',  `-.__.-.__.-'  ,'.  `\
-     (     .'.   V       V  ; '.     )
-     (    |::  `-,__.-.__,-'  ::|    )
-     |   /|`:.               .:'|\   |
-     |  / | `:.              :' |`\  |
-     | |  (  :.             .:  )  | |
-     | |   ( `:.            :' )   | |
-     | |    \ :.           .: /    | |
-     | |     \`:.         .:'/     | |
-     ) (      `\`:.     .:'/'      ) (
-     (  `)_     ) `:._.:' (     _(`  )
-     \  ' _)  .'           `.  (_ `  /
-      \  '_) /   .'"```"'.   \ (_`  /
-      `'"`  \  (         )  /  `"'`
+			  |\.'--`-.`-`;/|
+			  \.` '.'--.` './
+			  (\`,__=-'__,'/)
+		   _.-'-.( &Rd&W\_/&Rb&W ).-'-._
+		 /'.-'   ' .---. '   '-.`\
+	   /'  .' (=    (_)    =) '.  `\
+	  /'  .',  `-.__.-.__.-'  ,'.  `\
+	 (     .'.   V       V  ; '.     )
+	 (    |::  `-,__.-.__,-'  ::|    )
+	 |   /|`:.               .:'|\   |
+	 |  / | `:.              :' |`\  |
+	 | |  (  :.             .:  )  | |
+	 | |   ( `:.            :' )   | |
+	 | |    \ :.           .: /    | |
+	 | |     \`:.         .:'/     | |
+	 ) (      `\`:.     .:'/'      ) (
+	 (  `)_     ) `:._.:' (     _(`  )
+	 \  ' _)  .'           `.  (_ `  /
+	  \  '_) /   .'"```"'.   \ (_`  /
+	  `'"`  \  (         )  /  `"'`
    ___        `.`.       .'.'        ___
  .`   ``"""'''--`_)     (_'--'''"""``   `.
 (_(_(___...--'"'`         `'"'--...___)_)_)
@@ -11619,20 +11619,20 @@ In no instances will pets be reimbursed. Do not even ask.
 
 1 PHRED~
 .          / ;\`"`.       ,--------.     |:.     %|:.             |
-          ( /  ) / \      | *ULP*  |     |:.     %|:.             |
-        /`/     /#\ `.     "``\/'''"     |:.     %|:.             |
-       /__|     "'" /`\/']               |:.     %|:.             |
-       `/```\       \@  @                |:.     %|:.             |
-       /_____\    ;-.,_,/                |:.     %|:.    Phred    |
-       ` /````|   -.___/                 |:.     %|:.             |
-        /____.--.   \-.                 /:.     %/:.              "
-        `/```|   \   \|        .____.``:.____.``:.                \
-        /____|        \      /":.   %%/":.                         \
-        `  ,,!    /    \    /:. /:. %/:. /:.                        \
-           \;\   /`     '   |:. |:. %|:. |:.                         |
-           / `  /        '  |:. |:. %|:. |:.                        /
-           \___/        @ } ``````-```````````````````````````
-              \          ,
+		  ( /  ) / \      | *ULP*  |     |:.     %|:.             |
+		/`/     /#\ `.     "``\/'''"     |:.     %|:.             |
+	   /__|     "'" /`\/']               |:.     %|:.             |
+	   `/```\       \@  @                |:.     %|:.             |
+	   /_____\    ;-.,_,/                |:.     %|:.    Phred    |
+	   ` /````|   -.___/                 |:.     %|:.             |
+		/____.--.   \-.                 /:.     %/:.              "
+		`/```|   \   \|        .____.``:.____.``:.                \
+		/____|        \      /":.   %%/":.                         \
+		`  ,,!    /    \    /:. /:. %/:. /:.                        \
+		   \;\   /`     '   |:. |:. %|:. |:.                         |
+		   / `  /        '  |:. |:. %|:. |:.                        /
+		   \___/        @ } ``````-```````````````````````````
+			  \          ,
 ~
 
 57 'PICK LOCK'~
@@ -11654,7 +11654,7 @@ This skill enables you to pick open locked doors.
    As always with our events, admission is free but we do need to
    know in advance how many are coming.  To RSVP, please email:
  
-                           &Wtical@idirect.com
+						   &Wtical@idirect.com
  
    &GOnce again, we ask that everyone bring along a donation of
    non-perishable food item to be given to a food bank to help
@@ -11713,39 +11713,39 @@ Pixies gain experience on a scale of normal rate * 1.08.
 0 PKMAP~
 .                   (8) (7)   MAP OF PKILL TOWN                1)  Ocean Keep
 (1)<-\    (*)  (11)-(9)-(6)-                                   2)  Haon Dor
-     |              (12) |                                     3)  Repairs
-      \    --------------|-----------                          4)  One W of
-       \                 |       (*)                               Crossroads
-       | |        (5)    |                                     5)  Potions
+	 |              (12) |                                     3)  Repairs
+	  \    --------------|-----------                          4)  One W of
+	   \                 |       (*)                               Crossroads
+	   | |        (5)    |                                     5)  Potions
   (2)<-+-+-------------------------DAEMON WALK---------->(4)   6)  Gravoc
-        W| (*)           |   (3)                               7)  Healer
-        A|         |     |                                     8)  DH Board
-        L----ASHEN------------ALLEY--------                    9)  Pkill Board
-        L|               |           (*)  |                    10) Galaxy
-         |  MOLTEN FLUX                                        11) Practice 
-         -------------------------------B--------------------  12) Oracle Brd.
-       M |            H|          |     L|                  | M *) Mud
-       O |            E|          |-    A|   |              | O    Tunnels
-       L |            A|       ------   C|----              | L
-       T |            T|       |ZONE|   K|                  | T
-       E |        ----H-----------------M-------            | E
-       N |        |   E|               A_|                  | N
-         |            N|______________S|_ DIRGE             |
-      F  |              R O W        S_| |-----AL           | F
-      L  |                          T|   |   \|/ LE         | L
-      U  |                          R|   |   (10)  Y        | U
-      X  ---------------------------------------------------- X
-              MOLTEN FLUX
+		W| (*)           |   (3)                               7)  Healer
+		A|         |     |                                     8)  DH Board
+		L----ASHEN------------ALLEY--------                    9)  Pkill Board
+		L|               |           (*)  |                    10) Galaxy
+		 |  MOLTEN FLUX                                        11) Practice 
+		 -------------------------------B--------------------  12) Oracle Brd.
+	   M |            H|          |     L|                  | M *) Mud
+	   O |            E|          |-    A|   |              | O    Tunnels
+	   L |            A|       ------   C|----              | L
+	   T |            T|       |ZONE|   K|                  | T
+	   E |        ----H-----------------M-------            | E
+	   N |        |   E|               A_|                  | N
+		 |            N|______________S|_ DIRGE             |
+	  F  |              R O W        S_| |-----AL           | F
+	  L  |                          T|   |   \|/ LE         | L
+	  U  |                          R|   |   (10)  Y        | U
+	  X  ---------------------------------------------------- X
+			  MOLTEN FLUX
  
 Note: There may be other, hidden exits from pktown.
 Note: If walking to Pktown, say "I seek the ruins" at one of the following:
-      'Edge of Haon Dor forest', 'On a long, rusted bridge',
-      'The crossroads on the hilltop', 'Path in the plains',
-      'On a Slanted Path'
+	  'Edge of Haon Dor forest', 'On a long, rusted bridge',
+	  'The crossroads on the hilltop', 'Path in the plains',
+	  'On a Slanted Path'
 Note: To get to the Darkhaven Art Gallery, say 'the gallery' to Gravoc's
-      Pedagogic Spirit
+	  Pedagogic Spirit
 Note: If you're under lev. 6, you may return to the Academy be telling
-      Gravoc "the academy".
+	  Gravoc "the academy".
 ~
 
 1 PK_EQ~
@@ -11870,23 +11870,23 @@ For more information on spell, skills, weapons, and practicing, read section
 
 51 PROJECT~
 Syntax: project -- same as project list
-        project save 
-        project list [available]
-        project code  --- Lists approved projects with no coders
-        project mine -- Lists all projects that you own or are the coder
-        project more --- Lists projects as well as coder/log info
-        project add <name>
-        project <number> coder  --- Assigns you as the coder of a project
-        project <number> delete
-        project <number> take
-        project <number> log write
-        project <number> log subject <subject>
-        project <number> log post
-        project <number> log list
-        project <number> log <number> read
-        project <number> log <number> delete
-        project <number> description --- Buffer to describe the project
-        project <number> show -- shows description of the project
+		project save 
+		project list [available]
+		project code  --- Lists approved projects with no coders
+		project mine -- Lists all projects that you own or are the coder
+		project more --- Lists projects as well as coder/log info
+		project add <name>
+		project <number> coder  --- Assigns you as the coder of a project
+		project <number> delete
+		project <number> take
+		project <number> log write
+		project <number> log subject <subject>
+		project <number> log post
+		project <number> log list
+		project <number> log <number> read
+		project <number> log <number> delete
+		project <number> description --- Buffer to describe the project
+		project <number> show -- shows description of the project
 
 You can remove yourself as a coder or owner by repeating the command.
 Change status/post on other's projects, 60+, Code council, Vc heads.
@@ -12056,7 +12056,7 @@ PURGE will not get rid of PC's.
 This command is used for giving/taking Glory from players.  The syntax 
 is as follows:
  
-      qpset <player>  <give|take>  <amount>
+	  qpset <player>  <give|take>  <amount>
  
 Where one of give or take is used, and the amount is always a positive
 integer.
@@ -12160,17 +12160,17 @@ discretion of the immortal running the quest.
 Some things to remember while questing:
  
  &W-&GWe are volunteers, and choose to run quests. If you have criticisms of 
-    the quest, or the person running the quest, please be constructive and
-    vent your concerns in an appropriate forum - in the Hall of Heroes located
-    in the Darkhaven Town Hall.
+	the quest, or the person running the quest, please be constructive and
+	vent your concerns in an appropriate forum - in the Hall of Heroes located
+	in the Darkhaven Town Hall.
  
  &W-&GDo not ask when the next quest will be, or if there is a quest. Just pay
-    attention to channels and what is going on around you.  If something out
-    of the ordinary is going on, there's a good chance it might be a quest.
+	attention to channels and what is going on around you.  If something out
+	of the ordinary is going on, there's a good chance it might be a quest.
  
  &W-&GUnless explicitly stated, Multi-playing is &YNOT&G allowed during quests.
-    IF you are caught multi-playing, you will forfeit any reward, and most 
-    likely have a temporary ban from questing placed on the characters involved
+	IF you are caught multi-playing, you will forfeit any reward, and most 
+	likely have a temporary ban from questing placed on the characters involved
 
 &CSee Also:&YQUEST, GLORY, GLORY RATES, GLORY TRADE
 ~
@@ -12264,18 +12264,18 @@ closely resembles), his need for help from outside sources is low.
 
 51 RANGERSPELLS~
 .         blindness   0%         charm person   0%      continual light   0%
-     control weather   0%          create fire   0%          create food   0%
-       create spring   0%         create water   0%       cure blindness   0%
-       cure critical   0%           cure light   0%          cure poison   0%
-        cure serious   0%          detect evil   0%        detect hidden  24%
-        detect invis  85%         detect magic   0%        detect poison   0%
-        dispel magic  33%                dream   0%          faerie fire   0%
-               float   0%             identify  75%          infravision   0%
-               invis  74%     kindred strength  34%       know alignment   0%
-       locate object   0%        oak evolution   0%            pass door   0%
-              poison  85%              refresh   0%         remove invis  35%
-              shield   0%                sleep   0%           stone skin  53%
-      word of recall  90%
+	 control weather   0%          create fire   0%          create food   0%
+	   create spring   0%         create water   0%       cure blindness   0%
+	   cure critical   0%           cure light   0%          cure poison   0%
+		cure serious   0%          detect evil   0%        detect hidden  24%
+		detect invis  85%         detect magic   0%        detect poison   0%
+		dispel magic  33%                dream   0%          faerie fire   0%
+			   float   0%             identify  75%          infravision   0%
+			   invis  74%     kindred strength  34%       know alignment   0%
+	   locate object   0%        oak evolution   0%            pass door   0%
+			  poison  85%              refresh   0%         remove invis  35%
+			  shield   0%                sleep   0%           stone skin  53%
+	  word of recall  90%
  
 ~
 
@@ -12287,8 +12287,8 @@ act_progs can be trigger by it.
 
 58 RASSIGN MASSIGN OASSIGN~
 Syntax: rassign
-        oassign 
-        massign
+		oassign 
+		massign
 
 > Steps for creating a new area from scratch;
 > 1. checkvnum rooms   low_vnum hi_vnum
@@ -12522,7 +12522,7 @@ dark gates in a quiet corner of what is now refered to as the 'Old Marsh.'
 
 53 REDIT~
 Syntax: REDIT FIELD [parameter list]
-        REDIT ON
+		REDIT ON
  
 FIELD  | PARAMETERS             -- DESCRIPTION / NOTES
 ---------------------------------------------------------------------
@@ -12540,17 +12540,17 @@ exname | <direction> [keywords] -- sets an exit's keywords
 exkey  | <direction> <key vnum> -- sets an exit's key vnum/value
  
 Note: Put a '+' before the direction to force ADDing of that exit
-      and use a '#' to specify the exit by sequential order.
+	  and use a '#' to specify the exit by sequential order.
  
 REDIT ON will lock you into a mode in which 'redit' is implied in each command
 sequence, and hitting enter will give you an instant rstat of whichever room
 you are in at the time. To get out of REDIT ON, simply type the word DONE. 
 Example:
  
-        redit on
-        name A dark and forboding hallway
-        flags dark indoors
-        done
+		redit on
+		name A dark and forboding hallway
+		flags dark indoors
+		done
  
  
 See EXITTYPES, EXFLAGS, EXITMAKING, SECTORTYPES and ROOMFLAGS.
@@ -12621,7 +12621,7 @@ For example, if a sword of legend was rekeyed to blade , get sword would
 no longer work with this item. (get blade would pick up the item)
 
    When an item is rekeyed, one of the words from the short description
-     &GMUST&W be used in the rekey.
+	 &GMUST&W be used in the rekey.
  
 Rekey is included in the rename fee. See help glory for more information.
 ~
@@ -12724,7 +12724,7 @@ newdark.are, newacad.are&w.
 
 1 REPAIR~
 Syntax:   repair <object>
-          repair all
+		  repair all
  
 Repair allows you to repair equipment and swords at metal blacksmiths,
 and recharge staves and wands at magical 'blacksmiths.'  Repair all
@@ -12906,7 +12906,7 @@ the combined power of two casters.
 
 1 RESTORE~
 Syntax: restore <character>
-        restore all
+		restore all
 
 RESTORE restores full hit points, mana points, and movement points to the
 target character.  RESTORE ALL does this for all mortals except player
@@ -13011,7 +13011,7 @@ See also:  polymorph
 Syntax:
  
 RGRUB st n lo hi  -  list all room vnums between "lo" and "hi" that match
-                     sectortype "n"
+					 sectortype "n"
  
 e.g.
  
@@ -13053,8 +13053,8 @@ PARALYSIS
 
 52 RLIST~
 Syntax: rlist
-      :	rlist <first room>
-      :	rlist <first room> <last room>
+	  :	rlist <first room>
+	  :	rlist <first room> <last room>
 
 This command will list all of the prototype rooms in your area, when used 
 with no arguments.  When used with a single argument it will list all 
@@ -13112,7 +13112,7 @@ NEUTRAL       |         32  |  Room is oriented to those of neutral alignment
 CHAOTIC       |         64  |  Room is oriented to those of chaotic alignment
 NOMAGIC       |        128  |  Magic cannot be used in this room
 TUNNEL        |        256  |  Room is a tunnel - x number of players allowed
-                               (use 'redit tunnel #' to  set the number)
+							   (use 'redit tunnel #' to  set the number)
 PRIVATE       |        512  |  Room is private (restricted to 2 people)
 SAFE          |       1024  |  Room is safe... no violence allowed
 SOLITARY      |       2048  |  Room is solitary (restricted to 1 person)
@@ -13150,7 +13150,7 @@ Hour          <hour>              [loops as Script for an hour from start hour]
  
 *NOTE* {hour}/<hour> is in military time. ie, 15 hours is 3p.m. mud time.
 *NOTE* The mpcommand MPDONOTHING currently only works in Script progs,
-       NOT in Time or Hour progs.
+	   NOT in Time or Hour progs.
  
 For rooms, see also: RPSTAT, RPEDIT, TRIGGER, RPCOMMANDS, IFCHECKS, VARIABLES.
 ~
@@ -13420,15 +13420,15 @@ Use 'apply <itemname>' to rub some of the salve onto your skin.
 
 1 SARAH~
 .                 !!!!!!!!!!!!!;    .,.
-               !!!!!!!!!!!!!!!!!!!!!!!!!!
-         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      !!!!!!!!!!!!!!!!!.,cec. !!!!!!!!!!!!!
-    !!!!!!!!!!!!!!!!.e$$$$$$$$$.!! zcec !!!!
-    !!!!!!!!!!!!!.e$$$$$$$$$$$$$$c$$$$$L !!!
-    !!!!!!!!!!! z$$$$$$$$$$$$$$$$$$$$$$$!!'
+			   !!!!!!!!!!!!!!!!!!!!!!!!!!
+		 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	  !!!!!!!!!!!!!!!!!.,cec. !!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!.e$$$$$$$$$.!! zcec !!!!
+	!!!!!!!!!!!!!.e$$$$$$$$$$$$$$c$$$$$L !!!
+	!!!!!!!!!!! z$$$$$$$$$$$$$$$$$$$$$$$!!'
    !!!!!!!!!!!! $$$$$',ssss,."$$$$$$$$$$
    !!!!!!!!!!!! $$$$$$$$$$$$$$$$$$$',ss,
-    !!!!!!!!!!! $$$$$$$/'  "$$$$$$'""",
+	!!!!!!!!!!! $$$$$$$/'  "$$$$$$'""",
   !!!!!!!!!!!! $$$$$$$c'f . ,$$$$$,f ,
  !!!!!!!!!!!!! $$$$$$$$$$$$$$$$$$$$$$$
  !!!!!!!!!!!!! $$$$$$$$$$$$$$$$$$$$$$$
@@ -13442,7 +13442,7 @@ Use 'apply <itemname>' to rub some of the salve onto your skin.
  !!!!!!!!!!!!!! $$$$$$$$$b.
  !!!!!!!!!!!!!! $$$$$$$$$$$$
    !!!!!!!!!!!! $$$$*SARAH*$$$
-    !!!!!!!!!!! $$$$$$$$$$$$$$$$
+	!!!!!!!!!!! $$$$$$$$$$$$$$$$
 ~
 
 1 SAVE~
@@ -13498,7 +13498,7 @@ See Also: STYLES
 
 52 SAVEAREA LOADAREA~
 Syntax: savearea
-        loadarea
+		loadarea
 
 Savearea and loadarea will save or load your prototype area.
 ~
@@ -13518,15 +13518,15 @@ See MSET or type MSET by itself.
 The following are guidelines of level 54 responsibilities:
  
    - An Immortal must spend at least 5-7 hours per week or at least
-     25 hours per month online to remain active and productive
+	 25 hours per month online to remain active and productive
    - Must be visible to all mortals, unless involved in running a
-     quest, watching someone or building
+	 quest, watching someone or building
    - Authorization of new characters
    - Channel monitoring -- should keep most channels on
    - Appraising higher Immortals of Mortal rule violations
    - Advise a 55+ of all reimbursement requests from mortals
    - The bodybag command, for doing CRs for peaceful characters
-     (at the discretion of the immortal)
+	 (at the discretion of the immortal)
    - Mastering proper mortal discipline techniques and punishments
    - Helping 51's && 52's with problems and questions
    - Possible object and mob building work
@@ -13541,9 +13541,9 @@ rules, 'help imm'.  Visit note boards at 1200, 1213, and 1214 regularly.
 The following is a guideline of level 54 responsibilities:
  
    - An Immortal must spend at least 5-7 hours per week or at least
-     25 hours per month online to remain active and productive
+	 25 hours per month online to remain active and productive
    - Must be visible to all mortals, unless involved in running a
-     quest, watching someone or building
+	 quest, watching someone or building
    - Share primary oversight of mortal behaviour with level 55's
    - Responsible for oversight of level 51-53's
    - Advise a 55+ of all reimbursement requests from mortals
@@ -13743,7 +13743,7 @@ Use sedit save to save the new social or changes to existing socials.
 
 57 SETBOOT~
 Syntax: setboot time <hour> <minute>
- 	setboot manual <0|1>
+	setboot manual <0|1>
 
 The setboot command is useful for planning a reboot, (to save you from 
 the trouble of all those echos :) ) and for the daily boot.  The manual
@@ -14087,10 +14087,10 @@ to your class from the low level to the high level specified.
  
 Example:  slist 2 2
  
-    SPELL && SKILL LIST
-    ------------------
-    Level 2
-      skill :                mount   Current:  75 Max: 85 
+	SPELL && SKILL LIST
+	------------------
+	Level 2
+	  skill :                mount   Current:  75 Max: 85 
  
 ~
 
@@ -14108,7 +14108,7 @@ SLOOKUP ALL shows this information for all skills and spells.
 
 -1 FUSS SMAUGFUSS 'SMAUG FUSS'~
 .                          The SMAUG FUSS Project
-                             www.smaugmuds.org
+							 www.smaugmuds.org
 
 FUSS stands for: [F]ixed [U]p [S]maug [S]ource
 It has also come to be known by the alias: [F]ixed [U]p [S]tock [S]ource
@@ -14127,17 +14127,17 @@ bugs are found that apply backward to the base distribution.
 
 -1 SMAUG THORIC~
 .                               [WWW.SMAUG.ORG]
-         /     _      _            _      _    _____
-        /      |\    /|     /\     |      |   /     \     ***************
-       /       | \  / |    /  \    |      |  |            *   \\._.//   *
-      /        |  \/  |   /    \   |      |  |            *   (0...0)   *
-     /_______  |      |  |______|  |      |  |            *    ).:.(    *
-            /  |      |  |      |  |      |  |            *    {o o}    *
-           /   |      |  |      |  |      |  |     __     *   / ' ' \   *
-          /    |      |  |      |  |      |  |       |    *-'^.VxvxV.^'-*
-         /     |      |  |      |   \____/    \_____/     ***************
-        /
-            [S]imulated [M]edieval multi-[U]ser [A]dventure [G]ame
+		 /     _      _            _      _    _____
+		/      |\    /|     /\     |      |   /     \     ***************
+	   /       | \  / |    /  \    |      |  |            *   \\._.//   *
+	  /        |  \/  |   /    \   |      |  |            *   (0...0)   *
+	 /_______  |      |  |______|  |      |  |            *    ).:.(    *
+			/  |      |  |      |  |      |  |            *    {o o}    *
+		   /   |      |  |      |  |      |  |     __     *   / ' ' \   *
+		  /    |      |  |      |  |      |  |       |    *-'^.VxvxV.^'-*
+		 /     |      |  |      |   \____/    \_____/     ***************
+		/
+			[S]imulated [M]edieval multi-[U]ser [A]dventure [G]ame
 
 SMAUG 1.4 is a Merc2.1 derivative written by Thoric (Derek Snider) with help
 from Altrag, Blodkai, Haus, Narn, Scryn, Swordbearer, Tricops, Gorog, Rennard,
@@ -14164,7 +14164,7 @@ saves     saving throw victim gets (see SPELLSAVES)
 bitvector see AFFECTED_BY, the bitvector applied by the spell, if any
 affects   see AFFECTTYPES, the effect the spell has, if any
 value     an extra field reserved for things like the vnum used in spells
-          that create objects, or summon monsters to the caster's aid.
+		  that create objects, or summon monsters to the caster's aid.
  
 ~
 
@@ -14729,7 +14729,7 @@ should be in the forefront when considering whether to use this spell.
 
 1 TEND~
 Syntax:  tend <target>
-         tend
+		 tend
 The well-traveled Paladin will normally learn the techniques necessary
 to mend the wounds of himself or others.  This is the greatest mending
 ability in the Paladin's repertoire, though due to its nature it can
@@ -14745,13 +14745,13 @@ not be used while in combat.
 
 60 TEST1~
 .           &B/|                                           |\
-          /||                                           ||\
-         / \\__          //               \\          __// \
-        /  |_  \         | \   /     \   / |         /  _|  \
-       /  /  \  \         \  \/ \---/ \/  /         /  /     \
-      /  /    |  \         \  \/\   /\/  /         /  |       \
-     /  /     \   \__       \ ( &G0&B\ /&G0 &B) /       __/   /        \
-    /  /       \     \___    \ \_/|\_/ /    ___/     /\         \
+		  /||                                           ||\
+		 / \\__          //               \\          __// \
+		/  |_  \         | \   /     \   / |         /  _|  \
+	   /  /  \  \         \  \/ \---/ \/  /         /  /     \
+	  /  /    |  \         \  \/\   /\/  /         /  |       \
+	 /  /     \   \__       \ ( &G0&B\ /&G0 &B) /       __/   /        \
+	/  /       \     \___    \ \_/|\_/ /    ___/     /\         \
    /  /         \_)      \___ \/-\|/-\/ ___/      &b(_/\ &B\      `  \
   /  /           /&b\__)       &B\/  oVo  \/       &b(__/   ` &B\      `  \
  /  /           /,   &b\__)    &B(_/\ _ /\_)    &b(__/        &B\`      \  \
@@ -14771,7 +14771,7 @@ not be used while in combat.
 &B|           &wThe CoderGods have bestowed us with &BMayhem&w! Be ready   &B|
 &B|           &wfor complete chaos and thank a coder today!            &B|
  
-                        &wI.M.O.T.D. Updated: &B6/14/98
+						&wI.M.O.T.D. Updated: &B6/14/98
 ~
 
 1 THALOS~
@@ -14882,16 +14882,16 @@ to acquire without detection.
 
 61 THIEFSKILLS~
 .   aggressive style  21%                  aid  39%             backstab  95%
-                bash  22%        berserk style  17%               circle  95%
-               climb  17%      defensive style  17%               detrap  17%
-                 dig  17%               disarm  90%                dodge  95%
-          dual wield  85%      enhanced damage  55%        evasive style  22%
-       fourth attack  30%                gouge  95%                 hide  85%
-               mount  17%                 peek  95%            pick lock  95%
-       poison weapon  38%                punch  50%                 scan  90%
-              search  85%        second attack  90%                sneak  95%
-      standard style  17%                steal  95%         third attack  70%
-               track  85%               tumble  95%
+				bash  22%        berserk style  17%               circle  95%
+			   climb  17%      defensive style  17%               detrap  17%
+				 dig  17%               disarm  90%                dodge  95%
+		  dual wield  85%      enhanced damage  55%        evasive style  22%
+	   fourth attack  30%                gouge  95%                 hide  85%
+			   mount  17%                 peek  95%            pick lock  95%
+	   poison weapon  38%                punch  50%                 scan  90%
+			  search  85%        second attack  90%                sneak  95%
+	  standard style  17%                steal  95%         third attack  70%
+			   track  85%               tumble  95%
  
 ~
 
@@ -14908,17 +14908,17 @@ yadda yadda yadda
 
 61 THORIC1~
 .&w
-                                                 zee.                 
-        z**=.                                  .P"  $                  
-         %   c                               z"   $                   
-          b    %                             d    4"                   
-          4     $            ....           4"    $                    
-           F     L       .P"       "%.      $     $                    
-           $     4     e"             "c    "     $                    
-           $      F  z   &BTHORIC           &w*  4      $      
-           P      $ d                    3.$      $                    
-           %      $d       ..eeeec..      *$      'b                   
-          d       $%   .e$*c d" ".z**$%.   $       $                   
+												 zee.                 
+		z**=.                                  .P"  $                  
+		 %   c                               z"   $                   
+		  b    %                             d    4"                   
+		  4     $            ....           4"    $                    
+		   F     L       .P"       "%.      $     $                    
+		   $     4     e"             "c    "     $                    
+		   $      F  z   &BTHORIC           &w*  4      $      
+		   P      $ d                    3.$      $                    
+		   %      $d       ..eeeec..      *$      'b                   
+		  d       $%   .e$*c d" ".z**$%.   $       $                   
 ~
 
 0 TICK~
@@ -15178,7 +15178,7 @@ VNUM    - The vnum of either the room or object to be trapped.
 TYPE    - The type of trap.  (See TRAPTYPES)
 CHARGES - The number of charges this trap should contain.
 FLAGS   - Flags specifying the characteristics of the trap.
-          (ie: room trap or object trap, what triggers the trap, etc.)
+		  (ie: room trap or object trap, what triggers the trap, etc.)
 
 See RESETS, TRAPTYPES and TRAPFLAGS.
 ~
@@ -15289,7 +15289,7 @@ Price, Paul Reiche, Evan Robinson, Gordon Schick, Lawrence Schick, Don Snow,
 Edward G. Sollers, Garry Spiegle, Stephen D. Sullivan, Ralph Wagner, Jim
 Ward, Jean Wells, Bill Wilkerson, Donald Paterson, and Frank Mentzer.
 
-      DIKUMud's concepts were directly based on TSR's D&&D concepts.
+	  DIKUMud's concepts were directly based on TSR's D&&D concepts.
 ~
 
 1 TUMBLE~
@@ -15315,7 +15315,7 @@ Syntax:  unfoldarea <area filename>
 This command will load up an area file.
  
 NOTE:  It could be quite dangerous to unfold an area that is already
-       loaded, or one that has not been tested.
+	   loaded, or one that has not been tested.
  
 ~
 
@@ -15447,7 +15447,7 @@ him/her/it         $k     $m      $M      $K      --        --
 his/her/its        $l     $s      $S      $L      --        --
  
 See also: MPSTAT, RPSTAT, OPSTAT, MPEDIT, RPEDIT, OPEDIT, TRIGGER, MPTRIGGERS,
-          RPTRIGGERS, OPTRIGGERS, MPCOMMANDS, RPCOMMANDS, OPCOMMANDS, IFCHECKS.
+		  RPTRIGGERS, OPTRIGGERS, MPCOMMANDS, RPCOMMANDS, OPCOMMANDS, IFCHECKS.
 ~
 
 1 VAULT~
@@ -15487,7 +15487,7 @@ Lists the vnum range for rooms/mobs/objects in all prototype areas.
 
 1 'VOMICA PRAVUS'~
 Syntax:  vomica <victim>
-    or:  vom    <victim>
+	or:  vom    <victim>
  
 A truly depraved afflicition which may be inflicted by a vampire upon
 its victim, this curse will weaken an opponent's hitroll and damage
@@ -15703,7 +15703,7 @@ not appear on this list if you cannot detect invisible.  Immortals who are
 wizinvis higher than your own level also will not appear.
  
 Syntax:  who                 who <class>    who <class> race>
-         who <level range>   who deadly     who <class> <race> <level range>
+		 who <level range>   who deadly     who <class> <race> <level range>
  
 With arguments, WHO can show players of certain classes, races, or levels:
 For example:
@@ -15724,11 +15724,11 @@ NEW ADDITIONS:
  who <deity name>        lists all online worshippers of the specified deity
  who group               lists all online grouped players
  who group 10 20         will list all players level 1 thru 10 who are grouped
-                         or who desire to group. (see also help CONFIG)
+						 or who desire to group. (see also help CONFIG)
  who leader              will list all leaders of clans, orders, guilds and
-                         councils.  This can be used in conjuction with a
-                         specific order if it is listed after the name.
-                         For example who 'guild of mages' leader
+						 councils.  This can be used in conjuction with a
+						 specific order if it is listed after the name.
+						 For example who 'guild of mages' leader
 ~
 
 1 'WHO LEADER'~
@@ -15751,7 +15751,7 @@ Syntax:  wimpy max
 This command sets your wimpy value.  When your character takes damage that
 reduces your hit points below your wimpy value, you will automatically
 attempt to flee.
-                                                      
+													  
 'Wimpy' by itself sets your wimpy to about 20% your maximum hitpoints.
  
 'Wimpy <value>' allows you to set your wimpy at a level you determine,

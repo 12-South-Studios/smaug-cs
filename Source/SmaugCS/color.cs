@@ -61,14 +61,15 @@ namespace SmaugCS
 
             ch.SendToPager("\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n");
 
-            for (var count = 32; count < (int)ATTypes.MAX_COLORS; ++count)
-            {
-                if ((count % 8) == 0 && count != 32)
-                    ch.SendToPager("\r\n");
+            // todo foreach through colors instead of using MAX_COLORS
+            //for (var count = 32; count < (int)ATTypes.MAX_COLORS; ++count)
+            //{
+            //    if ((count % 8) == 0 && count != 32)
+            //        ch.SendToPager("\r\n");
 
-                var atType = EnumerationExtensions.GetEnum<ATTypes>(count);
-                ch.PagerPrintf("%s%-10s%s", color_str(atType, ch), LookupConstants.pc_displays[count], AnsiCodes.Reset);
-            }
+            //    var atType = EnumerationExtensions.GetEnum<ATTypes>(count);
+            //    ch.PagerPrintf("%s%-10s%s", color_str(atType, ch), LookupConstants.pc_displays[count], AnsiCodes.Reset);
+            //}
 
             ch.SendToPager("\r\n\r\n");
             ch.SendToPager("&YAvailable colors are:\r\n");
