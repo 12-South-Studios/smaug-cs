@@ -4,16 +4,16 @@ namespace SmaugCS.Config
 {
     public class VnumElement : ConfigurationElement
     {
-        [ConfigurationProperty("Name", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("name", IsKey = true, IsRequired = true)]
         public string Name
         {
-            get { return (string)this["Name"]; }
+            get { return (string)this["name"]; }
         }
 
-        [ConfigurationProperty("Value", IsRequired = true)]
+        [ConfigurationProperty("value", IsRequired = true)]
         public string Value
         {
-            get { return (string)this["Value"]; }
+            get { return (string)this["value"]; }
         }
     }
 }

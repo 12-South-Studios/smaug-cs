@@ -4,16 +4,16 @@ namespace SmaugCS.Config
 {
     public class MayorTextStringElement : ConfigurationElement
     {
-        [ConfigurationProperty("Name", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("name", IsKey = true, IsRequired = true)]
         public string Name
         {
-            get { return this["Name"] as string; }
+            get { return this["name"] as string; }
         }
 
-        [ConfigurationProperty("Value", IsRequired = true)]
+        [ConfigurationProperty("value", IsRequired = true)]
         public string Value
         {
-            get { return this["Value"] as string; }
+            get { return this["value"] as string; }
         }
     }
 }

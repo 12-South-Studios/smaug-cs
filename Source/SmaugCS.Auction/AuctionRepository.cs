@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using Infrastructure.Data;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Auction
@@ -12,13 +12,13 @@ namespace SmaugCS.Auction
     {
         public IEnumerable<AuctionHistory> History { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly IRepository _repository;
+        private readonly ISmaugDbContext _dbContext;
 
-        public AuctionRepository(ILogManager logManager, IRepository repository)
+        public AuctionRepository(ILogManager logManager, ISmaugDbContext dbContext)
         {
             History = new List<AuctionHistory>();
             _logManager = logManager;
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public void Add(AuctionData auction)
@@ -39,7 +39,9 @@ namespace SmaugCS.Auction
         {
             try
             {
-                foreach (var history in _repository.GetQuery<DAL.Models.Auction>().Select(auction => new AuctionHistory
+                if (!_dbContext.Auctions.Any()) return;
+
+                foreach (var history in _dbContext.Auctions.Select(auction => new AuctionHistory
                 {
                     BuyerName = auction.BuyerName,
                     ItemForSale = auction.ItemSoldId,
@@ -60,28 +62,31 @@ namespace SmaugCS.Auction
 
         public void Save()
         {
-            try
+            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
-                _repository.UnitOfWork.BeginTransaction();
-                foreach (var history in History.Where(x => !x.Saved).ToList())
+                try
                 {
-                    var auction = new DAL.Models.Auction
+                    foreach (var history in History.Where(x => !x.Saved).ToList())
                     {
-                        BuyerName = history.BuyerName,
-                        ItemSoldId = history.ItemForSale,
-                        SellerName = history.SellerName,
-                        SoldFor = history.SoldFor,
-                        SoldOn = history.SoldOn
-                    };
-                    _repository.Attach(auction);
-                    history.Saved = true;
+                        var auction = new DAL.Models.Auction
+                        {
+                            BuyerName = history.BuyerName,
+                            ItemSoldId = history.ItemForSale,
+                            SellerName = history.SellerName,
+                            SoldFor = history.SoldFor,
+                            SoldOn = history.SoldOn
+                        };
+                        _dbContext.Auctions.Attach(auction);
+                        history.Saved = true;
+                    }
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
                 }
-                _repository.UnitOfWork.CommitTransaction();
-            }
-            catch (DbException ex)
-            {
-                _repository.UnitOfWork.RollBackTransaction();
-                _logManager.Error(ex);
+                catch (DbException ex)
+                {
+                    transaction.Rollback();
+                    _logManager.Error(ex);
+                }
             }
         }
     }

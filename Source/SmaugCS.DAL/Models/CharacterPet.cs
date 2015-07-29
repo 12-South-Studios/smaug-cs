@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
@@ -6,12 +6,6 @@ namespace SmaugCS.DAL.Models
     [Table("CharacterPets")]
     public class CharacterPet : Entity
     {
-        [Required]
-        public int CharacterId { get; set; }
-
-        [ForeignKey("CharacterId")]
-        public virtual Character Character { get; set; }
-
         public int MonsterId { get; set; }
 
         public int RoomId { get; set; }
@@ -25,5 +19,7 @@ namespace SmaugCS.DAL.Models
         public int Position { get; set; }
 
         public int Flags { get; set; }
+
+        public virtual ICollection<CharacterItem> Items { get; set; } 
     }
 }

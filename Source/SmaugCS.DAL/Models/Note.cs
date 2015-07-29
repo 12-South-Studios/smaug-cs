@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
@@ -18,11 +17,5 @@ namespace SmaugCS.DAL.Models
         public bool IsPoll { get; set; }
 
         public string Text { get; set; }
-
-        [Required]
-        public int BoardId { get; set; }
-
-        [ForeignKey("BoardId")]
-        public virtual Board Board { get; set; }
     }
 }

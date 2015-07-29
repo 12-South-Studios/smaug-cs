@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using Infrastructure.Data;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
@@ -11,13 +11,13 @@ namespace SmaugCS.Ban
     {
         public IEnumerable<BanData> Bans { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly IRepository _repository;
+        private readonly ISmaugDbContext _dbContext;
 
-        public BanRepository(ILogManager logManager, IRepository repository)
+        public BanRepository(ILogManager logManager, ISmaugDbContext dbContext)
         {
             Bans = new List<BanData>();
             _logManager = logManager;
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public void Add(BanData ban)
@@ -29,8 +29,12 @@ namespace SmaugCS.Ban
         {
             try
             {
-                foreach (var newBan in _repository.GetQuery<DAL.Models.Ban>().Select(ban => new BanData(ban.Id, ban.BanType)
+                if (!_dbContext.Bans.Any()) return;
+
+                foreach (var newBan in _dbContext.Bans.Select(ban => new BanData
                 {
+                    Id = ban.Id, 
+                    Type = ban.BanType,
                     BannedBy = ban.BannedBy,
                     BannedOn = ban.BannedOn,
                     Duration = ban.Duration,
@@ -53,54 +57,60 @@ namespace SmaugCS.Ban
 
         public void Save()
         {
-            try
+            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
-                _repository.UnitOfWork.BeginTransaction();
-                foreach (var ban in Bans.Where(x => !x.Saved).ToList())
+                try
                 {
-                    var banToSave = new DAL.Models.Ban
+                    foreach (var ban in Bans.Where(x => !x.Saved).ToList())
                     {
-                        BannedBy = ban.BannedBy,
-                        BannedOn = ban.BannedOn,
-                        Duration = ban.Duration,
-                        Level = ban.Level,
-                        BanType = ban.Type,
-                        IsPrefix = ban.Prefix,
-                        IsSuffix = ban.Suffix,
-                        Name = ban.Name,
-                        Note = ban.Note
-                    };
-                    ban.Saved = true;
-                    _repository.Attach(banToSave);
+                        var banToSave = new DAL.Models.Ban
+                        {
+                            BannedBy = ban.BannedBy,
+                            BannedOn = ban.BannedOn,
+                            Duration = ban.Duration,
+                            Level = ban.Level,
+                            BanType = ban.Type,
+                            IsPrefix = ban.Prefix,
+                            IsSuffix = ban.Suffix,
+                            Name = ban.Name,
+                            Note = ban.Note
+                        };
+                        ban.Saved = true;
+                        _dbContext.Bans.Attach(banToSave);
+                    }
+                    _dbContext.SaveChanges();
+                   transaction.Commit();
                 }
-                _repository.UnitOfWork.CommitTransaction();
-            }
-            catch (DbException ex)
-            {
-                _repository.UnitOfWork.RollBackTransaction();
-                _logManager.Error(ex);
+                catch (DbException ex)
+                {
+                    transaction.Rollback();
+                    _logManager.Error(ex);
+                }
             }
         }
 
         public void Delete(int id)
         {
-            try
+            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
-                var localBan = Bans.FirstOrDefault(x => x.Id == id);
-                if (localBan == null) return;
-                Bans.ToList().Remove(localBan);
+                try
+                {
+                    var localBan = Bans.FirstOrDefault(x => x.Id == id);
+                    if (localBan == null) return;
+                    Bans.ToList().Remove(localBan);
 
-                var ban = _repository.GetQuery<DAL.Models.Ban>().FirstOrDefault(x => x.Id == id);
-                if (ban == null) return;
+                    var ban = _dbContext.Bans.FirstOrDefault(x => x.Id == id);
+                    if (ban == null) return;
 
-                _repository.UnitOfWork.BeginTransaction();
-                _repository.Delete(ban);
-                _repository.UnitOfWork.CommitTransaction();
-            }
-            catch (DbException ex)
-            {
-                _repository.UnitOfWork.RollBackTransaction();
-                _logManager.Error(ex);
+                    _dbContext.Bans.Remove(ban);
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (DbException ex)
+                {
+                    transaction.Rollback();
+                    _logManager.Error(ex);
+                }
             }
         }
     }

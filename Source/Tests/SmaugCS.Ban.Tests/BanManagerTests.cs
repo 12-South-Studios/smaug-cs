@@ -15,8 +15,10 @@ namespace SmaugCS.Ban.Tests
 
         private static BanData GetBan()
         {
-            return new BanData(1, BanTypes.Race)
+            return new BanData
                 {
+                    Id = 1,
+                    Type = BanTypes.Race,
                     Name = "Tester",
                     Note = "Tester was very bad",
                     BannedBy = "BigWig",

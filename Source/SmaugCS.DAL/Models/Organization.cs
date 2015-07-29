@@ -14,6 +14,7 @@ namespace SmaugCS.DAL.Models
         public string Description { get; set; }
 
         public string Leader { get; set; }
+
         [Required]
         public int BoardId { get; set; }
 

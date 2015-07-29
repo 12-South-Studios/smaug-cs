@@ -1,17 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
 {
     [Table("CharacterActivities")]
     public class CharacterActivity : Entity
     {
-        [Required]
-        public int CharacterId { get; set; }
-
-        [ForeignKey("CharacterId")]
-        public virtual Character Character { get; set; }
-
         public int PvPKills { get; set; }
 
         public int PvPDeaths { get; set; }

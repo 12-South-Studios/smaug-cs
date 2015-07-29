@@ -1,6 +1,6 @@
-﻿using Infrastructure.Data;
-using Ninject;
+﻿using Ninject;
 using Ninject.Modules;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Board
@@ -11,7 +11,7 @@ namespace SmaugCS.Board
         {
             Kernel.Bind<IBoardRepository>().To<BoardRepository>()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("repository", Kernel.Get<IRepository>());
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
 
             Kernel.Bind<IBoardManager>().To<BoardManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())

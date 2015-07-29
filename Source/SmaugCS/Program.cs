@@ -14,14 +14,17 @@ using SmaugCS.Ban;
 using SmaugCS.Board;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.DAL;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Interfaces;
 using SmaugCS.Loaders;
 using SmaugCS.Logging;
+using SmaugCS.Lua;
 using SmaugCS.News;
 using SmaugCS.Repository;
+using SmaugCS.Time;
 using SmaugCS.Weather;
 
 namespace SmaugCS
@@ -86,8 +89,17 @@ namespace SmaugCS
                 .WithConstructorArgument("log", Logger)
                 .WithConstructorArgument("level", LogLevel.Debug);
 
-            Kernel.Load(new SmaugModule());
-            Kernel.Load("SmaugCS.*.dll");
+            Kernel.Load(new SmaugDbContextModule(),
+                new LoggingModule(),
+                new RepositoryModule(),
+                new SmaugModule(),
+                new AuctionModule(),
+                new BanModule(),
+                new BoardModule(),
+                new LuaModule(),
+                new NewsModule(),
+                new TimeModule(),
+                new WeatherModule());
         }
 
         private static void OnServerStart()
@@ -109,7 +121,7 @@ namespace SmaugCS
             NetworkManager.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
             NetworkManager.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
-
+            
             RepositoryManager = Kernel.Get<IRepositoryManager>();
 
             var luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");

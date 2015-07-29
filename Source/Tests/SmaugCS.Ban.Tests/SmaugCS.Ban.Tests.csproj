@@ -70,9 +70,6 @@
     <Reference Include="Realm.Library.Common">
       <HintPath>..\..\..\Libraries\Realm.Library.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Realm.Library.SmallDb">
-      <HintPath>..\..\..\Libraries\Realm.Library.SmallDb.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>

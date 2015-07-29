@@ -4,12 +4,12 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using Infrastructure.Data;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Common.Enumerations;
+using SmaugCS.DAL.Interfaces;
 
 namespace SmaugCS.Logging
 {
@@ -18,17 +18,17 @@ namespace SmaugCS.Logging
         public ILogWrapper LogWrapper { get; private set; }
 
         private static IKernel _kernel;
-        private readonly IRepository _repository;
+        private readonly ISmaugDbContext _dbContext;
         private readonly List<LogEntry> _pendingLogs;
         private readonly ITimer _dbDumpTimer;
 
         public static ILogManager Instance { get { return _kernel.Get<ILogManager>(); } }
 
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, IRepository repository)
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext)
         {
             LogWrapper = logWrapper;
             _kernel = kernel;
-            _repository = repository;
+            _dbContext = dbContext;
 
             _pendingLogs = new List<LogEntry>();
 
@@ -55,30 +55,33 @@ namespace SmaugCS.Logging
             var logsToDump = new List<LogEntry>(_pendingLogs);
             _pendingLogs.Clear();
 
-            try
+            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
-                _repository.UnitOfWork.BeginTransaction();
-                foreach (var log in logsToDump)
+                try
                 {
-                    var logToSave = new DAL.Models.Log
+                    foreach (var log in logsToDump)
                     {
-                        LogType = log.LogType,
-                        LoggedOn = DateTime.UtcNow,
-                        Text = log.Text
-                    };
-                    _repository.Attach(logToSave);
+                        var logToSave = new DAL.Models.Log
+                        {
+                            LogType = log.LogType,
+                            LoggedOn = DateTime.UtcNow,
+                            Text = log.Text
+                        };
+                        _dbContext.Logs.Attach(logToSave);
+                    }
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
                 }
-                _repository.UnitOfWork.CommitTransaction();
-            }
-            catch (DbException ex)
-            {
-                _repository.UnitOfWork.RollBackTransaction();
-                DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
-
-                if (logsToDump.Any())
+                catch (DbException ex)
                 {
-                    _pendingLogs.AddRange(logsToDump);
-                    logsToDump.Clear();
+                    transaction.Rollback();
+                    DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
+
+                    if (logsToDump.Any())
+                    {
+                        _pendingLogs.AddRange(logsToDump);
+                        logsToDump.Clear();
+                    }
                 }
             }
         }

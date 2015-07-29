@@ -59,6 +59,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\Libraries\Ninject.dll</HintPath>
     </Reference>
@@ -69,6 +77,7 @@
       <HintPath>..\..\Libraries\Realm.Library.Lua.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
   </ItemGroup>
   <Choose>
@@ -87,10 +96,6 @@
     <Compile Include="LoggingModule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj">
-      <Project>{83ce8910-37aa-415a-954b-3e36f9701d17}</Project>
-      <Name>Infrastructure.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
@@ -103,6 +108,10 @@
       <Project>{157b6b68-68f7-414b-ae04-9cb80b9c68b4}</Project>
       <Name>SmaugCS.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Infrastructure.Data;
 using Moq;
 using Ninject;
 using NUnit.Framework;
@@ -12,6 +11,7 @@ using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
@@ -79,7 +79,7 @@ namespace SmaugCS.Tests.Repositories
         public void OnSetup()
         {
             var mockKernel = new Mock<IKernel>();
-            var mockCtx = new Mock<IRepository>();
+            var mockCtx = new Mock<ISmaugDbContext>();
             var mockLogger = new Mock<ILogWrapper>();
             var mockTimer = new Mock<ITimer>();
 

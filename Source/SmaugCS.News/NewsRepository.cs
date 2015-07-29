@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using Infrastructure.Data;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.News
@@ -10,13 +10,13 @@ namespace SmaugCS.News
     {
         public IEnumerable<NewsData> News { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly IRepository _repository;
+        private readonly ISmaugDbContext _dbContext;
 
-        public NewsRepository(ILogManager logManager, IRepository repository)
+        public NewsRepository(ILogManager logManager, ISmaugDbContext dbContext)
         {
             News = new List<NewsData>();
             _logManager = logManager;
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public void Add(NewsData news)
@@ -28,7 +28,9 @@ namespace SmaugCS.News
         {
             try
             {
-                foreach (var news in _repository.GetQuery<DAL.Models.News>())
+                if (!_dbContext.News.Any()) return;
+
+                foreach (DAL.Models.News news in _dbContext.News)
                 {
                     var newNews = new NewsData(news.Id)
                     {
@@ -41,18 +43,17 @@ namespace SmaugCS.News
                     };
                     News.ToList().Add(newNews);
 
-                    foreach (var n in _repository.GetQuery<DAL.Models.NewsEntry>()
-                        .Where(x => x.NewsId == newNews.Id))
+                    foreach(DAL.Models.NewsEntry entry in news.Entries) 
                     {
                         var newEntry = new NewsEntryData
                         {
-                            Id = n.Id,
-                            Title = n.Title,
-                            Name = n.Name,
-                            Text = n.Text,
-                            PostedOn = n.PostedOn,
-                            PostedBy = n.PostedBy,
-                            Active = n.IsActive
+                            Id = entry.Id,
+                            Title = entry.Title,
+                            Name = entry.Name,
+                            Text = entry.Text,
+                            PostedOn = entry.PostedOn,
+                            PostedBy = entry.PostedBy,
+                            Active = entry.IsActive
                         };
                         newNews.Entries.ToList().Add(newEntry);
                     }
@@ -67,45 +68,47 @@ namespace SmaugCS.News
 
         public void Save()
         {
-            try
+            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
-                _repository.UnitOfWork.BeginTransaction();
-                foreach (var news in News.Where(x => !x.Saved).ToList())
+                try
                 {
-                    var newsToSave = new DAL.Models.News
+                    foreach (var news in News.Where(x => !x.Saved).ToList())
                     {
-                        CreatedBy = news.CreatedBy,
-                        CreatedOn = news.CreatedOn,
-                        Header = news.Header,
-                        IsActive = news.Active,
-                        Level = news.Level,
-                        Name = news.Name
-                    };
-                    news.Saved = true;
-                    _repository.Attach(newsToSave);
-
-                    foreach (var entry in news.Entries.Where(y => !y.Saved).ToList())
-                    {
-                        var entryToSave = new DAL.Models.NewsEntry
+                        var newsToSave = new DAL.Models.News
                         {
-                            IsActive = entry.Active,
-                            Name = entry.Name,
-                            NewsId = news.Id,
-                            PostedBy = entry.PostedBy,
-                            PostedOn = entry.PostedOn,
-                            Title = entry.Title,
-                            Text = entry.Text
+                            CreatedBy = news.CreatedBy,
+                            CreatedOn = news.CreatedOn,
+                            Header = news.Header,
+                            IsActive = news.Active,
+                            Level = news.Level,
+                            Name = news.Name
                         };
-                        entry.Saved = true;
-                        _repository.Attach(entryToSave);
+                        news.Saved = true;
+                        _dbContext.News.Attach(newsToSave);
+
+                        foreach (var entry in news.Entries.Where(y => !y.Saved).ToList())
+                        {
+                            var entryToSave = new DAL.Models.NewsEntry
+                            {
+                                IsActive = entry.Active,
+                                Name = entry.Name,
+                                PostedBy = entry.PostedBy,
+                                PostedOn = entry.PostedOn,
+                                Title = entry.Title,
+                                Text = entry.Text
+                            };
+                            entry.Saved = true;
+                            newsToSave.Entries.Add(entryToSave);
+                        }
                     }
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
                 }
-                _repository.UnitOfWork.CommitTransaction();
-            }
-            catch (DbException ex)
-            {
-                _repository.UnitOfWork.RollBackTransaction();
-                _logManager.Error(ex);
+                catch (DbException ex)
+                {
+                    transaction.Rollback();
+                    _logManager.Error(ex);
+                }
             }
         }
     }

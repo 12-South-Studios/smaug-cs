@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Text;
-using Infrastructure.Data;
 using Moq;
 using Ninject;
 using NUnit.Framework;
@@ -8,6 +7,7 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using Realm.Library.Patterns.Repository;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
@@ -49,7 +49,7 @@ namespace SmaugCS.Tests.Repositories
             RepositoryManager dbMgr = new RepositoryManager(new Mock<IKernel>().Object, new Mock<ILogManager>().Object);
 
             LogManager logMgr = new LogManager(new Mock<ILogWrapper>().Object, new Mock<IKernel>().Object,
-                new Mock<ITimer>().Object, new Mock<IRepository>().Object);
+                new Mock<ITimer>().Object, new Mock<ISmaugDbContext>().Object);
 
             LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

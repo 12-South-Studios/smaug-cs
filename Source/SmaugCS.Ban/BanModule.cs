@@ -1,8 +1,8 @@
-﻿using Infrastructure.Data;
-using Ninject;
+﻿using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
@@ -16,7 +16,7 @@ namespace SmaugCS.Ban
 
             Kernel.Bind<IBanRepository>().To<BanRepository>()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("repository", Kernel.Get<IRepository>());
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
 
             Kernel.Bind<IBanManager>().To<BanManager>().InSingletonScope()
                 .WithConstructorArgument("kernel", Kernel)

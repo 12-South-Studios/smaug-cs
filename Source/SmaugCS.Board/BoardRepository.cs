@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using Infrastructure.Data;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Board
@@ -10,13 +10,13 @@ namespace SmaugCS.Board
     {
         public IEnumerable<BoardData> Boards { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly IRepository _repository;
+        private readonly ISmaugDbContext _dbContext;
 
-        public BoardRepository(ILogManager logManager, IRepository repository)
+        public BoardRepository(ILogManager logManager, ISmaugDbContext dbContext)
         {
             Boards = new List<BoardData>();
             _logManager = logManager;
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public void Add(BoardData board)
@@ -28,41 +28,42 @@ namespace SmaugCS.Board
         {
             try
             {
-                foreach (var b in _repository.GetQuery<DAL.Models.Board>())
+                if (!_dbContext.Boards.Any()) return;
+
+                foreach (DAL.Models.Board board in _dbContext.Boards)
                 {
-                    var newBoard = new BoardData(b.Id, b.BoardType)
+                    var newBoard = new BoardData(board.Id, board.BoardType)
                     {
-                        Name = b.Name,
-                        ReadGroup = b.ReadGroup,
-                        PostGroup = b.PostGroup,
-                        ExtraReaders = b.ExtraReaders,
-                        ExtraRemovers = b.ExtraRemovers,
-                        OTakeMessage = b.OTakeMessage,
-                        OPostMessage = b.OTakeMessage,
-                        ORemoveMessage = b.ORemoveMessage,
-                        OCopyMessage = b.OCopyMessage,
-                        OListMessage = b.OListMessage,
-                        PostMessage = b.PostMessage,
-                        OReadMessage = b.OReadMessage,
-                        MinimumReadLevel = b.MinimumReadLevel,
-                        MinimumPostLevel = b.MinimumPostLevel,
-                        MinimumRemoveLevel = b.MinimumRemoveLevel,
-                        MaximumPosts = b.MaximumPosts,
-                        BoardObjectId = b.BoardObjectId
+                        Name = board.Name,
+                        ReadGroup = board.ReadGroup,
+                        PostGroup = board.PostGroup,
+                        ExtraReaders = board.ExtraReaders,
+                        ExtraRemovers = board.ExtraRemovers,
+                        OTakeMessage = board.OTakeMessage,
+                        OPostMessage = board.OTakeMessage,
+                        ORemoveMessage = board.ORemoveMessage,
+                        OCopyMessage = board.OCopyMessage,
+                        OListMessage = board.OListMessage,
+                        PostMessage = board.PostMessage,
+                        OReadMessage = board.OReadMessage,
+                        MinimumReadLevel = board.MinimumReadLevel,
+                        MinimumPostLevel = board.MinimumPostLevel,
+                        MinimumRemoveLevel = board.MinimumRemoveLevel,
+                        MaximumPosts = board.MaximumPosts,
+                        BoardObjectId = board.BoardObjectId
                     };
                     Boards.ToList().Add(newBoard);
 
-                    foreach (var note in _repository.GetQuery<DAL.Models.Note>().Where(x => x.BoardId == newBoard.Id))
+                    foreach (var newNote in board.Notes.Select(note => new NoteData(note.Id)
                     {
-                        var newNote = new NoteData(note.Id)
-                        {
-                            Sender = note.Sender,
-                            DateSent = note.DateSent,
-                            RecipientList = note.RecipientList,
-                            Subject = note.Subject,
-                            IsPoll = note.IsPoll,
-                            Text = note.Text
-                        };
+                        Sender = note.Sender,
+                        DateSent = note.DateSent,
+                        RecipientList = note.RecipientList,
+                        Subject = note.Subject,
+                        IsPoll = note.IsPoll,
+                        Text = note.Text
+                    }))
+                    {
                         newBoard.Notes.ToList().Add(newNote);
                     }
                 }
@@ -76,56 +77,58 @@ namespace SmaugCS.Board
 
         public void Save()
         {
-            try
+            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
-                _repository.UnitOfWork.BeginTransaction();
-                foreach (var board in Boards.Where(x => !x.Saved).ToList())
+                try
                 {
-                    var boardToSave = new DAL.Models.Board
+                    foreach (var board in Boards.Where(x => !x.Saved).ToList())
                     {
-                        Name = board.Name,
-                        ReadGroup = board.ReadGroup,
-                        PostGroup = board.PostGroup,
-                        ExtraReaders = board.ExtraReaders,
-                        ExtraRemovers = board.ExtraRemovers,
-                        OTakeMessage = board.OTakeMessage,
-                        OPostMessage = board.OPostMessage,
-                        ORemoveMessage = board.ORemoveMessage,
-                        OCopyMessage = board.OCopyMessage,
-                        OListMessage = board.OListMessage,
-                        PostMessage = board.PostMessage,
-                        OReadMessage = board.ORemoveMessage,
-                        MinimumReadLevel = board.MinimumReadLevel,
-                        MinimumPostLevel = board.MinimumPostLevel,
-                        MinimumRemoveLevel = board.MinimumRemoveLevel,
-                        MaximumPosts = board.MaximumPosts,
-                        BoardObjectId = board.BoardObjectId
-                    };
-                    board.Saved = true;
-                    _repository.Attach(boardToSave);
-
-                    foreach (var note in board.Notes.Where(y => !y.Saved).ToList())
-                    {
-                        var noteToSave = new DAL.Models.Note
+                        var boardToSave = new DAL.Models.Board
                         {
-                            BoardId = boardToSave.Id,
-                            DateSent = note.DateSent,
-                            IsPoll = note.IsPoll,
-                            RecipientList = note.RecipientList,
-                            Sender = note.Sender,
-                            Subject = note.Subject,
-                            Text = note.Text
+                            Name = board.Name,
+                            ReadGroup = board.ReadGroup,
+                            PostGroup = board.PostGroup,
+                            ExtraReaders = board.ExtraReaders,
+                            ExtraRemovers = board.ExtraRemovers,
+                            OTakeMessage = board.OTakeMessage,
+                            OPostMessage = board.OPostMessage,
+                            ORemoveMessage = board.ORemoveMessage,
+                            OCopyMessage = board.OCopyMessage,
+                            OListMessage = board.OListMessage,
+                            PostMessage = board.PostMessage,
+                            OReadMessage = board.ORemoveMessage,
+                            MinimumReadLevel = board.MinimumReadLevel,
+                            MinimumPostLevel = board.MinimumPostLevel,
+                            MinimumRemoveLevel = board.MinimumRemoveLevel,
+                            MaximumPosts = board.MaximumPosts,
+                            BoardObjectId = board.BoardObjectId
                         };
-                        note.Saved = true;
-                        _repository.Attach(noteToSave);
+                        board.Saved = true;
+                        _dbContext.Boards.Attach(boardToSave);
+
+                        foreach (var note in board.Notes.Where(y => !y.Saved).ToList())
+                        {
+                            var noteToSave = new DAL.Models.Note
+                            {
+                                DateSent = note.DateSent,
+                                IsPoll = note.IsPoll,
+                                RecipientList = note.RecipientList,
+                                Sender = note.Sender,
+                                Subject = note.Subject,
+                                Text = note.Text
+                            };
+                            note.Saved = true;
+                            boardToSave.Notes.Add(noteToSave);
+                        }
                     }
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
                 }
-                _repository.UnitOfWork.CommitTransaction();
-            }
-            catch (DbException ex)
-            {
-                _repository.UnitOfWork.RollBackTransaction();
-                _logManager.Error(ex);
+                catch (DbException ex)
+                {
+                    transaction.Rollback();
+                    _logManager.Error(ex);
+                }  
             }
         }
     }

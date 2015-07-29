@@ -5,8 +5,8 @@ namespace SmaugCS.Ban
 {
     public class BanData
     {
-        public int Id { get; private set; }
-        public BanTypes Type { get; private set; }
+        public int Id { get; set; }
+        public BanTypes Type { get; set; }
         public string Name { get; set; }
         public string Note { get; set; }
         public string BannedBy { get; set; }
@@ -20,10 +20,8 @@ namespace SmaugCS.Ban
         public bool Suffix { get; set; }
         public bool Saved { get; set; }
 
-        public BanData(int id, BanTypes banType)
+        public BanData()
         {
-            Id = id;
-            Type = banType;
             Saved = false;
         }
 

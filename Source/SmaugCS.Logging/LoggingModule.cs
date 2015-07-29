@@ -1,9 +1,9 @@
-﻿using Infrastructure.Data;
-using Ninject;
+﻿using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using SmaugCS.Constants.Constants;
+using SmaugCS.DAL.Interfaces;
 
 namespace SmaugCS.Logging
 {
@@ -18,7 +18,7 @@ namespace SmaugCS.Logging
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
                 .WithConstructorArgument("kernel", Kernel)
                 .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"))
-                .WithConstructorArgument("repository", Kernel.Get<IRepository>());
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
         }
     }
 }

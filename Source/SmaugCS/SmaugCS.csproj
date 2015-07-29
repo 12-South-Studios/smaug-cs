@@ -122,9 +122,6 @@
     <Reference Include="Realm.Library.Patterns.Singleton">
       <HintPath>..\..\Libraries\Realm.Library.Patterns.Singleton.dll</HintPath>
     </Reference>
-    <Reference Include="Realm.Library.SmallDb">
-      <HintPath>..\..\Libraries\Realm.Library.SmallDb.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -938,10 +935,6 @@
     <Content Include="Documentation\Licenses.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj">
-      <Project>{83ce8910-37aa-415a-954b-3e36f9701d17}</Project>
-      <Name>Infrastructure.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Auction\SmaugCS.Auction.csproj">
       <Project>{101243bd-e350-43ff-944f-1a5a01d5b0d3}</Project>
       <Name>SmaugCS.Auction</Name>

@@ -4,10 +4,10 @@ namespace SmaugCS.Config
 {
     public class SystemDirectoryElement : ConfigurationElement
     {
-        [ConfigurationProperty("Name", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("name", IsKey = true, IsRequired = true)]
         public string Name
         {
-            get { return this["Name"] as string; }
+            get { return this["name"] as string; }
         }
 
         [ConfigurationProperty("Path", IsRequired = true)]

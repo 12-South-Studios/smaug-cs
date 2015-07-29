@@ -7,7 +7,6 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using Ninject;
 using Realm.Library.Common.Logging;
-using SmaugCS.DAL.DependencyModules;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.DAL.Models;
 
@@ -20,20 +19,18 @@ namespace SmaugCS.DAL
 
         private DateTime _lastSaveTimeUtc;
 
-        public SmaugDbContext()
+        public SmaugDbContext() : base("Smaug")
         {
             var kernel = new StandardKernel(new SmaugDbContextModule());
             Logger = kernel.Get<ILogWrapper>();
             ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
         }
-        public SmaugDbContext(ILogWrapper logger)
+        public SmaugDbContext(ILogWrapper logger) : base("Smaug")
         {
             Logger = logger;
             ObjectContext = ((IObjectContextAdapter) this).ObjectContext;
         }
 
-       
- 
         public override int SaveChanges()
         {
             _lastSaveTimeUtc = DateTime.UtcNow;
@@ -55,8 +52,6 @@ namespace SmaugCS.DAL
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
-
         }
 
         private void LogDbEntityValidationResults(DbEntityValidationException e)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
@@ -20,11 +19,5 @@ namespace SmaugCS.DAL.Models
 
         [DefaultValue(true)]
         public bool IsActive { get; set; }
-
-        [Required]
-        public int NewsId { get; set; }
-
-        [ForeignKey("NewsId")]
-        public virtual News News { get; set; }
     }
 }

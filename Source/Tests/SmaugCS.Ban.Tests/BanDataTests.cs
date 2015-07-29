@@ -11,8 +11,10 @@ namespace SmaugCS.Ban.Tests
         [TestCase(3600, true)]
         public void IsExpired_Test(int duration, bool expected)
         {
-            var ban = new BanData(1, BanTypes.Site)
+            var ban = new BanData
             {
+                Id = 1,
+                Type = BanTypes.Site,
                 BannedOn = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)),
                 Duration = duration
             };
@@ -23,8 +25,10 @@ namespace SmaugCS.Ban.Tests
         [Test]
         public void UnbanDate_Never_Test()
         {
-            var ban = new BanData(1, BanTypes.Site)
+            var ban = new BanData
             {
+                Id = 1,
+                Type = BanTypes.Site,
                 BannedOn = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)),
                 Duration = 0
             };
