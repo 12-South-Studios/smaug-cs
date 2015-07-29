@@ -1051,7 +1051,7 @@ namespace SmaugCS
                 return false;
 
             if (!ch.IsNpc() && !victim.IsNpc() && ch != victim
-                && victim.CurrentRoom.Area.Flags.IsSet((int)AreaFlags.NoPKill))
+                && victim.CurrentRoom.Area.Flags.IsSet((int)AreaFlags.NoPlayerVsPlayer))
             {
                 if (show_messg)
                 {

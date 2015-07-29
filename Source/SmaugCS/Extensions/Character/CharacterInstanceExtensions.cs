@@ -436,7 +436,7 @@ namespace SmaugCS.Extensions.Character
                    (!victim.CanPKill() || ch.IsNpc() || ch.CanPKill()) &&
                    (!victim.IsNpc() || !victim.Act.IsSet(ActFlags.Prototype)) &&
                    (!victim.IsNpc() || !victim.SavingThrows.CheckSaveVsSpellStaff(ch.Level, victim)) &&
-                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) || !ch.IsPKill());
+                   (!victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPlayerVsPlayer) || !ch.IsPKill());
         }
 
         public static bool CanDrop(this CharacterInstance ch, ObjectInstance obj)

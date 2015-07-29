@@ -200,7 +200,7 @@ namespace SmaugCS.Commands.Movement
 
                 // Prevent deadlies from entering a nopkill-flagged area from a non-flagged area, 
                 // but allow them to move around if already inside a nopkill area.
-                if (toRoom.Area.Flags.IsSet(AreaFlags.NoPKill) && !ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill)
+                if (toRoom.Area.Flags.IsSet(AreaFlags.NoPlayerVsPlayer) && !ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPlayerVsPlayer)
                     && ch.IsPKill() && !ch.IsImmortal())
                 {
                     ch.SetColor(ATTypes.AT_MAGIC);

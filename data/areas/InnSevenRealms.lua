@@ -1,6 +1,6 @@
 -- INNSEVENREALMS.LUA
 -- This is the zone-file for the Inn of the Seven Realms
--- Revised: 2014.08.07
+-- Revised: 2015.07.29
 -- Author: Jason Murdick
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();
@@ -14,8 +14,8 @@ function LoadArea()
 	area.this.HighHardRange = 60;
 	area.this.HighEconomy = 45009000;
 	area.this.ResetFrequency = 60;
-	area.this:SetFlags("nopkill");
-	area.this.ResetMessage = "A shiver runs up your spine...";
+	area.this:SetFlags("NoPlayerVsPlayer");
+	area.this.ResetMessage = "A cheer, stomping of feet and clanking of mugs echoes through the halls...";
 	
 	FirstFloorMobs();
 	SecondFloorMobs();

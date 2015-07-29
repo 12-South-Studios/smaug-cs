@@ -51,7 +51,7 @@ namespace SmaugCS.Spells
             if (CheckFunctions.CheckIfTrueCasting(!victim.CurrentRoom.Area.IsInHardRange(ch), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
             if (CheckFunctions.CheckIfTrueCasting(
-                victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPKill) && ch.IsPKill(), skill, ch,
+                victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPlayerVsPlayer) && ch.IsPKill(), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
             comm.act(ATTypes.AT_MAGIC, "$n disappears in a blinding flash of light!", ch, null, null, ToTypes.Room);

@@ -1,6 +1,6 @@
 -- THEVOID.LUA
 -- This is the zone-file for The Void
--- Revised: 2014.08.07
+-- Revised: 2015.07.29
 -- Author: Jason Murdick
 -- Version: 1.0
 f = loadfile(LDataPath() .. "\\modules\\module_area.lua")();

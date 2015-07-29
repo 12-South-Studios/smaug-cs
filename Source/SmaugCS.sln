@@ -174,10 +174,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{1B2F8ECD-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Areas", "Areas", "{5944DFDB-E6DE-4A53-B04A-5F4254A20F73}"
 	ProjectSection(SolutionItems) = preProject
-		..\data\area\Aran.lua = ..\data\area\Aran.lua
-		..\data\area\help.lua = ..\data\area\help.lua
-		..\data\area\InnSevenRealms.lua = ..\data\area\InnSevenRealms.lua
-		..\data\area\TheVoid.lua = ..\data\area\TheVoid.lua
+		..\data\areas\Aran.lua = ..\data\areas\Aran.lua
+		..\data\areas\help.lua = ..\data\areas\help.lua
+		..\data\areas\InnSevenRealms.lua = ..\data\areas\InnSevenRealms.lua
+		..\data\areas\TheVoid.lua = ..\data\areas\TheVoid.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clans", "Clans", "{8F7BD344-5F04-4042-9824-63CA53B4AE3B}"
@@ -338,6 +338,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NuGet", ".NuGet", "{506DF3
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aran", "Aran", "{42FB57E2-9ACE-4E0F-84B7-98B9B1E8B550}"
+	ProjectSection(SolutionItems) = preProject
+		..\data\areas\Aran\Mobs.lua = ..\data\areas\Aran\Mobs.lua
+		..\data\areas\Aran\Objects.lua = ..\data\areas\Aran\Objects.lua
+		..\data\areas\Aran\Rooms.lua = ..\data\areas\Aran\Rooms.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnSevenRealms", "InnSevenRealms", "{D76C78A3-A189-49E9-A703-709226C95B86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TheVoid", "TheVoid", "{435A89FA-A386-43B7-BA8C-2FED8E2DDB98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1142,5 +1153,8 @@ Global
 		{28971734-F26D-4936-B237-7725206D128F} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{7A8883DF-7D9A-43E7-AFDD-1D65B1AE1677} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
 		{A2B33652-2A5D-41AF-ADBC-ACC8CD9B949B} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
+		{42FB57E2-9ACE-4E0F-84B7-98B9B1E8B550} = {5944DFDB-E6DE-4A53-B04A-5F4254A20F73}
+		{D76C78A3-A189-49E9-A703-709226C95B86} = {5944DFDB-E6DE-4A53-B04A-5F4254A20F73}
+		{435A89FA-A386-43B7-BA8C-2FED8E2DDB98} = {5944DFDB-E6DE-4A53-B04A-5F4254A20F73}
 	EndGlobalSection
 EndGlobal

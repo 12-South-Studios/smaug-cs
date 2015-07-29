@@ -25,23 +25,19 @@ end
  --PURPOSE:  Executes the passed script or file
 --==================================================================
 function executeScript(script, isfile)
-	
-	if (isfile == true) then
-		n = loadfile(script)
-		
-		local status, err = pcall(n)
-		if status == false then
-			if err == nil then
-				--errorLog("base.lua:executeScript() -> script (" .. script .. ") -> unknown error -> " .. debug.traceback());
-				return false;		
-			else
-				--errorLog("base.lua:executeScript() -> script (" .. script .. ") -> " .. err .. " -> " .. debug.traceback());
-				return false;
-			end
-		end
-	else
-		--errorLog('base.lua:executeScript() -> called to execute script ' .. script .. '.');
+	if (isfile == false) then
+        LBootLog('ExecuteScript -> called to execute string ' .. script .. '.');
 		return false;
+    end
+
+	local status, err = pcall(loadfile(script));
+	if status == false then
+		if err == nil then
+			LBootLog("ExecuteScript -> script (" .. script .. ") -> unknown error -> " .. debug.traceback());
+		else
+			LBootLog("ExecuteScript -> script (" .. script .. ") -> " .. err .. " -> " .. debug.traceback());
+		end
+        return false;
 	end
 
 	return true;
