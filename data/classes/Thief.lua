@@ -8,7 +8,7 @@ f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 function LoadClass()
 	newClass = LCreateClass("Thief", 2);
 	class.this = newClass;
-	class.this:SetPrimaryAttribute("dexterity");
+	class.this:SetPrimaryAttribute("PermanentDexterity");
 	class.this.Weapon = 10312;
 	class.this.Guild = 3028;
 	class.this.SkillAdept = 85;

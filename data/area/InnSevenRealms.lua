@@ -35,7 +35,7 @@ function FirstFloorMobs()
 	stands behind the bar of this establishment.  His dark features mark him to be of 
 	southern descent.  He has dark hair and a bushy, dark beard which have been 
 	recently trimmed and his laugh echoes throughout the room.]];
-	mobile.ActFlags = "Immortal NoAttack";
+	mobile:SetStatistic("ActFlags", "Immortal NoAttack");
 	
 	-- Create a shop for Bron
 	shop = CreateShop(10030, 90, 7, 21);
@@ -51,7 +51,7 @@ function FirstFloorMobs()
 	mobile.Description = [[Wife of Bron, the proprietor of the Inn, Chalan does 
 	most of the cooking and runs the household staff.   She is a large woman with 
 	dark brown hair and a sharp tongue, but a kind face.]];
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 	-- MUDPROG
 	-- Stir the cauldron
 	-- Check the oven
@@ -72,15 +72,15 @@ function FirstFloorMobs()
 	mobile.LongDescription = "A young enthusiastic cleric is here.";
 	mobile.Description = [[description goes here]];
 	mobile.Class = "cleric";
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 	mobile.Defenses = "heal";
 
 	mobile = CreateMobile(10004, "natania child", "Natania Ma'Ganor");
 	mobile.LongDescription = "A small child with greasy, dark hair is here.";
 	mobile.Description = [[A small child of fewer than ten years, Natania has greasy, 
 	dark hair and smudges on her face and hands from helping her mother in the kitchen.]];
-	mobile.Gender = "female";
-	mobile.ActFlags = "npc sentinel wimpy";
+	mobile:SetStatistic("Gender", "female");
+	mobile:SetStatistic("ActFlags", "npc sentinel wimpy");
 
 	mobile = CreateMobile(10005, "alania elf", "Alania Telkhat, Healer");
 	mobile.LongDescription = "An aged elf is here.";
@@ -90,7 +90,7 @@ function FirstFloorMobs()
 	she surveys the crowds of patrons in the Inn.]];
 	mobile.Race = "elf";
 	mobile.Class = "cleric";
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 	mobile.Speaks = "common elven";
 	mobile.Defenses = "heal";
 
@@ -106,13 +106,13 @@ function FirstFloorMobs()
 	mobile = CreateMobile(10007, "patron", "Bar Patron");
 	mobile.LongDescription = "A bar patron is here.";
 	mobile.Description = [[A nondescript person is common clothes is drinking a mug of ale.]]
-	mobile.ActFlags = "npc stayarea";
+	mobile:SetStatistic("ActFlags", "npc stayarea");
 
 	mobile = CreateMobile(10008, "adventurer weary", "Weary Adventurer");
 	mobile.LongDescription = "A weary adventurer is here."
 	mobile.Description = [[A nondescript person who is looking for adventure, but is wearily eating 
 	a bowl of stew and drinking from a tankard of ale.]];
-	mobile.ActFlags = "npc stayarea";
+	mobile:SetStatistic("ActFlags", "npc stayarea");
 	-- MUD PROG
 	-- Randomly say something about the War or the Undead or some facet of the Realms
 
@@ -120,14 +120,14 @@ function FirstFloorMobs()
 	mobile.LongDescription = "A barmaid is here."; 
 	mobile.Description = [[A nondescript woman who deftly weaves through the patrons and tables to 
 	serve steaming bowls of food and tankards of ale.]];
-	mobile.Gender = "female";
-	mobile.ActFlags = "npc stayarea wimpy";
+	mobile:SetStatistic("Gender", "female");
+	mobile:SetStatistic("ActFlags", "npc stayarea wimpy");
 
 	mobile = CreateMobile(10010, "bouncer", "Burly Bouncer");
 	mobile.LongDescription = "A very large man with massive arms is here.";
 	mobile.Description = [[A very large man with arms as thick as tree trunks.  He has a very sour look 
 	on his face and appears to be someone you don’t wish to mess with.]];
-	mobile.ActFlags = "npc stayarea";
+	mobile:SetStatistic("ActFlags", "npc stayarea");
 	mobile.Attacks = "punch";
 	mobile:AddMudProg(CreateMudProg("rand_prog", "25", 
 	[[
@@ -170,14 +170,13 @@ function FirstFloorMobs()
 	mobile.Description = [[This small tabby cat has orange fur, white whiskers, and a demanding attitude. 
 	She looks at you with obvious disdain.]];
 	mobile.Race = "cat";
-	mobile.Gender = "female";
-	mobile.ActFlags = "wimpy";
+	mobile:SetStatistic("Gender", "female");
 	mobile.Speaks = "mammal";
 	mobile.Speaking = "mammal";
 	mobile.BodyParts = "head legs heart brains guts feet eye tail claws";
 	mobile.Attacks = "claws bite";
-	mobile.ActFlags = "npc stayarea wimpy";
-	mobile.AffectedBy = "infrared detect_invis";
+	mobile:SetStatistic("ActFlags", "npc stayarea wimpy");
+	mobile:SetStatistic("AffectedByFlags", "infrared detect_invis");
 	mobile:AddMudProg(CreateMudProg("rand_prog", "10", 
 	[[ 
 		LMobEmote(" flicks her tail.");
@@ -203,7 +202,7 @@ function SecondFloorMobs()
 	mobile = CreateMobile(10012, "arina noble", "Arina Tal'shon");
 	mobile.LongDescription = "";
 	mobile.Description = [[]];
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 
 	mobile = CreateMobile(10013, "ismail servant", "Ismail Nikhet");
 	mobile.LongDescription = "";
@@ -214,7 +213,7 @@ function SecondFloorMobs()
 	mobile = CreateMobile(10014, "dazhor dwarf mercenary", "Dazhor Ren");
 	mobile.LongDescription = "";
 	mobile.Description = [[]];
-	mobile.Gender = "male";
+	mobile:SetStatistic("Gender", "male");
 	mobile.Race = "dwarf";
 	mobile.Speaks = "common dwarven";
 	mobile.Attacks = "kick bash";
@@ -223,12 +222,12 @@ function SecondFloorMobs()
 	mobile = CreateMobile(10015, "manservant old elder", "Elderly Manservant");
 	mobile.LongDescription = "";
 	mobile.Description = [[]];
-	mobile.Gender = "male";
+	mobile:SetStatistic("Gender", "male");
 
 	mobile = CreateMobile(10016, "mercenary veteran", "Grizzled Mercenary");
 	mobile.LongDescription = "";
 	mobile.Description = [[]];
-	mobile.Gender = "male";
+	mobile:SetStatistic("Gender", "male");
 	mobile.Attacks = "kick trip";
 	mobile.Defenses = "parry";
 end
@@ -245,8 +244,8 @@ function BasementMobs()
 	mobile.Speaking = "rodent";
 	mobile.BodyParts = "head legs heart brains guts feet eye tail claws";
 	mobile.Attacks = "bite";
-	mobile.ActFlags = "npc stayarea aggressive";
-	mobile.AffectedBy = "infrared";
+	mobile:SetStatistic("ActFlags", "npc stayarea aggressive");
+	mobile:SetStatistic("AffectedByFlags", "infrared");
 end
 
 function Objects()
@@ -392,7 +391,7 @@ end
 
 function FirstFloorRooms()
 	LBootLog("=================== AREA 'INN OF THE SEVEN REALMS' - 1ST FLOOR ROOMS ====================");
-	room = LCreateRoom(10000, "A wood-paneled room", "inside", area.this);
+	room = CreateRoom(10000, "A wood-paneled room", "inside", area.this);
 	room.Description = [[This wood-paneled room is devoid of any furniture or decorations on the walls, 
 	save for a large hearth.  A fire cackles merrily within the pit, spreading a welcome warmth to the room, 
 	and causing shadows on the other walls to dance wildly.]];
@@ -403,7 +402,7 @@ function FirstFloorRooms()
 	AddObjectToRoom(room, 10048, 10000, 1);	-- Fireplace
 	AddDoorReset(room, "north", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10001, "Common Room (Northwest)", "inside", area.this);
+	room = CreateRoom(10001, "Common Room (Northwest)", "inside", area.this);
 	room.Description = [[This huge room is noisy and filled with numerous tables, patrons, and above all 
 	else, noise.  Dozens of people of all stripes, creeds, and origin are enjoying themselves at the tables while 
 	a host of servers attempt to deliver food and drink to out-stretched hands and thirsty mouths.  A large bar 
@@ -419,7 +418,7 @@ function FirstFloorRooms()
 	SetupWearyAdventurer(room, 10001, 1);	-- Weary Adventurer
 	AddDoorReset(room, "west", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10002, "Common Room (North)", "inside", area.this);
+	room = CreateRoom(10002, "Common Room (North)", "inside", area.this);
 	room.Description = [[This huge room is noisy and filled with numerous tables, patrons, and above all else, 
 	noise.  Dozens of people of all stripes, creeds, and origin are enjoying themselves at the tables while a host of 
 	servers attempt to deliver food and drink to out-stretched hands and thirsty mouths.  A large bar dominates this 
@@ -448,7 +447,7 @@ function FirstFloorRooms()
 	GiveToMobile(reset, 10029, 99);			-- Bowl of Stew
 	GiveToMobile(reset, 10030, 99);			-- Hunk of Hard Cheese
 
-	room = LCreateRoom(10003, "Common Room (Southwest)", "inside", area.this);
+	room = CreateRoom(10003, "Common Room (Southwest)", "inside", area.this);
 	room.Description = [[This huge room is noisy and filled with numerous tables, patrons, and above all else, 
 	noise.  Dozens of people of all stripes, creeds, and origin are enjoying themselves at the tables while a host of 
 	servers attempt to deliver food and drink to out-stretched hands and thirsty mouths.  A stairwell to the west 
@@ -465,13 +464,13 @@ function FirstFloorRooms()
 	EquipOnMobile(reset, 10008, 3);			-- Long Silken Robe
 	EquipOnMobile(reset, 10009, 6);			-- Fine Slippers
 
-	room = LCreateRoom(10004, "Hallway", "inside", area.this);
+	room = CreateRoom(10004, "Hallway", "inside", area.this);
 	AddExitToRoom(room, "west", 10008, "An open doorway leads into a kitchen to the west");
 	AddExitToRoom(room, "east", 10010, "The hallway continues to the east");
 	AddExitToRoom(room, "south", 10011, "A wooden door is to the north", "isdoor closed");
 	AddDoorReset(room, "north", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10005, "Common Room (Northeast)", "inside", area.this);
+	room = CreateRoom(10005, "Common Room (Northeast)", "inside", area.this);
 	AddExitToRoom(room, "south", 10006, "A path amongst the tables leads south");
 	AddExitToRoom(room, "west", 10002, "A path amongst the tables leads west");
 	AddObjectToRoom(room, 10033, 10005, 2);	-- Table
@@ -484,7 +483,7 @@ function FirstFloorRooms()
 	EquipOnMobile(reset, 10009, 6);			-- Fine Slippers
 	EquipOnMobile(reset, 1010, 14);			-- Symbol of Melesa
 
-	room = LCreateRoom(10006, "Common Room (Southeast)", "inside", area.this);
+	room = CreateRoom(10006, "Common Room (Southeast)", "inside", area.this);
 	AddExitToRoom(room, "north", 10005, "A path amongst the tables leads north");
 	AddExitToRoom(room, "west", 10007, "A path amongst the tables leads west");
 	AddObjectToRoom(room, 10033, 10006, 2);	-- Table
@@ -501,7 +500,7 @@ function FirstFloorRooms()
 	EquipOnMobile(reset, 10006, 13);			-- Longsword (TODO Sheathed)
 	EquipOnMobile(reset, 10007, 14);			-- Parchment
 	
-	room = LCreateRoom(10007, "Common Room (South)", "inside", area.this);
+	room = CreateRoom(10007, "Common Room (South)", "inside", area.this);
 	AddExitToRoom(room, "east", 10006, "A path amongst the tables leads east");
 	AddExitToRoom(room, "north", 10002, "A path amongst the tables leads north");
 	AddExitToRoom(room, "west", 10003, "A path amongst the tables leads west");
@@ -522,7 +521,7 @@ function FirstFloorRooms()
 	EquipOnMobile(reset, 10020, 6);			-- Leather Boots
 	EquipOnMobile(reset, 10025, 3);			-- Leather Straps
 
-	room = LCreateRoom(10008, "Kitchen", "inside", area.this);
+	room = CreateRoom(10008, "Kitchen", "inside", area.this);
 	AddExitToRoom(room, "north", 10009, "The kitchen continues to the north");
 	AddExitToRoom(room, "east", 10004, "An open doorway leads out of the kitchen to the east");
 	AddObjectToRoom(room, 10034, 10008, 1);	-- Stone Oven
@@ -534,7 +533,7 @@ function FirstFloorRooms()
 	EquipOnMobile(reset, 10000, 3);			-- Stained Apron
 	EquipOnMobile(reset, 10001, 14);			-- Wooden Spoon
 	
-	room = LCreateRoom(10009, "Kitchen", "inside", area.this);
+	room = CreateRoom(10009, "Kitchen", "inside", area.this);
 	AddExitToRoom(room, "south", 10008, "The kitchen continues to the south");
 	AddObjectToRoom(room, 10036, 10009, 1);	-- Cupboard
 	AddObjectToRoom(room, 10037, 10009, 2);	-- Barrel
@@ -546,13 +545,13 @@ function FirstFloorRooms()
 	EquipOnMobile(reset, 10012, 5);			-- Linen Hose
 	EquipOnMobile(reset, 10013, 14);			-- Battered Pot
 	
-	room = LCreateRoom(10010, "Hallway", "inside", area.this);
+	room = CreateRoom(10010, "Hallway", "inside", area.this);
 	AddExitToRoom(room, "west", 10004, "The hallway continues to the west");
 	exit.this = AddExitToRoom(room, "east", 10013, "A wooden door is to the east", "isdoor closed locked");
 	exit.this.Key = 10045;
 	AddDoorReset(room, "east", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10011, "Bedroom", "inside", area.this);
+	room = CreateRoom(10011, "Bedroom", "inside", area.this);
 	AddExitToRoom(room, "south", 10004, "A wooden door is to the south", "isdoor closed");
 	AddExitToRoom(room, "east", 10012, "The bedroom continues to the west");
 	AddObjectToRoom(room, 10047, 10011, 1);	-- Table
@@ -560,13 +559,13 @@ function FirstFloorRooms()
 	AddObjectToRoom(room, 10032, 10011, 1);	-- Candelabra
 	AddDoorReset(room, "west", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10012, "Bedroom", "inside", area.this);
+	room = CreateRoom(10012, "Bedroom", "inside", area.this);
 	AddExitToRoom(room, "west", 10011, "The bedroom continues to the east");
 	AddObjectToRoom(room, 10039, 10012, 1);	-- Small Bed
 	AddObjectToRoom(room, 10040, 10012, 1);	-- Small Dresser
 	AddMobileToRoom(room, 10018, 10012, 1);	-- Cat
 	
-	room = LCreateRoom(10013, "Storeroom", "inside", area.this);
+	room = CreateRoom(10013, "Storeroom", "inside", area.this);
 	AddExitToRoom(room, "north", 10025, "Stairs to the north lead down into the basement");
 	exit.this = AddExitToRoom(room, "west", 110, "A wooden door is to the west", "isdoor closed locked");
 	exit.this.Key = 10045;
@@ -579,29 +578,29 @@ end
 	
 function SecondFloorRooms()
 	LBootLog("=================== AREA 'INN OF THE SEVEN REALMS' - 2ND FLOOR ROOMS ====================");
-	room = LCreateRoom(10014, "Hallway (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10014, "Hallway (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "east", 10015, "The hallway continues to the east");
 	AddExitToRoom(room, "down", 10003, "A stairwell to the west leads down");
 	
-	room = LCreateRoom(10015, "Hallway (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10015, "Hallway (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "west", 10014, "The hallway continues to the west");
 	AddExitToRoom(room, "east", 10016, "The hallway continues to the east");
 	AddExitToRoom(room, "south", 10019, "A wooden door is to the south", "isdoor closed");
 	AddDoorReset(room, "south", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10016, "Hallway (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10016, "Hallway (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "west", 10015, "The hallway continues to the west");
 	AddExitToRoom(room, "north", 10017, "The hallway continues to the north");
 	AddExitToRoom(room, "south", 10020, "A wooden door is to the south", "isdoor closed");
 	AddDoorReset(room, "south", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10017, "Hallway (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10017, "Hallway (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "south", 10016, "The hallway continues to the south");
 	AddExitToRoom(room, "north", 10018, "The hallway continues to the north");
 	AddExitToRoom(room, "west", 10021, "A wooden door is to the west", "isdoor closed");
 	AddDoorReset(room, "west", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10018, "Hallway (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10018, "Hallway (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "south", 10017, "The hallway continues to the south");	
 	AddExitToRoom(room, "west", 10022, "A wooden door is to the west", "isdoor closed");
 	AddExitToRoom(room, "east", 10023, "A wooden door is to the east", "isdoor closed");
@@ -620,7 +619,7 @@ function SecondFloorRooms()
 		-- Heavy Leather Boots
 		-- Greatsword
 	
-	room = LCreateRoom(10019, "Inn Room (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10019, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "north", 10015, "A wooden door is to the north", "isdoor closed");
 	AddObjectToRoom(room, 10039, 10019, 1);	-- Small Bed
 	AddObjectToRoom(room, 10040, 10019, 1);	-- Small Dresser
@@ -630,25 +629,25 @@ function SecondFloorRooms()
 		-- Linen Shirt
 		-- Leather Shoes
 	
-	room = LCreateRoom(10020, "Inn Room (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10020, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "south", 10016, "A wooden door is to the north", "isdoor closed");
 	AddObjectToRoom(room, 10039, 10020, 1);	-- Small Bed
 	AddObjectToRoom(room, 10040, 10020, 1);	-- Small Dresser
 	AddDoorReset(room, "north", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10021, "Inn Room (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10021, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "east", 10017, "A wooden door is to the east", "isdoor closed");
 	AddObjectToRoom(room, 10039, 10021, 1);	-- Small Bed
 	AddObjectToRoom(room, 10040, 10021, 1);	-- Small Dresser
 	AddDoorReset(room, "east", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10022, "Inn Room (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10022, "Inn Room (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "east", 10018, "A wooden door is to the east", "isdoor closed");
 	AddObjectToRoom(room, 10039, 10022, 1);	-- Small Bed
 	AddObjectToRoom(room, 10040, 10022, 1);	-- Small Dresser
 	AddDoorReset(room, "east", "closed");	-- Close the Door
 	
-	room = LCreateRoom(10023, "Inn Suite (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10023, "Inn Suite (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "west", 10018, "A wooden door is to the west", "isdoor closed");
 	AddExitToRoom(room, "south", 10024, "The suite continues to the south");
 	AddObjectToRoom(room, 10047, 10023, 1);	-- Table
@@ -659,7 +658,7 @@ function SecondFloorRooms()
 		-- Woolen Shirt
 		-- Leather Shoes
 		
-	room = LCreateRoom(10024, "Inn Suite (2nd Floor)", "inside", area.this);
+	room = CreateRoom(10024, "Inn Suite (2nd Floor)", "inside", area.this);
 	AddExitToRoom(room, "north", 10023, "The suite continues to the north");
 	AddObjectToRoom(room, 10041, 10024, 1);	-- Large Bed
 	AddObjectToRoom(room, 10042, 10024, 1);	-- Large Dresser
@@ -671,7 +670,7 @@ end
 	
 function BasementRooms()
 	LBootLog("=================== AREA 'INN OF THE SEVEN REALMS' - BASEMENT ROOMS ====================");
-	room = LCreateRoom(10025, "Basement (South)", "inside", area.this);
+	room = CreateRoom(10025, "Basement (South)", "inside", area.this);
 	room.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.]];
@@ -681,7 +680,7 @@ function BasementRooms()
 	AddExitToRoom(room, "north", 10028, "A path amongst the debris leads north");
 	AddObjectToRoom(room, 10049, 10025, 2);	-- Debris
 	
-	room = LCreateRoom(10026, "Basement(Southwest)", "inside", area.this);
+	room = CreateRoom(10026, "Basement(Southwest)", "inside", area.this);
 	room.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.]];
@@ -691,7 +690,7 @@ function BasementRooms()
 	AddObjectToRoom(room, 10046, 10026, 2);	-- Broken Crate
 	AddObjectToRoom(room, 10049, 10026, 1);	-- Debris
 	
-	room = LCreateRoom(10027, "Basement(Northwest)", "inside", area.this);
+	room = CreateRoom(10027, "Basement(Northwest)", "inside", area.this);
 	room.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.]];
@@ -700,7 +699,7 @@ function BasementRooms()
 	AddObjectToRoom(room, 10046, 10027, 1);	-- Broken Crate
 	AddObjectToRoom(room, 10049, 10027, 2);	-- Debris
 	
-	room = LCreateRoom(10028, "Basement(North)", "inside", area.this);
+	room = CreateRoom(10028, "Basement(North)", "inside", area.this);
 	room.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.  A pile of stones that appear to have come from 
@@ -714,7 +713,7 @@ function BasementRooms()
 	AddMobileToRoom(room, 10017, 10028, 2);	-- Giant Rats
 	AddObjectToRoom(room, 10049, 10026, 2);	-- Debris
 	
-	room = LCreateRoom(10029, "Basement(Northeast)", "inside", area.this);
+	room = CreateRoom(10029, "Basement(Northeast)", "inside", area.this);
 	room.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.]];
@@ -724,7 +723,7 @@ function BasementRooms()
 	AddObjectToRoom(room, 10046, 10029, 2);	-- Broken Crate
 	AddObjectToRoom(room, 10049, 10029, 1);	-- Debris
 	
-	room = LCreateRoom(10030, "Basement(Southeast)", "inside", area.this);
+	room = CreateRoom(10030, "Basement(Southeast)", "inside", area.this);
 	room.Description = [[Years ago this basement may have been used for storage, but now it is 
 	home to piles of debris.  The shattered remnants of crates and barrels scattered about, while 
 	piles of detritus cover the stone floor.]];

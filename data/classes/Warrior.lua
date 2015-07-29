@@ -8,7 +8,7 @@ f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 function LoadClass()
 	newClass = LCreateClass("Warrior", 3);
 	class.this = newClass;
-	class.this:SetPrimaryAttribute("strength");
+	class.this:SetPrimaryAttribute("PermanentStrength");
 	class.this.Weapon = 10313;
 	class.this.Guild = 3022;
 	class.this.SkillAdept = 85;

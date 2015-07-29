@@ -10,7 +10,7 @@ function LoadLanguages()
 	lang.this = newLang;
 	lang.this.Alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
-	newLang = LCreateLanguage("default", "Unknown");
+	newLang = LCreateLanguage("default", "None");
 	lang.this = newLang;
 	lang.this.Alphabet = "ekjrugtlohfqbxyvndwmaczsip";
 	

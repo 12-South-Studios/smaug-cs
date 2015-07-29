@@ -5,7 +5,7 @@ namespace SmaugCS.Constants.Enums
     [Flags]
     public enum LiquidTypes
     {
-        None = 0, 
+        Normal = 0, 
         Alcohol, 
         Poison, 
         Blood

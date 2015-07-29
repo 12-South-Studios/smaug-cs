@@ -40,10 +40,12 @@ namespace SmaugCS.Data.Templates
 
         public static void SetObjectTemplateValues(ObjectTemplate template, IEnumerable<int> values)
         {
-            if (!DynamicValuesTable.ContainsKey(template.Type))
-                throw new InvalidDataException(string.Format("SetValues called with an invalid item type {0}", template.Type));
+            Action<dynamic, IEnumerable<int>> action;
+            DynamicValuesTable.TryGetValue(template.Type, out action);
 
-            DynamicValuesTable[template.Type].Invoke(template.Values, values);
+            if (action == null) return;
+
+            action.Invoke(template.Values, values);
         }
 
         private static void SetArmorDynamicValues(dynamic valueProperty, IEnumerable<int> values)

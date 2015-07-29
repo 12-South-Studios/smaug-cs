@@ -8,7 +8,7 @@ f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 function LoadClass()
 	newClass = LCreateClass("Mage", 0);
 	class.this = newClass;
-	class.this:SetPrimaryAttribute("intelligence");
+	class.this:SetPrimaryAttribute("PermanentIntelligence");
 	class.this.Weapon = 10312;
 	class.this.Guild = 3018;
 	class.this.SkillAdept = 95;

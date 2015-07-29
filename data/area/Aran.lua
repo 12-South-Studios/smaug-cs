@@ -81,7 +81,7 @@ function Mobs()
 	mobile.Description = [[This fairly large, plump, but somewhat exotic woman is standing behind the 
 	counter idly shuffling items while she attempts to hide the fact that she is watching you intently. 
 	You sense a strange air surrounding her, something predatory.]];
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 	
 	mobile = CreateMobile(10106, "high priest palurien trainer", "High Priest of Palurien");
 	mobile.LongDescription = "The High Priest of Palurien is here instructing some of the lesser priests.";
@@ -134,7 +134,7 @@ function Mobs()
 	her still beautiful face. In fact, there is something other-wordly about her which you cannot place your 
 	finger on.]];
 	mobile.Race = "elf";
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 	
 	mobile = CreateMobile(10114, "beggar", "a beggar");
 	mobile.LongDescription = "A beggar is shambling along moaning of his woes.";
@@ -150,7 +150,7 @@ function Mobs()
 	mobile.LongDescription = "A woman worshipping the goddess Vaitya kneels here.";
 	mobile.Description = [[A well-dressed woman is kneeling here worshipping the goddess Vaitya. Her 
 	hands are clasped in front of her, her head is bowed in reverence, and she is murmuring prayers.]];
-	mobile.Gender = "female";
+	mobile:SetStatistic("Gender", "female");
 	
 	mobile = CreateMobile(10117, "traveller", "a traveller");
 	mobile.LongDescription = "A traveller is here looking for a place to stay for the night.";

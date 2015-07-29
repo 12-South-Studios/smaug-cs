@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
@@ -63,6 +64,8 @@ namespace SmaugCS.Data.Templates
 
         public void AddAffect(long type, int duration, int modifier, int location, int flags)
         {
+            if (type < 0) throw new InvalidEnumArgumentException("type", (int)type, typeof(AffectedByTypes));
+
             AffectData newAffect = new AffectData
             {
                 Type = Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type),

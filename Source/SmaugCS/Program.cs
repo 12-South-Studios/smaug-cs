@@ -5,7 +5,9 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using log4net;
+using log4net.Appender;
 using log4net.Config;
+using log4net.Repository;
 using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
@@ -31,7 +33,7 @@ namespace SmaugCS
 {
     public static class Program
     {
-        private static readonly ILog Logger =
+        private static ILog _logger =
             log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static ITcpServer NetworkManager { get; private set; }
@@ -51,7 +53,7 @@ namespace SmaugCS
         static void Main()
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-            
+
             try
             {
                 ConfigureLogging();
@@ -63,8 +65,23 @@ namespace SmaugCS
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.ToString());
+                _logger.Error(ex.ToString());
                 Environment.Exit(0);
+            }
+            finally
+            {
+                FlushBuffers();
+                _logger = null;
+            }
+        }
+
+        private static void FlushBuffers()
+        {
+            foreach (IAppender appender in _logger.Logger.Repository.GetAppenders())
+            {
+                var buffered = appender as BufferingAppenderSkeleton;
+                if (buffered != null)
+                    buffered.Flush();
             }
         }
 
@@ -86,7 +103,7 @@ namespace SmaugCS
             Kernel = new StandardKernel();
 
             Kernel.Bind<ILogWrapper>().To<LogWrapper>()
-                .WithConstructorArgument("log", Logger)
+                .WithConstructorArgument("log", _logger)
                 .WithConstructorArgument("level", LogLevel.Debug);
 
             Kernel.Load(new SmaugDbContextModule(),

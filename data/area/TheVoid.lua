@@ -31,8 +31,8 @@ function Mobs()
 	mobile = CreateMobile(1, "translucent figure", "A translucent figure");
 	mobile.LongDescription = "A translucent figure is here, contemplating a higher reality.";
 	mobile.Class = "mage";
-	mobile.ActFlags = "npc sentinel noattack";
-	mobile.AffectedBy = "detect_invis detect_hidden sanctuary infrared protect truesight";
+	mobile:SetStatistic("ActFlags", "npc sentinel noattack");
+	mobile:SetStatistic("AffectedByFlags", "detect_invis detect_hidden sanctuary infrared protect truesight");
 	mobile:SetStats1(1000, 50, 20, -30, 10000, 1000);
 	mobile:SetStats2(5, 10, 30550);
 	mobile:SetStats3(4, 10, 200);
@@ -51,8 +51,8 @@ function Mobs()
 	mobile.LongDescription = "A demon imp hovers nearby...drooling constantly with a fiendish grin.";
 	mobile.Description = [[This demon is clearly something that you don't want to mess with...
 		It appears to be very agile, and very strong.]];
-	mobile.Gender = "neuter";
-	mobile.ActFlags = "detect_invis detect_hidden";
+	mobile:SetStatistic("Gender", "neuter");
+	mobile:SetStatistic("ActFlags", "detect_invis detect_hidden");
 	mobile:SetStats1(-1000, 50, 1, -300, 10000, 155000);
 	mobile:SetStats2(5, 10, 31550);
 	mobile:SetStats3(1, 2, 2);
@@ -141,13 +141,13 @@ function Mobs()
 	mobile = CreateMobile(3, "supermob", "the supermob");
 	mobile.LongDescription = "The supermob is here.  He looks busy as hell.";
 	mobile.Description = "How clever he looks!";
-	mobile.Gender = "neuter";
-	mobile.ActFlags = "npc polyself secretive mobinvis prototype";
-	mobile.AffectedBy = "invisible detect_invis detect_hidden hide truesight";
+	mobile:SetStatistic("Gender", "neuter");
+	mobile:SetStatistic("ActFlags", "npc polyself secretive mobinvis prototype");
+	mobile:SetStatistic("AffectedByFlags", "invisible detect_invis detect_hidden hide truesight");
 	mobile:SetStats1(-1000, 56, 1, -300, 10000, 155000);
 	mobile:SetStats2(1, 2, 2);
 	mobile:SetAttributes(13, 13, 13, 13, 13, 13, 25);
-	mobile.Immunity = "blunt pierce slash sleep charm nonmagic paralysis";
+	mobile:SetStatistic("Immunity", "blunt pierce slash sleep charm nonmagic paralysis");
 	mobile.Defenses = "parry dodge";
 	mobile:AddMudProg(CreateMudProg("rand_prog", "10", 
 	[[
@@ -977,10 +977,10 @@ function Objects()
 	object.WearFlags = "take feet";
 	object:SetValues(11, 11, 0, 0, 0, 0);
 	object:SetStats(2, 325400, 32540, 0, 0);
-	object:AddAffect(-1, -1, 5, 19, 0);
-	object:AddAffect(-1, -1, 1, 18, 0);
-	object:AddAffect(-1, -1, 100, 14, 0);
-	object:AddAffect(-1, -1, 1, 2, 0);
+	object:AddAffect(0, -1, 5, 19, 0);
+	object:AddAffect(0, -1, 1, 18, 0);
+	object:AddAffect(0, -1, 100, 14, 0);
+	object:AddAffect(0, -1, 1, 2, 0);
 
 	object = CreateObject(39, "key gate", "key");
 	object.ShortDescription = "a gate key";

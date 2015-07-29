@@ -47,8 +47,8 @@ function CreateMobile(vnum, keywords, name)
 	mobile.this.Speaks = "common";
 	mobile.this.Speaking = "common";
 	mobile.this.BodyParts = "head arms legs heart guts hands feet ear eye";
-	mobile.this.ActFlags = "npc sentinel";
-	mobile.this.Position = "standing";
+	mobile.this:SetStatistic("ActFlags", "npc sentinel");
+	mobile.this:SetStatistic("Position", "standing");
 	mobile.this.DefensivePosition = "standing";
 	return mobile.this;
 end
@@ -59,14 +59,14 @@ function CreateShop(buyRate, sellRate, openHour, closeHour)
 	return shop.this;
 end
 
-function CreateObject(vnum, name, objectTypes)
+function CreateObject(vnum, name, objectType)
 	newObject = LCreateObject(vnum, name);	
 	object.this = newObject;
 	
-	if (objectTypes == nil) then
-		object.this.Type = "none";
+	if (objectType == nil) then
+		object.this:SetType("none");
 	else 
-		object.this.Type = objectTypes;	
+		object.this:SetType(objectType);	
 	end
 	
 	object.this.WearFlags = "take";

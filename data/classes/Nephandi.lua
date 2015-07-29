@@ -8,7 +8,7 @@ f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 function LoadClass()
 	newClass = LCreateClass("Nephandi", 9);
 	class.this = newClass;
-	class.this:SetPrimaryAttribute("intelligence");
+	class.this:SetPrimaryAttribute("PermanentIntelligence");
 	class.this.Weapon = 10313;
 	class.this.Guild = 3013;
 	class.this.SkillAdept = 90;

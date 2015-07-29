@@ -8,7 +8,7 @@ f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
 function LoadClass()
 	newClass = LCreateClass("Augurer", 7);
 	class.this = newClass;
-	class.this:SetPrimaryAttribute("wisdom");
+	class.this:SetPrimaryAttribute("PermanentWisdom");
 	class.this.Weapon = 10312;
 	class.this.Guild = 21430;
 	class.this.SkillAdept = 95;
