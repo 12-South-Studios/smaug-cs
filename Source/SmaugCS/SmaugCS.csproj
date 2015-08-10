@@ -169,6 +169,7 @@
     <Compile Include="Extensions\GameManagerExtensions.cs" />
     <Compile Include="Exceptions\ObjectNotCarriedByCharacterException.cs" />
     <Compile Include="Exceptions\ObjectAlreadyExtractedException.cs" />
+    <Compile Include="Extensions\ResetExtensions.cs" />
     <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
     <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
     <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="Managers\CalendarManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Interfaces\ICalendarManager.cs" />
+    <Compile Include="Managers\PulseTypes.cs" />
     <Compile Include="MudProgs\MobileProgs\DeathProg.cs" />
     <Compile Include="MudProgs\MobileProgs\FightProg.cs" />
     <Compile Include="MudProgs\MobileProgs\HitPercentProg.cs" />

@@ -157,12 +157,5 @@ namespace SmaugCS.Data
             proxy.Write("#ENDAREADATA\n\n");
         }*/
 
-
-
-        public virtual void OnStartup(object o, EventArgs e)
-        {
-            foreach (RoomTemplate room in Rooms)
-                room.ProcessResets();
-        }
     }
 }

@@ -34,9 +34,9 @@ namespace SmaugCS.Repository
             if (args != null && args.Length > 1)
                 name = args[1].ToString();
 
-            var isMobile = false;
-            if (args != null && args.Length > 2)
-                isMobile = (bool) args[2];
+            var isMobile = true;
+            //if (args != null && args.Length > 2)
+            //    isMobile = (bool) args[2];
 
             var mob = new CharacterInstance(id, name)
             {

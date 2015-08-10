@@ -34,7 +34,7 @@ function AddExitToRoom(room, direction, location, description, flags)
 end
 
 function AddDoorReset(room, direction, state)
-	newReset = LCreateReset("door", 0, DirectionToNumber(direction), DoorStateToNumber(state), 0);
+	newReset = LCreateReset("door", 0, LGetDirectionNumber(direction), state, 0);
 	reset.this = newReset;
 	room:AddReset(reset.this);
 	return reset.this;
@@ -87,40 +87,6 @@ function CreateMudProg(progType, progArgList, progScript)
 	mprog.this.ArgList = progArgList;
 	mprog.this.Script = progScript;
 	return mprog.this;
-end
-
-function DirectionToNumber(direction)
-	local directions = {}
-	directions["north"] = 0;
-	directions["n"] = 0;
-	directions["east"] = 1;
-	directions["e"] = 1;
-	directions["south"] = 2;
-	directions["s"] = 2;
-	directions["west"] = 3;
-	directions["w"] = 3;
-	directions["up"] = 4;
-	directions["u"] = 4;
-	directions["down"] = 5;
-	directions["d"] = 5;
-	directions["northeast"] = 6;
-	directions["ne"] = 6;
-	directions["northwest"] = 7;
-	directions["nw"] = 7;
-	directions["southeast"] = 8;
-	directions["se"] = 8;
-	directions["southwest"] = 9;
-	directions["sw"] = 9;
-	directions["somewhere"] = 10;
-	
-	local val;
-	if (directions[direction] == nil) then
-		val = 10;
-	else 
-		val = directions[direction];
-	end
-	
-	return val;
 end
 
 function DoorStateToNumber(state)

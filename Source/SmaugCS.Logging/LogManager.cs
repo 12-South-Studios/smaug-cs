@@ -57,35 +57,25 @@ namespace SmaugCS.Logging
             var logsToDump = new List<LogEntry>(_pendingLogs);
             _pendingLogs.Clear();
 
-            _dbContext.ObjectContext.Connection.Open();
-            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
+            try
             {
-                try
+                foreach (var log in logsToDump)
                 {
-                    foreach (var log in logsToDump)
-                    {
-                        var logToSave = _dbContext.Logs.Create();
-                        logToSave.LogType = log.LogType;
-                        logToSave.Text = log.Text;
-                        logToSave.SessionId = _sessionId;
-                        _dbContext.Logs.Add(logToSave);
-                    }
-                    _dbContext.SaveChanges();
-                    transaction.Commit();
+                    var logToSave = new DAL.Models.Log {LogType = log.LogType, Text = log.Text, SessionId = _sessionId};
+                    _dbContext.Logs.Add(logToSave);
                 }
-                catch (DbException ex)
-                {
-                    transaction.Rollback();
-                    DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
+                _dbContext.SaveChanges();
+            }
+            catch (DbException ex)
+            {
+                DatabaseFailureLog("{0}\n{1}", ex.Message, ex.StackTrace);
 
-                    if (logsToDump.Any())
-                    {
-                        _pendingLogs.AddRange(logsToDump);
-                        logsToDump.Clear();
-                    }
+                if (logsToDump.Any())
+                {
+                    _pendingLogs.AddRange(logsToDump);
+                    logsToDump.Clear();
                 }
             }
-            _dbContext.ObjectContext.Connection.Close();
         }
 
         public void DatabaseFailureLog(string str, params object[] args)

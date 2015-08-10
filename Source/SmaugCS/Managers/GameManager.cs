@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Net;
+using System.Linq;
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
 using Realm.Library.NCalcExt;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
+using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Mobile;
+using SmaugCS.Extensions.Player;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
@@ -22,7 +26,6 @@ namespace SmaugCS.Managers
         private static IRepositoryManager _dbManager;
         private static ILogManager _logger;
         private static ITimer _timer;
-        private static ISmaugDbContext _dbContext;
 
         public GameManager(IRepositoryManager databaseManager, ILogManager logManager, ITimer timer)
         {
@@ -53,37 +56,7 @@ namespace SmaugCS.Managers
 
         public static CharacterInstance CurrentCharacter { get; set; }
 
-        private enum PulseTypes
-        {
-            [Name("PulseArea")]
-            Area,
-            [Name("PulseMobile")]
-            Mobile,
-            [Name("PulseViolence")]
-            Violence,
-            [Name("PulseTick")]
-            Point,
-            [Name("PulsesPerSecond")]
-            Second,
-            Time,
-            [Name("PulseAuction")]
-            Auction
-        };
-
-        private static readonly Dictionary<PulseTypes, int> PulseTrackerTable = new Dictionary<PulseTypes, int>();
-
-        private int GetPulseTimer(PulseTypes pulseType)
-        {
-            if (!PulseTrackerTable.ContainsKey(pulseType))
-                PulseTrackerTable[pulseType] = GameConstants.GetSystemValue<int>(pulseType.GetName());
-            return PulseTrackerTable[pulseType];
-        }
-
-        private void SetPulseTimer(PulseTypes pulseType, int value)
-        {
-            PulseTrackerTable[pulseType] = value;
-        }
-
+        #region Game Loop
         public void DoLoop()
         {
             InitializeResets();
@@ -93,18 +66,44 @@ namespace SmaugCS.Managers
             _timer.Start();
         }
 
+        private void InitializeResets()
+        {
+            foreach (AreaData area in _dbManager.AREAS.Values)
+            {
+                foreach (var room in area.Rooms)
+                {
+                    foreach (var reset in room.Resets)
+                    {
+                        reset.Process();
+                    }
+                }
+            }
+        }
+
+        private static readonly Dictionary<PulseTypes, Action<int>> PulseTypeTable = new Dictionary
+            <PulseTypes, Action<int>>
+        {
+            {PulseTypes.Area, UpdateArea},
+            {PulseTypes.Mobile, UpdateMobile},
+            {PulseTypes.Violence, UpdateViolence},
+            {PulseTypes.Point, UpdateTick},
+            {PulseTypes.Second, UpdateSecond}
+        };
+
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             DateTime start = DateTime.Now;
 
-            UpdateAreas();
-            UpdateMobiles();
-            UpdateViolence();
 
-            // todo pulse calendar
-
-            UpdateTick();
-            UpdateSecond();
+            foreach (var pulseType in PulseTypeTable.Keys)
+            {
+                var pulseTimer = GetPulseTimer(pulseType);
+                if ((pulseTimer - 1) <= 0)
+                {
+                    var pulseValue = GameConstants.GetSystemValue<int>(pulseType.GetName());
+                    PulseTypeTable[pulseType].Invoke(pulseValue);
+                }
+            }
 
             // todo mpsleep_update, tele_update, aggr_update, obj_act_update
             // todo room_act_update, clean_obj_queue, clean_char_queue
@@ -113,76 +112,111 @@ namespace SmaugCS.Managers
             _logger.Info("Timing Complete: {0} seconds.", end.Subtract(start).TotalSeconds);
         }
 
-        private void UpdateSecond()
-        {
-            var pulseTimer = GetPulseTimer(PulseTypes.Second);
-            if ((pulseTimer - 1) <= 0)
-            {
-                var pulseSecond = GameConstants.GetSystemValue<int>(PulseTypes.Second.GetName());
-                SetPulseTimer(PulseTypes.Second, pulseSecond);
-                // todo char_check, check_dns, reboot_check
+        private static readonly Dictionary<PulseTypes, int> PulseTrackerTable = new Dictionary<PulseTypes, int>();
 
-                _logger.Info("Update Seconds");
-            }
+        private static int GetPulseTimer(PulseTypes pulseType)
+        {
+            if (!PulseTrackerTable.ContainsKey(pulseType))
+                PulseTrackerTable[pulseType] = GameConstants.GetSystemValue<int>(pulseType.GetName());
+            return PulseTrackerTable[pulseType];
         }
 
-        private void UpdateTick()
+        private static void SetPulseTimer(PulseTypes pulseType, int value)
         {
-            var pulseTimer = GetPulseTimer(PulseTypes.Point);
-            if ((pulseTimer - 1) <= 0)
-            {
-                var pulseTick = GameConstants.GetSystemValue<int>(PulseTypes.Point.GetName());
-                SetPulseTimer(PulseTypes.Point, SmaugRandom.Between((int) (pulseTick*0.75f), (int) (pulseTick*1.2f)));
-
-                // todo auth_update, time_update, updateweather, hint_update, char_update, obj_update, clear_vrooms
-
-                _logger.Info("Update Tick");
-            }
+            PulseTrackerTable[pulseType] = value;
         }
 
-        private void UpdateViolence()
+        private static void UpdateSecond(int pulseValue)
         {
-            var pulseTimer = GetPulseTimer(PulseTypes.Violence);
-            if ((pulseTimer - 1) <= 0)
-            {
-                var pulseViolence = GameConstants.GetSystemValue<int>(PulseTypes.Violence.GetName());
-                SetPulseTimer(PulseTypes.Violence, pulseViolence);
-                // todo violence_update
+            SetPulseTimer(PulseTypes.Second, pulseValue);
+            // todo char_check, check_dns, reboot_check
 
-                _logger.Info("Update Violence");
-            }
+            _logger.Info("Update Seconds");
         }
 
-        private void UpdateMobiles()
+        private static void UpdateTick(int pulseValue)
         {
-            var pulseTimer = GetPulseTimer(PulseTypes.Mobile);
-            if ((pulseTimer - 1) <= 0)
-            {
-                var pulseMobile = GameConstants.GetSystemValue<int>(PulseTypes.Mobile.GetName());
-                SetPulseTimer(PulseTypes.Mobile, pulseMobile);
-                // todo mobile_update
+            SetPulseTimer(PulseTypes.Point, SmaugRandom.Between((int) (pulseValue*0.75f), (int) (pulseValue*1.2f)));
 
-                _logger.Info("Update Mobiles");
-            }
+            // todo auth_update, time_update, updateweather, hint_update, char_update, obj_update, clear_vrooms
+
+            _logger.Info("Update Tick");
         }
 
-        private void UpdateAreas()
+        private static void UpdateViolence(int pulseValue)
         {
-            var pulseTimer = GetPulseTimer(PulseTypes.Area);
-            if ((pulseTimer - 1) <= 0)
-            {
-                var pulseArea = GameConstants.GetSystemValue<int>(PulseTypes.Area.GetName());
-                SetPulseTimer(PulseTypes.Area, SmaugRandom.Between(pulseArea/2, 3*pulseArea/2));
-                // todo area_update
+            SetPulseTimer(PulseTypes.Violence, pulseValue);
+            // todo violence_update
 
-                _logger.Info("Update Areas");
-            }
+            _logger.Info("Update Violence");
         }
 
-        private void InitializeResets()
+        private static void UpdateMobile(int pulseValue)
         {
+            SetPulseTimer(PulseTypes.Mobile, pulseValue);
+
+            var players = 0;
+            var mobiles = 0;
+
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            {
+                if (ch is PlayerInstance)
+                {
+                    ((PlayerInstance)ch).ProcessUpdate();
+                    players++;
+                }
+                else if (ch is MobileInstance)
+                {
+                    ((MobileInstance)ch).ProcessUpdate();
+                    mobiles++;
+                }
+            }
+
+            _logger.Info("Updated {0} Players and {1} Mobiles.", players, mobiles);
+        }
+
+        private static void UpdateArea(int pulseValue)
+        {
+            SetPulseTimer(PulseTypes.Area, SmaugRandom.Between(pulseValue/2, 3*pulseValue/2));
+
+            var updated = 0;
+            var notified = 0;
             foreach (var area in _dbManager.AREAS.Values)
-                area.OnStartup(this, new EventArgs());
+            {
+                var resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
+                if ((resetAge == -1 && area.Age == -1) || (area.Age + 1 < (resetAge - 1))) continue;
+
+                if (area.NumberOfPlayers > 0 && area.Age == (resetAge - 1))
+                {
+                    var buffer = !string.IsNullOrEmpty(area.ResetMessage)
+                        ? area.ResetMessage
+                        : "You hear some squeaking sounds...";
+
+                    foreach(var pch in _dbManager.CHARACTERS.Values
+                        .Where(x => !x.IsNpc())
+                        .Where(x => x.IsAwake())
+                        .Where(x => x.CurrentRoom != null)
+                        .Where(x => x.CurrentRoom.Area.Equals(area)))
+                    {
+                        pch.SetColor(ATTypes.AT_RESET);
+                        pch.SendTo(buffer);
+                        notified++;
+                    }
+                }
+
+                if (area.NumberOfPlayers == 0 || area.Age >= resetAge)
+                {
+                    reset.reset_area(area);
+                    _logger.Info("Updated Area {0}/{1}", area.ID, area.Name);
+
+                    updated++;
+                    area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge/5);
+                }
+            }
+
+            _logger.Info("Updated {0} areas and notified {1} players.", updated, notified);
         }
+
+        #endregion
     }
 }

@@ -63,7 +63,8 @@ namespace SmaugCS
                 StartNewSession(Kernel.Get<ISmaugDbContext>());
                 InitializeSecondaryNinjectKernels();
                 OnServerStart();
-                
+                LogManager.Boot("---------------------[ End Boot Log ]--------------------");
+
                 while (true)
                 {
                     GameManager.DoLoop();
@@ -106,6 +107,16 @@ namespace SmaugCS
             Kernel.Load(new SmaugDbContextModule());
         }
 
+        private static void StartNewSession(ISmaugDbContext dbContext)
+        {
+            var newSession = dbContext.Sessions.Create();
+            newSession.IpAddress = ConfigurationManager.AppSettings["host"];
+            newSession.Port = Convert.ToInt32(ConfigurationManager.AppSettings["port"]);
+            dbContext.Sessions.Add(newSession);
+            dbContext.SaveChanges();
+            SessionId = newSession.Id;
+        }
+
         private static void InitializeSecondaryNinjectKernels()
         {
             Kernel.Load(new LoggingModule(SessionId),
@@ -123,7 +134,7 @@ namespace SmaugCS
         private static void OnServerStart()
         {
             LogManager = Kernel.Get<ILogManager>();
-            LogManager.Boot("---------------------[ Boot Log ]--------------------");
+            LogManager.Boot("-----------------------[ Boot Log ]----------------------");
 
             var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.DataPath);
             LogManager.Boot("{0} SystemDirectories loaded.", loaded);
@@ -165,6 +176,57 @@ namespace SmaugCS
             AuctionManager = Kernel.Get<IAuctionManager>();
 
             InitializeGameData();           
+        }
+
+        private static void InitializeGameData()
+        {
+            LogManager.Boot("Initializing Game Data");
+            ExecuteLuaScripts();
+            LoaderInitializer.Initialize();
+
+            //// Pre-Tests the module_Area to catch any errors early before area load
+            LuaManager.DoLuaScript(GameConstants.DataPath + "//modules//module_area.lua");
+            LoaderInitializer.Load();
+        }
+
+        private static void ExecuteLuaScripts()
+        {
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
+            LogManager.Boot("{0} Commands loaded.", RepositoryManager.COMMANDS.Count);
+            LookupManager.CommandLookup.UpdateFunctionReferences(RepositoryManager.COMMANDS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
+            LogManager.Boot("{0} SpecFuns loaded.", RepositoryManager.SPEC_FUNS.Count);
+            //SpecFunLookupTable.UpdateCommandFunctionReferences(RepositoryManager.Instance.SPEC_FUNS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
+            LogManager.Boot("{0} Socials loaded.", RepositoryManager.SOCIALS.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
+            LogManager.Boot("{0} Skills loaded.", RepositoryManager.SKILLS.Count);
+            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
+            LookupManager.SpellLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
+            LogManager.Boot("{0} Liquids loaded.", RepositoryManager.LIQUIDS.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
+            LogManager.Boot("{0} Mixtures loaded.",
+                RepositoryManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
+            // TODO: Update function references
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
+            LogManager.Boot("{0} Herbs loaded.", RepositoryManager.HERBS.Count);
+            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.HERBS.Values);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
+            LogManager.Boot("{0} Tongues loaded.", RepositoryManager.LANGUAGES.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
+            LogManager.Boot("{0} Planes loaded.", RepositoryManager.PLANES.Count);
+
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
+            LogManager.Boot("{0} Morphs loaded.", RepositoryManager.MORPHS.Count);
         }
 
         private static void FlushBuffers()
@@ -220,67 +282,6 @@ namespace SmaugCS
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
             LogManager.Bug((Exception)unhandledExceptionEventArgs.ExceptionObject);
-        }
-
-        private static void InitializeGameData()
-        {
-            LogManager.Boot("Initializing Game Data");
-            ExecuteLuaScripts();
-            LoaderInitializer.Initialize();
-
-            //// Pre-Tests the module_Area to catch any errors early before area load
-            LuaManager.DoLuaScript(GameConstants.DataPath + "//modules//module_area.lua");
-            LoaderInitializer.Load();
-        }
-
-        private static void ExecuteLuaScripts()
-        {
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
-            LogManager.Boot("{0} Commands loaded.", RepositoryManager.COMMANDS.Count);
-            LookupManager.CommandLookup.UpdateFunctionReferences(RepositoryManager.COMMANDS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
-            LogManager.Boot("{0} SpecFuns loaded.", RepositoryManager.SPEC_FUNS.Count);
-            //SpecFunLookupTable.UpdateCommandFunctionReferences(RepositoryManager.Instance.SPEC_FUNS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
-            LogManager.Boot("{0} Socials loaded.", RepositoryManager.SOCIALS.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
-            LogManager.Boot("{0} Skills loaded.", RepositoryManager.SKILLS.Count);
-            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
-            LookupManager.SpellLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
-            LogManager.Boot("{0} Liquids loaded.", RepositoryManager.LIQUIDS.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
-            LogManager.Boot("{0} Mixtures loaded.",
-                RepositoryManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
-            // TODO: Update function references
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
-            LogManager.Boot("{0} Herbs loaded.", RepositoryManager.HERBS.Count);
-            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.HERBS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
-            LogManager.Boot("{0} Tongues loaded.", RepositoryManager.LANGUAGES.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
-            LogManager.Boot("{0} Planes loaded.", RepositoryManager.PLANES.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
-            LogManager.Boot("{0} Morphs loaded.", RepositoryManager.MORPHS.Count);
-        }
-
-        private static void StartNewSession(ISmaugDbContext dbContext)
-        {
-            var newSession = dbContext.Sessions.Create();
-            newSession.IpAddress = ConfigurationManager.AppSettings["host"];
-            newSession.Port = Convert.ToInt32(ConfigurationManager.AppSettings["port"]);
-            dbContext.Sessions.Add(newSession);
-            dbContext.SaveChanges();
-            SessionId = newSession.Id;
         }
 
         #region Old Constants

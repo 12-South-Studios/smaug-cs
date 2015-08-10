@@ -241,13 +241,5 @@ namespace SmaugCS.Data.Templates
 
             proxy.Write("#ENDROOM\n\n");
         }*/
-
-        internal void ProcessResets()
-        {
-            foreach (ResetData reset in Resets)
-            {
-                // TODO Do resets (and sub-resets) here
-            }
-        }
     }
 }
