@@ -9,6 +9,13 @@ namespace SmaugCS.Logging
 {
     public class LoggingModule : NinjectModule
     {
+        private readonly int _sessionId;
+
+        public LoggingModule(int sessionId)
+        {
+            _sessionId = sessionId;
+        }
+
         public override void Load()
         {
             Kernel.Bind<ITimer>().To<CommonTimer>().Named("LogDumpTimer")
@@ -18,7 +25,8 @@ namespace SmaugCS.Logging
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
                 .WithConstructorArgument("kernel", Kernel)
                 .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"))
-                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
+                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>())
+                .WithConstructorArgument("sessionId", _sessionId);
         }
     }
 }

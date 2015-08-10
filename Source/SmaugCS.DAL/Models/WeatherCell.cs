@@ -1,11 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.DAL.Models
 {
     [Table("WeatherCells")]
-    public class WeatherCell : Entity
+    public class WeatherCell : IEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int Id { get; set; }
+
+        public DateTime? CreateDateUtc { get; set; }
+
         public int CellXCoordinate { get; set; }
 
         public int CellYCoordinate { get; set; }

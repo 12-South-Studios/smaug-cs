@@ -84,7 +84,7 @@ namespace SmaugCS.Tests.Repositories
             var mockTimer = new Mock<ITimer>();
 
             LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object);
-            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object);
+            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object, 0);
             RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, new Mock<ILogManager>().Object);
 
             LuaMobFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

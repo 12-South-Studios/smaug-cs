@@ -1,12 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.DAL.Models
 {
     [Table("Boards")]
-    public class Board : Entity
+    public class Board : IEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int Id { get; set; }
+
+        public DateTime? CreateDateUtc { get; set; }
+
         public BoardTypes BoardType { get; set; }
 
         public string Name { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.Core.Objects;
+using System.Threading.Tasks;
 
 namespace SmaugCS.DAL.Interfaces
 {
@@ -6,5 +7,6 @@ namespace SmaugCS.DAL.Interfaces
     {
         ObjectContext ObjectContext { get; }
         int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 }

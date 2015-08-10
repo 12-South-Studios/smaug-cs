@@ -49,7 +49,7 @@ namespace SmaugCS.Tests.Repositories
             RepositoryManager dbMgr = new RepositoryManager(new Mock<IKernel>().Object, new Mock<ILogManager>().Object);
 
             LogManager logMgr = new LogManager(new Mock<ILogWrapper>().Object, new Mock<IKernel>().Object,
-                new Mock<ITimer>().Object, new Mock<ISmaugDbContext>().Object);
+                new Mock<ITimer>().Object, new Mock<ISmaugDbContext>().Object, 0);
 
             LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

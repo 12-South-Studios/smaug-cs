@@ -13,7 +13,7 @@ namespace SmaugCS.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201507271304302_InitialSetup"; }
+            get { return "201508101456119_InitialSetup"; }
         }
         
         string IMigrationMetadata.Source

@@ -7,8 +7,14 @@ using SmaugCS.Common.Enumerations;
 namespace SmaugCS.DAL.Models
 {
     [Table("Bans")]
-    public class Ban : Entity
+    public class Ban : IEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int Id { get; set; }
+
+        public DateTime? CreateDateUtc { get; set; }
+
         public BanTypes BanType { get; set; }
 
         [MaxLength(100)]

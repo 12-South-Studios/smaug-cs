@@ -5,7 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
-using Ninject;
+using System.Threading.Tasks;
 using Realm.Library.Common.Logging;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.DAL.Models;
@@ -21,14 +21,21 @@ namespace SmaugCS.DAL
 
         public SmaugDbContext() : base("Smaug")
         {
-            var kernel = new StandardKernel(new SmaugDbContextModule());
-            Logger = kernel.Get<ILogWrapper>();
             ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
         }
         public SmaugDbContext(ILogWrapper logger) : base("Smaug")
         {
             Logger = logger;
             ObjectContext = ((IObjectContextAdapter) this).ObjectContext;
+        }
+
+        public override Task<int> SaveChangesAsync()
+        {
+            _lastSaveTimeUtc = DateTime.UtcNow;
+
+            ProcessEntities(x => x.State == EntityState.Added || x.State == EntityState.Modified);
+
+            return base.SaveChangesAsync();
         }
 
         public override int SaveChanges()
@@ -80,7 +87,7 @@ namespace SmaugCS.DAL
         {
             foreach (var entry in ChangeTracker.Entries().Where(predicate))
             {
-                var entity = entry.Entity as Entity;
+                var entity = entry.Entity as IEntity;
                 if (entity == null) continue;
 
                 AddCreateDateToEntity(entry);
@@ -89,7 +96,7 @@ namespace SmaugCS.DAL
 
         private void AddCreateDateToEntity(DbEntityEntry entry)
         {
-            var entity = entry.Entity as Entity;
+            var entity = entry.Entity as IEntity;
             if (entity == null) return;
 
             if (entry.State == EntityState.Modified && !entity.CreateDateUtc.HasValue)//Migration entities don't have create date.
@@ -117,5 +124,6 @@ namespace SmaugCS.DAL
         public IDbSet<Note> Notes { get; set; } 
         public IDbSet<Organization> Organizations { get; set; }
         public IDbSet<WeatherCell> Weather { get; set; }
+        public IDbSet<Session> Sessions { get; set; } 
     }
 }

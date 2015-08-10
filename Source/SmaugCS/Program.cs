@@ -7,7 +7,6 @@ using System.Text;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
-using log4net.Repository;
 using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
@@ -17,6 +16,7 @@ using SmaugCS.Board;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.DAL;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
@@ -33,8 +33,7 @@ namespace SmaugCS
 {
     public static class Program
     {
-        private static ILog _logger =
-            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static ILog _logger;
 
         public static ITcpServer NetworkManager { get; private set; }
         public static IKernel Kernel { get; private set; }
@@ -49,39 +48,37 @@ namespace SmaugCS
         public static IWeatherManager WeatherManager { get; private set; }
         public static INewsManager NewsManager { get; private set; }
         public static IAuctionManager AuctionManager { get; private set; }
+        public static int SessionId { get; private set; }
 
         static void Main()
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            _logger = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
             try
             {
                 ConfigureLogging();
-                InitializeNinjectKernel();
 
+                InitializeCoreNinjectKernels();
+                StartNewSession(Kernel.Get<ISmaugDbContext>());
+                InitializeSecondaryNinjectKernels();
                 OnServerStart();
-                GameManager.DoLoop();
-                OnServerStop();
+                
+                while (true)
+                {
+                    GameManager.DoLoop();
+                } 
             }
             catch (Exception ex)
             {
                 _logger.Error(ex.ToString());
-                Environment.Exit(0);
             }
             finally
             {
+                OnServerStop();
                 FlushBuffers();
                 _logger = null;
-            }
-        }
-
-        private static void FlushBuffers()
-        {
-            foreach (IAppender appender in _logger.Logger.Repository.GetAppenders())
-            {
-                var buffered = appender as BufferingAppenderSkeleton;
-                if (buffered != null)
-                    buffered.Flush();
+                Console.WriteLine("Application exiting.");
             }
         }
 
@@ -98,7 +95,7 @@ namespace SmaugCS
             XmlConfigurator.Configure();
         }
 
-        private static void InitializeNinjectKernel()
+        private static void InitializeCoreNinjectKernels()
         {
             Kernel = new StandardKernel();
 
@@ -106,8 +103,12 @@ namespace SmaugCS
                 .WithConstructorArgument("log", _logger)
                 .WithConstructorArgument("level", LogLevel.Debug);
 
-            Kernel.Load(new SmaugDbContextModule(),
-                new LoggingModule(),
+            Kernel.Load(new SmaugDbContextModule());
+        }
+
+        private static void InitializeSecondaryNinjectKernels()
+        {
+            Kernel.Load(new LoggingModule(SessionId),
                 new RepositoryModule(),
                 new SmaugModule(),
                 new AuctionModule(),
@@ -159,11 +160,21 @@ namespace SmaugCS
 
             WeatherManager = Kernel.Get<IWeatherManager>();
 
-            //NewsManager = Kernel.Get<INewsManager>();
+            NewsManager = Kernel.Get<INewsManager>();
 
             AuctionManager = Kernel.Get<IAuctionManager>();
 
             InitializeGameData();           
+        }
+
+        private static void FlushBuffers()
+        {
+            foreach (IAppender appender in _logger.Logger.Repository.GetAppenders())
+            {
+                var buffered = appender as BufferingAppenderSkeleton;
+                if (buffered != null)
+                    buffered.Flush();
+            }
         }
 
         private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
@@ -214,13 +225,11 @@ namespace SmaugCS
         private static void InitializeGameData()
         {
             LogManager.Boot("Initializing Game Data");
-
             ExecuteLuaScripts();
             LoaderInitializer.Initialize();
 
             //// Pre-Tests the module_Area to catch any errors early before area load
             LuaManager.DoLuaScript(GameConstants.DataPath + "//modules//module_area.lua");
-
             LoaderInitializer.Load();
         }
 
@@ -228,7 +237,6 @@ namespace SmaugCS
         {
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
             LogManager.Boot("{0} Commands loaded.", RepositoryManager.COMMANDS.Count);
-
             LookupManager.CommandLookup.UpdateFunctionReferences(RepositoryManager.COMMANDS.Values);
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
@@ -240,7 +248,6 @@ namespace SmaugCS
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
             LogManager.Boot("{0} Skills loaded.", RepositoryManager.SKILLS.Count);
-
             LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
             LookupManager.SpellLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
 
@@ -249,7 +256,7 @@ namespace SmaugCS
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
             LogManager.Boot("{0} Mixtures loaded.",
-                                     RepositoryManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
+                RepositoryManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
             // TODO: Update function references
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
@@ -264,7 +271,16 @@ namespace SmaugCS
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
             LogManager.Boot("{0} Morphs loaded.", RepositoryManager.MORPHS.Count);
+        }
 
+        private static void StartNewSession(ISmaugDbContext dbContext)
+        {
+            var newSession = dbContext.Sessions.Create();
+            newSession.IpAddress = ConfigurationManager.AppSettings["host"];
+            newSession.Port = Convert.ToInt32(ConfigurationManager.AppSettings["port"]);
+            dbContext.Sessions.Add(newSession);
+            dbContext.SaveChanges();
+            SessionId = newSession.Id;
         }
 
         #region Old Constants

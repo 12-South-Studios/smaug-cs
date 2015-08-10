@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
@@ -41,17 +43,16 @@ namespace SmaugCS.Auction
             {
                 if (!_dbContext.Auctions.Any()) return;
 
-                foreach (var history in _dbContext.Auctions.Select(auction => new AuctionHistory
+                var auctions = _dbContext.Auctions.Select(auction => new AuctionHistory
                 {
                     BuyerName = auction.BuyerName,
                     ItemForSale = auction.ItemSoldId,
                     SellerName = auction.SellerName,
                     SoldFor = auction.SoldFor,
                     SoldOn = auction.SoldOn
-                }))
-                {
-                    History.ToList().Add(history);
-                }
+                }).ToList();
+
+                History = auctions.ToList();
                 _logManager.Boot("Loaded {0} Auctions", History.Count());
             }
             catch (DbException ex)
@@ -60,12 +61,13 @@ namespace SmaugCS.Auction
             }
         }
 
-        public void Save()
+        public async Task Save()
         {
-            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
+            try
             {
-                try
+                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
+
                     foreach (var history in History.Where(x => !x.Saved).ToList())
                     {
                         var auction = new DAL.Models.Auction
@@ -79,14 +81,17 @@ namespace SmaugCS.Auction
                         _dbContext.Auctions.Attach(auction);
                         history.Saved = true;
                     }
-                    _dbContext.SaveChanges();
-                    transaction.Commit();
+                    await _dbContext.SaveChangesAsync();
+                    transactionScope.Complete();
                 }
-                catch (DbException ex)
-                {
-                    transaction.Rollback();
-                    _logManager.Error(ex);
-                }
+            }
+            catch (TransactionException tex)
+            {
+                _logManager.Error(tex);
+            }
+            catch (DbException ex)
+            {
+                _logManager.Error(ex);
             }
         }
     }

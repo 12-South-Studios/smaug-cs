@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Ninject.Modules;
+using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmaugCS.Constants.Constants;
@@ -9,6 +10,7 @@ using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
+using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
 
 namespace SmaugCS
@@ -17,6 +19,9 @@ namespace SmaugCS
     {
         public override void Load()
         {
+            Kernel.Bind<ITimer>().To<CommonTimer>().Named("GameLoopTimer")
+                .OnActivation(x => x.Interval = (1000f / GameConstants.GetSystemValue<int>("PulsesPerSecond")));
+
             Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
 
             Kernel.Bind<ITcpUserRepository>().To<TcpUserRepository>();
@@ -24,7 +29,10 @@ namespace SmaugCS
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
                 .WithConstructorArgument("repository", Kernel.Get<ITcpUserRepository>());
 
-            Kernel.Bind<IGameManager>().To<GameManager>().InSingletonScope();
+            Kernel.Bind<IGameManager>().To<GameManager>().InSingletonScope()
+                .WithConstructorArgument("databaseManager", Kernel.Get<IRepositoryManager>())
+                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
+                .WithConstructorArgument("timer", Kernel.Get<ITimer>("GameLoopTimer"));
 
             Kernel.Bind<ICalendarManager>().To<CalendarManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())

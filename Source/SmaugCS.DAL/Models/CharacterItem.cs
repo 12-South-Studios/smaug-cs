@@ -1,10 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
 {
     [Table("CharacterItems")]
-    public class CharacterItem : Entity
+    public class CharacterItem : IEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int Id { get; set; }
+
+        public DateTime? CreateDateUtc { get; set; }
+
         public long ItemId { get; set; }
 
         public int Count { get; set; }

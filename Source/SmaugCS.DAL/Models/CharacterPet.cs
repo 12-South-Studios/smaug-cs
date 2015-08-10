@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
 {
     [Table("CharacterPets")]
-    public class CharacterPet : Entity
+    public class CharacterPet : IEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int Id { get; set; }
+
+        public DateTime? CreateDateUtc { get; set; }
+
         public int MonsterId { get; set; }
 
         public int RoomId { get; set; }

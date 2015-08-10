@@ -21,14 +21,16 @@ namespace SmaugCS.Logging
         private readonly ISmaugDbContext _dbContext;
         private readonly List<LogEntry> _pendingLogs;
         private readonly ITimer _dbDumpTimer;
+        private readonly int _sessionId;
 
         public static ILogManager Instance { get { return _kernel.Get<ILogManager>(); } }
 
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext)
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext, int sessionId)
         {
             LogWrapper = logWrapper;
             _kernel = kernel;
             _dbContext = dbContext;
+            _sessionId = sessionId;
 
             _pendingLogs = new List<LogEntry>();
 
@@ -55,19 +57,18 @@ namespace SmaugCS.Logging
             var logsToDump = new List<LogEntry>(_pendingLogs);
             _pendingLogs.Clear();
 
+            _dbContext.ObjectContext.Connection.Open();
             using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
             {
                 try
                 {
                     foreach (var log in logsToDump)
                     {
-                        var logToSave = new DAL.Models.Log
-                        {
-                            LogType = log.LogType,
-                            LoggedOn = DateTime.UtcNow,
-                            Text = log.Text
-                        };
-                        _dbContext.Logs.Attach(logToSave);
+                        var logToSave = _dbContext.Logs.Create();
+                        logToSave.LogType = log.LogType;
+                        logToSave.Text = log.Text;
+                        logToSave.SessionId = _sessionId;
+                        _dbContext.Logs.Add(logToSave);
                     }
                     _dbContext.SaveChanges();
                     transaction.Commit();
@@ -84,6 +85,7 @@ namespace SmaugCS.Logging
                     }
                 }
             }
+            _dbContext.ObjectContext.Connection.Close();
         }
 
         public void DatabaseFailureLog(string str, params object[] args)

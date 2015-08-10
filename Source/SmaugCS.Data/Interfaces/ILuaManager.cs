@@ -8,6 +8,7 @@ namespace SmaugCS.Data
         LuaInterfaceProxy Proxy { get; }
         void InitializeLuaProxy(LuaInterfaceProxy proxy);
         void InitVirtualMachine();
+
         void DoLuaScript(string file);
     }
 }

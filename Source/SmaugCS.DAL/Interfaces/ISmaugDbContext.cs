@@ -16,6 +16,7 @@ namespace SmaugCS.DAL.Interfaces
         IDbSet<NewsEntry> NewsEntries { get; set; }
         IDbSet<Note> Notes { get; set; }
         IDbSet<Organization> Organizations { get; set; }
-        IDbSet<WeatherCell> Weather { get; set; } 
+        IDbSet<WeatherCell> Weather { get; set; }
+        IDbSet<Session> Sessions { get; set; } 
     }
 }

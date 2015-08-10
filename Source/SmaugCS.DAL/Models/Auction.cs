@@ -5,8 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SmaugCS.DAL.Models
 {
     [Table("Auctions")]
-    public class Auction : Entity
+    public class Auction : IEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int Id { get; set; }
+
+        public DateTime? CreateDateUtc { get; set; }
+
         [MaxLength(100)]
         public string SellerName { get; set; }
 

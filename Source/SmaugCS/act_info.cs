@@ -178,8 +178,6 @@ namespace SmaugCS
             var prgnShow = new int[size];
             var pitShow = new int[size];
             var nShow = 0;
-            string pstrShow;
-            var fCombine = false;
 
             foreach (var obj in list)
             {
@@ -200,8 +198,8 @@ namespace SmaugCS
                     && (obj.ItemType != ItemTypes.Trap
                         || ch.IsAffected(AffectedByTypes.DetectInvisibility)))
                 {
-                    pstrShow = obj.GetFormattedDescription(ch, fShort);
-                    fCombine = false;
+                    string pstrShow = obj.GetFormattedDescription(ch, fShort);
+                    bool fCombine = false;
 
                     if (ch.Act.IsSet(PlayerFlags.Combine))
                     {
@@ -409,7 +407,7 @@ namespace SmaugCS
 
             foreach (var exit in ch.CurrentRoom.Exits)
             {
-                if (exit.Destination == null || exit.Flags.IsSet((int)ExitFlags.Hidden)
+                if (exit.Flags.IsSet((int)ExitFlags.Hidden)
                     || (exit.Flags.IsSet((int)ExitFlags.Secret)
                         && exit.Flags.IsSet((int)ExitFlags.Closed)))
                     continue;

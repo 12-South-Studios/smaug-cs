@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmaugCS.DAL.Models
 {
-    [Table("CharacterImmortals")]
-    public class CharacterImmortal : IEntity
+    [Table("Sessions")]
+    public class Session : IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,14 +13,8 @@ namespace SmaugCS.DAL.Models
 
         public DateTime? CreateDateUtc { get; set; }
 
-        public string BamfinMessage { get; set; }
+        public string IpAddress { get; set; }
 
-        public string BamfoutMessage { get; set; }
-
-        public int Trust { get; set; }
-
-        public int WizInvis { get; set; }
-
-        public string ImmortalRank { get; set; }
+        public int Port { get; set; }
     }
 }

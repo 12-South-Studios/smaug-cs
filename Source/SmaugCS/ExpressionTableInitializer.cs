@@ -8,7 +8,7 @@ using SmaugCS.Managers;
 
 namespace SmaugCS
 {
-    public class ExpressionTableInitializer
+    public static class ExpressionTableInitializer
     {
         public static ExpressionTable GetExpressionTable()
         {
