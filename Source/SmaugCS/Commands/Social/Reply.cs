@@ -5,6 +5,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.MudProgs;
 
 namespace SmaugCS.Commands.Social
 {
@@ -140,7 +141,7 @@ namespace SmaugCS.Commands.Social
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log), buffer);
             }
 
-            mud_prog.mprog_tell_trigger(argument, ch);
+            MudProgHandler.ExecuteMobileProg(MudProgTypes.Tell, argument, ch);
         }
     }
 }

@@ -18,6 +18,7 @@ using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 
 namespace SmaugCS
@@ -33,7 +34,7 @@ namespace SmaugCS
                 if (ch is PlayerInstance)
                     ((PlayerInstance)ch).ProcessUpdate();
                 else if (ch is MobileInstance)
-                    ((MobileInstance)ch).ProcessUpdate();
+                    ((MobileInstance)ch).ProcessUpdate(RepositoryManager.Instance);
             }
 
             // trworld_dispose
@@ -74,16 +75,16 @@ namespace SmaugCS
                 handler.CurrentCharacter = ch;
 
                 if (!ch.IsNpc())
-                    mud_prog.rprog_random_trigger(ch);
+                    MudProgHandler.ExecuteRoomProg(MudProgTypes.Random, ch);
                 if (ch.CharDied())
                     continue;
                 
                 if (ch.IsNpc())
-                    mud_prog.mprog_time_trigger(ch);
+                    MudProgHandler.ExecuteMobileProg(MudProgTypes.Time, ch);
                 if (ch.CharDied())
                     continue;
 
-                mud_prog.rprog_time_trigger(ch);
+                MudProgHandler.ExecuteRoomProg(MudProgTypes.Time, ch);
                 if (ch.CharDied())
                     continue;
 
@@ -372,9 +373,9 @@ namespace SmaugCS
                 handler.CurrentObject = obj;
 
                 if (obj.CarriedBy != null)
-                    mud_prog.oprog_random_trigger(obj);
+                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Random, obj);
                 else if (obj.InRoom != null && obj.InRoom.Area.NumberOfPlayers > 0)
-                    mud_prog.oprog_random_trigger(obj);
+                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Random, obj);
 
                 if (handler.obj_extracted(obj))
                     continue;
@@ -506,7 +507,7 @@ namespace SmaugCS
                     continue;
 
                 if (ch.IsNpc())
-                    CheckNpc((MobileInstance)ch);
+                    CheckNpc((MobileInstance)ch, RepositoryManager.Instance);
                 else
                     CheckPlayer(ch);
             }
@@ -519,7 +520,7 @@ namespace SmaugCS
             throw new NotImplementedException();
         }
 
-        private static void CheckNpc(MobileInstance ch)
+        private static void CheckNpc(MobileInstance ch, IRepositoryManager dbManager)
         {
             if ((_charCounter & 1) > 0)
                 return;
@@ -539,7 +540,7 @@ namespace SmaugCS
 
                 if (ch.SpecialFunction != null)
                 {
-                    if (ch.SpecialFunction.Value.Invoke(ch))
+                    if (ch.SpecialFunction.Value.Invoke(ch, dbManager))
                         return;
                     if (ch.CharDied())
                         return;
@@ -635,7 +636,7 @@ namespace SmaugCS
             exit.Extract();
         }
 
-        public static void reboot_check(DateTime reset)
+        public static void reboot_check(DateTime? reset = null)
         {
             // TODO
         }

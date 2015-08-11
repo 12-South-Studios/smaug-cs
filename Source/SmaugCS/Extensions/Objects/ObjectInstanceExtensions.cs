@@ -16,6 +16,7 @@ using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Objects
@@ -505,7 +506,7 @@ namespace SmaugCS.Extensions.Objects
 
                 if (ch != null)
                 {
-                    mud_prog.oprog_drop_trigger(ch, tObj);
+                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Drop, ch, tObj);
                     if (ch.CharDied())
                         ch = null;
                 }

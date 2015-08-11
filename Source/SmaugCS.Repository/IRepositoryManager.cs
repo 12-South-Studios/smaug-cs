@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;
@@ -6,7 +7,7 @@ using SmaugCS.Logging;
 
 namespace SmaugCS.Repository
 {
-    public interface IRepositoryManager
+    public interface IRepositoryManager : IManager
     {
         ILogManager LogManager { get; }
 

@@ -16,7 +16,7 @@ namespace SmaugCS.MudProgs.MobileProgs
                 if (actor.IsNpc() && ((MobileInstance)actor).MobIndex == mob.MobIndex)
                     continue;
 
-                mud_prog.CheckIfExecuteText(mob, mudProg, txt);
+                CheckFunctions.CheckIfExecuteText(mob, mudProg, txt);
             }
         }
     }

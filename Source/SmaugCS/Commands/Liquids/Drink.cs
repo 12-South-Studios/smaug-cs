@@ -9,8 +9,9 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
-using SmaugCS.Helpers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Liquids
 {
@@ -97,7 +98,7 @@ namespace SmaugCS.Commands.Liquids
             LiquidData liquid = RepositoryManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
                                 RepositoryManager.Instance.LIQUIDS.Get(0);
 
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n drinks $T from $p.", ch, obj, liquid.ShortDescription, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You drink $T from $p.", ch, obj, liquid.ShortDescription, ToTypes.Character);
@@ -222,7 +223,7 @@ namespace SmaugCS.Commands.Liquids
                     pch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = GetMaximumCondition();
             }
 
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n drinks from the fountain.", ch, null, null, ToTypes.Room);
                 ch.SendTo("You take a long thirst quenching drink.");
@@ -255,7 +256,7 @@ namespace SmaugCS.Commands.Liquids
                                                || ch.GetCondition(ConditionTypes.Thirsty) >= maxCond,
                 "You are too full to drink any blood.")) return;
 
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_BLOOD, "$n drinks from the spilled blood.", ch, null, null, ToTypes.Room);
                 ch.SetColor(ATTypes.AT_BLOOD);

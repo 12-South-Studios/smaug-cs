@@ -35,7 +35,7 @@ namespace SmaugCS.Spells
                 SkillNumber = sn,
                 Location = ApplyTypes.HitRoll,
                 Modifier = -4,
-                Duration = (1 + (level/3))*GameConstants.GetConstant<int>("AffectDurationConversionValue")
+                Duration = GetDuration(level)
             };
 
             victim.AddAffect(af);
@@ -49,6 +49,11 @@ namespace SmaugCS.Spells
             }
 
             return ReturnTypes.None;
+        }
+
+        private static int GetDuration(int level)
+        {
+            return (1 + (level/3))*GameConstants.GetConstant<int>("AffectDurationConversionValue");
         }
     }
 }

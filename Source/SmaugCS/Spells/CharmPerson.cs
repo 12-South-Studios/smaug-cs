@@ -53,25 +53,27 @@ namespace SmaugCS.Spells
             var af = new AffectData
             {
                 SkillNumber = sn,
-                Duration = (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
-                           GameConstants.GetConstant<int>("AffectDurationConversionValue")
+                Duration = GetDuration(level)
             };
-            // af.BitVector = ExtendedBitvector.Meb((int) AffectedByTypes.Charm);
             victim.AddAffect(af);
             
             ch.SuccessfulCast(skill, victim);
-            //TODO log_printf_plus( LOG_NORMAL, ch->level, "%s has charmed %s.", ch->name, victim->name );
 
             if (!ch.IsNpc())
                 ((PlayerInstance)ch).PlayerData.NumberOfCharmies++;
-            if (victim.IsNpc())
-            {
-                var mob = (MobileInstance) victim;
-                mob.StartHating(ch);
-                mob.StartHunting(ch);
-            }
+            if (!victim.IsNpc()) return ReturnTypes.None;
+
+            var mob = (MobileInstance) victim;
+            mob.StartHating(ch);
+            mob.StartHunting(ch);
 
             return ReturnTypes.None;
+        }
+
+        private static int GetDuration(int level)
+        {
+            return (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
+                   GameConstants.GetConstant<int>("AffectDurationConversionValue");
         }
     }
 }

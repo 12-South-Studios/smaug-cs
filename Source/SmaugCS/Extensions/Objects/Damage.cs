@@ -3,6 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.MudProgs;
 
 namespace SmaugCS.Extensions.Objects
 {
@@ -23,10 +24,8 @@ namespace SmaugCS.Extensions.Objects
                 ch = null;
             }
 
-            if (obj.ItemType != ItemTypes.Light)
-                mud_prog.oprog_damage_trigger(ch, obj);
-            else if (!ch.IsInArena())
-                mud_prog.oprog_damage_trigger(ch, obj);
+            if (obj.ItemType != ItemTypes.Light || !ch.IsInArena())
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Damage, ch, obj);
 
             if (handler.obj_extracted(obj))
                 return handler.GlobalObjectCode;

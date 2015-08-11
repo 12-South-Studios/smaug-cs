@@ -17,6 +17,7 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
+using SmaugCS.Weather;
 
 namespace SmaugCS.Managers
 {
@@ -104,8 +105,11 @@ namespace SmaugCS.Managers
                 }
             }
 
-            // todo mpsleep_update, tele_update, aggr_update, obj_act_update
-            // todo room_act_update, clean_obj_queue, clean_char_queue
+            mud_prog.mpsleep_update();
+            update.tele_update();
+            update.aggr_update();
+            mud_prog.obj_act_update();
+            mud_prog.room_act_update();
 
             DateTime end = DateTime.Now;
             _logger.Info("Timing Complete: {0} seconds.", end.Subtract(start).TotalSeconds);
@@ -128,7 +132,9 @@ namespace SmaugCS.Managers
         private static void UpdateSecond(int pulseValue)
         {
             SetPulseTimer(PulseTypes.Second, pulseValue);
-            // todo char_check, check_dns, reboot_check
+
+            update.char_check();
+            update.reboot_check();
 
             _logger.Info("Update Seconds");
         }
@@ -137,15 +143,21 @@ namespace SmaugCS.Managers
         {
             SetPulseTimer(PulseTypes.Point, SmaugRandom.Between((int) (pulseValue*0.75f), (int) (pulseValue*1.2f)));
 
-            // todo auth_update, time_update, updateweather, hint_update, char_update, obj_update, clear_vrooms
-
+            update.auth_update();
+            update.time_update();
+            WeatherManager.Instance.Weather.Update(Instance.GameTime);
+            update.hint_update();
+            update.char_update();
+            update.obj_update();
+           
             _logger.Info("Update Tick");
         }
 
         private static void UpdateViolence(int pulseValue)
         {
             SetPulseTimer(PulseTypes.Violence, pulseValue);
-            // todo violence_update
+            
+            fight.violence_update();
 
             _logger.Info("Update Violence");
         }
@@ -166,7 +178,7 @@ namespace SmaugCS.Managers
                 }
                 else if (ch is MobileInstance)
                 {
-                    ((MobileInstance)ch).ProcessUpdate();
+                    ((MobileInstance)ch).ProcessUpdate(RepositoryManager.Instance);
                     mobiles++;
                 }
             }

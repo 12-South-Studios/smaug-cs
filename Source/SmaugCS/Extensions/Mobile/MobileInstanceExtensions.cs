@@ -8,12 +8,14 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
+using SmaugCS.MudProgs;
+using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Mobile
 {
     public static class MobileInstanceExtensions
     {
-        public static void ProcessUpdate(this MobileInstance ch)
+        public static void ProcessUpdate(this MobileInstance ch, IRepositoryManager dbManager)
         {
             handler.set_cur_char(ch);
 
@@ -43,7 +45,7 @@ namespace SmaugCS.Extensions.Mobile
 
             if (!ch.Act.IsSet(ActFlags.Running) && ch.SpecialFunction != null)
             {
-                if (ch.SpecialFunction.Value.Invoke(ch))
+                if (ch.SpecialFunction.Value.Invoke(ch, dbManager))
                     return;
                 if (ch.CharDied())
                     return;
@@ -51,7 +53,7 @@ namespace SmaugCS.Extensions.Mobile
 
             if (ch.MobIndex.HasProg(MudProgTypes.Script))
             {
-                mud_prog.mprog_script_trigger(ch);
+                MudProgHandler.ExecuteMobileProg(MudProgTypes.Script, ch);
                 return;
             }
 
@@ -77,18 +79,18 @@ namespace SmaugCS.Extensions.Mobile
 
             if (ch.CurrentRoom.Area.NumberOfPlayers > 0)
             {
-                mud_prog.mprog_random_trigger(ch);
+                MudProgHandler.ExecuteMobileProg(MudProgTypes.Random, ch);
                 if (ch.CharDied())
                     return;
                 if ((int) ch.CurrentPosition < (int) PositionTypes.Standing)
                     return;
             }
 
-            mud_prog.mprog_hour_trigger(ch);
+            MudProgHandler.ExecuteMobileProg(MudProgTypes.Hour, ch);
             if (ch.CharDied())
                 return;
 
-            mud_prog.rprog_hour_trigger(ch);
+            MudProgHandler.ExecuteRoomProg(MudProgTypes.Hour, ch);
             if (ch.CharDied())
                 return;
 

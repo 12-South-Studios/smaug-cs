@@ -5,10 +5,15 @@ namespace SmaugCS.MudProgs.MobileProgs
 {
     public static class FightProg
     {
-        public static void Execute(MobileInstance mob, CharacterInstance ch)
+        public static bool Execute(object[] args)
         {
+            var mob = (MobileInstance)args[0];
+            var ch = (CharacterInstance) args[1];
+
             if (mob.IsNpc() && mob.MobIndex.HasProg(MudProgTypes.Fight))
-                mud_prog.CheckIfExecute(mob, MudProgTypes.Fight);
+                CheckFunctions.CheckIfExecute(mob, MudProgTypes.Fight);
+
+            return true;
         }
     }
 }

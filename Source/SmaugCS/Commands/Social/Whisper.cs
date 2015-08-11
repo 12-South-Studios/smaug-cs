@@ -6,6 +6,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.MudProgs;
 
 namespace SmaugCS.Commands.Social
 {
@@ -135,7 +136,7 @@ namespace SmaugCS.Commands.Social
                                                 ch.IsNpc() ? ch.ShortDescription : ch.Name,
                                                 argument, victim.IsNpc() ? victim.ShortDescription : victim.Name));
 
-            mud_prog.mprog_tell_trigger(argument, ch);
+            MudProgHandler.ExecuteMobileProg(MudProgTypes.Tell, argument, ch);
         }
     }
 }

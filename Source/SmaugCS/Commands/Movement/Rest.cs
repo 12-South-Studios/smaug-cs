@@ -1,7 +1,8 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
+using SmaugCS.MudProgs;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -22,7 +23,7 @@ namespace SmaugCS.Commands.Movement
             else if (ch.CurrentPosition == PositionTypes.Mounted)
                 ch.SendTo("You'd better dismount first.");
 
-            mud_prog.rprog_rest_trigger(ch);
+            MudProgHandler.ExecuteRoomProg(MudProgTypes.Rest, ch);
         }
 
         private static void FromSitting(CharacterInstance ch)

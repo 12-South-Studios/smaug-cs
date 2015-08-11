@@ -292,10 +292,58 @@
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Interfaces\ICalendarManager.cs" />
     <Compile Include="Managers\PulseTypes.cs" />
+    <Compile Include="MudProgs\CheckFunctions.cs" />
+    <Compile Include="MudProgs\IMudProgHandler.cs" />
+    <Compile Include="MudProgs\MobileProgs\CommandProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\EntryProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\ActProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\BribeProg.cs" />
     <Compile Include="MudProgs\MobileProgs\DeathProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\GreetProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\GiveProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\HourProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\ScriptProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\TellProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\TimeProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\RandomProg.cs" />
+    <Compile Include="MudProgs\MobileProgs\SellProg.cs" />
     <Compile Include="MudProgs\MobileProgs\FightProg.cs" />
     <Compile Include="MudProgs\MobileProgs\HitPercentProg.cs" />
     <Compile Include="MudProgs\MobileProgs\SpeechProg.cs" />
+    <Compile Include="MudProgs\MudProgFunction.cs" />
+    <Compile Include="MudProgs\MudProgHandler.cs" />
+    <Compile Include="MudProgs\MudProgLocationTypes.cs" />
+    <Compile Include="MudProgs\ObjectProgs\ActProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\CommandProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\PushProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\PullProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\ZapProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\ExamineProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\DropProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\RepairProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\DamageProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\GreetProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\GetProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\SacrificeProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\RemoveProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\UseProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\WearProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\RandomProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\ScriptProg.cs" />
+    <Compile Include="MudProgs\ObjectProgs\SpeechProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\ActProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\CommandProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\HourProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\RandomProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\SpeechProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\DeathProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\FightProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\RestProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\SleepProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\EnterProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\LeaveProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\ScriptProg.cs" />
+    <Compile Include="MudProgs\RoomProgs\TimeProg.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -310,27 +358,27 @@
     <Compile Include="Skills\Trip.cs" />
     <Compile Include="Skills\Tumble.cs" />
     <Compile Include="SmaugModule.cs" />
-    <Compile Include="SpecFuns\BreathAcid.cs" />
-    <Compile Include="SpecFuns\BreathAny.cs" />
-    <Compile Include="SpecFuns\BreathFire.cs" />
-    <Compile Include="SpecFuns\BreathFrost.cs" />
-    <Compile Include="SpecFuns\BreathGas.cs" />
-    <Compile Include="SpecFuns\BreathLightning.cs" />
-    <Compile Include="SpecFuns\CastAdept.cs" />
-    <Compile Include="SpecFuns\CastCleric.cs" />
-    <Compile Include="SpecFuns\CastMage.cs" />
-    <Compile Include="SpecFuns\CastUndead.cs" />
-    <Compile Include="SpecFuns\Dragon.cs" />
-    <Compile Include="SpecFuns\Executioner.cs" />
-    <Compile Include="SpecFuns\Fido.cs" />
-    <Compile Include="SpecFuns\Guard.cs" />
+    <Compile Include="SpecFuns\Breaths\BreathAcid.cs" />
+    <Compile Include="SpecFuns\Breaths\BreathAny.cs" />
+    <Compile Include="SpecFuns\Breaths\BreathFire.cs" />
+    <Compile Include="SpecFuns\Breaths\BreathFrost.cs" />
+    <Compile Include="SpecFuns\Breaths\BreathGas.cs" />
+    <Compile Include="SpecFuns\Breaths\BreathLightning.cs" />
+    <Compile Include="SpecFuns\Casting\CastAdept.cs" />
+    <Compile Include="SpecFuns\Casting\CastCleric.cs" />
+    <Compile Include="SpecFuns\Casting\CastMage.cs" />
+    <Compile Include="SpecFuns\Casting\CastUndead.cs" />
+    <Compile Include="SpecFuns\Breaths\Dragon.cs" />
+    <Compile Include="SpecFuns\Professions\Executioner.cs" />
+    <Compile Include="SpecFuns\Professions\Fido.cs" />
+    <Compile Include="SpecFuns\Professions\Guard.cs" />
     <Compile Include="SpecFuns\ISpecFunHandler.cs" />
-    <Compile Include="SpecFuns\Janitor.cs" />
-    <Compile Include="SpecFuns\Mayor.cs" />
+    <Compile Include="SpecFuns\Professions\Janitor.cs" />
+    <Compile Include="SpecFuns\Professions\Mayor.cs" />
     <Compile Include="SpecFuns\Poison.cs" />
     <Compile Include="SpecFuns\SpecFunSpell.cs" />
-    <Compile Include="SpecFuns\Thief.cs" />
-    <Compile Include="SpecFuns\Wanderer.cs" />
+    <Compile Include="SpecFuns\Professions\Thief.cs" />
+    <Compile Include="SpecFuns\Professions\Wanderer.cs" />
     <Compile Include="Spells\Smaug\Affect.cs" />
     <Compile Include="Spells\Smaug\AffectCharacter.cs" />
     <Compile Include="Spells\Smaug\AreaAttack.cs" />
@@ -801,13 +849,13 @@
     <Compile Include="interp.cs" />
     <Compile Include="Liquids.cs" />
     <Compile Include="Macros.cs" />
-    <Compile Include="magic.cs" />
+    <Compile Include="Spells\magic.cs" />
     <Compile Include="ObjectFactory.cs" />
     <Compile Include="mapout.cs" />
     <Compile Include="mapper.cs" />
     <Compile Include="misc.cs" />
     <Compile Include="mpxset.cs" />
-    <Compile Include="mud_prog.cs" />
+    <Compile Include="MudProgs\mud_prog.cs" />
     <Compile Include="Objects\act_prog_data.cs" />
     <Compile Include="Objects\cha_app_type.cs" />
     <Compile Include="Objects\con_app_type.cs" />
@@ -847,7 +895,7 @@
     <Compile Include="renumber.cs" />
     <Compile Include="reset.cs" />
     <Compile Include="save.cs" />
-    <Compile Include="skills.cs" />
+    <Compile Include="Skills\skills.cs" />
     <Compile Include="SpecFuns\SpecFunHandler.cs" />
     <Compile Include="tables.cs" />
     <Compile Include="update.cs" />
@@ -1025,10 +1073,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MudProgs\ObjectProgs\" />
-    <Folder Include="MudProgs\RoomProgs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

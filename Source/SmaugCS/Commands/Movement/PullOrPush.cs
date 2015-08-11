@@ -10,6 +10,7 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Commands.Movement
@@ -418,7 +419,7 @@ namespace SmaugCS.Commands.Movement
             {
                 if (obj.Value.ToList()[0].IsSet(TriggerFlags.AutoReturn))
                     obj.Value.ToList()[0].RemoveBit(TriggerFlags.Up);
-                mud_prog.oprog_pull_trigger(ch, obj);
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Pull, ch, obj);
                 return true;
             }
             return false;
@@ -430,7 +431,7 @@ namespace SmaugCS.Commands.Movement
             {
                 if (obj.Value.ToList()[0].IsSet(TriggerFlags.AutoReturn))
                     obj.Value.ToList()[0].SetBit(TriggerFlags.Up);
-                mud_prog.oprog_push_trigger(ch, obj);
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Push, ch, obj);
                 return true;
             }
             return false;
@@ -438,7 +439,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireOProgUseTrigger(bool pull, CharacterInstance ch, ObjectInstance obj)
         {
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, string.Format("$n {0} $p.", pull ? "pulls" : "pushes"), ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, string.Format("You {0} $p.", pull ? "pull" : "push"), ch, obj, null, ToTypes.Character);

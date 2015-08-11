@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.MudProgs;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -22,7 +23,7 @@ namespace SmaugCS.Commands.Movement
             else if (ch.CurrentPosition == PositionTypes.Mounted)
                 ch.SendTo("You really should dismount first.");
 
-            mud_prog.rprog_sleep_trigger(ch);
+            MudProgHandler.ExecuteRoomProg(MudProgTypes.Sleep, ch);
         }
 
         private static bool CantSleepDueToMentalState(CharacterInstance ch, int modifier)

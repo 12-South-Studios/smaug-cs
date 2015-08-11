@@ -5,8 +5,9 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
+using SmaugCS.MudProgs;
 using SmaugCS.MudProgs.MobileProgs;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Social
 {
@@ -73,13 +74,13 @@ namespace SmaugCS.Commands.Social
                                   string.Format("{0}: {1}", ch.IsNpc() ? ch.ShortDescription : ch.Name, argument));
             }
 
-            SpeechProg.Execute(argument, ch);
+            MudProgHandler.ExecuteMobileProg(MudProgTypes.Speech, argument, ch);
             if (ch.CharDied())
                 return;
-            mud_prog.oprog_speech_trigger(argument, ch);
+            MudProgHandler.ExecuteObjectProg(MudProgTypes.Speech, argument, ch);
             if (ch.CharDied())
                 return;
-            mud_prog.rprog_speech_trigger(argument, ch);
+            MudProgHandler.ExecuteRoomProg(MudProgTypes.Speech, argument, ch);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Ninject;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
@@ -7,7 +8,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
-using SmaugCS.MudProgs.MobileProgs;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
@@ -30,11 +31,11 @@ namespace SmaugCS.Extensions.Character
                 return ch.RawKill(victim);
             }
 
-            DeathProg.Execute(ch, (MobileInstance)victim);
+            MudProgHandler.ExecuteMobileProg(MudProgTypes.Death, ch, victim);
             if (victim.CharDied())
                 return null;
 
-            mud_prog.rprog_death_trigger(victim);
+            MudProgHandler.ExecuteRoomProg(MudProgTypes.Death, victim);
             if (victim.CharDied())
                 return null;
 

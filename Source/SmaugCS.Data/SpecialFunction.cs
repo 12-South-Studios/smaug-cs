@@ -1,5 +1,6 @@
 ﻿using System;
 using Realm.Library.Common;
+using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data
@@ -10,6 +11,6 @@ namespace SmaugCS.Data
         {
         }
 
-        public Func<MobileInstance, bool> Value { get; set; }
+        public Func<MobileInstance, IManager, bool> Value { get; set; }
     }
 }

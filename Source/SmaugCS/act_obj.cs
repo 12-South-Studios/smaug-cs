@@ -7,10 +7,11 @@ using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS
 {
@@ -122,7 +123,7 @@ namespace SmaugCS
             if (ch.CharDied() || handler.obj_extracted(obj))
                 return;
 
-            mud_prog.oprog_get_trigger(ch, obj);
+            MudProgHandler.ExecuteObjectProg(MudProgTypes.Get, ch, obj);
         }
 
         private static void GetObjectFromRoom(CharacterInstance ch, ObjectInstance obj)

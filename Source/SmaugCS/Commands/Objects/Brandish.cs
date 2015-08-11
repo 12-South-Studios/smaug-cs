@@ -8,8 +8,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Objects
 {
@@ -41,7 +42,7 @@ namespace SmaugCS.Commands.Objects
 
         private static void BrandishStaff(CharacterInstance ch, ObjectInstance obj)
         {
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_MAGIC, "$n brandishes $p.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_MAGIC, "You brandish $p.", ch, obj, null, ToTypes.Character);

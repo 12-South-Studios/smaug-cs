@@ -21,6 +21,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
 using SmaugCS.MudProgs.MobileProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells.Smaug;
@@ -53,7 +54,7 @@ namespace SmaugCS
                 if (ch.CharDied())
                     return false;
 
-                mud_prog.oprog_get_trigger(ch, content);
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Get, ch, content);
                 if (ch.CharDied())
                     return false;
 
@@ -165,13 +166,13 @@ namespace SmaugCS
                     continue;
 
                 //// Mob triggers
-                mud_prog.rprog_rfight_trigger(ch);
+                MudProgHandler.ExecuteRoomProg(MudProgTypes.Fight, ch);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
-                HitPercentProg.Execute((MobileInstance)ch, victim);
+                MudProgHandler.ExecuteMobileProg(MudProgTypes.HitPercent, ch, victim);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
-                FightProg.Execute((MobileInstance)ch, victim);
+                MudProgHandler.ExecuteMobileProg(MudProgTypes.Fight, ch, victim);
                 if (ch.CharDied() || victim.CharDied())
                     continue;
 
@@ -1027,7 +1028,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (Macros.IS_PACIFIST(ch))
+            if (ch.IsPacifist())
             {
                 if (show_messg)
                 {
@@ -1037,7 +1038,7 @@ namespace SmaugCS
                 return true;
             }
 
-            if (Macros.IS_PACIFIST(victim))
+            if (victim.IsPacifist())
             {
                 if (show_messg)
                 {
@@ -1566,7 +1567,7 @@ namespace SmaugCS
 
                 obj.RemoveFrom();
                 var newObj = gch.CurrentRoom.AddTo(obj);
-                mud_prog.oprog_zap_trigger(gch, newObj);
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Zap, gch, newObj);
                 if (gch.CharDied())
                     return;
             }

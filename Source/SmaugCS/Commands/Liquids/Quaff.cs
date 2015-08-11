@@ -6,8 +6,9 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
-using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Liquids
 {
@@ -69,7 +70,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static void QuaffPotion(CharacterInstance ch, ObjectInstance obj, bool hgFlag)
         {
-            if (!mud_prog.oprog_use_trigger(ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 if (!ch.CanPKill() || obj.InObject == null)
                 {

@@ -10,6 +10,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
+using SmaugCS.MudProgs;
 
 namespace SmaugCS
 {
@@ -290,12 +291,12 @@ namespace SmaugCS
             {
                 txt = act_string(format, null, ch, arg1, arg2, Program.STRING_IMM);
                 if (to.CurrentRoom.HasProg(MudProgTypes.Act))
-                    mud_prog.rprog_act_trigger(txt, to.CurrentRoom, ch, (ObjectInstance) arg1, arg2);
+                    MudProgHandler.ExecuteRoomProg(MudProgTypes.Act, txt, to.CurrentRoom, ch, (ObjectInstance) arg1, arg2);
 
                 foreach (var toObj in to.CurrentRoom.Contents
                     .Where(toObj => to.CurrentRoom.HasProg(MudProgTypes.Act)))
                 {
-                    mud_prog.oprog_act_trigger(txt, toObj, ch, (ObjectInstance) arg1, arg2);
+                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Act, txt, toObj, ch, (ObjectInstance) arg1, arg2);
                 }
             }
 
@@ -341,7 +342,7 @@ namespace SmaugCS
                     to.SendTo(txt);
                 }
 
-                mud_prog.mprog_act_trigger(txt, to, ch, (ObjectInstance)arg1, arg2);
+                MudProgHandler.ExecuteMobileProg(MudProgTypes.Act, txt, to, ch, arg1, arg2);
             }
         }
     

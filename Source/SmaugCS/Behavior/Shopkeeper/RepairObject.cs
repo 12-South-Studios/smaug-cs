@@ -2,6 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using SmaugCS.MudProgs;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
@@ -71,7 +72,7 @@ namespace SmaugCS.Behavior.Shopkeeper
                         break;
                 }
 
-                mud_prog.oprog_repair_trigger(ch, obj);
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Repair, ch, obj);
             }
         }
     }

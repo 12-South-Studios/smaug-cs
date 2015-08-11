@@ -41,12 +41,7 @@ namespace SmaugCS.Spells
 
         private static void AddAffectToTarget(CharacterInstance ch, int sn, int level, ApplyTypes appLocation)
         {
-            int duration;
-            checked
-            {
-                duration = (4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue");
-            }
-
+            int duration = (4 * level) * GameConstants.GetConstant<int>("AffectDurationConversionValue");
             var af = new AffectData
             {
                 SkillNumber = sn,

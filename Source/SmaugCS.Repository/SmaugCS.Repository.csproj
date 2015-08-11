@@ -66,11 +66,11 @@
     <Compile Include="AreaRepository.cs" />
     <Compile Include="CharacterRepository.cs" />
     <Compile Include="DuplicateIndexException.cs" />
+    <Compile Include="IRepositoryManager.cs" />
     <Compile Include="RepositoryManagerExtensions.cs" />
     <Compile Include="RepositoryModule.cs" />
     <Compile Include="RepositoryManager.cs" />
     <Compile Include="GenericRepository.cs" />
-    <Compile Include="IRepositoryManager.cs" />
     <Compile Include="MobileRepository.cs" />
     <Compile Include="ObjectRepository.cs" />
     <Compile Include="ObjInstanceRepository.cs" />

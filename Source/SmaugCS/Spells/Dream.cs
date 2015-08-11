@@ -1,13 +1,15 @@
-﻿using SmaugCS.Data.Instances;
+﻿using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Spells
 {
-    class Dream
+    public static class Dream
     {
-        public static int spell_dream(int sn, int level, CharacterInstance ch, object vo)
+        public static ReturnTypes spell_dream(int sn, int level, CharacterInstance ch, object vo)
         {
-            // TODO
-            return 0;
+            // todo finish this magic.c:5114
+
+            return ReturnTypes.None;
         }
     }
 }

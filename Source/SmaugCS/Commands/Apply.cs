@@ -4,7 +4,8 @@ using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
+using SmaugCS.MudProgs;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands
 {
@@ -49,7 +50,7 @@ namespace SmaugCS.Commands
             salve.Split();
             salve.Values.Charges -= 1;
 
-            if (!mud_prog.oprog_use_trigger(ch, salve, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, salve, null, null))
                 UseSalve(salve, ch, victim);
 
             Macros.WAIT_STATE(ch, salve.Values.Delay);

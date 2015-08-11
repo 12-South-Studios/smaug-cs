@@ -11,6 +11,7 @@ using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
 
@@ -48,6 +49,7 @@ namespace SmaugCS
                 .OnActivation(x => x.InitializeLuaFunctions());
 
             Kernel.Bind<ISpecFunHandler>().To<SpecFunHandler>();
+            Kernel.Bind<IMudProgHandler>().To<MudProgHandler>();
         }
     }
 }

@@ -26,10 +26,7 @@ namespace SmaugCS
 
         public static bool NO_WEATHER_SECT(SectorTypes sect)
         {
-            return sect == SectorTypes.Inside ||
-                   sect == SectorTypes.Underwater ||
-                   sect == SectorTypes.OceanFloor ||
-                   sect == SectorTypes.Underground;
+            return (sect & SectorTypes.HasNoWeather) > 0;
         }
 
         public static void WAIT_STATE(CharacterInstance ch, int npulse)
@@ -48,10 +45,6 @@ namespace SmaugCS
         public static bool IS_VALID_DISEASE(int sn)
         {
             return sn >= 0 && sn < Program.MAX_DISEASE && db.DISEASES[sn] != null && !string.IsNullOrEmpty(db.DISEASES[sn].Name);
-        }
-        public static bool IS_PACIFIST(CharacterInstance ch)
-        {
-            return ch.IsNpc() && ch.Act.IsSet(ActFlags.Pacifist);
         }
 
         public static int SPELL_DAMAGE(SkillData skill)

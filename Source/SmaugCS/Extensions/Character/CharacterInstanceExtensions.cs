@@ -20,11 +20,12 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
-using SmaugCS.Helpers;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -119,6 +120,11 @@ namespace SmaugCS.Extensions.Character
 
             var player = instance;
             return player.PlayerData != null && player.PlayerData.Flags.IsSet(PCFlags.Deadly);
+        }
+
+        public static bool IsPacifist(this CharacterInstance ch)
+        {
+            return ch.IsNpc() && ch.Act.IsSet(ActFlags.Pacifist);
         }
 
         public static bool IsBlind(this CharacterInstance ch)
@@ -1325,7 +1331,7 @@ namespace SmaugCS.Extensions.Character
                     obj.RemoveFrom();
 
                 ch.CurrentRoom.AddTo(obj);
-                mud_prog.oprog_zap_trigger(ch, obj);
+                MudProgHandler.ExecuteObjectProg(MudProgTypes.Zap, ch, obj);
 
                 if ((gameManager ?? GameManager.Instance).GetSaveFlags().IsSet(AutoSaveFlags.ZapDrop) && !ch.CharDied())
                     save.save_char_obj(ch);

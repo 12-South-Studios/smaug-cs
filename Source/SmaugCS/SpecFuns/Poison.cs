@@ -9,7 +9,7 @@ namespace SmaugCS.SpecFuns
 {
     public static class Poison
     {
-        public static bool DoSpecPoison(MobileInstance ch)
+        public static bool Execute(MobileInstance ch, IManager dbManager)
         {
             if (!ch.IsInCombatPosition()) return false;
 
@@ -19,7 +19,9 @@ namespace SmaugCS.SpecFuns
             comm.act(ATTypes.AT_HIT, "You bite $N!", ch, null, victim, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n bites $N!", ch, null, victim, ToTypes.NotVictim);
             comm.act(ATTypes.AT_POISON, "$n bites you!", ch, null, victim, ToTypes.Victim);
-            Spells.Poison.spell_poison((int)RepositoryManager.Instance.GetEntity<SkillData>("poison").ID, ch.Level, ch, victim);
+
+            var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
+            Spells.Poison.spell_poison((int)databaseMgr.GetEntity<SkillData>("poison").ID, ch.Level, ch, victim);
 
             return true;
         }

@@ -57,6 +57,8 @@ namespace SmaugCS.Constants.Enums
 
         [MovementLoss(ModValue = 6)]
         [Thirst(ModValue = -2)]
-        Ice                 = 32768
+        Ice                 = 32768,
+
+        HasNoWeather = Inside & Underwater & OceanFloor  & Underground
     }
 }

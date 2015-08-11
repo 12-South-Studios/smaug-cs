@@ -1,7 +1,10 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.SpecFuns;
+using SmaugCS.SpecFuns.Breaths;
 
 namespace SmaugCS.Tests.SpecFuns
 {
@@ -21,7 +24,9 @@ namespace SmaugCS.Tests.SpecFuns
         {
             _character.CurrentPosition = PositionTypes.Incapacitated;
 
-            Assert.That(BreathAny.DoSpecBreathAny(_character), Is.EqualTo(false));
+            var mockDbManager = new Mock<IManager>();
+
+            Assert.That(BreathAny.Execute(_character, mockDbManager.Object), Is.EqualTo(false));
         }
     }
 }
