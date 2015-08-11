@@ -11,13 +11,9 @@ namespace SmaugCS.Data.Shops
         private List<ItemTypes> _itemTypes;
  
         public int Keeper { get; set; }
-
         public IEnumerable<ItemTypes> ItemTypes { get { return _itemTypes; } }
-
         public int OpenHour { get; set; }
-
         public int CloseHour { get; set; }
-
         public ShopTypes ShopType { get; set; }
 
         protected ShopData()

@@ -160,7 +160,7 @@ namespace SmaugCS.Tests.Repositories
             var actual = repo.Create(1, "Test");
 
             Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Vnum, Is.EqualTo(1));
+            Assert.That(actual.ID, Is.EqualTo(1));
             Assert.That(actual.Name, Is.EqualTo("Test"));
             Assert.That(actual.ShortDescription, Is.EqualTo("A newly created Test"));
             Assert.That(repo.Contains(1), Is.True);
@@ -177,7 +177,7 @@ namespace SmaugCS.Tests.Repositories
             var cloned = repo.Create(2, 1, "Test2");
 
             Assert.That(cloned, Is.Not.Null);
-            Assert.That(cloned.Vnum, Is.EqualTo(2));
+            Assert.That(cloned.ID, Is.EqualTo(2));
             Assert.That(cloned.Name, Is.EqualTo("Test2"));
             Assert.That(cloned.ShortDescription, Is.EqualTo(source.ShortDescription));
             Assert.That(repo.Contains(2), Is.True);

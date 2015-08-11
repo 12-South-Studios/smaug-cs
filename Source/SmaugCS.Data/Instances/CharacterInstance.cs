@@ -37,7 +37,7 @@ namespace SmaugCS.Data.Instances
         public IEnumerable<TimerData> Timers { get; set; }
         public CharacterMorph CurrentMorph { get; set; }
         public string LongDescription { get; set; }
-        
+
         public GenderTypes Gender { get; set; }
         public ClassTypes CurrentClass { get; set; }
         public RaceTypes CurrentRace { get; set; }

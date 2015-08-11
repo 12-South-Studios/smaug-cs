@@ -18,9 +18,9 @@ namespace SmaugCS.Data.Instances
         {
         }
 
-        public MobTemplate MobIndex
+        public MobileTemplate MobIndex
         {
-            get { return Parent.CastAs<MobTemplate>(); }
+            get { return Parent.CastAs<MobileTemplate>(); }
         }
     }
 }

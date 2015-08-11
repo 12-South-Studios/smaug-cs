@@ -17,7 +17,7 @@ namespace SmaugCS.Repository
 
             Kernel.Bind<IInstanceRepository<ObjectInstance>>().To<ObjInstanceRepository>();
             Kernel.Bind<IInstanceRepository<CharacterInstance>>().To<CharacterRepository>();
-            Kernel.Bind<ITemplateRepository<MobTemplate>>().To<MobileRepository>();
+            Kernel.Bind<ITemplateRepository<MobileTemplate>>().To<MobileRepository>();
             Kernel.Bind<ITemplateRepository<ObjectTemplate>>().To<ObjectRepository>();
             Kernel.Bind<ITemplateRepository<RoomTemplate>>().To<RoomRepository>();
         }

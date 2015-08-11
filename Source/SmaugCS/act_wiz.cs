@@ -144,7 +144,7 @@ namespace SmaugCS
             if (!ch.IsNpc())
             {
                 comm.act(ATTypes.AT_MAGIC, "$n disappears in a cloud of swirling colors.", victim, null, null, ToTypes.Room);
-                victim.retran = (int)victim.CurrentRoom.Vnum;
+                victim.retran = (int)victim.CurrentRoom.ID;
             }
 
             victim.CurrentRoom.RemoveFrom(victim);

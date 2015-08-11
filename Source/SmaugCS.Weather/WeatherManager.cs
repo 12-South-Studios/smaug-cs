@@ -79,6 +79,7 @@ namespace SmaugCS.Weather
             catch (DbException ex)
             {
                 _logManager.Error(ex);
+                throw;
             }
         }
     }

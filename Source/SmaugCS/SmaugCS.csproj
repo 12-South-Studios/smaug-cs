@@ -145,6 +145,7 @@
     <Compile Include="Commands\Polymorph\Morph.cs" />
     <Compile Include="Commands\Track.cs" />
     <Compile Include="Exceptions\ObjectAlreadyEquippedException.cs" />
+    <Compile Include="Exceptions\RoomMismatchException.cs" />
     <Compile Include="Extensions\BoardDataExtensions.cs" />
     <Compile Include="Extensions\Character\Affect.cs" />
     <Compile Include="Extensions\Character\Items.cs" />
@@ -284,7 +285,6 @@
     <Compile Include="Extensions\WeatherManagerExtensions.cs" />
     <Compile Include="Constants\LookupConstants.cs" />
     <Compile Include="Helpers\HelperFunctions.cs" />
-    <Compile Include="Interfaces\IInitializer.cs" />
     <Compile Include="Lookup\CommandLookupTable.cs" />
     <Compile Include="Lookup\SkillLookupTable.cs" />
     <Compile Include="Lookup\SpellLookupTable.cs" />
@@ -858,8 +858,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Documentation\license.diku" />
-    <None Include="Documentation\license.merc" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -934,7 +932,6 @@
     <None Include="CCode\Source\update.c" />
     <None Include="CCode\Source\variables.c" />
     <None Include="CCode\Source\weather.c" />
-    <Content Include="Documentation\Licenses.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmaugCS.Auction\SmaugCS.Auction.csproj">

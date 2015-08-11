@@ -15,14 +15,13 @@ namespace SmaugCS.Extensions
         {
             var room = RepositoryManager.Instance.ROOMS.Get(exit.Room_vnum);
             room.Exits.Remove(exit);
-            var rexit = exit.GetReverse();
-            rexit.Reverse = 0;
+            var reverseExit = exit.GetReverse();
+            reverseExit.Reverse = 0;
         }
 
         public static ExitData GetReverse(this ExitData exit)
         {
-            if (exit.Reverse == 0)
-                return null;
+            if (exit.Reverse == 0) return null;
             return exit.GetDestination() == null ? null : exit.GetDestination().GetExit((int)exit.Reverse);
         }
 
@@ -30,7 +29,7 @@ namespace SmaugCS.Extensions
         {
             return (dbManager ?? RepositoryManager.Instance).ROOMS.CastAs<Repository<long, RoomTemplate>>()
                                                           .Values.ToList()
-                                                          .Find(x => x.Vnum == exit.Destination);
+                                                          .Find(x => x.ID == exit.Destination);
         }
 
         /// <summary>

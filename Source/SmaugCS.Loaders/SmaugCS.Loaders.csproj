@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="Realm.Library.Common">
       <HintPath>..\..\Libraries\Realm.Library.Common.dll</HintPath>
     </Reference>
@@ -38,11 +42,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreaListLoader.cs" />
-    <Compile Include="ClanLoader.cs" />
-    <Compile Include="ClassLoader.cs" />
-    <Compile Include="CouncilLoader.cs" />
-    <Compile Include="DeityListLoader.cs" />
+    <Compile Include="Loaders\AreaListLoader.cs" />
+    <Compile Include="LoaderModule.cs" />
+    <Compile Include="Loaders\LanguageLoader.cs" />
+    <Compile Include="Loaders\ClanLoader.cs" />
+    <Compile Include="Loaders\ClassLoader.cs" />
+    <Compile Include="Loaders\CouncilLoader.cs" />
+    <Compile Include="Loaders\DeityListLoader.cs" />
     <Compile Include="Incomplete\CommentLoader.cs" />
     <Compile Include="Incomplete\HelpAreaLoader.cs" />
     <Compile Include="Incomplete\HintLoader.cs" />
@@ -51,14 +57,14 @@
     <Compile Include="Incomplete\ReservedLoader.cs" />
     <Compile Include="Incomplete\TimeLoader.cs" />
     <Compile Include="Incomplete\WatchListLoader.cs" />
-    <Compile Include="ListLoader.cs" />
+    <Compile Include="Loaders\BaseLoader.cs" />
     <Compile Include="LoaderInitializer.cs" />
     <Compile Include="Obsolete\AreaLoader.cs" />
     <Compile Include="Obsolete\FUSSAreaLoader.cs" />
     <Compile Include="Obsolete\PrototypeAreaLoader.cs" />
     <Compile Include="Obsolete\SmaugAreaLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RaceLoader.cs" />
+    <Compile Include="Loaders\RaceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">

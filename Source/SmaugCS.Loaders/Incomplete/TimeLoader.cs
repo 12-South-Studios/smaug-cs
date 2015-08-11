@@ -6,12 +6,17 @@ using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Loaders.Loaders;
 
 namespace SmaugCS.Loaders
 {
-    public class TimeLoader : ListLoader
+    public class TimeLoader : BaseLoader
     {
         #region Overrides of ListLoader
+
+        public TimeLoader(ILuaManager luaManager) : base(luaManager)
+        {
+        }
 
         public override string Filename
         {
@@ -21,6 +26,16 @@ namespace SmaugCS.Loaders
         public override void Save()
         {
             throw new NotImplementedException();
+        }
+
+        protected override string AppSettingName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        protected override SystemDirectoryTypes SystemDirectory
+        {
+            get { throw new NotImplementedException(); }
         }
 
         public override void Load()

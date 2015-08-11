@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
@@ -44,10 +43,10 @@ namespace SmaugCS.Auction
             get { return _kernel.Get<IAuctionManager>(); }
         }
 
-        private async void TimerOnElapsed(object sender, ElapsedEventArgs e)
+        private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
             if (Auction != null)
-                await Save();
+                Save();
         }
 
         public void Initialize()
@@ -55,9 +54,9 @@ namespace SmaugCS.Auction
             Repository.Load();
         }
 
-        public async Task Save()
+        public void Save()
         {
-            await Repository.Save();
+            Repository.Save();
         }
 
         public AuctionData StartAuction(CharacterInstance seller, ObjectInstance item, int startingPrice)

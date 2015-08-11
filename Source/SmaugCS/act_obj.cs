@@ -187,7 +187,7 @@ namespace SmaugCS
 
                 if (obj.InRoom == to_room)
                 {
-                    LogManager.Instance.Bug("Object falling into same room {0}", to_room.Vnum);
+                    LogManager.Instance.Bug("Object falling into same room {0}", to_room.ID);
                     obj.Extract();
                     return;
                 }

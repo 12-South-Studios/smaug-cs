@@ -9,6 +9,6 @@ namespace SmaugCS.Interfaces
         SystemData SystemData { get; }
         void SetGameTime(TimeInfoData gameTime);
         ExpressionParser ExpParser { get; }
-        void DoLoop();
+        void StartMainGameLoop();
     }
 }

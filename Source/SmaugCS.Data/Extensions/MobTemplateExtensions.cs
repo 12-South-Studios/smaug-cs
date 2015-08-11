@@ -9,27 +9,27 @@ namespace SmaugCS.Data.Extensions
 {
     public static class MobTemplateExtensions
     {
-        public static int GetRace(this MobTemplate template)
+        public static int GetRace(this MobileTemplate template)
         {
             return (int)EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
         }
 
-        public static PositionTypes GetPosition(this MobTemplate template)
+        public static PositionTypes GetPosition(this MobileTemplate template)
         {
             return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.Position);
         }
 
-        public static PositionTypes GetDefensivePosition(this MobTemplate template)
+        public static PositionTypes GetDefensivePosition(this MobileTemplate template)
         {
             return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefensivePosition);
         }
 
-        public static GenderTypes GetGender(this MobTemplate template)
+        public static GenderTypes GetGender(this MobileTemplate template)
         {
             return EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.GetStatistic<string>(StatisticTypes.Gender));
         }
 
-        public static int GetResistance(this MobTemplate template)
+        public static int GetResistance(this MobileTemplate template)
         {
             var value = 0;
             var words = template.Resistance.Split(' ');
@@ -40,7 +40,7 @@ namespace SmaugCS.Data.Extensions
             return value;
         }
 
-        public static int GetSusceptibility(this MobTemplate template)
+        public static int GetSusceptibility(this MobileTemplate template)
         {
             var value = 0;
             var words = template.Susceptibility.Split(' ');
@@ -51,7 +51,7 @@ namespace SmaugCS.Data.Extensions
             return value;
         }
 
-        public static int GetImmunity(this MobTemplate template)
+        public static int GetImmunity(this MobileTemplate template)
         {
             var value = 0;
             var words = template.Immunity.Split(' ');
@@ -62,7 +62,7 @@ namespace SmaugCS.Data.Extensions
             return value;
         }
 
-        public static int GetActFlags(this MobTemplate template)
+        public static int GetActFlags(this MobileTemplate template)
         {
             var bv = 0;
             var words = template.GetStatistic<string>(StatisticTypes.ActFlags).Split(' ');
@@ -73,7 +73,7 @@ namespace SmaugCS.Data.Extensions
             return bv;
         }
 
-        public static int GetAffected(this MobTemplate template)
+        public static int GetAffected(this MobileTemplate template)
         {
             var bv = 0;
             var words = template.GetStatistic<string>(StatisticTypes.AffectedByFlags).Split(' ');
@@ -84,7 +84,7 @@ namespace SmaugCS.Data.Extensions
             return bv;
         }
 
-        public static ExtendedBitvector GetAttacks(this MobTemplate template)
+        public static ExtendedBitvector GetAttacks(this MobileTemplate template)
         {
             var bv = new ExtendedBitvector();
             var words = template.Attacks.Split(' ');
@@ -95,7 +95,7 @@ namespace SmaugCS.Data.Extensions
             return bv;
         }
 
-        public static int GetDefenses(this MobTemplate template)
+        public static int GetDefenses(this MobileTemplate template)
         {
             var flags = 0;
             var words = template.Defenses.Split(' ');

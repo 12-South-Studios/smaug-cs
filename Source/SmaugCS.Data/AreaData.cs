@@ -63,7 +63,10 @@ namespace SmaugCS.Data
         public int Age { get; set; }
 
         [XmlIgnore]
-        public int NumberOfPlayers { get; set; }
+        public int NumberOfPlayers 
+        {
+            get { return Rooms.Sum(room => room.Persons.Count(x => !x.IsNpc())); }
+        }
 
         [XmlElement]
         public int ResetFrequency { get; set; }

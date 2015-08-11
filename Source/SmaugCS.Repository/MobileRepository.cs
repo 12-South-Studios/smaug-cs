@@ -8,11 +8,11 @@ using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Repository
 {
-    public class MobileRepository : Repository<long, MobTemplate>, ITemplateRepository<MobTemplate>
+    public class MobileRepository : Repository<long, MobileTemplate>, ITemplateRepository<MobileTemplate>
     {
-        private MobTemplate LastMob { get; set; }
+        private MobileTemplate LastMob { get; set; }
 
-        public MobTemplate Create(long id, long cloneId, string name)
+        public MobileTemplate Create(long id, long cloneId, string name)
         {
             Validation.Validate(cloneId >= 1 && cloneId != id && id >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
@@ -32,7 +32,7 @@ namespace SmaugCS.Repository
             return newMob;
         }
 
-        private static void CloneMobTemplate(MobTemplate newMob, MobTemplate cloneMob)
+        private static void CloneMobTemplate(MobileTemplate newMob, MobileTemplate cloneMob)
         {
             newMob.LongDescription = cloneMob.LongDescription;
             newMob.Description = cloneMob.Description;
@@ -68,7 +68,7 @@ namespace SmaugCS.Repository
             newMob.Defenses = cloneMob.Defenses;
         }
 
-        public MobTemplate Create(long id, string name)
+        public MobileTemplate Create(long id, string name)
         {
             Validation.Validate(id >= 1 && !name.IsNullOrWhitespace());
             Validation.Validate(() =>
@@ -77,7 +77,7 @@ namespace SmaugCS.Repository
                         throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                 });
 
-            var newMob = new MobTemplate(id, name);
+            var newMob = new MobileTemplate(id, name);
             newMob.Statistics[StatisticTypes.PermanentStrength] = 13;
             newMob.Statistics[StatisticTypes.PermanentDexterity] = 13;
             newMob.Statistics[StatisticTypes.PermanentIntelligence] = 13;

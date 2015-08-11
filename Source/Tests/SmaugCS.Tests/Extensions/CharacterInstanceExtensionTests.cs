@@ -72,7 +72,7 @@ namespace SmaugCS.Tests.Extensions
             PlayerInstance pch = new PlayerInstance(1, "TestChar");
             MobileInstance mob = new MobileInstance(2, "TesterMob");
             mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
-            mob.Parent = new MobTemplate(2, "Template");
+            mob.Parent = new MobileTemplate(2, "Template");
 
             pch.PlayerData = new PlayerData(1, 1);
 
@@ -85,7 +85,7 @@ namespace SmaugCS.Tests.Extensions
             PlayerInstance pch = new PlayerInstance(1, "TestChar");
             MobileInstance mob = new MobileInstance(2, "TesterMob");
             mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
-            mob.Parent = new MobTemplate(2, "Template");
+            mob.Parent = new MobileTemplate(2, "Template");
 
             pch.PlayerData = new PlayerData(1, 1);
             pch.PlayerData.Killed.Add(new KilledData(2));

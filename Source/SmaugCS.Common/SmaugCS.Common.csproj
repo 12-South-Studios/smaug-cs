@@ -80,6 +80,7 @@
     <Compile Include="Enumerations\LogTypes.cs" />
     <Compile Include="Enumerations\SkillTypes.cs" />
     <Compile Include="Enumerations\StatisticTypes.cs" />
+    <Compile Include="IInitializer.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="DataRowExtensions.cs" />
     <Compile Include="DirectoryProxy.cs" />

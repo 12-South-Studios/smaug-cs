@@ -1,12 +1,19 @@
 ﻿using System.IO;
 using Realm.Library.Common;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Loaders.Loaders;
 
 namespace SmaugCS.Loaders
 {
-    public class CommentLoader : ListLoader
+    public class CommentLoader : BaseLoader
     {
         #region Overrides of ListLoader
+
+        public CommentLoader(ILuaManager luaManager) : base(luaManager)
+        {
+        }
 
         public override string Filename
         {
@@ -36,6 +43,16 @@ namespace SmaugCS.Loaders
                     proxy.Write("text\n{0}~\n", note.Text);
                 }*/
             }
+        }
+
+        protected override string AppSettingName
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        protected override SystemDirectoryTypes SystemDirectory
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public override void Load()

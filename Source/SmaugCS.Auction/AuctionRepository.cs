@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Logging;
 
@@ -58,40 +56,33 @@ namespace SmaugCS.Auction
             catch (DbException ex)
             {
                 _logManager.Error(ex);
+                throw;
             }
         }
 
-        public async Task Save()
+        public void Save()
         {
             try
             {
-                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                foreach (var history in History.Where(x => !x.Saved).ToList())
                 {
-
-                    foreach (var history in History.Where(x => !x.Saved).ToList())
+                    var auction = new DAL.Models.Auction
                     {
-                        var auction = new DAL.Models.Auction
-                        {
-                            BuyerName = history.BuyerName,
-                            ItemSoldId = history.ItemForSale,
-                            SellerName = history.SellerName,
-                            SoldFor = history.SoldFor,
-                            SoldOn = history.SoldOn
-                        };
-                        _dbContext.Auctions.Attach(auction);
-                        history.Saved = true;
-                    }
-                    await _dbContext.SaveChangesAsync();
-                    transactionScope.Complete();
+                        BuyerName = history.BuyerName,
+                        ItemSoldId = history.ItemForSale,
+                        SellerName = history.SellerName,
+                        SoldFor = history.SoldFor,
+                        SoldOn = history.SoldOn
+                    };
+                    _dbContext.Auctions.Attach(auction);
+                    history.Saved = true;
                 }
-            }
-            catch (TransactionException tex)
-            {
-                _logManager.Error(tex);
+                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {
                 _logManager.Error(ex);
+                throw;
             }
         }
     }

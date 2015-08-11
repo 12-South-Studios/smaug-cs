@@ -7,6 +7,7 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
@@ -21,28 +22,10 @@ namespace SmaugCS.Extensions
         public static void RemoveFrom(this RoomTemplate room, CharacterInstance ch)
         {
             if (ch.CurrentRoom != room)
-            {
-                LogManager.Instance.Bug("Character {0} is not in Room {1}", ch.Name, room.Vnum);
-                return;
-            }
+                throw new RoomMismatchException("Character {0} is not in Room {1}", ch.Name, room.ID);
 
-            if (!ch.IsNpc())
-                --room.Area.NumberOfPlayers;
-
-            var obj = ch.GetEquippedItem(WearLocations.Light);
-            if (obj != null
-                && obj.ItemType == ItemTypes.Light
-                && obj.Value.ToList()[2] != 0
-                && room.Light > 0)
-                --room.Light;
-
-            foreach (var affect in ch.Affects)
-                room.RemoveAffect(affect);
-
-            foreach (var affect in room.Affects
-                .Where(affect => affect.Location != ApplyTypes.WearSpell
-                    && affect.Location != ApplyTypes.RemoveSpell
-                    && affect.Location != ApplyTypes.StripSN))
+            ch.Affects.ToList().ForEach(room.RemoveAffect);
+            foreach (var affect in room.Affects.Where(af => (af.Location & ApplyTypes.IsNotRemovable) > 0))
                 ch.RemoveAffect(affect);
 
             room.Persons.Remove(ch);
@@ -53,55 +36,40 @@ namespace SmaugCS.Extensions
                 ch.RemoveTimer(TimerTypes.ShoveDrag);
         }
 
-        public static void AddTo(this RoomTemplate room, CharacterInstance ch)
+        public static void AddTo(this RoomTemplate room, CharacterInstance ch, IRepositoryManager dbManager = null)
         {
+            if (ch == null) throw new ArgumentNullException("ch");
+
             var localRoom = room;
-
-            if (ch == null)
-                throw new ArgumentNullException("ch");
-
-            if (RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
+            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            if (databaseMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {
-                LogManager.Instance.Bug("%s: %s -> NULL room! Putting char in limbo (%d)",
-                    "char_to_room", ch.Name, VnumConstants.ROOM_VNUM_LIMBO);
-                localRoom = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
+                LogManager.Instance.Bug("{0} -> NULL room! Putting char in limbo ({1})",
+                   ch.Name, VnumConstants.ROOM_VNUM_LIMBO);
+                localRoom = databaseMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
             }
 
             ch.CurrentRoom = localRoom;
             if (ch.HomeVNum < 1)
-                ch.HomeVNum = localRoom.Vnum;
+                ch.HomeVNum = localRoom.ID;
             localRoom.Persons.Add(ch);
 
             if (!ch.IsNpc())
             {
-                localRoom.Area.NumberOfPlayers += 1;
                 if (localRoom.Area.NumberOfPlayers > localRoom.Area.MaximumPlayers)
                     localRoom.Area.MaximumPlayers = localRoom.Area.NumberOfPlayers;
             }
 
-            var light = ch.GetEquippedItem(WearLocations.Light);
-            if (light != null && light.ItemType == ItemTypes.Light
-                && light.Value.ToList()[2] > 0)
-                localRoom.Light++;
-
-            foreach (var affect in localRoom.Affects
-                .Where(affect => affect.Location != ApplyTypes.WearSpell
-                    && affect.Location != ApplyTypes.RemoveSpell
-                    && affect.Location != ApplyTypes.StripSN))
+            foreach (var affect in localRoom.Affects.Where(x => (x.Location & ApplyTypes.IsNotRemovable) > 0))
                 ch.AddAffect(affect);
-
-            foreach (var affect in localRoom.PermanentAffects
-                .Where(affect => affect.Location != ApplyTypes.WearSpell
-                    && affect.Location != ApplyTypes.RemoveSpell
-                    && affect.Location != ApplyTypes.StripSN))
+            foreach (var affect in localRoom.PermanentAffects.Where(x => (x.Location & ApplyTypes.IsNotRemovable) > 0))
                 ch.AddAffect(affect);
-
             foreach (var affect in ch.Affects)
                 localRoom.AddAffect(affect);
 
             if (!ch.IsNpc() && localRoom.Flags.IsSet(RoomFlags.Safe)
                 && ch.GetTimer(TimerTypes.ShoveDrag) == null)
-                ch.AddTimer(TimerTypes.ShoveDrag, 10, null, 0);
+                ch.AddTimer(TimerTypes.ShoveDrag, 10);
 
             if (localRoom.Flags.IsSet(RoomFlags.Teleport) && localRoom.TeleportDelay > 0)
             {
@@ -121,8 +89,7 @@ namespace SmaugCS.Extensions
 
         public static CharacterInstance IsDoNotDisturb(this RoomTemplate room, CharacterInstance ch)
         {
-            if (room.Flags.IsSet(RoomFlags.DoNotDisturb))
-                return null;
+            if (room.Flags.IsSet(RoomFlags.DoNotDisturb)) return null;
 
             return room.Persons.FirstOrDefault(rch => !rch.IsNpc() && ((PlayerInstance)rch).PlayerData != null && rch.IsImmortal()
                 && ((PlayerInstance)rch).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb) && ch.Trust < rch.Trust && ch.CanSee(rch));
@@ -131,77 +98,54 @@ namespace SmaugCS.Extensions
         public static void RemoveFrom(this RoomTemplate room, ObjectInstance obj)
         {
             if (obj.InRoom != room)
-            {
-                LogManager.Instance.Bug("Object {0} is not in Room {1}", obj.Name, room.ID);
-                return;
-            }
+                throw new RoomMismatchException("Object {0} is not in Room {1}", obj.Name, room.ID);
 
-            foreach (var paf in obj.Affects)
-                room.RemoveAffect(paf);
-            foreach (var paf in obj.ObjectIndex.Affects)
-                room.RemoveAffect(paf);
-
+            obj.Affects.ToList().ForEach(room.RemoveAffect);
+            obj.ObjectIndex.Affects.ToList().ForEach(room.RemoveAffect);
             room.Contents.Remove(obj);
 
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null)
                 obj.Empty(null, room);
 
-            if (obj.ItemType == ItemTypes.Fire)
-                obj.InRoom.Light -= obj.Count;
-
             obj.CarriedBy = null;
             obj.InObject = null;
             obj.InRoom = null;
 
-            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_CORPSE_PC && handler.falling > 0)
+            if (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_CORPSE_PC && handler.falling > 0)
                 save.write_corpses(null, obj.ShortDescription, obj);
         }
 
         public static ObjectInstance AddTo(this RoomTemplate room, ObjectInstance obj)
         {
-            foreach (var paf in obj.Affects)
-                room.AddAffect(paf);
-            foreach (var paf in obj.ObjectIndex.Affects)
-                room.AddAffect(paf);
+            obj.Affects.ToList().ForEach(room.AddAffect);
+            obj.ObjectIndex.Affects.ToList().ForEach(room.AddAffect);
 
-            var count = obj.Count;
-            var itemType = obj.ItemType;
-
-            foreach (var otmp in room.Contents)
+            foreach (var objInstance in room.Contents)
             {
-                var oret = otmp.GroupWith(obj);
-                if (oret == otmp)
-                {
-                    if (itemType == ItemTypes.Fire)
-                        room.Light += count;
-                    return oret;
-                }
+                var groupedObject = objInstance.GroupWith(obj);
+                if (groupedObject == objInstance)
+                    return groupedObject;
             }
 
             room.Contents.Add(obj);
             obj.InRoom = room;
             obj.CarriedBy = null;
             obj.InObject = null;
-            if (itemType == ItemTypes.Fire)
-                room.Light += count;
+
             handler.falling++;
             act_obj.obj_fall(obj, false);
             handler.falling--;
-            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_CORPSE_PC && handler.falling < 1)
+
+            if (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_CORPSE_PC && handler.falling < 1)
                 save.write_corpses(null, obj.ShortDescription, null);
             return obj;
         }
 
         public static bool IsDark(this RoomTemplate room)
         {
-            if (room.Light > 0)
-                return false;
-
-            if (room.Flags.IsSet(RoomFlags.Dark))
-                return true;
-
-            if (room.SectorType == SectorTypes.Inside
-                || room.SectorType == SectorTypes.City)
+            if (room.Light > 0) return false;
+            if (room.Flags.IsSet(RoomFlags.Dark)) return true;
+            if (room.SectorType == SectorTypes.Inside || room.SectorType == SectorTypes.City)
                 return false;
 
             return GameManager.Instance.GameTime.Sunlight == SunPositionTypes.Sunset

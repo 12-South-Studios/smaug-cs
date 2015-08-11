@@ -9,7 +9,7 @@ namespace SmaugCS.Extensions.Character
     public static class Timer
     {
         public static bool AddTimer(this CharacterInstance ch, TimerTypes type, int count,
-            Action<CharacterInstance, string> fun, int value)
+            Action<CharacterInstance, string> fun = null, int value = 0)
         {
             if (ch.Timers.Any(x => x.Type == type))
                 return false;

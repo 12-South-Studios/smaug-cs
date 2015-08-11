@@ -1,0 +1,185 @@
+-- DWARVEN.LUA
+-- This is the Dwarven Language file for the MUD
+-- Revised: 2015.08.11
+-- Author: Jason Murdick
+-- Version: 1.0
+f = loadfile(LDataPath() .. "\\modules\\module_base.lua")();
+
+function LoadLanguage()
+	-- opposite of elven.. extreme on the harsh tones..
+	newLang = LCreateLanguage("dwarven", "Dwarven");
+	lang.this = newLang;
+	
+	lang.this:AddPreConversion("age", "bahd");
+	lang.this:AddPreConversion("alone single", "unh");
+	lang.this:AddPreConversion("animal beast", "grukh");
+	lang.this:AddPreConversion("area region", "rek");
+	lang.this:AddPreConversion("arm", "kurz");
+	lang.this:AddPreConversion("army", "dizh");
+	lang.this:AddPreConversion("axe hew", "deth");
+	lang.this:AddPreConversion("bad rotten", "kuz");
+	lang.this:AddPreConversion("bay", "nar");
+	lang.this:AddPreConversion("beautiful marble", "bahl");
+	lang.this:AddPreConversion("bird eye", "zah");
+	lang.this:AddPreConversion("black death dead", "fahn");
+	lang.this:AddPreConversion("blood", "fahr");
+	lang.this:AddPreConversion("boat", "naz");
+	lang.this:AddPreConversion("body", "kurg");
+	lang.this:AddPreConversion("book", "trah");
+	lang.this:AddPreConversion("bow", "dezh");
+	lang.this:AddPreConversion("cannon word", "taeh");
+	lang.this:AddPreConversion("child", "kug");
+	lang.this:AddPreConversion("city", "khur");
+	lang.this:AddPreConversion("cradle home valley", "rakh");
+	lang.this:AddPreConversion("darkness disease", "kuth");
+	lang.this:AddPreConversion("daughter", "kum");
+	lang.this:AddPreConversion("day", "bahz");
+	lang.this:AddPreConversion("down underground", "tar");
+	lang.this:AddPreConversion("dragon", "vakh");
+	lang.this:AddPreConversion("earth brown copper", "mir");
+	lang.this:AddPreConversion("east", "tor");
+	lang.this:AddPreConversion("eight eighth", "azh");
+	lang.this:AddPreConversion("element source iron", "gred");
+	lang.this:AddPreConversion("elite veteran", "gran");
+	lang.this:AddPreConversion("engineer smith worker", "grath");
+	lang.this:AddPreConversion("father governor", "dehr");
+	lang.this:AddPreConversion("female woman lady", "kar");
+	lang.this:AddPreConversion("five fifth", "akh");
+	lang.this:AddPreConversion("flame", "gakh");
+	lang.this:AddPreConversion("fortress", "dahr");
+	lang.this:AddPreConversion("fury fierce", "gahl");
+	lang.this:AddPreConversion("game", "digh");
+	lang.this:AddPreConversion("gate entrance", "grah");
+	lang.this:AddPreConversion("glory", "dahn");
+	lang.this:AddPreConversion("gold sun", "ahm");
+	lang.this:AddPreConversion("grass", "mur");
+	lang.this:AddPreConversion("gray", "grahs");
+	lang.this:AddPreConversion("great", "dahm");
+	lang.this:AddPreConversion("green tree", "mun");
+	lang.this:AddPreConversion("guard", "grekh");
+	lang.this:AddPreConversion("hall cave tunnel", "thor");
+	lang.this:AddPreConversion("hate", "dekh");
+	lang.this:AddPreConversion("head", "kush");
+	lang.this:AddPreConversion("heal health", "ehl");
+	lang.this:AddPreConversion("hero champion", "makh");
+	lang.this:AddPreConversion("hidden invisible lost", "ukh");
+	lang.this:AddPreConversion("history", "karth");
+	lang.this:AddPreConversion("home house", "khat");
+	lang.this:AddPreConversion("honor", "dahz");
+	lang.this:AddPreConversion("hour", "behm");
+	lang.this:AddPreConversion("king ruler master lord", "senh");
+	lang.this:AddPreConversion("knowledge", "karg");
+	lang.this:AddPreConversion("land", "mih");
+	lang.this:AddPreConversion("large heavy", "gram");
+	lang.this:AddPreConversion("leader general", "sem");
+	lang.this:AddPreConversion("leg", "kurth");
+	lang.this:AddPreConversion("less weak", "bahm");
+	lang.this:AddPreConversion("light create", "mar");
+	lang.this:AddPreConversion("love", "lakh");
+	lang.this:AddPreConversion("low", "tus");
+	lang.this:AddPreConversion("magic power mystery", "morr");
+	lang.this:AddPreConversion("male man", "kam");
+	lang.this:AddPreConversion("meeting council", "grahd");
+	lang.this:AddPreConversion("mighty", "dehn");
+	lang.this:AddPreConversion("month", "behd");
+	lang.this:AddPreConversion("mother birth", "beht");
+	lang.this:AddPreConversion("mountain maker", "tum");
+	lang.this:AddPreConversion("nine ninth", "ahl");
+	lang.this:AddPreConversion("north", "tak");
+	lang.this:AddPreConversion("old elder", "bahg");
+	lang.this:AddPreConversion("one first money", "ahn");
+	lang.this:AddPreConversion("hundred", "dith");
+	lang.this:AddPreConversion("thousand", "grahz");
+	lang.this:AddPreConversion("out outer", "nakh");
+	lang.this:AddPreConversion("outsider other out", "degh");
+	lang.this:AddPreConversion("patience peace", "nag");
+	lang.this:AddPreConversion("person dwarf", "khah");
+	lang.this:AddPreConversion("protector empire", "sekh");
+	lang.this:AddPreConversion("red fire bronze", "gar");
+	lang.this:AddPreConversion("river", "lokh");
+	lang.this:AddPreConversion("road", "zhor");
+	lang.this:AddPreConversion("sea", "lihr");
+	lang.this:AddPreConversion("seek hunter attend", "fazh");
+	lang.this:AddPreConversion("seven seventh", "ath");
+	lang.this:AddPreConversion("shadow evil", "ur");
+	lang.this:AddPreConversion("silver moon", "behr");
+	lang.this:AddPreConversion("six sixth", "aash");
+	lang.this:AddPreConversion("sky", "leir");
+	lang.this:AddPreConversion("sleep dream vision", "kud");
+	lang.this:AddPreConversion("son", "ren");
+	lang.this:AddPreConversion("south", "tok");
+	lang.this:AddPreConversion("star", "ebh");
+	lang.this:AddPreConversion("steel strong cut", "grakh");
+	lang.this:AddPreConversion("step", "zir");
+	lang.this:AddPreConversion("stone granite", "zukh");
+	lang.this:AddPreConversion("storm", "gruhr");
+	lang.this:AddPreConversion("symbol rune", "ezh");
+	lang.this:AddPreConversion("tall high", "grul");
+	lang.this:AddPreConversion("teacher", "ehd");
+	lang.this:AddPreConversion("ten tenth", "dahg");
+	lang.this:AddPreConversion("three third", "ahs");
+	lang.this:AddPreConversion("time", "behz");
+	lang.this:AddPreConversion("tower", "thom");
+	lang.this:AddPreConversion("trade", "bakh");
+	lang.this:AddPreConversion("two second", "ahr");
+	lang.this:AddPreConversion("unit", "duzh");
+	lang.this:AddPreConversion("up", "tin");
+	lang.this:AddPreConversion("vow promise", "zar");
+	lang.this:AddPreConversion("wall", "sakh");
+	lang.this:AddPreConversion("war", "dukh");
+	lang.this:AddPreConversion("warrior soldier master", "dimh");
+	lang.this:AddPreConversion("water blue", "lor");
+	lang.this:AddPreConversion("way path", "zur");
+	lang.this:AddPreConversion("weapon", "dugh");
+	lang.this:AddPreConversion("week", "behg");
+	lang.this:AddPreConversion("west", "tir");
+	lang.this:AddPreConversion("white life", "fahm");
+	lang.this:AddPreConversion("wind", "lah");
+	lang.this:AddPreConversion("wise wisdom", "van");
+	lang.this:AddPreConversion("word language", "bahr");
+	lang.this:AddPreConversion("year", "bahn");
+	lang.this:AddPreConversion("young", "bah");
+	lang.this:AddPreConversion("zero none", "ahg");
+
+	-- Not Bharatan
+	lang.this:AddPreConversion("gesture", "iglishmek");
+	lang.this:AddPreConversion("horn", "inbar");
+	lang.this:AddPreConversion("record", "mazarbul");
+	lang.this:AddPreConversion("you", "menu");
+	lang.this:AddPreConversion("path bed", "nala");
+	lang.this:AddPreConversion("orc", "rukhs");
+	lang.this:AddPreConversion("cloud", "shathur");
+	lang.this:AddPreConversion("long", "sigin");
+	lang.this:AddPreConversion("lake pool", "zaram");
+	lang.this:AddPreConversion("spike", "zigil");
+	
+	lang.this:AddPreConversion("ee", "au");
+	lang.this:AddPreConversion("eth", "ok");
+	lang.this:AddPreConversion("ith", "uk");
+	lang.this:AddPreConversion("ath", "ak");
+	lang.this:AddPreConversion("uth", "uz");
+	lang.this:AddPreConversion("th", "gn");
+	lang.this:AddPreConversion("oo", "uu");
+	lang.this:AddPreConversion("dw", "kh");
+	lang.this:AddPreConversion("ar", "az");
+	lang.this:AddPreConversion("rf", "zl");
+	lang.this:AddPreConversion("en", "yth");
+	lang.this:AddPreConversion("ion", "um");
+	lang.this:AddPreConversion("es", "ad");
+	lang.this:AddPreConversion("you", "enu");
+	lang.this:AddPreConversion("ch", "k");
+	lang.this:AddPreConversion("ul", "uzl");
+	lang.this:AddPreConversion("ick", "uzk");
+	lang.this:AddPreConversion("of", "uv");
+	lang.this:AddPreConversion("ove", "uzo");
+	lang.this:AddPreConversion("ome", "um");
+	lang.this:AddPreConversion("my", "kha");
+	lang.this:AddPreConversion("me", "ka");
+	lang.this:AddPreConversion("to", "or");
+	
+	lang.this.Alphabet = "ubkdukggagkrzrypkdztibmzgo";
+end
+
+LoadLanguage();
+
+-- EOF

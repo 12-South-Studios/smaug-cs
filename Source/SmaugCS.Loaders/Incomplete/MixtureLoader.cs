@@ -4,12 +4,17 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Loaders.Loaders;
 
 namespace SmaugCS.Loaders
 {
-    public class MixtureLoader : ListLoader
+    public class MixtureLoader : BaseLoader
     {
         #region Overrides of ListLoader
+
+        public MixtureLoader(ILuaManager luaManager) : base(luaManager)
+        {
+        }
 
         public override string Filename
         {
@@ -32,6 +37,16 @@ namespace SmaugCS.Loaders
 
                 proxy.Write("#END\n");
             }*/
+        }
+
+        protected override string AppSettingName
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        protected override SystemDirectoryTypes SystemDirectory
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public override void Load()

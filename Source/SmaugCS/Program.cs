@@ -13,6 +13,7 @@ using Realm.Library.Network;
 using SmaugCS.Auction;
 using SmaugCS.Ban;
 using SmaugCS.Board;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.DAL;
@@ -52,22 +53,22 @@ namespace SmaugCS
 
         static void Main()
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += Application_OnUnhandledException;
             _logger = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
             try
             {
-                ConfigureLogging();
+                ConfigureLog4NetProperties();
 
                 InitializeCoreNinjectKernels();
                 StartNewSession(Kernel.Get<ISmaugDbContext>());
                 InitializeSecondaryNinjectKernels();
-                OnServerStart();
+                InitializeManagersAndGameSettings();
                 LogManager.Boot("---------------------[ End Boot Log ]--------------------");
 
                 while (true)
                 {
-                    GameManager.DoLoop();
+                    GameManager.StartMainGameLoop();
                 } 
             }
             catch (Exception ex)
@@ -76,14 +77,14 @@ namespace SmaugCS
             }
             finally
             {
-                OnServerStop();
-                FlushBuffers();
+                ShutdownManagersAndListeningPort();
+                FlushLog4NetBuffers();
                 _logger = null;
                 Console.WriteLine("Application exiting.");
             }
         }
 
-        private static void ConfigureLogging()
+        private static void ConfigureLog4NetProperties()
         {
             GlobalContext.Properties["BootLogName"] = string.Format("{0}\\{1}_{2}.log",
                                                                     GameConstants.LogPath, "BootLog",
@@ -128,10 +129,11 @@ namespace SmaugCS
                 new LuaModule(),
                 new NewsModule(),
                 new TimeModule(),
-                new WeatherModule());
+                new WeatherModule(),
+                new LoaderModule());
         }
 
-        private static void OnServerStart()
+        private static void InitializeManagersAndGameSettings()
         {
             LogManager = Kernel.Get<ILogManager>();
             LogManager.Boot("-----------------------[ Boot Log ]----------------------");
@@ -149,7 +151,7 @@ namespace SmaugCS
             NetworkManager = Kernel.Get<ITcpServer>();
             NetworkManager.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
-            NetworkManager.OnTcpUserStatusChanged += NetworkMgrOnOnTcpUserStatusChanged;
+            NetworkManager.OnTcpUserStatusChanged += NetworkManager_OnOnTcpUserStatusChanged;
             
             RepositoryManager = Kernel.Get<IRepositoryManager>();
 
@@ -175,21 +177,21 @@ namespace SmaugCS
 
             AuctionManager = Kernel.Get<IAuctionManager>();
 
-            InitializeGameData();           
+            InitializeStaticGameData();           
         }
 
-        private static void InitializeGameData()
+        private static void InitializeStaticGameData()
         {
             LogManager.Boot("Initializing Game Data");
-            ExecuteLuaScripts();
-            LoaderInitializer.Initialize();
+            LoadSystemDataFromLuaScripts();
+            var loaderInitializer = Kernel.Get<IInitializer>("LoaderInitializer");
 
             //// Pre-Tests the module_Area to catch any errors early before area load
             LuaManager.DoLuaScript(GameConstants.DataPath + "//modules//module_area.lua");
-            LoaderInitializer.Load();
+            ((LoaderInitializer)loaderInitializer).Load();
         }
 
-        private static void ExecuteLuaScripts()
+        private static void LoadSystemDataFromLuaScripts()
         {
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
             LogManager.Boot("{0} Commands loaded.", RepositoryManager.COMMANDS.Count);
@@ -229,7 +231,7 @@ namespace SmaugCS
             LogManager.Boot("{0} Morphs loaded.", RepositoryManager.MORPHS.Count);
         }
 
-        private static void FlushBuffers()
+        private static void FlushLog4NetBuffers()
         {
             foreach (IAppender appender in _logger.Logger.Repository.GetAppenders())
             {
@@ -239,7 +241,7 @@ namespace SmaugCS
             }
         }
 
-        private static void NetworkMgrOnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
+        private static void NetworkManager_OnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
         {
             var user = (ITcpUser) sender;
 
@@ -272,14 +274,14 @@ namespace SmaugCS
             RepositoryManager.CHARACTERS.Delete(character.ID);
         }
 
-        private static void OnServerStop()
+        private static void ShutdownManagersAndListeningPort()
         {
             NetworkManager.Shutdown("Shutting down MUD");
 
             // TODO: Shutdown Managers
         }
 
-        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        private static void Application_OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
             LogManager.Bug((Exception)unhandledExceptionEventArgs.ExceptionObject);
         }

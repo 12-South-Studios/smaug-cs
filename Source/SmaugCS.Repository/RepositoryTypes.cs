@@ -17,7 +17,7 @@ namespace SmaugCS.Repository
         [TypeMap(Object = typeof(ObjectInstance))]
         ObjectInstances,
 
-        [TypeMap(Repository = typeof(MobileRepository), Object = typeof(MobTemplate))]
+        [TypeMap(Repository = typeof(MobileRepository), Object = typeof(MobileTemplate))]
         MobileTemplates,
 
         MobileInstances,

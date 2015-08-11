@@ -19,6 +19,7 @@ namespace SmaugCS.Constants.Enums
         Race,
         Watch,
         Hotboot,
-        Color
+        Color,
+        Language
     }
 }

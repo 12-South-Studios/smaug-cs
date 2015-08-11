@@ -160,7 +160,7 @@
     <Compile Include="SpellFunction.cs" />
     <Compile Include="SystemData.cs" />
     <Compile Include="TeleportData.cs" />
-    <Compile Include="Templates\MobTemplate.cs" />
+    <Compile Include="Templates\MobileTemplate.cs" />
     <Compile Include="Templates\ObjectTemplate.cs" />
     <Compile Include="Templates\ObjectTemplateValueFunctions.cs" />
     <Compile Include="Templates\RoomTemplate.cs" />

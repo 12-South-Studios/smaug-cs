@@ -10,7 +10,6 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Mobile;
@@ -57,16 +56,16 @@ namespace SmaugCS.Managers
         public static CharacterInstance CurrentCharacter { get; set; }
 
         #region Game Loop
-        public void DoLoop()
+        public void StartMainGameLoop()
         {
-            InitializeResets();
+            InitializeRoomResets();
 
             if (_timer.Enabled) return;
             _timer.Enabled = true;
             _timer.Start();
         }
 
-        private void InitializeResets()
+        private void InitializeRoomResets()
         {
             foreach (AreaData area in _dbManager.AREAS.Values)
             {

@@ -345,7 +345,7 @@ namespace SmaugCS.Extensions.Objects
         {
             if (obj == o)
             {
-                LogManager.Instance.Bug("Trying to put object inside itself: vnum {0}", obj.ObjectIndex.Vnum);
+                LogManager.Instance.Bug("Trying to put object inside itself: vnum {0}", obj.ObjectIndex.ID);
                 return obj;
             }
 

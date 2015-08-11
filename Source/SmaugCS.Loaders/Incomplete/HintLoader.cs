@@ -1,10 +1,16 @@
 ﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Loaders.Loaders;
 
 namespace SmaugCS.Loaders
 {
-    public class HintLoader : ListLoader
+    public class HintLoader : BaseLoader
     {
+        public HintLoader(ILuaManager luaManager) : base(luaManager)
+        {
+        }
+
         public override string Filename
         {
             get { return SystemConstants.GetSystemFile(SystemFileTypes.Hints); }
@@ -22,6 +28,16 @@ namespace SmaugCS.Loaders
             //        proxy.Write("End\n");
             //    }
             //}
+        }
+
+        protected override string AppSettingName
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        protected override SystemDirectoryTypes SystemDirectory
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public override void Load()

@@ -1,11 +1,17 @@
 ﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Loaders.Loaders;
 
 namespace SmaugCS.Loaders
 {
-    public class WatchListLoader : ListLoader
+    public class WatchListLoader : BaseLoader
     {
         #region Overrides of ListLoader
+
+        public WatchListLoader(ILuaManager luaManager) : base(luaManager)
+        {
+        }
 
         public override string Filename
         {
@@ -25,6 +31,16 @@ namespace SmaugCS.Loaders
 
             //    proxy.Write("-1\n");
             //}
+        }
+
+        protected override string AppSettingName
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        protected override SystemDirectoryTypes SystemDirectory
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public override void Load()

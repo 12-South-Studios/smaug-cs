@@ -25,7 +25,53 @@ namespace SmaugCS.Data.Templates
 
         public int mpactnum { get; set; }
         public long TeleportToVnum { get; set; }
-        public int Light { get; set; }
+
+        public int Light
+        {
+            get
+            {
+                int total = 0;
+
+                // Light sum of any objects in the room and any affects on those objects
+                if (Contents.Any())
+                {
+                    total += Contents.Where(x => x.ItemType == ItemTypes.Light)
+                            .Sum(item => item.Values.HoursLeft*item.Count);
+
+                    total += Contents.Sum(item => item.Affects.Where(affect => affect.Location == ApplyTypes.RoomLight)
+                                    .Sum(affect => affect.Modifier));
+                }
+
+                // Light sum of affects on persons in the room, any light objects worn by those persons, 
+                // and any affects on objects being worn by those persons
+                if (Persons.Any())
+                {
+                    foreach (var person in Persons)
+                    {
+                        total += person.Affects.Where(affect => affect.Location == ApplyTypes.RoomLight)
+                            .Sum(affect => affect.Modifier);
+
+                        foreach (var item in person.Carrying.Where(item => item.WearLocation != WearLocations.None))
+                        {
+                            total += item.Affects.Where(affect => affect.Location == ApplyTypes.RoomLight)
+                                .Sum(affect => affect.Modifier);
+                            if (item.ItemType == ItemTypes.Light)
+                                total += item.Values.HoursLeft*item.Count;
+                        }
+                    }
+                }
+
+                // Light sum of any affects on the room itself
+                if (Affects.Any())
+                {
+                    total += Affects.Where(affect => affect.Location == ApplyTypes.RoomLight)
+                        .Sum(affect => affect.Modifier);
+                }
+
+                return total;
+            }
+        }
+
         public SectorTypes SectorType { get; set; }
         public SectorTypes WinterSector { get; set; }
         public int mpscriptpos { get; set; }
@@ -51,14 +97,13 @@ namespace SmaugCS.Data.Templates
 
         public void AddAffect(AffectData affect)
         {
-            if (affect.Location == ApplyTypes.RoomLight)
-                Light += affect.Modifier;
+            Affects.Add(affect);
         }
 
         public void RemoveAffect(AffectData affect)
         {
-            if (affect.Location == ApplyTypes.RoomLight)
-                Light -= affect.Modifier;
+            if (Affects.Contains(affect))
+                Affects.Remove(affect);
         }
 
         #endregion

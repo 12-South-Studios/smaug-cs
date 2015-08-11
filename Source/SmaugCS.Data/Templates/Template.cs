@@ -9,17 +9,8 @@ namespace SmaugCS.Data.Templates
     {
         public string Description { get; set; }
 
-        public long Vnum
-        {
-            get { return ID; }
-        }
-
         private readonly List<MudProgData> _mudProgs;
-
-        public IEnumerable<MudProgData> MudProgs
-        {
-            get { return _mudProgs; }
-        }
+        public IEnumerable<MudProgData> MudProgs { get { return _mudProgs; } }
 
         protected Template(long id, string name)
             : base(id, name)

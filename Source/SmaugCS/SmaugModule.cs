@@ -3,6 +3,7 @@ using Ninject.Modules;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Data;
 using SmaugCS.DAL.Interfaces;
@@ -42,6 +43,7 @@ namespace SmaugCS
 
             Kernel.Bind<IInitializer>().To<LuaInitializer>().InSingletonScope()
                 .Named("LuaInitializer")
+                .OnActivation(x => x.Initialize())
                 .OnActivation(x => x.InitializeLuaInjections(GameConstants.DataPath))
                 .OnActivation(x => x.InitializeLuaFunctions());
 

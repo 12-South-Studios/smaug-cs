@@ -445,7 +445,7 @@ namespace SmaugCS.Extensions.Character
                 return true;
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return true;
-            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
+            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.ID == VnumConstants.MOB_VNUM_SUPERMOB)
                 return true;
             return false;
         }
@@ -454,7 +454,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.HolyLight))
                 return true;
-            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.Vnum == VnumConstants.MOB_VNUM_SUPERMOB)
+            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.ID == VnumConstants.MOB_VNUM_SUPERMOB)
                 return true;
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
                 return false;
@@ -624,11 +624,11 @@ namespace SmaugCS.Extensions.Character
         {
             foreach (var obj in ch.Carrying)
             {
-                if (obj.ObjectIndex.Vnum == key ||
+                if (obj.ObjectIndex.ID == key ||
                     (obj.ItemType == ItemTypes.Key && obj.Value.ToList()[0] == key))
                     return obj;
                 if (obj.ItemType != ItemTypes.KeyRing) continue;
-                if (obj.Contents.Any(obj2 => obj.ObjectIndex.Vnum == key || obj2.Value.ToList()[0] == key))
+                if (obj.Contents.Any(obj2 => obj.ObjectIndex.ID == key || obj2.Value.ToList()[0] == key))
                     return obj;
             }
             return null;
@@ -698,7 +698,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Arena)) return true;
             if (ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.FreeKill)) return true;
-            if (ch.CurrentRoom.Vnum >= 29 && ch.CurrentRoom.Vnum <= 43) return true;
+            if (ch.CurrentRoom.ID >= 29 && ch.CurrentRoom.ID <= 43) return true;
             if (ch.CurrentRoom.Area.Name.EqualsIgnoreCase("arena")) return true;
             return false;
         }
@@ -1285,7 +1285,7 @@ namespace SmaugCS.Extensions.Character
             {
                 if (fall > 80)
                 {
-                    LogManager.Instance.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.Vnum);
+                    LogManager.Instance.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.ID);
                     ch.CurrentRoom.RemoveFrom(ch);
                     RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_TEMPLE).AddTo(ch);
                     return true;
@@ -1342,9 +1342,6 @@ namespace SmaugCS.Extensions.Character
                 ch.AddAffect(affect);
             foreach (var affect in obj.Affects)
                 ch.AddAffect(affect);
-
-            if (obj.ItemType == ItemTypes.Light && obj.Values.HoursLeft != 0 && ch.CurrentRoom != null)
-                ++ch.CurrentRoom.Light;
         }
 
         public static void Unequip(this CharacterInstance ch, ObjectInstance obj)
@@ -1368,15 +1365,6 @@ namespace SmaugCS.Extensions.Character
             }
 
             ch.update_aris();
-
-            if (obj.CarriedBy == null)
-                return;
-
-            if (obj.ItemType == ItemTypes.Light
-                && obj.Value.ToList()[2] != 0
-                && ch.CurrentRoom != null
-                && ch.CurrentRoom.Light > 0)
-                --ch.CurrentRoom.Light;
         }
 
         /// <summary>

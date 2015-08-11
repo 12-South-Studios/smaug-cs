@@ -116,9 +116,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		..\doc\hacker2.txt = ..\doc\hacker2.txt
 		How To Do Migrations.txt = How To Do Migrations.txt
 		..\doc\Immortal Rules.docx = ..\doc\Immortal Rules.docx
-		..\doc\license.diku = ..\doc\license.diku
-		..\doc\license.merc = ..\doc\license.merc
-		..\doc\license.txt = ..\doc\license.txt
 		..\doc\Mob.help = ..\doc\Mob.help
 		..\doc\Mortal Rules.docx = ..\doc\Mortal Rules.docx
 		..\doc\Notes.txt = ..\doc\Notes.txt
@@ -127,13 +124,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		..\doc\pfile.txt = ..\doc\pfile.txt
 		..\doc\player.txt = ..\doc\player.txt
 		..\doc\Prog.help = ..\doc\Prog.help
-		..\doc\readme.txt = ..\doc\readme.txt
 		..\doc\Resets.help = ..\doc\Resets.help
 		..\doc\Resets.txt = ..\doc\Resets.txt
 		..\doc\Room.help = ..\doc\Room.help
 		..\doc\security.txt = ..\doc\security.txt
 		..\doc\skill.txt = ..\doc\skill.txt
-		..\doc\smaug.txt = ..\doc\smaug.txt
 		..\doc\SMAUGDOC = ..\doc\SMAUGDOC
 		..\doc\smaugspells.txt = ..\doc\smaugspells.txt
 		..\doc\values.txt = ..\doc\values.txt
@@ -302,8 +297,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{4E1F08
 		..\data\system\StarMap.txt = ..\data\system\StarMap.txt
 		..\data\system\SunMap.txt = ..\data\system\SunMap.txt
 		..\data\system\sysdata.dat = ..\data\system\sysdata.dat
-		..\data\system\time.dat = ..\data\system\time.dat
-		..\data\system\tongues.lua = ..\data\system\tongues.lua
 		..\data\system\weather.dat = ..\data\system\weather.dat
 		..\data\system\weathermap.dat = ..\data\system\weathermap.dat
 		..\data\system\WeatherMessages.txt = ..\data\system\WeatherMessages.txt
@@ -351,6 +344,38 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TheVoid", "TheVoid", "{435A89FA-A386-43B7-BA8C-2FED8E2DDB98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Tests", "Tests\Integration.Tests\Integration.Tests.csproj", "{D24A9B54-287C-4CD3-AB57-7786B7FE8324}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{E858E874-00A2-4046-A059-714C9DD6F65B}"
+	ProjectSection(SolutionItems) = preProject
+		..\data\languages\Common.lua = ..\data\languages\Common.lua
+		..\data\languages\Default.lua = ..\data\languages\Default.lua
+		..\data\languages\Dwarven.lua = ..\data\languages\Dwarven.lua
+		..\data\languages\Elvish.lua = ..\data\languages\Elvish.lua
+		..\data\languages\Goblin.lua = ..\data\languages\Goblin.lua
+		..\data\languages\Halfling.lua = ..\data\languages\Halfling.lua
+		..\data\languages\Magical.lua = ..\data\languages\Magical.lua
+		..\data\languages\Ogre.lua = ..\data\languages\Ogre.lua
+		..\data\languages\Orcish.lua = ..\data\languages\Orcish.lua
+		..\data\languages\Pixie.lua = ..\data\languages\Pixie.lua
+		..\data\languages\Troll.lua = ..\data\languages\Troll.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{4A5DEA9D-A328-4B68-AE81-91E228D0999D}"
+	ProjectSection(SolutionItems) = preProject
+		..\DIKULicense.txt = ..\DIKULicense.txt
+		..\GeneralLicense.txt = ..\GeneralLicense.txt
+		..\Licenses.txt = ..\Licenses.txt
+		..\Log4netLicense.txt = ..\Log4netLicense.txt
+		..\LuaInterfaceLicense.txt = ..\LuaInterfaceLicense.txt
+		..\LuaLicense.txt = ..\LuaLicense.txt
+		..\MERCLicense.txt = ..\MERCLicense.txt
+		..\MOQLicense.txt = ..\MOQLicense.txt
+		..\NCalcLicense.txt = ..\NCalcLicense.txt
+		..\NinjectLicense.txt = ..\NinjectLicense.txt
+		..\NUnitLicense.txt = ..\NUnitLicense.txt
+		..\README.md = ..\README.md
+		..\SmaugFUSSLicense.txt = ..\SmaugFUSSLicense.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1179,5 +1204,7 @@ Global
 		{D76C78A3-A189-49E9-A703-709226C95B86} = {5944DFDB-E6DE-4A53-B04A-5F4254A20F73}
 		{435A89FA-A386-43B7-BA8C-2FED8E2DDB98} = {5944DFDB-E6DE-4A53-B04A-5F4254A20F73}
 		{D24A9B54-287C-4CD3-AB57-7786B7FE8324} = {8C290C9F-8A88-4A34-AD47-6D0D9E188ECF}
+		{E858E874-00A2-4046-A059-714C9DD6F65B} = {1B2F8ECD-DD0F-44B1-AEB6-5EC30F066F7B}
+		{4A5DEA9D-A328-4B68-AE81-91E228D0999D} = {29EA4E4A-C50F-4D83-B5C7-0F7BFDB67A13}
 	EndGlobalSection
 EndGlobal

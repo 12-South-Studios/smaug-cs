@@ -67,7 +67,7 @@ namespace SmaugCS.Spells
             return ReturnTypes.SpellFailed;
         }
 
-        private static ReturnTypes AnimateCorpse(int level, CharacterInstance ch, MobTemplate template, ObjectInstance corpse)
+        private static ReturnTypes AnimateCorpse(int level, CharacterInstance ch, MobileTemplate template, ObjectInstance corpse)
         {
             CreateAnimatedCorpse(level, ch, template, corpse);
 
@@ -81,7 +81,7 @@ namespace SmaugCS.Spells
             return ReturnTypes.None;
         }
 
-        private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobTemplate template, ObjectInstance corpse)
+        private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobileTemplate template, ObjectInstance corpse)
         {
             var mob = RepositoryManager.Instance.CHARACTERS.Create(template, 0,
                 string.Format("animated corpse {0}", template.PlayerName));

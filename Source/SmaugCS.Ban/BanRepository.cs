@@ -52,65 +52,58 @@ namespace SmaugCS.Ban
             catch (DbException ex)
             {
                 _logManager.Error(ex);
+                throw;
             }
         }
 
         public void Save()
         {
-            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
+            try
             {
-                try
+                foreach (var ban in Bans.Where(x => !x.Saved).ToList())
                 {
-                    foreach (var ban in Bans.Where(x => !x.Saved).ToList())
+                    var banToSave = new DAL.Models.Ban
                     {
-                        var banToSave = new DAL.Models.Ban
-                        {
-                            BannedBy = ban.BannedBy,
-                            BannedOn = ban.BannedOn,
-                            Duration = ban.Duration,
-                            Level = ban.Level,
-                            BanType = ban.Type,
-                            IsPrefix = ban.Prefix,
-                            IsSuffix = ban.Suffix,
-                            Name = ban.Name,
-                            Note = ban.Note
-                        };
-                        ban.Saved = true;
-                        _dbContext.Bans.Attach(banToSave);
-                    }
-                    _dbContext.SaveChanges();
-                   transaction.Commit();
+                        BannedBy = ban.BannedBy,
+                        BannedOn = ban.BannedOn,
+                        Duration = ban.Duration,
+                        Level = ban.Level,
+                        BanType = ban.Type,
+                        IsPrefix = ban.Prefix,
+                        IsSuffix = ban.Suffix,
+                        Name = ban.Name,
+                        Note = ban.Note
+                    };
+                    ban.Saved = true;
+                    _dbContext.Bans.Add(banToSave);
                 }
-                catch (DbException ex)
-                {
-                    transaction.Rollback();
-                    _logManager.Error(ex);
-                }
+                _dbContext.SaveChanges();
+            }
+            catch (DbException ex)
+            {
+                _logManager.Error(ex);
+                throw;
             }
         }
 
         public void Delete(int id)
         {
-            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
+            try
             {
-                try
-                {
-                    var localBan = Bans.FirstOrDefault(x => x.Id == id);
-                    if (localBan == null) return;
-                    Bans.ToList().Remove(localBan);
+                var localBan = Bans.FirstOrDefault(x => x.Id == id);
+                if (localBan == null) return;
+                Bans.ToList().Remove(localBan);
 
-                    var ban = _dbContext.Bans.FirstOrDefault(x => x.Id == id);
-                    if (ban == null) return;
+                var ban = _dbContext.Bans.FirstOrDefault(x => x.Id == id);
+                if (ban == null) return;
 
-                    _dbContext.Bans.Remove(ban);
-                    _dbContext.SaveChanges();
-                    transaction.Commit();
-                }
-                catch (DbException ex)
-                {
-                    transaction.Rollback();
-                    _logManager.Error(ex);
-                }
+                _dbContext.Bans.Remove(ban);
+                _dbContext.SaveChanges();
+            }
+            catch (DbException ex)
+            {
+                _logManager.Error(ex);
+                throw;
             }
         }
     }

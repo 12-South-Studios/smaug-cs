@@ -37,9 +37,9 @@ namespace SmaugCS.LuaHelpers
         }
 
         [LuaFunction("LGetMobile", "Retrieves a mob with a given ID", "ID of the mobile")]
-        public static MobTemplate LuaGetMobile(long id)
+        public static MobileTemplate LuaGetMobile(long id)
         {
-            return _dbManager.GetEntity<MobTemplate>(id);
+            return _dbManager.GetEntity<MobileTemplate>(id);
         }
 
         [LuaFunction("LGetObject", "Retrieves an object with a given ID", "ID of the object")]

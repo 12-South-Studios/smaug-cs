@@ -57,7 +57,7 @@ namespace SmaugCS.Commands.Liquids
             else
                 QuaffPotion(ch, obj, hgFlag);
 
-            if (obj.ObjectIndex.Vnum == VnumConstants.OBJ_VNUM_FLASK_BREWING)
+            if (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_FLASK_BREWING)
                 GameManager.Instance.SystemData.brewed_used++;
             else
                 GameManager.Instance.SystemData.upotion_val += obj.Cost/100;

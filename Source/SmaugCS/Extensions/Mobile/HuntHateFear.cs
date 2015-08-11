@@ -24,8 +24,7 @@ namespace SmaugCS.Extensions.Mobile
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;
 
-            Cast.do_cast(ch,
-                                  string.Format("summon {0}{1}", victim.IsNpc() ? string.Empty : "0.",
+            Cast.do_cast(ch, string.Format("summon {0}{1}", victim.IsNpc() ? string.Empty : "0.",
                                                 ch.CurrentHating.Name));
         }
 

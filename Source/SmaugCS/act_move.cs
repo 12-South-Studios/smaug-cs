@@ -143,9 +143,9 @@ namespace SmaugCS
             RoomTemplate backroom;
             var vdir = (int)exit.Direction;
 
-            if (room.Vnum > 32767)
+            if (room.ID > 32767)
             {
-                serial = room.Vnum;
+                serial = room.ID;
                 roomnum = room.TeleportToVnum;
                 if ((serial & 65535) == exit.vnum)
                 {
@@ -163,7 +163,7 @@ namespace SmaugCS
             }
             else
             {
-                var r1 = room.Vnum;
+                var r1 = room.ID;
                 var r2 = exit.vnum;
 
                 brvnum = r1;
@@ -177,7 +177,7 @@ namespace SmaugCS
 
             var foundRoom =
                 RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
-                    x => x.Vnum == serial && x.TeleportToVnum == roomnum);
+                    x => x.ID == serial && x.TeleportToVnum == roomnum);
             if (foundRoom != null)
                 found = true;
 
@@ -193,7 +193,7 @@ namespace SmaugCS
                     Flags = room.Flags
                 };
                 decorate_room(newRoom);
-                RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.Vnum, newRoom);
+                RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.ID, newRoom);
             }
 
             var xit = newRoom.GetExit(vdir);
@@ -241,7 +241,7 @@ namespace SmaugCS
                ch.SetColor(ATTypes.AT_DEAD);
                ch.SendTo("Oopsie... you're dead!");
 
-                var buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.Vnum);
+               var buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.ID);
                 //log_string(buffer);
                 ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
                 ch.Extract(false);

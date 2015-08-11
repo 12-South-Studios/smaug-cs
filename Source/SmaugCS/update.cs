@@ -349,10 +349,6 @@ namespace SmaugCS
         {
             if (--obj.Value.ToList()[2] == 0 && ch.CurrentRoom != null)
             {
-                ch.CurrentRoom.Light -= obj.Count;
-                if (ch.CurrentRoom.Light < 0)
-                    ch.CurrentRoom.Light = 0;
-
                 comm.act(ATTypes.AT_ACTION, "$p goes out.", ch, obj, null, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$p goes out.", ch, obj, null, ToTypes.Room);
 

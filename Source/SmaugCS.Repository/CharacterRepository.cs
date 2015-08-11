@@ -20,9 +20,9 @@ namespace SmaugCS.Repository
         public CharacterInstance Create(Template parent, params object[] args)
         {
             Validation.IsNotNull(parent, "parent");
-            Validation.Validate(parent is MobTemplate, "Invalid Template Type");
+            Validation.Validate(parent is MobileTemplate, "Invalid Template Type");
 
-            var mobParent = parent.CastAs<MobTemplate>();
+            var mobParent = parent.CastAs<MobileTemplate>();
 
             long id;
             if (args != null && args.Length > 0)

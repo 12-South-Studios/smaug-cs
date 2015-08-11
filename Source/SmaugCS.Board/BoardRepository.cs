@@ -72,63 +72,60 @@ namespace SmaugCS.Board
             catch (DbException ex)
             {
                 _logManager.Error(ex);
+                throw;
             }
         }
 
         public void Save()
         {
-            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
+            try
             {
-                try
+                foreach (var board in Boards.Where(x => !x.Saved).ToList())
                 {
-                    foreach (var board in Boards.Where(x => !x.Saved).ToList())
+                    var boardToSave = new DAL.Models.Board
                     {
-                        var boardToSave = new DAL.Models.Board
-                        {
-                            Name = board.Name,
-                            ReadGroup = board.ReadGroup,
-                            PostGroup = board.PostGroup,
-                            ExtraReaders = board.ExtraReaders,
-                            ExtraRemovers = board.ExtraRemovers,
-                            OTakeMessage = board.OTakeMessage,
-                            OPostMessage = board.OPostMessage,
-                            ORemoveMessage = board.ORemoveMessage,
-                            OCopyMessage = board.OCopyMessage,
-                            OListMessage = board.OListMessage,
-                            PostMessage = board.PostMessage,
-                            OReadMessage = board.ORemoveMessage,
-                            MinimumReadLevel = board.MinimumReadLevel,
-                            MinimumPostLevel = board.MinimumPostLevel,
-                            MinimumRemoveLevel = board.MinimumRemoveLevel,
-                            MaximumPosts = board.MaximumPosts,
-                            BoardObjectId = board.BoardObjectId
-                        };
-                        board.Saved = true;
-                        _dbContext.Boards.Attach(boardToSave);
+                        Name = board.Name,
+                        ReadGroup = board.ReadGroup,
+                        PostGroup = board.PostGroup,
+                        ExtraReaders = board.ExtraReaders,
+                        ExtraRemovers = board.ExtraRemovers,
+                        OTakeMessage = board.OTakeMessage,
+                        OPostMessage = board.OPostMessage,
+                        ORemoveMessage = board.ORemoveMessage,
+                        OCopyMessage = board.OCopyMessage,
+                        OListMessage = board.OListMessage,
+                        PostMessage = board.PostMessage,
+                        OReadMessage = board.ORemoveMessage,
+                        MinimumReadLevel = board.MinimumReadLevel,
+                        MinimumPostLevel = board.MinimumPostLevel,
+                        MinimumRemoveLevel = board.MinimumRemoveLevel,
+                        MaximumPosts = board.MaximumPosts,
+                        BoardObjectId = board.BoardObjectId
+                    };
+                    board.Saved = true;
+                    _dbContext.Boards.Add(boardToSave);
 
-                        foreach (var note in board.Notes.Where(y => !y.Saved).ToList())
+                    foreach (var note in board.Notes.Where(y => !y.Saved).ToList())
+                    {
+                        var noteToSave = new DAL.Models.Note
                         {
-                            var noteToSave = new DAL.Models.Note
-                            {
-                                DateSent = note.DateSent,
-                                IsPoll = note.IsPoll,
-                                RecipientList = note.RecipientList,
-                                Sender = note.Sender,
-                                Subject = note.Subject,
-                                Text = note.Text
-                            };
-                            note.Saved = true;
-                            boardToSave.Notes.Add(noteToSave);
-                        }
+                            DateSent = note.DateSent,
+                            IsPoll = note.IsPoll,
+                            RecipientList = note.RecipientList,
+                            Sender = note.Sender,
+                            Subject = note.Subject,
+                            Text = note.Text
+                        };
+                        note.Saved = true;
+                        boardToSave.Notes.Add(noteToSave);
                     }
-                    _dbContext.SaveChanges();
-                    transaction.Commit();
                 }
-                catch (DbException ex)
-                {
-                    transaction.Rollback();
-                    _logManager.Error(ex);
-                }  
+                _dbContext.SaveChanges();
+            }
+            catch (DbException ex)
+            {
+                _logManager.Error(ex);
+                throw;
             }
         }
     }

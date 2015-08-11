@@ -24,20 +24,20 @@ namespace SmaugCS.LuaHelpers
         }
 
         [LuaFunction("LGetLastMob", "Retrieves the Last Mob")]
-        public static MobTemplate LuaGetLastMob()
+        public static MobileTemplate LuaGetLastMob()
         {
-            return (MobTemplate) LastObject;
+            return (MobileTemplate) LastObject;
         }
 
         [LuaFunction("LProcessMob", "Processes a mob script", "script text")]
-        public static MobTemplate LuaProcessMob(string text)
+        public static MobileTemplate LuaProcessMob(string text)
         {
             _luaManager.Proxy.DoString(text);
             return LuaGetLastMob();
         }
 
         [LuaFunction("LCreateMobile", "Creates a new mob", "Id of the Mobile", "Name of the Mobile")]
-        public static MobTemplate LuaCreateMob(string id, string name)
+        public static MobileTemplate LuaCreateMob(string id, string name)
         {
             var mobId = Convert.ToInt64(id);
 

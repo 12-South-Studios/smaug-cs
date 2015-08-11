@@ -35,16 +35,6 @@ end
 LoadSocials();
 
 --[[
-#SOCIAL
-Name        ack~
-CharNoArg   You gasp and say 'ACK!' at your mistake.~
-OthersNoArg $n ACKS at $s big mistake.~
-CharFound   You ACK $M.~
-OthersFound $n ACKS $N.~
-VictFound   $n ACKS you.~
-CharAuto    You ACK yourself.~
-OthersAuto  $n ACKS $mself.  Must be a bad day.~
-End
 
 #SOCIAL
 Name        addict~

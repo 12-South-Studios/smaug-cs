@@ -145,7 +145,7 @@ namespace SmaugCS
                 var fexit = false;
                 foreach (var exit in room.Exits)
                 {
-                    exit.Room_vnum = room.Vnum;
+                    exit.Room_vnum = room.ID;
                     exit.Destination = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                     if (exit.vnum <= 0 || exit.Destination <= 0)
                     {
@@ -156,7 +156,7 @@ namespace SmaugCS
 
                         LogManager.Instance.Bug("Deleting %s exit in room %d",
                                                 LookupManager.Instance.GetLookup("DirectionNames", (int) exit.Direction),
-                                                room.Vnum);
+                                                room.ID);
                         exit.Extract();
                     }
                     else
@@ -300,7 +300,7 @@ namespace SmaugCS
 
                 for (var x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    var mob = RepositoryManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobTemplate>>().Get(x);
+                    var mob = RepositoryManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobileTemplate>>().Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.GetStatistic<int>(StatisticTypes.Coin) * 10);
                 }
@@ -513,7 +513,7 @@ namespace SmaugCS
 
             using (var proxy = new TextWriterProxy(new StreamWriter(file, true)))
             {
-                proxy.Write("[{0}] {1}: {2}\n", ch.CurrentRoom != null ? ch.CurrentRoom.Vnum : 0, ch.Name, str);
+                proxy.Write("[{0}] {1}: {2}\n", ch.CurrentRoom != null ? ch.CurrentRoom.ID : 0, ch.Name, str);
             }
         }
 
@@ -703,7 +703,7 @@ namespace SmaugCS
                     return;
                 if (letter != '>')
                 {
-                    LogManager.Instance.Bug("Vnum {0} MudProg Char", index.Vnum);
+                    LogManager.Instance.Bug("Vnum {0} MudProg Char", index.ID);
                     throw new Exception();
                 }
 
@@ -713,7 +713,7 @@ namespace SmaugCS
                 var type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
                 if (type == MudProgTypes.Error)
                 {
-                    LogManager.Instance.Bug("Invalid mud prog type {0} for Index {1}", type, index.Vnum);
+                    LogManager.Instance.Bug("Invalid mud prog type {0} for Index {1}", type, index.ID);
                     throw new Exception();
                 }
                 prog.Type = type;
@@ -833,13 +833,13 @@ namespace SmaugCS
             var newExit = new ExitData(door, "An exit")
             {
                 Direction = EnumerationExtensions.GetEnum<DirectionTypes>(door),
-                Room_vnum = room.Vnum,
+                Room_vnum = room.ID,
                 Destination = to_room.ID,
                 Distance = 1,
                 Key = -1
             };
 
-            var reverseExit = to_room.GetExitTo(LookupConstants.rev_dir[door], room.Vnum);
+            var reverseExit = to_room.GetExitTo(LookupConstants.rev_dir[door], room.ID);
             if (reverseExit != null)
             {
                 reverseExit.Reverse = newExit.ID;

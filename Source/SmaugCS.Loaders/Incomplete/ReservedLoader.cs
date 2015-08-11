@@ -1,11 +1,17 @@
 ﻿using System;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
+using SmaugCS.Loaders.Loaders;
 
 namespace SmaugCS.Loaders
 {
-    public class ReservedLoader : ListLoader
+    public class ReservedLoader : BaseLoader
     {
+        public ReservedLoader(ILuaManager luaManager) : base(luaManager)
+        {
+        }
+
         public override string Filename
         {
             get { return SystemConstants.GetSystemFile(SystemFileTypes.Reserved); }
@@ -14,6 +20,16 @@ namespace SmaugCS.Loaders
         public override void Save()
         {
             throw new NotImplementedException();
+        }
+
+        protected override string AppSettingName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        protected override SystemDirectoryTypes SystemDirectory
+        {
+            get { throw new NotImplementedException(); }
         }
 
         public override void Load()

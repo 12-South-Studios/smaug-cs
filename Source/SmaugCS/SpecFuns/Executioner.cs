@@ -41,7 +41,7 @@ namespace SmaugCS.SpecFuns
             if (ch.CharDied()) return true;
 
             var vnum = GameConstants.GetVnum("MobileCityGuard");
-            var cityguard = RepositoryManager.Instance.GetEntity<MobTemplate>(vnum);
+            var cityguard = RepositoryManager.Instance.GetEntity<MobileTemplate>(vnum);
 
             var newGuard = RepositoryManager.Instance.CHARACTERS.Create(cityguard, null);
             ch.CurrentRoom.AddTo(newGuard);

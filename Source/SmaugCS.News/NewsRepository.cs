@@ -63,52 +63,49 @@ namespace SmaugCS.News
             catch (DbException ex)
             {
                 _logManager.Error(ex);
+                throw;
             }
         }
 
         public void Save()
         {
-            using (var transaction = _dbContext.ObjectContext.Connection.BeginTransaction())
+            try
             {
-                try
+                foreach (var news in News.Where(x => !x.Saved).ToList())
                 {
-                    foreach (var news in News.Where(x => !x.Saved).ToList())
+                    var newsToSave = new DAL.Models.News
                     {
-                        var newsToSave = new DAL.Models.News
-                        {
-                            CreatedBy = news.CreatedBy,
-                            CreatedOn = news.CreatedOn,
-                            Header = news.Header,
-                            IsActive = news.Active,
-                            Level = news.Level,
-                            Name = news.Name
-                        };
-                        news.Saved = true;
-                        _dbContext.News.Attach(newsToSave);
+                        CreatedBy = news.CreatedBy,
+                        CreatedOn = news.CreatedOn,
+                        Header = news.Header,
+                        IsActive = news.Active,
+                        Level = news.Level,
+                        Name = news.Name
+                    };
+                    news.Saved = true;
+                    _dbContext.News.Add(newsToSave);
 
-                        foreach (var entry in news.Entries.Where(y => !y.Saved).ToList())
+                    foreach (var entry in news.Entries.Where(y => !y.Saved).ToList())
+                    {
+                        var entryToSave = new DAL.Models.NewsEntry
                         {
-                            var entryToSave = new DAL.Models.NewsEntry
-                            {
-                                IsActive = entry.Active,
-                                Name = entry.Name,
-                                PostedBy = entry.PostedBy,
-                                PostedOn = entry.PostedOn,
-                                Title = entry.Title,
-                                Text = entry.Text
-                            };
-                            entry.Saved = true;
-                            newsToSave.Entries.Add(entryToSave);
-                        }
+                            IsActive = entry.Active,
+                            Name = entry.Name,
+                            PostedBy = entry.PostedBy,
+                            PostedOn = entry.PostedOn,
+                            Title = entry.Title,
+                            Text = entry.Text
+                        };
+                        entry.Saved = true;
+                        newsToSave.Entries.Add(entryToSave);
                     }
-                    _dbContext.SaveChanges();
-                    transaction.Commit();
                 }
-                catch (DbException ex)
-                {
-                    transaction.Rollback();
-                    _logManager.Error(ex);
-                }
+                _dbContext.SaveChanges();
+            }
+            catch (DbException ex)
+            {
+                _logManager.Error(ex);
+                throw;
             }
         }
     }

@@ -6,12 +6,12 @@ using SmaugCS.Data.Shops;
 
 namespace SmaugCS.Data.Templates
 {
-    public class MobTemplate : Template
+    public class MobileTemplate : Template
     {
         public SpecialFunction SpecialFunction { get; set; }
-        public ShopData Shop { get; set; }
+        public ShopData Shop { get; private set; }
         public RepairShopData RepairShop { get; set; }
-        public string ShortDescription { get; set; }
+        public string ShortDescription { get; private set; }
         public string LongDescription { get; set; }
         public string SpecFun { get; set; }
         public int Count { get; set; }
@@ -32,11 +32,11 @@ namespace SmaugCS.Data.Templates
         public string DefensivePosition { get; set; }
         public string Race { get; set; }
         public string Class { get; set; }
-        public SavingThrowData SavingThrows { get; set; }
+        public SavingThrowData SavingThrows { get; private set; }
         public Dictionary<StatisticTypes, object> Statistics { get; private set; }
         public string PlayerName { get; set; }
 
-        public MobTemplate(long id, string name)
+        public MobileTemplate(long id, string name)
             : base(id, name)
         {
             SavingThrows = new SavingThrowData();

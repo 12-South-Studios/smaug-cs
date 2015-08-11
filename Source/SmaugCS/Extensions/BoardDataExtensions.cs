@@ -9,9 +9,7 @@ namespace SmaugCS.Extensions
     {
         public static bool CanPost(this BoardData board, PlayerInstance ch)
         {
-            if (ch.Trust >= board.MinimumPostLevel)
-                return true;
-
+            if (ch.Trust >= board.MinimumPostLevel) return true;
             if (string.IsNullOrWhiteSpace(board.PostGroup)) return false;
             if (ch.PlayerData.Clan != null
                 && ch.PlayerData.Clan.Name.Equals(board.PostGroup, StringComparison.OrdinalIgnoreCase))

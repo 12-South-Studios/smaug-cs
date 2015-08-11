@@ -1,8 +1,10 @@
 ﻿
+using System;
 using Realm.Library.Common;
 
 namespace SmaugCS.Constants.Enums
 {
+    [Flags]
     public enum ApplyTypes
     {
         None = -1,
@@ -131,6 +133,8 @@ namespace SmaugCS.Constants.Enums
         TeleportVnum,
 
         [Name("teleport delay")]
-        TeleportDelay
+        TeleportDelay,
+
+        IsNotRemovable = WearSpell | RemoveSpell | StripSN
     }
 }

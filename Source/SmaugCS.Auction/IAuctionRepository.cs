@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Auction
 {
@@ -7,7 +6,7 @@ namespace SmaugCS.Auction
     {
         void Add(AuctionData auction);
         void Load();
-        Task Save();
+        void Save();
 
         IEnumerable<AuctionHistory> History { get; }
     }

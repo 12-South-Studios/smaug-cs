@@ -333,7 +333,7 @@ namespace SmaugCS
             if (ch.IsImmortal())
             {
                 if (victim.IsNpc())
-                    ch.Printf("\r\nMobile #%d '%s' ", ((MobileInstance)victim).MobIndex.Vnum, victim.Name);
+                    ch.Printf("\r\nMobile #%d '%s' ", ((MobileInstance)victim).MobIndex.ID, victim.Name);
                 else
                     ch.Printf("\r\n%s ", victim.Name);
 
@@ -434,7 +434,7 @@ namespace SmaugCS
                                   exitInfo[(int)DirectionTypes.Northeast] > 0 ? "NE" : " -");
 
             if (ch.IsImmortal() && ch.Act.IsSet((int)PlayerFlags.RoomVNum))
-                ch.PrintfColor("&w-<---- &YVnum: %6d &w----------------------------->-        ", ch.CurrentRoom.Vnum);
+                ch.PrintfColor("&w-<---- &YVnum: %6d &w----------------------------->-        ", ch.CurrentRoom.ID);
             else
                 ch.SendTo("&w-<----------------------------------------------->-        ");
 

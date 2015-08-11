@@ -1779,7 +1779,7 @@ namespace SmaugCS
                     && !(ch.IsImmortal() && victim.IsImmortal()))
                 {
                     var buffer = string.Format("&p{0} on {1} in &W***&rILLEGAL PKILL&W*** &pattempt at {2}",
-                                                  ch.LastCommand, victim.Name, victim.CurrentRoom.Vnum);
+                                                  ch.LastCommand, victim.Name, victim.CurrentRoom.ID);
                     // TODO: last_pkroom = victim.CurrentRoom.vnum;
                     // TODO: log_string(buffer);
                     // TODO: to_channel(buffer, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL);

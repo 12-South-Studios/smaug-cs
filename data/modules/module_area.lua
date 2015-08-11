@@ -34,7 +34,7 @@ function AddExitToRoom(room, direction, location, description, flags)
 end
 
 function AddDoorReset(room, direction, state)
-	newReset = LCreateReset("door", 0, LGetDirectionNumber(direction), state, 0);
+	newReset = LCreateReset("door", 0, LGetDirectionNumber(direction), DoorStateToNumber(state), 0);
 	reset.this = newReset;
 	room:AddReset(reset.this);
 	return reset.this;

@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Lua;
+using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
@@ -20,6 +21,10 @@ namespace SmaugCS.LuaHelpers
             _dbManager = dbManager;
             _logManager = logManager;
             _lookupManager = lookupManager;
+        }
+
+        public void Initialize()
+        {
         }
 
         public void InitializeLuaInjections(string dataPath)

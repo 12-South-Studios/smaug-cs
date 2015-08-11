@@ -57,25 +57,15 @@ namespace SmaugCS.Data.Organizations
 
         public bool CanOutcast(CharacterInstance ch, CharacterInstance victim)
         {
-            if (ch == null || victim == null)
-                return false;
-            if (ch.Name.EqualsIgnoreCase(Deity))
-                return true;
-            if (victim.Name.EqualsIgnoreCase(Deity))
-                return false;
-            if (ch.Name.EqualsIgnoreCase(Leader))
-                return true;
-            if (victim.Name.EqualsIgnoreCase(Leader))
-                return false;
-            if (ch.Name.EqualsIgnoreCase(NumberOne))
-                return true;
-            if (victim.Name.EqualsIgnoreCase(NumberOne))
-                return false;
-            if (ch.Name.EqualsIgnoreCase(NumberTwo))
-                return true;
-            if (victim.Name.EqualsIgnoreCase(NumberTwo))
-                return false;
-            return true;
+            if (ch == null || victim == null) return false;
+            if (ch.Name.EqualsIgnoreCase(Deity)) return true;
+            if (victim.Name.EqualsIgnoreCase(Deity)) return false;
+            if (ch.Name.EqualsIgnoreCase(Leader)) return true;
+            if (victim.Name.EqualsIgnoreCase(Leader)) return false;
+            if (ch.Name.EqualsIgnoreCase(NumberOne)) return true;
+            if (victim.Name.EqualsIgnoreCase(NumberOne)) return false;
+            if (ch.Name.EqualsIgnoreCase(NumberTwo)) return true;
+            return !victim.Name.EqualsIgnoreCase(NumberTwo);
         }
 
         public void UpdateRoster(PlayerInstance ch)
