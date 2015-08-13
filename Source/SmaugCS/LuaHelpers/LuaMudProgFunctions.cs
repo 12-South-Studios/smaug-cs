@@ -1,11 +1,15 @@
 ﻿using System.Linq;
 using LuaInterface;
+using Realm.Library.Common;
 using Realm.Library.Lua;
 using SmaugCS.Common;
+using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
+using EnumerationExtensions = SmaugCS.Common.EnumerationExtensions;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -164,27 +168,211 @@ namespace SmaugCS.LuaHelpers
             return ch.IsDevoted();
         }
 
-        // CanPKill
-        // IsMounted
-        // IsMorphed
-        // IsNuisance
-        // IsGood
-        // IsNeutral
-        // IsEvil
-        // IsFighting
-        // IsImmortal
-        // IsCharmed
-        // IsFlying
-        // IsThief
-        // IsAttacker
-        // IsKiller
-        // IsFollowing
-        // IsAffectedBy
-        // GetNumberFighting
-        // GetHitPercent
-        // IsInRoom
-        // WasInRoom
-        // IsNoRecallRoom
+        [LuaFunction("LCanPKill", "Gets if the player can pkill", "Character")]
+        public static bool LuaCanPKill(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.CanPKill();
+        }
+
+        [LuaFunction("LIsMounted", "Gets if the player is mounted", "Character")]
+        public static bool LuaIsMounted(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.CurrentPosition == PositionTypes.Mounted && ch.CurrentMount != null;
+        }
+
+        [LuaFunction("LIsMorphed", "Gets if the player is polymorphed", "Character")]
+        public static bool LuaIsMorphed(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.CurrentMorph != null;
+        }
+
+        [LuaFunction("LIsNuisance", "Gets if the player is a nuisance", "Character")]
+        public static bool LuaIsNuisance(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            if (ch.IsNpc()) return false;
+
+            var player = (PlayerInstance) ch;
+            return player.PlayerData.Nuisance != null;
+        }
+
+        [LuaFunction("LIsGood", "Gets if the player is good", "Character")]
+        public static bool LuaIsGood(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsGood();
+        }
+
+        [LuaFunction("LIsEvil", "Gets if the player is evil", "Character")]
+        public static bool LuaIsEvil(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsEvil();
+        }
+
+        [LuaFunction("LIsNeutral", "Gets if the player is neutral", "Character")]
+        public static bool LuaIsNeutral(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsNeutral();
+        }
+
+        [LuaFunction("LIsFighting", "Gets if the player is fighting", "Character")]
+        public static bool LuaIsFighting(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.CurrentFighting != null;
+        }
+
+        [LuaFunction("LIsImmortal", "Gets if the player is immortal", "Character")]
+        public static bool LuaIsImmortal(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.Trust >= LevelConstants.ImmortalLevel;
+        }
+
+        [LuaFunction("LIsCharmed", "Gets if the player is charmed", "Character")]
+        public static bool LuaIsCharmed(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsAffected(AffectedByTypes.Charm);
+        }
+
+        [LuaFunction("LIsFlying", "Gets if the player is flying", "Character")]
+        public static bool LuaIsFlying(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.IsAffected(AffectedByTypes.Flying);
+        }
+
+        [LuaFunction("LIsThief", "Gets if the player is a thief", "Character")]
+        public static bool LuaIsThief(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Thief);
+        }
+
+        [LuaFunction("LIsAttacker", "Gets if the player is an attacker", "Character")]
+        public static bool LuaIsAttacker(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Attacker);
+        }
+
+        [LuaFunction("LIsKiller", "Gets if the player is a killer", "Character")]
+        public static bool LuaIsKiller(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Killer);
+        }
+
+        [LuaFunction("LIsFollowing", "Gets if the player is a follower", "Character")]
+        public static bool LuaIsFollowing(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            if (ch.Master == null) return false;
+            return ch.Master.CurrentRoom == ch.CurrentRoom;
+        }
+
+        [LuaFunction("LIsAffectedByNumeric", "Gets if the player is affected by X", "Character", "Affected By Value")]
+        public static bool LuaIsAffected(CharacterInstance ch, long affectedBy)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            AffectedByTypes affected = EnumerationExtensions.GetEnum<AffectedByTypes>(affectedBy);
+            return ch.IsAffected(affected);
+        }
+
+        [LuaFunction("LIsAffectedByString", "Gets if the player is affected by X", "Character", "Affected By name")]
+        public static bool LuaIsAffected(CharacterInstance ch, string affectedBy)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            AffectedByTypes affected = Realm.Library.Common.EnumerationExtensions.GetEnumByName<AffectedByTypes>(affectedBy);
+            return ch.IsAffected(affected);
+        }
+
+        [LuaFunction("LGetNumberFighting", "Gets the number of combatants the player is fighting", "Character")]
+        public static int LuaGetNumberFighting(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.NumberFighting;
+        }
+
+        [LuaFunction("LGetHitPercent", "Gets the to-hit percentage of the player", "Character")]
+        public static int LuaGetHitPercent(CharacterInstance ch)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.GetHitroll();
+        }
+
+        [LuaFunction("LIsInRoom", "Gets if the player is in the room", "Character", "Room")]
+        public static bool LuaIsInRoom(CharacterInstance ch, long roomId)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.CurrentRoom.ID == roomId;
+        }
+
+        [LuaFunction("LWasInRoom", "Gets if the player was in the room", "Character", "Room")]
+        public static bool LuaWasInRoom(CharacterInstance ch, long roomId)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.PreviousRoom != null && ch.PreviousRoom.ID == roomId;
+        }
+
+        [LuaFunction("LIsNoRecall", "Gets if the player's current room is no-recall", "Character", "Room")]
+        public static bool LuaIsNoRecall(CharacterInstance ch, long roomId)
+        {
+            if (ch == null)
+                throw new LuaException("Character cannot be null");
+
+            return ch.CurrentRoom.Flags.IsSet(RoomFlags.NoRecall);
+        }
+
+
         // IsDoingQuest
         // IsHelled
         // IsLeader
