@@ -30,17 +30,17 @@ namespace SmaugCS.Behavior.Shopkeeper
             // repair all gets a 10% surcharge
             else if ((cost = arg.Equals("all") ? cost : 11 * (cost / 10)) > ch.CurrentCoin)
             {
-                buffer = string.Format("$N tells you, 'It will cost {0} piece{1} of gold to {2} {3}...'",
-                                         cost, cost == 1 ? "" : "s", fixstr, obj.Name);
+                buffer =
+                    $"$N tells you, 'It will cost {cost} piece{(cost == 1 ? "" : "s")} of gold to {fixstr} {obj.Name}...'";
                 comm.act(ATTypes.AT_TELL, buffer, ch, null, keeper, ToTypes.Character);
                 comm.act(ATTypes.AT_TELL, "$n tells you, 'Which I see you can't afford.'", ch, null, keeper, ToTypes.Character);
             }
             else
             {
-                buffer = string.Format("$n gives $p to $N, who quickly {0} it.", fixstr2);
+                buffer = $"$n gives $p to $N, who quickly {fixstr2} it.";
                 comm.act(ATTypes.AT_ACTION, buffer, ch, obj, keeper, ToTypes.Room);
 
-                buffer = string.Format("$n charges you {0} gold piece{1} to {2} $p.", cost, cost == 1 ? "" : "s", fixstr);
+                buffer = $"$n charges you {cost} gold piece{(cost == 1 ? "" : "s")} to {fixstr} $p.";
                 comm.act(ATTypes.AT_ACTION, buffer, ch, obj, keeper, ToTypes.Character);
 
                 ch.CurrentCoin -= cost;

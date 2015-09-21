@@ -1354,7 +1354,7 @@ namespace SmaugCS.Extensions.Character
             var name = ch.Name.FirstWord();
             return string.IsNullOrEmpty(name)
                        ? string.Empty
-                       : string.Format("{0}.{1}", 1 + ch.CurrentRoom.Persons.Count(rch => name.IsEqual(rch.Name)), name);
+                       : $"{1 + ch.CurrentRoom.Persons.Count(rch => name.IsEqual(rch.Name))}.{name}";
         }
 
         public static bool CharDied(this CharacterInstance ch)

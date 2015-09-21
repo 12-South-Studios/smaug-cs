@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.PetsAndGroups
            ch.SetColor(ATTypes.AT_GOLD);
             ch.Printf("You split %d gold coins.  Your share is %d gold coins.\r\n", amount, share + extra);
 
-            var buffer = string.Format("$n splits {0} gold coins. Your share is {1} gold coins.", amount, share);
+            var buffer = $"$n splits {amount} gold coins. Your share is {share} gold coins.";
             foreach (var gch in ch.CurrentRoom.Persons.Where(x => x.IsSameGroup(ch) && x != ch))
             {
                 comm.act(ATTypes.AT_GOLD, buffer, ch, null, gch, ToTypes.Victim);

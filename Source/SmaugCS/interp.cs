@@ -93,7 +93,7 @@ namespace SmaugCS
                 if (foundCmd == null)
                     throw new InvalidDataException("CharacterSubStates.RepeatCommand: LastCommand was invalid");
 
-                logLine = string.Format("({0}) {1}", foundCmd.Name, argument);
+                logLine = $"({foundCmd.Name}) {argument}";
             }
 
             if (foundCmd == null)
@@ -101,7 +101,7 @@ namespace SmaugCS
                 // TODO 
             }
 
-            var lastPlayerCmd = string.Format("{0} used {1}", ch.Name, logLine);
+            var lastPlayerCmd = $"{ch.Name} used {logLine}";
             if (foundCmd != null && foundCmd.Log == LogAction.Never)
                 logLine = "XXXXXXXX XXXXXXXX XXXXXXXX";
 
@@ -223,9 +223,9 @@ namespace SmaugCS
         {
             var buf = string.Empty;
             if (ch.IsAffected(AffectedByTypes.Possess) && cmd.Flags.IsSet(CommandFlags.Possess))
-                buf = string.Format("You can't {0} while you are possessing someone!", cmd.Name);
+                buf = $"You can't {cmd.Name} while you are possessing someone!";
             else if (ch.CurrentMorph != null && cmd.Flags.IsSet(CommandFlags.Polymorphed))
-                buf = string.Format("You can't {0} while you are polymorphed!", cmd.Name);
+                buf = $"You can't {cmd.Name} while you are polymorphed!";
             return buf;
         }
     }

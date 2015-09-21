@@ -37,8 +37,8 @@ namespace SmaugCS.Data.Templates
             Affects = new List<AffectData>();
             Spells = new List<string>();
 
-            ShortDescription = string.Format("A newly created {0}", name);
-            Description = string.Format("Somebody dropped a newly created {0} here.", name);
+            ShortDescription = $"A newly created {name}";
+            Description = $"Somebody dropped a newly created {name} here.";
             Type = ItemTypes.Trash;
             Weight = 1;
         }

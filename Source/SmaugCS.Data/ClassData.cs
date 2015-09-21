@@ -72,7 +72,7 @@ namespace SmaugCS.Data
         public void AddSkill(string name, int level, int adept)
         {
             if (Skills.Any(x => x.Skill.EqualsIgnoreCase(name)))
-                throw new InvalidDataException(string.Format("Skill {0} is already found on Class {1}", name, Name));
+                throw new InvalidDataException($"Skill {name} is already found on Class {Name}");
 
             ClassSkillAdeptData data = new ClassSkillAdeptData
                 {

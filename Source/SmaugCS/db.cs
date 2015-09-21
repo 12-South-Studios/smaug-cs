@@ -86,7 +86,7 @@ namespace SmaugCS
         public static string GetHint(int level)
         {
             if (level < 0)
-                return string.Format("HintLevel error, level was {0}", level);
+                return $"HintLevel error, level was {level}";
 
             var count = HINTS.Count(hint => level >= hint.Low && level <= hint.High);
             if (count > 1)
@@ -580,7 +580,7 @@ namespace SmaugCS
                 }
             }
 
-            var buffer = string.Format(" Masters of the {0}!", GameManager.Instance.SystemData.MudTitle);
+            var buffer = $" Masters of the {GameManager.Instance.SystemData.MudTitle}!";
 
             var iLevel = 65535;
             foreach (var wiz in wizList)
@@ -908,9 +908,8 @@ namespace SmaugCS
                 sort_area(area, false);
             }*/
 
-            var buffer = string.Format("{0}:\n\tRooms: {1} - {2}\n\tObjects: {3} - {4}\n\tMobs: {5} - {6}\n",
-                                          area.Filename, area.LowRoomNumber, area.HighRoomNumber, area.LowObjectNumber,
-                                          area.HighObjectNumber, area.LowMobNumber, area.HighMobNumber);
+            var buffer =
+                $"{area.Filename}:\n\tRooms: {area.LowRoomNumber} - {area.HighRoomNumber}\n\tObjects: {area.LowObjectNumber} - {area.HighObjectNumber}\n\tMobs: {area.LowMobNumber} - {area.HighMobNumber}\n";
             LogManager.Instance.Boot(buffer);
 
             area.status.SetBit((int)AreaFlags.Loaded);

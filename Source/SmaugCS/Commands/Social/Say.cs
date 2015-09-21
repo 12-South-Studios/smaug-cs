@@ -70,7 +70,7 @@ namespace SmaugCS.Commands.Social
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
-                                  string.Format("{0}: {1}", ch.IsNpc() ? ch.ShortDescription : ch.Name, argument));
+                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument}");
             }
 
             MudProgHandler.ExecuteMobileProg(MudProgTypes.Speech, argument, ch);

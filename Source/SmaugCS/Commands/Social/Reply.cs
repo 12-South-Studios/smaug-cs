@@ -134,10 +134,8 @@ namespace SmaugCS.Commands.Social
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {
-                var buffer = string.Format("{0}: {1} (tell to) {2}",
-                                              ch.IsNpc() ? ch.ShortDescription : ch.Name,
-                                              argument,
-                                              victim.IsNpc() ? victim.ShortDescription : victim.Name);
+                var buffer =
+                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} (tell to) {(victim.IsNpc() ? victim.ShortDescription : victim.Name)}";
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log), buffer);
             }
 

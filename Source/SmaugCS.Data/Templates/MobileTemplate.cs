@@ -44,8 +44,8 @@ namespace SmaugCS.Data.Templates
             DamageDice = new DiceData();
             Statistics = new Dictionary<StatisticTypes, object>();
 
-            ShortDescription = string.Format("A newly created {0}", name);
-            LongDescription = string.Format("Somebody abandoned a newly created {0} here.", name);
+            ShortDescription = $"A newly created {name}";
+            LongDescription = $"Somebody abandoned a newly created {name} here.";
             Level = 1;
             Position = "standing";
             DefensivePosition = "standing";
@@ -142,7 +142,7 @@ namespace SmaugCS.Data.Templates
             {
                 Type = MudProgTypes.Speech,
                 ArgList = keyword,
-                Script = string.Format("LMobEmote(\"{0}\");", text)
+                Script = $"LMobEmote(\"{text}\");"
             };
 
             AddMudProg(mp);

@@ -33,8 +33,8 @@ namespace SmaugCS.Behavior.Shopkeeper
                     continue;
                 }
 
-                buffer = string.Format("$N tells you, 'It will cost {0} piece{1} of gold to {2} {3}.'",
-                    cost, cost == 1 ? "" : "s", fixstr, obj.Name);
+                buffer =
+                    $"$N tells you, 'It will cost {cost} piece{(cost == 1 ? "" : "s")} of gold to {fixstr} {obj.Name}.'";
                 comm.act(ATTypes.AT_TELL, buffer, ch, null, keeper, ToTypes.Character);
                 total += cost;
             }
@@ -43,8 +43,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
             ch.SendTo("\r\n");
 
-            buffer = string.Format("$N tells you, 'It will cost {0} piece{1} of gold in total.'", total,
-                cost == 1 ? "" : "s");
+            buffer = $"$N tells you, 'It will cost {total} piece{(cost == 1 ? "" : "s")} of gold in total.'";
             comm.act(ATTypes.AT_TELL, buffer, ch, null, keeper, ToTypes.Character);
             comm.act(ATTypes.AT_TELL, "$N tells you, 'Remember there is a 10% surcharge for repairing all your items.", ch, null, keeper, ToTypes.Character);
         }

@@ -192,9 +192,7 @@ namespace SmaugCS
                         buffer = argument.PadLeft(len);
                     break;
                 case (int)TextAlignmentStyle.Center:
-                    buffer = string.Format("{0}{1}{2}",
-                                           c.Repeat(space / 2), argument,
-                                           c.Repeat((space / 2) * 2 == space ? space / 2 : (space / 2) + 1));
+                    buffer = $"{c.Repeat(space/2)}{argument}{c.Repeat((space/2)*2 == space ? space/2 : (space/2) + 1)}";
                     break;
                 case (int)TextAlignmentStyle.Left:
                     buffer = argument.PadRight(space);

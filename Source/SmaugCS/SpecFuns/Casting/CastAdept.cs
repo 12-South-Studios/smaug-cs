@@ -39,8 +39,8 @@ namespace SmaugCS.SpecFuns.Casting
             var bits = SmaugRandom.Bits(3);
             var actLookupValue = ActLookupTable[bits];
 
-            comm.act(ATTypes.AT_MAGIC, 
-                string.Format("$n utters the word '{0}'.", actLookupValue.Item1), 
+            comm.act(ATTypes.AT_MAGIC,
+                $"$n utters the word '{actLookupValue.Item1}'.", 
                 ch, null, null, ToTypes.Room);
             return CastSpell(ch, victim, bits, actLookupValue.Item2, dbManager);
         }

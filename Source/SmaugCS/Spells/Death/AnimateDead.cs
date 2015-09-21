@@ -84,7 +84,7 @@ namespace SmaugCS.Spells
         private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobileTemplate template, ObjectInstance corpse)
         {
             var mob = RepositoryManager.Instance.CHARACTERS.Create(template, 0,
-                string.Format("animated corpse {0}", template.PlayerName));
+                $"animated corpse {template.PlayerName}");
 
             ch.CurrentRoom.AddTo(mob);
             mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
@@ -99,10 +99,9 @@ namespace SmaugCS.Spells
             mob.DamageRoll = new DiceData {SizeOf = ch.Level/8};
             mob.HitRoll = new DiceData {SizeOf = ch.Level/6};
             mob.CurrentAlignment = ch.CurrentAlignment;
-            mob.ShortDescription = string.Format("The animated corpse of {0}", template.ShortDescription);
+            mob.ShortDescription = $"The animated corpse of {template.ShortDescription}";
             mob.LongDescription =
-                string.Format("An animated corpse of {0} struggles with the horror of its undeath.",
-                    template.ShortDescription);
+                $"An animated corpse of {template.ShortDescription} struggles with the horror of its undeath.";
             mob.AddFollower(ch);
 
             MakeCorpseTemporary(level, mob);

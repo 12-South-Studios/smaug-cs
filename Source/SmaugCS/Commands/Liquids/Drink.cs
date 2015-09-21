@@ -30,7 +30,7 @@ namespace SmaugCS.Commands.Liquids
 
             var obj = GetDrinkSource(ch, arg);
             if (obj == null)
-                throw new ObjectNotFoundException(string.Format("Object {0} was not found.", arg));
+                throw new ObjectNotFoundException($"Object {arg} was not found.");
 
             if (obj.Count > 1 && obj.ItemType != ItemTypes.Fountain)
                 obj.Split();
@@ -234,7 +234,7 @@ namespace SmaugCS.Commands.Liquids
         {
             if (CheckFunctions.CheckIfEquivalent(ch, ch, obj.CarriedBy, "You're not carrying that.")) return;
 
-            interp.interpret(ch, string.Format("quaff {0}", obj.Name));
+            interp.interpret(ch, $"quaff {obj.Name}");
         }
 
         private static void DrinkFromBlood(PlayerInstance ch, ObjectInstance obj)

@@ -50,7 +50,7 @@ namespace SmaugCS.Commands.Deity
 
             var corpse =
                 ch.CurrentRoom.Contents.FirstOrDefault(
-                    x => x.ShortDescription.Equals(string.Format("the corpse of {0}", ch.Name)));
+                    x => x.ShortDescription.Equals($"the corpse of {ch.Name}"));
             if (CheckFunctions.CheckIfNullObject(ch, corpse, "No corpse of yours litters the world...")) return;
             if (CheckFunctions.CheckIfSet(ch, corpse.InRoom.Flags, RoomFlags.NoSupplicate,
                 "The image of your corpse appears, but suddenly fades away.")) return;
@@ -95,7 +95,7 @@ namespace SmaugCS.Commands.Deity
 
             var template = RepositoryManager.Instance.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
             var obj = RepositoryManager.Instance.OBJECTS.Create(template, ch.Level,
-                string.Format("sigil {0}", ch.PlayerData.CurrentDeity.Name));
+                $"sigil {ch.PlayerData.CurrentDeity.Name}");
             obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.AddTo(ch) : ch.CurrentRoom.AddTo(obj);
 
             comm.act(ATTypes.AT_MAGIC, "$n weaves $p from divine matter!", ch, obj, null, ToTypes.Room);

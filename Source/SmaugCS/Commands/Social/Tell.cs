@@ -140,11 +140,8 @@ namespace SmaugCS.Commands.Social
                 && ((PlayerInstance)victim).PlayerData.TellHistory != null
                 && char.IsLetter(ch.IsNpc() ? ch.ShortDescription.ToCharArray()[0] : ch.Name.ToCharArray()[0]))
             {
-                var buffer = string.Format("{0} told you '{1}'\r\n",
-                                              ch.IsNpc()
-                                                  ? ch.ShortDescription.CapitalizeFirst()
-                                                  : ch.Name.CapitalizeFirst(),
-                                                  argumentString);
+                var buffer =
+                    $"{(ch.IsNpc() ? ch.ShortDescription.CapitalizeFirst() : ch.Name.CapitalizeFirst())} told you '{argumentString}'\r\n";
                 ((PlayerInstance)victim).PlayerData.TellHistory.Add(buffer);
             }
 
@@ -176,10 +173,8 @@ namespace SmaugCS.Commands.Social
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {
-                var buffer = string.Format("{0}: {1} (tell to) {2}",
-                                              ch.IsNpc() ? ch.ShortDescription : ch.Name,
-                                              argumentString,
-                                              victim.IsNpc() ? victim.ShortDescription : victim.Name);
+                var buffer =
+                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argumentString} (tell to) {(victim.IsNpc() ? victim.ShortDescription : victim.Name)}";
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log), buffer);
             }
 

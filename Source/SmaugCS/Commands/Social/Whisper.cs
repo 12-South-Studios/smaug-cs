@@ -132,9 +132,7 @@ namespace SmaugCS.Commands.Social
 
             if (!ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
-                                  string.Format("{0}: {1} (whisper to) {2}",
-                                                ch.IsNpc() ? ch.ShortDescription : ch.Name,
-                                                argument, victim.IsNpc() ? victim.ShortDescription : victim.Name));
+                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} (whisper to) {(victim.IsNpc() ? victim.ShortDescription : victim.Name)}");
 
             MudProgHandler.ExecuteMobileProg(MudProgTypes.Tell, argument, ch);
         }

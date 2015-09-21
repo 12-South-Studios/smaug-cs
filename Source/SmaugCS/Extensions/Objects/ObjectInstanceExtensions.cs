@@ -371,7 +371,7 @@ namespace SmaugCS.Extensions.Objects
         public static void RemoveFrom(this ObjectInstance o, ObjectInstance obj)
         {
             if (obj.InObject != o)
-                throw new InvalidDataException(string.Format("Object {0} is not in {1}", obj.ID, o.ID));
+                throw new InvalidDataException($"Object {obj.ID} is not in {o.ID}");
 
             bool magic = o.IsInMagicContainer();
 
@@ -463,7 +463,7 @@ namespace SmaugCS.Extensions.Objects
             }
 
             throw new InvalidOperationException(
-                string.Format("Nothing specified to empty the contents of object {0} into", obj.ID));
+                $"Nothing specified to empty the contents of object {obj.ID} into");
         }
 
         private static bool EmptyInto(ObjectInstance obj, ObjectInstance destobj)

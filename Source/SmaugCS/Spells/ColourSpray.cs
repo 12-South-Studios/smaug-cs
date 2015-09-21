@@ -27,9 +27,8 @@ namespace SmaugCS.Spells
             modLevel = modLevel.GetHighestOfTwoNumbers(0);
 
             if (DamageValues.Length >= modLevel)
-                throw new InvalidDataException(string.Format(
-                    "ModLevel {0} is larger than the Damage Array size of {1}", modLevel,
-                    DamageValues.Length));
+                throw new InvalidDataException(
+                    $"ModLevel {modLevel} is larger than the Damage Array size of {DamageValues.Length}");
 
             var dam = SmaugRandom.Between(DamageValues[modLevel]/2, DamageValues[modLevel]*2);
             if (victim.SavingThrows.CheckSaveVsSpellStaff(modLevel, victim))

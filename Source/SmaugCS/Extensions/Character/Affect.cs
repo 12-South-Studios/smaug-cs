@@ -32,7 +32,7 @@ namespace SmaugCS.Extensions.Character
                     var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
-                        throw new InvalidDataException(string.Format("RecurringSpell with bad SN {0}", mod));
+                        throw new InvalidDataException($"RecurringSpell with bad SN {mod}");
                     ch.AffectedBy.RemoveBit(AffectedByTypes.RecurringSpell);
                     return;
                 }

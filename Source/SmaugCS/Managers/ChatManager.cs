@@ -139,7 +139,7 @@ namespace SmaugCS.Managers
 
             if (string.IsNullOrEmpty(argument))
             {
-                ch.SendTo(string.Format("{0} what?\r\n", verb).CapitalizeFirst());
+                ch.SendTo($"{verb} what?\r\n".CapitalizeFirst());
                 return;
             }
 
@@ -153,38 +153,36 @@ namespace SmaugCS.Managers
             {
                 case ChannelTypes.RaceTalk:
                     ch.Printf("You %s '%s'\r\n", verb, argument);
-                    buffer = string.Format("$n {0}s '$t'", verb);
+                    buffer = $"$n {verb}s '$t'";
                     break;
                 case ChannelTypes.Traffic:
                     ch.Printf("You %s:  %s\r\n", verb, argument);
-                    buffer = string.Format("$n {0}s:  $t", verb);
+                    buffer = $"$n {verb}s:  $t";
                     break;
                 case ChannelTypes.WarTalk:
                     ch.Printf("You %s '%s'\r\n", verb, argument);
-                    buffer = string.Format("$n {0}s '$t'", verb);
+                    buffer = $"$n {verb}s '$t'";
                     break;
                 case ChannelTypes.AvTalk:
                 case ChannelTypes.ImmTalk:
                     {
                         var position = ch.CurrentPosition;
                         comm.act(ATTypes.AT_IMMORT,
-                                 string.Format("$n{0} $t", channel == ChannelTypes.ImmTalk ? '>' : ':'), ch, argument, null,
+                            $"$n{(channel == ChannelTypes.ImmTalk ? '>' : ':')} $t", ch, argument, null,
                                  ToTypes.Character);
                         ch.CurrentPosition = position;
                     }
                     break;
                 default:
                     ch.Printf("You %s '%s'\r\n", verb, argument);
-                    buffer = string.Format("$n {0}s '$t'", verb);
+                    buffer = $"$n {verb}s '$t'";
                     break;
             }
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.LogSpeech))
             {
                 db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
-                                  string.Format("{0}: {1} ({2})", ch.IsNpc() ? ch.ShortDescription : ch.Name,
-                                                argument,
-                                                verb));
+                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} ({verb})");
             }
 
             foreach (var d in db.DESCRIPTORS)
@@ -240,9 +238,7 @@ namespace SmaugCS.Managers
                     if (ch.Act.IsSet((int)PlayerFlags.WizardInvisibility)
                         && vch.CanSee(ch) && vch.IsImmortal())
                     {
-                        lbuf = string.Format("({0})", !ch.IsNpc()
-                                                             ? ((PlayerInstance)ch).PlayerData.WizardInvisible
-                                                             : ch.MobInvisible);
+                        lbuf = $"({(!ch.IsNpc() ? ((PlayerInstance) ch).PlayerData.WizardInvisible : ch.MobInvisible)})";
                     }
 
                     var position = vch.CurrentPosition;

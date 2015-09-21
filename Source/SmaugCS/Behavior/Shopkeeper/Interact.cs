@@ -35,13 +35,13 @@ namespace SmaugCS.Behavior.Shopkeeper
             {
                 string buffer;
                 if (speakswell > 60)
-                    buffer = string.Format("{0} Could you repeat that?  I didn't quite catch it.", ch.Name);
+                    buffer = $"{ch.Name} Could you repeat that?  I didn't quite catch it.";
                 else if (speakswell > 50)
-                    buffer = string.Format("{0} Could you say that a little more clearly please?", ch.Name);
+                    buffer = $"{ch.Name} Could you say that a little more clearly please?";
                 else if (speakswell > 40)
-                    buffer = string.Format("{0} Sorry... What was that you wanted?", ch.Name);
+                    buffer = $"{ch.Name} Sorry... What was that you wanted?";
                 else
-                    buffer = string.Format("{0} I can't understand you.", ch.Name);
+                    buffer = $"{ch.Name} I can't understand you.";
 
                 Tell.do_tell(keeper, buffer);
                 return null;
@@ -55,7 +55,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (!ch.Act.IsSet(PlayerFlags.Killer)) return true;
 
             Say.do_say(keeper, "Murderers are not welcome here!");
-            Shout.do_shout(keeper, string.Format("{0} the KILLER is over here!", ch.Name));
+            Shout.do_shout(keeper, $"{ch.Name} the KILLER is over here!");
             return false;
         }
 
@@ -64,7 +64,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (!ch.Act.IsSet(PlayerFlags.Thief)) return false;
 
             Say.do_say(keeper, "Thieves are not welcome here!");
-            Shout.do_shout(keeper, string.Format("{0} the THIEF is over here!", ch.Name));
+            Shout.do_shout(keeper, $"{ch.Name} the THIEF is over here!");
             return true;
         }
 

@@ -82,8 +82,7 @@ namespace SmaugCS.Commands.Objects
                 save.save_char_obj(ch);
 
             (auctionManager ?? AuctionManager.Instance).StartAuction(ch, obj, startingBid);
-            ChatManager.talk_auction(string.Format("A new item is being auctioned: {0} at {1} coin.",
-                obj.ShortDescription, startingBid));
+            ChatManager.talk_auction($"A new item is being auctioned: {obj.ShortDescription} at {startingBid} coin.");
         }
 
         private static void PlaceBid(CharacterInstance ch, string argument, IAuctionManager auctionManager)
@@ -107,7 +106,7 @@ namespace SmaugCS.Commands.Objects
                 "You must bid at least 10,000 coins over the current bid.")) return;
             if (CheckFunctions.CheckIfTrue(ch, bid < ch.CurrentCoin, "You don't have that much money!")) return;
             if (CheckFunctions.CheckIfTrue(ch, bid > GameConstants.GetSystemValue<int>("MaximumAuctionBid"),
-                string.Format("You can't bid over {0} coins.", GameConstants.GetSystemValue<int>("MaximumAuctionBid"))))
+                $"You can't bid over {GameConstants.GetSystemValue<int>("MaximumAuctionBid")} coins."))
                 return;
 
             var thirdArg = argument.ThirdWord();
@@ -123,8 +122,7 @@ namespace SmaugCS.Commands.Objects
 
             (auctionManager ?? AuctionManager.Instance).PlaceBid(ch, bid);
 
-            ChatManager.talk_auction(string.Format("A bid of {0} coin has been received on {1}.", bid,
-                auction.ItemForSale.ShortDescription));
+            ChatManager.talk_auction($"A bid of {bid} coin has been received on {auction.ItemForSale.ShortDescription}.");
         }
 
         public static void StopAuction(CharacterInstance ch, string argument, IAuctionManager auctionManager)
@@ -254,21 +252,21 @@ namespace SmaugCS.Commands.Objects
             {
                 skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[1]);
                 if (skill != null)
-                    ch.SendTo(string.Format(" '{0}'", skill.Name));
+                    ch.SendTo($" '{skill.Name}'");
             }
 
             if (obj.Value.ToList()[2] >= 0)
             {
                 skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[2]);
                 if (skill != null)
-                    ch.SendTo(string.Format(" '{0}'", skill.Name));
+                    ch.SendTo($" '{skill.Name}'");
             }
 
             if (obj.Value.ToList()[3] >= 0)
             {
                 skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
-                    ch.SendTo(string.Format(" '{0}'", skill.Name));
+                    ch.SendTo($" '{skill.Name}'");
             }
             ch.SendTo(".");
         }
@@ -281,7 +279,7 @@ namespace SmaugCS.Commands.Objects
             {
                 var skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
-                    ch.SendTo(string.Format(" '{0}'", skill.Name));
+                    ch.SendTo($" '{skill.Name}'");
             }
             ch.SendTo(".");
         }

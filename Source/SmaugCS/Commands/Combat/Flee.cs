@@ -48,7 +48,7 @@ namespace SmaugCS.Commands.Combat
         private static void LoseExperience(PlayerInstance ch)
         {
             var lostXp = (int) ((ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level))*0.1f);
-            comm.act(ATTypes.AT_FLEE, string.Format("Curse the gods, you've lost {0} experience!", lostXp), ch, null,
+            comm.act(ATTypes.AT_FLEE, $"Curse the gods, you've lost {lostXp} experience!", ch, null,
                 null, ToTypes.Character);
             ch.GainXP(0 - lostXp);
         }

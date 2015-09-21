@@ -62,7 +62,7 @@ namespace SmaugCS
             }
 
             if (ch.CurrentCoin - oldgold > 1 && ch.CurrentPosition > PositionTypes.Sleeping)
-                Split.do_split(ch, string.Format("{0}", ch.CurrentCoin - oldgold));
+                Split.do_split(ch, $"{ch.CurrentCoin - oldgold}");
 
             return true;
         }
@@ -780,7 +780,7 @@ namespace SmaugCS
         {
             var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             if (skill == null)
-                throw new ObjectNotFoundException(string.Format("Skill {0} not found", sn));
+                throw new ObjectNotFoundException($"Skill {sn} not found");
 
             skill.LearnFromFailure(ch);
             ch.CauseDamageTo(victim, 0, damageType);
@@ -1045,7 +1045,7 @@ namespace SmaugCS
                 if (show_messg)
                 {
                    ch.SetColor(ATTypes.AT_MAGIC);
-                   ch.SendTo(string.Format("{0} is a pacifist and will not fight.\r\n", victim.ShortDescription.CapitalizeFirst()));
+                   ch.SendTo($"{victim.ShortDescription.CapitalizeFirst()} is a pacifist and will not fight.\r\n");
                 }
                 return true;
             }
@@ -1611,9 +1611,9 @@ namespace SmaugCS
 
             if (dt == Program.TYPE_HIT)
             {
-                roomMsg = string.Format("$n {0} $N{1}", vp, punct);
-                youMsg = string.Format("You {0} $N{1}", vs, punct);
-                victMsg = string.Format("$n {0} you{1}", vp, punct);
+                roomMsg = $"$n {vp} $N{punct}";
+                youMsg = $"You {vs} $N{punct}";
+                victMsg = $"$n {vp} you{punct}";
             }
             else if (dt > Program.TYPE_HIT && ch.IsWieldedWeaponPoisoned())
             {
@@ -1625,9 +1625,9 @@ namespace SmaugCS
                     attack = attackTypes.First();
                 }
 
-                roomMsg = string.Format("$n's poisoned {0} {1} $N{2}", attack, vp, punct);
-                youMsg = string.Format("Your poisoned {0} {1} $N{2}", attack, vp, punct);
-                victMsg = string.Format("$n's poisoned {0} {1} you{2}", attack, vp, punct);
+                roomMsg = $"$n's poisoned {attack} {vp} $N{punct}";
+                youMsg = $"Your poisoned {attack} {vp} $N{punct}";
+                victMsg = $"$n's poisoned {attack} {vp} you{punct}";
             }
             else
             {
@@ -1676,9 +1676,9 @@ namespace SmaugCS
                     attack = attackTypes.First();
                 }
 
-                roomMsg = string.Format("$n's {0} {1} $N{2}", attack, vp, punct);
-                youMsg = string.Format("Your {0} {1} $N{2}", attack, vp, punct);
-                victMsg = string.Format("$n's {0} {1} you{2}", attack, vp, punct);
+                roomMsg = $"$n's {attack} {vp} $N{punct}";
+                youMsg = $"Your {attack} {vp} $N{punct}";
+                victMsg = $"$n's {attack} {vp} you{punct}";
             }
 
             comm.act(ATTypes.AT_ACTION, roomMsg, ch, null, victim, ToTypes.NotVictim);
@@ -1778,8 +1778,8 @@ namespace SmaugCS
                     && ch != victim
                     && !(ch.IsImmortal() && victim.IsImmortal()))
                 {
-                    var buffer = string.Format("&p{0} on {1} in &W***&rILLEGAL PKILL&W*** &pattempt at {2}",
-                                                  ch.LastCommand, victim.Name, victim.CurrentRoom.ID);
+                    var buffer =
+                        $"&p{ch.LastCommand} on {victim.Name} in &W***&rILLEGAL PKILL&W*** &pattempt at {victim.CurrentRoom.ID}";
                     // TODO: last_pkroom = victim.CurrentRoom.vnum;
                     // TODO: log_string(buffer);
                     // TODO: to_channel(buffer, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL);

@@ -33,7 +33,7 @@ namespace SmaugCS.Commands.Admin
 
             var level = Convert.ToInt32(secondArg);
             if (CheckFunctions.CheckIf(ch, () => (level < 1 || level > GameConstants.GetConstant<int>("MaximumLevel")),
-                string.Format("Level range is 1 to {0}.", GameConstants.GetConstant<int>("MaximumLevel")))) return;
+                $"Level range is 1 to {GameConstants.GetConstant<int>("MaximumLevel")}.")) return;
             if (CheckFunctions.CheckIf(ch, () => (level > ch.Trust), "Level limited to your trust level.")) return;
 
             if (level <= victim.Level)

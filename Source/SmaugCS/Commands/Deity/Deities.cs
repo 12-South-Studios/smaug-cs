@@ -34,7 +34,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, !deities.Any(), "&gThere are no deities on this world.")) return;
 
             foreach (var deity in deities)
-                ch.PagerPrintfColor(string.Format("&G{0}	&g{1}", deity.Name.PadRight(14), deity.Worshippers));
+                ch.PagerPrintfColor($"&G{deity.Name.PadRight(14)}	&g{deity.Worshippers}");
         }
     }
 }

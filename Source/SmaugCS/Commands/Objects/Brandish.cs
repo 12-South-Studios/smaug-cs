@@ -25,7 +25,7 @@ namespace SmaugCS.Commands.Objects
                 return;
 
             if (obj.Value.ToList()[3] <= 0)
-                throw new InvalidDataException(string.Format("Object {0} has no skill ID assigned to Value[3]", obj.ID));
+                throw new InvalidDataException($"Object {obj.ID} has no skill ID assigned to Value[3]");
 
             Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
 
@@ -76,14 +76,13 @@ namespace SmaugCS.Commands.Objects
                         if (vch != ch) continue;
                         break;
                     default:
-                        throw new InvalidDataException(string.Format("Bad Target {0} for Skill {1} on Object {2}",
-                            skill.Target, skill.ID, obj.ID));
+                        throw new InvalidDataException(
+                            $"Bad Target {skill.Target} for Skill {skill.ID} on Object {obj.ID}");
                 }
 
                 var retcode = ch.ObjectCastSpell((int)skill.ID, obj.Value.ToList()[0], vch);
                 if (retcode == ReturnTypes.CharacterDied || retcode == ReturnTypes.BothDied)
-                    throw new InvalidDataException(string.Format("Character {0} died using Skill {1} from Object {2}",
-                        ch.ID, skill.ID, obj.ID));
+                    throw new InvalidDataException($"Character {ch.ID} died using Skill {skill.ID} from Object {obj.ID}");
             }
         }
     }

@@ -241,7 +241,7 @@ namespace SmaugCS
                ch.SetColor(ATTypes.AT_DEAD);
                ch.SendTo("Oopsie... you're dead!");
 
-               var buffer = string.Format("{0} hit a DEATH TRAP in room {1}!", ch.Name, ch.CurrentRoom.ID);
+               var buffer = $"{ch.Name} hit a DEATH TRAP in room {ch.CurrentRoom.ID}!";
                 //log_string(buffer);
                 ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
                 ch.Extract(false);

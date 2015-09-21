@@ -107,21 +107,21 @@ namespace SmaugCS.Commands.Movement
             if (obj.Values.Flags.IsSet(TriggerFlags.D_Down))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.Down, "from below");
             
-            throw new InvalidDataException(string.Format("Object {0} has invalid direction", obj.ID));
+            throw new InvalidDataException($"Object {obj.ID} has invalid direction");
         }
 
         private static void CreateNewPassage(CharacterInstance ch, ObjectInstance obj, DirectionTypes exitDir)
         {
             if (!obj.Values.Flags.IsSet(TriggerFlags.Passage))
-                throw new InvalidDataException(string.Format("Object {0} is not a passage", obj.ID));
+                throw new InvalidDataException($"Object {obj.ID} is not a passage");
 
             var sourceRoom = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (sourceRoom == null)
-                throw new InvalidDataException(string.Format("Source Room {0} was null", obj.Value.ToList()[1]));
+                throw new InvalidDataException($"Source Room {obj.Value.ToList()[1]} was null");
             
             var destRoom = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
             if (destRoom == null)
-                throw new InvalidDataException(string.Format("Destination Room {0} was null", obj.Value.ToList()[2]));
+                throw new InvalidDataException($"Destination Room {obj.Value.ToList()[2]} was null");
 
             var exit = db.make_exit(sourceRoom, destRoom, (int)exitDir);
             exit.Key = -1;
@@ -151,7 +151,7 @@ namespace SmaugCS.Commands.Movement
 
             var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (room == null)
-                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value.ToList()[1]));
+                throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
             foreach(var rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, exit.Keywords, ToTypes.Character);
@@ -175,7 +175,7 @@ namespace SmaugCS.Commands.Movement
 
             var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (room == null)
-                throw new InvalidDataException(string.Format("Room {0} was null", obj.Value.ToList()[1]));
+                throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
             foreach (var rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d closes.", rch, null, exit.Keywords, ToTypes.Character);
@@ -199,16 +199,16 @@ namespace SmaugCS.Commands.Movement
             {
                 var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]) ?? obj.InRoom;
                 if (room == null)
-                    throw new InvalidDataException(string.Format("Room {0} was null", obj.Value.ToList()[1]));
+                    throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
                 var container =
                     ch.CurrentRoom.Contents.FirstOrDefault(foundObj => foundObj.ObjectIndex.ID == obj.Value.ToList()[2]);
 
                 if (container == null)
-                    throw new InvalidDataException(string.Format("Container {0} was null", obj.Value.ToList()[2]));
+                    throw new InvalidDataException($"Container {obj.Value.ToList()[2]} was null");
 
                 if (container.ItemType != ItemTypes.Container)
-                    throw new InvalidDataException(string.Format("Container {0} is not of type 'Container'", container.ID));
+                    throw new InvalidDataException($"Container {container.ID} is not of type 'Container'");
 
                 if (obj.Value.ToList()[3].IsSet( ContainerFlags.Closeable))
                     container.Value.ToList()[1].ToggleBit(ContainerFlags.Closeable);
@@ -441,8 +441,8 @@ namespace SmaugCS.Commands.Movement
         {
             if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
-                comm.act(ATTypes.AT_ACTION, string.Format("$n {0} $p.", pull ? "pulls" : "pushes"), ch, obj, null, ToTypes.Room);
-                comm.act(ATTypes.AT_ACTION, string.Format("You {0} $p.", pull ? "pull" : "push"), ch, obj, null, ToTypes.Character);
+                comm.act(ATTypes.AT_ACTION, $"$n {(pull ? "pulls" : "pushes")} $p.", ch, obj, null, ToTypes.Room);
+                comm.act(ATTypes.AT_ACTION, $"You {(pull ? "pull" : "push")} $p.", ch, obj, null, ToTypes.Character);
                 return true;
             }
             return false;

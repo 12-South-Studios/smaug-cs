@@ -315,8 +315,8 @@ namespace SmaugCS
             {
                 comm.act(ATTypes.AT_MAGIC,
                          ch.CurrentClass == rch.CurrentClass
-                             ? string.Format("$n utters the words, '{0}'.", skill.Name)
-                             : string.Format("$n utters the words, '{0}'.", newString),
+                             ? $"$n utters the words, '{skill.Name}'."
+                             : $"$n utters the words, '{newString}'.",
                          ch, null, rch, ToTypes.Victim);
             }
         }

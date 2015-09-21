@@ -24,8 +24,7 @@ namespace SmaugCS.Extensions.Mobile
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;
 
-            Cast.do_cast(ch, string.Format("summon {0}{1}", victim.IsNpc() ? string.Empty : "0.",
-                                                ch.CurrentHating.Name));
+            Cast.do_cast(ch, $"summon {(victim.IsNpc() ? string.Empty : "0.")}{ch.CurrentHating.Name}");
         }
 
         public static bool IsHunting(this MobileInstance ch, CharacterInstance victim)

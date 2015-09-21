@@ -125,7 +125,7 @@ namespace SmaugCS
             if (ch.IsNpc() && victim.IsNotAuthorized()
                 && location.Area != victim.CurrentRoom.Area)
             {
-                var buffer = string.Format("Mptransfer - unauthed char ({0})", victim.Name);
+                var buffer = $"Mptransfer - unauthed char ({victim.Name})";
                 //progbug(buffer, ch);
                 return;
             }

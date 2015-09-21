@@ -34,13 +34,13 @@ namespace SmaugCS.SpecFuns.Professions
 
             if (victim != null && ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
             {
-                Yell.do_yell(ch, string.Format("{0} is a {1}! As well as a COWARD!", victim.Name, crime));
+                Yell.do_yell(ch, $"{victim.Name} is a {crime}! As well as a COWARD!");
                 return true;
             }
 
             if (victim != null)
             {
-                Shout.do_shout(ch, string.Format("{0} is a {1}! PROTECT THE INNOCENT! BANZAI!!!", victim.Name, crime));
+                Shout.do_shout(ch, $"{victim.Name} is a {crime}! PROTECT THE INNOCENT! BANZAI!!!");
                 fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
                 return true;
             }

@@ -64,9 +64,9 @@ namespace SmaugCS.Extensions.Character
                 || (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)))
             {
                 if (!victim.IsNpc())
-                    buffer += string.Format("(Invis {0}) ", ((PlayerInstance)victim).PlayerData.WizardInvisible);
+                    buffer += $"(Invis {((PlayerInstance) victim).PlayerData.WizardInvisible}) ";
                 else
-                    buffer += string.Format("(MobInvis {0}) ", victim.MobInvisible);
+                    buffer += $"(MobInvis {victim.MobInvisible}) ";
             }
 
             if (!victim.IsNpc())

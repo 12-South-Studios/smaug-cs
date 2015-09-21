@@ -86,13 +86,10 @@ namespace SmaugCS
 
         private static void ConfigureLog4NetProperties()
         {
-            GlobalContext.Properties["BootLogName"] = string.Format("{0}\\{1}_{2}.log",
-                                                                    GameConstants.LogPath, "BootLog",
-                                                                    DateTime.Now.ToString("yyyyMMdd-HHmmss"));
-            GlobalContext.Properties["BugsLogName"] = string.Format("{0}\\{1}.log",
-                                                                    GameConstants.LogPath, "Bugs");
-            GlobalContext.Properties["SmaugLogName"] = string.Format("{0}\\{1}.log",
-                                                                     GameConstants.LogPath, "Smaug");
+            GlobalContext.Properties["BootLogName"] =
+                $"{GameConstants.LogPath}\\{"BootLog"}_{DateTime.Now.ToString("yyyyMMdd-HHmmss")}.log";
+            GlobalContext.Properties["BugsLogName"] = $"{GameConstants.LogPath}\\{"Bugs"}.log";
+            GlobalContext.Properties["SmaugLogName"] = $"{GameConstants.LogPath}\\{"Smaug"}.log";
 
             XmlConfigurator.Configure();
         }
@@ -263,8 +260,7 @@ namespace SmaugCS
             {
                 var descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);
                 if (descrip == null)
-                    throw new ObjectNotFoundException(string.Format("Character not found matching user {0}",
-                    user.IpAddress));
+                    throw new ObjectNotFoundException($"Character not found matching user {user.IpAddress}");
 
                 db.DESCRIPTORS.Remove(descrip);
                 return;

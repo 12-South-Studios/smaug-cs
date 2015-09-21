@@ -18,7 +18,7 @@ namespace SmaugCS.Commands
                 "Usage:  'bug <message>'  (your location is automatically recorded)")) return;
 
             db.append_file(ch, SystemConstants.GetSystemFile(SystemFileTypes.PBug),
-                           string.Format("({0}):  {1}", tm.ToLongDateString(), argument));
+                $"({tm.ToLongDateString()}):  {argument}");
             ch.SendTo("Thanks, your bug notice has been recorded.");
         }
     }

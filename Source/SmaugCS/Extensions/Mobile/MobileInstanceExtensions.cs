@@ -163,16 +163,16 @@ namespace SmaugCS.Extensions.Mobile
                         switch (SmaugRandom.Bits(2))
                         {
                             case 0:
-                                buf = string.Format("Get away from me, {0}!", rch.Name);
+                                buf = $"Get away from me, {rch.Name}!";
                                 break;
                             case 1:
-                                buf = string.Format("Leave me be, {0}!", rch.Name);
+                                buf = $"Leave me be, {rch.Name}!";
                                 break;
                             case 2:
-                                buf = string.Format("{0} is trying to kill me!  Help!", rch.Name);
+                                buf = $"{rch.Name} is trying to kill me!  Help!";
                                 break;
                             case 3:
-                                buf = string.Format("Someone save me from {0}!", rch.Name);
+                                buf = $"Someone save me from {rch.Name}!";
                                 break;
                         }
 

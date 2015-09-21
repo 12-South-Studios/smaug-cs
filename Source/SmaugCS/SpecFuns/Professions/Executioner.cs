@@ -31,11 +31,11 @@ namespace SmaugCS.SpecFuns.Professions
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
             {
-                Yell.do_yell(ch, string.Format("{0} is a {1}! As well as a COWARD!", victim.Name, crime));
+                Yell.do_yell(ch, $"{victim.Name} is a {crime}! As well as a COWARD!");
                 return true;
             }
 
-            Shout.do_shout(ch, string.Format("{0} is a {1}! PROTECT THE INNOCENT! MORE BLOOOOD!!!", victim.Name, crime));
+            Shout.do_shout(ch, $"{victim.Name} is a {crime}! PROTECT THE INNOCENT! MORE BLOOOOD!!!");
             fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
 
             if (ch.CharDied()) return true;
