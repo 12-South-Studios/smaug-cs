@@ -12,18 +12,6 @@ namespace SmaugCS.Auction
         {
         }
 
-        public InvalidBidException()
-        {
-        }
-
-        public InvalidBidException(string msg) : base(msg)
-        {
-        }
-
-        public InvalidBidException(string msg, Exception ex) : base(msg, ex)
-        {
-        }
-
         public InvalidBidException(string msg, params object[] args)
             : base(string.Format(msg, args))
         {

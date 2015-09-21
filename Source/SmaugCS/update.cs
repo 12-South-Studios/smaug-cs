@@ -32,9 +32,9 @@ namespace SmaugCS
             foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
             {
                 if (ch is PlayerInstance)
-                    ((PlayerInstance)ch).ProcessUpdate();
-                else if (ch is MobileInstance)
-                    ((MobileInstance)ch).ProcessUpdate(RepositoryManager.Instance);
+                    ((PlayerInstance) ch).ProcessUpdate();
+                else
+                    (ch as MobileInstance)?.ProcessUpdate(RepositoryManager.Instance);
             }
 
             // trworld_dispose
@@ -44,11 +44,8 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values.Where(ch => !ch.IsNpc() && !ch.IsImmortal()))
             {
-                if (ch.IsNpc() || ch.IsImmortal())
-                    continue;
-
                 ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
                 if (ch.CurrentRoom != null && ch.Level > 3)
@@ -57,7 +54,7 @@ namespace SmaugCS
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     var attrib = ch.CurrentRoom.SectorType.GetAttribute<ThirstAttribute>();
-                    var modValue = (attrib == null ? -1 : attrib.ModValue) + race.ThirstMod;
+                    var modValue = (attrib?.ModValue ?? -1) + race.ThirstMod;
 
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, modValue);
                 }
@@ -108,14 +105,11 @@ namespace SmaugCS
 
                 // TODO Variables
 
-                if (ch.CurrentMorph != null)
+                if (ch.CurrentMorph?.timer > 0)
                 {
-                    if (ch.CurrentMorph.timer > 0)
-                    {
-                        --ch.CurrentMorph.timer;
-                        if (ch.CurrentMorph.timer == 0)
-                            UnmorphChar.do_unmorph_char(ch, string.Empty);
-                    }
+                    --ch.CurrentMorph.timer;
+                    if (ch.CurrentMorph.timer == 0)
+                        UnmorphChar.do_unmorph_char(ch, string.Empty);
                 }
 
                 // TODO Nuisance
@@ -179,14 +173,9 @@ namespace SmaugCS
                 if (!ch.IsNpc() && !ch.IsImmortal() && ((PlayerInstance)ch).PlayerData.release_date > DateTime.MinValue &&
                     ((PlayerInstance)ch).PlayerData.release_date <= DateTime.Now)
                 {
-                    RoomTemplate location;
-                    if (((PlayerInstance)ch).PlayerData.Clan != null)
-                        location = RepositoryManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
-                    else
-                        location = RepositoryManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
-
-                    if (location == null)
-                        location = ch.CurrentRoom;
+                    var location =
+                        RepositoryManager.Instance.ROOMS.Get(((PlayerInstance) ch).PlayerData.Clan?.RecallRoom ??
+                                                             VnumConstants.ROOM_VNUM_TEMPLE) ?? ch.CurrentRoom;
 
                     ch.CurrentRoom.RemoveFrom(ch);
                     location.AddTo(ch);
@@ -208,10 +197,15 @@ namespace SmaugCS
                         ch.MentalState = 20.GetNumberThatIsBetween(minMentalState, 100);
                         ch.CauseDamageTo(ch, 6, RepositoryManager.Instance.LookupSkill("poison"));
                     }
-                    else if (ch.CurrentPosition == PositionTypes.Incapacitated)
-                        ch.CauseDamageTo(ch, 1, Program.TYPE_UNDEFINED);
-                    else if (ch.CurrentPosition == PositionTypes.Mortal)
-                        ch.CauseDamageTo(ch, 4, Program.TYPE_UNDEFINED);
+                    else switch (ch.CurrentPosition)
+                    {
+                        case PositionTypes.Incapacitated:
+                            ch.CauseDamageTo(ch, 1, Program.TYPE_UNDEFINED);
+                            break;
+                        case PositionTypes.Mortal:
+                            ch.CauseDamageTo(ch, 4, Program.TYPE_UNDEFINED);
+                            break;
+                    }
                     if (ch.CharDied())
                         continue;
 
@@ -320,9 +314,7 @@ namespace SmaugCS
         {
             if (ch.IsNpc())
                 return 2;
-            if (ch.IsPKill())
-                return 3;
-            return 4;
+            return ch.IsPKill() ? 3 : 4;
         }
 
         private static void ProcessIdle(CharacterInstance ch)
@@ -610,7 +602,7 @@ namespace SmaugCS
         public static void remove_portal(ObjectInstance portal)
         {
             if (portal == null)
-                 throw new ArgumentNullException("portal");
+                 throw new ArgumentNullException(nameof(portal));
 
             var fromRoom = portal.InRoom;
             if (fromRoom == null)

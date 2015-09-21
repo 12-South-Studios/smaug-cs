@@ -21,8 +21,7 @@ namespace Integration.Tests
         [TearDown]
         public static void CleanUp()
         {
-            if (_kernel != null)
-                _kernel.Dispose();
+            _kernel?.Dispose();
         }
 
         [Test]
@@ -54,11 +53,12 @@ namespace Integration.Tests
                 }
 
                 sqlConnection.ChangeDatabase("Master");
-                var singleUserCommand = new SqlCommand(string.Format("alter database {0} set single_user with rollback immediate", databaseName),
+                var singleUserCommand = new SqlCommand(
+                    $"alter database {databaseName} set single_user with rollback immediate",
                         sqlConnection);
                 singleUserCommand.ExecuteNonQuery();
 
-                var command = new SqlCommand(string.Format("drop database {0}", databaseName), sqlConnection);
+                var command = new SqlCommand($"drop database {databaseName}", sqlConnection);
                 command.ExecuteNonQuery();
                 sqlConnection.Close();
             }

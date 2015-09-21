@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
@@ -8,8 +7,8 @@ namespace SmaugCS
 {
     public static class player
     {
-        private static readonly Dictionary<int, string> affect_locations = new Dictionary<int, string>()
-            {
+        private static readonly Dictionary<int, string> affect_locations = new Dictionary<int, string>
+        {
                 { (int)ApplyTypes.None, "NIL"},
                 { (int)ApplyTypes.Strength, " STR  "},
                 { (int)ApplyTypes.Dexterity, " DEX  "},
@@ -121,7 +120,7 @@ namespace SmaugCS
 
         public static void set_title(PlayerInstance ch, string title)
         {
-            ch.PlayerData.Title = Char.IsLetterOrDigit(title[0]) ? title.Substring(1) : title;
+            ch.PlayerData.Title = char.IsLetterOrDigit(title[0]) ? title.Substring(1) : title;
         }
     }
 }

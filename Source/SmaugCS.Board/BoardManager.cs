@@ -18,10 +18,7 @@ namespace SmaugCS.Board
             _kernel = kernel;
         }
 
-        public static IBoardManager Instance
-        {
-            get { return _kernel.Get<IBoardManager>(); }
-        }
+        public static IBoardManager Instance => _kernel.Get<IBoardManager>();
 
         public void Initialize()
         {

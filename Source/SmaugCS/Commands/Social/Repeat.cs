@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
@@ -18,8 +17,8 @@ namespace SmaugCS.Commands.Social
             int tellIndex;
             if (string.IsNullOrWhiteSpace(argument))
                 tellIndex = ((PlayerInstance)ch).PlayerData.TellHistory.Count - 1;
-            else if (Char.IsLetter(argument.ToCharArray()[0]) && argument.Length == 1)
-                tellIndex = Char.ToLower(argument.ToCharArray()[0]) - 'a';
+            else if (char.IsLetter(argument.ToCharArray()[0]) && argument.Length == 1)
+                tellIndex = char.ToLower(argument.ToCharArray()[0]) - 'a';
             else
             {
                 ch.Printf("You may only index your tell history using a single letter.");

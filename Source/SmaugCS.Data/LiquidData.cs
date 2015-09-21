@@ -20,7 +20,7 @@ namespace SmaugCS.Data
         public string Color { get; set; }
 
         [XmlElement("ID")]
-        public int Vnum { get { return (int)ID; } }
+        public int Vnum => (int)ID;
 
         [XmlElement("LiquidType")]
         public LiquidTypes Type { get; set; }

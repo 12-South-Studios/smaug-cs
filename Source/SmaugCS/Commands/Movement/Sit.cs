@@ -11,18 +11,27 @@ namespace SmaugCS.Commands.Movement
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_sit(CharacterInstance ch, string argument)
         {
-            if (ch.CurrentPosition == PositionTypes.Sleeping)
-                FromSleeping(ch);
-            else if (ch.CurrentPosition == PositionTypes.Resting)
-                FromResting(ch);
-            else if (ch.CurrentPosition == PositionTypes.Standing)
-                FromStanding(ch);
-            else if (ch.CurrentPosition == PositionTypes.Sitting)
-                ch.SendTo("You are already sitting.");
-            else if (ch.IsInCombatPosition())
-                ch.SendTo("You are busy fighting!");
-            else if (ch.CurrentPosition == PositionTypes.Mounted)
-                ch.SendTo("You are already sitting - on your mount.");
+            switch (ch.CurrentPosition)
+            {
+                case PositionTypes.Sleeping:
+                    FromSleeping(ch);
+                    break;
+                case PositionTypes.Resting:
+                    FromResting(ch);
+                    break;
+                case PositionTypes.Standing:
+                    FromStanding(ch);
+                    break;
+                case PositionTypes.Sitting:
+                    ch.SendTo("You are already sitting.");
+                    break;
+                default:
+                    if (ch.IsInCombatPosition())
+                        ch.SendTo("You are busy fighting!");
+                    else if (ch.CurrentPosition == PositionTypes.Mounted)
+                        ch.SendTo("You are already sitting - on your mount.");
+                    break;
+            }
         }
 
         private static void FromStanding(CharacterInstance ch)

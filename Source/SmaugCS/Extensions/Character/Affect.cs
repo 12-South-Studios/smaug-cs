@@ -250,7 +250,7 @@ namespace SmaugCS.Extensions.Character
                 if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     ch.AffectedBy.SetBit(AffectedByTypes.RecurringSpell);
                 else
-                    throw new InvalidDataException(string.Format("RecurringSpell with bad SN {0}", mod));
+                    throw new InvalidDataException($"RecurringSpell with bad SN {mod}");
             }
             return mod;
         }
@@ -258,12 +258,11 @@ namespace SmaugCS.Extensions.Character
         public static void RemoveAffect(this CharacterInstance ch, AffectData paf)
         {
             if (ch.Affects == null || ch.Affects.Count == 0)
-                throw new InvalidDataException(string.Format("Character {0} has no affects", ch.ID));
+                throw new InvalidDataException($"Character {ch.ID} has no affects");
 
             ch.ModifyAffect(paf, false);
 
-            if (ch.CurrentRoom != null)
-                ch.CurrentRoom.RemoveAffect(paf);
+            ch.CurrentRoom?.RemoveAffect(paf);
 
             ch.Affects.Remove(paf);
         }
@@ -271,7 +270,7 @@ namespace SmaugCS.Extensions.Character
         public static void AddAffect(this CharacterInstance ch, AffectData affect)
         {
             if (affect == null)
-                throw new ArgumentNullException("affect");
+                throw new ArgumentNullException(nameof(affect));
 
             var newAffect = new AffectData
             {
@@ -285,8 +284,7 @@ namespace SmaugCS.Extensions.Character
             ch.Affects.Add(newAffect);
             ch.ModifyAffect(newAffect, true);
 
-            if (ch.CurrentRoom != null)
-                ch.CurrentRoom.AddAffect(newAffect);
+            ch.CurrentRoom?.AddAffect(newAffect);
         }
 
         public static void StripAffects(this CharacterInstance ch, int sn)

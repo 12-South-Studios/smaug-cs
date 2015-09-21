@@ -24,20 +24,20 @@ namespace SmaugCS.Constants.Enums
         Silence = 32768,
         NoEmote = 65536,
 
-        [Descriptor(new[] { "(ATTACKER) " })]
+        [Descriptor("(ATTACKER) ")]
         Attacker = 131072,
         NoTell = 262144,
         Log = 524288,
         Deny = 1048576,
         Freeze = 2097152,
 
-        [Descriptor(new[] { "(THIEF) " })]
+        [Descriptor("(THIEF) ")]
         Thief = 4194304,
 
-        [Descriptor(new[] { "(KILLER) " })]
+        [Descriptor("(KILLER) ")]
         Killer = 8388608,
 
-        [Descriptor(new[] { "(LITTERBUG) " })]
+        [Descriptor("(LITTERBUG) ")]
         Litterbug = 16777216,
         Ansi = 33554432,
         Rip = 67108864,
@@ -46,7 +46,7 @@ namespace SmaugCS.Constants.Enums
         AutoGold = 536870912,
         AutoMap = 1073741824,
 
-        [Descriptor(new []{"[AFK]"})]
+        [Descriptor("[AFK]")]
         AwayFromKeyboard = 214783648,
         InvisibilePrompt = 4294967296,
         Compass = 8589934592

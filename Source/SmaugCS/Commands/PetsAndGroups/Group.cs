@@ -125,9 +125,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return " N";
             if (alignment > -350)
                 return "-N";
-            if (alignment > -750)
-                return "+S";
-            return " S";
+            return alignment > -750 ? "+S" : " S";
         }
         private static void disband_group(CharacterInstance ch)
         {

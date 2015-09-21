@@ -8,7 +8,7 @@ namespace SmaugCS
 {
     public static class tables
     {
-        public static List<Tuple<string, string>> SyllableTable = new List<Tuple<string, string>>()
+        public static readonly List<Tuple<string, string>> SyllableTable = new List<Tuple<string, string>>
             {
                 new Tuple<string, string>(" ", " "),
                 new Tuple<string, string>("ar", "abra"),

@@ -47,7 +47,7 @@ namespace SmaugCS
                 pre = result == 3 ? "You see " : "You notice ";
             }
 
-            return string.Format("{0}{1}{2}", pre, LookupConstants.RoomSents[(int)sector][x], post);
+            return $"{pre}{LookupConstants.RoomSents[(int) sector][x]}{post}";
         }
         private static string GetDecorateRoom_PreAndPost_2(SectorTypes sector, int x)
         {
@@ -64,13 +64,13 @@ namespace SmaugCS
                 pre = random == 1 ? "you see " : "over yonder ";
             }
 
-            return string.Format("{0}{1}{2}", pre, LookupConstants.RoomSents[(int)sector][x], post);
+            return $"{pre}{LookupConstants.RoomSents[(int) sector][x]}{post}";
         }
         private static string GetDecorateRoom_PreAndPost_3(SectorTypes sector, int x)
         {
             string[] outputArray = { ".", " not too far away.", ", and ", " nearby." };
 
-            return string.Format("{0}{1}{2}", string.Empty, LookupConstants.RoomSents[(int)sector][x], outputArray[SmaugRandom.Between(0, 3)]);
+            return $"{string.Empty}{LookupConstants.RoomSents[(int) sector][x]}{outputArray[SmaugRandom.Between(0, 3)]}";
         }
 
         public static void decorate_room(RoomTemplate room)
@@ -112,7 +112,7 @@ namespace SmaugCS
                             ? GetDecorateRoom_PreAndPost_2(sector, x)
                             : GetDecorateRoom_PreAndPost_3(sector, x);
                     else
-                        buf2 = string.Format("{0}.", LookupConstants.RoomSents[(int)sector][x]);
+                        buf2 = $"{LookupConstants.RoomSents[(int) sector][x]}.";
 
                     if (len > 5 && buf2.EndsWith("."))
                     {
@@ -126,7 +126,7 @@ namespace SmaugCS
                 }
             }
 
-            room.Description = string.Format("{0}\r\n", wordwrap(buf, 78));
+            room.Description = $"{wordwrap(buf, 78)}\r\n";
         }
 
         public static string rev_exit(DirectionTypes vdir)

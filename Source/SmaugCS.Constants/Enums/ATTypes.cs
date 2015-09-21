@@ -119,6 +119,6 @@ namespace SmaugCS.Constants.Enums
         AT_GUILDTALK = 107,
         AT_BOARD = 108,
         AT_BOARD2 = 109,
-        AT_BOARD3 = 110,
+        AT_BOARD3 = 110
     };
 }

@@ -91,10 +91,7 @@ namespace SmaugCS
                 return victim.CurrentRoom;
 
             var obj = ch.GetObjectInWorld(arg);
-            if (obj != null)
-                return obj.InRoom;
-
-            return null;
+            return obj?.InRoom;
         }
 
         /// <summary>
@@ -207,12 +204,9 @@ namespace SmaugCS
                 || (lo >= area.LowObjectNumber && lo <= area.HighObjectNumber))
                 return true;
 
-            if ((hi <= area.HighRoomNumber && hi >= area.LowRoomNumber)
-                || (hi <= area.HighMobNumber && hi >= area.LowMobNumber)
-                || (hi <= area.HighObjectNumber && hi >= area.LowObjectNumber))
-                return true;
-
-            return false;
+            return (hi <= area.HighRoomNumber && hi >= area.LowRoomNumber)
+                   || (hi <= area.HighMobNumber && hi >= area.LowMobNumber)
+                   || (hi <= area.HighObjectNumber && hi >= area.LowObjectNumber);
         }
 
         public static bool check_area_conflicts(int lo, int hi)

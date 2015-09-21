@@ -23,7 +23,7 @@ namespace SmaugCS.Ban.Tests
                     Note = "Tester was very bad",
                     BannedBy = "BigWig",
                     BannedOn = DateTime.Now,
-                    Duration = Int32.MaxValue
+                    Duration = int.MaxValue
                 };
         }
 

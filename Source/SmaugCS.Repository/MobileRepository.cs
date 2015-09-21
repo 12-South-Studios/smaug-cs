@@ -20,7 +20,7 @@ namespace SmaugCS.Repository
                     if (Contains(id))
                         throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                     if (!Contains(cloneId))
-                        throw new InvalidDataException(string.Format("Clone ID {0} is not present", cloneId));
+                        throw new InvalidDataException($"Clone ID {cloneId} is not present");
                 });
 
             var newMob = Create(id, name);
@@ -77,15 +77,20 @@ namespace SmaugCS.Repository
                         throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                 });
 
-            var newMob = new MobileTemplate(id, name);
-            newMob.Statistics[StatisticTypes.PermanentStrength] = 13;
-            newMob.Statistics[StatisticTypes.PermanentDexterity] = 13;
-            newMob.Statistics[StatisticTypes.PermanentIntelligence] = 13;
-            newMob.Statistics[StatisticTypes.PermanentWisdom] = 13;
-            newMob.Statistics[StatisticTypes.PermanentCharisma] = 13;
-            newMob.Statistics[StatisticTypes.PermanentConstitution] = 13;
-            newMob.Statistics[StatisticTypes.PermanentLuck] = 13;
-            newMob.Statistics[StatisticTypes.ActFlags] = string.Format("{0} {1}", ActFlags.IsNpc, ActFlags.Prototype);
+            var newMob = new MobileTemplate(id, name)
+            {
+                Statistics =
+                {
+                    [StatisticTypes.PermanentStrength] = 13,
+                    [StatisticTypes.PermanentDexterity] = 13,
+                    [StatisticTypes.PermanentIntelligence] = 13,
+                    [StatisticTypes.PermanentWisdom] = 13,
+                    [StatisticTypes.PermanentCharisma] = 13,
+                    [StatisticTypes.PermanentConstitution] = 13,
+                    [StatisticTypes.PermanentLuck] = 13,
+                    [StatisticTypes.ActFlags] = $"{ActFlags.IsNpc} {ActFlags.Prototype}"
+                }
+            };
 
             Add(id, newMob);
             LastMob = newMob;

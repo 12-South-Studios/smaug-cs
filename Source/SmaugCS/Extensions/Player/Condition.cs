@@ -14,7 +14,7 @@ namespace SmaugCS.Extensions.Player
     {
         public static int GetCondition(this PlayerInstance ch, ConditionTypes condition)
         {
-            return ch.PlayerData != null ? ch.PlayerData.ConditionTable[condition] : 0;
+            return ch.PlayerData?.ConditionTable[condition] ?? 0;
         }
 
         public static void GainCondition(this PlayerInstance ch, ConditionTypes condition, int value)

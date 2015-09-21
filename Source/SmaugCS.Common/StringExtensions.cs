@@ -15,7 +15,7 @@ namespace SmaugCS.Common
 
         public static string TrimHash(this string value)
         {
-            return value.TrimEnd(new[] { '~' });
+            return value.TrimEnd('~');
         }
 
         /// <summary>
@@ -27,20 +27,17 @@ namespace SmaugCS.Common
         {
             string[] words = value.Split('.');
 
-            if (words.Length >= 2 && words[0].IsNumber())
-            {
-                int val;
-                if (!Int32.TryParse(words[0], out val))
-                    return null;
+            if (words.Length < 2 || !words[0].IsNumber()) return new Tuple<int, string>(1, value);
 
-                string outVal = string.Empty;
-                for (int i = 1; i < words.Length; i++)
-                    outVal += words[i];
+            int val;
+            if (!int.TryParse(words[0], out val))
+                return null;
 
-                return new Tuple<int, string>(val, outVal);
-            }
+            string outVal = string.Empty;
+            for (int i = 1; i < words.Length; i++)
+                outVal += words[i];
 
-            return new Tuple<int, string>(1, value);
+            return new Tuple<int, string>(val, outVal);
         }
 
         public static bool IsNumberArgument(this string value)
@@ -53,12 +50,10 @@ namespace SmaugCS.Common
         {
             string[] words = value.Split('.');
 
-            if (words.Length >= 2 && words[0].IsNumber())
-            {
-                int val;
-                return !Int32.TryParse(words[0], out val) ? 0 : val;
-            }
-            return 0;
+            if (words.Length < 2 || !words[0].IsNumber()) return 0;
+
+            int val;
+            return !int.TryParse(words[0], out val) ? 0 : val;
         }
 
         public static string StripNumberArgument(this string value)
@@ -98,13 +93,12 @@ namespace SmaugCS.Common
             Tuple<string, string> returnVal = value.FirstArgument();
 
             // First argument starts with a quote so find end and make that the entire "first argument"
-            if (returnVal.Item1.StartsWith("\"") || returnVal.Item1.StartsWith("\'"))
-            {
-                int index = returnVal.Item2.IndexOfAny(new[] { '\"', '\'' });
-                string newStr = returnVal.Item1 + " " + returnVal.Item2.Substring(0, index + 1);
-                string remainder = returnVal.Item2.Remove(0, index + 1);
-                returnVal = new Tuple<string, string>(newStr, remainder);
-            }
+            if (!returnVal.Item1.StartsWith("\"") && !returnVal.Item1.StartsWith("\'")) return returnVal;
+
+            int index = returnVal.Item2.IndexOfAny(new[] { '\"', '\'' });
+            string newStr = returnVal.Item1 + " " + returnVal.Item2.Substring(0, index + 1);
+            string remainder = returnVal.Item2.Remove(0, index + 1);
+            returnVal = new Tuple<string, string>(newStr, remainder);
 
             return returnVal;
         }
@@ -119,15 +113,15 @@ namespace SmaugCS.Common
             ExtendedBitvector bit = new ExtendedBitvector();
             int x = 0;
 
-            List<string> untrimmed = argument.TrimEnd('~').Split(new[] { '&' }).ToList();
+            List<string> untrimmed = argument.TrimEnd('~').Split('&').ToList();
 
             List<string> numbers = new List<string>();
             untrimmed.ForEach(s => numbers.Add(s.Trim()));
 
             foreach (string number in numbers)
             {
-                UInt64 num;
-                if (!UInt64.TryParse(number, out num))
+                ulong num;
+                if (!ulong.TryParse(number, out num))
                     continue;
 
                 bit.SetBit(num);

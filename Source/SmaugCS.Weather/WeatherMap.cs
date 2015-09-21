@@ -26,10 +26,7 @@ namespace SmaugCS.Weather
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-        public static string WeatherFile
-        {
-            get { return SystemConstants.GetSystemFile(SystemFileTypes.Weather); }
-        }
+        public static string WeatherFile => SystemConstants.GetSystemFile(SystemFileTypes.Weather);
 
         #region Function Maps
 
@@ -104,7 +101,7 @@ namespace SmaugCS.Weather
             {
                 IEnumerable<string> lines = proxy.ReadIntoList();
                 if (!lines.Any())
-                    throw new InvalidDataException(string.Format("Missing data for {0}", fileType));
+                    throw new InvalidDataException($"Missing data for {fileType}");
 
                 map.ToList().AddRange(lines);
             }
@@ -260,10 +257,7 @@ namespace SmaugCS.Weather
                         proxy.Write("Climate      {0}\n", cell.Climate);
                         proxy.Write("Hemisphere   {0}\n", cell.Hemisphere);
                         proxy.Write("State        {0}\n",
-                            String.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
-                            cell.CloudCover, cell.Energy, cell.Humidity,
-                            cell.Precipitation, cell.Pressure, cell.Temperature,
-                            cell.WindSpeedX, cell.WindSpeedY));
+                            $"{cell.CloudCover} {cell.Energy} {cell.Humidity} {cell.Precipitation} {cell.Pressure} {cell.Temperature} {cell.WindSpeedX} {cell.WindSpeedY}");
                         proxy.Write("End\n\n");
                     }
                 }

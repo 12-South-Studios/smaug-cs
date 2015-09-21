@@ -114,7 +114,7 @@ namespace SmaugCS.Extensions.Objects
                     && !ch.IsAffected(AffectedByTypes.DetectInvisibility);
         }
 
-        public static ObjectInstance GroupWith(this ObjectInstance obj1, ObjectInstance obj2)
+        public static ObjectInstance GroupWith(this ObjectInstance obj1, ObjectInstance obj2, IAuctionManager auctionManager = null)
         {
             if (obj1 == null || obj2 == null) return null;
             if (obj1 == obj2) return obj1;
@@ -146,13 +146,13 @@ namespace SmaugCS.Extensions.Objects
             {
                 obj1.Count += obj2.Count;
                 obj1.ObjectIndex.Count += obj2.Count;
-                obj2.Extract();
+                obj2.Extract((auctionManager ?? AuctionManager.Instance));
                 return obj1;
             }
             return obj2;
 
         }
-        public static void Extract(this ObjectInstance obj)
+        public static void Extract(this ObjectInstance obj, IAuctionManager auctionManager = null)
         {
             if (handler.obj_extracted(obj))
                 throw new ObjectAlreadyExtractedException("Object {0}", obj.ObjectIndex.ID);
@@ -161,19 +161,18 @@ namespace SmaugCS.Extensions.Objects
                 update.remove_portal(obj);
 
             if (AuctionManager.Instance.Auction.ItemForSale == obj)
-                Commands.Objects.Auction.StopAuction(AuctionManager.Instance.Auction.Seller,
-                    "Sale of {0} has been stopped by a system action.");
+                Commands.Objects.Auction.StopAuction((auctionManager ?? AuctionManager.Instance).Auction.Seller,
+                    "Sale of {0} has been stopped by a system action.", auctionManager);
 
             if (obj.CarriedBy != null)
                 obj.RemoveFrom();
             else if (obj.InRoom != null)
                 obj.InRoom.RemoveFrom(obj);
-            else if (obj.InObject != null)
+            else
                 obj.InObject.RemoveFrom(obj);
 
             var objContent = obj.Contents.Last();
-            if (objContent != null)
-                objContent.Extract();
+            objContent?.Extract();
 
             obj.Affects.Clear();
             obj.ExtraDescriptions.Clear();
@@ -183,7 +182,7 @@ namespace SmaugCS.Extensions.Objects
             foreach (var relation in db.RELATIONS
                                                 .Where(relation => relation.Types == RelationTypes.OSet_On))
             {
-                if (obj == relation.Subject)
+                if (obj == (ObjectInstance) relation.Subject)
                     relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
                 else
                     continue;

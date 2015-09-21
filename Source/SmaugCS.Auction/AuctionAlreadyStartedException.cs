@@ -12,18 +12,6 @@ namespace SmaugCS.Auction
         {
         }
 
-        public AuctionAlreadyStartedException()
-        {
-        }
-
-        public AuctionAlreadyStartedException(string msg) : base(msg)
-        {
-        }
-
-        public AuctionAlreadyStartedException(string msg, Exception ex) : base(msg, ex)
-        {
-        }
-
         public AuctionAlreadyStartedException(string msg, params object[] args)
             : base(string.Format(msg, args))
         {

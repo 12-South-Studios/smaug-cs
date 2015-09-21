@@ -86,13 +86,8 @@ namespace SmaugCS.Extensions
         private static void ProcessDoorReset(ResetData reset, IRepositoryManager dbManager)
         {
             var room = dbManager.ROOMS.Get(reset.Args.ToList()[0]);
-            if (room == null)
-            {
-                // todo bug
-                return;
-            }
 
-            var exit = room.GetExit(reset.Args.ToList()[1]);
+            var exit = room?.GetExit(reset.Args.ToList()[1]);
             if (exit == null)
             {
                 // todo not found error

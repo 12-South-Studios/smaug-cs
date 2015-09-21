@@ -4,43 +4,43 @@
     {
         None = 0,
 
-        [Descriptor(new []{ "surrounded by a green cloud of gas", "poison"})]
+        [Descriptor("surrounded by a green cloud of gas", "poison")]
         PoisonGas = 1, 
 
-        [Descriptor(new []{"hit by a dart", "poison"})]
+        [Descriptor("hit by a dart", "poison")]
         PoisonDart,
 
-        [Descriptor(new []{"pricked by a needle", "poison"})]
+        [Descriptor("pricked by a needle", "poison")]
         PoisonNeedle,
 
-        [Descriptor(new []{"stabbed by a dagger", "poison"})]
+        [Descriptor("stabbed by a dagger", "poison")]
         PoisonDagger, 
 
-        [Descriptor(new []{"struck with an arrow", "poison"})]
+        [Descriptor("struck with an arrow", "poison")]
         PoisonArrow, 
 
-        [Descriptor(new []{"surrounded by a red cloud of gas", "blindness"})]
+        [Descriptor("surrounded by a red cloud of gas", "blindness")]
         BlindnessGas,
 
-        [Descriptor(new []{"surrounded by a yellow cloud of gass", "sleep"})]
+        [Descriptor("surrounded by a yellow cloud of gass", "sleep")]
         SleepingGas,
 
-        [Descriptor(new []{"struck by a burst of flame", "fireball"})]
+        [Descriptor("struck by a burst of flame", "fireball")]
         Flame,
 
-        [Descriptor(new []{"hit by an explosion", "fireball"})]
+        [Descriptor("hit by an explosion", "fireball")]
         Explosion,
 
-        [Descriptor(new []{"covered by a spray of acid", "acid blast"})]
+        [Descriptor("covered by a spray of acid", "acid blast")]
         AcidSpray, 
 
-        [Descriptor(new []{"suddenly shocked", ""})]
+        [Descriptor("suddenly shocked", "")]
         ElectricShock,
 
-        [Descriptor(new []{"sliced by a razor sharp blade", ""})]
+        [Descriptor("sliced by a razor sharp blade", "")]
         Blade,
 
-        [Descriptor(new []{"surrounded by a mysterious aura", "change sex"})]
+        [Descriptor("surrounded by a mysterious aura", "change sex")]
         SexChange
     }
 }

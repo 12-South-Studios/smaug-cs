@@ -16,7 +16,7 @@ namespace SmaugCS.Extensions.Objects
 
             if (!ch.IsNpc() && (!ch.IsPKill() || (ch.IsPKill() && !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag))))
                 comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Character);
-            else if (obj.InRoom != null && obj.InRoom.Persons.First() != null)
+            else if (obj.InRoom?.Persons.First() != null)
             {
                 ch = obj.InRoom.Persons.First();
                 comm.act(ATTypes.AT_OBJECT, "($p gets damaged)", ch, obj, null, ToTypes.Room);

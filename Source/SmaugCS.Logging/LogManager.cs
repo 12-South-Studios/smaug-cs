@@ -23,7 +23,7 @@ namespace SmaugCS.Logging
         private readonly ITimer _dbDumpTimer;
         private readonly int _sessionId;
 
-        public static ILogManager Instance { get { return _kernel.Get<ILogManager>(); } }
+        public static ILogManager Instance => _kernel.Get<ILogManager>();
 
         public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext, int sessionId)
         {

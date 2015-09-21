@@ -38,17 +38,17 @@
             Clears all entities and keys
             </summary>
         </member>
+        <member name="P:Realm.Library.Patterns.Repository.IRepository`2.Count">
+            <summary>
+            Gets the number of entities in the repository
+            </summary>
+        </member>
         <member name="M:Realm.Library.Patterns.Repository.IRepository`2.Get(`0)">
             <summary>
             Gets the entity by key
             </summary>
             <param name="key"></param>
             <returns></returns>
-        </member>
-        <member name="P:Realm.Library.Patterns.Repository.IRepository`2.Count">
-            <summary>
-            Gets the number of entities in the repository
-            </summary>
         </member>
         <member name="P:Realm.Library.Patterns.Repository.IRepository`2.Keys">
             <summary>

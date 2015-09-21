@@ -30,8 +30,7 @@ namespace SmaugCS.Commands.Combat
                     return;
                 }
 
-                if (ch.Master != null)
-                    ch.Master.Act.SetBit(PlayerFlags.Attacker);
+                ch.Master?.Act.SetBit(PlayerFlags.Attacker);
             }
 
             if (CheckFunctions.CheckIfTrue(ch, ch.IsInCombatPosition(), "You do the best you can!")) return;
@@ -42,7 +41,7 @@ namespace SmaugCS.Commands.Combat
 
             Macros.WAIT_STATE(ch, 1 & GameConstants.GetSystemValue<int>("PulseViolence"));
 
-            var buf = string.Format("Help!  I am being attacked by {0}!", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+            var buf = $"Help!  I am being attacked by {(ch.IsNpc() ? ch.ShortDescription : ch.Name)}!";
             if (victim.IsPKill())
                 Wartalk.do_wartalk(victim, buf);
             else 

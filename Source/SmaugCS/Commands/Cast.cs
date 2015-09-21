@@ -21,7 +21,7 @@ namespace SmaugCS.Commands
         private static int _blood = 0;
         private static int _mana = 0;
 
-        [Descriptor(new[] { " is here chanting." })]
+        [Descriptor(" is here chanting.")]
         public static void do_cast(CharacterInstance ch, string argument)
         {
             var pch = (PlayerInstance) ch;

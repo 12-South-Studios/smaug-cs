@@ -34,10 +34,7 @@ namespace SmaugCS.Managers
             _dbContext = dbContext;
         }
 
-        public static ICalendarManager Instance
-        {
-            get { return Program.Kernel.Get<ICalendarManager>(); }
-        }
+        public static ICalendarManager Instance => Program.Kernel.Get<ICalendarManager>();
 
         public void Initialize()
         {
@@ -177,11 +174,8 @@ namespace SmaugCS.Managers
         private static void UpdateSeason(TimeInfoData gameTime)
         {
             var day = db.GetHoliday(gameTime.Month, gameTime.Day);
-            if (day != null)
-            {
-                if (gameTime.Day + 1 == day.Day && gameTime.Hour == 0)
-                    act_wiz.echo_to_all(ATTypes.AT_IMMORT, day.Announce, (int)EchoTypes.All);
-            }
+            if (gameTime.Day + 1 == day?.Day && gameTime.Hour == 0)
+                act_wiz.echo_to_all(ATTypes.AT_IMMORT, day.Announce, (int)EchoTypes.All);
 
             if (gameTime.Season == SeasonTypes.Winter && !_winterFreeze)
             {

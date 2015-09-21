@@ -21,13 +21,11 @@ namespace SmaugCS.Extensions
         public static void WeatherMessage(this IWeatherManager manager, string txt, int x, int y)
         {
             var players = db.DESCRIPTORS.Where(c => c.ConnectionStatus == ConnectionTypes.Playing
-                                                                    && c.Character != null
-                                                                    && c.Character.IsOutside()
-                                                                    && c.Character.IsAwake()
-                                                                    && c.Character.CurrentRoom != null
-                                                                    && c.Character.CurrentRoom.Area != null
-                                                                    && c.Character.CurrentRoom.Area.WeatherX == x
-                                                                    && c.Character.CurrentRoom.Area.WeatherY == y);
+                                                    && c.Character != null
+                                                    && c.Character.IsOutside()
+                                                    && c.Character.IsAwake() && c.Character.CurrentRoom?.Area != null &&
+                                                    c.Character.CurrentRoom.Area.WeatherX == x &&
+                                                    c.Character.CurrentRoom.Area.WeatherY == y);
 
             players.ToList().ForEach(p => p.Character.SendTo(txt));
         }

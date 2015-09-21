@@ -187,13 +187,9 @@ namespace SmaugCS.Skills
                     && victim != ch
                     && !victim.CharDied())
                 {
-                    foreach (var vch in ch.CurrentRoom.Persons)
+                    if (ch.CurrentRoom.Persons.Any(vch => victim == vch && victim.CurrentFighting == null && victim.Master != ch))
                     {
-                        if (victim == vch && victim.CurrentFighting == null && victim.Master != ch)
-                        {
-                            retcode = fight.multi_hit(victim, ch, Program.TYPE_UNDEFINED);
-                            break;
-                        }
+                        retcode = fight.multi_hit(victim, ch, Program.TYPE_UNDEFINED);
                     }
                 }
 

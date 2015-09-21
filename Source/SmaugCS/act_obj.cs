@@ -97,7 +97,7 @@ namespace SmaugCS
                 GetObjectFromRoom(ch, obj);
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom)
-                && (container == null || container.CarriedBy == null))
+                && (container?.CarriedBy == null))
             {
                 foreach (var clan in RepositoryManager.Instance.CLANS.Values)
                 {

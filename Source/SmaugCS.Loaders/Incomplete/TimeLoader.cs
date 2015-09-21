@@ -18,10 +18,7 @@ namespace SmaugCS.Loaders
         {
         }
 
-        public override string Filename
-        {
-            get { return SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat"; }
-        }
+        public override string Filename => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat";
 
         public override void Save()
         {

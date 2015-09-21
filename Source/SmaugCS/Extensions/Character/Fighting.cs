@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Ninject;
 using SmaugCS.Commands;
 using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
@@ -40,15 +39,21 @@ namespace SmaugCS.Extensions.Character
                 return null;
 
             var corpse = ObjectFactory.CreateCorpse(victim, ch);
-            if (victim.CurrentRoom.SectorType == SectorTypes.OceanFloor
-                || victim.CurrentRoom.SectorType == SectorTypes.Underwater
-                || victim.CurrentRoom.SectorType == SectorTypes.ShallowWater
-                || victim.CurrentRoom.SectorType == SectorTypes.DeepWater)
-                comm.act(ATTypes.AT_BLOOD, "$n's blood slowly clouds the surrounding water.", victim, null, null, ToTypes.Room);
-            else if (victim.CurrentRoom.SectorType == SectorTypes.Air)
-                comm.act(ATTypes.AT_BLOOD, "$n's blood sprays wildly through the air.", victim, null, null, ToTypes.Room);
-            else
-                ObjectFactory.CreateBlood(victim);
+            switch (victim.CurrentRoom.SectorType)
+            {
+                case SectorTypes.OceanFloor:
+                case SectorTypes.Underwater:
+                case SectorTypes.ShallowWater:
+                case SectorTypes.DeepWater:
+                    comm.act(ATTypes.AT_BLOOD, "$n's blood slowly clouds the surrounding water.", victim, null, null, ToTypes.Room);
+                    break;
+                case SectorTypes.Air:
+                    comm.act(ATTypes.AT_BLOOD, "$n's blood sprays wildly through the air.", victim, null, null, ToTypes.Room);
+                    break;
+                default:
+                    ObjectFactory.CreateBlood(victim);
+                    break;
+            }
 
             if (victim.IsNpc())
             {
@@ -74,7 +79,7 @@ namespace SmaugCS.Extensions.Character
         }
         public static CharacterInstance GetMyTarget(this CharacterInstance ch)
         {
-            return ch == null || ch.CurrentFighting == null ? null : ch.CurrentFighting.Who;
+            return ch?.CurrentFighting?.Who;
         }
 
         public static int ModifyDamageWithResistance(this CharacterInstance ch, int dam, ResistanceTypes ris)

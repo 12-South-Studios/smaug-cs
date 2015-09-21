@@ -20,6 +20,6 @@ namespace SmaugCS.Constants.Enums
         Backup = 1 << 12,
         QuitBackup = 1 << 13,
         Fill = 1 << 14,
-        Empty = 1 << 15,
+        Empty = 1 << 15
     }
 }

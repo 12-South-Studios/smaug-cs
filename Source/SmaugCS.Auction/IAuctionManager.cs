@@ -10,7 +10,7 @@ namespace SmaugCS.Auction
         void PlaceBid(CharacterInstance bidder, int bidAmount);
         void StopAuction();
 
-        AuctionData Auction { get; set; }
+        AuctionData Auction { get; }
         IAuctionRepository Repository { get; }
     }
 }

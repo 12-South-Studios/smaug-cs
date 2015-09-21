@@ -68,8 +68,8 @@ namespace SmaugCS.Weather
             {
                 while (!proxy.EndOfStream)
                 {
-                    var line = proxy.ReadLine().TrimEnd(new[] { '~' });
-                    var words = line.Split(new[] { ',' });
+                    var line = proxy.ReadLine().TrimEnd('~');
+                    var words = line.Split(',');
 
                     var hemisphere = EnumerationExtensions.GetEnum<HemisphereTypes>(words[0]
                         .EqualsIgnoreCase("north") ? 0 : 1);

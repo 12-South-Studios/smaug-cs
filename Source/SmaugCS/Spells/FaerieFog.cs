@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
@@ -12,11 +13,10 @@ namespace SmaugCS.Spells
             comm.act(ATTypes.AT_MAGIC, "$n conjures a cloud of purple smoke.", ch, null, null, ToTypes.Room);
             comm.act(ATTypes.AT_MAGIC, "You conjure a cloud of purple smoke.", ch, null, null, ToTypes.Character);
 
-            foreach (var person in ch.CurrentRoom.Persons)
+            foreach (var person in ch.CurrentRoom.Persons
+                .Where(person => person.IsNpc() || !person.Act.IsSet(PlayerFlags.WizardInvisibility))
+                .Where(person => person != ch && !person.SavingThrows.CheckSaveVsSpellStaff(level, person)))
             {
-                if (!person.IsNpc() && person.Act.IsSet(PlayerFlags.WizardInvisibility)) continue;
-                if (person == ch || person.SavingThrows.CheckSaveVsSpellStaff(level, person)) continue;
-
                 // todo finish this magic.c:3127
                 // affect_strip(person, gsn_invis)
                 // affect_strip(person, gsn_mass_invis)

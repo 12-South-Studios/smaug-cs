@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
+﻿using SmaugCS.Data.Instances;
 
 namespace SmaugCS.MudProgs.MobileProgs
 {

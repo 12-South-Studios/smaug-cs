@@ -16,7 +16,7 @@ namespace SmaugCS.Repository
     public class ObjInstanceRepository : Repository<long, ObjectInstance>, IInstanceRepository<ObjectInstance>
     {
         private static long _idSpace = 1;
-        private static long GetNextId { get { return _idSpace++; } }
+        private static long GetNextId => _idSpace++;
 
         public ObjectInstance Create(Template parent, params object[] args)
         {

@@ -16,6 +16,11 @@
             <param name="source"></param>
             <returns></returns>
         </member>
+        <member name="M:Realm.Library.Network.IFormatter.Enable(Realm.Library.Network.ITcpUser,System.Net.Sockets.NetworkStream)">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Realm.Library.Network.ITcpUserRepository">
             <summary>
             Defines the contract for a TcpUserRepository
@@ -26,11 +31,6 @@
             Defines the contract for a TcpClient wrapper
             </summary>
         </member>
-        <member name="M:Realm.Library.Network.ITcpClientWrapper.WriteToBuffer(System.String)">
-            <summary>
-            Writes a given message to the buffer which will be queued to send to the client stream.
-            </summary>
-        </member>
         <member name="P:Realm.Library.Network.ITcpClientWrapper.IpAddress">
             <summary>
             Gets the IpAddress of the connected user
@@ -39,6 +39,11 @@
         <member name="P:Realm.Library.Network.ITcpClientWrapper.ConnectedOn">
             <summary>
             Gets the datetime when a connection occurred
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Network.ITcpClientWrapper.WriteToBuffer(System.String)">
+            <summary>
+            Writes a given message to the buffer which will be queued to send to the client stream.
             </summary>
         </member>
         <member name="T:Realm.Library.Network.ITcpServer">
@@ -60,6 +65,31 @@
             <summary>
             Event on a TcpServer status change
             </summary>
+        </member>
+        <member name="P:Realm.Library.Network.ITcpServer.Status">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Network.ITcpServer.Startup(System.Int32,System.Net.IPAddress)">
+            <summary>
+            
+            </summary>
+            <param name="port"></param>
+            <param name="host"></param>
+        </member>
+        <member name="M:Realm.Library.Network.ITcpServer.Shutdown(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:Realm.Library.Network.ITcpServer.DisconnectUser(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
         </member>
         <member name="T:Realm.Library.Network.ITcpUser">
             <summary>
@@ -94,16 +124,16 @@
             <param name="name"></param>
             <param name="value"></param>
         </member>
+        <member name="P:Realm.Library.Network.Mxp.MxpEntity.Value">
+            <summary>
+            Gets the value of the entity string
+            </summary>
+        </member>
         <member name="M:Realm.Library.Network.Mxp.MxpEntity.ToString">
             <summary>
             Override ToString to create the actual mxp entity value
             </summary>
             <returns></returns>
-        </member>
-        <member name="P:Realm.Library.Network.Mxp.MxpEntity.Value">
-            <summary>
-            Gets the value of the entity string
-            </summary>
         </member>
         <member name="T:Realm.Library.Network.Mxp.MxpEntityRepository">
             <summary>
@@ -144,13 +174,6 @@
             <summary>
             Sends mxp negotiation to the given stream
             </summary>
-        </member>
-        <member name="M:Realm.Library.Network.Mxp.MxpExtensions.EnableMxp(Realm.Library.Network.ITcpUser,System.IO.Stream)">
-            <summary>
-            Sends the enable mxp negotitation to the user
-            </summary>
-            <param name="tcpUser"></param>
-            <param name="clientStream"></param>
         </member>
         <member name="T:Realm.Library.Network.Mxp.MxpFormatter">
             <summary>
@@ -313,18 +336,13 @@
             Abstract class wraps the TcpClient and exposes additional functionality
             </summary>
         </member>
-        <member name="M:Realm.Library.Network.TcpClientWrapper.#ctor(Realm.Library.Common.Logging.ILogWrapper,System.Net.Sockets.TcpClient,Realm.Library.Network.IFormatter)">
+        <member name="M:Realm.Library.Network.TcpClientWrapper.#ctor(Realm.Library.Common.Logging.ILogWrapper,System.Net.Sockets.TcpClient,System.Collections.Generic.IEnumerable{Realm.Library.Network.IFormatter})">
             <summary>
             Constructor
             </summary>
             <param name="log"></param>
             <param name="tcpClient"></param>
-            <param name="formatter"></param>
-        </member>
-        <member name="M:Realm.Library.Network.TcpClientWrapper.WriteToBuffer(System.String)">
-            <summary>
-            Writes a given message to the buffer which will be queued to send to the client stream.
-            </summary>
+            <param name="formatters"></param>
         </member>
         <member name="P:Realm.Library.Network.TcpClientWrapper.Log">
             <summary>
@@ -336,7 +354,7 @@
             Gets a reference to the TcpClient attached to this object
             </summary>
         </member>
-        <member name="P:Realm.Library.Network.TcpClientWrapper.Formatter">
+        <member name="P:Realm.Library.Network.TcpClientWrapper.Formatters">
              <summary>
             
              </summary>
@@ -356,17 +374,43 @@
             Gets a reference to the NetworkStream object
             </summary>
         </member>
+        <member name="M:Realm.Library.Network.TcpClientWrapper.WriteToBuffer(System.String)">
+            <summary>
+            Writes a given message to the buffer which will be queued to send to the client stream.
+            </summary>
+        </member>
         <member name="T:Realm.Library.Network.TcpServer">
             <summary>
             Tcp Server class handles the listening socket and management of Tcp Users
             </summary>
         </member>
-        <member name="M:Realm.Library.Network.TcpServer.#ctor(Realm.Library.Common.Logging.ILogWrapper,Realm.Library.Network.ITcpUserRepository)">
+        <member name="M:Realm.Library.Network.TcpServer.#ctor(Realm.Library.Common.Logging.ILogWrapper,Realm.Library.Network.ITcpUserRepository,System.Collections.Generic.IEnumerable{Realm.Library.Network.IFormatter})">
             <summary>
             Constructor
             </summary>
             <param name="log"></param>
             <param name="repository"></param>
+            <param name="formatters"></param>
+        </member>
+        <member name="P:Realm.Library.Network.TcpServer.Status">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="E:Realm.Library.Network.TcpServer.OnTcpUserStatusChanged">
+            <summary>
+            Event on a TcpUser status change
+            </summary>
+        </member>
+        <member name="E:Realm.Library.Network.TcpServer.OnTcpServerStatusChanged">
+            <summary>
+            Event on a TcpServer status change
+            </summary>
+        </member>
+        <member name="E:Realm.Library.Network.TcpServer.OnNetworkMessageReceived">
+            <summary>
+            Event on a TcpServer status change
+            </summary>
         </member>
         <member name="M:Realm.Library.Network.TcpServer.GetTcpUser(System.String)">
             <summary>
@@ -395,38 +439,23 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="P:Realm.Library.Network.TcpServer.Status">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="E:Realm.Library.Network.TcpServer.OnTcpUserStatusChanged">
-            <summary>
-            Event on a TcpUser status change
-            </summary>
-        </member>
-        <member name="E:Realm.Library.Network.TcpServer.OnTcpServerStatusChanged">
-            <summary>
-            Event on a TcpServer status change
-            </summary>
-        </member>
-        <member name="E:Realm.Library.Network.TcpServer.OnNetworkMessageReceived">
-            <summary>
-            Event on a TcpServer status change
-            </summary>
-        </member>
         <member name="T:Realm.Library.Network.TcpUser">
             <summary>
             Tcp User class handles tcp communication
             </summary>
         </member>
-        <member name="M:Realm.Library.Network.TcpUser.#ctor(Realm.Library.Common.Logging.ILogWrapper,System.Net.Sockets.TcpClient,Realm.Library.Network.IFormatter)">
+        <member name="M:Realm.Library.Network.TcpUser.#ctor(Realm.Library.Common.Logging.ILogWrapper,System.Net.Sockets.TcpClient,System.Collections.Generic.IEnumerable{Realm.Library.Network.IFormatter})">
             <summary>
             Constructor
             </summary>
             <param name="log"></param>
             <param name="tcpClient"></param>
-            <param name="formatter"></param>
+            <param name="formatters"></param>
+        </member>
+        <member name="P:Realm.Library.Network.TcpUser.Id">
+            <summary>
+            Gets the unique identifier of this user
+            </summary>
         </member>
         <member name="M:Realm.Library.Network.TcpUser.OnConnect">
             <summary>
@@ -436,11 +465,6 @@
         <member name="M:Realm.Library.Network.TcpUser.Disconnect">
             <summary>
             Disconnects the user from the connected socket
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Network.TcpUser.Id">
-            <summary>
-            Gets the unique identifier of this user
             </summary>
         </member>
         <member name="T:Realm.Library.Network.TextFormatter">

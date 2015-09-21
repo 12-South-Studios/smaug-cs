@@ -87,14 +87,17 @@ namespace SmaugCS.Commands.Liquids
 
         private static IEnumerable<ItemTypes> ChooseSourceItemTypes(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.ItemType == ItemTypes.Container)
-                return new List<ItemTypes> {ItemTypes.Container, ItemTypes.NpcCorpse, ItemTypes.PlayerCorpse};
-            if (obj.ItemType == ItemTypes.DrinkContainer)
-                return new List<ItemTypes> {ItemTypes.Fountain, ItemTypes.Blood};
-            if (obj.ItemType == ItemTypes.HerbContainer)
-                return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
-            if (obj.ItemType == ItemTypes.Pipe)
-                return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
+            switch (obj.ItemType)
+            {
+                case ItemTypes.Container:
+                    return new List<ItemTypes> {ItemTypes.Container, ItemTypes.NpcCorpse, ItemTypes.PlayerCorpse};
+                case ItemTypes.DrinkContainer:
+                    return new List<ItemTypes> {ItemTypes.Fountain, ItemTypes.Blood};
+                case ItemTypes.HerbContainer:
+                    return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
+                case ItemTypes.Pipe:
+                    return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
+            }
 
             comm.act(ATTypes.AT_ACTION, "$n tries to fill $p... (Don't ask me how)", ch, obj, null, ToTypes.Room);
             ch.SendTo("You cannot fill that.");

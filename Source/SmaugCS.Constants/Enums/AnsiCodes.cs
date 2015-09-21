@@ -9,9 +9,7 @@ namespace SmaugCS.Constants.Enums
             string name = code.GetName();
             if (name.Contains("[0;3"))
                 return name.Replace("[0;3", "[0;5;3");
-            if (name.Contains("[1;3"))
-                return name.Replace("[1;3", "[1;5;3");
-            return name;
+            return name.Contains("[1;3") ? name.Replace("[1;3", "[1;5;3") : name;
         }
     }
 

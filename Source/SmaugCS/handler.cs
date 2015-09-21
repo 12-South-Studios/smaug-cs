@@ -41,13 +41,13 @@ namespace SmaugCS
  
         public static int falling = 0;
 
-        private static readonly Dictionary<int, string> ObjectMessageLargeMap = new Dictionary<int, string>()
+        private static readonly Dictionary<int, string> ObjectMessageLargeMap = new Dictionary<int, string>
             {
                 {1, "As you reach for it, you forget what it was...\r\n"},
                 {2, "As you reach for it, something inside stops you...\r\n"}
             };
 
-        private static readonly Dictionary<int, string> ObjectMessageSmallMap = new Dictionary<int, string>()
+        private static readonly Dictionary<int, string> ObjectMessageSmallMap = new Dictionary<int, string>
             {
                 {1, "In just a second...\r\n"},
                 {2, "You can't find that...\r\n"},
@@ -185,9 +185,7 @@ namespace SmaugCS
 
         public static ObjectInstance get_trap(ObjectInstance obj)
         {
-            if (!obj.IsTrapped())
-                return null;
-            return obj.Contents.FirstOrDefault(check => check.ItemType == ItemTypes.Trap);
+            return !obj.IsTrapped() ? null : obj.Contents.FirstOrDefault(check => check.ItemType == ItemTypes.Trap);
         }
 
         public static void name_stamp_stats(CharacterInstance ch)
@@ -350,10 +348,10 @@ namespace SmaugCS
             switch (paf.Location)
             {
                 default:
-                    buf = string.Format("Affects {0} by {1}.", affect_loc_name((int)paf.Location), paf.Modifier);
+                    buf = $"Affects {affect_loc_name((int) paf.Location)} by {paf.Modifier}.";
                     break;
                 case ApplyTypes.Affect:
-                    buf = string.Format("Affects {0} by", affect_loc_name((int)paf.Location), paf.Modifier);
+                    buf = $"Affects {affect_loc_name((int) paf.Location)} by {paf.Modifier}.";
 
                     for (var i = 0; i < 32; i++)
                     {
@@ -370,12 +368,12 @@ namespace SmaugCS
                         var skill = RepositoryManager.Instance.SKILLS.Get(paf.Modifier);
                         name = skill.Name;
                     }
-                    buf = string.Format("Casts spell '{0}'", name);
+                    buf = $"Casts spell '{name}'";
                     break;
                 case ApplyTypes.Resistance:
                 case ApplyTypes.Immunity:
                 case ApplyTypes.Susceptibility:
-                    buf = string.Format("Affects {0} by", affect_loc_name((int)paf.Location), paf.Modifier);
+                    buf = $"Affects {affect_loc_name((int) paf.Location)} by {paf.Modifier}";
 
                     for (var i = 0; i < 32; i++)
                     {
@@ -425,7 +423,7 @@ namespace SmaugCS
         public static void queue_extracted_char(CharacterInstance ch, bool extract)
         {
             if (ch == null)
-                throw new ArgumentNullException("ch");
+                throw new ArgumentNullException(nameof(ch));
 
             var ecd = new ExtracedCharacterData
             {
@@ -472,11 +470,8 @@ namespace SmaugCS
             if (ch.Switched == null) return;
             if (!possess)
             {
-                foreach (var af in ch.Switched.Affects)
+                foreach (var af in ch.Switched.Affects.Where(x => x.Duration != -1))
                 {
-                    if (af.Duration == -1)
-                        continue;
-
                     var skill = RepositoryManager.Instance.SKILLS.Get((int) af.Type);
                     if (af.Type != AffectedByTypes.None && skill != null &&
                         skill.SpellFunction.Value == Possess.spell_possess)
@@ -484,12 +479,10 @@ namespace SmaugCS
                 }
             }
 
-            foreach (var cmd in RepositoryManager.Instance.COMMANDS.Values)
+            foreach (var cmd in RepositoryManager.Instance.COMMANDS.Values
+                .Where(x => x.DoFunction.Value == Switch.do_switch)
+                .Where(x => x.Level > ch.Trust))
             {
-                if (cmd.DoFunction.Value != Switch.do_switch)
-                    continue;
-                if (cmd.Level <= ch.Trust)
-                    return;
                 if (!ch.IsNpc() && cmd.Name.IsAnyEqual(((PlayerInstance)ch).PlayerData.bestowments)
                     && cmd.Level <= ch.Trust + GameManager.Instance.SystemData.BestowDifference)
                     return;

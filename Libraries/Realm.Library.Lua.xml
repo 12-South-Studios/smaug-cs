@@ -145,6 +145,17 @@
             Constructor
             </summary>
         </member>
+        <member name="P:Realm.Library.Lua.LuaVirtualMachineContext.VMCount">
+            <summary>
+            Gets the number of virtual machines on the queue
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Lua.LuaVirtualMachineContext.NextVM">
+            <summary>
+            Gets the next virtual machine on the queue and then re-enqueues the chosen vm.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Realm.Library.Lua.LuaVirtualMachineContext.RegisterLuaFunctions(System.Object)">
             <summary>
             Registers all lua functions found within the given object
@@ -162,17 +173,6 @@
             
              </summary>
              <param name="disposing"></param>
-        </member>
-        <member name="P:Realm.Library.Lua.LuaVirtualMachineContext.VMCount">
-            <summary>
-            Gets the number of virtual machines on the queue
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Lua.LuaVirtualMachineContext.NextVM">
-            <summary>
-            Gets the next virtual machine on the queue and then re-enqueues the chosen vm.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:Realm.Library.Lua.LuaExtension">
             <summary>

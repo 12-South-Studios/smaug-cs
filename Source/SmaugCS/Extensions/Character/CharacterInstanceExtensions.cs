@@ -133,16 +133,12 @@ namespace SmaugCS.Extensions.Character
                 return true;
             if (ch.IsAffected(AffectedByTypes.TrueSight))
                 return true;
-            if (!ch.IsAffected(AffectedByTypes.Blind))
-                return true;
-
-            return false;
+            return !ch.IsAffected(AffectedByTypes.Blind);
         }
 
         public static void Extract(this CharacterInstance ch, bool fPull)
         {
-            if (ch == null) return;
-            if (ch.CurrentRoom == null) return;
+            if (ch?.CurrentRoom == null) return;
             if (ch == db.Supermob) return;
             if (ch.CharDied()) return;
 
@@ -154,9 +150,9 @@ namespace SmaugCS.Extensions.Character
             foreach (var relation in db.RELATIONS
                                                 .Where(relation => fPull && relation.Types == RelationTypes.MSet_On))
             {
-                if (ch == relation.Subject)
+                if (ch == (CharacterInstance) relation.Subject)
                     relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
-                else if (ch != relation.Actor)
+                else if (ch != (CharacterInstance) relation.Actor)
                     continue;
 
                 db.RELATIONS.Remove(relation);
@@ -206,8 +202,7 @@ namespace SmaugCS.Extensions.Character
             }
 
             var lastObj = ch.Carrying.Last();
-            if (lastObj != null)
-                lastObj.Extract();
+            lastObj?.Extract();
 
             ch.CurrentRoom.RemoveFrom(ch);
 
@@ -233,7 +228,7 @@ namespace SmaugCS.Extensions.Character
                     comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swilring mists!", ch, null, null,
                              ToTypes.Room);
                     Say.do_say(wch,
-                               string.Format("Welcome back to the land of the living, {0}", ch.Name.CapitalizeFirst()));
+                        $"Welcome back to the land of the living, {ch.Name.CapitalizeFirst()}");
                 }
                 else
                     comm.act(ATTypes.AT_MAGIC, "$n appears from some strange swirling mists!", ch, null, null,
@@ -245,10 +240,10 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsNpc())
                 --((MobileInstance) ch).MobIndex.Count;
 
-            if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor != null && ((PlayerInstance)ch).Descriptor.Original != null)
+            if (!ch.IsNpc() && ((PlayerInstance) ch).Descriptor?.Original != null)
                 Return.do_return(ch, "");
 
-            if (ch.Switched != null && ((PlayerInstance)ch.Switched).Descriptor != null)
+            if (((PlayerInstance) ch.Switched)?.Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
             foreach (var wch in RepositoryManager.Instance.CHARACTERS.Values)
@@ -312,15 +307,10 @@ namespace SmaugCS.Extensions.Character
                 check = true;
             else if (!ch.IsNpc() && percent < Macros.LEARNED(ch, (int)skill.ID))
                 check = true;
-            else if (ch.CurrentMorph != null
-                     && ch.CurrentMorph.Morph != null
-                     && ch.CurrentMorph.Morph.skills.IsAnyEqual(skill.Name)
-                     && percent < 85)
+            else if (ch.CurrentMorph?.Morph != null && ch.CurrentMorph.Morph.skills.IsAnyEqual(skill.Name) && percent < 85)
                 check = true;
 
-            if (ch.CurrentMorph != null
-                && ch.CurrentMorph.Morph != null
-                && ch.CurrentMorph.Morph.no_skills.IsAnyEqual(skill.Name))
+            if (ch.CurrentMorph?.Morph != null && ch.CurrentMorph.Morph.no_skills.IsAnyEqual(skill.Name))
                 check = false;
 
             return check;
@@ -391,10 +381,7 @@ namespace SmaugCS.Extensions.Character
                 return true;
 
             obj = ch.GetEquippedItem(WearLocations.DualWield);
-            if (obj != null && fight.UsedWeapon == obj && obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned))
-                return true;
-
-            return false;
+            return obj != null && fight.UsedWeapon == obj && obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned);
         }
 
         public static void ImproveMentalState(this CharacterInstance ch, int mod)
@@ -451,9 +438,7 @@ namespace SmaugCS.Extensions.Character
                 return true;
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return true;
-            if (ch.IsNpc() && ((MobileInstance)ch).MobIndex.ID == VnumConstants.MOB_VNUM_SUPERMOB)
-                return true;
-            return false;
+            return ch.IsNpc() && ((MobileInstance)ch).MobIndex.ID == VnumConstants.MOB_VNUM_SUPERMOB;
         }
 
         public static bool CanSee(this CharacterInstance ch, ObjectInstance obj)
@@ -484,10 +469,7 @@ namespace SmaugCS.Extensions.Character
                     return false;
             }
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) && !ch.IsAffected(AffectedByTypes.DetectInvisibility))
-                return false;
-
-            return true;
+            return !obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || ch.IsAffected(AffectedByTypes.DetectInvisibility);
         }
 
         public static bool CanSee(this CharacterInstance ch, CharacterInstance victim)
@@ -531,9 +513,8 @@ namespace SmaugCS.Extensions.Character
             {
                 if (ch.IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
                     return true;
-                if (((PlayerInstance)ch).PlayerData.Council != null && ((PlayerInstance)ch).PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council"))
-                    return true;
-                return false;
+                return ((PlayerInstance) ch).PlayerData.Council != null &&
+                       ((PlayerInstance) ch).PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council");
             }
 
             return true;
@@ -620,10 +601,8 @@ namespace SmaugCS.Extensions.Character
                 "You are already wielding two weapons... grow some more arms!")) return false;
             if (CheckFunctions.CheckIfTrue(ch, (wield || nwield) && ch.GetEquippedItem(WearLocations.Shield) != null,
                 "You cannot dual wield, you're already holding a shield!")) return false;
-            if (CheckFunctions.CheckIfTrue(ch, (wield || nwield) && ch.GetEquippedItem(WearLocations.Hold) != null,
-                "You cannot hold another weapon, you're already holding something in that hand!")) return false;
-
-            return true;
+            return !CheckFunctions.CheckIfTrue(ch, (wield || nwield) && ch.GetEquippedItem(WearLocations.Hold) != null,
+                "You cannot hold another weapon, you're already holding something in that hand!");
         }
 
         public static ObjectInstance HasKey(this CharacterInstance ch, int key)
@@ -685,19 +664,16 @@ namespace SmaugCS.Extensions.Character
                     return false;
             }
 
-            if (morph.dayfrom != -1 && morph.dayto != -1
-                && (morph.dayto < (GameManager.Instance.GameTime.Day + 1) || morph.dayfrom > (GameManager.Instance.GameTime.Day + 1)))
-                return false;
-            return true;
+            return morph.dayfrom == -1 || morph.dayto == -1 ||
+                   (morph.dayto >= (GameManager.Instance.GameTime.Day + 1) &&
+                    morph.dayfrom <= (GameManager.Instance.GameTime.Day + 1));
         }
 
         public static bool CanCharm(this CharacterInstance ch)
         {
             if (ch.IsNpc() || ch.IsImmortal())
                 return true;
-            if (((ch.GetCurrentCharisma() / 3) + 1) > ((PlayerInstance)ch).PlayerData.NumberOfCharmies)
-                return true;
-            return false;
+            return ((ch.GetCurrentCharisma() / 3) + 1) > ((PlayerInstance)ch).PlayerData.NumberOfCharmies;
         }
 
         public static bool IsInArena(this CharacterInstance ch)
@@ -705,8 +681,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Arena)) return true;
             if (ch.CurrentRoom.Area.Flags.IsSet(AreaFlags.FreeKill)) return true;
             if (ch.CurrentRoom.ID >= 29 && ch.CurrentRoom.ID <= 43) return true;
-            if (ch.CurrentRoom.Area.Name.EqualsIgnoreCase("arena")) return true;
-            return false;
+            return ch.CurrentRoom.Area.Name.EqualsIgnoreCase("arena");
         }
 
         public static bool IsInCombatPosition(this CharacterInstance ch)
@@ -971,15 +946,13 @@ namespace SmaugCS.Extensions.Character
                     return Convert.ToInt16(movement*2.5);
                 if (ch.CarryWeight >= max*0.80)
                     return Convert.ToInt16(movement*2);
-                if (ch.CarryWeight >= max*0.75)
-                    return Convert.ToInt16(movement*1.5);
-                return movement;
+                return ch.CarryWeight >= max*0.75 ? Convert.ToInt16(movement*1.5) : movement;
             }
         }
 
         public static void AdvanceLevel(this PlayerInstance ch, IRepositoryManager databaseManager = null)
         {
-            var buffer = string.Format("the {0}", tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender));
+            var buffer = $"the {tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender)}";
             player.set_title(ch, buffer);
 
             var myClass = (databaseManager ?? RepositoryManager.Instance).GetClass(ch.CurrentClass);
@@ -1016,14 +989,9 @@ namespace SmaugCS.Extensions.Character
                 ch.AdvanceLevelAvatar();
             if (ch.Level < LevelConstants.ImmortalLevel)
             {
-                if (ch.IsVampire())
-                    buffer = string.Format("Your gain is: {0}/{1} hp, {2}/{3} bp, {4}/{5} mv, {6}/{7} prac.\r\n",
-                                           add_hp, ch.MaximumHealth, 1, ch.Level + 10, add_move, ch.MaximumMovement, add_prac,
-                                           ch.Practice);
-                else
-                    buffer = string.Format("Your gain is: {0}/{1} hp, {2}/{3} mana, {4}/{5} mv, {6}/{7} prac.\r\n",
-                                           add_hp, ch.MaximumHealth, add_mana, ch.MaximumMana, add_move, ch.MaximumMovement,
-                                           add_prac, ch.Practice);
+                buffer = ch.IsVampire()
+                    ? $"Your gain is: {add_hp}/{ch.MaximumHealth} hp, {1}/{ch.Level + 10} bp, {add_move}/{ch.MaximumMovement} mv, {add_prac}/{ch.Practice} prac.\r\n"
+                    : $"Your gain is: {add_hp}/{ch.MaximumHealth} hp, {add_mana}/{ch.MaximumMana} mana, {add_move}/{ch.MaximumMovement} mv, {add_prac}/{ch.Practice} prac.\r\n";
 
                ch.SetColor(ATTypes.AT_WHITE);
                ch.SendTo(buffer);

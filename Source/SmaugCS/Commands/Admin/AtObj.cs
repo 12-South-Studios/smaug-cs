@@ -20,7 +20,7 @@ namespace SmaugCS.Commands.Admin
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "At where what?")) return;
 
             ObjectInstance obj = RepositoryManager.Instance.GetEntity<ObjectInstance>(argument);
-            if (CheckFunctions.CheckIf(ch, () => obj == null || obj.InRoom == null,
+            if (CheckFunctions.CheckIf(ch, () => obj?.InRoom == null,
                 "No such object in existence.")) return;
 
             RoomTemplate location = obj.InRoom;
@@ -45,11 +45,9 @@ namespace SmaugCS.Commands.Admin
             location.AddTo(ch);
             interp.interpret(ch, argument);
 
-            if (!ch.CharDied())
-            {
-                ch.CurrentRoom.RemoveFrom(ch);
-                original.AddTo(ch);
-            }
+            if (ch.CharDied()) return;
+            ch.CurrentRoom.RemoveFrom(ch);
+            original.AddTo(ch);
         }
     }
 }

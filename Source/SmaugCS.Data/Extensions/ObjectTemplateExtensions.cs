@@ -14,13 +14,13 @@ namespace SmaugCS.Data.Extensions
             if (template.WearFlags.IsNullOrEmpty())
                 return new List<WearLocations>();
 
-            var words = template.WearFlags.Split(new[] {' '});
-            return Enumerable.ToList(words.Select(EnumerationExtensions.GetEnum<WearLocations>));
+            var words = template.WearFlags.Split(' ');
+            return words.Select(EnumerationExtensions.GetEnum<WearLocations>).ToList();
         }
 
         public static void SetExtraFlags(this ObjectTemplate template, string extraFlags)
         {
-            var words = template.Flags.Split(new[] {' '});
+            var words = template.Flags.Split(' ');
             foreach (var word in words)
             {
                 NumberExtensions.SetBit(template.ExtraFlags, EnumerationExtensions.GetEnum<ItemExtraFlags>(word));

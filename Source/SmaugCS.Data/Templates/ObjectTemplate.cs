@@ -64,7 +64,7 @@ namespace SmaugCS.Data.Templates
 
         public void AddAffect(long type, int duration, int modifier, int location, int flags)
         {
-            if (type < 0) throw new InvalidEnumArgumentException("type", (int)type, typeof(AffectedByTypes));
+            if (type < 0) throw new InvalidEnumArgumentException(nameof(type), (int)type, typeof(AffectedByTypes));
 
             AffectData newAffect = new AffectData
             {
@@ -89,7 +89,7 @@ namespace SmaugCS.Data.Templates
         #region IHasExtraDescriptions Implementation
         public void AddExtraDescription(string keywords, string description)
         {
-            string[] words = keywords.Split(new[] { ' ' });
+            string[] words = keywords.Split(' ');
             foreach (string word in words)
             {
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));

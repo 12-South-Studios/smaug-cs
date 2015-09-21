@@ -72,7 +72,7 @@ namespace SmaugCS.SpecFuns
                 SpecFunSpell value;
                 lookupTable.TryGetValue(SmaugRandom.Bits(4), out value);
 
-                minLevel = value != null ? value.Level : lookupTable[-1].Level;
+                minLevel = value?.Level ?? lookupTable[-1].Level;
                 spellName = value != null ? value.Spell : lookupTable[-1].Spell;
             }
 

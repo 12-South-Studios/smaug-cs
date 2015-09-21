@@ -9,7 +9,7 @@ namespace SmaugCS.Time
     public sealed class TimerManager : ITimerManager
     {
         private static int _idSpace = 1;
-        private static int GetNextId { get { return _idSpace++; } }
+        private static int GetNextId => _idSpace++;
         private static IKernel _kernel;
 
         private readonly ConcurrentDictionary<int, CommonTimer> _timerTable;
@@ -25,10 +25,7 @@ namespace SmaugCS.Time
             _timerTable.Values.ToList().ForEach(x => x.Dispose());
         }
 
-        public static ITimerManager Instance
-        {
-            get { return _kernel.Get<ITimerManager>(); }
-        }
+        public static ITimerManager Instance => _kernel.Get<ITimerManager>();
 
         public int AddTimer(double duration, ElapsedEventHandler callback)
         {
@@ -53,8 +50,7 @@ namespace SmaugCS.Time
         {
             CommonTimer timer;
             _timerTable.TryRemove(timerId, out timer);
-            if (timer != null)
-                timer.Dispose();
+            timer?.Dispose();
         }
     }
 }

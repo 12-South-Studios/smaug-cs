@@ -60,9 +60,7 @@ namespace SmaugCS
                 return false;
             if (logline.Length == 2 && (logline.StartsWith("ne") || logline.StartsWith("nw")))
                 return false;
-            if (logline.Length == 3 && (logline.StartsWith("se") || logline.StartsWith("sw")))
-                return false;
-            return true;
+            return logline.Length != 3 || (!logline.StartsWith("se") && !logline.StartsWith("sw"));
         }
 
         public static void interpret(CharacterInstance ch, string argument)

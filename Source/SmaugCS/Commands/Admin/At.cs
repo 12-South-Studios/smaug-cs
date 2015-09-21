@@ -32,7 +32,7 @@ namespace SmaugCS.Commands.Admin
             else
             {
                 worldCharacter = RepositoryManager.Instance.GetEntity<CharacterInstance>(argument);
-                if (CheckFunctions.CheckIf(ch, () => worldCharacter == null || worldCharacter.CurrentRoom == null,
+                if (CheckFunctions.CheckIf(ch, () => worldCharacter?.CurrentRoom == null,
                     "No such mobile or player in the world.")) return;
             }
 

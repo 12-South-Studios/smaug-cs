@@ -81,7 +81,7 @@ namespace SmaugCS
                 || obj.ItemType == ItemTypes.Quiver
                 || obj.ItemType == ItemTypes.PlayerCorpse)
             {
-                if (ch != null && ch.CurrentRoom != null)
+                if (ch?.CurrentRoom != null)
                 {
                     comm.act(ATTypes.AT_OBJECT, "The contents of $p fall to the ground.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_OBJECT, "The contents of $p fall to the ground.", ch, obj, null, ToTypes.Character);

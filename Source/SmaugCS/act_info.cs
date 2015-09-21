@@ -111,7 +111,12 @@ namespace SmaugCS
 
         public static string hallucinated_object(int ms, bool fShort)
         {
-            var sms = ((ms + 10) / 5).GetNumberThatIsBetween(1, 20);
+            if (ms == int.MaxValue) throw new ArgumentOutOfRangeException();
+
+            var temp = ms + 10;
+            if (temp == int.MaxValue) throw new ArgumentOutOfRangeException();
+
+            var sms = (temp / 5).GetNumberThatIsBetween(1, 20);
 
             return fShort
                        ? LookupManager.Instance.GetLookup("HallucinatedShortNames",
@@ -263,7 +268,7 @@ namespace SmaugCS
         {
             var itemType = EnumerationExtensions.GetEnum<ItemTypes>(pitShow[i]);
             var attrib = itemType.GetAttribute<CharacterColorAttribute>();
-            ch.SetColor(attrib == null ? ATTypes.AT_OBJECT : attrib.ATType);
+            ch.SetColor(attrib?.ATType ?? ATTypes.AT_OBJECT);
         }
 
         public static void show_char_to_char_1(CharacterInstance victim, PlayerInstance ch)
@@ -278,14 +283,13 @@ namespace SmaugCS
 
             if (!string.IsNullOrEmpty(victim.Description))
             {
-                if (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null)
-                    ch.SendTo(victim.CurrentMorph.Morph.Description);
-                else
-                    ch.SendTo(victim.Description);
+                ch.SendTo(victim.CurrentMorph?.Morph != null
+                    ? victim.CurrentMorph.Morph.Description
+                    : victim.Description);
             }
             else
             {
-                if (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null)
+                if (victim.CurrentMorph?.Morph != null)
                     ch.SendTo(victim.CurrentMorph.Morph.Description);
                 else if (victim.IsNpc())
                     comm.act(ATTypes.AT_PLAIN, "You see nothing special about $M.", ch, null, victim, ToTypes.Character);
@@ -370,7 +374,7 @@ namespace SmaugCS
             }
         }
 
-        private static readonly Dictionary<string, int> StringToDoorDirection = new Dictionary<string, int>()
+        private static readonly Dictionary<string, int> StringToDoorDirection = new Dictionary<string, int>
             {
                 {"n;north", 0},
                 {"e;east", 1},
@@ -402,8 +406,8 @@ namespace SmaugCS
 
         public static void print_compass(CharacterInstance ch)
         {
-            var exitInfo = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var exitColors = new List<string>() { "&w", "&Y", "&C", "&b", "&w", "&R" };
+            var exitInfo = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            var exitColors = new List<string> { "&w", "&Y", "&C", "&b", "&w", "&R" };
 
             foreach (var exit in ch.CurrentRoom.Exits)
             {

@@ -43,7 +43,7 @@ namespace SmaugCS.Commands.Admin
             ch.SendTo("Invalid argument");
         }
 
-        private static Dictionary<string, Action<PlayerInstance, PlayerInstance>> AuthorizeFunctionTable = new Dictionary
+        private static readonly Dictionary<string, Action<PlayerInstance, PlayerInstance>> AuthorizeFunctionTable = new Dictionary
             <string, Action<PlayerInstance, PlayerInstance>>
         {
             {"accept", AuthorizeCharacter},

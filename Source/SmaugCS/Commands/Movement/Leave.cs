@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -13,7 +12,7 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_leave(CharacterInstance ch, string argument)
         {
-            if (String.IsNullOrEmpty(argument))
+            if (string.IsNullOrEmpty(argument))
             {
                 LeaveRoom(ch);
                 return;

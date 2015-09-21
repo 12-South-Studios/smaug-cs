@@ -84,7 +84,7 @@ namespace SmaugCS.Extensions
         public static void WriteToBuffer(this DescriptorData d, string txt, int length)
         {
             if (d == null)
-                throw new ArgumentNullException("d");
+                throw new ArgumentNullException(nameof(d));
 
             if (string.IsNullOrEmpty(d.outbuf))
                 return;

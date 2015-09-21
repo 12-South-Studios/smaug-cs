@@ -58,7 +58,7 @@ namespace SmaugCS.Commands.Movement
             var fromRoom = inRoom;
             RoomTemplate toRoom = null;
 
-            if (exit == null || exit.Destination == null)
+            if (exit?.Destination == null)
             {
                 if (drunk && ch.CurrentPosition != PositionTypes.Mounted
                     && ch.CurrentRoom.SectorType != SectorTypes.ShallowWater

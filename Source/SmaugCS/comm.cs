@@ -62,25 +62,23 @@ namespace SmaugCS
                 return obj.ShortDescription.Remove(0, 3);
             if (obj.ShortDescription.StartsWithIgnoreCase("the "))
                 return obj.ShortDescription.Remove(0, 4);
-            if (obj.ShortDescription.StartsWithIgnoreCase("some "))
-                return obj.ShortDescription.Remove(0, 5);
-            return obj.ShortDescription;
+            return obj.ShortDescription.StartsWithIgnoreCase("some ")
+                ? obj.ShortDescription.Remove(0, 5)
+                : obj.ShortDescription;
         }
 
         public static string obj_short(ObjectInstance obj)
         {
             return obj.Count > 1
-                ? string.Format("{0} ({1})", obj.ShortDescription, obj.Count)
+                ? $"{obj.ShortDescription} ({obj.Count})"
                 : obj.ShortDescription;
         }
 
         public static string MORPHNAME(CharacterInstance ch)
         {
-            if (ch.CurrentMorph != null
-                && ch.CurrentMorph.Morph != null
-                && !string.IsNullOrEmpty(ch.CurrentMorph.Morph.ShortDescription))
-                return ch.CurrentMorph.Morph.ShortDescription;
-            return Macros.NAME(ch);
+            return !string.IsNullOrEmpty(ch.CurrentMorph?.Morph?.ShortDescription)
+                ? ch.CurrentMorph.Morph.ShortDescription
+                : Macros.NAME(ch);
         }
 
         public static string act_string(string format, CharacterInstance to, CharacterInstance ch, object arg1, object arg2, int flags)
@@ -121,7 +119,7 @@ namespace SmaugCS
                             else if (!flags.IsSet(Program.STRING_IMM))
                                 buffer = (to != null ? Macros.MORPHERS(ch, to) : MORPHNAME(ch));
                             else
-                                buffer = string.Format("(MORPH) {0}", to != null ? Macros.PERS(ch, to) : Macros.NAME(ch));
+                                buffer = $"(MORPH) {(to != null ? Macros.PERS(ch, to) : Macros.NAME(ch))}";
                             break;
                         case "$N":
                             vch = arg2.CastAs<CharacterInstance>();
@@ -130,7 +128,7 @@ namespace SmaugCS
                             else if (!flags.IsSet(Program.STRING_IMM))
                                 buffer = (to != null ? Macros.MORPHERS(vch, to) : MORPHNAME(vch));
                             else
-                                buffer = string.Format("(MORPH) {0}", to != null ? Macros.PERS(vch, to) : Macros.NAME(vch));
+                                buffer = $"(MORPH) {(to != null ? Macros.PERS(vch, to) : Macros.NAME(vch))}";
                             break;
                         case "$e":
                             buffer = ch.Gender.SubjectPronoun();
@@ -172,7 +170,7 @@ namespace SmaugCS
                                          : "something";
                             break;
                         case "$d":
-                            if (arg2 == null || string.IsNullOrEmpty(arg2.ToString()))
+                            if (string.IsNullOrEmpty(arg2?.ToString()))
                                 buffer = "door";
                             else
                             {
@@ -279,9 +277,7 @@ namespace SmaugCS
 
             if (type == ToTypes.Victim)
             {
-                if (vch == null)
-                    return;
-                if (vch.CurrentRoom == null)
+                if (vch?.CurrentRoom == null)
                     return;
                 to = vch;
             }
@@ -330,7 +326,7 @@ namespace SmaugCS
                       (ch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
                        to.Trust <
                        (playerInstance != null
-                           ? (playerInstance.PlayerData != null ? playerInstance.PlayerData.WizardInvisible : 0)
+                           ? (playerInstance.PlayerData?.WizardInvisible ?? 0)
                            : 0)))))
                     continue;
 

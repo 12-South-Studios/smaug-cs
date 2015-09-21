@@ -22,7 +22,7 @@ namespace SmaugCS.SpecFuns.Casting
             if (victim == null || victim == ch) return false;
 
             var skill = handler.PickSpell(SpellLevelLookupTable, ch.Level);
-            if (skill == null || skill.SpellFunction == null) return false;
+            if (skill?.SpellFunction == null) return false;
 
             skill.SpellFunction.Value.DynamicInvoke(skill.ID, ch.Level, ch, victim);
             return true;

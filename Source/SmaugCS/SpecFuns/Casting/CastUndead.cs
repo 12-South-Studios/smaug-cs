@@ -26,10 +26,10 @@ namespace SmaugCS.SpecFuns.Casting
                 return false;
 
             var skill = handler.PickSpell(SpellLevelLookupTable, ch.Level);
-            if (skill == null || skill.SpellFunction == null)
+            if (skill?.SpellFunction == null)
                 return false;
 
-            skill.SpellFunction.Value.DynamicInvoke(new object[] { skill.ID, ch.Level, ch, victim });
+            skill.SpellFunction.Value.DynamicInvoke(skill.ID, ch.Level, ch, victim);
             return true;
         }
 

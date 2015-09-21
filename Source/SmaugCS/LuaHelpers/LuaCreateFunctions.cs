@@ -131,7 +131,7 @@ namespace SmaugCS.LuaHelpers
             };
 
             if (type.EqualsIgnoreCase("herb"))
-                throw new InvalidOperationException(string.Format("Use of LCreateSkill for Herbs is deprecated"));
+                throw new InvalidOperationException("Use of LCreateSkill for Herbs is deprecated");
             
             _dbManager.AddToRepository(newSkill);
             _luaManager.Proxy.CreateTable("skill");
@@ -147,7 +147,7 @@ namespace SmaugCS.LuaHelpers
             var newHerb = new HerbData(id, name) { Type = EnumerationExtensions.GetEnumIgnoreCase<SkillTypes>(type) };
 
             if (!type.EqualsIgnoreCase("herb"))
-                throw new InvalidOperationException(string.Format("Use of LCreateHerb for Non-Herbs is not supported"));
+                throw new InvalidOperationException("Use of LCreateHerb for Non-Herbs is not supported");
 
             _dbManager.AddToRepository(newHerb);
             _luaManager.Proxy.CreateTable("herb");

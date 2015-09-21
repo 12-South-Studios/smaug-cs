@@ -11,10 +11,7 @@ namespace SmaugCS.Loaders
         {
         }
 
-        public override string Filename
-        {
-            get { return SystemConstants.GetSystemFile(SystemFileTypes.Hints); }
-        }
+        public override string Filename => SystemConstants.GetSystemFile(SystemFileTypes.Hints);
 
         public override void Save()
         {

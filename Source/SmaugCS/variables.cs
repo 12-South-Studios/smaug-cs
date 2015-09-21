@@ -65,8 +65,8 @@ namespace SmaugCS
 
         public static bool is_valid_tag(string tagname)
         {
-            return tagname.ToCharArray().ToList().All(Char.IsLetter)
-                && tagname.ToCharArray().All(c => Char.IsLetterOrDigit(c) || c == '_');
+            return tagname.ToCharArray().ToList().All(char.IsLetter)
+                && tagname.ToCharArray().All(c => char.IsLetterOrDigit(c) || c == '_');
         }
 
         public static void do_mptag(CharacterInstance ch, string argument)
@@ -125,7 +125,7 @@ namespace SmaugCS
             {
                 var word = proxy.EndOfStream ? "End" : proxy.ReadNextWord();
 
-                switch (Char.ToUpper(word.ToCharArray()[0]))
+                switch (char.ToUpper(word.ToCharArray()[0]))
                 {
                     case '*':
                         proxy.ReadToEndOfLine();

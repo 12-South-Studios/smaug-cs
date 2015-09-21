@@ -15,14 +15,7 @@ namespace SmaugCS.Loaders
         {
         }
 
-        public override string Filename
-        {
-            get
-            {
-                // TODO
-                return string.Empty;
-            }
-        }
+        public override string Filename => string.Empty;
 
         public CharacterInstance Character { get; set; }
 

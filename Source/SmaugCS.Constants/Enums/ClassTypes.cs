@@ -47,7 +47,7 @@ namespace SmaugCS.Constants.Enums
         Augurer     = 8,
 
         [Player]
-        [Descriptor(new[] { "(Red Aura) ", "(Grey Aura) ", "(White Aura) " })]
+        [Descriptor("(Red Aura) ", "(Grey Aura) ", "(White Aura) ")]
         [ShoveValue(ModValue = 55)]
         Paladin     = 9,
 

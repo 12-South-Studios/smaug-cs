@@ -14,7 +14,7 @@ namespace SmaugCS.Constants
             return values.ToList().FindIndex(x => x.EqualsIgnoreCase(name));
         }
 
-        public static List<int> PartVnums = new List<int>()
+        public static readonly List<int> PartVnums = new List<int>
                                                 {
                                                     12,
                                                     /* Head */
@@ -83,7 +83,7 @@ namespace SmaugCS.Constants
 
         public static string CANT_PRAC = "Tongue";
 
-        public static List<string> pc_displays = new List<string>()
+        public static readonly List<string> pc_displays = new List<string>
                                                      {
                                                          "black",
                                                          "dred",
@@ -198,7 +198,7 @@ namespace SmaugCS.Constants
                                                          "board3"
                                                      };
 
-        public static List<ATTypes> default_set = new List<ATTypes>()
+        public static List<ATTypes> default_set = new List<ATTypes>
                                                     {
                                                         ATTypes.None,
                                                         ATTypes.AT_BLOOD,
@@ -340,7 +340,7 @@ namespace SmaugCS.Constants
                                                         ATTypes.AT_WHITE /* 110 */
                                                     };
 
-        public static List<TimezoneData> tzone_table = new List<TimezoneData>()
+        public static List<TimezoneData> tzone_table = new List<TimezoneData>
                                                          {
                                                              new TimezoneData("GMT-12", "Eniwetok", -12, 0),
                                                              new TimezoneData("GMT-11", "Samoa", -11, 0),
@@ -371,7 +371,7 @@ namespace SmaugCS.Constants
                                                                             0)
                                                          };
 
-        public static List<string> save_flag = new List<string>()
+        public static List<string> save_flag = new List<string>
                                                    {
                                                        "death",
                                                        "kill",
@@ -408,22 +408,22 @@ namespace SmaugCS.Constants
                                                    };
 
 
-        public static List<short> rev_dir = new List<short>() { 2, 3, 0, 1, 5, 4, 9, 8, 7, 6, 10 };
+        public static readonly List<short> rev_dir = new List<short> { 2, 3, 0, 1, 5, 4, 9, 8, 7, 6, 10 };
 
 
-        public static List<int> SentTotals = new List<int>() { 3, 5, 4, 4, 1, 1, 1, 1, 1, 2, 2, 25, 1, 1 };
+        public static readonly List<int> SentTotals = new List<int> { 3, 5, 4, 4, 1, 1, 1, 1, 1, 2, 2, 25, 1, 1 };
 
-        public static List<List<string>> RoomSents = new List<List<string>>()
+        public static readonly List<List<string>> RoomSents = new List<List<string>>
                                                           {
-                                                              new List<string>()
+                                                              new List<string>
                                                                   {
                                                                       "rough hewn walls of granite with the occasional spider crawling around",
                                                                       "signs of a recent battle from the bloodstains on the floor",
                                                                       "a damp musty odour not unlike rotting vegetation"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "the occasional stray digging through some garbage"
                                                                       ,
                                                                       "merchants trying to lure customers to their tents"
@@ -435,8 +435,8 @@ namespace SmaugCS.Constants
                                                                       "several shady figures talking down a dark alleyway"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "sparce patches of brush and shrubs",
                                                                       "a small cluster of trees far off in the distance"
                                                                       ,
@@ -444,8 +444,8 @@ namespace SmaugCS.Constants
                                                                       "a wide variety of weeds and wildflowers"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "tall, dark evergreens prevent you from seeing very far"
                                                                       ,
                                                                       "many huge oak trees that look several hundred years old"
@@ -454,45 +454,45 @@ namespace SmaugCS.Constants
                                                                       "a patch of bright white birch trees slender and tall"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "rolling hills lightly speckled with violet wildflowers"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "the rocky mountain pass offers many hiding places"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "the water is smooth as glass"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "rough waves splash about angrily"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "a small school of fish"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "the land far below",
                                                                       "a misty haze of clouds"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "sand as far as the eye can see",
                                                                       "an oasis far in the distance"
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "nothing unusual",
                                                                       "nothing unusual",
                                                                       "nothing unusual",
@@ -520,13 +520,13 @@ namespace SmaugCS.Constants
                                                                       "nothing unusual",
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "rocks and coral which litter the ocean floor."
                                                                   },
 
-                                                              new List<string>()
-                                                                  {
+                                                              new List<string>
+                                                              {
                                                                       "a lengthy tunnel of rock."
                                                                   }
                                                           };
@@ -544,8 +544,8 @@ namespace SmaugCS.Constants
                 {'Y', "&Y"}, {'c', "&c"}
             };
 
-        public static List<str_app_type> str_app = new List<str_app_type>()
-                                                       {
+        public static readonly List<str_app_type> str_app = new List<str_app_type>
+        {
                                                            new str_app_type(-5, -4, 0, 0),
                                                            new str_app_type(-5, -4, 3, 1),
                                                            new str_app_type(-3, -2, 3, 2),
@@ -573,8 +573,8 @@ namespace SmaugCS.Constants
                                                            new str_app_type(10, 12, 999, 60)
                                                        };
 
-        public static List<int_app_type> int_app = new List<int_app_type>()
-                                                       {
+        public static List<int_app_type> int_app = new List<int_app_type>
+        {
                                                            new int_app_type(3),
                                                            new int_app_type(5),
                                                            new int_app_type(7),
@@ -603,8 +603,8 @@ namespace SmaugCS.Constants
                                                            new int_app_type(99)
                                                        };
 
-        public static List<wis_app_type> wis_app = new List<wis_app_type>()
-                                                       {
+        public static readonly List<wis_app_type> wis_app = new List<wis_app_type>
+        {
                                                            new wis_app_type(0),
                                                            new wis_app_type(0),
                                                            new wis_app_type(0),
@@ -633,8 +633,8 @@ namespace SmaugCS.Constants
                                                            new wis_app_type(7) // 25
                                                        };
 
-        public static List<dex_app_type> dex_app = new List<dex_app_type>()
-                                                       {
+        public static readonly List<dex_app_type> dex_app = new List<dex_app_type>
+        {
                                                            new dex_app_type(60),
                                                            new dex_app_type(50),
                                                            new dex_app_type(50),
@@ -663,8 +663,8 @@ namespace SmaugCS.Constants
                                                            new dex_app_type(-120)
                                                        };
 
-        public static List<con_app_type> con_app = new List<con_app_type>()
-                                                       {
+        public static readonly List<con_app_type> con_app = new List<con_app_type>
+        {
                                                            new con_app_type(-4, 20),
                                                            new con_app_type(-3, 25),
                                                            new con_app_type(-2, 30),
@@ -693,8 +693,8 @@ namespace SmaugCS.Constants
                                                            new con_app_type(8, 99)
                                                        };
 
-        public static List<cha_app_type> cha_app = new List<cha_app_type>()
-                                                       {
+        public static List<cha_app_type> cha_app = new List<cha_app_type>
+        {
                                                            new cha_app_type(-60),
                                                            new cha_app_type(-50),
                                                            new cha_app_type(-50),
@@ -723,8 +723,8 @@ namespace SmaugCS.Constants
                                                            new cha_app_type(99)
                                                        };
 
-        public static List<lck_app_type> lck_app = new List<lck_app_type>()
-                                                       {
+        public static List<lck_app_type> lck_app = new List<lck_app_type>
+        {
                                                            new lck_app_type(60),
                                                            new lck_app_type(50),
                                                            new lck_app_type(50),
@@ -796,10 +796,10 @@ namespace SmaugCS.Constants
             }
         }
 
-        public static List<List<string>> preciptemp_msg = new List<List<string>>()
-                                                              {
-                                                                  new List<string>()
-                                                                      {
+        public static List<List<string>> preciptemp_msg = new List<List<string>>
+        {
+                                                                  new List<string>
+                                                                  {
                                                                           "Frigid temperatures settle over the land",
                                                                           "It is bitterly cold",
                                                                           "The weather is crisp and dry",
@@ -807,8 +807,8 @@ namespace SmaugCS.Constants
                                                                           "A dry heat warms the land",
                                                                           "Seething heat bakes the land"
                                                                       },
-                                                                  new List<string>()
-                                                                      {
+                                                                  new List<string>
+                                                                  {
                                                                           "A few flurries drift from the high clouds",
                                                                           "Frozen drops of rain fall from the sky",
                                                                           "An occasional raindrop falls to the ground",
@@ -816,8 +816,8 @@ namespace SmaugCS.Constants
                                                                           "It is very warm, and the sky is overcast",
                                                                           "High humidity intensifies the seering heat"
                                                                       },
-                                                                  new List<string>()
-                                                                      {
+                                                                  new List<string>
+                                                                  {
                                                                           "A brief snow squall dusts the earth",
                                                                           "A light flurry dusts the ground",
                                                                           "Light snow drifts down from the heavens",
@@ -825,8 +825,8 @@ namespace SmaugCS.Constants
                                                                           "A few drops of rain fall to the warm ground",
                                                                           "A light rain falls through the sweltering sky"
                                                                       },
-                                                                  new List<string>()
-                                                                      {
+                                                                  new List<string>
+                                                                  {
                                                                           "Snowfall covers the frigid earth",
                                                                           "Light snow falls to the ground",
                                                                           "A brief shower moistens the crisp air",
@@ -834,8 +834,8 @@ namespace SmaugCS.Constants
                                                                           "The warm air is heavy with rain",
                                                                           "A refreshing shower eases the oppresive heat"
                                                                       },
-                                                                  new List<string>()
-                                                                      {
+                                                                  new List<string>
+                                                                  {
                                                                           "Sleet falls in sheets through the frosty air",
                                                                           "Snow falls quickly, piling upon the cold earth",
                                                                           "Rain pelts the ground on this crisp day",
@@ -843,8 +843,8 @@ namespace SmaugCS.Constants
                                                                           "A warm rain drums the ground loudly",
                                                                           "Tropical rain showers pelt the seering ground"
                                                                       },
-                                                                  new List<string>()
-                                                                      {
+                                                                  new List<string>
+                                                                  {
                                                                           "A downpour of frozen rain covers the land in ice",
                                                                           "A blizzard blankets everything in pristine white",
                                                                           "Torrents of rain fall from a cool sky",
@@ -854,10 +854,10 @@ namespace SmaugCS.Constants
                                                                       }
                                                               };
 
-        public static List<List<string>> windtemp_msg = new List<List<string>>()
-                                                            {
-                                                                new List<string>()
-                                                                    {
+        public static List<List<string>> windtemp_msg = new List<List<string>>
+        {
+                                                                new List<string>
+                                                                {
                                                                         "The frigid air is completely still",
                                                                         "A cold temperature hangs over the area",
                                                                         "The crisp air is eerily calm",
@@ -865,8 +865,8 @@ namespace SmaugCS.Constants
                                                                         "No wind makes the day uncomfortably warm",
                                                                         "The stagnant heat is sweltering"
                                                                     },
-                                                                new List<string>()
-                                                                    {
+                                                                new List<string>
+                                                                {
                                                                         "A light breeze makes the frigid air seem colder",
                                                                         "A stirring of the air intensifies the cold",
                                                                         "A touch of wind makes the day cool",
@@ -874,8 +874,8 @@ namespace SmaugCS.Constants
                                                                         "It is very warm, the air stirs slightly",
                                                                         "A faint breeze stirs the feverish air"
                                                                     },
-                                                                new List<string>()
-                                                                    {
+                                                                new List<string>
+                                                                {
                                                                         "A breeze gives the frigid air bite",
                                                                         "A breeze swirls the cold air",
                                                                         "A lively breeze cools the area",
@@ -883,8 +883,8 @@ namespace SmaugCS.Constants
                                                                         "Very warm breezes buffet the area",
                                                                         "A breeze ciculates the sweltering air"
                                                                     },
-                                                                new List<string>()
-                                                                    {
+                                                                new List<string>
+                                                                {
                                                                         "Stiff gusts add cold to the frigid air",
                                                                         "The cold air is agitated by gusts of wind",
                                                                         "Wind blows in from the north, cooling the area",
@@ -892,8 +892,8 @@ namespace SmaugCS.Constants
                                                                         "Brief gusts of wind punctuate the warm day",
                                                                         "Wind attempts to cut the sweltering heat"
                                                                     },
-                                                                new List<string>()
-                                                                    {
+                                                                new List<string>
+                                                                {
                                                                         "The frigid air whirls in gusts of wind",
                                                                         "A strong, cold wind blows in from the north",
                                                                         "Strong wind makes the cool air nip",
@@ -901,8 +901,8 @@ namespace SmaugCS.Constants
                                                                         "Warm, gusty winds move through the area",
                                                                         "Blustering winds punctuate the seering heat"
                                                                     },
-                                                                new List<string>()
-                                                                    {
+                                                                new List<string>
+                                                                {
                                                                         "A frigid gale sets bones shivering",
                                                                         "Howling gusts of wind cut the cold air",
                                                                         "An angry wind whips the air into a frenzy",
@@ -912,15 +912,15 @@ namespace SmaugCS.Constants
                                                                     }
                                                             };
 
-        public static List<string> precip_msg = new List<string>()
-                                                    {
+        public static List<string> precip_msg = new List<string>
+        {
                                                         "there is not a cloud in the sky",
                                                         "pristine white clouds are in the sky",
                                                         "thick, grey clouds mask the sun"
                                                     };
 
-        public static List<string> wind_msg = new List<string>()
-                                                  {
+        public static List<string> wind_msg = new List<string>
+        {
                                                       "there is not a breath of wind in the air",
                                                       "a slight breeze stirs the air",
                                                       "a breeze wafts through the area",

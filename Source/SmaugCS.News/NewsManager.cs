@@ -17,10 +17,7 @@ namespace SmaugCS.News
             _kernel = kernel;
         }
 
-        public static INewsManager Instance
-        {
-            get { return _kernel.Get<INewsManager>(); }
-        }
+        public static INewsManager Instance => _kernel.Get<INewsManager>();
 
         public void Initialize()
         {

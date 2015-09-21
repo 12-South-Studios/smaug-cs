@@ -36,17 +36,17 @@ namespace SmaugCS.Commands.Admin
             if (CheckFunctions.CheckIfTrue(pch, pch.SubState == CharacterSubStates.Restricted,
                 "You cannot use this command from within another command.")) return;
 
-            if (pch.SubState == CharacterSubStates.None)
-                pch.tempnum = (int) CharacterSubStates.None;
-            else if (pch.SubState == CharacterSubStates.BanDescription)
+            switch (pch.SubState)
             {
-                // TODO: add_ban(ch, "", "", 0, 0);
-                return;
-            }
-            else
-            {
-                LogManager.Instance.Bug("Illegal Characer Substate (Name={0}, SubState={1}", pch.Name, pch.SubState);
-                return;
+                case CharacterSubStates.None:
+                    pch.tempnum = (int) CharacterSubStates.None;
+                    break;
+                case CharacterSubStates.BanDescription:
+                    // TODO: add_ban(ch, "", "", 0, 0);
+                    return;
+                default:
+                    LogManager.Instance.Bug("Illegal Characer Substate (Name={0}, SubState={1}", pch.Name, pch.SubState);
+                    return;
             }
 
             if (args[0].IsNullOrWhitespace())
@@ -126,14 +126,14 @@ namespace SmaugCS.Commands.Admin
 
         public static int AddBan(PlayerInstance ch, string arg1, string arg2, int duration, BanTypes type)
         {
-            if (ch.SubState == CharacterSubStates.Restricted)
+            switch (ch.SubState)
             {
-                ch.SendTo("You cannot use this command from within another command.\r\n");
-                return 0;
+                case CharacterSubStates.Restricted:
+                    ch.SendTo("You cannot use this command from within another command.\r\n");
+                    return 0;
+                case CharacterSubStates.BanDescription:
+                    return AddBanDescription(ch, arg1, arg2, duration, type);
             }
-
-            if (ch.SubState == CharacterSubStates.BanDescription)
-                return AddBanDescription(ch, arg1, arg2, duration, type);
 
 
             return 0;

@@ -167,7 +167,7 @@ namespace SmaugCS.Data
 
         public void SetFlags(string flags)
         {
-            string[] words = flags.Split(new[] {' '});
+            string[] words = flags.Split(' ');
             foreach (string word in words)
             {
                 Flags += (int)EnumerationExtensions.GetEnumIgnoreCase<SkillFlags>(word);

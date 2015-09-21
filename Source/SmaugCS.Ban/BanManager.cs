@@ -38,10 +38,7 @@ namespace SmaugCS.Ban
             _timer.Dispose();
         }
 
-        public static IBanManager Instance
-        {
-            get { return _kernel.Get<IBanManager>(); }
-        }
+        public static IBanManager Instance => _kernel.Get<IBanManager>();
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {

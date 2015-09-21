@@ -38,7 +38,7 @@ namespace SmaugCS.Extensions
 
         public static void AddTo(this RoomTemplate room, CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            if (ch == null) throw new ArgumentNullException("ch");
+            if (ch == null) throw new ArgumentNullException(nameof(ch));
 
             var localRoom = room;
             var databaseMgr = (dbManager ?? RepositoryManager.Instance);

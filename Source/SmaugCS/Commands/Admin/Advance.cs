@@ -86,8 +86,7 @@ namespace SmaugCS.Commands.Admin
                 while (victim.Carrying.Any())
                 {
                     var objInstance = victim.Carrying.FirstOrDefault();
-                    if (objInstance == null) continue;
-                    objInstance.Extract();
+                    objInstance?.Extract();
                 }
             }
             catch (ArgumentException)

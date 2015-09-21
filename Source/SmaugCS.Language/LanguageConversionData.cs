@@ -15,9 +15,9 @@ namespace SmaugCS.Language
 
         public LanguageConversionData(string line)
         {
-            string[] words = line.Split(new[] { ' ' });
-            OldValue = words[0].Trim(new[] { '\'' });
-            NewValue = words[1].Trim(new[] { '\'' });
+            string[] words = line.Split(' ');
+            OldValue = words[0].Trim('\'');
+            NewValue = words[1].Trim('\'');
         }
     }
 }

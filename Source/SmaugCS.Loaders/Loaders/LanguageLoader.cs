@@ -11,28 +11,16 @@ namespace SmaugCS.Loaders.Loaders
         {
         }
 
-        public override string Filename
-        {
-            get
-            {
-                return SystemConstants.GetSystemDirectory(SystemDirectory) +
-                       SystemConstants.GetSystemFile(SystemFileTypes.Tongues);
-            }
-        }
+        public override string Filename => SystemConstants.GetSystemDirectory(SystemDirectory) +
+                                           SystemConstants.GetSystemFile(SystemFileTypes.Tongues);
 
         public override void Save()
         {
             throw new NotImplementedException();
         }
 
-        protected override string AppSettingName
-        {
-            get { return "Languages"; }
-        }
+        protected override string AppSettingName => "Languages";
 
-        protected override SystemDirectoryTypes SystemDirectory
-        {
-            get { return SystemDirectoryTypes.Language; }
-        }
+        protected override SystemDirectoryTypes SystemDirectory => SystemDirectoryTypes.Language;
     }
 }

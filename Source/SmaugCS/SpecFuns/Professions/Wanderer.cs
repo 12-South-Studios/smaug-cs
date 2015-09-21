@@ -62,8 +62,7 @@ namespace SmaugCS.SpecFuns.Professions
                         var door = db.number_door();
                         exit = ch.CurrentRoom.GetExitNumber(door);
 
-                        if (exit == null) continue;
-                        var destRoom = exit.GetDestination(RepositoryManager.Instance);
+                        var destRoom = exit?.GetDestination(RepositoryManager.Instance);
                         if (destRoom == null || exit.Flags.IsSet(ExitFlags.Closed) ||
                             destRoom.Flags.IsSet(RoomFlags.NoDrop)) continue;
                         if (destRoom.Persons.OfType<MobileInstance>().Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))

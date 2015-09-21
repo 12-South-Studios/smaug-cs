@@ -119,9 +119,7 @@ namespace SmaugCS.Spells.Smaug
             if (damage > 0 && ((ch.CurrentFighting != null && ch.CurrentFighting.Who == vch)
                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))
             {
-                var xp = ch.CurrentFighting != null
-                    ? ch.CurrentFighting.Experience
-                    : vch.CurrentFighting.Experience;
+                var xp = ch.CurrentFighting?.Experience ?? vch.CurrentFighting.Experience;
                 var xpGain = xp*damage*2/vch.MaximumHealth;
 
                 ((PlayerInstance)ch).GainXP(0 - xpGain);

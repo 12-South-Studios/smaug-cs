@@ -39,7 +39,7 @@ namespace SmaugCS.Weather
                 foreach (var section in sections)
                 {
                     var lines = new List<string>();
-                    section.Lines.ToList().ForEach(x => lines.Add(x.TrimEnd(new[] { '~' })));
+                    section.Lines.ToList().ForEach(x => lines.Add(x.TrimEnd('~')));
 
                     WeatherMessages.Add(EnumerationExtensions.GetEnum<PrecipitationTypes>(section.Header), lines);
                 }

@@ -360,16 +360,16 @@ namespace SmaugCS
                 var action = (weapon != null) ? "fire" : "throw";
                 if (exit != null)
                 {
-                    comm.act(ATTypes.AT_GREY, string.Format("You [0} $p $T.", action), ch, projectile, exit.Direction.GetName(),
+                    comm.act(ATTypes.AT_GREY, $"You {action} $p $T.", ch, projectile, exit.Direction.GetName(),
                             ToTypes.Character);
-                    comm.act(ATTypes.AT_GREY, string.Format("$n {0}s $p $T.", action), ch, projectile, exit.Direction.GetName(),
+                    comm.act(ATTypes.AT_GREY, $"$n {action}s $p $T.", ch, projectile, exit.Direction.GetName(),
                         ToTypes.Room);
                 }
                 else
                 {
-                    comm.act(ATTypes.AT_GREY, string.Format("You {0} $p at $N.", action), ch, projectile, victim, ToTypes.Character);
-                    comm.act(ATTypes.AT_GREY, string.Format("$n {0}s $p at $N.", action), ch, projectile, victim, ToTypes.NotVictim);
-                    comm.act(ATTypes.AT_GREY, string.Format("$n {0}s $p at you!", action), ch, projectile, victim, ToTypes.Victim);
+                    comm.act(ATTypes.AT_GREY, $"You {action} $p at $N.", ch, projectile, victim, ToTypes.Character);
+                    comm.act(ATTypes.AT_GREY, $"$n {action}s $p at $N.", ch, projectile, victim, ToTypes.NotVictim);
+                    comm.act(ATTypes.AT_GREY, $"$n {action}s $p at you!", ch, projectile, victim, ToTypes.Victim);
                 }
             }
             else if (skill != null)
@@ -420,9 +420,8 @@ namespace SmaugCS
                 {
                     var color = (projectile != null) ? ATTypes.AT_GREY : ATTypes.AT_MAGIC;
 
-                    var txt = string.Format("You see your {0} {1} a door in the distance to the {2}.",
-                        (projectile != null) ? projectile.Name : GetSkillText(skill),
-                        (projectile != null ? "pierce" : "hit"), exit.Direction.GetName());
+                    var txt =
+                        $"You see your {((projectile != null) ? projectile.Name : GetSkillText(skill))} {(projectile != null ? "pierce" : "hit")} a door in the distance to the {exit.Direction.GetName()}.";
                     comm.act(color, txt, ch, null, null, ToTypes.Character);
 
                     if (projectile != null)

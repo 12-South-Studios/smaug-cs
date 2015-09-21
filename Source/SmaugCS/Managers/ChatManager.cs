@@ -37,7 +37,7 @@ namespace SmaugCS.Managers
             if (db.DESCRIPTORS.Count == 0 || string.IsNullOrEmpty(argument))
                 return;
 
-            var buf = string.Format("{0}: {1}\r\n", verb, argument);
+            var buf = $"{verb}: {argument}\r\n";
 
             foreach (var d in db.DESCRIPTORS)
             {
@@ -274,14 +274,22 @@ namespace SmaugCS.Managers
 
                     // TODO Toggle global mobtrigger flag
                     lbuf = lbuf + buffer;
-                    if (channel == ChannelTypes.ImmTalk || channel == ChannelTypes.AvTalk)
-                        comm.act(ATTypes.AT_IMMORT, lbuf, ch, sbuf, vch, ToTypes.Victim);
-                    else if (channel == ChannelTypes.WarTalk)
-                        comm.act(ATTypes.AT_WARTALK, lbuf, ch, sbuf, vch, ToTypes.Victim);
-                    else if (channel == ChannelTypes.RaceTalk)
-                        comm.act(ATTypes.AT_RACETALK, lbuf, ch, sbuf, vch, ToTypes.Victim);
-                    else
-                        comm.act(ATTypes.AT_GOSSIP, lbuf, ch, sbuf, vch, ToTypes.Victim);
+                    switch (channel)
+                    {
+                        case ChannelTypes.ImmTalk:
+                        case ChannelTypes.AvTalk:
+                            comm.act(ATTypes.AT_IMMORT, lbuf, ch, sbuf, vch, ToTypes.Victim);
+                            break;
+                        case ChannelTypes.WarTalk:
+                            comm.act(ATTypes.AT_WARTALK, lbuf, ch, sbuf, vch, ToTypes.Victim);
+                            break;
+                        case ChannelTypes.RaceTalk:
+                            comm.act(ATTypes.AT_RACETALK, lbuf, ch, sbuf, vch, ToTypes.Victim);
+                            break;
+                        default:
+                            comm.act(ATTypes.AT_GOSSIP, lbuf, ch, sbuf, vch, ToTypes.Victim);
+                            break;
+                    }
                     vch.CurrentPosition = position;
                 }
             }
@@ -289,18 +297,22 @@ namespace SmaugCS.Managers
 
         private static ATTypes GetColorForChannelTalk(ChannelTypes channel)
         {
-            if (channel == ChannelTypes.RaceTalk)
-                return ATTypes.AT_RACETALK;
-            if (channel == ChannelTypes.WarTalk)
-                return ATTypes.AT_WARTALK;
-            if (channel == ChannelTypes.ImmTalk || channel == ChannelTypes.AvTalk)
-                return 0;
+            switch (channel)
+            {
+                case ChannelTypes.RaceTalk:
+                    return ATTypes.AT_RACETALK;
+                case ChannelTypes.WarTalk:
+                    return ATTypes.AT_WARTALK;
+                case ChannelTypes.ImmTalk:
+                case ChannelTypes.AvTalk:
+                    return 0;
+            }
             return ATTypes.AT_GOSSIP;
         }
 
         public static void talk_auction(string argument)
         {
-            var buffer = string.Format("Auction: {0}", argument);
+            var buffer = $"Auction: {argument}";
 
             foreach (var d in db.DESCRIPTORS)
             {

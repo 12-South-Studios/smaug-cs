@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Linq;
+using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
@@ -21,7 +22,7 @@ namespace SmaugCS.Data
         public string Description { get; set; }
 
         [XmlElement("ID")]
-        public long vnum { get { return ID; } }
+        public long vnum => ID;
 
         [XmlElement("RoomID")]
         public long Room_vnum { get; set; }
@@ -41,10 +42,8 @@ namespace SmaugCS.Data
         public void SetFlags(string flags)
         {
             var words = flags.Split(' ');
-            foreach (var word in words)
+            foreach (var flagValue in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>).Select(flag => (int)flag))
             {
-                var flag = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>(word);
-                var flagValue = (int)flag;
                 Flags = Flags.SetBit(flagValue);
             }
         }

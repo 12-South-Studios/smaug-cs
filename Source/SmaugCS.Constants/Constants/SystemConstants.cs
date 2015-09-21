@@ -57,8 +57,8 @@ namespace SmaugCS.Constants.Constants
             {
                 while (!proxy.EndOfStream)
                 {
-                    var line = proxy.ReadLine().TrimEnd(new[] { '~' });
-                    var words = line.Split(new[] { ',' });
+                    var line = proxy.ReadLine().TrimEnd('~');
+                    var words = line.Split(',');
 
                     var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(words[0]);
                     SystemDirectories.Add(dirType, path + "\\" + words[1]);
@@ -73,8 +73,8 @@ namespace SmaugCS.Constants.Constants
             {
                 while (!proxy.EndOfStream)
                 {
-                    var line = proxy.ReadLine().TrimEnd(new[] { '~' });
-                    var words = line.Split(new[] { ',' });
+                    var line = proxy.ReadLine().TrimEnd('~');
+                    var words = line.Split(',');
 
                     var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(words[0]);
                     var useSystemDirectory = Convert.ToBoolean(BooleanConstants.ContainsIgnoreCase(words[2]));

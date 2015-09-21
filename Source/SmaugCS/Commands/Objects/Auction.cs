@@ -19,7 +19,7 @@ namespace SmaugCS.Commands.Objects
 {
     public static class Auction
     {
-        public static void do_auction(CharacterInstance ch, string argument)
+        public static void do_auction(CharacterInstance ch, string argument, IAuctionManager auctionManager = null)
         {
             if (ch.IsNpc()) return;
             
@@ -31,15 +31,15 @@ namespace SmaugCS.Commands.Objects
 
             var firstArg = argument.FirstWord();
             if (firstArg.IsNullOrEmpty())
-                ReviewAuction(ch);
+                ReviewAuction(ch, auctionManager);
             if (ch.IsImmortal() && firstArg.EqualsIgnoreCase("stop"))
-                StopAuction(ch, "Sale of {0} has been stopped by an Immortal.");
+                StopAuction(ch, "Sale of {0} has been stopped by an Immortal.", auctionManager);
             if (firstArg.EqualsIgnoreCase("bid"))
-                PlaceBid(ch, argument);
-            PlaceItemForAuction(ch, argument);
+                PlaceBid(ch, argument, auctionManager);
+            PlaceItemForAuction(ch, argument, auctionManager);
         }
 
-        private static void PlaceItemForAuction(CharacterInstance ch, string argument)
+        private static void PlaceItemForAuction(CharacterInstance ch, string argument, IAuctionManager auctionManager)
         {
             var firstArg = argument.FirstWord();
             var obj = ch.GetCarriedObject(firstArg);
@@ -50,7 +50,7 @@ namespace SmaugCS.Commands.Objects
                 "Personal items may not be auctioned.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch,
-                AuctionManager.Instance.Repository.History.Any(x => x.ItemForSale == obj.ObjectIndex.ID),
+                (auctionManager ?? AuctionManager.Instance).Repository.History.Any(x => x.ItemForSale == obj.ObjectIndex.ID),
                 "Such an item has been auctioned recently, try again later.")) return;
 
             var secondArg = argument.SecondWord();
@@ -61,10 +61,10 @@ namespace SmaugCS.Commands.Objects
             var startingBid = secondArg.ToInt32();
             if (CheckFunctions.CheckIfTrue(ch, startingBid <= 0, "You can't auction something for nothing!")) return;
 
-            if (AuctionManager.Instance.Auction != null)
+            if ((auctionManager ?? AuctionManager.Instance).Auction != null)
             {
                 comm.act(ATTypes.AT_TELL, "Try again later - $p is being auctioned right now!", ch,
-                    AuctionManager.Instance.Auction.ItemForSale, null, ToTypes.Character);
+                    (auctionManager ?? AuctionManager.Instance).Auction.ItemForSale, null, ToTypes.Character);
                 if (!ch.IsImmortal())
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulseViolence"));
                 return;
@@ -81,17 +81,17 @@ namespace SmaugCS.Commands.Objects
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
 
-            AuctionManager.Instance.StartAuction(ch, obj, startingBid);
+            (auctionManager ?? AuctionManager.Instance).StartAuction(ch, obj, startingBid);
             ChatManager.talk_auction(string.Format("A new item is being auctioned: {0} at {1} coin.",
                 obj.ShortDescription, startingBid));
         }
 
-        private static void PlaceBid(CharacterInstance ch, string argument)
+        private static void PlaceBid(CharacterInstance ch, string argument, IAuctionManager auctionManager)
         {
-            if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
+            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? AuctionManager.Instance).Auction,
                 "There isn't anything being auctioned right now.")) return;
 
-            var auction = AuctionManager.Instance.Auction;
+            var auction = (auctionManager ?? AuctionManager.Instance).Auction;
 
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < auction.ItemForSale.Level,
                 "This object's level is too high for your use.")) return;
@@ -121,20 +121,20 @@ namespace SmaugCS.Commands.Objects
             if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
 
-            AuctionManager.Instance.PlaceBid(ch, bid);
+            (auctionManager ?? AuctionManager.Instance).PlaceBid(ch, bid);
 
             ChatManager.talk_auction(string.Format("A bid of {0} coin has been received on {1}.", bid,
                 auction.ItemForSale.ShortDescription));
         }
 
-        public static void StopAuction(CharacterInstance ch, string argument)
+        public static void StopAuction(CharacterInstance ch, string argument, IAuctionManager auctionManager)
         {
-            if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction, "There is no auction to stop."))
+            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? AuctionManager.Instance).Auction, "There is no auction to stop."))
                 return;
 
             ch.SetColor(ATTypes.AT_LBLUE);
 
-            var auction = AuctionManager.Instance.Auction;
+            var auction = (auctionManager ?? AuctionManager.Instance).Auction;
 
             ChatManager.talk_auction(string.Format(argument, auction.ItemForSale.ShortDescription));
             auction.ItemForSale.AddTo(auction.Seller);
@@ -148,18 +148,18 @@ namespace SmaugCS.Commands.Objects
                 auction.Buyer.SendTo("Your money has been returned.");
             }
 
-            AuctionManager.Instance.StopAuction();
+            (auctionManager ?? AuctionManager.Instance).StopAuction();
         }
 
-        private static void ReviewAuction(CharacterInstance ch)
+        private static void ReviewAuction(CharacterInstance ch, IAuctionManager auctionManager)
         {
-            if (CheckFunctions.CheckIfNullObject(ch, AuctionManager.Instance.Auction,
+            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? AuctionManager.Instance).Auction,
                 "There is nothing being auctioned right now.  What would you like to auction?")) return;
 
             ch.SetColor(ATTypes.AT_BLUE);
             ch.SendTo("Auctions:");
 
-            var auction = AuctionManager.Instance.Auction;
+            var auction = (auctionManager ?? AuctionManager.Instance).Auction;
             if (auction.BidAmount > 0)
                 ch.Printf("Current bid on this item is %s coin.", auction.BidAmount);
             else 

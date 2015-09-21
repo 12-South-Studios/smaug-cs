@@ -9,17 +9,17 @@
             
             </summary>
         </member>
-        <member name="M:Realm.Library.Common.RangeAttribute.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="P:Realm.Library.Common.RangeAttribute.Minimum">
             <summary>
             
             </summary>
         </member>
         <member name="P:Realm.Library.Common.RangeAttribute.Maximum">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.RangeAttribute.#ctor">
             <summary>
             
             </summary>
@@ -64,17 +64,17 @@
             
             </summary>
         </member>
+        <member name="P:Realm.Library.Common.Caching.CachedObjectRepository`2.Count">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.Caching.CachedObjectRepository`2.Get(`0)">
             <summary>
             Gets the entity by key
             </summary>
             <param name="key"></param>
             <returns></returns>
-        </member>
-        <member name="P:Realm.Library.Common.Caching.CachedObjectRepository`2.Count">
-            <summary>
-            
-            </summary>
         </member>
         <member name="P:Realm.Library.Common.Caching.CachedObjectRepository`2.Keys">
             <summary>
@@ -91,6 +91,31 @@
             
              </summary>
              <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.Name">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.CacheMemoryLimitInBytes">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.PhysicalMemoryLimit">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.PollingInterval">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.CacheItemPolicy">
+             <summary>
+            
+             </summary>
         </member>
         <member name="M:Realm.Library.Common.IMemoryCacheWrapper`1.AddOrUpdate(System.String,`0)">
              <summary>
@@ -128,31 +153,6 @@
              <param name="key"></param>
              <returns></returns>
         </member>
-        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.Name">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.CacheMemoryLimitInBytes">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.PhysicalMemoryLimit">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.PollingInterval">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.CacheItemPolicy">
-             <summary>
-            
-             </summary>
-        </member>
         <member name="P:Realm.Library.Common.IMemoryCacheWrapper`1.Count">
              <summary>
             
@@ -172,6 +172,31 @@
              <param name="config"></param>
         </member>
         <member name="M:Realm.Library.Common.MemoryCacheWrapper`1.Finalize">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.Name">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.CacheMemoryLimitInBytes">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.PhysicalMemoryLimit">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.PollingInterval">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.CacheItemPolicy">
              <summary>
             
              </summary>
@@ -212,6 +237,11 @@
              <param name="key"></param>
              <returns></returns>
         </member>
+        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.Count">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="M:Realm.Library.Common.MemoryCacheWrapper`1.Dispose">
              <summary>
             
@@ -222,36 +252,6 @@
             
              </summary>
              <param name="disposing"></param>
-        </member>
-        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.Name">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.CacheMemoryLimitInBytes">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.PhysicalMemoryLimit">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.PollingInterval">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.CacheItemPolicy">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.MemoryCacheWrapper`1.Count">
-             <summary>
-            
-             </summary>
         </member>
         <member name="T:Realm.Library.Common.Collections.BidirectionalDictionary`2">
             <summary>
@@ -301,6 +301,67 @@
             <param name="first"></param>
             <param name="second"></param>
         </member>
+        <member name="T:Realm.Library.Common.Collections.SerializableDictionary`2">
+            <summary>
+            
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TVal"></typeparam>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+            <summary>
+            
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            
+            </summary>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="capacity"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1},System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            
+            </summary>
+            <param name="dictionary"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            
+            </summary>
+            <param name="capacity"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="P:Realm.Library.Common.Collections.SerializableDictionary`2.ValueSerializer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Realm.Library.Common.Collections.EntityRepository">
+            <summary>
+            Stores objects that implement IEntity, derives from Repository
+            </summary>
+        </member>
         <member name="T:Realm.Library.Common.NaturalSortStringComparer">
             <summary>
             Natural Sort comparer implementation that allows you to take strings
@@ -338,83 +399,6 @@
              <summary>
             
              </summary>
-        </member>
-        <member name="T:Realm.Library.Common.BaseContext`1">
-             <summary>
-            
-             </summary>
-             <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:Realm.Library.Common.BaseContext`1.#ctor(`0)">
-             <summary>
-            
-             </summary>
-             <param name="owner"></param>
-        </member>
-        <member name="P:Realm.Library.Common.BaseContext`1.Owner">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="T:Realm.Library.Common.IBitContext">
-            <summary>
-            Declares the contract for an object that can handle a bit field
-            </summary>
-        </member>
-        <member name="T:Realm.Library.Common.IContext">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.HasBit(System.Int32)">
-            <summary>
-            Gets whether or not the object has the given bit
-            </summary>
-            <param name="bit">Bit value</param>
-            <returns>Returns whether or not the object has the bit</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.HasBit(System.Enum)">
-            <summary>
-            Gets whether or not the object has the given enum (with a bit value)
-            </summary>
-            <param name="value">Enum value</param>
-            <returns>Returns whether or not the object has the enum</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.SetBit(System.Int32)">
-            <summary>
-            Sets the given bit onto the object
-            </summary>
-            <param name="bit">Bit value</param>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.SetBit(System.Enum)">
-            <summary>
-            Sets the given enum (with a bit value) onto the object
-            </summary>
-            <param name="value">Enum value</param>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.UnsetBit(System.Int32)">
-            <summary>
-            Removes the bit value from the object
-            </summary>
-            <param name="bit">Bit value</param>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.UnsetBit(System.Enum)">
-            <summary>
-            Removes the enum (with a bit value) from the object
-            </summary>
-            <param name="value">Enum value</param>
-        </member>
-        <member name="M:Realm.Library.Common.IBitContext.SetBits(System.Int32)">
-            <summary>
-            Sets all of the bits for the object. Overwrites any existing.
-            </summary>
-            <param name="value">Bit value</param>
-        </member>
-        <member name="P:Realm.Library.Common.IBitContext.GetBits">
-            <summary>
-            Gets the total value of the object's bit-field
-            </summary>
-            <returns>Returns an integer value</returns>
         </member>
         <member name="M:Realm.Library.Common.BitContext.#ctor(Realm.Library.Common.IEntity)">
              <summary>
@@ -460,13 +444,35 @@
              </summary>
              <param name="value"></param>
         </member>
+        <member name="P:Realm.Library.Common.BitContext.GetBits">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="M:Realm.Library.Common.BitContext.SetBits(System.Int32)">
              <summary>
             
              </summary>
              <param name="value"></param>
         </member>
-        <member name="P:Realm.Library.Common.BitContext.GetBits">
+        <member name="T:Realm.Library.Common.BaseContext`1">
+             <summary>
+            
+             </summary>
+             <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Realm.Library.Common.BaseContext`1.#ctor(`0)">
+             <summary>
+            
+             </summary>
+             <param name="owner"></param>
+        </member>
+        <member name="P:Realm.Library.Common.BaseContext`1.Owner">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:Realm.Library.Common.IContext">
              <summary>
             
              </summary>
@@ -475,88 +481,6 @@
              <summary>
             
              </summary>
-        </member>
-        <member name="T:Realm.Library.Common.IPropertyContext">
-            <summary>
-            Declares the contract for an object that can handle properties
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.GetProperty``1(System.String)">
-            <summary>
-            Gets the indicated property by name
-            </summary>
-            <param name="name">Property name</param>
-            <returns>Returns an object representing the property</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.SetProperty(System.String,System.Object,Realm.Library.Common.PropertyTypeOptions)">
-            <summary>
-            Sets the given property with value onto the object
-            </summary>
-            <param name="name">Name of the property</param>
-            <param name="value">Object value to set</param>
-            <param name="bits">Bit field of property bits</param>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.SetProperty(System.Enum,System.Object,Realm.Library.Common.PropertyTypeOptions)">
-            <summary>
-            Sets the given property with value onto the object
-            </summary>
-            <param name="prop">Enumerated property</param>
-            <param name="value">Object value to set</param>
-            <param name="bits">Bit field of property bits</param>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.HasProperty(System.String)">
-            <summary>
-            Gets whether or not the object has the given property
-            </summary>
-            <param name="name">Property name</param>
-            <returns>Returns whether or not the object has the property</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.IsPersistable(System.String)">
-            <summary>
-            Determines if the given property can be persisted to the database
-            </summary>
-            <param name="name">Property name</param>
-            <returns>Returns true if the given property is persistable</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.IsVolatile(System.String)">
-            <summary>
-            Determines if the given property can be changed
-            </summary>
-            <param name="name">Property name</param>
-            <returns>Returns true if the given property is volatile</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.IsVisible(System.String)">
-            <summary>
-            Determines if the given property is visible
-            </summary>
-            <param name="name">Property name</param>
-            <returns>Returns true if the given property is visible</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.RemoveProperty(System.String)">
-            <summary>
-            Removes a given property from the dictionary
-            </summary>
-            <param name="name">Property name</param>
-            <returns>Returns true if the remove was successful</returns>
-        </member>
-        <member name="M:Realm.Library.Common.IPropertyContext.GetPropertyBits(System.String)">
-            <summary>
-            Returns a string compilation representing the Persistable, Volatile and Visible flags
-            </summary>
-            <param name="name">Property name</param>
-            <returns>String of flags (P=Persistable, V=Volatile, I=Visible</returns>
-        </member>
-        <member name="P:Realm.Library.Common.IPropertyContext.PropertyKeys">
-            <summary>
-            Gets an enumeration of the property keys from the dictionary
-            </summary>
-            <returns>Returns an IEnumerable value of the property keys</returns>
-        </member>
-        <member name="P:Realm.Library.Common.IPropertyContext.Count">
-            <summary>
-            Gets the number of properties on the object
-            </summary>
-            <returns>Returns an integer value</returns>
         </member>
         <member name="M:Realm.Library.Common.PropertyContext.#ctor(Realm.Library.Common.IEntity)">
              <summary>
@@ -623,13 +547,6 @@
              <param name="name"></param>
              <returns></returns>
         </member>
-        <member name="M:Realm.Library.Common.PropertyContext.GetPropertyBits(System.String)">
-             <summary>
-            
-             </summary>
-             <param name="name"></param>
-             <returns></returns>
-        </member>
         <member name="P:Realm.Library.Common.PropertyContext.PropertyKeys">
              <summary>
             
@@ -639,6 +556,13 @@
              <summary>
             
              </summary>
+        </member>
+        <member name="M:Realm.Library.Common.PropertyContext.GetPropertyBits(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="name"></param>
+             <returns></returns>
         </member>
         <member name="T:Realm.Library.Common.Data.Atom">
             <summary>
@@ -651,17 +575,17 @@
             </summary>
             <param name="type"></param>
         </member>
+        <member name="P:Realm.Library.Common.Data.Atom.Type">
+            <summary>
+            Gets the type of Atom
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.Data.Atom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
             <param name="log"></param>
             <param name="prefix"></param>
-        </member>
-        <member name="P:Realm.Library.Common.Data.Atom.Type">
-            <summary>
-            Gets the type of Atom
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.Data.AtomExtensions">
             <summary>
@@ -749,17 +673,17 @@
             </summary>
             <param name="value"></param>
         </member>
+        <member name="P:Realm.Library.Common.Data.BoolAtom.Value">
+            <summary>
+            Gets the value of the atom
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.Data.BoolAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
             <param name="log"></param>
             <param name="prefix"></param>
-        </member>
-        <member name="P:Realm.Library.Common.Data.BoolAtom.Value">
-            <summary>
-            Gets the value of the atom
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.Data.DictionaryAtom">
             <summary>
@@ -787,6 +711,11 @@
             Gets if teh dictionary is emtpy
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:Realm.Library.Common.Data.DictionaryAtom.Count">
+            <summary>
+            Gets the number of objects in the dictionary
+            </summary>
         </member>
         <member name="M:Realm.Library.Common.Data.DictionaryAtom.ContainsKey(System.String)">
             <summary>
@@ -898,18 +827,6 @@
             <param name="key"></param>
             <param name="value"></param>
         </member>
-        <member name="M:Realm.Library.Common.Data.DictionaryAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
-            <summary>
-            Dumps the contents of the Atom with the given prefix
-            </summary>
-            <param name="log"></param>
-            <param name="prefix"></param>
-        </member>
-        <member name="P:Realm.Library.Common.Data.DictionaryAtom.Count">
-            <summary>
-            Gets the number of objects in the dictionary
-            </summary>
-        </member>
         <member name="P:Realm.Library.Common.Data.DictionaryAtom.Keys">
             <summary>
             Gets an enumerable list of keys
@@ -919,6 +836,13 @@
             <summary>
             Gets an enumerable collection of values
             </summary>
+        </member>
+        <member name="M:Realm.Library.Common.Data.DictionaryAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
+            <summary>
+            Dumps the contents of the Atom with the given prefix
+            </summary>
+            <param name="log"></param>
+            <param name="prefix"></param>
         </member>
         <member name="T:Realm.Library.Common.Data.IntAtom">
             <summary>
@@ -936,6 +860,11 @@
             Overloaded constructor
             </summary>
             <param name="value"></param>
+        </member>
+        <member name="P:Realm.Library.Common.Data.IntAtom.Value">
+            <summary>
+            Gets the value of the atom
+            </summary>
         </member>
         <member name="M:Realm.Library.Common.Data.IntAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
@@ -956,11 +885,6 @@
             Overload of GetHashCode to provide a different hash code
             </summary>
             <returns></returns>
-        </member>
-        <member name="P:Realm.Library.Common.Data.IntAtom.Value">
-            <summary>
-            Gets the value of the atom
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.Data.ListAtom">
             <summary>
@@ -994,6 +918,11 @@
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:Realm.Library.Common.Data.ListAtom.Count">
+            <summary>
+            Gets the number of objects in the list
+            </summary>
         </member>
         <member name="M:Realm.Library.Common.Data.ListAtom.Get(System.Int32)">
             <summary>
@@ -1123,11 +1052,6 @@
             <param name="log"></param>
             <param name="prefix"></param>
         </member>
-        <member name="P:Realm.Library.Common.Data.ListAtom.Count">
-            <summary>
-            Gets the number of objects in the list
-            </summary>
-        </member>
         <member name="T:Realm.Library.Common.Data.ObjectAtom">
             <summary>
             Class that defines an object Atom
@@ -1139,17 +1063,17 @@
             </summary>
             <param name="value"></param>
         </member>
+        <member name="P:Realm.Library.Common.Data.ObjectAtom.Value">
+            <summary>
+            Gets the value of the atom
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.Data.ObjectAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
             <param name="log"></param>
             <param name="prefix"></param>
-        </member>
-        <member name="P:Realm.Library.Common.Data.ObjectAtom.Value">
-            <summary>
-            Gets the value of the atom
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.Data.RealAtom">
             <summary>
@@ -1168,17 +1092,17 @@
             </summary>
             <param name="value"></param>
         </member>
+        <member name="P:Realm.Library.Common.Data.RealAtom.Value">
+            <summary>
+            Gets the value of the atom
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.Data.RealAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
             Dumps the contents of the Atom with the given prefix
             </summary>
             <param name="log"></param>
             <param name="prefix"></param>
-        </member>
-        <member name="P:Realm.Library.Common.Data.RealAtom.Value">
-            <summary>
-            Gets the value of the atom
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.Data.StringAtom">
             <summary>
@@ -1190,6 +1114,11 @@
             Constructor
             </summary>
             <param name="value"></param>
+        </member>
+        <member name="P:Realm.Library.Common.Data.StringAtom.Value">
+            <summary>
+            Gets the value of the atom
+            </summary>
         </member>
         <member name="M:Realm.Library.Common.Data.StringAtom.Dump(Realm.Library.Common.Logging.ILogWrapper,System.String)">
             <summary>
@@ -1211,73 +1140,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:Realm.Library.Common.Data.StringAtom.Value">
-            <summary>
-            Gets the value of the atom
-            </summary>
-        </member>
         <member name="T:Realm.Library.Common.EntityContext`1">
              <summary>
             
              </summary>
              <typeparam name="T"></typeparam>
-        </member>
-        <member name="T:Realm.Library.Common.IEntityContext`1">
-            <summary>
-            Public interface for a context that allows the managing of objects
-            that implement IContext
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.IEntityContext`1.Contains(`0)">
-            <summary>
-            Gets if the handler contains the entity
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.IEntityContext`1.Contains(System.Int64)">
-            <summary>
-            Gets if the handler contains an entity with the given ID
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.IEntityContext`1.AddEntity(`0)">
-            <summary>
-            Adds the given entity
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.IEntityContext`1.AddEntities(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            Adds a given list of entities
-            </summary>
-            <param name="entityList"></param>
-        </member>
-        <member name="M:Realm.Library.Common.IEntityContext`1.RemoveEntity(`0)">
-            <summary>
-            Removes an entity
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.IEntityContext`1.GetEntity(System.Int64)">
-            <summary>
-            Gets an entity by ID
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Realm.Library.Common.IEntityContext`1.Entities">
-            <summary>
-            Gets a list of entities
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IEntityContext`1.Count">
-            <summary>
-            Gets the number of entities
-            </summary>
         </member>
         <member name="M:Realm.Library.Common.EntityContext`1.#ctor(`0)">
              <summary>
@@ -1319,17 +1186,17 @@
              <param name="entity"></param>
              <returns></returns>
         </member>
+        <member name="P:Realm.Library.Common.EntityContext`1.Entities">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="M:Realm.Library.Common.EntityContext`1.GetEntity(System.Int64)">
              <summary>
             
              </summary>
              <param name="id"></param>
              <returns></returns>
-        </member>
-        <member name="P:Realm.Library.Common.EntityContext`1.Entities">
-             <summary>
-            
-             </summary>
         </member>
         <member name="P:Realm.Library.Common.EntityContext`1.Count">
              <summary>
@@ -1368,6 +1235,80 @@
              <summary>
             
              </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.#ctor(Realm.Library.Common.ITimer,Realm.Library.Common.Logging.ILogWrapper)">
+             <summary>
+            
+             </summary>
+             <param name="timer"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="P:Realm.Library.Common.EventHandler.Frequency">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.RegisterListener(Realm.Library.Common.EventListener)">
+            <summary>
+            Registers an object to listen to another object for a particular event
+            and if that event is triggered to use a callback function
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.IsListening(System.Object,System.Type)">
+            <summary>
+            Is the object listening to the given event
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.IsListening(System.Object,System.Object,System.Type)">
+            <summary>
+            Is the object listening to the other object
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.StopListeningTo(System.Object,System.Object,System.Type)">
+            <summary>
+            Removes an object that was being listened to by another object for a particular event
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.StopListening(System.Object,System.Type)">
+            <summary>
+            Removes an object that was listening to a particular event
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.StopListening(System.Object)">
+            <summary>
+            Removes an object that was listening to any event
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent(System.Object,Realm.Library.Common.IEventBase)">
+            <summary>
+             Enqueues an event onto the event queue
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent(System.Object,Realm.Library.Common.IEventBase,Realm.Library.Common.RealmEventArgs)">
+            <summary>
+            Overload function for throwing an event
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent(System.Object,Realm.Library.Common.IEventBase,Realm.Library.Common.EventTable)">
+            <summary>
+            Overload function for throwing an event
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent``1(System.Object,Realm.Library.Common.EventTable)">
+            <summary>
+            Instantiates and throws an event of the given type
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent``1(System.Object)">
+            <summary>
+            Instantiates and throws an event of the given type
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventHandler.TimerElapsed(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            Handles a timer event and processes objects listening to
+            the given event and sender
+            </summary>
         </member>
         <member name="T:Realm.Library.Common.IEventHandler">
              <summary>
@@ -1456,81 +1397,12 @@
              <typeparam name="T"></typeparam>
              <param name="sender"></param>
         </member>
-        <member name="M:Realm.Library.Common.EventHandler.#ctor(Realm.Library.Common.ITimer,Realm.Library.Common.Logging.ILogWrapper)">
-             <summary>
-            
-             </summary>
-             <param name="timer"></param>
-            <param name="logger"></param>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.RegisterListener(Realm.Library.Common.EventListener)">
-            <summary>
-            Registers an object to listen to another object for a particular event
-            and if that event is triggered to use a callback function
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.IsListening(System.Object,System.Type)">
-            <summary>
-            Is the object listening to the given event
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.IsListening(System.Object,System.Object,System.Type)">
-            <summary>
-            Is the object listening to the other object
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.StopListeningTo(System.Object,System.Object,System.Type)">
-            <summary>
-            Removes an object that was being listened to by another object for a particular event
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.StopListening(System.Object,System.Type)">
-            <summary>
-            Removes an object that was listening to a particular event
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.StopListening(System.Object)">
-            <summary>
-            Removes an object that was listening to any event
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent(System.Object,Realm.Library.Common.IEventBase)">
-            <summary>
-             Enqueues an event onto the event queue
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent(System.Object,Realm.Library.Common.IEventBase,Realm.Library.Common.RealmEventArgs)">
-            <summary>
-            Overload function for throwing an event
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent(System.Object,Realm.Library.Common.IEventBase,Realm.Library.Common.EventTable)">
-            <summary>
-            Overload function for throwing an event
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent``1(System.Object,Realm.Library.Common.EventTable)">
-            <summary>
-            Instantiates and throws an event of the given type
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.ThrowEvent``1(System.Object)">
-            <summary>
-            Instantiates and throws an event of the given type
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.EventHandler.TimerElapsed(System.Object,System.Timers.ElapsedEventArgs)">
-            <summary>
-            Handles a timer event and processes objects listening to
-            the given event and sender
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EventHandler.Frequency">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:Realm.Library.Common.BaseException">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.BaseException.ResourceReferenceProperty">
             <summary>
             
             </summary>
@@ -1566,11 +1438,6 @@
             </summary>
             <param name="info"></param>
             <param name="context"></param>
-        </member>
-        <member name="P:Realm.Library.Common.BaseException.ResourceReferenceProperty">
-            <summary>
-            
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.InitializationException">
              <summary>
@@ -1891,111 +1758,10 @@
             Core event type used when the game is initialized
             </summary>
         </member>
-        <member name="T:Realm.Library.Common.EventBase">
-            <summary>
-            Abstract class that defines the
-            </summary>
-        </member>
-        <member name="T:Realm.Library.Common.IEventBase">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IEventBase.Name">
-            <summary>
-            The name of the event
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IEventBase.Sender">
-            <summary>
-            The object that sent this event
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.IEventBase.Args">
-            <summary>
-            The argument package for the event
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EventBase.Name">
-            <summary>
-            The name of the event
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EventBase.Sender">
-            <summary>
-            The object that sent this event
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EventBase.Callback">
-            <summary>
-            The function to call when the event is triggered
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EventBase.Args">
-            <summary>
-            The argument package for the event
-            </summary>
-        </member>
         <member name="M:Realm.Library.Common.OnGameInitialize.#ctor">
              <summary>
             
              </summary>
-        </member>
-        <member name="T:Realm.Library.Common.Collections.SerializableDictionary`2">
-            <summary>
-            
-            </summary>
-            <typeparam name="TKey"></typeparam>
-            <typeparam name="TVal"></typeparam>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
-            <summary>
-            
-            </summary>
-            <param name="dictionary"></param>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
-            <summary>
-            
-            </summary>
-            <param name="comparer"></param>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="capacity"></param>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1},System.Collections.Generic.IEqualityComparer{`0})">
-            <summary>
-            
-            </summary>
-            <param name="dictionary"></param>
-            <param name="comparer"></param>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
-            <summary>
-            
-            </summary>
-            <param name="capacity"></param>
-            <param name="comparer"></param>
-        </member>
-        <member name="M:Realm.Library.Common.Collections.SerializableDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            
-            </summary>
-            <param name="info"></param>
-            <param name="context"></param>
-        </member>
-        <member name="P:Realm.Library.Common.Collections.SerializableDictionary`2.ValueSerializer">
-            <summary>
-            
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.SingleLinkedList`1">
             <summary>
@@ -2008,23 +1774,6 @@
             
             </summary>
             <param name="p"></param>
-        </member>
-        <member name="M:Realm.Library.Common.SingleLinkedList`1.Pop">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Realm.Library.Common.SingleLinkedList`1.Reverse">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.SingleLinkedList`1.ToEnumerable">
-            <summary>
-            
-            </summary>
-            <returns></returns>
         </member>
         <member name="P:Realm.Library.Common.SingleLinkedList`1.Head">
             <summary>
@@ -2051,6 +1800,23 @@
             
             </summary>
         </member>
+        <member name="M:Realm.Library.Common.SingleLinkedList`1.Pop">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Common.SingleLinkedList`1.Reverse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.SingleLinkedList`1.ToEnumerable">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Realm.Library.Common.SingleLinkedNode`1">
             <summary>
             
@@ -2071,45 +1837,6 @@
             <summary>
             Critical level of the Log event
             </summary>
-        </member>
-        <member name="T:Realm.Library.Common.Logging.LogWrapper">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="M:Realm.Library.Common.Logging.LogWrapper.#ctor(log4net.ILog,Realm.Library.Common.Logging.LogLevel)">
-             <summary>
-            
-             </summary>
-             <param name="log"></param>
-             <param name="level"></param>
-        </member>
-        <member name="M:Realm.Library.Common.Logging.LogWrapper.LogThis(Realm.Library.Common.Logging.LogLevel)">
-             <summary>
-            
-             </summary>
-             <param name="logLevel"></param>
-             <returns></returns>
-        </member>
-        <member name="E:Realm.Library.Common.Logging.LogWrapper.OnLoggingEvent">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.Logging.LogWrapper.Log">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.Logging.LogWrapper.Logger">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Realm.Library.Common.Logging.LogWrapper.MinLoggingLevel">
-             <summary>
-            
-             </summary>
         </member>
         <member name="T:Realm.Library.Common.GameSingleton">
             <summary>
@@ -2230,6 +1957,11 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="P:Realm.Library.Common.CommonTimer.Id">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.CommonTimer.Start(System.Nullable{System.Double})">
             <summary>
             
@@ -2237,16 +1969,6 @@
             <param name="interval"></param>
         </member>
         <member name="M:Realm.Library.Common.CommonTimer.Stop">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Realm.Library.Common.CommonTimer.Dispose">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.CommonTimer.Id">
             <summary>
             
             </summary>
@@ -2262,6 +1984,11 @@
             </summary>
         </member>
         <member name="P:Realm.Library.Common.CommonTimer.Enabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.CommonTimer.Dispose">
             <summary>
             
             </summary>
@@ -2351,7 +2078,7 @@
              <summary>
             
              </summary>
-             <param name="Message"></param>
+             <param name="message"></param>
              <param name="passphrase"></param>
              <returns></returns>
         </member>
@@ -2359,7 +2086,7 @@
              <summary>
             
              </summary>
-             <param name="Message"></param>
+             <param name="message"></param>
              <param name="passphrase"></param>
              <returns></returns>
         </member>
@@ -2550,6 +2277,11 @@
             <param name="itemName"></param>
             <returns></returns>
         </member>
+        <member name="P:Realm.Library.Common.BooleanSet.IsComplete">
+            <summary>
+            Gets if all of the items within the set are complete
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.BooleanSet.CompleteItem(System.String)">
             <summary>
             Indicates to the boolean set that the given item is now complete.
@@ -2560,9 +2292,29 @@
             <exception cref="T:System.Collections.Generic.KeyNotFoundException">KeyNotFoundException is thrown if the itemName does not exist in the set</exception>
             <exception cref="T:System.Data.NoNullAllowedException">NoNullAllowedException is thrown if the Callback function was not defined</exception>
         </member>
-        <member name="P:Realm.Library.Common.BooleanSet.IsComplete">
+        <member name="T:Realm.Library.Common.EventBase">
             <summary>
-            Gets if all of the items within the set are complete
+            Abstract class that defines the
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EventBase.Name">
+            <summary>
+            The name of the event
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EventBase.Sender">
+            <summary>
+            The object that sent this event
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EventBase.Callback">
+            <summary>
+            The function to call when the event is triggered
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EventBase.Args">
+            <summary>
+            The argument package for the event
             </summary>
         </member>
         <member name="T:Realm.Library.Common.EventListener">
@@ -2578,12 +2330,6 @@
             <param name="listenTo"></param>
             <param name="eventType"></param>
             <param name="callback"></param>
-        </member>
-        <member name="M:Realm.Library.Common.EventListener.ToString">
-            <summary>
-            Override of the ToString function
-            </summary>
-            <returns></returns>
         </member>
         <member name="P:Realm.Library.Common.EventListener.Listener">
             <summary>
@@ -2604,6 +2350,12 @@
             <summary>
             Function to call when the event is triggered
             </summary>
+        </member>
+        <member name="M:Realm.Library.Common.EventListener.ToString">
+            <summary>
+            Override of the ToString function
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Realm.Library.Common.EventTable">
             <summary>
@@ -2658,6 +2410,26 @@
             Gets the calling class and method for the current stack
             </summary>
             <returns>Returns the full name of the class (with namespace) and the calling method</returns>
+        </member>
+        <member name="T:Realm.Library.Common.IEventBase">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IEventBase.Name">
+            <summary>
+            The name of the event
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IEventBase.Sender">
+            <summary>
+            The object that sent this event
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.IEventBase.Args">
+            <summary>
+            The argument package for the event
+            </summary>
         </member>
         <member name="T:Realm.Library.Common.ICell">
             <summary>
@@ -2715,6 +2487,63 @@
              <param name="args"></param>
              <returns></returns>
         </member>
+        <member name="T:Realm.Library.Common.IEntityContext`1">
+            <summary>
+            Public interface for a context that allows the managing of objects
+            that implement IContext
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.IEntityContext`1.Contains(`0)">
+            <summary>
+            Gets if the handler contains the entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Common.IEntityContext`1.Contains(System.Int64)">
+            <summary>
+            Gets if the handler contains an entity with the given ID
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Common.IEntityContext`1.AddEntity(`0)">
+            <summary>
+            Adds the given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Common.IEntityContext`1.AddEntities(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a given list of entities
+            </summary>
+            <param name="entityList"></param>
+        </member>
+        <member name="M:Realm.Library.Common.IEntityContext`1.RemoveEntity(`0)">
+            <summary>
+            Removes an entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Realm.Library.Common.IEntityContext`1.Entities">
+            <summary>
+            Gets a list of entities
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.IEntityContext`1.GetEntity(System.Int64)">
+            <summary>
+            Gets an entity by ID
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Realm.Library.Common.IEntityContext`1.Count">
+            <summary>
+            Gets the number of entities
+            </summary>
+        </member>
         <member name="T:Realm.Library.Common.IEntityRepository">
             <summary>
             Public interface for a repository to store objects that implement IEntity
@@ -2760,6 +2589,22 @@
             Overrides the GetHashCode to incorporate a true hash of the object properties
             </summary>
         </member>
+        <member name="M:Realm.Library.Common.Entity.op_Equality(Realm.Library.Common.Entity,Realm.Library.Common.Entity)">
+            <summary>
+            
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Realm.Library.Common.Entity.op_Inequality(Realm.Library.Common.Entity,Realm.Library.Common.Entity)">
+            <summary>
+            
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
         <member name="M:Realm.Library.Common.Entity.Dispose">
             <summary>
             Overrides the base Dispose to make this object disposable
@@ -2770,11 +2615,6 @@
             Dispose of any internal resources
             </summary>
             <param name="disposing"></param>
-        </member>
-        <member name="T:Realm.Library.Common.Collections.EntityRepository">
-            <summary>
-            Stores objects that implement IEntity, derives from Repository
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.Property">
             <summary>
@@ -3119,20 +2959,40 @@
             Class definining an attribute
             </summary>
         </member>
+        <member name="P:Realm.Library.Common.ValueAttribute.Value">
+            <summary>
+            Read-Only value of the attribute
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.ValueAttribute.#ctor(System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Realm.Library.Common.NameAttribute"/> class
             </summary>
             <param name="value">value of the attribute</param>
         </member>
-        <member name="P:Realm.Library.Common.ValueAttribute.Value">
+        <member name="T:Realm.Library.Common.EnumAttribute">
+            <summary>
+            Class definining an attribute
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EnumAttribute.Name">
+            <summary>
+            Read-Only name of the attribute
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EnumAttribute.Value">
             <summary>
             Read-Only value of the attribute
             </summary>
         </member>
-        <member name="T:Realm.Library.Common.EnumAttribute">
+        <member name="P:Realm.Library.Common.EnumAttribute.ShortName">
             <summary>
-            Class definining an attribute
+            Read-Only short name of the attribute
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.EnumAttribute.ExtraData">
+            <summary>
+            Read-Only extra string data of the attribute
             </summary>
         </member>
         <member name="M:Realm.Library.Common.EnumAttribute.#ctor(System.String)">
@@ -3165,29 +3025,14 @@
             <param name="shortName"></param>
             <param name="extraData"></param>
         </member>
-        <member name="P:Realm.Library.Common.EnumAttribute.Name">
-            <summary>
-            Read-Only name of the attribute
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EnumAttribute.Value">
-            <summary>
-            Read-Only value of the attribute
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EnumAttribute.ShortName">
-            <summary>
-            Read-Only short name of the attribute
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.EnumAttribute.ExtraData">
-            <summary>
-            Read-Only extra string data of the attribute
-            </summary>
-        </member>
         <member name="T:Realm.Library.Common.NameAttribute">
             <summary>
             Class definining an attribute
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.NameAttribute.Name">
+            <summary>
+            Read-Only name of the attribute
             </summary>
         </member>
         <member name="M:Realm.Library.Common.NameAttribute.#ctor(System.String)">
@@ -3195,11 +3040,6 @@
             Initializes a new instance of the <see cref="T:Realm.Library.Common.NameAttribute"/> class
             </summary>
             <param name="name">name of the attribute</param>
-        </member>
-        <member name="P:Realm.Library.Common.NameAttribute.Name">
-            <summary>
-            Read-Only name of the attribute
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.EnumerationExtensions">
             <summary>
@@ -3782,10 +3622,147 @@
             <param name="toCompare"></param>
             <returns></returns>
         </member>
+        <member name="T:Realm.Library.Common.IBitContext">
+            <summary>
+            Declares the contract for an object that can handle a bit field
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.HasBit(System.Int32)">
+            <summary>
+            Gets whether or not the object has the given bit
+            </summary>
+            <param name="bit">Bit value</param>
+            <returns>Returns whether or not the object has the bit</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.HasBit(System.Enum)">
+            <summary>
+            Gets whether or not the object has the given enum (with a bit value)
+            </summary>
+            <param name="value">Enum value</param>
+            <returns>Returns whether or not the object has the enum</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.SetBit(System.Int32)">
+            <summary>
+            Sets the given bit onto the object
+            </summary>
+            <param name="bit">Bit value</param>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.SetBit(System.Enum)">
+            <summary>
+            Sets the given enum (with a bit value) onto the object
+            </summary>
+            <param name="value">Enum value</param>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.UnsetBit(System.Int32)">
+            <summary>
+            Removes the bit value from the object
+            </summary>
+            <param name="bit">Bit value</param>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.UnsetBit(System.Enum)">
+            <summary>
+            Removes the enum (with a bit value) from the object
+            </summary>
+            <param name="value">Enum value</param>
+        </member>
+        <member name="P:Realm.Library.Common.IBitContext.GetBits">
+            <summary>
+            Gets the total value of the object's bit-field
+            </summary>
+            <returns>Returns an integer value</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IBitContext.SetBits(System.Int32)">
+            <summary>
+            Sets all of the bits for the object. Overwrites any existing.
+            </summary>
+            <param name="value">Bit value</param>
+        </member>
         <member name="T:Realm.Library.Common.ILogBridge">
             <summary>
             Declares a bridge contract for logging
             </summary>
+        </member>
+        <member name="T:Realm.Library.Common.IPropertyContext">
+            <summary>
+            Declares the contract for an object that can handle properties
+            </summary>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.GetProperty``1(System.String)">
+            <summary>
+            Gets the indicated property by name
+            </summary>
+            <param name="name">Property name</param>
+            <returns>Returns an object representing the property</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.SetProperty(System.String,System.Object,Realm.Library.Common.PropertyTypeOptions)">
+            <summary>
+            Sets the given property with value onto the object
+            </summary>
+            <param name="name">Name of the property</param>
+            <param name="value">Object value to set</param>
+            <param name="bits">Bit field of property bits</param>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.SetProperty(System.Enum,System.Object,Realm.Library.Common.PropertyTypeOptions)">
+            <summary>
+            Sets the given property with value onto the object
+            </summary>
+            <param name="prop">Enumerated property</param>
+            <param name="value">Object value to set</param>
+            <param name="bits">Bit field of property bits</param>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.HasProperty(System.String)">
+            <summary>
+            Gets whether or not the object has the given property
+            </summary>
+            <param name="name">Property name</param>
+            <returns>Returns whether or not the object has the property</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.IsPersistable(System.String)">
+            <summary>
+            Determines if the given property can be persisted to the database
+            </summary>
+            <param name="name">Property name</param>
+            <returns>Returns true if the given property is persistable</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.IsVolatile(System.String)">
+            <summary>
+            Determines if the given property can be changed
+            </summary>
+            <param name="name">Property name</param>
+            <returns>Returns true if the given property is volatile</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.IsVisible(System.String)">
+            <summary>
+            Determines if the given property is visible
+            </summary>
+            <param name="name">Property name</param>
+            <returns>Returns true if the given property is visible</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.RemoveProperty(System.String)">
+            <summary>
+            Removes a given property from the dictionary
+            </summary>
+            <param name="name">Property name</param>
+            <returns>Returns true if the remove was successful</returns>
+        </member>
+        <member name="P:Realm.Library.Common.IPropertyContext.PropertyKeys">
+            <summary>
+            Gets an enumeration of the property keys from the dictionary
+            </summary>
+            <returns>Returns an IEnumerable value of the property keys</returns>
+        </member>
+        <member name="P:Realm.Library.Common.IPropertyContext.Count">
+            <summary>
+            Gets the number of properties on the object
+            </summary>
+            <returns>Returns an integer value</returns>
+        </member>
+        <member name="M:Realm.Library.Common.IPropertyContext.GetPropertyBits(System.String)">
+            <summary>
+            Returns a string compilation representing the Persistable, Volatile and Visible flags
+            </summary>
+            <param name="name">Property name</param>
+            <returns>String of flags (P=Persistable, V=Volatile, I=Visible</returns>
         </member>
         <member name="T:Realm.Library.Common.PropertyTypeOptions">
             <summary>
@@ -3867,6 +3844,21 @@
             Event Argument class for the MUD
             </summary>
         </member>
+        <member name="P:Realm.Library.Common.RealmEventArgs.Type">
+            <summary>
+            The type of event
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.RealmEventArgs.Data">
+            <summary>
+            A dictionary table of key-value data
+            </summary>
+        </member>
+        <member name="P:Realm.Library.Common.RealmEventArgs.Sender">
+            <summary>
+            The object that sent the event
+            </summary>
+        </member>
         <member name="M:Realm.Library.Common.RealmEventArgs.#ctor">
             <summary>
             Initializes a new instance of the class
@@ -3900,21 +3892,6 @@
             </summary>
             <param name="key">Name of the data value</param>
             <returns>Returns a flag indicating whether or not the data value exists</returns>
-        </member>
-        <member name="P:Realm.Library.Common.RealmEventArgs.Type">
-            <summary>
-            The type of event
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.RealmEventArgs.Data">
-            <summary>
-            A dictionary table of key-value data
-            </summary>
-        </member>
-        <member name="P:Realm.Library.Common.RealmEventArgs.Sender">
-            <summary>
-            The object that sent the event
-            </summary>
         </member>
         <member name="T:Realm.Library.Common.XMLExtensions">
              <summary>

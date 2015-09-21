@@ -15,7 +15,7 @@ namespace SmaugCS.Repository
     public class CharacterRepository : Repository<long, CharacterInstance>, IInstanceRepository<CharacterInstance>
     {
         private static long _idSpace = 1;
-        private static long GetNextId { get { return _idSpace++; } }
+        private static long GetNextId => _idSpace++;
 
         public CharacterInstance Create(Template parent, params object[] args)
         {

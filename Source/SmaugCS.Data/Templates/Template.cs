@@ -10,7 +10,7 @@ namespace SmaugCS.Data.Templates
         public string Description { get; set; }
 
         private readonly List<MudProgData> _mudProgs;
-        public IEnumerable<MudProgData> MudProgs { get { return _mudProgs; } }
+        public IEnumerable<MudProgData> MudProgs => _mudProgs;
 
         protected Template(long id, string name)
             : base(id, name)

@@ -12,8 +12,8 @@ namespace SmaugCS.Objects
         {
             this.tohit = tohit;
             this.todam = todam;
-            this.Carry = carry;
-            this.Wield = wield;
+            Carry = carry;
+            Wield = wield;
         }
     }
 }

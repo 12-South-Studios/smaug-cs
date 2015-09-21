@@ -138,10 +138,10 @@ namespace SmaugCS.Spells.Smaug
                                                   && !victim.IsAffectedBy(magic.ParseDiceExpression(ch, saf.Modifier)),
                 skill, ch, CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
-            if (CheckFunctions.CheckIfTrueCasting(skill.CheckSave(level, ch, victim), skill, ch,
-                CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
-
-            return ReturnTypes.None;
+            return CheckFunctions.CheckIfTrueCasting(skill.CheckSave(level, ch, victim), skill, ch,
+                CastingFunctionType.Failed, victim)
+                ? ReturnTypes.SpellFailed
+                : ReturnTypes.None;
         }
     }
 }

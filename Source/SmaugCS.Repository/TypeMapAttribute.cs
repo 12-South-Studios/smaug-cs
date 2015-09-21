@@ -2,7 +2,7 @@
 
 namespace SmaugCS.Repository
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class TypeMapAttribute : Attribute
     {
         public Type Repository { get; set; }

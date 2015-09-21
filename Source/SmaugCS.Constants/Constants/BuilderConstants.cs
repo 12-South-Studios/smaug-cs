@@ -5,7 +5,7 @@ namespace SmaugCS.Constants.Constants
 {
     public static class BuilderConstants
     {
-        public static List<string> ex_pmisc = new List<string>
+        public static readonly List<string> ex_pmisc = new List<string>
                                                   {
                                                       "undefined",
                                                       "vortex",
@@ -23,13 +23,13 @@ namespace SmaugCS.Constants.Constants
                                                        "geyser"
                                                    };
 
-        public static List<string> ex_pair = new List<string>() { "wind", "storm", "coldwind", "breeze" };
+        public static readonly List<string> ex_pair = new List<string> { "wind", "storm", "coldwind", "breeze" };
 
-        public static List<string> ex_pearth = new List<string>() { "landslide", "sinkhole", "quicksand", "earthquake" };
+        public static readonly List<string> ex_pearth = new List<string> { "landslide", "sinkhole", "quicksand", "earthquake" };
 
-        public static List<string> ex_pfire = new List<string>() { "lava", "hotair" };
+        public static readonly List<string> ex_pfire = new List<string> { "lava", "hotair" };
 
-        public static List<string> ex_flags = new List<string>()
+        public static readonly List<string> ex_flags = new List<string>
                                                   {
                                                       "isdoor",
                                                       "closed",
@@ -62,7 +62,7 @@ namespace SmaugCS.Constants.Constants
                                                       "bolted"
                                                   };
 
-        public static List<string> sec_flags = new List<string>()
+        public static readonly List<string> sec_flags = new List<string>
                                                    {
                                                        "inside",
                                                        "city",
@@ -99,7 +99,7 @@ namespace SmaugCS.Constants.Constants
                                                    };
 
 
-        public static List<string> r_flags = new List<string>()
+        public static readonly List<string> r_flags = new List<string>
                                                  {
                                                      "dark",
                                                      "death",
@@ -136,7 +136,7 @@ namespace SmaugCS.Constants.Constants
                                                      "bfs_mark"
                                                  };
 
-        public static List<string> o_flags = new List<string>()
+        public static readonly List<string> o_flags = new List<string>
                                                  {
                                                      "glow",
                                                      "hum",
@@ -178,7 +178,7 @@ namespace SmaugCS.Constants.Constants
                                                  };
 
 
-        public static List<string> w_flags = new List<string>
+        public static readonly List<string> w_flags = new List<string>
                                                  {
                                                      "take",
                                                      "finger",
@@ -254,7 +254,7 @@ namespace SmaugCS.Constants.Constants
                                                           "r13"
                                                       };
 
-        public static List<string> area_flags = new List<string>
+        public static readonly List<string> area_flags = new List<string>
                                                     {
                                                         "nopkill",
                                                         "freekill",
@@ -290,7 +290,7 @@ namespace SmaugCS.Constants.Constants
                                                         "r31"
                                                     };
 
-        public static List<string> o_types = new List<string>
+        public static readonly List<string> o_types = new List<string>
                                                  {
                                                      "none",
                                                      "light",
@@ -360,7 +360,7 @@ namespace SmaugCS.Constants.Constants
                                                      "mix"
                                                  };
 
-        public static List<string> a_types = new List<string>
+        public static readonly List<string> a_types = new List<string>
                                                  {
                                                      "none",
                                                      "strength",
@@ -441,7 +441,7 @@ namespace SmaugCS.Constants.Constants
                                                      "teledelay"
                                                  };
 
-        public static List<string> a_flags = new List<string>
+        public static readonly List<string> a_flags = new List<string>
                                                  {
                                                      "blind",
                                                      "invisible",
@@ -481,7 +481,7 @@ namespace SmaugCS.Constants.Constants
                                                      "venomshield"
                                                  };
 
-        public static List<string> act_flags = new List<string>
+        public static readonly List<string> act_flags = new List<string>
                                                    {
                                                        "npc",
                                                        "sentinel",
@@ -516,7 +516,7 @@ namespace SmaugCS.Constants.Constants
                                                        "prototype"
                                                    };
 
-        public static List<string> pc_flags = new List<string>
+        public static readonly List<string> pc_flags = new List<string>
                                                   {
                                                       "r1",
                                                       "deadly",
@@ -553,7 +553,7 @@ namespace SmaugCS.Constants.Constants
                                                       "r31"
                                                   };
 
-        public static List<string> plr_flags = new List<string>
+        public static readonly List<string> plr_flags = new List<string>
                                                    {
                                                        "npc",
                                                        "boughtpet",
@@ -591,7 +591,7 @@ namespace SmaugCS.Constants.Constants
                                                        "compass"
                                                    };
 
-        public static List<string> trap_flags = new List<string>
+        public static readonly List<string> trap_flags = new List<string>
                                                     {
                                                         "room",
                                                         "obj",
@@ -626,7 +626,7 @@ namespace SmaugCS.Constants.Constants
                                                         "r15"
                                                     };
 
-        public static List<string> cmd_flags = new List<string>
+        public static readonly List<string> cmd_flags = new List<string>
                                                    {
                                                        "possessed",
                                                        "polymorphed",
@@ -662,7 +662,7 @@ namespace SmaugCS.Constants.Constants
                                                        "r30"
                                                    };
 
-        public static List<string> wear_locs = new List<string>
+        public static readonly List<string> wear_locs = new List<string>
                                                    {
                                                        "light",
                                                        "finger1",
@@ -692,7 +692,7 @@ namespace SmaugCS.Constants.Constants
                                                        "ankle2"
                                                    };
 
-        public static List<string> ris_flags = new List<string>
+        public static readonly List<string> ris_flags = new List<string>
                                                    {
                                                        "fire",
                                                        "cold",
@@ -728,7 +728,7 @@ namespace SmaugCS.Constants.Constants
                                                        "r10"
                                                    };
 
-        public static List<string> trig_flags = new List<string>
+        public static readonly List<string> trig_flags = new List<string>
                                                     {
                                                         "up",
                                                         "unlock",
@@ -764,7 +764,7 @@ namespace SmaugCS.Constants.Constants
                                                         "r3"
                                                     };
 
-        public static List<string> part_flags = new List<string>
+        public static readonly List<string> part_flags = new List<string>
                                                     {
                                                         "head",
                                                         "arms",
@@ -800,7 +800,7 @@ namespace SmaugCS.Constants.Constants
                                                         "r2"
                                                     };
 
-        public static List<string> attack_flags = new List<string>
+        public static readonly List<string> attack_flags = new List<string>
                                                       {
                                                           "bite",
                                                           "claws",
@@ -836,7 +836,7 @@ namespace SmaugCS.Constants.Constants
                                                           "spiralblast"
                                                       };
 
-        public static List<string> defense_flags = new List<string>
+        public static readonly List<string> defense_flags = new List<string>
                                                        {
                                                            "parry",
                                                            "dodge",
@@ -865,7 +865,7 @@ namespace SmaugCS.Constants.Constants
                                                            "venomshield"
                                                        };
 
-        public static List<string> npc_position = new List<string>
+        public static readonly List<string> npc_position = new List<string>
                                                       {
                                                           "dead",
                                                           "mortal",
@@ -885,14 +885,14 @@ namespace SmaugCS.Constants.Constants
                                                           "drag"
                                                       };
 
-        public static List<string> npc_sex = new List<string>
+        public static readonly List<string> npc_sex = new List<string>
                                                  {
                                                      "neuter",
                                                      "male",
                                                      "female"
                                                  };
 
-        public static List<string> mprog_flags = new List<string>
+        public static readonly List<string> mprog_flags = new List<string>
                                                      {
                                                          "act",
                                                          "speech",
@@ -931,7 +931,7 @@ namespace SmaugCS.Constants.Constants
                                                          "command"
                                                      };
 
-        public static Dictionary<MudProgTypes, string> mprog_types = new Dictionary<MudProgTypes, string>()
+        public static readonly Dictionary<MudProgTypes, string> mprog_types = new Dictionary<MudProgTypes, string>
             {
                 {MudProgTypes.InFile, "in_file_prog"},
                 {MudProgTypes.Act, "act_prog"},

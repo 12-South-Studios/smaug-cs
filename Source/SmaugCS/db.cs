@@ -56,7 +56,7 @@ namespace SmaugCS
         #endregion
 
         #region Helps
-        public static List<HelpData> HELPS = new List<HelpData>();
+        public static readonly List<HelpData> HELPS = new List<HelpData>();
         public static string HelpGreeting { get; set; }
         #endregion
 
@@ -66,7 +66,7 @@ namespace SmaugCS
         public static List<WizardData> WIZARDS = new List<WizardData>();
         public static List<LoginMessageData> LOGIN_MESSAGES = new List<LoginMessageData>();
         public static List<RepairShopData> REPAIR = new List<RepairShopData>();
-        public static List<TeleportData> TELEPORT = new List<TeleportData>();
+        public static readonly List<TeleportData> TELEPORT = new List<TeleportData>();
 
         public static List<map_index_data> MAP = new List<map_index_data>();
 
@@ -113,7 +113,7 @@ namespace SmaugCS
             return " ";
         }
 
-        public static List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
+        public static readonly List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
         
         public static List<WatchData> WATCHES = new List<WatchData>();
 
@@ -188,7 +188,6 @@ namespace SmaugCS
         /// Adds a help page to the list if it is not a duplicate of an existing page. 
         /// Page is insert-sorted by keyword. (The reason for sorting is to keep do_hlist looking nice)
         /// </summary>
-        /// <param name="pHelp"></param>
         public static void add_help(HelpData newHelp)
         {
             if (HELPS.Any(x => x.Level == newHelp.Level && x.Keyword.Equals(newHelp.Keyword)))
@@ -513,7 +512,7 @@ namespace SmaugCS
 
             using (var proxy = new TextWriterProxy(new StreamWriter(file, true)))
             {
-                proxy.Write("[{0}] {1}: {2}\n", ch.CurrentRoom != null ? ch.CurrentRoom.ID : 0, ch.Name, str);
+                proxy.Write("[{0}] {1}: {2}\n", ch.CurrentRoom?.ID ?? 0, ch.Name, str);
             }
         }
 
@@ -537,7 +536,7 @@ namespace SmaugCS
                 IEnumerable<string> lines = proxy.ReadIntoList();
                 foreach (var line in lines)
                 {
-                    ch.SendToPagerColor(line.Trim(new[] { '\r', '\n' }));
+                    ch.SendToPagerColor(line.Trim('\r', '\n'));
                 }
             }
         }

@@ -70,11 +70,9 @@ namespace SmaugCS.Commands.Combat
         {
             var door = db.number_door();
             var exit = wasIn.GetExit(door);
-            if (exit == null
-                || exit.GetDestination() == null
-                || exit.Flags.IsSet(ExitFlags.NoFlee)
-                || (exit.Flags.IsSet(ExitFlags.Closed) || !ch.IsAffected(AffectedByTypes.PassDoor))
-                || (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
+            if (exit?.GetDestination() == null || exit.Flags.IsSet(ExitFlags.NoFlee) ||
+                (exit.Flags.IsSet(ExitFlags.Closed) || !ch.IsAffected(AffectedByTypes.PassDoor)) ||
+                (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
                 return false;
 
             var sneak = RepositoryManager.Instance.GetEntity<SkillData>("sneak");
@@ -83,7 +81,7 @@ namespace SmaugCS.Commands.Combat
             ch.StripAffects((int)sneak.ID);
             ch.AffectedBy = ch.AffectedBy.RemoveBit(AffectedByTypes.Sneak);
 
-            if (ch.CurrentMount != null && ch.CurrentMount.CurrentFighting != null)
+            if (ch.CurrentMount?.CurrentFighting != null)
                 ch.CurrentMount.StopFighting(true);
             Move.move_char(ch, exit, 0);
 

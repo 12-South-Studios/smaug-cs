@@ -55,10 +55,7 @@ namespace SmaugCS.Data.Instances
             Value = new List<int>();
         }
 
-        public ObjectTemplate ObjectIndex
-        {
-            get { return Parent.CastAs<ObjectTemplate>(); }
-        }
+        public ObjectTemplate ObjectIndex => Parent.CastAs<ObjectTemplate>();
 
         public int ApplyArmorClass
         {
@@ -81,10 +78,7 @@ namespace SmaugCS.Data.Instances
             }
         }
 
-        public int ObjectNumber
-        {
-            get { return Count; }
-        }
+        public int ObjectNumber => Count;
 
         public int HitRoll
         {
@@ -98,7 +92,7 @@ namespace SmaugCS.Data.Instances
         #region IHasExtraDescriptions Implementation
         public void AddExtraDescription(string keywords, string description)
         {
-            string[] words = keywords.Split(new[] { ' ' });
+            string[] words = keywords.Split(' ');
             foreach (string word in words)
             {
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));

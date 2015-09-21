@@ -193,7 +193,7 @@ namespace SmaugCS
         private static int AgeFunction(FunctionArgs args)
         {
             var instance = GameManager.CurrentCharacter as PlayerInstance;
-            return instance != null ? instance.CalculateAge() : 0;
+            return instance?.CalculateAge() ?? 0;
         }
         private static string ReplaceAgeCall(Match regexMatch)
         {

@@ -9,11 +9,11 @@ namespace SmaugCS.Constants.Enums
         None = 0,
         Blind = 1, 
 
-        [Descriptor(new []{"(Invis) "})]
+        [Descriptor("(Invis) ")]
         Invisible = 2,
 
         [Name("detect_evil")]
-        [Descriptor(new[] { "(Red Aura) " })]
+        [Descriptor("(Red Aura) ")]
         DetectEvil = 4, 
 
         [Name("detect_invis")]
@@ -28,7 +28,7 @@ namespace SmaugCS.Constants.Enums
         Sanctuary = 128,
 
         [Name("faerie_fire")]
-        [Descriptor(new[] { "(Pink Aura) " })]
+        [Descriptor("(Pink Aura) ")]
         FaerieFire = 256,    
         Infrared = 512,  
         Curse = 1024, 
@@ -38,7 +38,7 @@ namespace SmaugCS.Constants.Enums
         Paralysis = 16384,
         Sneak = 32768,
 
-        [Descriptor(new []{"(Hide) "})]
+        [Descriptor("(Hide) ")]
         Hide = 65536,
         Sleep = 131072,
 
@@ -47,7 +47,7 @@ namespace SmaugCS.Constants.Enums
         Flying = 524288,
 
         [Name("pass_door")]
-        [Descriptor(new[] { "(Translucent) " })]
+        [Descriptor("(Translucent) ")]
         PassDoor = 1048576,
         Floating = 2097152,
 
@@ -71,7 +71,7 @@ namespace SmaugCS.Constants.Enums
         [VisibleAffect(ATType = ATTypes.AT_MAGIC, Description = "%s appears to be in a deep trance...")]
         Possess = 536870912,
 
-        [Descriptor(new[] { "(Wild-eyed) " })]
+        [Descriptor("(Wild-eyed) ")]
         Berserk = 1073741824,
 
         [Name("aqua_breath")]

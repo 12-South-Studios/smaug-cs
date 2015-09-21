@@ -34,15 +34,15 @@ namespace SmaugCS.Extensions.Character
 
             var dam = SmaugRandom.Between(obj.Value.ToList()[2], obj.Value.ToList()[2] * 2);
 
-            comm.act(ATTypes.AT_HITME, string.Format("You are {0}!", txt), ch, null, null, ToTypes.Character);
-            comm.act(ATTypes.AT_ACTION, string.Format("$n is {0}.", txt), ch, null, null, ToTypes.Room);
+            comm.act(ATTypes.AT_HITME, $"You are {txt}!", ch, null, null, ToTypes.Character);
+            comm.act(ATTypes.AT_ACTION, $"$n is {txt}.", ch, null, null, ToTypes.Room);
 
             --obj.Value.ToList()[0];
             if (obj.Value.ToList()[0] <= 0)
                 obj.Extract();
 
             var returnCode = ReturnTypes.None;
-            if (attrib != null && !string.IsNullOrEmpty(attrib.Messages.ToList()[1]))
+            if (!string.IsNullOrEmpty(attrib?.Messages.ToList()[1]))
             {
                 var skill = RepositoryManager.Instance.GetEntity<SkillData>(attrib.Messages.ToList()[1]);
                 returnCode = ch.ObjectCastSpell((int)skill.ID, level, ch);

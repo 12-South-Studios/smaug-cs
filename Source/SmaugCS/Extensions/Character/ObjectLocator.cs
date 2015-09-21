@@ -69,9 +69,7 @@ namespace SmaugCS.Extensions.Character
                 return null;
             }
 
-            if (CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.IsDoor, "You can't do that.")) return null;
-
-            return exit;
+            return CheckFunctions.CheckIfNotSet(ch, exit.Flags, ExitFlags.IsDoor, "You can't do that.") ? null : exit;
         }
 
         public static ObjectInstance GetObjectOfType(this CharacterInstance ch, ItemTypes type)

@@ -8,7 +8,7 @@ namespace SmaugCS.Constants
     {
         public IEnumerable<string> Messages { get; private set; }
 
-        public DescriptorAttribute(string[] Messages = null)
+        public DescriptorAttribute(params string[] Messages)
         {
             this.Messages = Messages;
         }

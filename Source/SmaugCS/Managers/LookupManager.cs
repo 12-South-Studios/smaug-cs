@@ -21,10 +21,7 @@ namespace SmaugCS.Managers
             SpellLookup = new SpellLookupTable();
         }
 
-        public static ILookupManager Instance
-        {
-            get { return Program.Kernel.Get<ILookupManager>(); }
-        }
+        public static ILookupManager Instance => Program.Kernel.Get<ILookupManager>();
 
         public LookupBase<CommandData, DoFunction> CommandLookup { get; private set; }
         public LookupBase<SkillData, DoFunction> SkillLookup { get; private set; }
@@ -33,7 +30,7 @@ namespace SmaugCS.Managers
         public ResistanceTypes GetResistanceType(SpellDamageTypes type)
         {
             var attrib = type.GetAttribute<DamageResistanceAttribute>();
-            return attrib == null ? ResistanceTypes.Unknown : attrib.ResistanceType;
+            return attrib?.ResistanceType ?? ResistanceTypes.Unknown;
         }
 
         public void AddLookup(string table, string entry)

@@ -24,7 +24,7 @@ namespace SmaugCS.Constants
             return MaxLevel - type.GetValue();
         }
 
-        public static int ImmortalLevel { get { return GetLevel(ImmortalTypes.Immortal); } }
-        public static int AvatarLevel { get { return GetLevel(ImmortalTypes.Avatar); } }
+        public static int ImmortalLevel => GetLevel(ImmortalTypes.Immortal);
+        public static int AvatarLevel => GetLevel(ImmortalTypes.Avatar);
     }
 }

@@ -102,7 +102,7 @@ namespace SmaugCS
                     switch (tuple.Item1.ToLower())
                     {
                         case "colors":
-                            var colors = tuple.Item2.Split(new[] { ' ' });
+                            var colors = tuple.Item2.Split(' ');
                             for (var i = 0; i < colors.Length; i++)
                             {
                                 ch.Colors[EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
@@ -155,7 +155,6 @@ namespace SmaugCS
                 return 0;
 
             var len = 0;
-            int vislen;
             var dst = string.Empty;
 
             var chars = src.ToCharArray();
@@ -166,7 +165,7 @@ namespace SmaugCS
                     case '&': // normal, foreground color
                     case '^': // background color
                     case '}': // blink foreground color
-                        vislen = 0;
+                        var vislen = 0;
                         i += colorcode(src, dst, null, 20, vislen);
                         len += vislen; // count output token length
                         break;
@@ -228,7 +227,7 @@ namespace SmaugCS
             ch.SetColor(attype);
         }
 
-        private static readonly List<string> color_list = new List<string>()
+        private static readonly List<string> color_list = new List<string>
             {
                 "_bla",
                 "_red",
@@ -248,7 +247,7 @@ namespace SmaugCS
                 "_whi"
             };
 
-        private static readonly List<string> blink_list = new List<string>()
+        private static readonly List<string> blink_list = new List<string>
             {
                 "*bla",
                 "*red",

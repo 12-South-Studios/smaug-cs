@@ -36,8 +36,7 @@ namespace SmaugCS.Tests.Extensions
         [Test]
         public void GetGenderTest()
         {
-            var template = new MobileTemplate(1, "Test");
-            template.Statistics[StatisticTypes.Gender] = "neuter";
+            var template = new MobileTemplate(1, "Test") {Statistics = {[StatisticTypes.Gender] = "neuter"}};
 
             Assert.That(template.GetGender(), Is.EqualTo(GenderTypes.Neuter));
         }

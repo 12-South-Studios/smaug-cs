@@ -16,10 +16,8 @@ namespace SmaugCS.Objects
         {
             var level = 0;
 
-            foreach (var line in lines.Where(x => !x.EqualsIgnoreCase("end")))
+            foreach (var tuple in lines.Where(x => !x.EqualsIgnoreCase("end")).Select(line => line.FirstArgument()))
             {
-                var tuple = line.FirstArgument();
-
                 switch (tuple.Item1.ToLower())
                 {
                     case "level":

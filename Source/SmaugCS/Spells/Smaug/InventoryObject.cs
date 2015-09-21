@@ -38,10 +38,11 @@ namespace SmaugCS.Spells.Smaug
                          obj.ItemType == ItemTypes.DrinkContainer))
                         return PurifySpellAction(skill, ch, obj);
 
-                    if (CheckFunctions.CheckIfTrueCasting(Macros.SPELL_CLASS(skill) != (int) SpellClassTypes.None, skill,
-                        ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
+                    return CheckFunctions.CheckIfTrueCasting(Macros.SPELL_CLASS(skill) != (int) SpellClassTypes.None,
+                        skill, ch, CastingFunctionType.Failed, null, obj)
+                        ? ReturnTypes.None
+                        : CloneObjectSpellAction(skill, level, ch, obj);
 
-                    return CloneObjectSpellAction(skill, level, ch, obj);
                 case (int)SpellActTypes.Obscure:
                     return ObscureSpellAction(skill, level, ch, obj);
                 case (int)SpellActTypes.Destroy:

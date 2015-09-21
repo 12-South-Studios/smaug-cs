@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS", "SmaugCS\SmaugCS.csproj", "{30198591-FFF9-488C-AB88-2B02D58900D4}"
 EndProject
@@ -58,18 +58,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.DAL", "SmaugCS.DAL\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{AEB4E194-789C-491F-A78F-A030A633AF96}"
 	ProjectSection(SolutionItems) = preProject
-		..\Libraries\EntityFramework.dll = ..\Libraries\EntityFramework.dll
-		..\Libraries\EntityFramework.SqlServer.dll = ..\Libraries\EntityFramework.SqlServer.dll
-		..\Libraries\EntityFramework.xml = ..\Libraries\EntityFramework.xml
-		..\Libraries\log4net.dll = ..\Libraries\log4net.dll
-		..\Libraries\log4net.xml = ..\Libraries\log4net.xml
-		..\Libraries\lua51.dll = ..\Libraries\lua51.dll
-		..\Libraries\LuaInterface.dll = ..\Libraries\LuaInterface.dll
-		..\Libraries\Moq.dll = ..\Libraries\Moq.dll
-		..\Libraries\NCalc.dll = ..\Libraries\NCalc.dll
-		..\Libraries\Ninject.dll = ..\Libraries\Ninject.dll
-		..\Libraries\Ninject.xml = ..\Libraries\Ninject.xml
-		..\Libraries\nunit.framework.dll = ..\Libraries\nunit.framework.dll
 		..\Libraries\Realm.Library.Ai.dll = ..\Libraries\Realm.Library.Ai.dll
 		..\Libraries\Realm.Library.Ai.pdb = ..\Libraries\Realm.Library.Ai.pdb
 		..\Libraries\Realm.Library.Ai.xml = ..\Libraries\Realm.Library.Ai.xml
@@ -97,7 +85,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 		..\Libraries\Realm.Library.Patterns.Singleton.dll = ..\Libraries\Realm.Library.Patterns.Singleton.dll
 		..\Libraries\Realm.Library.Patterns.Singleton.pdb = ..\Libraries\Realm.Library.Patterns.Singleton.pdb
 		..\Libraries\Realm.Library.Patterns.Singleton.xml = ..\Libraries\Realm.Library.Patterns.Singleton.xml
-		..\Libraries\VikingErik.LuaInterface.dll = ..\Libraries\VikingErik.LuaInterface.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{29EA4E4A-C50F-4D83-B5C7-0F7BFDB67A13}"

@@ -1,5 +1,4 @@
-﻿using SmaugCS.Data.Instances;
-using SmaugCS.Data.Templates;
+﻿using SmaugCS.Data.Templates;
 
 namespace SmaugCS.MudProgs.RoomProgs
 {

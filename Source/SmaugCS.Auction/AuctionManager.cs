@@ -13,7 +13,7 @@ namespace SmaugCS.Auction
         private static IKernel _kernel;
         private static ITimer _timer;
 
-        public AuctionData Auction { get; set; }
+        public AuctionData Auction { get; private set; }
 
         public IAuctionRepository Repository { get; private set; }
 
@@ -38,10 +38,7 @@ namespace SmaugCS.Auction
             _timer.Dispose();
         }
 
-        public static IAuctionManager Instance
-        {
-            get { return _kernel.Get<IAuctionManager>(); }
-        }
+        public static IAuctionManager Instance => _kernel.Get<IAuctionManager>();
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {

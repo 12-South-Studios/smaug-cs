@@ -59,7 +59,7 @@ namespace SmaugCS.Helpers
         public static bool CheckIf(CharacterInstance actor, Func<object[], bool> funcToCheck, string message = "", 
             IEnumerable<object> args = null, ATTypes atType = ATTypes.AT_PLAIN)
         {
-            return funcToCheck.Invoke(args != null ? args.ToArray() : null) && SendToChar(actor, message, atType);
+            return funcToCheck.Invoke(args?.ToArray()) && SendToChar(actor, message, atType);
         }
 
         public static bool CheckIf(CharacterInstance actor, Func<bool> funcToCheck, string message = "")

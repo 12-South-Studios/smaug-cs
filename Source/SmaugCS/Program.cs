@@ -157,7 +157,7 @@ namespace SmaugCS
 
             var luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
             if (luaInitializer == null)
-                throw new ApplicationException(string.Format("LuaInitializer failed to start"));
+                throw new ApplicationException("LuaInitializer failed to start");
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
 
@@ -236,8 +236,7 @@ namespace SmaugCS
             foreach (IAppender appender in _logger.Logger.Repository.GetAppenders())
             {
                 var buffered = appender as BufferingAppenderSkeleton;
-                if (buffered != null)
-                    buffered.Flush();
+                buffered?.Flush();
             }
         }
 
@@ -447,13 +446,13 @@ namespace SmaugCS
         public static int AREA_LOADED = BV01;
 
         public static int STRING_NONE = 0;
-        public static int STRING_IMM = BV01;
+        public static readonly int STRING_IMM = BV01;
 
         public static int OLD_SF_SAVE_HALF_DAMAGE = BV18;
         public static int OLD_SF_SAVE_NEGATES = BV19;
 
-        public static int ALL_BITS = Int32.MaxValue;
-        public static int SDAM_MASK = ALL_BITS & ~(BV00 | BV01 | BV02);
+        public static int ALL_BITS = int.MaxValue;
+        public static readonly int SDAM_MASK = ALL_BITS & ~(BV00 | BV01 | BV02);
         public static int SACT_MASK = ALL_BITS & ~(BV03 | BV04 | BV05);
         public static int SCLA_MASK = ALL_BITS & ~(BV06 | BV07 | BV08);
         public static int SPOW_MASK = ALL_BITS & ~(BV09 | BV10);
@@ -597,13 +596,13 @@ namespace SmaugCS
             var sb = new StringBuilder(s);
 
             var i = 0;
-            while (Char.IsDigit(sb[i]))
+            while (char.IsDigit(sb[i]))
             {
                 number = (number * 10) + Convert.ToInt32(sb[i]);
                 i++;
             }
 
-            switch (Char.ToUpper(sb[0]))
+            switch (char.ToUpper(sb[0]))
             {
                 case 'K':
                     number *= (multiplier = 1000);
@@ -616,13 +615,13 @@ namespace SmaugCS
             }
 
             i = 0;
-            while (Char.IsDigit(sb[i]) && multiplier > 1)
+            while (char.IsDigit(sb[i]) && multiplier > 1)
             {
                 multiplier /= 10;
                 number = number + Convert.ToInt32(sb[i] * multiplier);
             }
 
-            if (!Char.IsDigit(sb[0]))
+            if (!char.IsDigit(sb[0]))
                 return 0;
 
             return number;
@@ -631,21 +630,21 @@ namespace SmaugCS
         public static int parsebet(int currentbet, string s)
         {
             var sb = new StringBuilder(s);
-            if (Char.IsDigit(sb[0]))
+            if (char.IsDigit(sb[0]))
                 return advatoi(s);
-            if (sb[0] == '+')
+            switch (sb[0])
             {
-                if (sb.Length == 1)
-                    return (currentbet * 125) / 100;
-                return (currentbet * (100 + Convert.ToInt32(s))) / 100;
+                case '+':
+                    if (sb.Length == 1)
+                        return (currentbet * 125) / 100;
+                    return (currentbet * (100 + Convert.ToInt32(s))) / 100;
+                case '*':
+                case 'x':
+                    if (sb.Length == 1)
+                        return currentbet * 2;
+                    return currentbet * Convert.ToInt32(s);
             }
 
-            if (sb[0] == '*' || sb[0] == 'x')
-            {
-                if (sb.Length == 1)
-                    return currentbet * 2;
-                return currentbet * Convert.ToInt32(s);
-            }
             return 0;
         }
 

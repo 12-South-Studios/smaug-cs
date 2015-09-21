@@ -121,13 +121,13 @@ namespace SmaugCS.Commands.Combat
         private static int GetChanceByCharacterClass(CharacterInstance ch)
         {
             var attrib = ch.CurrentClass.GetAttribute<DragValueAttribute>();
-            return attrib == null ? 0 : attrib.ModValue;
+            return attrib?.ModValue ?? 0;
         }
 
         private static int GetBonusByCharacterRace(CharacterInstance ch)
         {
             var attrib = ch.CurrentRace.GetAttribute<DragValueAttribute>();
-            return attrib == null ? 0 : attrib.ModValue;
+            return attrib?.ModValue ?? 0;
         }
     }
 }

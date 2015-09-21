@@ -10,18 +10,27 @@ namespace SmaugCS.Commands.Movement
     {
         public static void do_rest(CharacterInstance ch, string argument)
         {
-            if (ch.CurrentPosition == PositionTypes.Sleeping)
-                FromSleeping(ch);
-            else if (ch.CurrentPosition == PositionTypes.Resting)
-                ch.SendTo("You are already resting.");
-            else if (ch.CurrentPosition == PositionTypes.Standing)
-                FromStanding(ch);
-            else if (ch.CurrentPosition == PositionTypes.Sitting)
-                FromSitting(ch);
-            else if (ch.IsInCombatPosition())
-                ch.SendTo("You are busy fighting!");
-            else if (ch.CurrentPosition == PositionTypes.Mounted)
-                ch.SendTo("You'd better dismount first.");
+            switch (ch.CurrentPosition)
+            {
+                case PositionTypes.Sleeping:
+                    FromSleeping(ch);
+                    break;
+                case PositionTypes.Resting:
+                    ch.SendTo("You are already resting.");
+                    break;
+                case PositionTypes.Standing:
+                    FromStanding(ch);
+                    break;
+                case PositionTypes.Sitting:
+                    FromSitting(ch);
+                    break;
+                default:
+                    if (ch.IsInCombatPosition())
+                        ch.SendTo("You are busy fighting!");
+                    else if (ch.CurrentPosition == PositionTypes.Mounted)
+                        ch.SendTo("You'd better dismount first.");
+                    break;
+            }
 
             MudProgHandler.ExecuteRoomProg(MudProgTypes.Rest, ch);
         }

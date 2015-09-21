@@ -5,21 +5,12 @@ namespace SmaugCS.Config
     public class SystemDataConfigurationSection : ConfigurationSection
     {
         [ConfigurationProperty("SystemDirectories")]
-        public SystemDirectoryElementCollection SystemDirectories
-        {
-            get { return (SystemDirectoryElementCollection)this["SystemDirectories"]; }
-        }
+        public SystemDirectoryElementCollection SystemDirectories => (SystemDirectoryElementCollection)this["SystemDirectories"];
 
         [ConfigurationProperty("SystemFiles")]
-        public SystemFileElementCollectionn SystemFiles
-        {
-            get { return (SystemFileElementCollectionn) this["SystemFiles"]; }
-        }
+        public SystemFileElementCollectionn SystemFiles => (SystemFileElementCollectionn) this["SystemFiles"];
 
         [ConfigurationProperty("SystemValues")]
-        public SystemValueElementCollection SystemValues
-        {
-            get { return (SystemValueElementCollection)this["SystemValues"]; }
-        }
+        public SystemValueElementCollection SystemValues => (SystemValueElementCollection)this["SystemValues"];
     }
 }

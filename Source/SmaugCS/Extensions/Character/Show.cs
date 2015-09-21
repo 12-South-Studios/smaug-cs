@@ -27,10 +27,10 @@ namespace SmaugCS.Extensions.Character
         private static string GetConditionPhrase(int percent, bool isSelf)
         {
             var healthCond = HealthConditionTypes.PerfectHealth;
-            foreach (var cond in EnumerationFunctions.GetAllEnumValues<HealthConditionTypes>())
+            foreach (var cond in EnumerationFunctions.GetAllEnumValues<HealthConditionTypes>()
+                .Where(cond => percent >= cond.GetValue()))
             {
-                if (percent >= cond.GetValue())
-                    healthCond = cond;
+                healthCond = cond;
             }
 
             var attrib = healthCond.GetAttribute<DescriptorAttribute>();
@@ -90,8 +90,7 @@ namespace SmaugCS.Extensions.Character
 
             ch.SetColor(ATTypes.AT_PERSON);
             if ((victim.CurrentPosition == victim.CurrentDefensivePosition && !string.IsNullOrEmpty(victim.LongDescription))
-                || (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null
-                    && victim.CurrentMorph.Morph.Position == (int)victim.CurrentPosition))
+                || (victim.CurrentMorph?.Morph != null && victim.CurrentMorph.Morph.Position == (int)victim.CurrentPosition))
             {
                 if (victim.CurrentMorph != null)
                 {
@@ -117,8 +116,7 @@ namespace SmaugCS.Extensions.Character
                 return;
             }
 
-            if (victim.CurrentMorph != null && victim.CurrentMorph.Morph != null
-                && !ch.IsImmortal())
+            if (victim.CurrentMorph?.Morph != null && !ch.IsImmortal())
                 buffer += Macros.MORPHERS(victim, ch);
             else
                 buffer += Macros.PERS(victim, ch);
@@ -131,7 +129,7 @@ namespace SmaugCS.Extensions.Character
             {
                 var attributes = timer.Action.Value.Method.GetCustomAttributes(typeof(DescriptorAttribute), false);
                 var attrib =
-                    (DescriptorAttribute)attributes.FirstOrDefault(x => x.GetType() == typeof(DescriptorAttribute));
+                    (DescriptorAttribute)attributes.FirstOrDefault(x => x is DescriptorAttribute);
                 buffer += attrib == null ? " is looking rather lost." : attrib.Messages.First();
             }
             else
@@ -180,9 +178,7 @@ namespace SmaugCS.Extensions.Character
                 return "(Mount) ";
             if (victim.Switched != null && ((PlayerInstance)victim.Switched).Descriptor.ConnectionStatus == ConnectionTypes.Editing)
                 return ConnectionTypes.Editing.GetAttribute<DescriptorAttribute>().Messages.First();
-            if (victim.CurrentMorph != null)
-                return "(Morphed) ";
-            return string.Empty;
+            return victim.CurrentMorph != null ? "(Morphed) " : string.Empty;
         }
 
         private static string GenerateBufferDescriptorFromVictimPosition(CharacterInstance victim, CharacterInstance ch)
@@ -220,10 +216,9 @@ namespace SmaugCS.Extensions.Character
             if (victim.GetMyTarget() == ch)
                 return attrib.Messages.ToList()[2];
 
-            if (victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom)
-                return string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentFighting.Who, ch));
-
-            return attrib.Messages.ToList()[3];
+            return victim.CurrentRoom == victim.CurrentFighting.Who.CurrentRoom
+                ? string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentFighting.Who, ch))
+                : attrib.Messages.ToList()[3];
         }
 
         private static string GetMountedDescriptor(CharacterInstance ch, CharacterInstance victim,
@@ -235,10 +230,9 @@ namespace SmaugCS.Extensions.Character
             if (victim.CurrentMount == ch)
                 return attrib.Messages.ToList()[1];
 
-            if (victim.CurrentRoom == victim.CurrentMount.CurrentRoom)
-                return string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentMount, ch));
-
-            return attrib.Messages.ToList()[3];
+            return victim.CurrentRoom == victim.CurrentMount.CurrentRoom
+                ? string.Format(attrib.Messages.ToList()[2], Macros.PERS(victim.CurrentMount, ch))
+                : attrib.Messages.ToList()[3];
         }
 
         private static string GetStandingDescriptor(CharacterInstance ch, CharacterInstance victim,
@@ -267,10 +261,13 @@ namespace SmaugCS.Extensions.Character
         private static string GetSittingDescriptor(CharacterInstance ch, CharacterInstance victim,
             DescriptorAttribute attrib)
         {
-            if (ch.CurrentPosition == PositionTypes.Sitting)
-                return attrib.Messages.First();
-            if (ch.CurrentPosition == PositionTypes.Resting)
-                return attrib.Messages.ToList()[1];
+            switch (ch.CurrentPosition)
+            {
+                case PositionTypes.Sitting:
+                    return attrib.Messages.First();
+                case PositionTypes.Resting:
+                    return attrib.Messages.ToList()[1];
+            }
             return attrib.Messages.ToList()[2];
         }
 

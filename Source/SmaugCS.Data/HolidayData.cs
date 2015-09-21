@@ -14,9 +14,8 @@ namespace SmaugCS.Data
 
         public void Load(TextSection section)
         {
-            foreach (string line in section.Lines.Where(x => !x.StartsWith("*")))
+            foreach (Tuple<string, string> tuple in section.Lines.Where(x => !x.StartsWith("*")).Select(line => line.FirstArgument()))
             {
-                Tuple<string, string> tuple = line.FirstArgument();
                 switch (tuple.Item1.ToLower())
                 {
                     case "announce":

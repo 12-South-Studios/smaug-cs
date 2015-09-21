@@ -31,35 +31,20 @@ namespace SmaugCS.Data.Extensions
 
         public static int GetResistance(this MobileTemplate template)
         {
-            var value = 0;
             var words = template.Resistance.Split(' ');
-            foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
-            {
-                value = value.SetBit(resType);
-            }
-            return value;
+            return words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>).Aggregate(0, (current, resType) => current.SetBit(resType));
         }
 
         public static int GetSusceptibility(this MobileTemplate template)
         {
-            var value = 0;
             var words = template.Susceptibility.Split(' ');
-            foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
-            {
-                value = value.SetBit(resType);
-            }
-            return value;
+            return words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>).Aggregate(0, (current, resType) => current.SetBit(resType));
         }
 
         public static int GetImmunity(this MobileTemplate template)
         {
-            var value = 0;
             var words = template.Immunity.Split(' ');
-            foreach (var resType in words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>))
-            {
-                value = value.SetBit(resType);
-            }
-            return value;
+            return words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>).Aggregate(0, (current, resType) => current.SetBit(resType));
         }
 
         public static int GetActFlags(this MobileTemplate template)

@@ -24,7 +24,7 @@
         ReadIMotd                   = 18,
         CopyoverRecover             = 19,
 
-        [Descriptor(new[] { "(Writing) " })]
+        [Descriptor("(Writing) ")]
         Editing                     = 20
     }
 }

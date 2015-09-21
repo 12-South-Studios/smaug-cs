@@ -76,9 +76,9 @@ namespace SmaugCS
 
             foreach (var c in chars)
             {
-                if (Char.ToUpper(c) == 'T' && Random.D100(1) < (drunk * 2))
+                if (char.ToUpper(c) == 'T' && Random.D100(1) < (drunk * 2))
                     newstring += c + 'h';
-                else if (Char.ToUpper(c) == 'X' && Random.D100(1) < (drunk * 2 / 5))
+                else if (char.ToUpper(c) == 'X' && Random.D100(1) < (drunk * 2 / 5))
                     newstring += c + "csh";
                 else if (Random.D100(1) < (drunk * 2 / 5))
                 {

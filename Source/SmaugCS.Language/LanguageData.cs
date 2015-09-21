@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Realm.Library.Common;
 
 namespace SmaugCS.Language
@@ -9,19 +9,13 @@ namespace SmaugCS.Language
         private readonly List<LanguageConversionData> _preConversion;
         private readonly List<LanguageConversionData> _conversion;
 
-        public IEnumerable<LanguageConversionData> PreConversion
-        {
-            get { return _preConversion; }
-        }
+        public IEnumerable<LanguageConversionData> PreConversion => _preConversion;
 
         public string Alphabet { get; set; }
 
         public LanguageTypes Type { get; private set; }
 
-        public IEnumerable<LanguageConversionData> Conversion
-        {
-            get { return _conversion; }
-        }
+        public IEnumerable<LanguageConversionData> Conversion => _conversion;
 
         public LanguageData(long id, string name, LanguageTypes type) : base(id, name)
         {
@@ -78,8 +72,8 @@ namespace SmaugCS.Language
 
             foreach (char c in chars)
             {
-                if (!c.IsNumeric() && !Char.IsPunctuation(c) && !Char.IsSymbol(c) &&
-                    Realm.Library.Common.Random.D100(1) > percent)
+                if (!c.IsNumeric() && !char.IsPunctuation(c) && !char.IsSymbol(c) &&
+                    Random.D100(1) > percent)
                     newPhrase += GetAlphabetEquivalent(c);
                 else
                     newPhrase += c;
@@ -91,13 +85,10 @@ namespace SmaugCS.Language
         internal string DoPreConversion(int percent, string text)
         {
             string preConversion = text;
-            if (PreConversion != null)
+            if (PreConversion == null) return preConversion;
+            foreach (LanguageConversionData lcd in PreConversion.Where(lcd => preConversion.Contains(lcd.OldValue) && Random.D100(1) >= percent))
             {
-                foreach (LanguageConversionData lcd in PreConversion)
-                {
-                    if (preConversion.Contains(lcd.OldValue) && Realm.Library.Common.Random.D100(1) >= percent)
-                        preConversion = preConversion.Replace(lcd.OldValue, lcd.NewValue);
-                }
+                preConversion = preConversion.Replace(lcd.OldValue, lcd.NewValue);
             }
             return preConversion;
         }
@@ -105,13 +96,10 @@ namespace SmaugCS.Language
         internal string DoPostConversion(int percent, string text)
         {
             string postConversion = text;
-            if (Conversion != null)
+            if (Conversion == null) return postConversion;
+            foreach (LanguageConversionData lcd in Conversion.Where(lcd => postConversion.Contains(lcd.OldValue) && Random.D100(1) > percent))
             {
-                foreach (LanguageConversionData lcd in Conversion)
-                {
-                    if (postConversion.Contains(lcd.OldValue) && Realm.Library.Common.Random.D100(1) > percent)
-                        postConversion = postConversion.Replace(lcd.OldValue, lcd.NewValue);
-                }
+                postConversion = postConversion.Replace(lcd.OldValue, lcd.NewValue);
             }
             return postConversion; 
         }
@@ -119,8 +107,8 @@ namespace SmaugCS.Language
         private const string EnglishAlphabet = "abcdefghijklmnopqrtsuvwxyz";
         internal char GetAlphabetEquivalent(char englishChar)
         {
-            char newChar = Alphabet[EnglishAlphabet.IndexOf(Char.ToLower(englishChar))];
-            return Char.IsUpper(englishChar) ? Char.ToUpper(newChar) : newChar;
+            char newChar = Alphabet[EnglishAlphabet.IndexOf(char.ToLower(englishChar))];
+            return char.IsUpper(englishChar) ? char.ToUpper(newChar) : newChar;
         }
 
     }

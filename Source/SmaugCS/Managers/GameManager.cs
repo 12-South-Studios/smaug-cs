@@ -38,10 +38,7 @@ namespace SmaugCS.Managers
             SystemData = new SystemData();
         }
 
-        public static IGameManager Instance
-        {
-            get { return Program.Kernel.Get<IGameManager>(); }
-        }
+        public static IGameManager Instance => Program.Kernel.Get<IGameManager>();
 
         public SystemData SystemData { get; private set; }
 

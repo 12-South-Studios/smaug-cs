@@ -46,7 +46,7 @@ namespace SmaugCS.Constants.Constants
 
         private static VnumConfigurationSection _vnumSection;
 
-        public static Int32 GetVnum(string name)
+        public static int GetVnum(string name)
         {
             if (_vnumSection == null)
                 _vnumSection = ConfigurationManagerFunctions.GetSection<VnumConfigurationSection>("VnumSection");
@@ -57,37 +57,18 @@ namespace SmaugCS.Constants.Constants
             return element != null ? Convert.ToInt32(element.Value) : -1;
         }
 
-        public static string DataPath
-        {
-            get { return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "data"); }
-        }
+        public static string DataPath => $"{GetConstant<string>("AppPath")}\\{"data"}\\";
 
-        public static string LogPath
-        {
-            get { return string.Format("{0}\\{1}\\", GetConstant<string>("AppPath"), "logs"); }
-        }
+        public static string LogPath => $"{GetConstant<string>("AppPath")}\\{"logs"}\\";
 
         #endregion
 
 
-        public static int MaximumExperienceWorth
-        {
-            get { return GetConstant<int>("MaximumExperienceValue"); }
-        }
-        public static int MinimumExperienceWorth
-        {
-            get { return GetConstant<int>("MinimumExperienceValue"); }
-        }
+        public static int MaximumExperienceWorth => GetConstant<int>("MaximumExperienceValue");
+        public static int MinimumExperienceWorth => GetConstant<int>("MinimumExperienceValue");
 
-        public static int MaximumWearLayers
-        {
-            get { return GetConstant<int>("MaximumLayers"); }
-        }
+        public static int MaximumWearLayers => GetConstant<int>("MaximumLayers");
 
-        public static int MaximumWearLocations
-        {
-            get { return GetConstant<int>("MaximumWearLocations"); }
-        }
-
+        public static int MaximumWearLocations => GetConstant<int>("MaximumWearLocations");
     }
 }

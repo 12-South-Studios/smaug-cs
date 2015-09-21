@@ -39,7 +39,7 @@ namespace SmaugCS.Repository
                     if (Contains(id))
                         throw new DuplicateIndexException("Invalid ID {0}, Index already exists", id);
                     if (!Contains(cloneId))
-                        throw new InvalidDataException(string.Format("Clone ID {0} is not present", cloneId));
+                        throw new InvalidDataException($"Clone ID {cloneId} is not present");
                 });
 
             var newObject = Create(id, name);

@@ -22,14 +22,17 @@ namespace SmaugCS.Spells
 
             if (ch.Chance(chance) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
             {
-                foreach (var obj in victim.Carrying)
+                foreach (var obj in victim.Carrying.Where(obj => SmaugRandom.Bits(2) == 0))
                 {
-                    if (SmaugRandom.Bits(2) != 0) continue;
-
-                    if (obj.ItemType == ItemTypes.Armor)
-                        CheckDamageArmor(obj, victim);
-                    else if (obj.ItemType == ItemTypes.Container)
-                        CheckDamageContainer(obj, victim);
+                    switch (obj.ItemType)
+                    {
+                        case ItemTypes.Armor:
+                            CheckDamageArmor(obj, victim);
+                            break;
+                        case ItemTypes.Container:
+                            CheckDamageContainer(obj, victim);
+                            break;
+                    }
                 }
             }
 

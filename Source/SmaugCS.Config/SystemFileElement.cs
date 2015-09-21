@@ -5,21 +5,12 @@ namespace SmaugCS.Config
     public class SystemFileElement : ConfigurationElement
     {
         [ConfigurationProperty("name", IsKey = true, IsRequired = true)]
-        public string Name
-        {
-            get { return (string)this["name"]; }
-        }
+        public string Name => (string)this["name"];
 
         [ConfigurationProperty("Filename", IsRequired = true)]
-        public string Filename
-        {
-            get { return (string)this["Filename"]; }
-        }
-        
+        public string Filename => (string)this["Filename"];
+
         [ConfigurationProperty("UseSystemFolder", IsRequired = false)]
-        public bool UseSystemFolder
-        {
-            get { return (bool)this["UseSystemFolder"]; }
-        }
+        public bool UseSystemFolder => (bool)this["UseSystemFolder"];
     }
 }

@@ -10,24 +10,15 @@ namespace SmaugCS.Loaders.Loaders
         {
         }
 
-        public override string Filename
-        {
-            get { return string.Empty; }
-        }
+        public override string Filename => string.Empty;
 
         public override void Save()
         {
             throw new NotImplementedException();
         }
 
-        protected override string AppSettingName
-        {
-            get { return "Classes"; }
-        }
+        protected override string AppSettingName => "Classes";
 
-        protected override SystemDirectoryTypes SystemDirectory
-        {
-            get { return SystemDirectoryTypes.Class; }
-        }
+        protected override SystemDirectoryTypes SystemDirectory => SystemDirectoryTypes.Class;
     }
 }

@@ -24,17 +24,14 @@ namespace SmaugCS.Commands
         private static void ViewIndividualPlayer(CharacterInstance ch, string firstArg)
         {
             var victim = ch.GetCharacterInWorld(firstArg);
-            if (victim != null)
+            if (victim?.CurrentRoom != null
+                && victim.CurrentRoom.Area == ch.CurrentRoom.Area
+                && !victim.IsAffected(AffectedByTypes.Hide)
+                && !victim.IsAffected(AffectedByTypes.Sneak)
+                && ch.CanSee(victim))
             {
-                if (victim.CurrentRoom != null
-                    && victim.CurrentRoom.Area == ch.CurrentRoom.Area
-                    && !victim.IsAffected(AffectedByTypes.Hide)
-                    && !victim.IsAffected(AffectedByTypes.Sneak)
-                    && ch.CanSee(victim))
-                {
-                    ch.PagerPrintf("{0} {1}", Macros.PERS(victim, ch).PadRight(28, ' '), victim.CurrentRoom.Name);
-                    return;
-                }
+                ch.PagerPrintf("{0} {1}", Macros.PERS(victim, ch).PadRight(28, ' '), victim.CurrentRoom.Name);
+                return;
             }
 
             comm.act(ATTypes.AT_PLAIN, "You didn't find any $T.", ch, null, firstArg, ToTypes.Character);

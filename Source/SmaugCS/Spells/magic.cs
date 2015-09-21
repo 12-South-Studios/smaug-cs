@@ -674,18 +674,14 @@ namespace SmaugCS
                 SmaugRandom.D100() < (((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8) + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
                 victim = ch.GetMyTarget();
 
-            if (CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
-                !silence ? "You can't cast this on yourself!" : "")) return null;
-
-            return victim;
+            return CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),
+                !silence ? "You can't cast this on yourself!" : "") ? null : victim;
         }
 
         private static object TargetSelf(string arg, CharacterInstance ch, bool silence)
         {
-            if (CheckFunctions.CheckIfTrue(ch, !arg.IsNullOrEmpty() && !arg.EqualsIgnoreCase(ch.Name),
-                !silence ? "You cannot cast this spell on another." : "")) return null;
-
-            return ch;
+            return CheckFunctions.CheckIfTrue(ch, !arg.IsNullOrEmpty() && !arg.EqualsIgnoreCase(ch.Name),
+                !silence ? "You cannot cast this spell on another." : "") ? null : ch;
         }
 
         private static object TargetObjectInInventory(string arg, CharacterInstance ch, bool silence)
@@ -694,16 +690,14 @@ namespace SmaugCS
                 return null;
 
             var obj = ch.GetCarriedObject(arg);
-            if (CheckFunctions.CheckIfNullObject(ch, obj, !silence ? "You are not carrying that." : "")) return null;
-
-            return obj;
+            return CheckFunctions.CheckIfNullObject(ch, obj, !silence ? "You are not carrying that." : "") ? null : obj;
         }
 
         public static ReturnTypes ObjectCastSpell(this CharacterInstance ch, int sn, int level,
             CharacterInstance victim = null, ObjectInstance obj = null)
         {
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
-            if (skill == null || skill.SpellFunction == null)
+            if (skill?.SpellFunction == null)
                 return ReturnTypes.Error;
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoMagic)

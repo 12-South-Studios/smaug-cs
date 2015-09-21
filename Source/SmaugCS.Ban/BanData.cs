@@ -12,7 +12,7 @@ namespace SmaugCS.Ban
         public string BannedBy { get; set; }
         public DateTime BannedOn { get; set; }
         public int Flag { get; set; }
-        public DateTime UnbanDate { get { return Duration > 0 ? BannedOn.AddSeconds(Duration) : DateTime.MaxValue; } }
+        public DateTime UnbanDate => Duration > 0 ? BannedOn.AddSeconds(Duration) : DateTime.MaxValue;
         public int Duration { get; set; }
         public int Level { get; set; }
         public bool Warn { get; set; }

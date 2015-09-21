@@ -12,15 +12,7 @@ namespace SmaugCS.Auction
         {
         }
 
-        public NoAuctionStartedException()
-        {
-        }
-
         public NoAuctionStartedException(string msg) : base(msg)
-        {
-        }
-
-        public NoAuctionStartedException(string msg, Exception ex) : base(msg, ex)
         {
         }
 

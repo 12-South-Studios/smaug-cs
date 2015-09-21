@@ -34,7 +34,7 @@ namespace SmaugCS.Constants.Enums
         Annoying = 67108864,
         StatShield = 134217728,
 
-        [Descriptor(new[] { "(PROTO) " })]
-        Prototype = 268435456,
+        [Descriptor("(PROTO) ")]
+        Prototype = 268435456
     }
 }

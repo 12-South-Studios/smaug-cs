@@ -20,7 +20,7 @@ namespace SmaugCS.Common
 
         public static string ToPercent(this double value, double total)
         {
-            return String.Format("{0:0.00%}", value / total);
+            return $"{value/total:0.00%}";
         }
 
         public static string GetFlagString(this int value, IEnumerable<string> flags)

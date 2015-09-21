@@ -16,10 +16,7 @@ namespace SmaugCS.News
         public bool Active { get; set; }
         public bool Saved { get; set; }
 
-        public IEnumerable<NewsEntryData> Entries
-        {
-            get { return _entries; }
-        }
+        public IEnumerable<NewsEntryData> Entries => _entries;
 
         public NewsData(int id)
         {

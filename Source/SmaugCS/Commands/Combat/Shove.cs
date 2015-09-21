@@ -99,19 +99,19 @@ namespace SmaugCS.Commands.Combat
             Macros.WAIT_STATE(ch, 12);
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe) && !ch.HasTimer(TimerTypes.ShoveDrag))
-                ch.AddTimer(TimerTypes.ShoveDrag, 10, null, 0);
+                ch.AddTimer(TimerTypes.ShoveDrag, 10);
         }
 
         private static int GetChanceByCharacterClass(CharacterInstance ch)
         {
             var attrib = ch.CurrentClass.GetAttribute<ShoveValueAttribute>();
-            return attrib == null ? 0 : attrib.ModValue;
+            return attrib?.ModValue ?? 0;
         }
 
         private static int GetBonusByCharacterRace(CharacterInstance ch)
         {
             var attrib = ch.CurrentRace.GetAttribute<ShoveValueAttribute>();
-            return attrib == null ? 0 : attrib.ModValue;
+            return attrib?.ModValue ?? 0;
         }
     }
 }

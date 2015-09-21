@@ -1,5 +1,4 @@
-﻿using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Instances;
+﻿using SmaugCS.Data.Instances;
 
 namespace SmaugCS.MudProgs.MobileProgs
 {

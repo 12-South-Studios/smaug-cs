@@ -166,7 +166,7 @@ namespace SmaugCS.Data.Templates
 
         public bool IsPrivate()
         {
-            int count = Persons.Count();
+            int count = Persons.Count;
 
             return (Flags.IsSet(RoomFlags.Private) && count >= 2)
                    || (Flags.IsSet(RoomFlags.Solitary) && count >= 1);
@@ -175,7 +175,7 @@ namespace SmaugCS.Data.Templates
         #region IHasExtraDescriptions Implementation
         public void AddExtraDescription(string keywords, string description)
         {
-            string[] words = keywords.Split(new[] { ' ' });
+            string[] words = keywords.Split(' ');
             foreach (string word in words)
             {
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));

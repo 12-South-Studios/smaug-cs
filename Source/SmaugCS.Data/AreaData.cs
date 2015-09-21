@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
@@ -19,10 +18,7 @@ namespace SmaugCS.Data
 
         private List<RoomTemplate> _rooms;
 
-        public IEnumerable<RoomTemplate> Rooms
-        {
-            get { return _rooms; }
-        }
+        public IEnumerable<RoomTemplate> Rooms => _rooms;
 
         [XmlIgnore]
         public string Filename { get; set; }
@@ -126,7 +122,7 @@ namespace SmaugCS.Data
 
         public void SetFlags(string flags)
         {
-            string[] words = flags.Split(new[] { ' ' });
+            string[] words = flags.Split(' ');
             foreach (string word in words)
             {
                 Flags += (int)EnumerationExtensions.GetEnumIgnoreCase<AreaFlags>(word);

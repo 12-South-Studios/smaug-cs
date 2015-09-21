@@ -22,7 +22,6 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
-using SmaugCS.MudProgs.MobileProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells.Smaug;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
@@ -110,7 +109,7 @@ namespace SmaugCS
                             || pafNext.Duration > 0)
                         {
                             var skill = RepositoryManager.Instance.GetEntity<SkillData>((int) paf.Type);
-                            if (paf.Type > 0 && skill != null && !string.IsNullOrEmpty(skill.WearOffMessage))
+                            if (paf.Type > 0 && !string.IsNullOrEmpty(skill?.WearOffMessage))
                             {
                                ch.SetColor(ATTypes.AT_WEAROFF);
                                ch.SendTo(skill.WearOffMessage);
@@ -255,8 +254,8 @@ namespace SmaugCS
                 if (ch.Act.IsSet(PlayerFlags.Nice))
                     return ReturnTypes.None;
 
-                ch.AddTimer(TimerTypes.RecentFight, 11, null, 0);
-                victim.AddTimer(TimerTypes.RecentFight, 11, null, 0);
+                ch.AddTimer(TimerTypes.RecentFight, 11);
+                victim.AddTimer(TimerTypes.RecentFight, 11);
             }
 
             if (ch.IsAttackSuppressed())
@@ -377,7 +376,7 @@ namespace SmaugCS
                     && !ch.IsAffected(AffectedByTypes.Floating))
                 {
                     var attribute = ch.CurrentRoom.SectorType.GetAttribute<MovementLossAttribute>();
-                    move = ch.GetEncumberedMove(attribute != null ? attribute.ModValue : 1);
+                    move = ch.GetEncumberedMove(attribute?.ModValue ?? 1);
                 }
                 else
                     move = ch.GetEncumberedMove(1);
@@ -458,8 +457,8 @@ namespace SmaugCS
             if (wield != null)
                 profBonus = weapon_prof_bonus_check(ch, wield);
 
-            var proficiencyBonus = profBonus != null ? profBonus.Item1 : 0;
-            var sn = profBonus != null ? profBonus.Item2 : -1;
+            var proficiencyBonus = profBonus?.Item1 ?? 0;
+            var sn = profBonus?.Item2 ?? -1;
 
             if (ch.CurrentFighting != null
                 && damageType == Program.TYPE_UNDEFINED
@@ -1002,14 +1001,17 @@ namespace SmaugCS
 
         private static int ModifyDamageByFightingStyle(CharacterInstance victim, int damage)
         {
-            if (victim.CurrentPosition == PositionTypes.Berserk)
-                return (int) (damage*1.2f);
-            if (victim.CurrentPosition == PositionTypes.Aggressive)
-                return (int) (damage*1.1f);
-            if (victim.CurrentPosition == PositionTypes.Defensive)
-                return (int) (damage*0.85f);
-            if (victim.CurrentPosition == PositionTypes.Evasive)
-                return (int) (damage*0.8f);
+            switch (victim.CurrentPosition)
+            {
+                case PositionTypes.Berserk:
+                    return (int) (damage*1.2f);
+                case PositionTypes.Aggressive:
+                    return (int) (damage*1.1f);
+                case PositionTypes.Defensive:
+                    return (int) (damage*0.85f);
+                case PositionTypes.Evasive:
+                    return (int) (damage*0.8f);
+            }
             return damage;
         }
 
@@ -1128,12 +1130,9 @@ namespace SmaugCS
                 return true;
 
             // Members of diferent clans can loot too
-            if (!ch.IsNpc() && !victim.IsNpc()
-                && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly)
-                && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly))
-                return true;
-
-            return false;
+            return !ch.IsNpc() && !victim.IsNpc()
+                   && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly)
+                   && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly);
         }
 
         /// <summary>
@@ -1433,7 +1432,7 @@ namespace SmaugCS
             }
         }
 
-        private static readonly List<string> DeathCries = new List<string>()
+        private static readonly List<string> DeathCries = new List<string>
             {
                 "You hear $n's death cry.",
                 "$n screams furiously as $e falls to the ground in a heap!",
@@ -1720,7 +1719,7 @@ namespace SmaugCS
             return 0;
         }
 
-        private static readonly List<string> SlashMessageTable = new List<string>()
+        private static readonly List<string> SlashMessageTable = new List<string>
         {
             "SlashGenericMessages", // hit
             "SlashBladeMessages", // slice
@@ -1741,7 +1740,7 @@ namespace SmaugCS
             "SlashGenericMessages", // stone
             "SlashGenericMessages", // pea
         };
-        private static readonly List<string> PierceMessageTable = new List<string>()
+        private static readonly List<string> PierceMessageTable = new List<string>
         {
             "PierceGenericMessages", // hit
             "PierceBladeMessages", // slice

@@ -1,6 +1,5 @@
 namespace SmaugCS.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class InitialSetup : DbMigration

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
@@ -17,7 +16,7 @@ namespace SmaugCS.MudProgs
             foreach (var mprog in mob.MobIndex.MudProgs)
             {
                 int chance;
-                if (!Int32.TryParse(mprog.ArgList, out chance))
+                if (!int.TryParse(mprog.ArgList, out chance))
                     throw new InvalidDataException();
 
                 if (mprog.Type != type || SmaugRandom.D100() > chance) continue;

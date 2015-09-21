@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -19,7 +18,7 @@ namespace SmaugCS.MudProgs.MobileProgs
             foreach (var mprog in mob.MobIndex.MudProgs.Where(x => x.Type == MudProgTypes.HitPercent))
             {
                 int chance;
-                if (!Int32.TryParse(mprog.ArgList, out chance))
+                if (!int.TryParse(mprog.ArgList, out chance))
                     throw new InvalidDataException();
 
                 if ((100*mob.CurrentHealth/mob.MaximumHealth) < chance)

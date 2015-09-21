@@ -12,14 +12,14 @@ namespace SmaugCS.Loaders
 {
     public class PrototypeAreaLoader
     {
-        public string Directory { get { return SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God); } }
+        public string Directory => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
 
         public void Load()
         {
             var dirProxy = new DirectoryProxy();
             var files = dirProxy.GetFiles(Directory);
 
-            var validLines = new List<string>() { "level", "roomrange", "mobrange", "objrange" };
+            var validLines = new List<string> { "level", "roomrange", "mobrange", "objrange" };
 
             foreach (var file in files.Where(x => !x.Equals(".")))
             {
@@ -29,10 +29,10 @@ namespace SmaugCS.Loaders
 
                     int low = 0, hi = 0, rlow = 0, rhi = 0, mlow, mhi, olow, ohi;
                     var badFile = false;
-                    string[] words;
 
                     foreach (var line in lines)
                     {
+                        string[] words;
                         switch (line.ToLower())
                         {
                             case "level":

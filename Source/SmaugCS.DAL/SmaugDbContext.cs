@@ -65,17 +65,15 @@ namespace SmaugCS.DAL
         {
             foreach (var eve in e.EntityValidationErrors)
             {
-                var error = string.Format(
-                    "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                var error =
+                    $"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation errors:";
 
                 Console.WriteLine(error);
                 Logger.Error(error);
 
                 foreach (var ve in eve.ValidationErrors)
                 {
-                    var validationError = string.Format("- Property: \"{0}\", Error: \"{1}\"",
-                        ve.PropertyName, ve.ErrorMessage);
+                    var validationError = $"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"";
 
                     Console.WriteLine(validationError);
                     Logger.ErrorFormat(validationError);
@@ -108,8 +106,7 @@ namespace SmaugCS.DAL
             if (!entity.CreateDateUtc.HasValue)
             {
                 throw new InvalidOperationException(
-                    string.Format("Create date for object doesn't exist. This is required.  Object type: {0}",
-                        entry.Entity.GetType().Name));
+                    $"Create date for object doesn't exist. This is required.  Object type: {entry.Entity.GetType().Name}");
             }
         }
 

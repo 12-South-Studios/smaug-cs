@@ -34,12 +34,9 @@ namespace SmaugCS.Data
 
         public void Load(IEnumerable<string> lines)
         {
-            foreach (string line in lines.Where(x => !x.StartsWith("*")))
+            foreach (Tuple<string, string> tuple in lines.Where(x => !x.StartsWith("*"))
+                .TakeWhile(line => !line.Equals("END")).Select(line => line.FirstArgument()))
             {
-                if (line.Equals("END"))
-                    break;
-
-                Tuple<string, string> tuple = line.FirstArgument();
                 switch (tuple.Item1.ToLower())
                 {
                     case "mhour":
@@ -55,7 +52,7 @@ namespace SmaugCS.Data
                         Year = tuple.Item2.ToInt32();
                         break;
                     default:
-                        //LogManager.Instance.Bug("Unknown time element {0}", tuple.Item1);
+                        // todo log it
                         break;
                 }
             }

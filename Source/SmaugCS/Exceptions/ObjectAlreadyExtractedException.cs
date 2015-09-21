@@ -16,7 +16,7 @@ namespace SmaugCS.Exceptions
 
         public ObjectAlreadyExtractedException(string message, Exception inner) : base(message, inner) { }
 
-        protected ObjectAlreadyExtractedException(SerializationInfo info, StreamingContext context)
+        private ObjectAlreadyExtractedException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
     }
 }

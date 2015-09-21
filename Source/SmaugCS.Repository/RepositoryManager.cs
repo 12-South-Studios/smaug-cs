@@ -26,17 +26,14 @@ namespace SmaugCS.Repository
             foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
                 var attrib = EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
-                if (attrib == null || attrib.Repository == null)
+                if (attrib?.Repository == null)
                     continue;
 
                 _repositories.Add(repoType, Activator.CreateInstance(attrib.Repository));
             }
         }
 
-        public static IRepositoryManager Instance
-        {
-            get { return Kernel.Get<IRepositoryManager>(); }
-        }
+        public static IRepositoryManager Instance => Kernel.Get<IRepositoryManager>();
 
         /// <summary>
         /// Adds the given object to the repository of the matching entity type
@@ -74,130 +71,64 @@ namespace SmaugCS.Repository
             foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
             {
                 var attrib = EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);
-                if (attrib == null || attrib.Object == null)
+                if (attrib?.Object == null)
                     continue;
                 if (attrib.Object == objectType)
                     return repoType;
             }
 
-            throw new ArgumentException(string.Format("{0} is not a valid Repository Type", objectType), "objectType");
+            throw new ArgumentException($"{objectType} is not a valid Repository Type", nameof(objectType));
         }
 
         #region Properties
-        public RoomRepository ROOMS
-        {
-            get { return _repositories[RepositoryTypes.Rooms].CastAs<RoomRepository>(); }
-        }
+        public RoomRepository ROOMS => _repositories[RepositoryTypes.Rooms].CastAs<RoomRepository>();
 
-        public AreaRepository AREAS
-        {
-            get { return _repositories[RepositoryTypes.Areas].CastAs<AreaRepository>(); }
-        }
+        public AreaRepository AREAS => _repositories[RepositoryTypes.Areas].CastAs<AreaRepository>();
 
-        public ObjectRepository OBJECTTEMPLATES
-        {
-            get { return _repositories[RepositoryTypes.ObjectTemplates].CastAs<ObjectRepository>(); }
-        }
-        
-        public MobileRepository MOBILETEMPLATES
-        {
-            get { return _repositories[RepositoryTypes.MobileTemplates].CastAs<MobileRepository>(); }
-        }
+        public ObjectRepository OBJECTTEMPLATES => _repositories[RepositoryTypes.ObjectTemplates].CastAs<ObjectRepository>();
 
-        public CharacterRepository CHARACTERS
-        {
-            get { return _repositories[RepositoryTypes.Characters].CastAs<CharacterRepository>(); }
-        }
+        public MobileRepository MOBILETEMPLATES => _repositories[RepositoryTypes.MobileTemplates].CastAs<MobileRepository>();
 
-        public ObjInstanceRepository OBJECTS
-        {
-            get { return _repositories[RepositoryTypes.ObjectInstances].CastAs<ObjInstanceRepository>(); }
-        }
+        public CharacterRepository CHARACTERS => _repositories[RepositoryTypes.Characters].CastAs<CharacterRepository>();
+
+        public ObjInstanceRepository OBJECTS => _repositories[RepositoryTypes.ObjectInstances].CastAs<ObjInstanceRepository>();
 
         public GenericRepository<T> GetRepository<T>(RepositoryTypes type) where T : class
         {
             return _repositories.ContainsKey(type) ? _repositories[type].CastAs<GenericRepository<T>>() : null;
         }
 
-        public GenericRepository<LiquidData> LIQUIDS
-        {
-            get { return GetRepository<LiquidData>(RepositoryTypes.Liquids); }
-        }
+        public GenericRepository<LiquidData> LIQUIDS => GetRepository<LiquidData>(RepositoryTypes.Liquids);
 
-        public GenericRepository<SkillData> SKILLS
-        {
-            get { return GetRepository<SkillData>(RepositoryTypes.Skills); }
-        }
+        public GenericRepository<SkillData> SKILLS => GetRepository<SkillData>(RepositoryTypes.Skills);
 
-        public GenericRepository<HerbData> HERBS
-        {
-            get { return GetRepository<HerbData>(RepositoryTypes.Herbs); }
-        } 
+        public GenericRepository<HerbData> HERBS => GetRepository<HerbData>(RepositoryTypes.Herbs);
 
-        public GenericRepository<SpecialFunction> SPEC_FUNS
-        {
-            get { return GetRepository<SpecialFunction>(RepositoryTypes.SpecFuns); }
-        }
+        public GenericRepository<SpecialFunction> SPEC_FUNS => GetRepository<SpecialFunction>(RepositoryTypes.SpecFuns);
 
-        public GenericRepository<CommandData> COMMANDS
-        {
-            get { return GetRepository<CommandData>(RepositoryTypes.Commands); }
-        }
+        public GenericRepository<CommandData> COMMANDS => GetRepository<CommandData>(RepositoryTypes.Commands);
 
-        public GenericRepository<SocialData> SOCIALS
-        {
-            get { return GetRepository<SocialData>(RepositoryTypes.Socials); }
-        }
+        public GenericRepository<SocialData> SOCIALS => GetRepository<SocialData>(RepositoryTypes.Socials);
 
-        public GenericRepository<LanguageData> LANGUAGES
-        {
-            get { return GetRepository<LanguageData>(RepositoryTypes.Languages); }
-        }
+        public GenericRepository<LanguageData> LANGUAGES => GetRepository<LanguageData>(RepositoryTypes.Languages);
 
-        public GenericRepository<RaceData> RACES
-        {
-            get { return GetRepository<RaceData>(RepositoryTypes.Races); }
-        }
+        public GenericRepository<RaceData> RACES => GetRepository<RaceData>(RepositoryTypes.Races);
 
-        public GenericRepository<ClassData> CLASSES
-        {
-            get { return GetRepository<ClassData>(RepositoryTypes.Classes); }
-        }
+        public GenericRepository<ClassData> CLASSES => GetRepository<ClassData>(RepositoryTypes.Classes);
 
-        public GenericRepository<DeityData> DEITIES
-        {
-            get { return GetRepository<DeityData>(RepositoryTypes.Deities); }
-        }
+        public GenericRepository<DeityData> DEITIES => GetRepository<DeityData>(RepositoryTypes.Deities);
 
-        public GenericRepository<ClanData> CLANS
-        {
-            get { return GetRepository<ClanData>(RepositoryTypes.Clans); }
-        }
+        public GenericRepository<ClanData> CLANS => GetRepository<ClanData>(RepositoryTypes.Clans);
 
-        public GenericRepository<CouncilData> COUNCILS
-        {
-            get { return GetRepository<CouncilData>(RepositoryTypes.Councils); }
-        }
+        public GenericRepository<CouncilData> COUNCILS => GetRepository<CouncilData>(RepositoryTypes.Councils);
 
-        public GenericRepository<PlaneData> PLANES
-        {
-            get { return GetRepository<PlaneData>(RepositoryTypes.Planes); }
-        }
+        public GenericRepository<PlaneData> PLANES => GetRepository<PlaneData>(RepositoryTypes.Planes);
 
-        public GenericRepository<MorphData> MORPHS
-        {
-            get { return GetRepository<MorphData>(RepositoryTypes.Morphs); }
-        }
+        public GenericRepository<MorphData> MORPHS => GetRepository<MorphData>(RepositoryTypes.Morphs);
 
-        public GenericRepository<HintData> HINTS
-        {
-            get { return GetRepository<HintData>(RepositoryTypes.Hints); }
-        }
+        public GenericRepository<HintData> HINTS => GetRepository<HintData>(RepositoryTypes.Hints);
 
-        public GenericRepository<MixtureData> MIXTURES
-        {
-            get { return GetRepository<MixtureData>(RepositoryTypes.Mixtures); }
-        } 
+        public GenericRepository<MixtureData> MIXTURES => GetRepository<MixtureData>(RepositoryTypes.Mixtures);
 
         #endregion
 

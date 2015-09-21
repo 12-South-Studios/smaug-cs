@@ -3,7 +3,7 @@ using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Communication
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class CouncilChannelAttribute : ChannelAttribute
     {
         public bool NoNpc { get; set; }

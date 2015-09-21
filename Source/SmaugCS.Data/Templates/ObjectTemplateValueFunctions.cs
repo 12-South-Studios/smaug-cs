@@ -42,9 +42,7 @@ namespace SmaugCS.Data.Templates
             Action<dynamic, IEnumerable<int>> action;
             DynamicValuesTable.TryGetValue(template.Type, out action);
 
-            if (action == null) return;
-
-            action.Invoke(template.Values, values);
+            action?.Invoke(template.Values, values);
         }
 
         private static void SetArmorDynamicValues(dynamic valueProperty, IEnumerable<int> values)

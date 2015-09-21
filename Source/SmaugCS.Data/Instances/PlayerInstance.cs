@@ -11,8 +11,8 @@ namespace SmaugCS.Data.Instances
         public EditorData CurrentEditor { get; set; }
         public CharacterSubStates SubState { get; set; }
         public override int Trust { get; set; }
-        public int PlayedDuration { get { return (int)(DateTime.Now.ToFileTimeUtc() - LoggedOn.ToFileTimeUtc()) / 3600; } }
-        public DateTime LoggedOn { get { return Descriptor.User.ConnectedOn; } }
+        public int PlayedDuration => (int)(DateTime.Now.ToFileTimeUtc() - LoggedOn.ToFileTimeUtc()) / 3600;
+        public DateTime LoggedOn => Descriptor.User.ConnectedOn;
         public int TotalPlayedTime { get; set; }
         public DateTime save_time { get; set; }
         public Dictionary<ATTypes, char> Colors { get; private set; }

@@ -24,7 +24,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public static string ReadFlagString(this TextReaderProxy proxy)
         {
-            return proxy.ReadString().TrimStart(new[] { ' ' }).TrimEnd(new[] { '\n', '\r', '~' });
+            return proxy.ReadString().TrimStart(' ').TrimEnd('\n', '\r', '~');
         }
     }
 }

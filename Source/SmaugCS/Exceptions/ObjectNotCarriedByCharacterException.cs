@@ -16,7 +16,7 @@ namespace SmaugCS.Exceptions
 
         public ObjectNotCarriedByCharacterException(string message, Exception inner) : base(message, inner) { }
 
-        protected ObjectNotCarriedByCharacterException(SerializationInfo info, StreamingContext context)
+        private ObjectNotCarriedByCharacterException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
     }
 }

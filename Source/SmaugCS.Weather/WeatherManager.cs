@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Linq;
 using Ninject;
 using SmaugCS.DAL.Interfaces;
@@ -24,10 +23,7 @@ namespace SmaugCS.Weather
             _dbContext = dbContext;
         }
 
-        public static IWeatherManager Instance
-        {
-            get { return _kernel.Get<IWeatherManager>(); }
-        }
+        public static IWeatherManager Instance => _kernel.Get<IWeatherManager>();
 
         public WeatherCell GetWeather(AreaData area)
         {
@@ -50,28 +46,21 @@ namespace SmaugCS.Weather
             {
                 if (!_dbContext.Weather.Any()) return;
 
-                var cells = new List<WeatherCell>();
-
-                foreach (var cell in _dbContext.Weather)
+                var cells = _dbContext.Weather.Select(cell => new WeatherCell(cell.Id)
                 {
-                    var newCell = new WeatherCell(cell.Id)
-                    {
-                        XCoord = cell.CellXCoordinate,
-                        YCoord = cell.CellYCoordinate,
-                        Climate = cell.ClimateType,
-                        Hemisphere = cell.HemisphereType,
-                        CloudCover = cell.CloudCover,
-                        Energy = cell.Energy,
-                        Humidity = cell.Humidity,
-                        Precipitation = cell.Precipitation,
-                        Pressure = cell.Pressure,
-                        Temperature = cell.Temperature,
-                        WindSpeedX = cell.WindSpeedX,
-                        WindSpeedY = cell.WindSpeedY
-                    };
-
-                    cells.Add(newCell);
-                }
+                    XCoord = cell.CellXCoordinate,
+                    YCoord = cell.CellYCoordinate,
+                    Climate = cell.ClimateType,
+                    Hemisphere = cell.HemisphereType,
+                    CloudCover = cell.CloudCover,
+                    Energy = cell.Energy,
+                    Humidity = cell.Humidity,
+                    Precipitation = cell.Precipitation,
+                    Pressure = cell.Pressure,
+                    Temperature = cell.Temperature,
+                    WindSpeedX = cell.WindSpeedX,
+                    WindSpeedY = cell.WindSpeedY
+                }).ToList();
 
                 Weather = new WeatherMap(timeInfo, width, height, cells);
                 _logManager.Boot("Loaded {0} Weather Cells", cells.Count);

@@ -20,10 +20,7 @@ namespace SmaugCS.Lua
             _logWrapper = logWrapper;
         }
 
-        public static ILuaManager Instance
-        {
-            get { return _kernel.Get<ILuaManager>(); }
-        }
+        public static ILuaManager Instance => _kernel.Get<ILuaManager>();
 
         public void InitializeLuaProxy(LuaInterfaceProxy proxy)
         {

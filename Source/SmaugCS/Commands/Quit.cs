@@ -75,7 +75,7 @@ namespace SmaugCS.Commands
             }
 
             LogManager.Instance.Info(
-                string.Format("{0} has quit (Room {1}).", ch.Name, ch.CurrentRoom != null ? ch.CurrentRoom.ID : -1),
+                $"{ch.Name} has quit (Room {ch.CurrentRoom?.ID ?? -1}).",
                 LogTypes.Info, ch.Trust);
 
             ch.Extract(true);

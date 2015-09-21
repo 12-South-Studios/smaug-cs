@@ -1,5 +1,4 @@
-﻿using System;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Communication;
 using SmaugCS.Constants;
@@ -139,7 +138,7 @@ namespace SmaugCS.Commands.Social
 
             if (!victim.IsNpc() && victim.IsImmortal()
                 && ((PlayerInstance)victim).PlayerData.TellHistory != null
-                && Char.IsLetter(ch.IsNpc() ? ch.ShortDescription.ToCharArray()[0] : ch.Name.ToCharArray()[0]))
+                && char.IsLetter(ch.IsNpc() ? ch.ShortDescription.ToCharArray()[0] : ch.Name.ToCharArray()[0]))
             {
                 var buffer = string.Format("{0} told you '{1}'\r\n",
                                               ch.IsNpc()

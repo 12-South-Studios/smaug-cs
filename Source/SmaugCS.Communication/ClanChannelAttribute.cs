@@ -4,7 +4,7 @@ using System;
 
 namespace SmaugCS.Communication
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class ClanChannelAttribute : ChannelAttribute
     {
         public bool NoNpc { get; set; }

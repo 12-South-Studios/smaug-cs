@@ -23,8 +23,7 @@ namespace SmaugCS.Extensions.Player
 
         public static void StopIdling(this PlayerInstance ch)
         {
-            if (ch == null || ch.Descriptor == null
-                || ch.Descriptor.ConnectionStatus != ConnectionTypes.Playing)
+            if (ch?.Descriptor == null || ch.Descriptor.ConnectionStatus != ConnectionTypes.Playing)
                 return;
 
             ch.Timer = 0;
@@ -39,10 +38,10 @@ namespace SmaugCS.Extensions.Player
 
         public static long GetLearned(this PlayerInstance ch, long skillId)
         {
-            if (ch.PlayerData == null) return 0;
-            if (ch.PlayerData.Learned == null) return 0;
-            if (!ch.PlayerData.Learned.Contains(skillId)) return 0;
-            return ch.PlayerData.Learned.ToList().FirstOrDefault(x => x == skillId);
+            if (ch.PlayerData?.Learned == null) return 0;
+            return !ch.PlayerData.Learned.Contains(skillId)
+                ? 0
+                : ch.PlayerData.Learned.ToList().FirstOrDefault(x => x == skillId);
         }
 
         public static int CalculateAge(this PlayerInstance ch)
@@ -77,11 +76,11 @@ namespace SmaugCS.Extensions.Player
 
                 atType = ATTypes.AT_WHITE;
                 if (victim.IsGood())
-                    description = string.Format("{0} glows with an aura of divine radiance.\r\n", name);
+                    description = $"{name} glows with an aura of divine radiance.\r\n";
                 else if (victim.IsEvil())
-                    description = string.Format("{0} shimmers beneath an aura of dark energy.\r\n", name);
+                    description = $"{name} shimmers beneath an aura of dark energy.\r\n";
                 else
-                    description = string.Format("{0} is shrouded in flowing shadow and light.\r\n", name);
+                    description = $"{name} is shrouded in flowing shadow and light.\r\n";
             }
             if (!victim.IsNpc() && victim.Switched.IsAffected(AffectedByTypes.Possess))
                 attrib = AffectedByTypes.Possess.GetAttribute<VisibleAffectAttribute>();

@@ -19,7 +19,7 @@ namespace SmaugCS.SpecFuns.Breaths
 
             var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
             var skill = databaseMgr.GetEntity<SkillData>(spellName);
-            if (skill == null || skill.SpellFunction == null) return false;
+            if (skill?.SpellFunction == null) return false;
 
             skill.SpellFunction.Value.Invoke((int)skill.ID, ch.Level, ch, victim);
             return true;
