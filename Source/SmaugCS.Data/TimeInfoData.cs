@@ -51,9 +51,6 @@ namespace SmaugCS.Data
                     case "myear":
                         Year = tuple.Item2.ToInt32();
                         break;
-                    default:
-                        // todo log it
-                        break;
                 }
             }
         }

@@ -10,7 +10,7 @@ using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Air
 {
     public static class ControlWeather
     {
@@ -34,7 +34,7 @@ namespace SmaugCS.Spells
                 return ReturnTypes.SpellFailed;
 
             var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
-            var change = 5.GetNumberThatIsBetween(SmaugRandom.Between(5, 15) + (ch.Level / 10), 15);
+            var change = 5.GetNumberThatIsBetween(SmaugRandom.Between(5, 15) + ch.Level / 10, 15);
             
             WeatherChangeTable[Cast.TargetName.ToLower()].Invoke(cell, change);
 

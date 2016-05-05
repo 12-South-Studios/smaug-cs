@@ -80,8 +80,8 @@ namespace SmaugCS
             {
                 //// Experience gained during battle decreases as the battle drags on
                 if (ch.CurrentFighting != null &&
-                    (++ch.CurrentFighting.Duration%24) == 0)
-                    ch.CurrentFighting.Experience = ((ch.CurrentFighting.Experience*9)/10);
+                    ++ch.CurrentFighting.Duration%24 == 0)
+                    ch.CurrentFighting.Experience = ch.CurrentFighting.Experience*9/10;
 
                 foreach (var timer in ch.Timers)
                     DecreaseExperienceInBattle(timer, (PlayerInstance)ch);
@@ -180,7 +180,7 @@ namespace SmaugCS
 
                 var mch = (MobileInstance) ch;
                 if (mch.Attacks.IsEmpty()) continue;
-                if (30 + (ch.Level/4) < SmaugRandom.D100()) continue;
+                if (30 + ch.Level/4 < SmaugRandom.D100()) continue;
 
                 var cnt = 0;
                 int attacktype;
@@ -275,7 +275,7 @@ namespace SmaugCS
                 return ReturnTypes.None;
 
             var berserk = RepositoryManager.Instance.GetEntity<SkillData>("berserk");
-            var chance = ch.IsNpc() ? 100 : (Macros.LEARNED(ch, (int) berserk.ID)*5/2);
+            var chance = ch.IsNpc() ? 100 : Macros.LEARNED(ch, (int) berserk.ID)*5/2;
             if (ch.IsAffected(AffectedByTypes.Berserk) && SmaugRandom.D100() < chance)
             {
                 retcode = one_hit(ch, victim, dt);
@@ -328,7 +328,7 @@ namespace SmaugCS
                 secondAttack.LearnFromFailure(ch);
 
             var thirdAttack = RepositoryManager.Instance.GetEntity<SkillData>("third attack");
-            chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int)thirdAttack.ID) + (dualBonus*1.5f)) / 2);
+            chance = ch.IsNpc() ? ch.Level : (int)((Macros.LEARNED(ch, (int)thirdAttack.ID) + dualBonus*1.5f) / 2);
             if (SmaugRandom.D100() < chance)
             {
                 thirdAttack.LearnFromSuccess(ch);
@@ -340,7 +340,7 @@ namespace SmaugCS
                 thirdAttack.LearnFromFailure(ch);
 
             var fourthAttack = RepositoryManager.Instance.GetEntity<SkillData>("fourth attack");
-            chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fourthAttack.ID) + (dualBonus*2)) / 3;
+            chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fourthAttack.ID) + dualBonus*2) / 3;
             if (SmaugRandom.D100() < chance)
             {
                 fourthAttack.LearnFromSuccess(ch);
@@ -352,7 +352,7 @@ namespace SmaugCS
                 fourthAttack.LearnFromFailure(ch);
 
             var fifthAttack = RepositoryManager.Instance.GetEntity<SkillData>("fifth attack");
-            chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fifthAttack.ID) + (dualBonus*3)) / 4;
+            chance = ch.IsNpc() ? ch.Level : (Macros.LEARNED(ch, (int)fifthAttack.ID) + dualBonus*3) / 4;
             if (SmaugRandom.D100() < chance)
             {
                 fifthAttack.LearnFromSuccess(ch);
@@ -560,7 +560,7 @@ namespace SmaugCS
                 {
                     var intDiff = ch.GetCurrentIntelligence() - victim.GetCurrentIntelligence();
                     if (intDiff != 0)
-                        victimArmorClass += (intDiff*ch.CurrentFighting.TimesKilled)/10;
+                        victimArmorClass += intDiff*ch.CurrentFighting.TimesKilled/10;
                 }
             }
 
@@ -590,9 +590,9 @@ namespace SmaugCS
             if (!victim.IsAwake())
                 damage *= 2;
             if (dt == (int) RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID)
-                damage *= (2 + (ch.Level - (victim.Level/4)).GetNumberThatIsBetween(2, 30)/8);
+                damage *= 2 + (ch.Level - victim.Level/4).GetNumberThatIsBetween(2, 30)/8;
             if (dt == (int) RepositoryManager.Instance.GetEntity<SkillData>("circle").ID)
-                damage *= (2 + (ch.Level - (victim.Level/4)).GetNumberThatIsBetween(2, 30)/16);
+                damage *= 2 + (ch.Level - victim.Level/4).GetNumberThatIsBetween(2, 30)/16;
             if (damage <= 0)
                 damage = 1;
 
@@ -757,7 +757,7 @@ namespace SmaugCS
                 if (mod <= 0)
                     damage = -1;
                 if (mod != 10)
-                    damage = (damage*mod)/10;
+                    damage = damage*mod/10;
             }
             return damage;
         }
@@ -858,7 +858,7 @@ namespace SmaugCS
                 thac0_32 = RepositoryManager.Instance.GetClass(ch.CurrentClass).ToHitArmorClass32;
             }
 
-            thac0_0 = ch.Level.Interpolate(thac0_0, thac0_32) - ch.GetHitroll() + (distance*2);
+            thac0_0 = ch.Level.Interpolate(thac0_0, thac0_32) - ch.GetHitroll() + distance*2;
 
             return new Tuple<int, int>(thac0_0, thac0_32);
         }
@@ -908,7 +908,7 @@ namespace SmaugCS
         private static ReturnTypes ProjectileHit(CharacterInstance ch, CharacterInstance victim,
             ObjectInstance projectile, ObjectInstance wield, int bonus, int proficiencySkillNumber, int dt)
         {
-            var damage = wield == null ? bonus : SmaugRandom.Between(wield.Value.ToList()[1], wield.Value.ToList()[2]) + (bonus / 10);
+            var damage = wield == null ? bonus : SmaugRandom.Between(wield.Value.ToList()[1], wield.Value.ToList()[2]) + bonus / 10;
             damage += ch.GetDamroll();
             if (bonus > 0)
                 damage += bonus/4;
@@ -1249,7 +1249,7 @@ namespace SmaugCS
                     ch.CurrentMana = ch.MaximumMana;
                     ch.CurrentMovement = ch.MaximumMovement;
                     if (ch.PlayerData != null)
-                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = (10 + ch.Level);
+                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = 10 + ch.Level;
                     victim.UpdatePositionByCurrentHealth();
                     if (victim != ch)
                     {
@@ -1278,7 +1278,7 @@ namespace SmaugCS
                     ((PlayerInstance)victim).PlayerData.PvPDeaths++;
                     ((PlayerInstance)victim).AdjustFavor(DeityFieldTypes.Die, 1);
                     ch.AdjustFavor(DeityFieldTypes.Kill, 1);
-                    victim.AddTimer(TimerTypes.PKilled, 115, null, 0);
+                    victim.AddTimer(TimerTypes.PKilled, 115);
                     Macros.WAIT_STATE(victim, 3 * GameConstants.GetSystemValue<int>("PulseViolence"));
                     return;
                 }
@@ -1579,7 +1579,7 @@ namespace SmaugCS
             if (dam == 0)
                 dampc = 0;
             else
-                dampc = ((dam*1000)/victim.MaximumHealth) + (50 - ((victim.CurrentHealth*50)/victim.MaximumHealth));
+                dampc = dam*1000/victim.MaximumHealth + (50 - victim.CurrentHealth*50/victim.MaximumHealth);
 
             RoomTemplate wasInRoom = null;
             if (ch.CurrentRoom != victim.CurrentRoom)
@@ -1595,10 +1595,10 @@ namespace SmaugCS
             var vs = LookupManager.Instance.GetLookup(SlashMessageTable[w_index], d_index);
             var vp = LookupManager.Instance.GetLookup(PierceMessageTable[w_index], d_index);
 
-            var punct = (dampc <= 30) ? '.' : '!';
+            var punct = dampc <= 30 ? '.' : '!';
 
-            var gcflag = (dam == 0 && (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag)));
-            var gvflag = (dam == 0 && (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Gag)));
+            var gcflag = dam == 0 && !ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Gag);
+            var gvflag = dam == 0 && !victim.IsNpc() && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Gag);
 
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
 
@@ -1664,7 +1664,7 @@ namespace SmaugCS
                             comm.act(ATTypes.AT_ACTION, skill.HitRoomMessage, ch, null, victim, ToTypes.Room);
                     }
                 }
-                else if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + attackTypes.Count()))
+                else if (dt >= Program.TYPE_HIT && dt < Program.TYPE_HIT + attackTypes.Count())
                 {
                     attack = obj != null
                         ? obj.ShortDescription
@@ -1714,7 +1714,7 @@ namespace SmaugCS
             if (dt > 0)
                 return 0;
             var attackTypes = LookupManager.Instance.GetLookups("AttackTable");
-            if (dt >= Program.TYPE_HIT && dt < (Program.TYPE_HIT + attackTypes.Count()))
+            if (dt >= Program.TYPE_HIT && dt < Program.TYPE_HIT + attackTypes.Count())
                 return dt - Program.TYPE_HIT;
             return 0;
         }
@@ -1738,7 +1738,7 @@ namespace SmaugCS
             "SlashGenericMessages", // arrow
             "SlashGenericMessages", // dart
             "SlashGenericMessages", // stone
-            "SlashGenericMessages", // pea
+            "SlashGenericMessages" // pea
         };
         private static readonly List<string> PierceMessageTable = new List<string>
         {
@@ -1759,7 +1759,7 @@ namespace SmaugCS
             "PierceGenericMessages", // arrow
             "PierceGenericMessages", // dart
             "PierceGenericMessages", // stone
-            "PierceGenericMessages", // pea
+            "PierceGenericMessages" // pea
         };
 
         public static void dam_message(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
@@ -1772,7 +1772,7 @@ namespace SmaugCS
             if (!victim.IsNpc() && !ch.IsNpc())
             {
                 if ((((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly)
-                     || (ch.Level - victim.Level) > 10
+                     || ch.Level - victim.Level > 10
                      || ((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly))
                     && !ch.IsInArena()
                     && ch != victim

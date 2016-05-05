@@ -3,9 +3,9 @@ using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
-using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 
 namespace SmaugCS.Behavior.Shopkeeper
@@ -31,7 +31,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (IsVisibleToKeeper(keeper, ch)) return null;
 
             var speakswell = keeper.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, keeper));
-            if ((SmaugRandom.D100() % 65) > speakswell)
+            if (SmaugRandom.D100() % 65 > speakswell)
             {
                 string buffer;
                 if (speakswell > 60)

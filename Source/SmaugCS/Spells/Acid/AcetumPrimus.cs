@@ -4,7 +4,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Acid
 {
     public static class AcetumPrimus
     {

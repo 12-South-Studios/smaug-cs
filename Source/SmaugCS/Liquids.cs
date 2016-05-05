@@ -85,8 +85,8 @@ namespace SmaugCS
 
         public static LiquidData liqobj_can_mix(ObjectInstance sourceObj, ObjectInstance objectLiq)
         {
-            var mixture = RepositoryManager.Instance.MIXTURES.Values.Where(m => (m.Data.ToList()[0] == sourceObj.Value.ToList()[2]
-                                                                 || m.Data.ToList()[1] == sourceObj.Value.ToList()[2]))
+            var mixture = RepositoryManager.Instance.MIXTURES.Values.Where(m => m.Data.ToList()[0] == sourceObj.Value.ToList()[2]
+                                                                                || m.Data.ToList()[1] == sourceObj.Value.ToList()[2])
                                      .FirstOrDefault(m => m.Data.ToList()[0] == objectLiq.Value.ToList()[2]
                                                                 || m.Data.ToList()[1] == objectLiq.Value.ToList()[2]);
 

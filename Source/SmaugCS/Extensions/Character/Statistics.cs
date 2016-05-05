@@ -1,8 +1,10 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
@@ -92,7 +94,9 @@ namespace SmaugCS.Extensions.Character
                 return 1000000;
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return 1000000;
-            return LookupConstants.str_app[ch.GetCurrentStrength()].Carry;
+
+            return (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+                StrengthModTypes.Carry);
         }
     }
 }

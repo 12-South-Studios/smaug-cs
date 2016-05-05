@@ -103,7 +103,7 @@ namespace SmaugCS.Spells.Smaug
 
         private static int GetThreeQuartersDamage(int damage)
         {
-            return (damage*3)/4;
+            return damage*3/4;
         }
 
         private static int GetBaseDamage(int level, CharacterInstance ch, SkillData skill)

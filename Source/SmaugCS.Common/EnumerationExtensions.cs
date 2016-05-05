@@ -24,11 +24,10 @@ namespace SmaugCS.Common
             return Attribute.IsDefined(field, typeof(T));
         }
 
-        public static bool IsSet(this Enum value, Enum bit)
-        {
-            return value.HasFlag(bit);
-        }
+        public static bool IsSet(this Enum value, Enum bit) => value.HasFlag(bit);
 
+        public static bool IsSet(this Enum value, int bit) => value.HasBit(bit);
+   
         public static T GetEnum<T>(long value)
         {
             if (Enum.IsDefined(typeof(T), value))

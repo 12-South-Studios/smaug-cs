@@ -8,7 +8,7 @@ namespace SmaugCS.Board
 {
     public class BoardRepository : IBoardRepository
     {
-        public IEnumerable<BoardData> Boards { get; private set; }
+        public IEnumerable<BoardData> Boards { get; }
         private readonly ILogManager _logManager;
         private readonly ISmaugDbContext _dbContext;
 
@@ -19,10 +19,7 @@ namespace SmaugCS.Board
             _dbContext = dbContext;
         }
 
-        public void Add(BoardData board)
-        {
-            Boards.ToList().Add(board);
-        }
+        public void Add(BoardData board) => Boards.ToList().Add(board);
 
         public void Load()
         {

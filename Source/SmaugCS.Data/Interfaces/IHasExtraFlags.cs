@@ -1,4 +1,4 @@
-﻿namespace SmaugCS.Data
+﻿namespace SmaugCS.Data.Interfaces
 {
     public interface IHasExtraFlags
     {

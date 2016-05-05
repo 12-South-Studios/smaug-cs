@@ -9,7 +9,7 @@ namespace SmaugCS.Ban
     // ReSharper disable once ClassNeverInstantiated.Global
     public class BanRepository : IBanRepository
     {
-        public IEnumerable<BanData> Bans { get; private set; }
+        public IEnumerable<BanData> Bans { get; }
         private readonly ILogManager _logManager;
         private readonly ISmaugDbContext _dbContext;
 
@@ -20,10 +20,7 @@ namespace SmaugCS.Ban
             _dbContext = dbContext;
         }
 
-        public void Add(BanData ban)
-        {
-            Bans.ToList().Add(ban);
-        }
+        public void Add(BanData ban) => Bans.ToList().Add(ban);
 
         public void Load()
         {

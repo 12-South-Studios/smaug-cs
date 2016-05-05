@@ -111,7 +111,7 @@ namespace SmaugCS.Data
 
         public bool EconomyHas(int gold)
         {
-            return (((HighEconomy > 0) ? 1 : 0) * 1000000000 + LowEconomy) >= gold;
+            return (HighEconomy > 0 ? 1 : 0) * 1000000000 + LowEconomy >= gold;
         }
 
         public void AddRoom(RoomTemplate room)

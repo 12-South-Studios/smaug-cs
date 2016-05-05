@@ -25,9 +25,6 @@ namespace SmaugCS.Ban
             Saved = false;
         }
 
-        public bool IsExpired()
-        {
-            return UnbanDate <= DateTime.Now;
-        }
+        public bool IsExpired() => UnbanDate <= DateTime.Now;
     }
 }

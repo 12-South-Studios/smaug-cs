@@ -21,6 +21,7 @@ using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Loaders;
 using SmaugCS.Logging;
@@ -157,6 +158,7 @@ namespace SmaugCS
                 throw new ApplicationException("LuaInitializer failed to start");
 
             LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
+            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.StatModLookups));
 
             BanManager = Kernel.Get<IBanManager>();
             BoardManager = Kernel.Get<IBoardManager>();
@@ -312,38 +314,38 @@ namespace SmaugCS
         #endregion
 
         #region 32bit bitvector defines
-        public static int BV00 = (1 << 0);
-        public static int BV01 = (1 << 1);
-        public static int BV02 = (1 << 2);
-        public static int BV03 = (1 << 3);
-        public static int BV04 = (1 << 4);
-        public static int BV05 = (1 << 5);
-        public static int BV06 = (1 << 6);
-        public static int BV07 = (1 << 7);
-        public static int BV08 = (1 << 8);
-        public static int BV09 = (1 << 9);
-        public static int BV10 = (1 << 10);
-        public static int BV11 = (1 << 11);
-        public static int BV12 = (1 << 12);
-        public static int BV13 = (1 << 13);
-        public static int BV14 = (1 << 14);
-        public static int BV15 = (1 << 15);
-        public static int BV16 = (1 << 16);
-        public static int BV17 = (1 << 17);
-        public static int BV18 = (1 << 18);
-        public static int BV19 = (1 << 19);
-        public static int BV20 = (1 << 20);
-        public static int BV21 = (1 << 21);
-        public static int BV22 = (1 << 22);
-        public static int BV23 = (1 << 23);
-        public static int BV24 = (1 << 24);
-        public static int BV25 = (1 << 25);
-        public static int BV26 = (1 << 26);
-        public static int BV27 = (1 << 27);
-        public static int BV28 = (1 << 28);
-        public static int BV29 = (1 << 29);
-        public static int BV30 = (1 << 30);
-        public static int BV31 = (1 << 31);
+        public static int BV00 = 1 << 0;
+        public static int BV01 = 1 << 1;
+        public static int BV02 = 1 << 2;
+        public static int BV03 = 1 << 3;
+        public static int BV04 = 1 << 4;
+        public static int BV05 = 1 << 5;
+        public static int BV06 = 1 << 6;
+        public static int BV07 = 1 << 7;
+        public static int BV08 = 1 << 8;
+        public static int BV09 = 1 << 9;
+        public static int BV10 = 1 << 10;
+        public static int BV11 = 1 << 11;
+        public static int BV12 = 1 << 12;
+        public static int BV13 = 1 << 13;
+        public static int BV14 = 1 << 14;
+        public static int BV15 = 1 << 15;
+        public static int BV16 = 1 << 16;
+        public static int BV17 = 1 << 17;
+        public static int BV18 = 1 << 18;
+        public static int BV19 = 1 << 19;
+        public static int BV20 = 1 << 20;
+        public static int BV21 = 1 << 21;
+        public static int BV22 = 1 << 22;
+        public static int BV23 = 1 << 23;
+        public static int BV24 = 1 << 24;
+        public static int BV25 = 1 << 25;
+        public static int BV26 = 1 << 26;
+        public static int BV27 = 1 << 27;
+        public static int BV28 = 1 << 28;
+        public static int BV29 = 1 << 29;
+        public static int BV30 = 1 << 30;
+        public static int BV31 = 1 << 31;
         // 32 USED! DO NOT ADD MORE! SB 
         #endregion
 
@@ -522,7 +524,7 @@ namespace SmaugCS
 
         public static bool BOUNDARY(int x, int y)
         {
-            return ((x < 0) || (y < 0) || (x > MAPX) || (y > MAPY));
+            return (x < 0) || (y < 0) || (x > MAPX) || (y > MAPY);
         }
 
         #endregion
@@ -549,12 +551,12 @@ namespace SmaugCS
 
         public static bool IS_WHITE(int x)
         {
-            return (x >= WHITE_PAWN && x <= WHITE_KING);
+            return x >= WHITE_PAWN && x <= WHITE_KING;
         }
 
         public static bool IS_BLACK(int x)
         {
-            return (x >= BLACK_PAWN && x <= BLACK_KING);
+            return x >= BLACK_PAWN && x <= BLACK_KING;
         }
 
         public static int MOVE_OK = 0;
@@ -594,17 +596,17 @@ namespace SmaugCS
             var i = 0;
             while (char.IsDigit(sb[i]))
             {
-                number = (number * 10) + Convert.ToInt32(sb[i]);
+                number = number * 10 + Convert.ToInt32(sb[i]);
                 i++;
             }
 
             switch (char.ToUpper(sb[0]))
             {
                 case 'K':
-                    number *= (multiplier = 1000);
+                    number *= multiplier = 1000;
                     break;
                 case 'M':
-                    number *= (multiplier = 1000000);
+                    number *= multiplier = 1000000;
                     break;
                 default:
                     return 0;
@@ -632,8 +634,8 @@ namespace SmaugCS
             {
                 case '+':
                     if (sb.Length == 1)
-                        return (currentbet * 125) / 100;
-                    return (currentbet * (100 + Convert.ToInt32(s))) / 100;
+                        return currentbet * 125 / 100;
+                    return currentbet * (100 + Convert.ToInt32(s)) / 100;
                 case '*':
                 case 'x':
                     if (sb.Length == 1)

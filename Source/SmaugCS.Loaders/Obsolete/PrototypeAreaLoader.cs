@@ -3,12 +3,11 @@ using System.IO;
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Logging;
 
-namespace SmaugCS.Loaders
+namespace SmaugCS.Loaders.Obsolete
 {
     public class PrototypeAreaLoader
     {

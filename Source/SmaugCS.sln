@@ -56,37 +56,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.Auction.Tests", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmaugCS.DAL", "SmaugCS.DAL\SmaugCS.DAL.csproj", "{157B6B68-68F7-414B-AE04-9CB80B9C68B4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{AEB4E194-789C-491F-A78F-A030A633AF96}"
-	ProjectSection(SolutionItems) = preProject
-		..\Libraries\Realm.Library.Ai.dll = ..\Libraries\Realm.Library.Ai.dll
-		..\Libraries\Realm.Library.Ai.pdb = ..\Libraries\Realm.Library.Ai.pdb
-		..\Libraries\Realm.Library.Ai.xml = ..\Libraries\Realm.Library.Ai.xml
-		..\Libraries\Realm.Library.Common.dll = ..\Libraries\Realm.Library.Common.dll
-		..\Libraries\Realm.Library.Common.pdb = ..\Libraries\Realm.Library.Common.pdb
-		..\Libraries\Realm.Library.Common.xml = ..\Libraries\Realm.Library.Common.xml
-		..\Libraries\Realm.Library.Lua.dll = ..\Libraries\Realm.Library.Lua.dll
-		..\Libraries\Realm.Library.Lua.pdb = ..\Libraries\Realm.Library.Lua.pdb
-		..\Libraries\Realm.Library.Lua.xml = ..\Libraries\Realm.Library.Lua.xml
-		..\Libraries\Realm.Library.NCalcExt.dll = ..\Libraries\Realm.Library.NCalcExt.dll
-		..\Libraries\Realm.Library.NCalcExt.pdb = ..\Libraries\Realm.Library.NCalcExt.pdb
-		..\Libraries\Realm.Library.NCalcExt.xml = ..\Libraries\Realm.Library.NCalcExt.xml
-		..\Libraries\Realm.Library.Network.dll = ..\Libraries\Realm.Library.Network.dll
-		..\Libraries\Realm.Library.Network.pdb = ..\Libraries\Realm.Library.Network.pdb
-		..\Libraries\Realm.Library.Network.xml = ..\Libraries\Realm.Library.Network.xml
-		..\Libraries\Realm.Library.Patterns.Command.dll = ..\Libraries\Realm.Library.Patterns.Command.dll
-		..\Libraries\Realm.Library.Patterns.Command.pdb = ..\Libraries\Realm.Library.Patterns.Command.pdb
-		..\Libraries\Realm.Library.Patterns.Command.xml = ..\Libraries\Realm.Library.Patterns.Command.xml
-		..\Libraries\Realm.Library.Patterns.Factory.dll = ..\Libraries\Realm.Library.Patterns.Factory.dll
-		..\Libraries\Realm.Library.Patterns.Factory.pdb = ..\Libraries\Realm.Library.Patterns.Factory.pdb
-		..\Libraries\Realm.Library.Patterns.Factory.xml = ..\Libraries\Realm.Library.Patterns.Factory.xml
-		..\Libraries\Realm.Library.Patterns.Repository.dll = ..\Libraries\Realm.Library.Patterns.Repository.dll
-		..\Libraries\Realm.Library.Patterns.Repository.pdb = ..\Libraries\Realm.Library.Patterns.Repository.pdb
-		..\Libraries\Realm.Library.Patterns.Repository.xml = ..\Libraries\Realm.Library.Patterns.Repository.xml
-		..\Libraries\Realm.Library.Patterns.Singleton.dll = ..\Libraries\Realm.Library.Patterns.Singleton.dll
-		..\Libraries\Realm.Library.Patterns.Singleton.pdb = ..\Libraries\Realm.Library.Patterns.Singleton.pdb
-		..\Libraries\Realm.Library.Patterns.Singleton.xml = ..\Libraries\Realm.Library.Patterns.Singleton.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{29EA4E4A-C50F-4D83-B5C7-0F7BFDB67A13}"
 	ProjectSection(SolutionItems) = preProject
 		..\doc\act.txt = ..\doc\act.txt
@@ -282,6 +251,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{4E1F08
 		..\data\system\socials.lua = ..\data\system\socials.lua
 		..\data\system\specfuns.lua = ..\data\system\specfuns.lua
 		..\data\system\StarMap.txt = ..\data\system\StarMap.txt
+		StatModLookups.lua = StatModLookups.lua
 		..\data\system\SunMap.txt = ..\data\system\SunMap.txt
 		..\data\system\sysdata.dat = ..\data\system\sysdata.dat
 		..\data\system\weather.dat = ..\data\system\weather.dat

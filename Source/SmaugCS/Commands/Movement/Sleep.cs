@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CantSleepDueToMentalState(CharacterInstance ch, int modifier)
         {
-            if (ch.MentalState > 30 && (SmaugRandom.D100() + modifier) < ch.MentalState)
+            if (ch.MentalState > 30 && SmaugRandom.D100() + modifier < ch.MentalState)
             {
                 ch.SendTo("You just can't seem to calm yourself down enough to sleep.");
                 comm.act(ATTypes.AT_PLAIN, "$n closes $s eyes for a few moments, but just can't seem to go to sleep.",

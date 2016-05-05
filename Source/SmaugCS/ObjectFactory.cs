@@ -19,7 +19,7 @@ namespace SmaugCS
     {
         public static void CreateFire(RoomTemplate inRoom, int duration, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             var fire = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                    .Get(VnumConstants.OBJ_VNUM_FIRE), 0);
             fire.Timer = SmaugRandom.Fuzzy(duration);
@@ -28,7 +28,7 @@ namespace SmaugCS
 
         public static ObjectInstance CreateTrap(IEnumerable<int> values, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             var trap = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_TRAP), 0);
             trap.Timer = 0;
@@ -39,16 +39,16 @@ namespace SmaugCS
         public static void CreateScraps(ObjectInstance obj, IRepositoryManager dbManager = null)
         {
             obj.Split();
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             var scraps = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                            .Get(VnumConstants.OBJ_VNUM_SCRAPS), 0);
 
             scraps.Timer = SmaugRandom.Between(5, 15);
 
-            scraps.ShortDescription = (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_SCRAPS)
+            scraps.ShortDescription = obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_SCRAPS
                                           ? "some debris"
                                           : obj.ShortDescription;
-            scraps.Description = (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_SCRAPS)
+            scraps.Description = obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_SCRAPS
                                      ? "Bits of debris lie on the ground here."
                                      : obj.Description;
 
@@ -102,7 +102,7 @@ namespace SmaugCS
         {
             string name;
             ObjectInstance corpse;
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
 
             if (ch.IsNpc())
             {
@@ -137,7 +137,7 @@ namespace SmaugCS
                 if (ch.CanPKill() && GameManager.Instance.SystemData.PlayerKillLoot > 0)
                     corpse.ExtraFlags.SetBit(ItemExtraFlags.ClanCorpse);
 
-                corpse.Value.ToList()[3] = (!ch.IsNpc() && !killer.IsNpc()) ? 1 : 0;
+                corpse.Value.ToList()[3] = !ch.IsNpc() && !killer.IsNpc() ? 1 : 0;
             }
 
             if (ch.CanPKill() && killer.CanPKill() && ch != killer)
@@ -162,7 +162,7 @@ namespace SmaugCS
 
         public static void CreateBlood(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, 
                 ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
 
@@ -173,7 +173,7 @@ namespace SmaugCS
 
         public static void CreateBloodstain(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
 
@@ -184,7 +184,7 @@ namespace SmaugCS
         public static ObjectInstance CreateMoney(int amount, IRepositoryManager dbManager = null)
         {
             var coinAmt = amount <= 0 ? 1 : amount;
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(coinAmt == 1
                                                                 ? VnumConstants.OBJ_VNUM_MONEY_ONE

@@ -14,7 +14,7 @@ namespace SmaugCS.Repository
     public sealed class RepositoryManager : IRepositoryManager
     {
         private readonly Dictionary<RepositoryTypes, object> _repositories;
-        public ILogManager LogManager { get; private set; }
+        public ILogManager LogManager { get; }
         public static IKernel Kernel { get; private set; }
 
         public RepositoryManager(IKernel kernel, ILogManager logManager)

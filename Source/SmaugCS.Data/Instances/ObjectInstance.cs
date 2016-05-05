@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Data.Instances
@@ -22,7 +23,7 @@ namespace SmaugCS.Data.Instances
             set { _carriedBy = value; }
         }
 
-        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; private set; }
+        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; }
         public RoomTemplate InRoom { get; set; }
         public string Action { get; set; }
         public string Owner { get; set; }
@@ -40,8 +41,8 @@ namespace SmaugCS.Data.Instances
         public dynamic Values { get; set; }
         public int Count { get; set; }
 
-        public ObjectInstance[,] PlayerEq { get; set; }
-        public ObjectInstance[,] MobEq { get; set; }
+        public ObjectInstance[,] PlayerEq { get; private set; }
+        public ObjectInstance[,] MobEq { get; private set; }
 
         public ObjectInstance(long id, string name, int maxWear, int maxLayers)
             : base(id, name)
@@ -119,9 +120,7 @@ namespace SmaugCS.Data.Instances
         }
 
         public ExtraDescriptionData GetExtraDescription(string keyword)
-        {
-            return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
-        }
+            => ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
 
         #endregion
     }

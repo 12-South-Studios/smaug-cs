@@ -102,103 +102,30 @@ namespace SmaugCS
         }
 
         #region Custom Functions
-        private static int LevelFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.Level;
-        }
-        private static string ReplaceLevelCall(Match regexMatch)
-        {
-            return "Level()";
-        }
-        private static int HealthFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.CurrentHealth;
-        }
-        private static string ReplaceHealthCall(Match regexMatch)
-        {
-            return "Health()";
-        }
-        private static int ManaFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.CurrentMana;
-        }
-        private static string ReplaceManaCall(Match regexMatch)
-        {
-            return "Mana()";
-        }
-        private static int MovementFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.CurrentMovement;
-        }
-        private static string ReplaceMovementCall(Match regexMatch)
-        {
-            return "Movement()";
-        }
-        private static int StrengthFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentStrength();
-        }
-        private static string ReplaceStrengthCall(Match regexMatch)
-        {
-            return "Strength()";
-        }
-        private static int IntelligenceFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentIntelligence();
-        }
-        private static string ReplaceIntelligenceCall(Match regexMatch)
-        {
-            return "Intelligence()";
-        }
-        private static int WisdomFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentWisdom();
-        }
-        private static string ReplaceWisdomCall(Match regexMatch)
-        {
-            return "Wisdom()";
-        }
-        private static int DexterityFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentDexterity();
-        }
-        private static string ReplaceDexterityCall(Match regexMatch)
-        {
-            return "Dexterity()";
-        }
-        private static int ConstitutionFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentConstitution();
-        }
-        private static string ReplaceConstitutionCall(Match regexMatch)
-        {
-            return "Constitution()";
-        }
-        private static int CharismaFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentCharisma();
-        }
-        private static string ReplaceCharismaCall(Match regexMatch)
-        {
-            return "Charisma()";
-        }
-        private static int LuckFunction(FunctionArgs args)
-        {
-            return GameManager.CurrentCharacter.GetCurrentLuck();
-        }
-        private static string ReplaceLuckCall(Match regexMatch)
-        {
-            return "Luck()";
-        }
-        private static int AgeFunction(FunctionArgs args)
-        {
-            var instance = GameManager.CurrentCharacter as PlayerInstance;
-            return instance?.CalculateAge() ?? 0;
-        }
-        private static string ReplaceAgeCall(Match regexMatch)
-        {
-            return "Age()";
-        }
+        private static int LevelFunction(FunctionArgs args) => GameManager.CurrentCharacter.Level;
+        private static string ReplaceLevelCall(Match regexMatch) => "Level()";
+        private static int HealthFunction(FunctionArgs args) => GameManager.CurrentCharacter.CurrentHealth;
+        private static string ReplaceHealthCall(Match regexMatch) => "Health()";
+        private static int ManaFunction(FunctionArgs args) => GameManager.CurrentCharacter.CurrentMana;
+        private static string ReplaceManaCall(Match regexMatch) => "Mana()";
+        private static int MovementFunction(FunctionArgs args) => GameManager.CurrentCharacter.CurrentMovement;
+        private static string ReplaceMovementCall(Match regexMatch) => "Movement()";
+        private static int StrengthFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentStrength();
+        private static string ReplaceStrengthCall(Match regexMatch) => "Strength()";
+        private static int IntelligenceFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentIntelligence();
+        private static string ReplaceIntelligenceCall(Match regexMatch) => "Intelligence()";
+        private static int WisdomFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentWisdom();
+        private static string ReplaceWisdomCall(Match regexMatch) => "Wisdom()";
+        private static int DexterityFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentDexterity();
+        private static string ReplaceDexterityCall(Match regexMatch) => "Dexterity()";
+        private static int ConstitutionFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentConstitution();
+        private static string ReplaceConstitutionCall(Match regexMatch) => "Constitution()";
+        private static int CharismaFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentCharisma();
+        private static string ReplaceCharismaCall(Match regexMatch) => "Charisma()";
+        private static int LuckFunction(FunctionArgs args) => GameManager.CurrentCharacter.GetCurrentLuck();
+        private static string ReplaceLuckCall(Match regexMatch) => "Luck()";
+        private static int AgeFunction(FunctionArgs args) => (GameManager.CurrentCharacter as PlayerInstance)?.CalculateAge() ?? 0;
+        private static string ReplaceAgeCall(Match regexMatch) => "Age()";
         #endregion
     }
 }

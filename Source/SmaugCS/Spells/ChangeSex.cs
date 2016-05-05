@@ -44,7 +44,7 @@ namespace SmaugCS.Spells
         {
             checked
             {
-                return (10*level*GameConstants.GetConstant<int>("AffectDurationConversionValue"));
+                return 10*level*GameConstants.GetConstant<int>("AffectDurationConversionValue");
             }
         }
     }

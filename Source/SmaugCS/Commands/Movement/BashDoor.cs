@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Movement
             comm.act(ATTypes.AT_SKILL, "WHAAAAM!!! $n bashes against the $d, but it holds strong.", actor, null, arg,
                 ToTypes.Room);
 
-            var damage = (actor.MaximumHealth/20) + 10;
+            var damage = actor.MaximumHealth/20 + 10;
             actor.CauseDamageTo(actor, damage, (int)skill.ID);
             skill.LearnFromFailure(actor);
         }
@@ -60,7 +60,7 @@ namespace SmaugCS.Commands.Movement
 
             if (exit.Flags.IsSet(ExitFlags.BashProof)
                 || actor.CurrentMovement < 15
-                || SmaugRandom.D100() >= (chance + 4*(actor.GetCurrentStrength() - 19)))
+                || SmaugRandom.D100() >= chance + 4*(actor.GetCurrentStrength() - 19))
             {
                 Bash(actor, skill, arg);
                 return;
@@ -79,7 +79,7 @@ namespace SmaugCS.Commands.Movement
             foreach(var ch in destination.Persons)
                 comm.act(ATTypes.AT_SKILL, "The $d crashes open!", ch, null, reverseExit.Keywords, ToTypes.Character);
             
-            actor.CauseDamageTo(actor, (actor.CurrentHealth/20), (int) skill.ID);
+            actor.CauseDamageTo(actor, actor.CurrentHealth/20, (int) skill.ID);
         }
        
         private static void BashExit(ExitData exit)

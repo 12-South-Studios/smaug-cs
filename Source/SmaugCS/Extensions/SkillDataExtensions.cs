@@ -71,13 +71,13 @@ namespace SmaugCS.Extensions
 
         private static void GainLearningInSkill(SkillData skill, PlayerInstance ch, int mastery)
         {
-            var chance = ch.GetLearned((int) skill.ID) + (5*skill.difficulty);
+            var chance = ch.GetLearned((int) skill.ID) + 5*skill.difficulty;
             var percent = SmaugRandom.D100();
             int learn;
 
             if (percent >= chance)
                 learn = 2;
-            else if ((chance - percent) > 25)
+            else if (chance - percent > 25)
                 return;
             else
                 learn = 1;
@@ -95,11 +95,11 @@ namespace SmaugCS.Extensions
             var val = pch.GetLearned((int) skill.ID);
             if (val <= 0) return;
 
-            var chance = pch.GetLearned((int) skill.ID) + (5*skill.difficulty);
-            if ((chance - SmaugRandom.D100()) > 25) return;
+            var chance = pch.GetLearned((int) skill.ID) + 5*skill.difficulty;
+            if (chance - SmaugRandom.D100() > 25) return;
 
             int mastery = skill.GetMasteryLevel(pch);
-            if (pch.GetLearned((int) skill.ID) < (mastery - 1))
+            if (pch.GetLearned((int) skill.ID) < mastery - 1)
             {
                 //pch.PlayerData.Learned.ToList().First(x => x == skill.ID) =
                 //    mastery.GetLowestOfTwoNumbers((int)(pch.GetLearned(skill.ID) + 1));
@@ -160,7 +160,7 @@ namespace SmaugCS.Extensions
                 skillLevel = ch.Level;
             if (ch.PlayerData.Learned.ToList()[sn] < adept)
             {
-                var schance = ch.PlayerData.Learned.ToList()[sn] + (5 * skill.difficulty);
+                var schance = ch.PlayerData.Learned.ToList()[sn] + 5 * skill.difficulty;
                 var percent = SmaugRandom.D100();
 
                 var learn = 1;

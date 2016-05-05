@@ -12,7 +12,7 @@ namespace SmaugCS.Extensions.Character
             if (!ch.IsNpc() && ch.IsImmortal())
                 return 100;
             if (ch.IsNpc() && (ch.Speaks == 0
-                || ch.Speaks.IsSet((language & ~(int)LanguageTypes.Clan))))
+                || ch.Speaks.IsSet(language & ~(int)LanguageTypes.Clan)))
                 return 100;
             if (language.IsSet((int)LanguageTypes.Common))
                 return 100;

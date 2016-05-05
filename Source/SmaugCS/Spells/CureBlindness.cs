@@ -16,7 +16,7 @@ namespace SmaugCS.Spells
             var victim = (CharacterInstance)vo;
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
-           ch.SetColor(ATTypes.AT_MAGIC);
+            ch.SetColor(ATTypes.AT_MAGIC);
 
             if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic), skill, ch,
                 CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
@@ -26,10 +26,9 @@ namespace SmaugCS.Spells
                     ? "You work your cure, but it has no apparent effect."
                     : "You don't seem to be blind.")) return ReturnTypes.SpellFailed;
             
-            // TODO: affect_strip(victim, AffectedByTypes.Blind);
-            
-           victim.SetColor(ATTypes.AT_MAGIC);
-           victim.SendTo("Your vision returns!");
+            victim.StripAffects((int)AffectedByTypes.Blind);
+            victim.SetColor(ATTypes.AT_MAGIC);
+            victim.SendTo("Your vision returns!");
             if (ch != victim)
                 ch.SendTo("You work your cure, restoring vision.");
             return ReturnTypes.None;

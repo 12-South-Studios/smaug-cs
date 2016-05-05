@@ -2,13 +2,13 @@
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Social
 {
     public static class Where
     {
@@ -77,9 +77,7 @@ namespace SmaugCS.Commands
                         continue;
                     if (ch.Trust < victim.Trust)
                         continue;
-                    if (((PlayerInstance)victim).Descriptor == null ||
-                        (((PlayerInstance)victim).Descriptor.ConnectionStatus != ConnectionTypes.Playing ||
-                         ((PlayerInstance)victim).Descriptor.ConnectionStatus != ConnectionTypes.Editing))
+                    if (((PlayerInstance)victim).Descriptor == null || ((PlayerInstance)victim).Descriptor.ConnectionStatus != ConnectionTypes.Playing || ((PlayerInstance)victim).Descriptor.ConnectionStatus != ConnectionTypes.Editing)
                         continue;
                     if (!ch.CanSee(victim))
                         continue;

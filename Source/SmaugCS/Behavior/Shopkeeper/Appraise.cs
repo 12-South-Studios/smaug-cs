@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -28,24 +27,24 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static int GetCostIfBuying(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj)
         {
-            var richCustomer = ch.CurrentCoin > (ch.Level * ch.Level * 100000);
+            var richCustomer = ch.CurrentCoin > ch.Level * ch.Level * 100000;
             var profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0)
-                            + ((ch.Level.GetNumberThatIsBetween(5, LevelConstants.AvatarLevel) - 20) / 2);
+                            + (ch.Level.GetNumberThatIsBetween(5, LevelConstants.AvatarLevel) - 20) / 2;
 
             var shop = keeper.MobIndex.Shop.CastAs<ItemShopData>();
-            var cost = (obj.Cost * (shop.ProfitSell + 1).GetHighestOfTwoNumbers(shop.ProfitBuy + profitMod) / 100);
+            var cost = obj.Cost * (shop.ProfitSell + 1).GetHighestOfTwoNumbers(shop.ProfitBuy + profitMod) / 100;
             return cost;
         }
 
         private static int GetCostIfSelling(CharacterInstance ch, MobileInstance keeper, ObjectInstance obj)
         {
-            var richCustomer = ch.CurrentCoin > (ch.Level * ch.Level * 100000);
+            var richCustomer = ch.CurrentCoin > ch.Level * ch.Level * 100000;
             var profitMod = 13 - ch.GetCurrentCharisma() + (richCustomer ? 15 : 0);
 
             var shop = keeper.MobIndex.Shop.CastAs<ItemShopData>();
             var cost = 0;
             if (shop.ItemTypes.ToList().Contains(obj.ItemType))
-                cost = (obj.Cost * (shop.ProfitBuy - 1).GetLowestOfTwoNumbers(shop.ProfitSell + profitMod)) / 100;
+                cost = obj.Cost * (shop.ProfitBuy - 1).GetLowestOfTwoNumbers(shop.ProfitSell + profitMod) / 100;
 
             if (keeper.Carrying.Any(carriedObj => obj.ObjectIndex == carriedObj.ObjectIndex))
                 cost = 0;
@@ -58,7 +57,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (obj == null || keeper.MobIndex.Shop == null) return 0;
 
             var shop = keeper.MobIndex.RepairShop;
-            var cost = (shop.ItemTypes.ToList().Any(x => x == obj.ItemType)) ? (obj.Cost*shop.ProfitFix/1000) : 0;
+            var cost = shop.ItemTypes.ToList().Any(x => x == obj.ItemType) ? obj.Cost*shop.ProfitFix/1000 : 0;
             if (cost <= 0)
                 cost = 1;
 

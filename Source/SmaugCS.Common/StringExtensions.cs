@@ -8,15 +8,9 @@ namespace SmaugCS.Common
 {
     public static class StringExtensions
     {
-        public static bool IsAllUpper(this string value)
-        {
-            return Regex.IsMatch(value, @"^[A-Z ]+$");
-        }
+        public static bool IsAllUpper(this string value) => Regex.IsMatch(value, @"^[A-Z ]+$");
 
-        public static string TrimHash(this string value)
-        {
-            return value.TrimEnd('~');
-        }
+        public static string TrimHash(this string value) => value.TrimEnd('~');
 
         /// <summary>
         /// Given a string like 14.foo, returns 14 and foo as a tuple
@@ -43,7 +37,7 @@ namespace SmaugCS.Common
         public static bool IsNumberArgument(this string value)
         {
             string[] words = value.Split('.');
-            return (words.Length >= 2 && words[0].IsNumber());
+            return words.Length >= 2 && words[0].IsNumber();
         }
 
         public static int GetNumberArgument(this string value)
@@ -75,9 +69,7 @@ namespace SmaugCS.Common
         /// <returns>Tuple where Item1 is the first word and Item2 is the remainder</returns>
         /// <remarks>Was formerly known as one_argument</remarks>
         public static Tuple<string, string> FirstArgument(this string value)
-        {
-            return new Tuple<string, string>(value.FirstWord(), value.RemoveWord(1));
-        }
+            => new Tuple<string, string>(value.FirstWord(), value.RemoveWord(1));
 
         /// <summary>
         /// Picks off one argument from a string and returns the rest.  Uses quotes
@@ -137,10 +129,7 @@ namespace SmaugCS.Common
         /// <param name="str"></param>
         /// <param name="defaultChar"></param>
         /// <returns></returns>
-        public static string SmashTilde(this string str, string defaultChar = "-")
-        {
-            return str.HideTilde(defaultChar);
-        }
+        public static string SmashTilde(this string str, string defaultChar = "-") => str.HideTilde(defaultChar);
 
         /// <summary>
         /// Hides the tilde in teh given string, replacing it with a given character
@@ -148,10 +137,7 @@ namespace SmaugCS.Common
         /// <param name="str"></param>
         /// <param name="hiddenChar"></param>
         /// <returns></returns>
-        public static string HideTilde(this string str, string hiddenChar = "*")
-        {
-            return str.Replace("~", hiddenChar);
-        }
+        public static string HideTilde(this string str, string hiddenChar = "*") => str.Replace("~", hiddenChar);
 
         /// <summary>
         /// Unhides the tilde in a string, replacing the given character with a tilde
@@ -159,9 +145,6 @@ namespace SmaugCS.Common
         /// <param name="str"></param>
         /// <param name="hiddenChar"></param>
         /// <returns></returns>
-        public static string UnhideTilde(this string str, string hiddenChar = "*")
-        {
-            return str.Replace(hiddenChar, "~");
-        }
+        public static string UnhideTilde(this string str, string hiddenChar = "*") => str.Replace(hiddenChar, "~");
     }
 }

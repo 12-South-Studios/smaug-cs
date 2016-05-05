@@ -77,14 +77,14 @@ namespace SmaugCS
 
                     if (tObject.CarriedBy == null || tObject.CarriedBy != ch || checkweight)
                     {
-                        if ((ch.CarryWeight + weight) > ch.CanCarryMaxWeight())
+                        if (ch.CarryWeight + weight > ch.CanCarryMaxWeight())
                         {
                             comm.act(ATTypes.AT_PLAIN, "$d: you can't carry that much weight.", ch, null, obj.ShortDescription, ToTypes.Character);
                             return;
                         }
                     }
                 }
-                else if ((ch.CarryWeight + weight) > ch.CanCarryMaxWeight())
+                else if (ch.CarryWeight + weight > ch.CanCarryMaxWeight())
                 {
                     comm.act(ATTypes.AT_PLAIN, "$d: you can't carry that much weight.", ch, null, obj.ShortDescription, ToTypes.Character);
                     return;
@@ -235,7 +235,7 @@ namespace SmaugCS
                     {
                         case ItemTypes.Weapon:
                         case ItemTypes.Armor:
-                            if ((obj.Values.CurrentAC - dam) <= 0)
+                            if (obj.Values.CurrentAC - dam <= 0)
                             {
                                 if (obj.InRoom.Persons.Any())
                                 {
@@ -250,7 +250,7 @@ namespace SmaugCS
                                 obj.Values.CurrentAC -= dam;
                             break;
                         default:
-                            if ((dam * 15) > obj.GetResistance())
+                            if (dam * 15 > obj.GetResistance())
                             {
                                 if (obj.InRoom.Persons.Any())
                                 {

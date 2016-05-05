@@ -7,8 +7,6 @@ namespace SmaugCS.Communication
     public sealed class ImmortalChannelAttribute : RequireTrustChannelAttribute
     {
         public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
-        {
-            return ch.IsImmortal() && base.Verify(channelType, ch, minTrust);
-        }
+            => ch.IsImmortal() && base.Verify(channelType, ch, minTrust);
     }
 }

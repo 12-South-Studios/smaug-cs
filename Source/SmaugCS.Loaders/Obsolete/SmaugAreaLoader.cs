@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using Realm.Library.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 
-namespace SmaugCS.Loaders
+namespace SmaugCS.Loaders.Obsolete
 {
     public class SmaugAreaLoader : AreaLoader
     {

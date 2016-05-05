@@ -292,7 +292,7 @@ namespace SmaugCS
                     continue;
 
                 var range = area.HighSoftRange - area.LowSoftRange;
-                range = (range > 0) ? range / 2 : 25;
+                range = range > 0 ? range / 2 : 25;
                 var gold = range * range * 50000;
 
                 area.BoostEconomy(gold);
@@ -328,11 +328,11 @@ namespace SmaugCS
             {
                 var resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
                 if ((resetAge == -1 && area.Age == -1)
-                    || (++area.Age < (resetAge - 1)))
+                    || (++area.Age < resetAge - 1))
                     continue;
 
                 //// Check players
-                if (area.NumberOfPlayers > 0 && area.Age == (resetAge - 1))
+                if (area.NumberOfPlayers > 0 && area.Age == resetAge - 1)
                 {
                     var buffer = !string.IsNullOrEmpty(area.ResetMessage)
                                         ? area.ResetMessage + "\r\n"
@@ -353,7 +353,7 @@ namespace SmaugCS
                 if (area.NumberOfPlayers == 0 || area.Age >= resetAge)
                 {
                     reset.reset_area(area);
-                    area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge / 5);
+                    area.Age = resetAge == -1 ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
                     var room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
@@ -547,7 +547,7 @@ namespace SmaugCS
 
             if (!string.IsNullOrEmpty(line))
             {
-                var filler = (78 - line.Length);
+                var filler = 78 - line.Length;
                 if (filler < 1)
                     filler = 1;
                 filler /= 2;

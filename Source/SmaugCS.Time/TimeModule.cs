@@ -1,5 +1,4 @@
-﻿using Ninject;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 
 namespace SmaugCS.Time
 {
@@ -7,8 +6,7 @@ namespace SmaugCS.Time
     {
         public override void Load()
         {
-            Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope()
-                .WithConstructorArgument("kernel", Kernel.Get<IKernel>());
+            Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope();
         }
     }
 }

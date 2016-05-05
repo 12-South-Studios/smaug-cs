@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data;
 
-namespace SmaugCS.Loaders
+namespace SmaugCS.Loaders.Obsolete
 {
     // ReSharper disable InconsistentNaming
     public class FUSSAreaLoader : AreaLoader

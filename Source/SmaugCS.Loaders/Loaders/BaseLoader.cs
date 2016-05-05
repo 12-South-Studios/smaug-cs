@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Loaders.Loaders
 {

@@ -26,10 +26,10 @@ namespace SmaugCS.Extensions.Objects
             if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory))
                 resist += 20;
 
-            resist += (obj.Level / 10) - 2;
+            resist += obj.Level / 10 - 2;
 
             if (obj.ItemType == ItemTypes.Armor || obj.ItemType == ItemTypes.Weapon)
-                resist += (obj.Value.ToList()[0] / 2) - 2;
+                resist += obj.Value.ToList()[0] / 2 - 2;
 
             return resist.GetNumberThatIsBetween(10, 99);
         }
@@ -58,7 +58,7 @@ namespace SmaugCS.Extensions.Objects
             if (obj.Values.CurrentAC >= obj.Values.OriginalAC)
                 cost = -2;
             else
-                cost *= (obj.Values.OriginalAC - obj.Values.CurrentAC);
+                cost *= obj.Values.OriginalAC - obj.Values.CurrentAC;
             return cost;
         }
         public static int GetWeaponRepairCost(this ObjectInstance obj, int baseCost, int weaponCondition)
@@ -67,7 +67,7 @@ namespace SmaugCS.Extensions.Objects
             if (weaponCondition == obj.Values.Condition)
                 cost = -2;
             else
-                cost *= (weaponCondition - obj.Values.Condition);
+                cost *= weaponCondition - obj.Values.Condition;
             return cost;
         }
         public static int GetImplementRepairCost(this ObjectInstance obj, int baseCost)
@@ -76,7 +76,7 @@ namespace SmaugCS.Extensions.Objects
             if (obj.Value.ToList()[2] >= obj.Value.ToList()[1])
                 cost = -2;
             else
-                cost *= (obj.Value.ToList()[1] - obj.Value.ToList()[2]);
+                cost *= obj.Value.ToList()[1] - obj.Value.ToList()[2];
             return cost;
         }
     }

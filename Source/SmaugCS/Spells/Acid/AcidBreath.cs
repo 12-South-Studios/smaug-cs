@@ -6,7 +6,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Acid
 {
     public static class AcidBreath
     {

@@ -116,7 +116,7 @@ namespace SmaugCS.Repository
 
         private static void UpdateFood(ObjectInstance obj)
         {
-            obj.Timer = (obj.Value.ToList()[4] > 0) ? obj.Value.ToList()[4] : obj.Value.ToList()[1];
+            obj.Timer = obj.Value.ToList()[4] > 0 ? obj.Value.ToList()[4] : obj.Value.ToList()[1];
         }
         private static void UpdateSalve(ObjectInstance obj)
         {

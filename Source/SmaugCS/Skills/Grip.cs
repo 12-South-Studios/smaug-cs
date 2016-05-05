@@ -31,7 +31,7 @@ namespace SmaugCS.Skills
 
             chance += 2*(victim.GetCurrentLuck()-13);
 
-            if (SmaugRandom.D100() >= (chance + victim.Level - ch.Level))
+            if (SmaugRandom.D100() >= chance + victim.Level - ch.Level)
             {
                 skill.LearnFromFailure(victim);
                 return false;

@@ -35,9 +35,9 @@ namespace SmaugCS
                 return;
             }
 
-            var sunpos = (Program.MAP_WIDTH * (24 - GameManager.Instance.GameTime.Hour) / 24);
+            var sunpos = Program.MAP_WIDTH * (24 - GameManager.Instance.GameTime.Hour) / 24;
             var moonpos = (sunpos + GameManager.Instance.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
-            var moonphase = ((((Program.MAP_WIDTH + moonpos - sunpos) % Program.MAP_WIDTH) + (Program.MAP_WIDTH / 16)) * 8) /
+            var moonphase = ((Program.MAP_WIDTH + moonpos - sunpos) % Program.MAP_WIDTH + Program.MAP_WIDTH / 16) * 8 /
                             Program.MAP_WIDTH;
             if (moonphase > 4)
                 moonphase -= 8;
@@ -47,7 +47,7 @@ namespace SmaugCS
 
             for (var line = 0; line < Program.MAP_HEIGHT; line++)
             {
-                if ((GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
+                if (GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18
                     && (line < 3 || line >= 6))
                     continue;
 
@@ -55,7 +55,7 @@ namespace SmaugCS
 
                 for (var i = 0; i <= Program.MAP_WIDTH; i++)
                 {
-                    if ((GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
+                    if (GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18
                         && (moonpos >= Program.MAP_WIDTH / 4 - 2)
                         && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                         && (i >= moonpos - 2) && (i <= moonpos + 2)
@@ -120,11 +120,11 @@ namespace SmaugCS
 
             return fShort
                        ? LookupManager.Instance.GetLookup("HallucinatedShortNames",
-                                                          (SmaugRandom.Between(
-                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1))
+                                                          SmaugRandom.Between(
+                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1)
                        : LookupManager.Instance.GetLookup("HallucinatedLongNames",
-                                                          (SmaugRandom.Between(
-                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1));
+                                                          SmaugRandom.Between(
+                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1);
         }
 
         public static void show_list_to_char(List<ObjectInstance> list, PlayerInstance ch, bool fShort, bool fShowNothing)
@@ -148,13 +148,13 @@ namespace SmaugCS
 
             var ms = (ch.MentalState > 0 ? ch.MentalState : 1)*
                      (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk) > 0
-                         ? (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk)/12)
+                         ? ch.PlayerData.GetConditionValue(ConditionTypes.Drunk)/12
                          : 1);
 
             int offcount;
             if (Math.Abs(ms) > 40)
             {
-                offcount = ((count * ms) / 100).GetNumberThatIsBetween(-count, count * 2);
+                offcount = (count * ms / 100).GetNumberThatIsBetween(-count, count * 2);
                 if (offcount < 0)
                     offcount += SmaugRandom.Between(0, Math.Abs(offcount));
                 else if (offcount > 0)
@@ -186,7 +186,7 @@ namespace SmaugCS
 
             foreach (var obj in list)
             {
-                if (offcount < 0 && ++cnt > (count + offcount))
+                if (offcount < 0 && ++cnt > count + offcount)
                     break;
 
                 if (tmp > 0 && SmaugRandom.Bits(1) == 0)

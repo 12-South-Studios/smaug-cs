@@ -18,7 +18,7 @@ namespace SmaugCS.Commands.Movement
             var obj = ch.GetObjectOnMeOrInRoom(firstArg);
             if (obj == null)
             {
-                comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, obj, ToTypes.Character);
+                comm.act(ATTypes.AT_PLAIN, "I see no $T here.", ch, null, null, ToTypes.Character);
                 return;
             }
 

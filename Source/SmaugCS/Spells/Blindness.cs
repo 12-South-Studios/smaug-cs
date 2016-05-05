@@ -53,7 +53,7 @@ namespace SmaugCS.Spells
 
         private static int GetDuration(int level)
         {
-            return (1 + (level/3))*GameConstants.GetConstant<int>("AffectDurationConversionValue");
+            return (1 + level/3)*GameConstants.GetConstant<int>("AffectDurationConversionValue");
         }
     }
 }

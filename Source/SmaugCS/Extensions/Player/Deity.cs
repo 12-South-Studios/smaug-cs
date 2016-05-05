@@ -24,8 +24,8 @@ namespace SmaugCS.Extensions.Player
             var oldfavor = ch.PlayerData.Favor;
             var deity = ch.PlayerData.CurrentDeity;
 
-            if (((ch.CurrentAlignment - deity.Alignment) > 650)
-                 || ((ch.CurrentAlignment - deity.Alignment) < -650)
+            if ((ch.CurrentAlignment - deity.Alignment > 650)
+                 || (ch.CurrentAlignment - deity.Alignment < -650)
                 && (deity.Alignment != 0))
             {
                 ch.PlayerData.Favor -= 2;

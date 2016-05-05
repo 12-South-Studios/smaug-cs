@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Lookup;
 
 namespace SmaugCS.Managers
@@ -19,14 +21,16 @@ namespace SmaugCS.Managers
             CommandLookup = new CommandLookupTable();
             SkillLookup = new SkillLookupTable();
             SpellLookup = new SpellLookupTable();
+            StatModLookup = new Dictionary<string, List<StatModLookup>>();
         }
 
         public static ILookupManager Instance => Program.Kernel.Get<ILookupManager>();
 
-        public LookupBase<CommandData, DoFunction> CommandLookup { get; private set; }
-        public LookupBase<SkillData, DoFunction> SkillLookup { get; private set; }
-        public LookupBase<SkillData, SpellFunction> SpellLookup { get; private set; }
-
+        public LookupBase<CommandData, DoFunction> CommandLookup { get; }
+        public LookupBase<SkillData, DoFunction> SkillLookup { get; }
+        public LookupBase<SkillData, SpellFunction> SpellLookup { get; }
+        public Dictionary<string, List<StatModLookup>> StatModLookup { get; }
+         
         public ResistanceTypes GetResistanceType(SpellDamageTypes type)
         {
             var attrib = type.GetAttribute<DamageResistanceAttribute>();
@@ -70,6 +74,17 @@ namespace SmaugCS.Managers
             if (lookups.Any() && lookups.Count() > index)
                 return lookups.ElementAt(index);
             return string.Empty;
+        }
+
+        public object GetStatMod(string category, int level, Enum name)
+        {
+            if (!StatModLookup.ContainsKey(category)) return null;
+
+            var lookups = StatModLookup[category];
+            if (level < 0 || level >= lookups.Count)
+                throw new Exception();
+
+            return lookups[level].GetLookup(name.ToString());
         }
     }
 }

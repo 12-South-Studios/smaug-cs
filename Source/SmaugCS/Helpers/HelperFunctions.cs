@@ -40,11 +40,11 @@ namespace SmaugCS.Helpers
         {
             var actor = (CharacterInstance) args[0];
             var position = actor.CurrentPosition;
-            return (position == PositionTypes.Aggressive
-                    || position == PositionTypes.Berserk
-                    || position == PositionTypes.Defensive
-                    || position == PositionTypes.Evasive
-                    || position == PositionTypes.Fighting);
+            return position == PositionTypes.Aggressive
+                   || position == PositionTypes.Berserk
+                   || position == PositionTypes.Defensive
+                   || position == PositionTypes.Evasive
+                   || position == PositionTypes.Fighting;
         }
     }
 }

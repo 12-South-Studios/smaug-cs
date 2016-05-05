@@ -1,6 +1,6 @@
 ﻿using Realm.Library.Lua;
 using SmaugCS.Common;
-using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
 

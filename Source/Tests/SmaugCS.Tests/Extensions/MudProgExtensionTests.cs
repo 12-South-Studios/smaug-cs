@@ -6,6 +6,7 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
 

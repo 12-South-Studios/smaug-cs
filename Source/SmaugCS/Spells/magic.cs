@@ -16,7 +16,7 @@ using SmaugCS.Managers;
 using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
-namespace SmaugCS
+namespace SmaugCS.Spells
 {
     public static class magic
     {
@@ -342,7 +342,7 @@ namespace SmaugCS
                 return 1000;
             if (modifier == 10)
                 return chance;
-            return (chance * modifier) / 10;
+            return chance * modifier / 10;
         }
 
         /// <summary>
@@ -610,7 +610,7 @@ namespace SmaugCS
             // Nuisance flag will pick who you are fighting for offensive spells up to 92% of the time
             if (!ch.IsNpc() && ch.CurrentFighting != null && ((PlayerInstance)ch).PlayerData.Nuisance != null
                 && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.D100() < (((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8) + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
+                SmaugRandom.D100() < (((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8 + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power)
                 victim = ch.GetMyTarget();
 
             if (fight.is_safe(ch, victim, true))
@@ -671,7 +671,7 @@ namespace SmaugCS
             // Nuisance flag will pick who you are fighting for defensive spells up to 36% of the time
             if (!ch.IsNpc() && ch.CurrentFighting != null && ((PlayerInstance)ch).PlayerData.Nuisance != null
                 && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 5 &&
-                SmaugRandom.D100() < (((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8) + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
+                SmaugRandom.D100() < (((PlayerInstance)ch).PlayerData.Nuisance.Flags - 5) * 8 + 6 * ((PlayerInstance)ch).PlayerData.Nuisance.Power)
                 victim = ch.GetMyTarget();
 
             return CheckFunctions.CheckIfTrue(ch, ch == victim && skill.Flags.IsSet(SkillFlags.NoSelf),

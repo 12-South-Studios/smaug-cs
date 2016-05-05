@@ -45,7 +45,7 @@ namespace SmaugCS.Commands.Objects
             if (CheckFunctions.CheckIfTrue(ch, shovel == null && obj.GetWeight() > carryWeight,
                 "You'd need a shovel to bury something that big.")) return;
 
-            var move = (obj.GetWeight()*50*(shovel != null ? 1 : 5))/
+            var move = obj.GetWeight()*50*(shovel != null ? 1 : 5)/
                        1.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight());
             move = 2.GetNumberThatIsBetween(move, 1000);
             if (CheckFunctions.CheckIfTrue(ch, move > ch.CurrentMovement,

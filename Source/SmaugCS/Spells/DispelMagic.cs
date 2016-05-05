@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
@@ -41,8 +43,149 @@ namespace SmaugCS.Spells
             else
                 chance -= 15;
 
-            // todo finish this from magic.c:2692
+            bool twice = false, three = false;
+            if (SmaugRandom.D100() > 75 - chance)
+            {
+                twice = true;
+                if (SmaugRandom.D100() > 75 - chance)
+                    three = true;
+            }
 
+            bool continueOuterLoop = true;
+            int affectedBy ;
+            bool found = false;
+            int cnt = 0, times = 0;
+
+            while (continueOuterLoop)
+            {
+                AffectData paf = null;
+
+                // grab affected_by from mobs first
+                if (victim.IsNpc() && victim.AffectedBy > 0)
+                {
+                    for (;;)
+                    {
+                        affectedBy = SmaugRandom.Between(0, EnumerationFunctions.MaximumEnumValue<AffectedByTypes>() - 1);
+                        if (victim.IsAffectedBy(affectedBy))
+                        {
+                            found = true;
+                            break;
+                        }
+                        if (cnt++ > 30)
+                        {
+                            found = false;
+                            break;
+                        }
+                    }
+
+                    // is it a spell?
+                    if (found)
+                    {
+                        foreach(var af in victim.Affects)
+                        {
+                            paf = af;
+                            if (paf.Type.IsSet(affectedBy))
+                                break;
+                        }
+
+                        // its a spell, remove it
+                        if (paf != null)
+                        {
+                            if (level < victim.Level || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
+                            {
+                                if (magic.dispel_casting(paf, ch, victim, 0, false) != 0)
+                                    ch.FailedCast(skill, victim);
+                                return ReturnTypes.SpellFailed;
+                            }
+                            if (skill.Flags.IsSet(SkillFlags.NoDispel))
+                            {
+                                if (magic.dispel_casting(paf, ch, victim, 0, false) != 0 && times == 0)
+                                    ch.FailedCast(skill, victim);
+                                return ReturnTypes.SpellFailed;
+                            }
+
+                            if (magic.dispel_casting(paf, ch, victim, 0, true) != 0 && times == 0) 
+                                ch.SuccessfulCast(skill, victim);
+                            victim.RemoveAffect(paf);
+
+                            if ((twice && times < 1) || (three && times < 2))
+                            {
+                                times++;
+                                continue;
+                            }
+                            return ReturnTypes.None;
+                        }
+
+                        // not a spell, just remove the bit (for mobs only)
+                        else
+                        {
+                            if (level < victim.Level || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
+                            {
+                                if (magic.dispel_casting(null, ch, victim, affectedBy, false) != 0)
+                                    ch.FailedCast(skill, victim);
+                                return ReturnTypes.SpellFailed;
+                            }
+
+                            if (magic.dispel_casting(null, ch, victim, affectedBy, true) != 0 && times == 0)
+                                ch.SuccessfulCast(skill, victim);
+                            victim.AffectedBy.RemoveBit(affectedBy);
+
+                            if ((twice && times < 1) || (three && times < 2))
+                            {
+                                times++;
+                                continue;
+                            }
+                            return ReturnTypes.None;
+                        }
+                    }
+                }
+
+                // mob has no affectedBys or we didn't catch them
+                if (!victim.Affects.Any())
+                {
+                    ch.FailedCast(skill, victim);
+                    return ReturnTypes.SpellFailed;
+                }
+
+                // randomize the affects
+                cnt = victim.Affects.Count;
+                paf = victim.Affects.First();
+
+                int affectNum;
+                int i = 0;
+                for (affectNum = SmaugRandom.Between(0, cnt - 1); affectNum > 0; affectNum--)
+                {
+                    paf = victim.Affects.ToList()[i];
+                }
+
+                if (level < victim.Level || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim))
+                {
+                    if (magic.dispel_casting(paf, ch, victim, 0, false) != 0)
+                        ch.FailedCast(skill, victim);
+                    return ReturnTypes.SpellFailed;
+                }
+
+                // make sure we have an affect and it isn't a dispel
+                if (paf == null || paf.Type.IsSet(SkillFlags.NoDispel))
+                {
+                    if (magic.dispel_casting(paf, ch, victim, 0, false) != 0)
+                        ch.FailedCast(skill, victim);
+                    return ReturnTypes.SpellFailed;
+                }
+
+                if (magic.dispel_casting(null, ch, victim, 0, true) != 0 && times == 0)
+                    ch.SuccessfulCast(skill, victim);
+                victim.RemoveAffect(paf);
+
+                if ((twice && times < 1) || (three && times < 2))
+                {
+                    times++;
+                    continue;
+                }
+            }
+
+            if (!victim.IsNpc())
+                victim.update_aris();
             return ReturnTypes.None;
         }
 

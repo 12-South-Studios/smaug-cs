@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Object
 {
     class CreateWater
     {

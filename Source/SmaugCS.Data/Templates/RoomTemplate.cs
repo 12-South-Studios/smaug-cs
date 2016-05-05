@@ -4,21 +4,22 @@ using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Data.Templates
 {
     public class RoomTemplate : Template, IHasExtraDescriptions
     {
-        public ICollection<ResetData> Resets { get; private set; }
+        public ICollection<ResetData> Resets { get; }
         public ResetData LastMobReset { get; set; }
         public ResetData LastObjectReset { get; set; }
-        public ICollection<CharacterInstance> Persons { get; private set; }
-        public ICollection<ObjectInstance> Contents { get; private set; }
-        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; private set; }
+        public ICollection<CharacterInstance> Persons { get; }
+        public ICollection<ObjectInstance> Contents { get; }
+        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; }
         public AreaData Area { get; set; }
-        public ICollection<ExitData> Exits { get; private set; }
+        public ICollection<ExitData> Exits { get; }
         public ICollection<AffectData> PermanentAffects { get; private set; }
-        public ICollection<AffectData> Affects { get; private set; }
+        public ICollection<AffectData> Affects { get; }
         public PlaneData plane { get; set; }
         public ICollection<MudProgActData> MudProgActs { get; private set; }
         public int Flags { get; set; }
@@ -95,10 +96,7 @@ namespace SmaugCS.Data.Templates
 
         #region Affects
 
-        public void AddAffect(AffectData affect)
-        {
-            Affects.Add(affect);
-        }
+        public void AddAffect(AffectData affect) => Affects.Add(affect);
 
         public void RemoveAffect(AffectData affect)
         {
@@ -119,20 +117,12 @@ namespace SmaugCS.Data.Templates
             return exit;
         }
 
-        public ExitData GetExit(int dir)
-        {
-            return Exits.FirstOrDefault(exit => (int)exit.Direction == dir);
-        }
+        public ExitData GetExit(int dir) => Exits.FirstOrDefault(exit => (int)exit.Direction == dir);
 
-        public ExitData GetExit(DirectionTypes dir)
-        {
-            return Exits.FirstOrDefault(exit => exit.Direction == dir);
-        }
+        public ExitData GetExit(DirectionTypes dir) => Exits.FirstOrDefault(exit => exit.Direction == dir);
 
         public ExitData GetExitTo(int dir, long vnumTo)
-        {
-            return Exits.FirstOrDefault(exit => (int)exit.Direction == dir && exit.vnum == vnumTo);
-        }
+            => Exits.FirstOrDefault(exit => (int) exit.Direction == dir && exit.vnum == vnumTo);
 
         public ExitData GetExitNumber(int count)
         {
@@ -155,6 +145,7 @@ namespace SmaugCS.Data.Templates
             };
             Exits.Add(newExit);
         }
+
         public void AddExitObject(ExitData exit)
         {
             if (Exits.Any(x => x.Direction == exit.Direction))
@@ -164,13 +155,8 @@ namespace SmaugCS.Data.Templates
         }
         #endregion
 
-        public bool IsPrivate()
-        {
-            int count = Persons.Count;
-
-            return (Flags.IsSet(RoomFlags.Private) && count >= 2)
-                   || (Flags.IsSet(RoomFlags.Solitary) && count >= 1);
-        }
+        public bool IsPrivate() => (Flags.IsSet(RoomFlags.Private) && Persons.Count >= 2)
+                                   || (Flags.IsSet(RoomFlags.Solitary) && Persons.Count >= 1);
 
         #region IHasExtraDescriptions Implementation
         public void AddExtraDescription(string keywords, string description)
@@ -179,15 +165,14 @@ namespace SmaugCS.Data.Templates
             foreach (string word in words)
             {
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
-                if (foundEd == null)
+                if (foundEd != null) continue;
+
+                foundEd = new ExtraDescriptionData
                 {
-                    foundEd = new ExtraDescriptionData
-                    {
-                        Keyword = keywords, 
-                        Description = description
-                    };
-                    ExtraDescriptions.Add(foundEd);
-                }
+                    Keyword = keywords, 
+                    Description = description
+                };
+                ExtraDescriptions.Add(foundEd);
             }
         }
 
@@ -202,16 +187,11 @@ namespace SmaugCS.Data.Templates
         }
 
         public ExtraDescriptionData GetExtraDescription(string keyword)
-        {
-            return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
-        }
+            => ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
 
         #endregion
 
-        public void AddReset(ResetData reset)
-        {
-            Resets.Add(reset);
-        }
+        public void AddReset(ResetData reset) => Resets.Add(reset);
 
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)
         {
@@ -226,9 +206,7 @@ namespace SmaugCS.Data.Templates
         }
 
         public void SetSector(string sector)
-        {
-            SectorType = Realm.Library.Common.EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
-        }
+            => SectorType = Realm.Library.Common.EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
 
         public void SetFlags(string flags)
         {

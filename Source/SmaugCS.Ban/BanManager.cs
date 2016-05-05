@@ -14,7 +14,7 @@ namespace SmaugCS.Ban
         private readonly ITimer _timer;
         private static IKernel _kernel;
 
-        public IBanRepository Repository { get; private set; }
+        public IBanRepository Repository { get; }
 
         public BanManager(IKernel kernel, ITimer timer, ILogManager logManager, IBanRepository repository)
         {
@@ -56,21 +56,12 @@ namespace SmaugCS.Ban
             //toRemove.ForEach(b => _bans.Remove(b));
         }
 
-        public void Initialize()
-        {
-            Repository.Load();
-        }
+        public void Initialize() => Repository.Load();
 
-        public void Save()
-        {
-            Repository.Save();
-        }
+        public void Save() => Repository.Save();
 
 
-        public void ClearBans()
-        {
-            Repository.Bans.ToList().Clear();
-        }
+        public void ClearBans() => Repository.Bans.ToList().Clear();
 
         public bool CheckTotalBans(string host, int supremeLevel)
         {
@@ -88,10 +79,7 @@ namespace SmaugCS.Ban
             return false;
         }
 
-        internal static bool CheckBanExpiration(BanData ban)
-        {
-            return !ban.IsExpired();
-        }
+        internal static bool CheckBanExpiration(BanData ban) => !ban.IsExpired();
 
         internal static bool CheckBanExpireAndLevel(BanData ban, int characterLevel)
         {
@@ -146,20 +134,14 @@ namespace SmaugCS.Ban
             return false;
         }
 
-        private bool CheckClassBans(PlayerInstance ch)
-        {
-            return Repository.Bans.Where(x => x.Type == BanTypes.Class)
-                    .Where(ban => ban.Flag == (int) ch.CurrentClass)
-                    .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
-                    .FirstOrDefault();
-        }
+        private bool CheckClassBans(PlayerInstance ch) => Repository.Bans.Where(x => x.Type == BanTypes.Class)
+            .Where(ban => ban.Flag == (int) ch.CurrentClass)
+            .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
+            .FirstOrDefault();
 
-        private bool CheckRaceBans(PlayerInstance ch)
-        {
-            return Repository.Bans.Where(x => x.Type == BanTypes.Race)
-                    .Where(ban => ban.Flag == (int) ch.CurrentRace)
-                    .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
-                    .FirstOrDefault();
-        }
+        private bool CheckRaceBans(PlayerInstance ch) => Repository.Bans.Where(x => x.Type == BanTypes.Race)
+            .Where(ban => ban.Flag == (int) ch.CurrentRace)
+            .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
+            .FirstOrDefault();
     }
 }

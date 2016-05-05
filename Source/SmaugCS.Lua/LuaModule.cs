@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using Realm.Library.Common.Logging;
-using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Lua
 {

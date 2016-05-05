@@ -7,6 +7,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using SmaugCS.Skills;
 
 namespace SmaugCS.Spells.Smaug
 {

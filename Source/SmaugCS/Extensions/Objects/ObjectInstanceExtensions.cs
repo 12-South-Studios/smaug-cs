@@ -11,6 +11,7 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Character;
@@ -146,7 +147,7 @@ namespace SmaugCS.Extensions.Objects
             {
                 obj1.Count += obj2.Count;
                 obj1.ObjectIndex.Count += obj2.Count;
-                obj2.Extract((auctionManager ?? AuctionManager.Instance));
+                obj2.Extract(auctionManager ?? AuctionManager.Instance);
                 return obj1;
             }
             return obj2;

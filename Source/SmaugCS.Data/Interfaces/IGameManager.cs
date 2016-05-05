@@ -1,7 +1,6 @@
 ﻿using Realm.Library.NCalcExt;
-using SmaugCS.Data;
 
-namespace SmaugCS.Interfaces
+namespace SmaugCS.Data.Interfaces
 {
     public interface IGameManager
     {

@@ -13,9 +13,7 @@ namespace SmaugCS.Common
         /// <param name="proxy"></param>
         /// <returns></returns>
         public static ExtendedBitvector ReadBitvector(this TextReaderProxy proxy)
-        {
-            return proxy.ReadString(new[] { '~' }).ToBitvector();
-        }
+            => proxy.ReadString(new[] {'~'}).ToBitvector();
 
         /// <summary>
         /// Does what ReadString does, but ensures that any carriage returns and the hash mark are trimmed
@@ -23,8 +21,6 @@ namespace SmaugCS.Common
         /// <param name="proxy"></param>
         /// <returns></returns>
         public static string ReadFlagString(this TextReaderProxy proxy)
-        {
-            return proxy.ReadString().TrimStart(' ').TrimEnd('\n', '\r', '~');
-        }
+            => proxy.ReadString().TrimStart(' ').TrimEnd('\n', '\r', '~');
     }
 }

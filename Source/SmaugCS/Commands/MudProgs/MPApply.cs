@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Communication;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;

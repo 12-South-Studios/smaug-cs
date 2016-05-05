@@ -5,7 +5,7 @@ using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
-using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
@@ -22,7 +22,7 @@ namespace SmaugCS
         public override void Load()
         {
             Kernel.Bind<ITimer>().To<CommonTimer>().Named("GameLoopTimer")
-                .OnActivation(x => x.Interval = (1000f / GameConstants.GetSystemValue<int>("PulsesPerSecond")));
+                .OnActivation(x => x.Interval = 1000f / GameConstants.GetSystemValue<int>("PulsesPerSecond"));
 
             Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
 

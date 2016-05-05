@@ -257,7 +257,7 @@ namespace SmaugCS
                                 {
                                     if ((ch.CurrentPosition == PositionTypes.Standing ||
                                          (int) ch.CurrentPosition < (int) PositionTypes.Fighting) &&
-                                        (SmaugRandom.D100() + ((100 - (val*10)) + 10) < Math.Abs(ch.MentalState)))
+                                        (SmaugRandom.D100() + (100 - val*10) + 10 < Math.Abs(ch.MentalState)))
                                         Sleep.do_sleep(ch, string.Empty);
                                     else
                                         ch.SendTo(LowMentalStateTable[val]);

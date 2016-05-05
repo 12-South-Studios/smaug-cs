@@ -78,17 +78,17 @@ namespace SmaugCS.Spells.Smaug
             {
                 case (int)SpellPowerTypes.Minor:
                     if (CheckFunctions.CheckIfTrueCasting(
-                            (ch.Level - obj.Level < 20) || (obj.Cost > (ch.Level*ch.GetCurrentIntelligence()/5)),
+                            (ch.Level - obj.Level < 20) || (obj.Cost > ch.Level*ch.GetCurrentIntelligence()/5),
                             skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
                 case (int)SpellPowerTypes.Greater:
                     if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 5) ||
-                        (obj.Cost > (ch.Level*10*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom())),
+                        (obj.Cost > ch.Level*10*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom()),
                         skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
                 case (int)SpellPowerTypes.Major:
                     if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 0) ||
-                        (obj.Cost > (ch.Level * 50 * ch.GetCurrentIntelligence() * ch.GetCurrentWisdom())),
+                        (obj.Cost > ch.Level * 50 * ch.GetCurrentIntelligence() * ch.GetCurrentWisdom()),
                         skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
 
                     ObjectInstance clonedObj = null;    // TODO Clone ObjectInstance

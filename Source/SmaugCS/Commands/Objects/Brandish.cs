@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -10,6 +9,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using SmaugCS.Spells;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Objects

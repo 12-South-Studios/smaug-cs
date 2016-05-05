@@ -159,12 +159,11 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new RoomRepository();
 
-            repo.Create(0, null);
+            Assert.Throws<ArgumentException>(() => repo.Create(0, null));
         }
 
         /*[Test]

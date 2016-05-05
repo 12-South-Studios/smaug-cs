@@ -1,6 +1,6 @@
 ﻿using Realm.Library.Lua;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Interfaces
 {
     public interface ILuaManager
     {

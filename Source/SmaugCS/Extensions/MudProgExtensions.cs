@@ -3,6 +3,7 @@ using LuaInterface;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 

@@ -57,7 +57,7 @@ namespace SmaugCS.SpecFuns.Professions
 
                 if (thrown && !noExit)
                 {
-                    while (!found && !noExit)
+                    while (!found)
                     {
                         var door = db.number_door();
                         exit = ch.CurrentRoom.GetExitNumber(door);

@@ -33,7 +33,7 @@ namespace SmaugCS.Data.Templates
         public string Race { get; set; }
         public string Class { get; set; }
         public SavingThrowData SavingThrows { get; private set; }
-        public Dictionary<StatisticTypes, object> Statistics { get; private set; }
+        public Dictionary<StatisticTypes, object> Statistics { get; }
         public string PlayerName { get; set; }
 
         public MobileTemplate(long id, string name)
@@ -55,15 +55,10 @@ namespace SmaugCS.Data.Templates
         }
 
         public T GetStatistic<T>(StatisticTypes type)
-        {
-            return Statistics.ContainsKey(type) ? (T)Statistics[type] : default(T);
-        }
+            => Statistics.ContainsKey(type) ? (T) Statistics[type] : default(T);
 
         public void SetStatistic(string name, object value)
-        {
-            StatisticTypes stat = (StatisticTypes)EnumerationFunctions.GetEnumByName<StatisticTypes>(name);
-            Statistics[stat] = value;
-        }
+            => Statistics[(StatisticTypes) EnumerationFunctions.GetEnumByName<StatisticTypes>(name)] = value;
 
         public void SetStats1(int align, int level, int thac0, int ac, int gold, int xp)
         {
@@ -128,10 +123,7 @@ namespace SmaugCS.Data.Templates
             };
         }
 
-        public void AddShop(ShopData shop)
-        {
-            Shop = shop;
-        }
+        public void AddShop(ShopData shop) => Shop = shop;
 
         public void AddConversation(string keyword, string text)
         {

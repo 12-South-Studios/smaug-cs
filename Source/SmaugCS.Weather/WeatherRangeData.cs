@@ -14,14 +14,14 @@ namespace SmaugCS.Weather
         public SeasonTypes Season { get; private set; }
         public ClimateTypes Climate { get; private set; }
 
-        public IEnumerable<int> Temperature { get; private set; }
-        public IEnumerable<int> Pressure { get; private set; }
-        public IEnumerable<int> CloudCover { get; private set; }
-        public IEnumerable<int> Humidity { get; private set; }
-        public IEnumerable<int> Precipitation { get; private set; }
-        public IEnumerable<int> Energy { get; private set; }
-        public IEnumerable<int> WindSpeedX { get; private set; }
-        public IEnumerable<int> WindSpeedY { get; private set; }
+        public IEnumerable<int> Temperature { get; }
+        public IEnumerable<int> Pressure { get; }
+        public IEnumerable<int> CloudCover { get; }
+        public IEnumerable<int> Humidity { get; }
+        public IEnumerable<int> Precipitation { get; }
+        public IEnumerable<int> Energy { get; }
+        public IEnumerable<int> WindSpeedX { get; }
+        public IEnumerable<int> WindSpeedY { get; }
 
         public WeatherRangeData(HemisphereTypes hemisphere, SeasonTypes season, ClimateTypes climate)
         {

@@ -23,7 +23,7 @@ namespace SmaugCS.Tests
 	[TestFixture]
 	public class LuaCreateFunctionTests
 	{
-	    private static LuaManager LuaMgr { get; set; }
+		private static LuaManager LuaMgr { get; set; }
 
 		[SetUp]
 		public void OnSetup()
@@ -33,21 +33,21 @@ namespace SmaugCS.Tests
 			
 			const string dataPath = "D://Projects//SmaugCS//trunk//data";
 
-            Mock<IKernel> mockKernel = new Mock<IKernel>();
+			Mock<IKernel> mockKernel = new Mock<IKernel>();
 
-            LuaMgr = new LuaManager(mockKernel.Object, mockLogManager.Object.LogWrapper);
+			LuaMgr = new LuaManager(mockKernel.Object, mockLogManager.Object.LogWrapper);
 
 			RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, mockLogManager.Object);
 
-            LuaGetFunctions.InitializeReferences(LuaMgr, dbMgr, dataPath);
-            LuaCreateFunctions.InitializeReferences(LuaMgr, dbMgr, mockLogManager.Object);
+			LuaGetFunctions.InitializeReferences(LuaMgr, dbMgr, dataPath);
+			LuaCreateFunctions.InitializeReferences(LuaMgr, dbMgr, mockLogManager.Object);
 
 			var luaProxy = new LuaInterfaceProxy();
 
-		    var luaFuncRepo = LuaHelper.Register(typeof (LuaCreateFunctions), null);
+			var luaFuncRepo = LuaHelper.Register(typeof (LuaCreateFunctions), null);
 			luaProxy.RegisterFunctions(luaFuncRepo);
 
-            LuaMgr.InitializeLuaProxy(luaProxy);
+			LuaMgr.InitializeLuaProxy(luaProxy);
 		}
 
 		#region MudProg
@@ -124,9 +124,9 @@ namespace SmaugCS.Tests
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Type, Is.EqualTo(ResetTypes.Mob));
-            Assert.That(result.Args.ToList()[0], Is.EqualTo(100));
-            Assert.That(result.Args.ToList()[1], Is.EqualTo(104));
-            Assert.That(result.Args.ToList()[2], Is.EqualTo(1));
+			Assert.That(result.Args.ToList()[0], Is.EqualTo(100));
+			Assert.That(result.Args.ToList()[1], Is.EqualTo(104));
+			Assert.That(result.Args.ToList()[2], Is.EqualTo(1));
 		}
 
 		[Test]
@@ -137,8 +137,8 @@ namespace SmaugCS.Tests
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Resets.Count, Is.EqualTo(1));
-            Assert.That(result.Resets.ToList()[0].Type, Is.EqualTo(ResetTypes.Give));
-            Assert.That(result.Resets.ToList()[0].Args.ToList()[0], Is.EqualTo(110));
+			Assert.That(result.Resets.ToList()[0].Type, Is.EqualTo(ResetTypes.Give));
+			Assert.That(result.Resets.ToList()[0].Args.ToList()[0], Is.EqualTo(110));
 		}
 		#endregion
 
@@ -400,7 +400,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
-            Assert.That(result.PrimaryAttribute, Is.EqualTo(StatisticTypes.PermanentStrength));
+			Assert.That(result.PrimaryAttribute, Is.EqualTo(StatisticTypes.PermanentStrength));
 		}
 
 		[Test]
@@ -410,7 +410,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
-            Assert.That(result.SecondaryAttribute, Is.EqualTo(StatisticTypes.PermanentConstitution));
+			Assert.That(result.SecondaryAttribute, Is.EqualTo(StatisticTypes.PermanentConstitution));
 		}
 
 		[Test]
@@ -420,7 +420,7 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<ClassData>();
 
 			Assert.That(result, Is.Not.Null);
-            Assert.That(result.DeficientAttribute, Is.EqualTo(StatisticTypes.PermanentCharisma));
+			Assert.That(result.DeficientAttribute, Is.EqualTo(StatisticTypes.PermanentCharisma));
 		}
 
 		[Test]
@@ -500,8 +500,8 @@ namespace SmaugCS.Tests
 			var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
 			Assert.That(result, Is.Not.Null);
-            Assert.That(result.WhereNames.ToList()[0], Is.EqualTo("<used as light>     "));
-            Assert.That(result.WhereNames.ToList()[1], Is.EqualTo("<worn on finger>    "));
+			Assert.That(result.WhereNames.ToList()[0], Is.EqualTo("<used as light>     "));
+			Assert.That(result.WhereNames.ToList()[1], Is.EqualTo("<worn on finger>    "));
 		}
 
 		[Test]
@@ -532,7 +532,7 @@ namespace SmaugCS.Tests
 		[Test]
 		public void LuaCreateClanTest()
 		{
-            LuaMgr.Proxy.DoString(GetClanLuaScript());
+			LuaMgr.Proxy.DoString(GetClanLuaScript());
 			var result = LuaCreateFunctions.LastObject.CastAs<ClanData>();
 
 			Assert.That(result, Is.Not.Null);

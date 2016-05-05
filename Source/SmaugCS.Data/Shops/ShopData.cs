@@ -8,7 +8,7 @@ namespace SmaugCS.Data.Shops
     [XmlRoot("Shop")]
     public abstract class ShopData
     {
-        private List<ItemTypes> _itemTypes;
+        private readonly List<ItemTypes> _itemTypes;
  
         public int Keeper { get; set; }
         public IEnumerable<ItemTypes> ItemTypes => _itemTypes;

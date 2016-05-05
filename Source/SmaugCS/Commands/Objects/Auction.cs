@@ -102,7 +102,7 @@ namespace SmaugCS.Commands.Objects
             var bid = Program.parsebet(auction.BidAmount, secondArg);
             if (CheckFunctions.CheckIfTrue(ch, bid < auction.StartingBid,
                 "You must place a bid that is higher than the starting bet.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, bid < (auction.BidAmount + 10000),
+            if (CheckFunctions.CheckIfTrue(ch, bid < auction.BidAmount + 10000,
                 "You must bid at least 10,000 coins over the current bid.")) return;
             if (CheckFunctions.CheckIfTrue(ch, bid < ch.CurrentCoin, "You don't have that much money!")) return;
             if (CheckFunctions.CheckIfTrue(ch, bid > GameConstants.GetSystemValue<int>("MaximumAuctionBid"),

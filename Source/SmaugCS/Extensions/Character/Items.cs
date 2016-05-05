@@ -7,6 +7,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
+using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
@@ -517,6 +518,9 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearWield(ObjectInstance obj, CharacterInstance ch, bool replace, ItemWearFlags wearFlag)
         {
+            var strWieldMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+                StrengthModTypes.Wield);
+
             if (!ch.CouldDualWield())
             {
                 if (!ch.RemoveFrom(WearLocations.WieldMissile, replace)
@@ -536,12 +540,10 @@ namespace SmaugCS.Extensions.Character
 
                 if (tobj != null)
                 {
-                    if (!ch.CanDualWield())
-                        return;
+                    if (!ch.CanDualWield()) return;
 
                     if (CheckFunctions.CheckIfTrue(ch,
-                        (obj.GetWeight() + tobj.GetWeight()) >
-                        LookupConstants.str_app[ch.GetCurrentStrength()].Wield, "It is too heavy for you to wield."))
+                        obj.GetWeight() + tobj.GetWeight() > strWieldMod, "It is too heavy for you to wield."))
                         return;
 
                     if (CheckFunctions.CheckIfTrue(ch, hd != null || sd != null,
@@ -566,9 +568,8 @@ namespace SmaugCS.Extensions.Character
                 }
             }
 
-            if (CheckFunctions.CheckIfTrue(ch,
-                obj.GetWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield,
-                "It is too heavy for you to wield.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, obj.GetWeight() > strWieldMod, "It is too heavy for you to wield."))
+                return;
 
             if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
@@ -589,9 +590,11 @@ namespace SmaugCS.Extensions.Character
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.MissileWeapon,
                 "You're already wielding a missile weapon.")) return;
 
+            var strWieldMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+                StrengthModTypes.Wield);
+
             if (CheckFunctions.CheckIfTrue(ch,
-                (obj.GetWeight() + mw.GetWeight()) > LookupConstants.str_app[ch.GetCurrentStrength()].Wield,
-                "It is too heavy for you to wield.")) return;
+                obj.GetWeight() + mw.GetWeight() > strWieldMod, "It is too heavy for you to wield.")) return;
 
             if (CheckFunctions.CheckIfNotNullObject(ch, dw, "You're already wielding two weapons.")) return;
             if (CheckFunctions.CheckIfTrue(ch, hd != null || sd != null,

@@ -25,20 +25,13 @@ namespace SmaugCS.Weather
 
         public static IWeatherManager Instance => _kernel.Get<IWeatherManager>();
 
-        public WeatherCell GetWeather(AreaData area)
-        {
-            return Weather.GetCellFromMap(area.WeatherX, area.WeatherY);
-        }
+        public WeatherCell GetWeather(AreaData area) => Weather.GetCellFromMap(area.WeatherX, area.WeatherY);
 
         public static bool ExceedsThreshold(int initial, int delta, int threshold)
-        {
-            return ((initial < threshold) && (initial + delta >= threshold));
-        }
+            => (initial < threshold) && (initial + delta >= threshold);
 
         public static bool DropsBelowThreshold(int initial, int delta, int threshold)
-        {
-            return ((initial >= threshold) && (initial + delta < threshold));
-        }
+            => (initial >= threshold) && (initial + delta < threshold);
 
         public void Initialize(TimeInfoData timeInfo, int height, int width)
         {

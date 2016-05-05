@@ -8,6 +8,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
+using SmaugCS.Spells;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Liquids
@@ -114,7 +115,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static bool PotionWasFumbled(CharacterInstance ch)
         {
-            return SmaugRandom.D100() > (ch.GetCurrentDexterity()*2 + 48);
+            return SmaugRandom.D100() > ch.GetCurrentDexterity()*2 + 48;
         }
 
         private static void QuaffNonPotion(CharacterInstance ch, ObjectInstance obj)

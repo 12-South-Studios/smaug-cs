@@ -5,6 +5,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
@@ -12,7 +13,6 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
-using SmaugCS.Objects;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions
@@ -41,7 +41,7 @@ namespace SmaugCS.Extensions
             if (ch == null) throw new ArgumentNullException(nameof(ch));
 
             var localRoom = room;
-            var databaseMgr = (dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = dbManager ?? RepositoryManager.Instance;
             if (databaseMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {
                 LogManager.Instance.Bug("{0} -> NULL room! Putting char in limbo ({1})",

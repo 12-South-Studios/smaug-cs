@@ -517,7 +517,7 @@ namespace SmaugCS.Constants
                                                                       "nothing unusual",
                                                                       "nothing unusual",
                                                                       "nothing unusual",
-                                                                      "nothing unusual",
+                                                                      "nothing unusual"
                                                                   },
 
                                                               new List<string>
@@ -544,34 +544,34 @@ namespace SmaugCS.Constants
                 {'Y', "&Y"}, {'c', "&c"}
             };
 
-        public static readonly List<str_app_type> str_app = new List<str_app_type>
-        {
-                                                           new str_app_type(-5, -4, 0, 0),
-                                                           new str_app_type(-5, -4, 3, 1),
-                                                           new str_app_type(-3, -2, 3, 2),
-                                                           new str_app_type(-3, -1, 10, 3),
-                                                           new str_app_type(-2, -1, 55, 5),
-                                                           new str_app_type(-1, 0, 80, 6),
-                                                           new str_app_type(-1, 0, 90, 7),
-                                                           new str_app_type(0, 0, 100, 8),
-                                                           new str_app_type(0, 0, 100, 9),
-                                                           new str_app_type(0, 0, 115, 10),
-                                                           new str_app_type(0, 0, 115, 11),
-                                                           new str_app_type(0, 0, 140, 12),
-                                                           new str_app_type(0, 0, 140, 13),
-                                                           new str_app_type(0, 1, 170, 14),
-                                                           new str_app_type(1, 1, 170, 15),
-                                                           new str_app_type(1, 2, 195, 16),
-                                                           new str_app_type(2, 3, 220, 22),
-                                                           new str_app_type(2, 4, 250, 25),
-                                                           new str_app_type(3, 5, 400, 30),
-                                                           new str_app_type(3, 6, 500, 35),
-                                                           new str_app_type(4, 7, 600, 40),
-                                                           new str_app_type(5, 7, 700, 45),
-                                                           new str_app_type(6, 8, 800, 50),
-                                                           new str_app_type(8, 10, 900, 55),
-                                                           new str_app_type(10, 12, 999, 60)
-                                                       };
+        //public static readonly List<str_app_type> str_app = new List<str_app_type>
+        //{
+        //                                                   new str_app_type(-5, -4, 0, 0),
+        //                                                   new str_app_type(-5, -4, 3, 1),
+        //                                                   new str_app_type(-3, -2, 3, 2),
+        //                                                   new str_app_type(-3, -1, 10, 3),
+        //                                                   new str_app_type(-2, -1, 55, 5),
+        //                                                   new str_app_type(-1, 0, 80, 6),
+        //                                                   new str_app_type(-1, 0, 90, 7),
+        //                                                   new str_app_type(0, 0, 100, 8),
+        //                                                   new str_app_type(0, 0, 100, 9),
+        //                                                   new str_app_type(0, 0, 115, 10),
+        //                                                   new str_app_type(0, 0, 115, 11),
+        //                                                   new str_app_type(0, 0, 140, 12),
+        //                                                   new str_app_type(0, 0, 140, 13),
+        //                                                   new str_app_type(0, 1, 170, 14),
+        //                                                   new str_app_type(1, 1, 170, 15),
+        //                                                   new str_app_type(1, 2, 195, 16),
+        //                                                   new str_app_type(2, 3, 220, 22),
+        //                                                   new str_app_type(2, 4, 250, 25),
+        //                                                   new str_app_type(3, 5, 400, 30),
+        //                                                   new str_app_type(3, 6, 500, 35),
+        //                                                   new str_app_type(4, 7, 600, 40),
+        //                                                   new str_app_type(5, 7, 700, 45),
+        //                                                   new str_app_type(6, 8, 800, 50),
+        //                                                   new str_app_type(8, 10, 900, 55),
+        //                                                   new str_app_type(10, 12, 999, 60)
+        //                                               };
 
         public static List<int_app_type> int_app = new List<int_app_type>
         {

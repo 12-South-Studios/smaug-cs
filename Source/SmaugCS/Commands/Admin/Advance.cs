@@ -22,19 +22,19 @@ namespace SmaugCS.Commands.Admin
             string secondArg = argument.SecondWord();
 
             if (CheckFunctions.CheckIf(ch,
-                () => (string.IsNullOrEmpty(firstArg) || string.IsNullOrEmpty(secondArg) || !secondArg.IsNumeric()),
+                () => string.IsNullOrEmpty(firstArg) || string.IsNullOrEmpty(secondArg) || !secondArg.IsNumeric(),
                 "Syntax:  advance <character> <Level>")) return;
 
             var victim = ch.GetCharacterInRoom(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, victim, "That character is not in the room.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "You cannot advance a non-player-character.")) return;
-            if (CheckFunctions.CheckIf(ch, () => (ch.Trust <= victim.Trust || ch == victim), "You can't do that."))
+            if (CheckFunctions.CheckIf(ch, () => ch.Trust <= victim.Trust || ch == victim, "You can't do that."))
                 return;
 
             var level = Convert.ToInt32(secondArg);
-            if (CheckFunctions.CheckIf(ch, () => (level < 1 || level > GameConstants.GetConstant<int>("MaximumLevel")),
+            if (CheckFunctions.CheckIf(ch, () => level < 1 || level > GameConstants.GetConstant<int>("MaximumLevel"),
                 $"Level range is 1 to {GameConstants.GetConstant<int>("MaximumLevel")}.")) return;
-            if (CheckFunctions.CheckIf(ch, () => (level > ch.Trust), "Level limited to your trust level.")) return;
+            if (CheckFunctions.CheckIf(ch, () => level > ch.Trust, "Level limited to your trust level.")) return;
 
             if (level <= victim.Level)
                 LowerVictimLevel(ch, victim, level);

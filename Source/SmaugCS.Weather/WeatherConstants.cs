@@ -15,21 +15,12 @@ namespace SmaugCS.Weather
             new Dictionary<PrecipitationTypes, List<string>>();
 
         public static IEnumerable<string> GetWeatherMessages(PrecipitationTypes precip)
-        {
-            return WeatherMessages.ContainsKey(precip) ? WeatherMessages[precip] : new List<string>();
-        }
+            => WeatherMessages.ContainsKey(precip) ? WeatherMessages[precip] : new List<string>();
 
         public static int GetHemisphere(string type)
-        {
-            var hemisphere = EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
-            return (int)hemisphere;
-        }
+            => (int) EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
 
-        public static int GetClimate(string type)
-        {
-            var climate = EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
-            return (int)climate;
-        }
+        public static int GetClimate(string type) => (int) EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
 
         public static void InitializeWeatherMessages(string filename)
         {

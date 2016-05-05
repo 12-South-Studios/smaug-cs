@@ -79,7 +79,7 @@ namespace SmaugCS.Commands.Combat
             }
 
             var chance = GetChanceByCharacterClass(ch);
-            chance += ((ch.GetCurrentStrength() - 15)*3);
+            chance += (ch.GetCurrentStrength() - 15)*3;
             chance += ch.Level - victim.Level;
             chance += GetBonusByCharacterRace(ch);
 

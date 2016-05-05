@@ -31,10 +31,10 @@ namespace SmaugCS
 
         public static void WAIT_STATE(CharacterInstance ch, int npulse)
         {
-            ch.wait = (short)((!ch.IsNpc()
-                && ((PlayerInstance)ch).PlayerData.Nuisance != null
-                && (((PlayerInstance)ch).PlayerData.Nuisance.Flags > 4))
-                ? ch.wait.GetHighestOfTwoNumbers((npulse + (((PlayerInstance)ch).PlayerData.Nuisance.Flags - 4) + (short)((PlayerInstance)ch).PlayerData.Nuisance.Power))
+            ch.wait = (short)(!ch.IsNpc()
+                              && ((PlayerInstance)ch).PlayerData.Nuisance != null
+                              && (((PlayerInstance)ch).PlayerData.Nuisance.Flags > 4)
+                ? ch.wait.GetHighestOfTwoNumbers(npulse + (((PlayerInstance)ch).PlayerData.Nuisance.Flags - 4) + (short)((PlayerInstance)ch).PlayerData.Nuisance.Power)
                           : ch.wait.GetHighestOfTwoNumbers(npulse));
         }
 
@@ -49,23 +49,23 @@ namespace SmaugCS
 
         public static int SPELL_DAMAGE(SkillData skill)
         {
-            return (skill.Info & 7);
+            return skill.Info & 7;
         }
         public static int SPELL_ACTION(SkillData skill)
         {
-            return ((skill.Info >> 3) & 7);
+            return (skill.Info >> 3) & 7;
         }
         public static int SPELL_CLASS(SkillData skill)
         {
-            return ((skill.Info >> 6) & 7);
+            return (skill.Info >> 6) & 7;
         }
         public static int SPELL_POWER(SkillData skill)
         {
-            return ((skill.Info >> 9) & 3);
+            return (skill.Info >> 9) & 3;
         }
         public static int SPELL_SAVE(SkillData skill)
         {
-            return ((skill.Info >> 11) & 7);
+            return (skill.Info >> 11) & 7;
         }
         public static void SET_SDAM(SkillData skill, int val)
         {

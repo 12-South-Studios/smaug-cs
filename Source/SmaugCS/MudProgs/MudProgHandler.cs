@@ -57,21 +57,12 @@ namespace SmaugCS.MudProgs
         }
 
         public static bool ExecuteMobileProg(MudProgTypes mudProgType, params object[] args)
-        {
-            var handler = _kernel.Get<IMudProgHandler>();
-            return handler.Execute(MudProgLocationTypes.Mobile, mudProgType, args);
-        }
+            => _kernel.Get<IMudProgHandler>().Execute(MudProgLocationTypes.Mobile, mudProgType, args);
 
         public static bool ExecuteObjectProg(MudProgTypes mudProgType, params object[] args)
-        {
-            var handler = _kernel.Get<IMudProgHandler>();
-            return handler.Execute(MudProgLocationTypes.Object, mudProgType, args);
-        }
+            => _kernel.Get<IMudProgHandler>().Execute(MudProgLocationTypes.Object, mudProgType, args);
 
         public static bool ExecuteRoomProg(MudProgTypes mudProgType, params object[] args)
-        {
-            var handler = _kernel.Get<IMudProgHandler>();
-            return handler.Execute(MudProgLocationTypes.Room, mudProgType, args);
-        }
+            => _kernel.Get<IMudProgHandler>().Execute(MudProgLocationTypes.Room, mudProgType, args);
     }
 }

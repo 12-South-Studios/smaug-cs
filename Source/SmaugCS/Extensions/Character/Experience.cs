@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -13,7 +12,7 @@ namespace SmaugCS.Extensions.Character
     {
         public static int GetExperienceWorth(this CharacterInstance ch)
         {
-            var wexp = ((int)Math.Pow(ch.Level, 3) * 5) + ch.MaximumHealth;
+            var wexp = (int)Math.Pow(ch.Level, 3) * 5 + ch.MaximumHealth;
             wexp -= (ch.ArmorClass - 50) * 2;
             wexp += (ch.BareDice.NumberOf * ch.BareDice.SizeOf + ch.GetDamroll()) * 50;
             wexp += ch.GetHitroll() * ch.Level * 10;
@@ -36,7 +35,7 @@ namespace SmaugCS.Extensions.Character
 
         public static int GetExperienceLevel(this CharacterInstance ch, int level)
         {
-            return ((int)Math.Pow(0.GetHighestOfTwoNumbers(level - 1), 3) * ch.GetExperienceBase());
+            return (int)Math.Pow(0.GetHighestOfTwoNumbers(level - 1), 3) * ch.GetExperienceBase();
         }
 
         public static int GetLevelExperience(this CharacterInstance ch, int cexp)
@@ -52,7 +51,7 @@ namespace SmaugCS.Extensions.Character
                 if (tmp > cexp)
                     x /= 2;
                 else if (lastx != x)
-                    x += (x / 2);
+                    x += x / 2;
                 else
                     y = x;
             }

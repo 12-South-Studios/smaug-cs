@@ -2,7 +2,7 @@
 using Realm.Library.Common;
 using SmaugCS.Config;
 
-namespace SmaugCS.Constants
+namespace SmaugCS.Constants.Constants
 {
     public static class StringConstants
     {

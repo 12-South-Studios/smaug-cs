@@ -15,7 +15,7 @@ namespace SmaugCS.Auction
 
         public AuctionData Auction { get; private set; }
 
-        public IAuctionRepository Repository { get; private set; }
+        public IAuctionRepository Repository { get; }
 
         public AuctionManager(IKernel kernel, ITimer timer, IAuctionRepository repository)
         {
@@ -46,15 +46,9 @@ namespace SmaugCS.Auction
                 Save();
         }
 
-        public void Initialize()
-        {
-            Repository.Load();
-        }
+        public void Initialize() => Repository.Load();
 
-        public void Save()
-        {
-            Repository.Save();
-        }
+        public void Save() => Repository.Save();
 
         public AuctionData StartAuction(CharacterInstance seller, ObjectInstance item, int startingPrice)
         {

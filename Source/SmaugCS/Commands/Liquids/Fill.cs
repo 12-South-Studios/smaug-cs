@@ -28,7 +28,7 @@ namespace SmaugCS.Commands.Liquids
                     comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, obj.Name, ToTypes.Character);
                     return;
                 }
-                if (CheckFunctions.CheckIfTrue(ch, (obj.GetRealWeight()/obj.Count) >= obj.Values.Capacity,
+                if (CheckFunctions.CheckIfTrue(ch, obj.GetRealWeight()/obj.Count >= obj.Values.Capacity,
                     "It's already full as it can be.")) return;
             }
             else

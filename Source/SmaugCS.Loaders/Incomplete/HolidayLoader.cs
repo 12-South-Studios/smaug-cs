@@ -1,9 +1,9 @@
 ﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Loaders.Loaders;
 
-namespace SmaugCS.Loaders
+namespace SmaugCS.Loaders.Incomplete
 {
     public class HolidayLoader : BaseLoader
     {

@@ -32,7 +32,7 @@ namespace SmaugCS.Language
         Clan = 262144,
         Gith = 524288,
         Gnome = 1048576,
-        ValidLanguages = (Common | Elven | Dwarven | Pixie | Ogre
-            | Orcish | Trollish | Goblin | Halfling | Gith | Gnome)
+        ValidLanguages = Common | Elven | Dwarven | Pixie | Ogre
+                         | Orcish | Trollish | Goblin | Halfling | Gith | Gnome
     }
 }

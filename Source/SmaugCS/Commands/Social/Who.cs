@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Social
 {
     public static class Who
     {

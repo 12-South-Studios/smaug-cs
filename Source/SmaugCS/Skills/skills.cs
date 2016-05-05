@@ -14,7 +14,7 @@ using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Spells.Smaug;
 
-namespace SmaugCS
+namespace SmaugCS.Skills
 {
     public static class skills
     {
@@ -357,7 +357,7 @@ namespace SmaugCS
             {
                 //todo handler.separate_obj(projectile);
 
-                var action = (weapon != null) ? "fire" : "throw";
+                var action = weapon != null ? "fire" : "throw";
                 if (exit != null)
                 {
                     comm.act(ATTypes.AT_GREY, $"You {action} $p $T.", ch, projectile, exit.Direction.GetName(),
@@ -418,10 +418,10 @@ namespace SmaugCS
 
                 if (exit.Flags.IsSet(ExitFlags.Closed))
                 {
-                    var color = (projectile != null) ? ATTypes.AT_GREY : ATTypes.AT_MAGIC;
+                    var color = projectile != null ? ATTypes.AT_GREY : ATTypes.AT_MAGIC;
 
                     var txt =
-                        $"You see your {((projectile != null) ? projectile.Name : GetSkillText(skill))} {(projectile != null ? "pierce" : "hit")} a door in the distance to the {exit.Direction.GetName()}.";
+                        $"You see your {(projectile != null ? projectile.Name : GetSkillText(skill))} {(projectile != null ? "pierce" : "hit")} a door in the distance to the {exit.Direction.GetName()}.";
                     comm.act(color, txt, ch, null, null, ToTypes.Character);
 
                     if (projectile != null)

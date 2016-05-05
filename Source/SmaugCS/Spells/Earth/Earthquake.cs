@@ -5,7 +5,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Earth
 {
     public static class Earthquake
     {

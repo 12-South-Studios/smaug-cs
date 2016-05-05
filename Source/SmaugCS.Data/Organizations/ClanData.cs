@@ -24,8 +24,8 @@ namespace SmaugCS.Data.Organizations
         public string LeaderRank { get; set; }
         public string NumberOneRank { get; set; }
         public string NumberTwoRank { get; set; }
-        public IEnumerable<int> PvPKillTable { get; set; }
-        public IEnumerable<int> PvPDeathTable { get; set; }
+        public IEnumerable<int> PvPKillTable { get; private set; }
+        public IEnumerable<int> PvPDeathTable { get; private set; }
         public int PvEKills { get; set; }
         public int PvEDeaths { get; set; }
         public int IllegalPvPKill { get; set; }
@@ -102,15 +102,9 @@ namespace SmaugCS.Data.Organizations
                 Members.ToList().Remove(roster);
         }
 
-        public void RemoveAllRosters()
-        {
-            Members.ToList().Clear();
-        }
+        public void RemoveAllRosters() => Members.ToList().Clear();
 
-        public void SetTypeByValue(int type)
-        {
-            ClanType = EnumerationExtensions.GetEnum<ClanTypes>(type);
-        }
+        public void SetTypeByValue(int type) => ClanType = EnumerationExtensions.GetEnum<ClanTypes>(type);
 
         /* public override void Save()
          {

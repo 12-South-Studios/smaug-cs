@@ -7,9 +7,6 @@ namespace SmaugCS.Common
     [ExcludeFromCodeCoverage]
     public class DirectoryProxy
     {
-        public virtual IEnumerable<string> GetFiles(string path)
-        {
-            return Directory.GetFiles(path);
-        }
+        public virtual IEnumerable<string> GetFiles(string path) => Directory.GetFiles(path);
     }
 }

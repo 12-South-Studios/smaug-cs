@@ -1,7 +1,8 @@
 ﻿using System;
 using SmaugCS.Data;
+using SmaugCS.Loaders.Obsolete;
 
-namespace SmaugCS.Loaders
+namespace SmaugCS.Loaders.Incomplete
 {
     public class HelpAreaLoader : AreaLoader
     {

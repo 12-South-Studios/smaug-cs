@@ -15,12 +15,12 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Exceptions;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
-using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
@@ -269,7 +269,7 @@ namespace SmaugCS.Extensions.Character
 
         public static bool Chance(this CharacterInstance ch, int percent)
         {
-            return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState))) +
+            return SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - (10 - Math.Abs(ch.MentalState)) +
                    (ch.IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent;
         }
 
@@ -425,7 +425,7 @@ namespace SmaugCS.Extensions.Character
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.Solitary) &&
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral) &&
                    !victim.CurrentRoom.Flags.IsSet(RoomFlags.Death) &&
-                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.Prototype) && victim.Level < (ch.Level + 15) &&
+                   !victim.CurrentRoom.Flags.IsSet(RoomFlags.Prototype) && victim.Level < ch.Level + 15 &&
                    (!victim.CanPKill() || ch.IsNpc() || ch.CanPKill()) &&
                    (!victim.IsNpc() || !victim.Act.IsSet(ActFlags.Prototype)) &&
                    (!victim.IsNpc() || !victim.SavingThrows.CheckSaveVsSpellStaff(ch.Level, victim)) &&
@@ -665,15 +665,15 @@ namespace SmaugCS.Extensions.Character
             }
 
             return morph.dayfrom == -1 || morph.dayto == -1 ||
-                   (morph.dayto >= (GameManager.Instance.GameTime.Day + 1) &&
-                    morph.dayfrom <= (GameManager.Instance.GameTime.Day + 1));
+                   (morph.dayto >= GameManager.Instance.GameTime.Day + 1 &&
+                    morph.dayfrom <= GameManager.Instance.GameTime.Day + 1);
         }
 
         public static bool CanCharm(this CharacterInstance ch)
         {
             if (ch.IsNpc() || ch.IsImmortal())
                 return true;
-            return ((ch.GetCurrentCharisma() / 3) + 1) > ((PlayerInstance)ch).PlayerData.NumberOfCharmies;
+            return ch.GetCurrentCharisma() / 3 + 1 > ((PlayerInstance)ch).PlayerData.NumberOfCharmies;
         }
 
         public static bool IsInArena(this CharacterInstance ch)
@@ -686,11 +686,11 @@ namespace SmaugCS.Extensions.Character
 
         public static bool IsInCombatPosition(this CharacterInstance ch)
         {
-            return (ch.CurrentPosition == PositionTypes.Fighting
-                    || ch.CurrentPosition == PositionTypes.Evasive
-                    || ch.CurrentPosition == PositionTypes.Defensive
-                    || ch.CurrentPosition == PositionTypes.Aggressive
-                    || ch.CurrentPosition == PositionTypes.Berserk);
+            return ch.CurrentPosition == PositionTypes.Fighting
+                   || ch.CurrentPosition == PositionTypes.Evasive
+                   || ch.CurrentPosition == PositionTypes.Defensive
+                   || ch.CurrentPosition == PositionTypes.Aggressive
+                   || ch.CurrentPosition == PositionTypes.Berserk;
         }
 
         public static bool IsImmune(this CharacterInstance ch, ResistanceTypes type)
@@ -731,7 +731,7 @@ namespace SmaugCS.Extensions.Character
 
         public static bool IsVampire(this CharacterInstance ch)
         {
-            return (!ch.IsNpc() && (ch.CurrentRace == RaceTypes.Vampire) || ch.CurrentClass == ClassTypes.Vampire);
+            return !ch.IsNpc() && (ch.CurrentRace == RaceTypes.Vampire) || ch.CurrentClass == ClassTypes.Vampire;
         }
         
         public static bool IsGood(this CharacterInstance ch)
@@ -802,7 +802,7 @@ namespace SmaugCS.Extensions.Character
 
         public static bool HasBodyPart(this CharacterInstance ch, int part)
         {
-            return (ch.ExtraFlags == 0 || ch.ExtraFlags.IsSet(part));
+            return ch.ExtraFlags == 0 || ch.ExtraFlags.IsSet(part);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
@@ -851,14 +851,17 @@ namespace SmaugCS.Extensions.Character
 
         public static int GetHitroll(this CharacterInstance ch)
         {
-            return ch.HitRoll.SizeOf + LookupConstants.str_app[ch.GetCurrentStrength()].tohit
-                   + (2 - (Math.Abs(ch.MentalState) / 10));
+            var toHitMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+                StrengthModTypes.ToHit);
+            return ch.HitRoll.SizeOf + toHitMod + (2 - Math.Abs(ch.MentalState)/10);
         }
 
         public static int GetDamroll(this CharacterInstance ch)
         {
-            return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + LookupConstants.str_app[ch.GetCurrentStrength()].todam +
-                   ((ch.MentalState > 5 && ch.MentalState < 15) ? 1 : 0);
+            var toDamMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+                StrengthModTypes.ToDam);
+            return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + toDamMod +
+                   (ch.MentalState > 5 && ch.MentalState < 15 ? 1 : 0);
         }
 
         public static bool IsClanned(this CharacterInstance ch)
@@ -1044,7 +1047,7 @@ namespace SmaugCS.Extensions.Character
             }
 
             var myRace = RepositoryManager.Instance.GetRace(ch.CurrentRace);
-            modgain *= (myRace.ExperienceMultiplier / 100.0f);
+            modgain *= myRace.ExperienceMultiplier / 100.0f;
 
             if (ch.IsPKill() && modgain < 0)
             {
@@ -1202,7 +1205,7 @@ namespace SmaugCS.Extensions.Character
             var modGain = gain;
             if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] <= 1)
                 modGain /= 2;
-            else if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] >= (8 + ch.Level))
+            else if (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] >= 8 + ch.Level)
                 modGain *= 2;
 
             if (ch.IsOutside())

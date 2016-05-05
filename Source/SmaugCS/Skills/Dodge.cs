@@ -3,9 +3,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
-using SmaugCS.Interfaces;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
 

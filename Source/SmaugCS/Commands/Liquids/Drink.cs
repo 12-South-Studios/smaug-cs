@@ -36,7 +36,7 @@ namespace SmaugCS.Commands.Liquids
                 obj.Split();
 
             if (CheckFunctions.CheckIfTrue(ch,
-                !ch.IsNpc() && ((PlayerInstance)ch).GetCondition(ConditionTypes.Drunk) > (GetMaximumCondition() - 8),
+                !ch.IsNpc() && ((PlayerInstance)ch).GetCondition(ConditionTypes.Drunk) > GetMaximumCondition() - 8,
                 "You fail to reach your mouth.  *Hic*")) return;
 
             DrinkFrom(ch, obj);
@@ -140,13 +140,13 @@ namespace SmaugCS.Commands.Liquids
             var cond = ch.GetCondition(ConditionTypes.Bloodthirsty);
             var maxCond = GetMaximumCondition();
 
-            if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
+            if (cond > maxCond / 2 && cond < maxCond * 0.4f)
                 ch.SendTo("&rYou replenish your body with the vital fluid.");
-            else if (cond >= (maxCond * 0.4f) && cond < (maxCond * 0.6f))
+            else if (cond >= maxCond * 0.4f && cond < maxCond * 0.6f)
                 ch.SendTo("&rYour thirst for blood begins to decrease.");
-            else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
+            else if (cond >= maxCond * 0.6f && cond < maxCond * 0.9f)
                 ch.SendTo("&RThe thirst for blood begins to leave you...");
-            else if (cond >= (maxCond * 0.9f) && cond < maxCond)
+            else if (cond >= maxCond * 0.9f && cond < maxCond)
                 ch.SendTo("&RYou drink the last drop of the fluid, the thirst for more leaves your body.");
         }
 
@@ -155,13 +155,13 @@ namespace SmaugCS.Commands.Liquids
             var cond = ch.GetCondition(ConditionTypes.Thirsty);
             var maxCond = GetMaximumCondition();
 
-            if (cond > (maxCond / 2) && cond < (maxCond * 0.4f))
+            if (cond > maxCond / 2 && cond < maxCond * 0.4f)
                 ch.SendTo("Your stomach begins to slosh around.");
-            else if (cond >= (maxCond * 0.4f) && cond < (maxCond * 0.6f))
+            else if (cond >= maxCond * 0.4f && cond < maxCond * 0.6f)
                 ch.SendTo("You start to feel bloated.");
-            else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
+            else if (cond >= maxCond * 0.6f && cond < maxCond * 0.9f)
                 ch.SendTo("You feel bloated.");
-            else if (cond >= (maxCond * 0.9f) && cond < maxCond)
+            else if (cond >= maxCond * 0.9f && cond < maxCond)
                 ch.SendTo("Your stomach is almost filled to it's brim!");
             else if (cond == maxCond)
                 ch.SendTo("Your stomach is full, you can't manage to get anymore down.");
@@ -172,13 +172,13 @@ namespace SmaugCS.Commands.Liquids
             var cond = ch.GetCondition(ConditionTypes.Drunk);
             var maxCond = GetMaximumCondition();
 
-            if (cond > (maxCond/2) && cond < (maxCond*0.4f))
+            if (cond > maxCond/2 && cond < maxCond*0.4f)
                 ch.SendTo("You feel quite sloshed.");
-            else if (cond >= (maxCond*0.4f) && cond < (maxCond*0.6f))
+            else if (cond >= maxCond*0.4f && cond < maxCond*0.6f)
                 ch.SendTo("You start to feel a little drunk.");
-            else if (cond >= (maxCond * 0.6f) && cond < (maxCond * 0.9f))
+            else if (cond >= maxCond * 0.6f && cond < maxCond * 0.9f)
                 ch.SendTo("Your vision starts to get blurry.");
-            else if (cond >= (maxCond * 0.9f) && cond < maxCond)
+            else if (cond >= maxCond * 0.9f && cond < maxCond)
                 ch.SendTo("You feel very drunk.");
             else if (cond == maxCond)
                 ch.SendTo("You feel like you're going to pass out.");
@@ -241,14 +241,14 @@ namespace SmaugCS.Commands.Liquids
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsVampire(), "It is not in your nature to do such things.")) return;
 
-            if (obj.Timer < 0 && ch.Level > 5 && ch.GetCondition(ConditionTypes.Bloodthirsty) > (5 + ch.Level/10))
+            if (obj.Timer < 0 && ch.Level > 5 && ch.GetCondition(ConditionTypes.Bloodthirsty) > 5 + ch.Level/10)
             {
                 ch.SendTo("It is beneath you to stoop to drinking blood from the ground!");
                 ch.SendTo("Unless in dire need, you'd much rather have blood from a victim's neck!");
                 return;
             }
 
-            if (CheckFunctions.CheckIfTrue(ch, ch.GetCondition(ConditionTypes.Bloodthirsty) >= (10 + ch.Level),
+            if (CheckFunctions.CheckIfTrue(ch, ch.GetCondition(ConditionTypes.Bloodthirsty) >= 10 + ch.Level,
                 "Alas... you cannot consume any more blood.")) return;
 
             var maxCond = GetMaximumCondition();
@@ -275,7 +275,7 @@ namespace SmaugCS.Commands.Liquids
             ch.GainCondition(ConditionTypes.Full, 1);
             ch.GainCondition(ConditionTypes.Thirsty, 1);
 
-            if ((obj.Values.Quantity - 1) <= 0)
+            if (obj.Values.Quantity - 1 <= 0)
             {
                 obj.Extract();
                 ObjectFactory.CreateBloodstain(ch, RepositoryManager.Instance);

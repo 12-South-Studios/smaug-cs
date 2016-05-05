@@ -2,6 +2,7 @@
 using Realm.Library.Lua;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.LuaHelpers
@@ -41,6 +42,20 @@ namespace SmaugCS.LuaHelpers
         public static int LuaLookupDirection(string direction)
         {
             return DirectionLookupTable.ContainsKey(direction.ToLower()) ? DirectionLookupTable[direction.ToLower()] : 10;
+        }
+
+        [LuaFunction("LAddStatModLookup", "Category", "Name", "Value")]
+        public static int LAddStatModLookup(string category, string name, object value)
+        {
+            if (!_lookupManager.StatModLookup.ContainsKey(category))
+                _lookupManager.StatModLookup[category] = new List<StatModLookup>();
+
+            var lookups = _lookupManager.StatModLookup[category];
+
+            var lookup = new StatModLookup();
+            lookup.AddLookup(name, value);
+            lookups.Add(lookup);
+            return 1;
         }
     }
 }

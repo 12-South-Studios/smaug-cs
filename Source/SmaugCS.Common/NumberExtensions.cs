@@ -8,20 +8,11 @@ namespace SmaugCS.Common
 {
     public static class NumberExtensions
     {
-        public static string ToPunctuation(this int value)
-        {
-            return value.ToString("#,#", CultureInfo.InvariantCulture);
-        }
+        public static string ToPunctuation(this int value) => value.ToString("#,#", CultureInfo.InvariantCulture);
 
-        public static string ToPercent(this int value, int total)
-        {
-            return ((double)value).ToPercent(total);
-        }
+        public static string ToPercent(this int value, int total) => ((double)value).ToPercent(total);
 
-        public static string ToPercent(this double value, double total)
-        {
-            return $"{value/total:0.00%}";
-        }
+        public static string ToPercent(this double value, double total) => $"{value/total:0.00%}";
 
         public static string GetFlagString(this int value, IEnumerable<string> flags)
         {
@@ -42,10 +33,7 @@ namespace SmaugCS.Common
         }
 
         #region IsSet
-        public static bool IsSet(this int value, int bit)
-        {
-            return (value & bit) > 0;
-        }
+        public static bool IsSet(this int value, int bit) => (value & bit) > 0;
 
         public static bool IsSet(this int value, Enum bit)
         {
@@ -54,10 +42,7 @@ namespace SmaugCS.Common
             return (value & (bitValue == 0 ? Convert.ToInt32(bit) : bitValue)) > 0;
         }
 
-        public static bool IsSet(this long value, long bit)
-        {
-            return (value & bit) > 0;
-        }
+        public static bool IsSet(this long value, long bit) => (value & bit) > 0;
 
         public static bool IsSet(this long value, Enum bit)
         {
@@ -98,10 +83,7 @@ namespace SmaugCS.Common
         #endregion
 
         #region RemoveBit
-        public static int RemoveBit(this int value, int bit)
-        {
-            return value &= ~bit;
-        }
+        public static int RemoveBit(this int value, int bit) => value &= ~bit;
 
         public static int RemoveBit(this int value, Enum bit)
         {
@@ -110,10 +92,7 @@ namespace SmaugCS.Common
             return value &= ~(bitValue == 0 ? Convert.ToInt32(bit) : bitValue); 
         }
 
-        public static long RemoveBit(this long value, long bit)
-        {
-            return value &= ~bit;
-        }
+        public static long RemoveBit(this long value, long bit) => value &= ~bit;
 
         public static long RemoveBit(this long value, Enum bit)
         {
@@ -124,43 +103,29 @@ namespace SmaugCS.Common
         #endregion
 
         #region ToggleBit
-        public static int ToggleBit(this int value, int bit)
-        {
-            return value ^= bit;
-        }
+        public static int ToggleBit(this int value, int bit) => value ^= bit;
 
         public static int ToggleBit(this int value, Enum bit)
         {
             if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
             int bitValue = bit.GetValue();
-            return value ^= (bitValue == 0 ? Convert.ToInt32(bit) : bitValue);  
+            return value ^= bitValue == 0 ? Convert.ToInt32(bit) : bitValue;  
         }
         #endregion
 
-        public static int Interpolate(this int level, int value00, int value32)
-        {
-            return value00 + level * (value32 - value00) / 32;
-        }
+        public static int Interpolate(this int level, int value00, int value32) => value00 + level * (value32 - value00) / 32;
 
         public static int GetLowestOfTwoNumbers(this int numberToCheck, int numberToCompareAgainst)
-        {
-            return numberToCheck < numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
-        }
+            => numberToCheck < numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
 
         public static long GetLowestOfTwoNumbers(this long numberToCheck, long numberToCompareAgainst)
-        {
-            return numberToCheck < numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
-        }
+            => numberToCheck < numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
 
         public static int GetHighestOfTwoNumbers(this int numberToCheck, int numberToCompareAgainst)
-        {
-            return numberToCheck > numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
-        }
+            => numberToCheck > numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
 
         public static long GetHighestOfTwoNumbers(this long numberToCheck, long numberToCompareAgainst)
-        {
-            return numberToCheck > numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
-        }
+            => numberToCheck > numberToCompareAgainst ? numberToCheck : numberToCompareAgainst;
 
         public static int GetNumberThatIsBetween(this int numberToCheck, int numberThatIsMinimumValue, int numberThatIsMaximumValue)
         {
@@ -174,9 +139,6 @@ namespace SmaugCS.Common
             return numberToCheck > numberThatIsMaximumValue ? numberThatIsMaximumValue : numberToCheck;
         }
 
-        public static int GetAbsoluteDifference(this int value1, int value2)
-        {
-            return Math.Abs(value1 - value2);
-        }
+        public static int GetAbsoluteDifference(this int value1, int value2) => Math.Abs(value1 - value2);
     }
 }

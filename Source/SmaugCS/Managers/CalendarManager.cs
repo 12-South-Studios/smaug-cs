@@ -7,6 +7,7 @@ using Realm.Library.Patterns.Repository;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
@@ -201,22 +202,22 @@ namespace SmaugCS.Managers
                 if (gameTime.Hour == 0 && day == 0)
                     StartSpringSeason();
             }
-            else if (day < (daysPerYear / 4) * 2)
+            else if (day < daysPerYear / 4 * 2)
             {
                 gameTime.Season = SeasonTypes.Summer;
-                if (gameTime.Hour == 0 && day == (daysPerYear / 4))
+                if (gameTime.Hour == 0 && day == daysPerYear / 4)
                     StartSummerSeason();
             }
-            else if (day < (daysPerYear / 4) * 3)
+            else if (day < daysPerYear / 4 * 3)
             {
                 gameTime.Season = SeasonTypes.Fall;
-                if (gameTime.Hour == 0 && day == (daysPerYear / 4) * 2)
+                if (gameTime.Hour == 0 && day == daysPerYear / 4 * 2)
                     StartFallSeason();
             }
             else if (day < daysPerYear)
             {
                 gameTime.Season = SeasonTypes.Winter;
-                if (gameTime.Hour == 0 && day == (daysPerYear / 4) * 3)
+                if (gameTime.Hour == 0 && day == daysPerYear / 4 * 3)
                     StartWinterSeason();
             }
             else

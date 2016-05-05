@@ -23,7 +23,7 @@ namespace SmaugCS.Spells
         {
             var victim = (CharacterInstance) vo;
 
-            var modLevel = level.GetLowestOfTwoNumbers(((DamageValues.Length * 2) / 2) - 1);
+            var modLevel = level.GetLowestOfTwoNumbers(DamageValues.Length * 2 / 2 - 1);
             modLevel = modLevel.GetHighestOfTwoNumbers(0);
 
             if (DamageValues.Length >= modLevel)

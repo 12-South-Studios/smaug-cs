@@ -10,12 +10,13 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Player;
-using SmaugCS.Interfaces;
 using SmaugCS.Logging;
+using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
 
@@ -95,7 +96,7 @@ namespace SmaugCS.Managers
             foreach (var pulseType in PulseTypeTable.Keys)
             {
                 var pulseTimer = GetPulseTimer(pulseType);
-                if ((pulseTimer - 1) <= 0)
+                if (pulseTimer - 1 <= 0)
                 {
                     var pulseValue = GameConstants.GetSystemValue<int>(pulseType.GetName());
                     PulseTypeTable[pulseType].Invoke(pulseValue);
@@ -192,9 +193,9 @@ namespace SmaugCS.Managers
             foreach (var area in _dbManager.AREAS.Values)
             {
                 var resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
-                if ((resetAge == -1 && area.Age == -1) || (area.Age + 1 < (resetAge - 1))) continue;
+                if ((resetAge == -1 && area.Age == -1) || (area.Age + 1 < resetAge - 1)) continue;
 
-                if (area.NumberOfPlayers > 0 && area.Age == (resetAge - 1))
+                if (area.NumberOfPlayers > 0 && area.Age == resetAge - 1)
                 {
                     var buffer = !string.IsNullOrEmpty(area.ResetMessage)
                         ? area.ResetMessage
@@ -218,7 +219,7 @@ namespace SmaugCS.Managers
                     _logger.Info("Updated Area {0}/{1}", area.ID, area.Name);
 
                     updated++;
-                    area.Age = (resetAge == -1) ? -1 : SmaugRandom.Between(0, resetAge/5);
+                    area.Age = resetAge == -1 ? -1 : SmaugRandom.Between(0, resetAge/5);
                 }
             }
 

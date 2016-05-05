@@ -2,7 +2,7 @@
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -199,7 +199,7 @@ namespace SmaugCS.Extensions.Character
 
         private static int GetVnumFromArgumentIfImmortal(CharacterInstance ch, string arg)
         {
-            return (ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber()) ? arg.ToInt32() : -1;
+            return ch.Trust >= LevelConstants.GetLevel(ImmortalTypes.Savior) && arg.IsNumber() ? arg.ToInt32() : -1;
         }
     }
 }

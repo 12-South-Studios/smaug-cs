@@ -22,21 +22,7 @@ namespace SmaugCS.Board
 
         public void Initialize()
         {
-            //try
-            //{
-            //    List<BoardData> boards = _smallDb.ExecuteQuery(_connection, SqlProcedureStatics.BoardGetAll, TranslateBoardData);
-
-            //    foreach (BoardData board in boards)
-            //    {
-            //        _boards.Add(board);
-            //        LoadNotesForBoard(board);
-            //    }
-            //    _logManager.Boot("Loaded {0} Boards", _boards.Count);
-            //}
-            //catch (DbException ex)
-            //{
-            //    _logManager.Error(ex);
-            //}
+            Repository.Load();
         }
     }
 }

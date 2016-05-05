@@ -25,14 +25,14 @@ namespace SmaugCS.Data.Instances
             if (obj.GetType() != GetType()) return false;
 
             var objToCheck = (Instance) obj;
-            return ((objToCheck.ID == ID) && (objToCheck.Name.Equals(Name)));
+            return (objToCheck.ID == ID) && objToCheck.Name.Equals(Name);
         }
 
         public override int GetHashCode()
         {
             var hash = 13;
-            hash = (hash * 7) + ID.GetHashCode();
-            hash = (hash * 7) + Name.GetHashCode();
+            hash = hash * 7 + ID.GetHashCode();
+            hash = hash * 7 + Name.GetHashCode();
             return hash;
         }
 
@@ -43,9 +43,6 @@ namespace SmaugCS.Data.Instances
             return a.ID == b.ID && a.Name.Equals(b.Name);
         }
 
-        public static bool operator !=(Instance a, Instance b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(Instance a, Instance b) => !(a == b);
     }
 }

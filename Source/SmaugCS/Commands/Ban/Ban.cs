@@ -9,7 +9,7 @@ using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands.Ban
 {
     public static class Ban
     {
@@ -31,7 +31,7 @@ namespace SmaugCS.Commands.Admin
                 "Time value is -1 (forever) or from 1 to 1000.")) return;
 
             // Convert the value from DAYS to SECONDS
-            var duration = tempTime > 0 ? (tempTime * 86400) : tempTime;
+            var duration = tempTime > 0 ? tempTime * 86400 : tempTime;
 
             if (CheckFunctions.CheckIfTrue(pch, pch.SubState == CharacterSubStates.Restricted,
                 "You cannot use this command from within another command.")) return;

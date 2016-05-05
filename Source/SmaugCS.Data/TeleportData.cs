@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Objects
+namespace SmaugCS.Data
 {
     public class TeleportData
     {

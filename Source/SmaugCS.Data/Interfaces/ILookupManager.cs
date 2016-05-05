@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SmaugCS.Constants.Enums;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data.Interfaces
 {
     public interface ILookupManager
     {
@@ -15,5 +16,9 @@ namespace SmaugCS.Data
         LookupBase<CommandData, DoFunction> CommandLookup { get; }
         LookupBase<SkillData, DoFunction> SkillLookup { get; }
         LookupBase<SkillData, SpellFunction> SpellLookup { get; }
+
+        Dictionary<string, List<StatModLookup>> StatModLookup { get; }
+
+        object GetStatMod(string category, int level, Enum name);
     }
 }

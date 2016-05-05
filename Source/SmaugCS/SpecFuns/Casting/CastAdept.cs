@@ -8,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
+using SmaugCS.Spells.Poison;
 using SmaugCS.Spells.Smaug;
 
 namespace SmaugCS.SpecFuns.Casting

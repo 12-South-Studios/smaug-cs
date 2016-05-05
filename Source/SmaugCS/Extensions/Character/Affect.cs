@@ -9,6 +9,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
+using SmaugCS.Managers;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Extensions.Character
@@ -175,7 +176,7 @@ namespace SmaugCS.Extensions.Character
                     ch.MentalState = (ch.MentalState + mod).GetNumberThatIsBetween(-100, 100);
                     break;
                 case (int)ApplyTypes.Emotion:
-                    ch.EmotionalState = (ch.EmotionalState).GetNumberThatIsBetween(-100, 100);
+                    ch.EmotionalState = ch.EmotionalState.GetNumberThatIsBetween(-100, 100);
                     break;
 
                 case (int)ApplyTypes.StripSN:
@@ -187,10 +188,10 @@ namespace SmaugCS.Extensions.Character
 
                 case (int)ApplyTypes.WearSpell:
                 case (int)ApplyTypes.RemoveSpell:
-                    if ((ch.CurrentRoom.Flags.IsSet(RoomFlags.NoMagic)
-                         || ch.Immunity.IsSet(ResistanceTypes.Magic))
-                        || (((int)affect.Location % Program.REVERSE_APPLY) == (int)ApplyTypes.WearSpell && !add)
-                        || (((int)affect.Location % Program.REVERSE_APPLY) == (int)ApplyTypes.RemoveSpell && add)
+                    if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoMagic)
+                        || ch.Immunity.IsSet(ResistanceTypes.Magic)
+                        || ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.WearSpell && !add)
+                        || ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RemoveSpell && add)
                         || handler.SavingCharacter == ch
                         || handler.LoadingCharacter == ch)
                         return;
@@ -224,8 +225,10 @@ namespace SmaugCS.Extensions.Character
             }
 
             var wield = ch.GetEquippedItem(WearLocations.Wield);
-            if (!ch.IsNpc() && handler.SavingCharacter != ch
-                && wield != null && wield.GetWeight() > LookupConstants.str_app[ch.GetCurrentStrength()].Wield)
+            var strWieldMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+                StrengthModTypes.Wield);
+
+            if (!ch.IsNpc() && handler.SavingCharacter != ch && wield != null && wield.GetWeight() > strWieldMod)
             {
                 if (Depth == 0)
                 {

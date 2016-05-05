@@ -54,14 +54,14 @@ namespace SmaugCS.Data
             if (obj.GetType() != GetType()) return false;
 
             var objToCheck = (ExitData)obj;
-            return ((objToCheck.ID == ID) && (objToCheck.Name.Equals(Name)));
+            return (objToCheck.ID == ID) && objToCheck.Name.Equals(Name);
         }
 
         public override int GetHashCode()
         {
             var hash = 13;
-            hash = (hash * 7) + ID.GetHashCode();
-            hash = (hash * 7) + Name.GetHashCode();
+            hash = hash * 7 + ID.GetHashCode();
+            hash = hash * 7 + Name.GetHashCode();
             return hash;
         }
 

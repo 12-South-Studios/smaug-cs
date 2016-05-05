@@ -21,11 +21,10 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_InvalidParent()
         {
             var repo = new ObjInstanceRepository();
-            repo.Create(null, null);
+            Assert.Throws<ArgumentNullException>(() => repo.Create(null, null));
         }
     }
 }

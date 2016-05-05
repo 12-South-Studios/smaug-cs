@@ -54,6 +54,7 @@ namespace SmaugCS.Constants.Enums
         Liquids,
         Mixtures,
         SpecFuns,
-        Lookups
+        Lookups,
+        StatModLookups
     }
 }

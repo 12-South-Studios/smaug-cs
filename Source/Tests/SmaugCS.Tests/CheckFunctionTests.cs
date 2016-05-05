@@ -58,7 +58,7 @@ namespace SmaugCS.Tests
         {
             var actor = new CharacterInstance(1, "TestNpc") {PermanentStrength = 25};
 
-            Assert.That(CheckFunctions.CheckIf(actor, () => (5 * 10) == 50, string.Empty), Is.True);
+            Assert.That(CheckFunctions.CheckIf(actor, () => 5 * 10 == 50, string.Empty), Is.True);
         }
 
         [Test]

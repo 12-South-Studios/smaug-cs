@@ -69,14 +69,14 @@ namespace SmaugCS
 
             // We're going to be nice and let nothing weird happen unless you're a tad messed up
             var drunk = 1.GetHighestOfTwoNumbers(ch.IsNpc() ? 0 : ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]);
-            if (Math.Abs(ms) + (drunk / 3) < 30)
+            if (Math.Abs(ms) + drunk / 3 < 30)
                 return false;
-            if ((SmaugRandom.D100() + (ms < 0 ? 15 : 5)) > Math.Abs(ms) / 2 + drunk / 4)
+            if (SmaugRandom.D100() + (ms < 0 ? 15 : 5) > Math.Abs(ms) / 2 + drunk / 4)
                 return false;
 
-            var output = (ms > 15)
+            var output = ms > 15
                 ? ObjectMessageLargeMap[SmaugRandom.Between(1.GetHighestOfTwoNumbers(ms / 5 - 15), (ms + 4) / 5)]
-                : ObjectMessageSmallMap[SmaugRandom.Between(1, ((Math.Abs(ms) / 2 + drunk).GetNumberThatIsBetween(1, 60)) / 10)];
+                : ObjectMessageSmallMap[SmaugRandom.Between(1, (Math.Abs(ms) / 2 + drunk).GetNumberThatIsBetween(1, 60) / 10)];
 
             ch.SendTo(output);
             return true;
@@ -208,7 +208,7 @@ namespace SmaugCS
             foreach (var c in ch.Name)
             {
                 var b = c%14;
-                var a = (c%1) + 1;
+                var a = c%1 + 1;
 
                 switch (b)
                 {
@@ -443,8 +443,8 @@ namespace SmaugCS
 
         public static bool chance_attrib(CharacterInstance ch, short percent, short attrib)
         {
-            return (SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - attrib + 13 +
-                    (ch.IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent);
+            return SmaugRandom.D100() - ch.GetCurrentLuck() + 13 - attrib + 13 +
+                   (ch.IsDevoted() ? ((PlayerInstance)ch).PlayerData.Favor / -500 : 0) <= percent;
         }
 
         public static void economize_mobgold(CharacterInstance mob)

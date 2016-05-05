@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SmaugCS.Common;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
@@ -55,7 +56,7 @@ namespace SmaugCS.Extensions.Player
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
 
-            comm.act(ATTypes.AT_HUNGRY, attrib.Messages.ToList()[(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
+            comm.act(ATTypes.AT_HUNGRY, attrib.Messages.ToList()[conditionValue * 2 + 1], ch, null, null, ToTypes.Room);
             if (conditionValue == 0)
             {
                 if (!ch.IsPKill() || SmaugRandom.Bits(1) == 0)
@@ -83,7 +84,7 @@ namespace SmaugCS.Extensions.Player
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
 
-            comm.act(ATTypes.AT_THIRSTY, attrib.Messages.ToList()[(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
+            comm.act(ATTypes.AT_THIRSTY, attrib.Messages.ToList()[conditionValue * 2 + 1], ch, null, null, ToTypes.Room);
             if (conditionValue == 0)
             {
                 ch.WorsenMentalState(ch.IsPKill() ? 1 : 2);
@@ -107,7 +108,7 @@ namespace SmaugCS.Extensions.Player
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
             if (conditionValue >= 2) return retcode;
 
-            comm.act(ATTypes.AT_HUNGRY, attrib.Messages.ToList()[(conditionValue * 2) + 1], ch, null, null, ToTypes.Room);
+            comm.act(ATTypes.AT_HUNGRY, attrib.Messages.ToList()[conditionValue * 2 + 1], ch, null, null, ToTypes.Room);
             if (conditionValue == 0)
             {
                 ch.WorsenMentalState(2);

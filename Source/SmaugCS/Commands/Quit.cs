@@ -39,7 +39,7 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIf(ch, args =>
             {
                 var actor = (CharacterInstance) args[0];
-                return actor.IsPKill() && actor.wimpy > (actor.MaximumHealth/2.25f);
+                return actor.IsPKill() && actor.wimpy > actor.MaximumHealth/2.25f;
             }, "Your wimpy has been adjusted to the maximum level for deadlies.", new List<object> {ch}))
                 Wimpy.do_wimpy(ch, "max");
 

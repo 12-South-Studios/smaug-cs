@@ -12,14 +12,11 @@ namespace SmaugCS.Common
             int bits = Bits(2);
             checked
             {
-                return 1.GetHighestOfTwoNumbers((bits == 0) ? number - 1 : (bits == 3) ? number + 1 : number);
+                return 1.GetHighestOfTwoNumbers(bits == 0 ? number - 1 : bits == 3 ? number + 1 : number);
             }
         }
 
-        public static int Bits(int width)
-        {
-            return RandomMM() & ((1 << width) - 1);
-        }
+        public static int Bits(int width) => RandomMM() & ((1 << width) - 1);
 
         public static int RandomMM()
         {
@@ -30,50 +27,23 @@ namespace SmaugCS.Common
         #endregion
 
         #region Dice
-        public static int Between(int from, int to)
-        {
-            return Realm.Library.Common.Random.Between(from, to);
-        }
+        public static int Between(int from, int to) => Realm.Library.Common.Random.Between(from, to);
 
-        public static int D4(int times = 1)
-        {
-            return Realm.Library.Common.Random.D4(times);
-        }
+        public static int D4(int times = 1) => Realm.Library.Common.Random.D4(times);
 
-        public static int D6(int times = 1)
-        {
-            return Realm.Library.Common.Random.D6(times);
-        }
+        public static int D6(int times = 1) => Realm.Library.Common.Random.D6(times);
 
-        public static int D8(int times = 1)
-        {
-            return Realm.Library.Common.Random.D8(times);
-        }
+        public static int D8(int times = 1) => Realm.Library.Common.Random.D8(times);
 
-        public static int D10(int times = 1)
-        {
-            return Realm.Library.Common.Random.D10(times);
-        }
+        public static int D10(int times = 1) => Realm.Library.Common.Random.D10(times);
 
-        public static int D12(int times = 1)
-        {
-            return Realm.Library.Common.Random.D12(times);
-        }
+        public static int D12(int times = 1) => Realm.Library.Common.Random.D12(times);
 
-        public static int D20(int times = 1)
-        {
-            return Realm.Library.Common.Random.D20(times);
-        }
+        public static int D20(int times = 1) => Realm.Library.Common.Random.D20(times);
 
-        public static int D100(int times = 1)
-        {
-            return Realm.Library.Common.Random.D100(times);
-        }
+        public static int D100(int times = 1) => Realm.Library.Common.Random.D100(times);
 
-        public static int Roll(int size, int times)
-        {
-            return Realm.Library.Common.Random.Roll(size, times);
-        }
+        public static int Roll(int size, int times) => Realm.Library.Common.Random.Roll(size, times);
         #endregion
     }
 }

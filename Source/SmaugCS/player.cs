@@ -83,7 +83,7 @@ namespace SmaugCS
                 { (int)ApplyTypes.SectorType, " SECTOR"},
                 { (int)ApplyTypes.RoomLight, " LIGHT "},
                 { (int)ApplyTypes.TeleportVnum, " TELEVN"},
-                { (int)ApplyTypes.TeleportDelay, " TELEDY"},
+                { (int)ApplyTypes.TeleportDelay, " TELEDY"}
             };
 
 

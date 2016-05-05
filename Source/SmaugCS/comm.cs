@@ -115,18 +115,18 @@ namespace SmaugCS
                             break;
                         case "$n":
                             if (ch.CurrentMorph == null)
-                                buffer = (to != null ? Macros.PERS(ch, to) : Macros.NAME(ch));
+                                buffer = to != null ? Macros.PERS(ch, to) : Macros.NAME(ch);
                             else if (!flags.IsSet(Program.STRING_IMM))
-                                buffer = (to != null ? Macros.MORPHERS(ch, to) : MORPHNAME(ch));
+                                buffer = to != null ? Macros.MORPHERS(ch, to) : MORPHNAME(ch);
                             else
                                 buffer = $"(MORPH) {(to != null ? Macros.PERS(ch, to) : Macros.NAME(ch))}";
                             break;
                         case "$N":
                             vch = arg2.CastAs<CharacterInstance>();
                             if (vch.CurrentMorph == null)
-                                buffer = (to != null ? Macros.PERS(vch, to) : Macros.NAME(vch));
+                                buffer = to != null ? Macros.PERS(vch, to) : Macros.NAME(vch);
                             else if (!flags.IsSet(Program.STRING_IMM))
-                                buffer = (to != null ? Macros.MORPHERS(vch, to) : MORPHNAME(vch));
+                                buffer = to != null ? Macros.MORPHERS(vch, to) : MORPHNAME(vch);
                             else
                                 buffer = $"(MORPH) {(to != null ? Macros.PERS(vch, to) : Macros.NAME(vch))}";
                             break;
@@ -322,12 +322,10 @@ namespace SmaugCS
                     continue;
                 if (type == ToTypes.CanSee &&
                     (to == ch ||
-                     (!to.IsImmortal() && !ch.IsNpc() &&
-                      (ch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
-                       to.Trust <
-                       (playerInstance != null
-                           ? (playerInstance.PlayerData?.WizardInvisible ?? 0)
-                           : 0)))))
+                     (!to.IsImmortal() && !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.WizardInvisibility) && to.Trust <
+                      (playerInstance != null
+                          ? (playerInstance.PlayerData?.WizardInvisible ?? 0)
+                          : 0))))
                     continue;
 
                 txt = act_string(format, to, ch, arg1, arg2, to.IsImmortal() ? Program.STRING_IMM : Program.STRING_NONE);
@@ -372,10 +370,10 @@ namespace SmaugCS
         public static void display_prompt(DescriptorData d)
         {
             var ch = d.Character;
-            var och = (d.Original ?? d.Character);
+            var och = d.Original ?? d.Character;
             var buffer = string.Empty;
 
-            var ansi = (!och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi));
+            var ansi = !och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi);
 
             const string helpstart = "<Type HELP START>";
 

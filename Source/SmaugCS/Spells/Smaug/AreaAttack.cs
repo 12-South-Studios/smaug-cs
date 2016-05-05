@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SmaugCS.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -146,7 +146,7 @@ namespace SmaugCS.Spells.Smaug
 
         private static int GetThreeQuartersDamage(int damage)
         {
-            return (damage * 3) / 4;
+            return damage * 3 / 4;
         }
     }
 }

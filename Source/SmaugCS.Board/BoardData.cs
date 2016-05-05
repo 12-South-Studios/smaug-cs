@@ -28,7 +28,7 @@ namespace SmaugCS.Board
         public long BoardObjectId { get; set; }
         public bool Saved { get; set; }
 
-        public ReadOnlyCollection<NoteData> Notes { get; private set; }
+        public ReadOnlyCollection<NoteData> Notes { get; }
 
         public BoardData(int id, BoardTypes type)
         {
@@ -38,10 +38,7 @@ namespace SmaugCS.Board
             Notes = new ReadOnlyCollection<NoteData>(new List<NoteData>());
         }
 
-        public void AddNotes(IEnumerable<NoteData> notes)
-        {
-            Notes.ToList().AddRange(notes);
-        }
+        public void AddNotes(IEnumerable<NoteData> notes) => Notes.ToList().AddRange(notes);
        
         public void RemoveNote(NoteData note)
         {

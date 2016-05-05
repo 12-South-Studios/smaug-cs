@@ -10,13 +10,13 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Auctions",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         SellerName = c.String(maxLength: 100),
                         BuyerName = c.String(maxLength: 100),
-                        SoldOn = c.DateTime(nullable: false),
-                        SoldFor = c.Int(nullable: false),
-                        ItemSoldId = c.Long(nullable: false),
+                        SoldOn = c.DateTime(false),
+                        SoldFor = c.Int(false),
+                        ItemSoldId = c.Long(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -24,19 +24,19 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Bans",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        BanType = c.Int(nullable: false),
+                        BanType = c.Int(false),
                         Name = c.String(maxLength: 100),
                         Note = c.String(maxLength: 1024),
                         BannedBy = c.String(maxLength: 25),
-                        BannedOn = c.DateTime(nullable: false),
-                        Duration = c.Int(nullable: false),
-                        Level = c.Int(nullable: false),
-                        IsWarning = c.Boolean(nullable: false),
-                        IsPrefix = c.Boolean(nullable: false),
-                        IsSuffix = c.Boolean(nullable: false),
-                        IsActive = c.Boolean(nullable: false),
+                        BannedOn = c.DateTime(false),
+                        Duration = c.Int(false),
+                        Level = c.Int(false),
+                        IsWarning = c.Boolean(false),
+                        IsPrefix = c.Boolean(false),
+                        IsSuffix = c.Boolean(false),
+                        IsActive = c.Boolean(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -44,9 +44,9 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Boards",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        BoardType = c.Int(nullable: false),
+                        BoardType = c.Int(false),
                         Name = c.String(),
                         ReadGroup = c.String(),
                         PostGroup = c.String(),
@@ -59,11 +59,11 @@ namespace SmaugCS.DAL.Migrations
                         OListMessage = c.String(),
                         PostMessage = c.String(),
                         OReadMessage = c.String(),
-                        MinimumReadLevel = c.Int(nullable: false),
-                        MinimumPostLevel = c.Int(nullable: false),
-                        MinimumRemoveLevel = c.Int(nullable: false),
-                        MaximumPosts = c.Int(nullable: false),
-                        BoardObjectId = c.Long(nullable: false),
+                        MinimumReadLevel = c.Int(false),
+                        MinimumPostLevel = c.Int(false),
+                        MinimumRemoveLevel = c.Int(false),
+                        MaximumPosts = c.Int(false),
+                        BoardObjectId = c.Long(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -71,15 +71,15 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Notes",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         Sender = c.String(),
-                        DateSent = c.DateTime(nullable: false),
+                        DateSent = c.DateTime(false),
                         RecipientList = c.String(),
                         Subject = c.String(),
-                        IsPoll = c.Boolean(nullable: false),
+                        IsPoll = c.Boolean(false),
                         Text = c.String(),
-                        Board_Id = c.Int(),
+                        Board_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Boards", t => t.Board_Id)
@@ -89,24 +89,24 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Characters",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         Name = c.String(),
                         Password = c.String(),
                         Description = c.String(),
-                        Gender = c.Int(nullable: false),
-                        School = c.Int(nullable: false),
-                        Race = c.Int(nullable: false),
-                        DeletedOnUtc = c.DateTime(nullable: false),
-                        Age = c.Int(nullable: false),
-                        Level = c.Int(nullable: false),
-                        RoomId = c.Int(nullable: false),
+                        Gender = c.Int(false),
+                        School = c.Int(false),
+                        Race = c.Int(false),
+                        DeletedOnUtc = c.DateTime(false),
+                        Age = c.Int(false),
+                        Level = c.Int(false),
+                        RoomId = c.Int(false),
                         AuthedBy = c.String(),
-                        CouncilId = c.Long(nullable: false),
-                        DeityId = c.Int(nullable: false),
-                        ClanId = c.Long(nullable: false),
+                        CouncilId = c.Long(false),
+                        DeityId = c.Int(false),
+                        ClanId = c.Long(false),
                         ImmortalData_Id = c.Int(),
-                        Pet_Id = c.Int(),
+                        Pet_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.CharacterImmortals", t => t.ImmortalData_Id)
@@ -118,21 +118,21 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterActivities",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        PvPKills = c.Int(nullable: false),
-                        PvPDeaths = c.Int(nullable: false),
-                        PvPTimer = c.Int(nullable: false),
-                        PvEKills = c.Int(nullable: false),
-                        PvEDeaths = c.Int(nullable: false),
-                        IllegalPvP = c.Int(nullable: false),
-                        PlayedTime = c.Long(nullable: false),
-                        IdleTime = c.Long(nullable: false),
-                        AuctionBidsPlaced = c.Int(nullable: false),
-                        AuctionsWon = c.Int(nullable: false),
-                        AuctionsStarted = c.Int(nullable: false),
-                        CoinEarned = c.Long(nullable: false),
-                        Character_Id = c.Int(),
+                        PvPKills = c.Int(false),
+                        PvPDeaths = c.Int(false),
+                        PvPTimer = c.Int(false),
+                        PvEKills = c.Int(false),
+                        PvEDeaths = c.Int(false),
+                        IllegalPvP = c.Int(false),
+                        PlayedTime = c.Long(false),
+                        IdleTime = c.Long(false),
+                        AuctionBidsPlaced = c.Int(false),
+                        AuctionsWon = c.Int(false),
+                        AuctionsStarted = c.Int(false),
+                        CoinEarned = c.Long(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -142,14 +142,14 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterAffects",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         AffectType = c.String(),
-                        Duration = c.Int(nullable: false),
-                        Modifier = c.Int(nullable: false),
-                        Location = c.Int(nullable: false),
-                        Flags = c.Int(nullable: false),
-                        Character_Id = c.Int(),
+                        Duration = c.Int(false),
+                        Modifier = c.Int(false),
+                        Location = c.Int(false),
+                        Flags = c.Int(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -159,11 +159,11 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterFriends",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         FriendName = c.String(),
-                        AddedOn = c.DateTime(nullable: false),
-                        Character_Id = c.Int(),
+                        AddedOn = c.DateTime(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -173,11 +173,11 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterIgnored",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         IgnoredName = c.String(),
-                        AddedOn = c.DateTime(nullable: false),
-                        Character_Id = c.Int(),
+                        AddedOn = c.DateTime(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -187,13 +187,13 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterImmortals",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         BamfinMessage = c.String(),
                         BamfoutMessage = c.String(),
-                        Trust = c.Int(nullable: false),
-                        WizInvis = c.Int(nullable: false),
-                        ImmortalRank = c.String(),
+                        Trust = c.Int(false),
+                        WizInvis = c.Int(false),
+                        ImmortalRank = c.String()
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -201,24 +201,24 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterItems",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        ItemId = c.Long(nullable: false),
-                        Count = c.Int(nullable: false),
-                        Location = c.Int(nullable: false),
-                        Flags = c.Int(nullable: false),
-                        ContainedInId = c.Long(nullable: false),
-                        Value1 = c.Int(nullable: false),
-                        Value2 = c.Int(nullable: false),
-                        Value3 = c.Int(nullable: false),
-                        Value4 = c.Int(nullable: false),
-                        Value5 = c.Int(nullable: false),
-                        Value6 = c.Int(nullable: false),
+                        ItemId = c.Long(false),
+                        Count = c.Int(false),
+                        Location = c.Int(false),
+                        Flags = c.Int(false),
+                        ContainedInId = c.Long(false),
+                        Value1 = c.Int(false),
+                        Value2 = c.Int(false),
+                        Value3 = c.Int(false),
+                        Value4 = c.Int(false),
+                        Value5 = c.Int(false),
+                        Value6 = c.Int(false),
                         OverrideName = c.String(),
                         OverrideShortDescription = c.String(),
                         OverrideLongDescription = c.String(),
                         Character_Id = c.Int(),
-                        CharacterPet_Id = c.Int(),
+                        CharacterPet_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -230,10 +230,10 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterLanguages",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         LanguageName = c.String(),
-                        Character_Id = c.Int(),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -243,12 +243,12 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterLogins",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        LoginDate = c.DateTime(nullable: false),
+                        LoginDate = c.DateTime(false),
                         IpAddress = c.String(),
-                        SessionId = c.Int(nullable: false),
-                        Character_Id = c.Int(),
+                        SessionId = c.Int(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Sessions", t => t.SessionId)
@@ -260,10 +260,10 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Sessions",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         IpAddress = c.String(),
-                        Port = c.Int(nullable: false),
+                        Port = c.Int(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -271,15 +271,15 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterPets",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        MonsterId = c.Int(nullable: false),
-                        RoomId = c.Int(nullable: false),
+                        MonsterId = c.Int(false),
+                        RoomId = c.Int(false),
                         OverrideName = c.String(),
                         OverrideShortDescription = c.String(),
                         OverrideLongDescription = c.String(),
-                        Position = c.Int(nullable: false),
-                        Flags = c.Int(nullable: false),
+                        Position = c.Int(false),
+                        Flags = c.Int(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -287,11 +287,11 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterPvEHistories",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        MonsterId = c.Int(nullable: false),
-                        TimesKilled = c.Int(nullable: false),
-                        Character_Id = c.Int(),
+                        MonsterId = c.Int(false),
+                        TimesKilled = c.Int(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -301,12 +301,12 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterSkills",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        SkillType = c.Int(nullable: false),
+                        SkillType = c.Int(false),
                         SkillName = c.String(),
-                        LearnedValue = c.Int(nullable: false),
-                        Character_Id = c.Int(),
+                        LearnedValue = c.Int(false),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -316,12 +316,12 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.CharacterStatistics",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        Statistic = c.Int(nullable: false),
+                        Statistic = c.Int(false),
                         IntValue = c.Int(),
                         StringValue = c.String(),
-                        Character_Id = c.Int(),
+                        Character_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.Character_Id)
@@ -331,12 +331,12 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.GameStates",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        GameYear = c.Int(nullable: false),
-                        GameMonth = c.Int(nullable: false),
-                        GameDay = c.Int(nullable: false),
-                        GameHour = c.Int(nullable: false),
+                        GameYear = c.Int(false),
+                        GameMonth = c.Int(false),
+                        GameDay = c.Int(false),
+                        GameHour = c.Int(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -344,11 +344,11 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Logs",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        LogType = c.Int(nullable: false),
+                        LogType = c.Int(false),
                         Text = c.String(),
-                        SessionId = c.Int(nullable: false),
+                        SessionId = c.Int(false)
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Sessions", t => t.SessionId)
@@ -358,14 +358,14 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.News",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         Name = c.String(),
                         Header = c.String(),
-                        Level = c.Int(nullable: false),
-                        CreatedOn = c.DateTime(nullable: false),
+                        Level = c.Int(false),
+                        CreatedOn = c.DateTime(false),
                         CreatedBy = c.String(),
-                        IsActive = c.Boolean(nullable: false),
+                        IsActive = c.Boolean(false)
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -373,15 +373,15 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.NewsEntries",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
                         Title = c.String(),
                         Name = c.String(),
                         Text = c.String(),
-                        PostedOn = c.DateTime(nullable: false),
+                        PostedOn = c.DateTime(false),
                         PostedBy = c.String(),
-                        IsActive = c.Boolean(nullable: false),
-                        News_Id = c.Int(),
+                        IsActive = c.Boolean(false),
+                        News_Id = c.Int()
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.News", t => t.News_Id)
@@ -391,13 +391,13 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.Organizations",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        OrganizationType = c.Int(nullable: false),
+                        OrganizationType = c.Int(false),
                         Name = c.String(),
                         Description = c.String(),
                         Leader = c.String(),
-                        BoardId = c.Int(nullable: false),
+                        BoardId = c.Int(false)
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Boards", t => t.BoardId)
@@ -407,20 +407,20 @@ namespace SmaugCS.DAL.Migrations
                 "dbo.WeatherCells",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         CreateDateUtc = c.DateTime(),
-                        CellXCoordinate = c.Int(nullable: false),
-                        CellYCoordinate = c.Int(nullable: false),
-                        ClimateType = c.Int(nullable: false),
-                        HemisphereType = c.Int(nullable: false),
-                        CloudCover = c.Int(nullable: false),
-                        Energy = c.Int(nullable: false),
-                        Humidity = c.Int(nullable: false),
-                        Precipitation = c.Int(nullable: false),
-                        Pressure = c.Int(nullable: false),
-                        Temperature = c.Int(nullable: false),
-                        WindSpeedX = c.Int(nullable: false),
-                        WindSpeedY = c.Int(nullable: false),
+                        CellXCoordinate = c.Int(false),
+                        CellYCoordinate = c.Int(false),
+                        ClimateType = c.Int(false),
+                        HemisphereType = c.Int(false),
+                        CloudCover = c.Int(false),
+                        Energy = c.Int(false),
+                        Humidity = c.Int(false),
+                        Precipitation = c.Int(false),
+                        Pressure = c.Int(false),
+                        Temperature = c.Int(false),
+                        WindSpeedX = c.Int(false),
+                        WindSpeedY = c.Int(false)
                     })
                 .PrimaryKey(t => t.Id);
             

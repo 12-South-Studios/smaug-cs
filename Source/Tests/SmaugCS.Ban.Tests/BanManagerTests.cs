@@ -11,7 +11,7 @@ namespace SmaugCS.Ban.Tests
     [TestFixture]
     public class BanManagerTests
     {
-        private static IBanManager _banManager = BanManager.Instance;
+        private static IBanManager _banManager;
 
         private static BanData GetBan()
         {
@@ -28,7 +28,7 @@ namespace SmaugCS.Ban.Tests
         }
 
         [SetUp]
-        private void OnSetup()
+        public void OnSetup()
         {
             var mockLogger = new Mock<ILogManager>();
             mockLogger.Setup(x => x.Error(It.IsAny<Exception>()));
@@ -41,19 +41,26 @@ namespace SmaugCS.Ban.Tests
         }
 
         [TearDown]
-        private void OnTeardown()
+        public void OnTeardown()
         {
             _banManager.ClearBans();
             _banManager = null;
         }
 
-        //[Test]
-        //public void AddBan_Empty_Test()
-        //{
-        //    var ban = GetBan();
+        [Test]
+        public void AddBan_Empty_Test()
+        {
+            var ban = GetBan();
 
-        //    Assert.That(_banManager.AddBan(ban), Is.True);
-        //}
+            try
+            {
+                _banManager.Repository.Add(ban);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message + " was thrown!");
+            }
+        }
 
         //[Test]
         //public void AddBan_NotEmpty_Test()

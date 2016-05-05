@@ -16,9 +16,9 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Rip ON or OFF?")) return;
 
             if (firstArg.EqualsIgnoreCase("on"))
-                EnableRip(((PlayerInstance)ch));
+                EnableRip((PlayerInstance)ch);
             else if (firstArg.EqualsIgnoreCase("off"))
-                DisableRip(((PlayerInstance)ch));
+                DisableRip((PlayerInstance)ch);
             else
                 ch.SendTo("Huh?!?");
         }

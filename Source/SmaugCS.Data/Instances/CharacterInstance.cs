@@ -34,7 +34,7 @@ namespace SmaugCS.Data.Instances
         public object DestinationBuffer { get; set; }
 
         
-        public IEnumerable<TimerData> Timers { get; set; }
+        public IEnumerable<TimerData> Timers { get; private set; }
         public CharacterMorph CurrentMorph { get; set; }
         public string LongDescription { get; set; }
 
@@ -136,30 +136,15 @@ namespace SmaugCS.Data.Instances
         #endregion
 
         #region IVerifiable
-        public bool IsNpc()
-        {
-            return Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
-        }
+        public bool IsNpc() => Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
 
-        public bool IsAffected(AffectedByTypes affectedBy)
-        {
-            return AffectedBy.IsSet(affectedBy);
-        }
+        public bool IsAffected(AffectedByTypes affectedBy) => AffectedBy.IsSet(affectedBy);
 
-        public bool IsFloating()
-        {
-            return IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
-        }
+        public bool IsFloating() => IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
 
-        public virtual bool IsImmortal(int level = 51)
-        {
-            return false;
-        }
+        public virtual bool IsImmortal(int level = 51) =>false;
 
-        public virtual bool IsHero(int hero = 50)
-        {
-            return false;
-        }
+        public virtual bool IsHero(int hero = 50) => false;
         #endregion
     }
 }

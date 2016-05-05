@@ -20,15 +20,9 @@ namespace SmaugCS.Data.Templates
 
         #region Implementation of IHasMudProgs
 
-        public bool HasProg(int prog)
-        {
-            return MudProgs.Any(x => (int)x.Type == prog);
-        }
+        public bool HasProg(int prog) => MudProgs.Any(x => (int)x.Type == prog);
 
-        public bool HasProg(MudProgTypes type)
-        {
-            return HasProg((int)type);
-        }
+        public bool HasProg(MudProgTypes type) => HasProg((int)type);
 
         public void AddMudProg(MudProgData mprog)
         {
@@ -44,14 +38,14 @@ namespace SmaugCS.Data.Templates
             if (obj.GetType() != GetType()) return false;
 
             var objToCheck = (Template)obj;
-            return ((objToCheck.ID == ID) && (objToCheck.Name.Equals(Name)));
+            return (objToCheck.ID == ID) && objToCheck.Name.Equals(Name);
         }
 
         public override int GetHashCode()
         {
             var hash = 13;
-            hash = (hash * 7) + ID.GetHashCode();
-            hash = (hash * 7) + Name.GetHashCode();
+            hash = hash * 7 + ID.GetHashCode();
+            hash = hash * 7 + Name.GetHashCode();
             return hash;
         }
 
@@ -62,9 +56,6 @@ namespace SmaugCS.Data.Templates
             return a.ID == b.ID && a.Name.Equals(b.Name);
         }
 
-        public static bool operator !=(Template a, Template b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(Template a, Template b) => !(a == b);
     }
 }

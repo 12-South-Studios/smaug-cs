@@ -1,4 +1,5 @@
 ﻿using SmaugCS.Data.Templates;
+
 // ReSharper disable CheckNamespace
 
 

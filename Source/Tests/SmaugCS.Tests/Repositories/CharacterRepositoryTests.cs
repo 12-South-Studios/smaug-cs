@@ -21,11 +21,11 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_InvalidParent()
         {
             var repo = new CharacterRepository();
-            repo.Create(null);
+            Assert.Throws<ArgumentNullException>(() => repo.Create(null),
+                "Unit Test expected an ArgumentNullException to be thrown!");
         }
     }
 }

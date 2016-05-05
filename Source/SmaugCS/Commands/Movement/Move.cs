@@ -30,7 +30,7 @@ namespace SmaugCS.Commands.Movement
                 if (pch.PlayerData.Nuisance != null && pch.PlayerData.Nuisance.Flags > 8
                     && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag
-                    && SmaugRandom.D100() > (pch.PlayerData.Nuisance.Flags*pch.PlayerData.Nuisance.Power))
+                    && SmaugRandom.D100() > pch.PlayerData.Nuisance.Flags*pch.PlayerData.Nuisance.Power)
                     nuisance = true;
             }
 

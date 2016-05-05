@@ -46,10 +46,10 @@ namespace SmaugCS.Extensions.Player
 
         public static int CalculateAge(this PlayerInstance ch)
         {
-            var numDays = ((GameManager.Instance.GameTime.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth")) +
+            var numDays = (GameManager.Instance.GameTime.Month + 1) * GameConstants.GetSystemValue<int>("DaysPerMonth") +
                            GameManager.Instance.GameTime.Day;
-            var chDays = ((ch.PlayerData.Month + 1) *
-                           GameConstants.GetSystemValue<int>("DaysPerMonth")) + ch.PlayerData.Day;
+            var chDays = (ch.PlayerData.Month + 1) *
+                         GameConstants.GetSystemValue<int>("DaysPerMonth") + ch.PlayerData.Day;
             var age = GameManager.Instance.GameTime.Year - ch.PlayerData.Year;
 
             if (chDays - numDays > 0)

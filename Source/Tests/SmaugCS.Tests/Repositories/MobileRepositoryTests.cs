@@ -284,50 +284,45 @@ namespace SmaugCS.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Create_ThrowsException()
         {
             var repo = new MobileRepository();
 
-            repo.Create(1, "");
+            Assert.Throws<ArgumentException>(() => repo.Create(1, ""));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new MobileRepository();
 
-            repo.Create(0, "Test");
+            Assert.Throws<ArgumentException>(() => repo.Create(0, "Test"));
         }
 
         [Test]
-        [ExpectedException(typeof(DuplicateIndexException))]
         public void Create_DuplicateVnum()
         {
             var repo = new MobileRepository();
 
             repo.Create(1, "Test");
-            repo.Create(1, "Test2");
+            Assert.Throws<DuplicateIndexException>(() => repo.Create(1, "Test2"));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void Create_Clone_InvalidCloneVnum()
         {
             var repo = new MobileRepository();
 
-            repo.Create(1, 1, "Test");
+            Assert.Throws<ArgumentException>(() => repo.Create(1, 1, "Test"));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidDataException))]
         public void Create_Clone_MissingCloneMob()
         {
             var repo = new MobileRepository();
 
             repo.Create(1, "Test");
-            repo.Create(2, 5, "Test2");
+            Assert.Throws<InvalidDataException>(() => repo.Create(2, 5, "Test2"));
         }
     }
 }

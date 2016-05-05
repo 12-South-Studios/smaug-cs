@@ -7,6 +7,7 @@ using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Communication;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -35,7 +36,7 @@ namespace SmaugCS
         private static string GetDecorateRoom_PreAndPost_1(int iRand, int nRand, SectorTypes sector, int x)
         {
             string pre, post;
-            var result = SmaugRandom.Between(1, 2 * (iRand == (nRand - 1) ? 1 : 2));
+            var result = SmaugRandom.Between(1, 2 * (iRand == nRand - 1 ? 1 : 2));
             if (result <= 2)
             {
                 post = ".";
@@ -79,11 +80,9 @@ namespace SmaugCS
             var buf2 = string.Empty;
             var previous = new int[8];
 
-            //room.Name = "In a virtual room";
             room.Description = "You're on a pathway.\r\n";
 
             var sector = room.SectorType;
-            //room.Name = GameConstants.SectorNames[(int)sector].Key;
             var nRand = SmaugRandom.Between(1, 8.GetLowestOfTwoNumbers(LookupConstants.SentTotals[(int)sector]));
 
             for (var iRand = 0; iRand < nRand; iRand++)
@@ -107,7 +106,7 @@ namespace SmaugCS
                     var len = buf.Length;
                     if (len == 0)
                         buf2 = GetDecorateRoom_PreAndPost_1(iRand, nRand, sector, x);
-                    else if (iRand != (nRand - 1))
+                    else if (iRand != nRand - 1)
                         buf2 = buf.EndsWith(".")
                             ? GetDecorateRoom_PreAndPost_2(sector, x)
                             : GetDecorateRoom_PreAndPost_3(sector, x);
@@ -199,15 +198,14 @@ namespace SmaugCS
             var xit = newRoom.GetExit(vdir);
             if (!found || xit == null)
             {
-                //xit = db.make_exit(newRoom, exit.GetDestination(), vdir);
+                xit = db.make_exit(newRoom, exit.GetDestination(), vdir);
                 xit.Key = -1;
                 xit.Distance = (int)distance;
             }
 
             if (!found)
             {
-                //ExitData bxit = db.make_exit(newRoom, backroom, GameConstants.rev_dir[vdir]);
-                ExitData bxit = null;
+                ExitData bxit = db.make_exit(newRoom, backroom, LookupConstants.rev_dir[vdir]);
                 bxit.Key = -1;
                 if ((serial & 65536) != exit.vnum)
                     bxit.Distance = (int)roomnum;
@@ -242,7 +240,6 @@ namespace SmaugCS
                ch.SendTo("Oopsie... you're dead!");
 
                var buffer = $"{ch.Name} hit a DEATH TRAP in room {ch.CurrentRoom.ID}!";
-                //log_string(buffer);
                 ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
                 ch.Extract(false);
             }
@@ -299,16 +296,16 @@ namespace SmaugCS
                 return ReturnTypes.None;
 
             var pull = xit.Pull;
-            var pullfact = (20 - (Math.Abs(pull) / 5)).GetNumberThatIsBetween(1, 20);
+            var pullfact = (20 - Math.Abs(pull) / 5).GetNumberThatIsBetween(1, 20);
 
-            if ((pulse % pullfact) != 0)
+            if (pulse % pullfact != 0)
             {
                 foreach (var exit in ch.CurrentRoom.Exits
                     .Where(exit => exit.Pull > 0 && exit.Destination != null))
                 {
                     pull = exit.Pull;
-                    pullfact = (20 - (Math.Abs(pull) / 5)).GetNumberThatIsBetween(1, 20);
-                    if ((pulse % pullfact) == 0)
+                    pullfact = (20 - Math.Abs(pull) / 5).GetNumberThatIsBetween(1, 20);
+                    if (pulse % pullfact == 0)
                         break;
                 }
             }
@@ -448,7 +445,7 @@ namespace SmaugCS
 
                 var resistance = obj.GetWeight();
                 if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
-                    resistance = (resistance * 6) / 5;
+                    resistance = resistance * 6 / 5;
 
                 switch (obj.ItemType)
                 {
@@ -463,7 +460,7 @@ namespace SmaugCS
                         break;
                     case ItemTypes.Pen:
                     case ItemTypes.Wand:
-                        resistance = (resistance * 5) / 6;
+                        resistance = resistance * 5 / 6;
                         break;
                     case ItemTypes.PlayerCorpse:
                     case ItemTypes.NpcCorpse:
@@ -472,7 +469,7 @@ namespace SmaugCS
                         break;
                 }
 
-                if ((Math.Abs(pull) * 10) > resistance)
+                if (Math.Abs(pull) * 10 > resistance)
                 {
                     if (!string.IsNullOrEmpty(msg.ObjMsg)
                         && ch.CurrentRoom.Persons.Any())

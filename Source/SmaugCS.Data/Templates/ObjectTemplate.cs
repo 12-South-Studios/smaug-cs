@@ -5,13 +5,14 @@ using System.Dynamic;
 using System.Linq;
 using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Data.Templates
 {
     public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
     {
-        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; private set; }
-        public ICollection<AffectData> Affects { get; private set; }
+        public ICollection<ExtraDescriptionData> ExtraDescriptions { get; }
+        public ICollection<AffectData> Affects { get; }
         public int ExtraFlags { get; set; }
         public string Flags { get; set; }
         public string ShortDescription { get; set; }
@@ -19,15 +20,15 @@ namespace SmaugCS.Data.Templates
         public string Action { get; set; }
         public dynamic Values { get; set; }
         public int Cost { get; set; }
-        public int Rent { get; set; }
+        public int Rent { get; private set; }
         public int MagicFlags { get; set; }
         public string WearFlags { get; set; }
         public int Count { get; set; }
         public int Weight { get; set; }
-        public int Layers { get; set; }
-        public int Level { get; set; }
+        public int Layers { get; private set; }
+        public int Level { get; private set; }
         public ItemTypes Type { get; set; }
-        public ICollection<string> Spells { get; private set; }
+        public ICollection<string> Spells { get; }
 
         public ObjectTemplate(long id, string name)
             : base(id, name)
@@ -43,10 +44,7 @@ namespace SmaugCS.Data.Templates
             Weight = 1;
         }
 
-        public void SetType(string type)
-        {
-            Type = EnumerationExtensions.GetEnumByName<ItemTypes>(type);
-        }
+        public void SetType(string type) => Type = EnumerationExtensions.GetEnumByName<ItemTypes>(type);
 
         [SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray", 
             Justification = "This function is required by LUA and cannot handle lists or parameter arrays")]
@@ -93,15 +91,14 @@ namespace SmaugCS.Data.Templates
             foreach (string word in words)
             {
                 ExtraDescriptionData foundEd = ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(word));
-                if (foundEd == null)
+                if (foundEd != null) continue;
+
+                foundEd = new ExtraDescriptionData
                 {
-                    foundEd = new ExtraDescriptionData
-                    {
-                        Keyword = word, 
-                        Description = description
-                    };
-                    ExtraDescriptions.Add(foundEd);
-                }
+                    Keyword = word, 
+                    Description = description
+                };
+                ExtraDescriptions.Add(foundEd);
             }
         }
 
@@ -116,9 +113,7 @@ namespace SmaugCS.Data.Templates
         }
 
         public ExtraDescriptionData GetExtraDescription(string keyword)
-        {
-            return ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
-        }
+            => ExtraDescriptions.FirstOrDefault(ed => ed.Keyword.EqualsIgnoreCase(keyword));
 
         #endregion
 

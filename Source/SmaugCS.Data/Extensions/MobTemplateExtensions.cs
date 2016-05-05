@@ -10,42 +10,32 @@ namespace SmaugCS.Data.Extensions
     public static class MobTemplateExtensions
     {
         public static int GetRace(this MobileTemplate template)
-        {
-            return (int)EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
-        }
+            => (int) EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
 
         public static PositionTypes GetPosition(this MobileTemplate template)
-        {
-            return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.Position);
-        }
+            => EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.Position);
 
         public static PositionTypes GetDefensivePosition(this MobileTemplate template)
-        {
-            return EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefensivePosition);
-        }
+            => EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.DefensivePosition);
 
         public static GenderTypes GetGender(this MobileTemplate template)
-        {
-            return EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.GetStatistic<string>(StatisticTypes.Gender));
-        }
+            =>
+                EnumerationExtensions.GetEnumIgnoreCase<GenderTypes>(template.GetStatistic<string>(StatisticTypes.Gender));
 
         public static int GetResistance(this MobileTemplate template)
-        {
-            var words = template.Resistance.Split(' ');
-            return words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>).Aggregate(0, (current, resType) => current.SetBit(resType));
-        }
+            => template.Resistance.Split(' ')
+                    .Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>)
+                    .Aggregate(0, (current, resType) => current.SetBit(resType));
 
         public static int GetSusceptibility(this MobileTemplate template)
-        {
-            var words = template.Susceptibility.Split(' ');
-            return words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>).Aggregate(0, (current, resType) => current.SetBit(resType));
-        }
+            => template.Susceptibility.Split(' ')
+                .Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>)
+                .Aggregate(0, (current, resType) => current.SetBit(resType));
 
         public static int GetImmunity(this MobileTemplate template)
-        {
-            var words = template.Immunity.Split(' ');
-            return words.Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>).Aggregate(0, (current, resType) => current.SetBit(resType));
-        }
+            => template.Immunity.Split(' ')
+                .Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>)
+                .Aggregate(0, (current, resType) => current.SetBit(resType));
 
         public static int GetActFlags(this MobileTemplate template)
         {

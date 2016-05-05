@@ -11,22 +11,13 @@
             _bits = clone._bits;
         }
 
-        public bool IsEmpty()
-        {
-            return _bits == 0;
-        }
+        public bool IsEmpty() => _bits == 0;
 
         #region IsSet
 
-        public bool IsSet(ulong bit)
-        {
-            return (_bits & bit) > 0;
-        }
+        public bool IsSet(ulong bit) => (_bits & bit) > 0;
 
-        public bool IsSet(int bit)
-        {
-            return IsSet((ulong) bit);
-        }
+        public bool IsSet(int bit) => IsSet((ulong) bit);
 
         #endregion
 
@@ -38,10 +29,7 @@
             return _bits;
         }
 
-        public ulong SetBit(int bit)
-        {
-            return SetBit((ulong) bit);
-        }
+        public ulong SetBit(int bit) => SetBit((ulong) bit);
         #endregion
 
         #region RemoveBit
@@ -52,10 +40,7 @@
             return _bits;
         }
 
-        public ulong RemoveBit(int bit)
-        {
-            return RemoveBit((ulong) bit);
-        }
+        public ulong RemoveBit(int bit) => RemoveBit((ulong) bit);
         #endregion
 
         #region ToggleBit
@@ -66,10 +51,7 @@
             return _bits;
         }
 
-        public ulong ToggleBit(int bit)
-        {
-            return ToggleBit((ulong) bit);
-        }
+        public ulong ToggleBit(int bit) => ToggleBit((ulong) bit);
         #endregion
 
         /*#region Extended Bitvectors

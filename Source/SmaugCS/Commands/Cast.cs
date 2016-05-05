@@ -2,12 +2,14 @@
 using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Repository;
+using SmaugCS.Spells;
 
 namespace SmaugCS.Commands
 {
@@ -54,7 +56,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            if (!ch.IsNpc() && (SmaugRandom.D100() + _skill.difficulty * 5) > pch.PlayerData.Learned.ToList().FirstOrDefault(x => x == _skill.ID))
+            if (!ch.IsNpc() && SmaugRandom.D100() + _skill.difficulty * 5 > pch.PlayerData.Learned.ToList().FirstOrDefault(x => x == _skill.ID))
             {
 
             }

@@ -4,7 +4,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Death
 {
     public static class BlackHand
     {

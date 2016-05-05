@@ -16,7 +16,7 @@ using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Death
 {
     public static class AnimateDead
     {
@@ -46,18 +46,18 @@ namespace SmaugCS.Spells
                 {
                     if (CheckFunctions.CheckIfTrue(ch,
                         !ch.IsImmortal() &&
-                        (((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) - (template.Level / 3)) < 0,
+                        ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) - template.Level / 3 < 0,
                         "You don't have the power to reanimate this corpse.")) return ReturnTypes.SpellFailed;
 
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, template.Level / 3);
                 }
-                else if ((ch.CurrentMana - (template.Level/4)) < 0)
+                else if (ch.CurrentMana - template.Level/4 < 0)
                 {
                     ch.SendTo("You do not have enough mana to reanimate this corpse.");
                     return ReturnTypes.SpellFailed;
                 }
                 else
-                    ch.CurrentMana -= (template.Level*4);
+                    ch.CurrentMana -= template.Level*4;
             }
 
             if (ch.IsImmortal() || (ch.Chance(75) && template.Level - ch.Level < 10))
@@ -93,7 +93,7 @@ namespace SmaugCS.Spells
             mob.MaximumHealth = template.Level*8 +
                                 SmaugRandom.Between(template.Level*template.Level/4, template.Level*template.Level);
             mob.MaximumHealth = (mob.MaximumHealth/4).GetNumberThatIsBetween(
-                (mob.MaximumHealth * corpse.Value.ToList()[3]) / 100, ch.Level * SmaugRandom.D20(10));
+                mob.MaximumHealth * corpse.Value.ToList()[3] / 100, ch.Level * SmaugRandom.D20(10));
             mob.MaximumHealth = mob.MaximumHealth.GetHighestOfTwoNumbers(1);
             mob.CurrentHealth = mob.MaximumHealth;
             mob.DamageRoll = new DiceData {SizeOf = ch.Level/8};

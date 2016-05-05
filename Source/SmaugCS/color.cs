@@ -52,7 +52,7 @@ namespace SmaugCS
 
             for (var count = 0; count < 16; ++count)
             {
-                if ((count % 8) == 0 && count != 0)
+                if (count % 8 == 0 && count != 0)
                     ch.SendToPager("\r\n");
 
                 var atType = EnumerationExtensions.GetEnum<ATTypes>(count);
@@ -77,7 +77,7 @@ namespace SmaugCS
             var numColors = 0;
             foreach (var color in LookupManager.Instance.GetLookups("ValidColors"))
             {
-                if ((numColors % 8) == 0 && numColors != 0)
+                if (numColors % 8 == 0 && numColors != 0)
                     ch.SendToPager("\r\n");
 
                 ch.PagerPrintf("%s%-10s", color_str(ATTypes.AT_PLAIN, ch), color);
@@ -192,7 +192,7 @@ namespace SmaugCS
                         buffer = argument.PadLeft(len);
                     break;
                 case (int)TextAlignmentStyle.Center:
-                    buffer = $"{c.Repeat(space/2)}{argument}{c.Repeat((space/2)*2 == space ? space/2 : (space/2) + 1)}";
+                    buffer = $"{c.Repeat(space/2)}{argument}{c.Repeat(space/2*2 == space ? space/2 : space/2 + 1)}";
                     break;
                 case (int)TextAlignmentStyle.Left:
                     buffer = argument.PadRight(space);

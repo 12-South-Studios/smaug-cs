@@ -17,10 +17,7 @@ namespace SmaugCS.Common
         /// <param name="arg3"></param>
         /// <param name="arg4"></param>
         public static void Write(this TextWriterProxy proxy, string value,
-            object arg1, object arg2, object arg3, object arg4)
-        {
-            proxy.Write(value, new[] { arg1, arg2, arg3, arg4 });
-        }
+            object arg1, object arg2, object arg3, object arg4) => proxy.Write(value, new[] {arg1, arg2, arg3, arg4});
 
         /// <summary>
         /// 
@@ -29,8 +26,6 @@ namespace SmaugCS.Common
         /// <param name="value"></param>
         /// <param name="args"></param>
         public static void Write(this TextWriterProxy proxy, string value, params object[] args)
-        {
-            proxy.Write(string.Format(value, args));
-        }
+            => proxy.Write(string.Format(value, args));
     }
 }

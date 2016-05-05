@@ -12,6 +12,7 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
+using SmaugCS.Spells;
 
 namespace SmaugCS.Skills
 {
@@ -78,7 +79,7 @@ namespace SmaugCS.Skills
                     case TargetTypes.Ignore:
                         vo = null;
                         victim = ch.GetMyTarget();
-                        targetName = (argument.IsNullOrEmpty() && victim != null) ? victim.Name : argument;
+                        targetName = argument.IsNullOrEmpty() && victim != null ? victim.Name : argument;
                         break;
                     case TargetTypes.OffensiveCharacter:
                         victim = ch.GetMyTarget();
@@ -146,7 +147,7 @@ namespace SmaugCS.Skills
                 Macros.WAIT_STATE(ch, skill.Rounds);
 
                 //// Check for failure
-                if ((SmaugRandom.D100() + skill.difficulty * 5) > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, (int)skill.ID)))
+                if (SmaugRandom.D100() + skill.difficulty * 5 > (ch.IsNpc() ? 75 : Macros.LEARNED(ch, (int)skill.ID)))
                 {
                     ch.FailedCast(skill, victim, obj);
                     skill.LearnFromFailure((PlayerInstance)ch);

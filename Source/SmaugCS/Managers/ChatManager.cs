@@ -17,10 +17,7 @@ namespace SmaugCS.Managers
         private ChatManager()
         {
         }
-
-        /// <summary>
-        ///
-        /// </summary>
+        
         public static ChatManager Instance
         {
             get
@@ -217,10 +214,8 @@ namespace SmaugCS.Managers
                             continue;
                     }
 
-                    if (channel == ChannelTypes.Newbie &&
-                        (!och.IsImmortal() && !och.IsNotAuthorized()
-                        && !(och.PlayerData.Council != null
-                        && och.PlayerData.Council.Name.Equals("Newbie Council"))))
+                    if (channel == ChannelTypes.Newbie && !och.IsImmortal() && !och.IsNotAuthorized() && !(och.PlayerData.Council != null
+                                                                                                           && och.PlayerData.Council.Name.Equals("Newbie Council")))
                         continue;
                     if (vch.CurrentRoom.Flags.IsSet((int)RoomFlags.Silence))
                         continue;
@@ -260,12 +255,12 @@ namespace SmaugCS.Managers
                     if (!ch.IsNpc()
                         && ((PlayerInstance)ch).PlayerData.Nuisance != null
                         && ((PlayerInstance)ch).PlayerData.Nuisance.Flags > 7
-                        && (SmaugRandom.D100() < ((((PlayerInstance)ch).PlayerData.Nuisance.Flags - 7) * 10 * ((PlayerInstance)ch).PlayerData.Nuisance.Power)))
+                        && (SmaugRandom.D100() < (((PlayerInstance)ch).PlayerData.Nuisance.Flags - 7) * 10 * ((PlayerInstance)ch).PlayerData.Nuisance.Power))
                         sbuf = argument.Scramble(SmaugRandom.Between(1, 10));
 
                     if (!vch.IsNpc() && vch.PlayerData.Nuisance != null
                         && vch.PlayerData.Nuisance.Flags > 7
-                        && (SmaugRandom.D100() < ((vch.PlayerData.Nuisance.Flags - 7) * 10 * vch.PlayerData.Nuisance.Power)))
+                        && (SmaugRandom.D100() < (vch.PlayerData.Nuisance.Flags - 7) * 10 * vch.PlayerData.Nuisance.Power))
                         sbuf = argument.Scramble(SmaugRandom.Between(1, 10));
 
                     // TODO Toggle global mobtrigger flag

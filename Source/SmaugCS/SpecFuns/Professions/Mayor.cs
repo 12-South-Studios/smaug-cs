@@ -28,7 +28,7 @@ namespace SmaugCS.SpecFuns.Professions
                     _index = 0;
                 }
 
-                _path = (GameManager.Instance.GameTime.Hour == 6 ? OpenPath : (GameManager.Instance.GameTime.Hour == 20 ? ClosePath : string.Empty));
+                _path = GameManager.Instance.GameTime.Hour == 6 ? OpenPath : (GameManager.Instance.GameTime.Hour == 20 ? ClosePath : string.Empty);
             }
 
             if (ch.CurrentFighting != null)

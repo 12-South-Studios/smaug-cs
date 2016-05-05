@@ -1,7 +1,7 @@
 ﻿using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS
+namespace SmaugCS.MudProgs
 {
     public static class mud_prog
     {

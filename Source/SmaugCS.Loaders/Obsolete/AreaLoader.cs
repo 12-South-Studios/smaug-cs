@@ -2,7 +2,7 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 
-namespace SmaugCS.Loaders
+namespace SmaugCS.Loaders.Obsolete
 {
     public abstract class AreaLoader
     {

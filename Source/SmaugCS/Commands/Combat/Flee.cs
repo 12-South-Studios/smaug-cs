@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -70,9 +70,7 @@ namespace SmaugCS.Commands.Combat
         {
             var door = db.number_door();
             var exit = wasIn.GetExit(door);
-            if (exit?.GetDestination() == null || exit.Flags.IsSet(ExitFlags.NoFlee) ||
-                (exit.Flags.IsSet(ExitFlags.Closed) || !ch.IsAffected(AffectedByTypes.PassDoor)) ||
-                (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
+            if (exit?.GetDestination() == null || exit.Flags.IsSet(ExitFlags.NoFlee) || exit.Flags.IsSet(ExitFlags.Closed) || !ch.IsAffected(AffectedByTypes.PassDoor) || (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
                 return false;
 
             var sneak = RepositoryManager.Instance.GetEntity<SkillData>("sneak");

@@ -14,8 +14,8 @@ namespace SmaugCS.DAL
 {
     internal class SmaugDbContext : DbContext, ISmaugDbContext
     {
-        private ILogWrapper Logger { get; set; }
-        public ObjectContext ObjectContext { get; private set; }
+        private ILogWrapper Logger { get; }
+        public ObjectContext ObjectContext { get; }
 
         private DateTime _lastSaveTimeUtc;
 

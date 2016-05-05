@@ -9,8 +9,6 @@ namespace SmaugCS.Communication
         public int MinTrust { get; set; }
 
         public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
-        {
-            return ch.Trust >= MinTrust && base.Verify(channelType, ch, minTrust);
-        }
+            => ch.Trust >= MinTrust && base.Verify(channelType, ch, minTrust);
     }
 }

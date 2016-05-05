@@ -2,7 +2,7 @@
 using SmaugCS.Commands;
 using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -100,7 +100,7 @@ namespace SmaugCS.Extensions.Character
                 return -1;
             if (modifier == 10)
                 return dam;
-            return (dam * modifier) / 10;
+            return dam * modifier / 10;
         }
 
         public static void CheckAttackForAttackerFlag(this CharacterInstance ch, CharacterInstance victim)
@@ -207,7 +207,7 @@ namespace SmaugCS.Extensions.Character
         public static int ComputeAlignmentChange(this CharacterInstance ch, CharacterInstance victim)
         {
             var align = ch.CurrentAlignment - victim.CurrentAlignment;
-            var divalign = (ch.CurrentAlignment > -350 && ch.CurrentAlignment < 350) ? 4 : 20;
+            var divalign = ch.CurrentAlignment > -350 && ch.CurrentAlignment < 350 ? 4 : 20;
             int newAlign;
 
             if (align > 500)
@@ -222,7 +222,7 @@ namespace SmaugCS.Extensions.Character
 
         public static int ComputeExperienceGain(this CharacterInstance ch, CharacterInstance victim)
         {
-            var xp = (victim.GetExperienceWorth() * 0.GetNumberThatIsBetween((victim.Level - ch.Level) + 10, 13)) / 10;
+            var xp = victim.GetExperienceWorth() * 0.GetNumberThatIsBetween(victim.Level - ch.Level + 10, 13) / 10;
             var align = ch.CurrentAlignment - victim.CurrentAlignment;
 
             if (align > 990 || align < -990)
@@ -263,9 +263,9 @@ namespace SmaugCS.Extensions.Character
             var xpRatio = ((PlayerInstance)ch).PlayedDuration / ch.Level;
 
             if (xpRatio > 20000)
-                modXp = (modXp*5)/4; //// 5/4
+                modXp = modXp*5/4; //// 5/4
             else if (xpRatio > 16000)
-                modXp = (modXp*3)/4; //// 3/4
+                modXp = modXp*3/4; //// 3/4
             else if (xpRatio > 10000)
                 modXp >>= 1; //// 1/2
             else if (xpRatio > 5000)
@@ -285,7 +285,7 @@ namespace SmaugCS.Extensions.Character
 
             if (times > 0 && times < 20)
             {
-                modXp = (modXp * (20 - times)) / 20;
+                modXp = modXp * (20 - times) / 20;
                 if (times > 15)
                     modXp /= 3;
                 else if (times > 10)

@@ -12,7 +12,7 @@ namespace SmaugCS
 
         public static bool BOUNDARY(int x, int y)
         {
-            return ((x) < 0) || ((y) < 0) || ((x) > MAPX) || ((y) > MAPY);
+            return (x < 0) || (y < 0) || (x > MAPX) || (y > MAPY);
         }
 
         public static coordinate get_exit_dir(int dir, int x, int y, int xorig, int yorig)

@@ -24,15 +24,9 @@ namespace SmaugCS.Data.Instances
             Colors = new Dictionary<ATTypes, char>();
         }
 
-        public override bool IsImmortal(int level = 51)
-        {
-            return Trust >= level;
-        }
+        public override bool IsImmortal(int level = 51) => Trust >= level;
 
-        public override bool IsHero(int hero = 50)
-        {
-            return Trust >= hero;
-        }
+        public override bool IsHero(int hero = 50) => Trust >= hero;
 
         public int tempnum { get; set; }
     }

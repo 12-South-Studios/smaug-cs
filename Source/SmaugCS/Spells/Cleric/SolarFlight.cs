@@ -12,7 +12,7 @@ using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Cleric
 {
     public static class SolarFlight
     {

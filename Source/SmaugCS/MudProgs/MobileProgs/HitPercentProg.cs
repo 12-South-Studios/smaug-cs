@@ -21,7 +21,7 @@ namespace SmaugCS.MudProgs.MobileProgs
                 if (!int.TryParse(mprog.ArgList, out chance))
                     throw new InvalidDataException();
 
-                if ((100*mob.CurrentHealth/mob.MaximumHealth) < chance)
+                if (100*mob.CurrentHealth/mob.MaximumHealth < chance)
                     return mprog.Execute(mob);
             }
 

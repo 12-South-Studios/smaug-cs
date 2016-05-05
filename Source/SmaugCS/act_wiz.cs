@@ -211,8 +211,8 @@ namespace SmaugCS
 
         public static bool check_area_conflicts(int lo, int hi)
         {
-            return (RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
-                    || RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi)));
+            return RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
+                   || RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi));
         }
     }
 }

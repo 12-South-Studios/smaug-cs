@@ -4,7 +4,7 @@ using Realm.Library.Common;
 using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
-using SmaugCS.Constants;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -48,7 +48,7 @@ namespace SmaugCS.Extensions.Character
             if (modifiedDamage > 0 && victim.IsNpc() && ch != victim)
                 DoHuntAndHate(ch, victim);
 
-            var maxDamage = ch.Level * ((dt == RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID) ? 80 : 40);
+            var maxDamage = ch.Level * (dt == RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID ? 80 : 40);
             if (modifiedDamage > maxDamage)
                 modifiedDamage = maxDamage;
 
@@ -273,9 +273,9 @@ namespace SmaugCS.Extensions.Character
 
         private static void PreserveVampireFromDamage(CharacterInstance victim, int dam)
         {
-            if (dam >= (victim.MaximumHealth / 10))
-                ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -1 - (victim.Level / 20));
-            if (victim.CurrentHealth <= (victim.MaximumHealth / 8) &&
+            if (dam >= victim.MaximumHealth / 10)
+                ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -1 - victim.Level / 20);
+            if (victim.CurrentHealth <= victim.MaximumHealth / 8 &&
                 ((PlayerInstance)victim).PlayerData.GetConditionValue(ConditionTypes.Bloodthirsty) > 5)
             {
                 ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
@@ -292,7 +292,7 @@ namespace SmaugCS.Extensions.Character
 
             int xpGain;
             if (ch.CurrentFighting.Who == victim)
-                xpGain = (ch.CurrentFighting.Experience * dam) / victim.MaximumHealth;
+                xpGain = ch.CurrentFighting.Experience * dam / victim.MaximumHealth;
             else
                 xpGain = (int)(ch.ComputeExperienceGain(victim) * 0.85f * dam) / victim.MaximumHealth;
 
