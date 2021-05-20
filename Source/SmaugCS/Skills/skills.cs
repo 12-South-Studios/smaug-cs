@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;

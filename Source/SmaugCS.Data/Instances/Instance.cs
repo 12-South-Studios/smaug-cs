@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Realm.Library.Common;
+using Realm.Library.Common.Objects;
 using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Data.Instances

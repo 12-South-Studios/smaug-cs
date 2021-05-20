@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Realm.Library.Lua;
 using SmaugCS.Common;
@@ -116,27 +117,8 @@ namespace SmaugCS.Data.Instances
             Timers = new List<TimerData>();
         }
 
-        #region IDisposable
-
-        private bool _disposed;
-
-        protected override void Dispose(bool disposing)
-        {
-            if (_disposed)
-                return; 
-
-            if (disposing)
-            {
-                LuaVM.Close();
-            }
-
-            _disposed = true;
-            base.Dispose(disposing);
-        }
-        #endregion
-
-        #region IVerifiable
-        public bool IsNpc() => Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
+    #region IVerifiable
+    public bool IsNpc() => Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
 
         public bool IsAffected(AffectedByTypes affectedBy) => AffectedBy.IsSet(affectedBy);
 
@@ -145,6 +127,7 @@ namespace SmaugCS.Data.Instances
         public virtual bool IsImmortal(int level = 51) =>false;
 
         public virtual bool IsHero(int hero = 50) => false;
-        #endregion
-    }
+
+    #endregion
+  }
 }

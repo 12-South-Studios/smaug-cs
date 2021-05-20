@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data.Organizations
@@ -104,7 +105,7 @@ namespace SmaugCS.Data.Organizations
 
         public void RemoveAllRosters() => Members.ToList().Clear();
 
-        public void SetTypeByValue(int type) => ClanType = EnumerationExtensions.GetEnum<ClanTypes>(type);
+        public void SetTypeByValue(int type) => ClanType = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<ClanTypes>(type);
 
         /* public override void Save()
          {

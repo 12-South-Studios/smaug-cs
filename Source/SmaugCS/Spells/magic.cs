@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Realm.Library.Common;
+using System.Threading.Tasks;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
@@ -14,7 +15,7 @@ using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Spells
 {
@@ -369,7 +370,7 @@ namespace SmaugCS.Spells
                 return 0;
 
             GameManager.CurrentCharacter = ch;
-            return GameManager.Instance.ExpParser.Execute(expression);
+            return Task.Run(() => GameManager.Instance.ExpParser.ExecuteAsync(expression)).Result;
         }
 
         public static int ParseDiceExpression(CharacterInstance ch, string expression)

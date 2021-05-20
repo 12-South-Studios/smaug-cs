@@ -3,7 +3,7 @@ using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Data.Extensions
 {

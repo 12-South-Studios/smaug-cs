@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -40,7 +41,7 @@ namespace SmaugCS.Data
 
         public void SetRaceType(string field, string value)
         {
-            RaceTypes type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<RaceTypes>(value);
+            RaceTypes type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<RaceTypes>(value);
 
             if (field.EqualsIgnoreCase("npcfoe"))
                 NPCFoe = type;
@@ -50,7 +51,7 @@ namespace SmaugCS.Data
 
         public void AddFieldValue(string field, int value)
         {
-            DeityFieldTypes fieldType = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DeityFieldTypes>(field);
+            DeityFieldTypes fieldType = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<DeityFieldTypes>(field);
             _values[fieldType] = value;
         }
 

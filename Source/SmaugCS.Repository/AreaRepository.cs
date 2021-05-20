@@ -1,4 +1,4 @@
-﻿using Realm.Library.Patterns.Repository;
+﻿using Realm.Standard.Patterns.Repository;
 using SmaugCS.Data;
 
 namespace SmaugCS.Repository

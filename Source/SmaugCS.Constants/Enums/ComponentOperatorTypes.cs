@@ -1,4 +1,4 @@
-﻿using Realm.Library.Common;
+﻿using Realm.Library.Common.Attributes;
 
 namespace SmaugCS.Constants.Enums
 {

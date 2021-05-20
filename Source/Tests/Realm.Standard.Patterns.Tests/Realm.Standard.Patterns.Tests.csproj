@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy" Version="7.0.2" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj" />
+  </ItemGroup>
+
+</Project>

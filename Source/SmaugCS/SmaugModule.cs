@@ -1,6 +1,6 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmaugCS.Common;
@@ -14,6 +14,7 @@ using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
+using Realm.Library.Common;
 
 namespace SmaugCS
 {

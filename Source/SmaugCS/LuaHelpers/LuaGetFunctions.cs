@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Data.Instances;

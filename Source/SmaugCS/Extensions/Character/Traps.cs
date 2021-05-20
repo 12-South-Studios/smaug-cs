@@ -8,7 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
 {

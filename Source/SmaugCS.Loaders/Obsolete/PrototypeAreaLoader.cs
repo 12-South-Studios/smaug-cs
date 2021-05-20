@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;

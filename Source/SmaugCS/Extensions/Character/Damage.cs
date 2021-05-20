@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
@@ -12,7 +13,7 @@ using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Repository;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
 {

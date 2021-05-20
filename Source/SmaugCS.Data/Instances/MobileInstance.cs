@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common;
+using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Data.Templates;
 

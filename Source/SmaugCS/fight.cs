@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
-using Realm.Library.Patterns.Repository;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
+using Realm.Standard.Patterns.Repository;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Commands.PetsAndGroups;
 using SmaugCS.Commands.Skills;
@@ -24,7 +27,7 @@ using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells.Smaug;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
 {

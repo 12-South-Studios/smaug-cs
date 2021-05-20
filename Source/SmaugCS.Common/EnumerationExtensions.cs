@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using System;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Common
 {
@@ -15,7 +15,6 @@ namespace SmaugCS.Common
             return enumAttrib;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static bool HasAttribute<T>(this Enum value) where T : Attribute
         {
             Validation.IsNotNull(value, "value");

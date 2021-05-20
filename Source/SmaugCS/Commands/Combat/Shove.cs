@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -7,7 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Commands.Combat
 {

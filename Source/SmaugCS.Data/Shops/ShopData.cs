@@ -23,7 +23,7 @@ namespace SmaugCS.Data.Shops
 
         public void AddItemType(string type)
         {
-            ItemTypes itemType = EnumerationExtensions.GetEnumIgnoreCase<ItemTypes>(type);
+            ItemTypes itemType = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<ItemTypes>(type);
             if (!_itemTypes.Contains(itemType))
                 _itemTypes.Add(itemType);
         }

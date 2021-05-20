@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
@@ -17,7 +17,7 @@ using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
 using SmaugCS.Weather.Enums;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
 {

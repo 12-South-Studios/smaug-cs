@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Attributes;
 
 namespace SmaugCS.Managers
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Common.Objects;
 using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data.Templates

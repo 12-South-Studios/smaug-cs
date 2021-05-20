@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Xml.Serialization;
-using Realm.Library.Common;
+using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
@@ -42,7 +42,7 @@ namespace SmaugCS.Data
         public void SetFlags(string flags)
         {
             var words = flags.Split(' ');
-            foreach (var flagValue in words.Select(Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>).Select(flag => (int)flag))
+            foreach (var flagValue in words.Select(Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<ExitFlags>).Select(flag => (int)flag))
             {
                 Flags = Flags.SetBit(flagValue);
             }

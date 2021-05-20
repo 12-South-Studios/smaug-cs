@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using Realm.Library.Common;
+using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 
@@ -80,7 +81,7 @@ namespace SmaugCS.Data
 
         public void AddAffectedBy(string name)
         {
-            AffectedByTypes type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<AffectedByTypes>(name);
+            AffectedByTypes type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<AffectedByTypes>(name);
             AffectedBy = AffectedBy.SetBit(type);
         }
     }

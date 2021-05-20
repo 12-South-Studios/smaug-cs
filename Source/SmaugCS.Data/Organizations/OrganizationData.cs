@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using Realm.Library.Common;
+using Realm.Library.Common.Objects;
 
 namespace SmaugCS.Data.Organizations
 {

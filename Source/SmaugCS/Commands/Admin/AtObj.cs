@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common;
+﻿using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;

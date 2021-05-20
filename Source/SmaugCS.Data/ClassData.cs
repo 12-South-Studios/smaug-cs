@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
@@ -56,17 +57,17 @@ namespace SmaugCS.Data
 
         public void SetPrimaryAttribute(string name)
         {
-            PrimaryAttribute = Realm.Library.Common.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
+            PrimaryAttribute = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
         }
 
         public void SetSecondaryAttribute(string name)
         {
-            SecondaryAttribute = Realm.Library.Common.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
+            SecondaryAttribute = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
         }
 
         public void SetDeficientAttribute(string name)
         {
-            DeficientAttribute = Realm.Library.Common.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
+            DeficientAttribute = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<StatisticTypes>(name);
         }
 
         public void AddSkill(string name, int level, int adept)
@@ -91,7 +92,7 @@ namespace SmaugCS.Data
 
         public void SetType(string type)
         {
-            Type = Realm.Library.Common.EnumerationExtensions.GetEnumByName<ClassTypes>(type);
+            Type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<ClassTypes>(type);
         }
     }
 }

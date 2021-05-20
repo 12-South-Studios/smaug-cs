@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using LuaInterface;
 using Realm.Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
@@ -321,7 +320,7 @@ namespace SmaugCS.LuaHelpers
             if (ch == null)
                 throw new LuaException("Character cannot be null");
 
-            AffectedByTypes affected = Realm.Library.Common.EnumerationExtensions.GetEnumByName<AffectedByTypes>(affectedBy);
+            AffectedByTypes affected = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<AffectedByTypes>(affectedBy);
             return ch.IsAffected(affected);
         }
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Patterns.Repository;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
+using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;

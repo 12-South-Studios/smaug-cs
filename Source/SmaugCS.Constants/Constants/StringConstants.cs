@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Config;
 
 namespace SmaugCS.Constants.Constants

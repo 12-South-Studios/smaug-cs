@@ -1,7 +1,8 @@
 ﻿using System;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
-using Realm.Library.Patterns.Repository;
+using Realm.Standard.Patterns.Repository;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;

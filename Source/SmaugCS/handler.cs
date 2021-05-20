@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
@@ -17,7 +19,7 @@ using SmaugCS.Managers;
 using SmaugCS.Objects;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
 {

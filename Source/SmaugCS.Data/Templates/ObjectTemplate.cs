@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
 
@@ -44,7 +45,7 @@ namespace SmaugCS.Data.Templates
             Weight = 1;
         }
 
-        public void SetType(string type) => Type = EnumerationExtensions.GetEnumByName<ItemTypes>(type);
+        public void SetType(string type) => Type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<ItemTypes>(type);
 
         [SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray", 
             Justification = "This function is required by LUA and cannot handle lists or parameter arrays")]
@@ -69,7 +70,7 @@ namespace SmaugCS.Data.Templates
                 Type = Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type),
                 Duration = duration,
                 Modifier = modifier,
-                Location = EnumerationExtensions.GetEnum<ApplyTypes>(location),
+                Location = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<ApplyTypes>(location),
                 Flags = flags
             };
             Affects.Add(newAffect);

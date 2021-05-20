@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Common
 {

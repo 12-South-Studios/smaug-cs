@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -112,7 +113,7 @@ namespace SmaugCS.Data.Templates
         {
             var exit = Exits.FirstOrDefault(x => x.Keywords.ContainsIgnoreCase(arg));
             if (exit != null) return exit;
-            var dir = Realm.Library.Common.EnumerationExtensions.GetEnumByName<DirectionTypes>(arg);
+            var dir = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<DirectionTypes>(arg);
             exit = GetExit(dir);
             return exit;
         }
@@ -132,7 +133,7 @@ namespace SmaugCS.Data.Templates
 
         public void AddExit(string direction, long destination, string description)
         {
-            DirectionTypes dir = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
+            DirectionTypes dir = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<DirectionTypes>(direction);
             if (Exits.Any(x => x.Direction == dir))
                 return;
 
@@ -197,7 +198,7 @@ namespace SmaugCS.Data.Templates
         {
             var newReset = new ResetData
             {
-                Type = Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
+                Type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
                 Extra = extra,
                 Command = type[0].ToString()
             };
@@ -206,14 +207,14 @@ namespace SmaugCS.Data.Templates
         }
 
         public void SetSector(string sector)
-            => SectorType = Realm.Library.Common.EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
+            => SectorType = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<SectorTypes>(sector.CapitalizeFirst());
 
         public void SetFlags(string flags)
         {
             var words = flags.Split(' ');
             foreach (var word in words)
             {
-                Flags += (int)Realm.Library.Common.EnumerationExtensions.GetEnumIgnoreCase<RoomFlags>(word);
+                Flags += (int)Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<RoomFlags>(word);
             }
 
         }

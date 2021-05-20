@@ -1,6 +1,7 @@
 ﻿using System;
 using Realm.Library.Common;
-using Realm.Library.Patterns.Repository;
+using Realm.Library.Common.Objects;
+using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
@@ -8,7 +9,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using EnumerationExtensions = Realm.Library.Common.EnumerationExtensions;
+using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Repository
 {

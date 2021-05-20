@@ -1,5 +1,5 @@
 ﻿using System;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Board;
 using SmaugCS.Data.Instances;
 

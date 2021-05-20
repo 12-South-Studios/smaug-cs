@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Auction;
 using SmaugCS.Common;
 using SmaugCS.Constants;

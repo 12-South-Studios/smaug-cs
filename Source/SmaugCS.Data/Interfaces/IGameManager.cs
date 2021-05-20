@@ -1,4 +1,4 @@
-﻿using Realm.Library.NCalcExt;
+﻿using Realm.Library.NCalc;
 
 namespace SmaugCS.Data.Interfaces
 {

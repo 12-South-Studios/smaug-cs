@@ -1,5 +1,5 @@
 ﻿using System;
-using Realm.Library.Common;
+using Realm.Library.Common.Attributes;
 
 namespace SmaugCS.Common.Enumerations
 {
@@ -8,7 +8,7 @@ namespace SmaugCS.Common.Enumerations
     {
         None = 0,
 
-        [Enum("spell")]
+        [Name("spell")]
         Spell = 1,
 
         [Name("skill")]

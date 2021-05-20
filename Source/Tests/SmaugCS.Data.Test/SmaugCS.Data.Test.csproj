@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\NUnit.3.13.2\build\NUnit.props" Condition="Exists('..\..\packages\NUnit.3.13.2\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -8,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SmaugCS.Data.Test</RootNamespace>
     <AssemblyName>SmaugCS.Data.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -19,6 +20,8 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,50 +59,33 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.16.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.16.1\lib\net45\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Realm.Library.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Command, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Command.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Decorator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Decorator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Factory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Factory.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Repository.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Singleton, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Singleton.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.13.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.13.2\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -115,6 +101,30 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
+      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
+      <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
+      <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
+      <Name>Realm.Standard.Patterns.Command</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj">
+      <Project>{feab7c57-63f5-428c-a5d2-057d3240dcfa}</Project>
+      <Name>Realm.Standard.Patterns.Decorator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj">
+      <Project>{6937f92d-7ba3-4bba-852d-571ac0d6baf2}</Project>
+      <Name>Realm.Standard.Patterns.Factory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
+      <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
+      <Name>Realm.Standard.Patterns.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj">
+      <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
+      <Name>Realm.Standard.Patterns.Singleton</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SmaugCS.Common\SmaugCS.Common.csproj">
       <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
       <Name>SmaugCS.Common</Name>
@@ -154,6 +164,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\..\packages\NUnit.3.13.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit.3.13.2\build\NUnit.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

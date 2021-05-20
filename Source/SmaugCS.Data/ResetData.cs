@@ -28,7 +28,7 @@ namespace SmaugCS.Data
         {
             var newReset = new ResetData
             {
-                Type = EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
+                Type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<ResetTypes>(type),
                 Extra = extra
             };
             newReset.SetArgs(arg1, arg2, arg3);

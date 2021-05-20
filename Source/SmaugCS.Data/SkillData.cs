@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 
@@ -77,7 +79,6 @@ namespace SmaugCS.Data
             SkillMasteries = new List<SkillMasteryData>();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static int Compare(SkillData sk1, SkillData sk2)
         {
             if (sk1 == null && sk2 != null)
@@ -109,12 +110,12 @@ namespace SmaugCS.Data
 
         public void SetTarget(string type)
         {
-            Target = EnumerationExtensions.GetEnumIgnoreCase<TargetTypes>(type);
+            Target = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<TargetTypes>(type);
         }
 
         public void SetTargetByValue(int type)
         {
-            Target = EnumerationExtensions.GetEnum<TargetTypes>(type);
+            Target = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<TargetTypes>(type);
         }
 
         public void AddAffect(SmaugAffect affect)
@@ -170,7 +171,7 @@ namespace SmaugCS.Data
             string[] words = flags.Split(' ');
             foreach (string word in words)
             {
-                Flags += (int)EnumerationExtensions.GetEnumIgnoreCase<SkillFlags>(word);
+                Flags += (int)Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<SkillFlags>(word);
             }
         }
 
@@ -181,7 +182,7 @@ namespace SmaugCS.Data
 
         public void SetSaveVsByValue(int value)
         {
-            SaveVs = EnumerationExtensions.GetEnum<SaveVsTypes>(value);
+            SaveVs = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<SaveVsTypes>(value);
         }
     }
 }

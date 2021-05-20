@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SmaugCS.Lua</RootNamespace>
     <AssemblyName>SmaugCS.Lua</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -51,60 +51,20 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="lua51, Version=0.0.0.0, Culture=neutral, PublicKeyToken=1e1fb15b02227b8a, processorArchitecture=x86">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\lua51.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\LuaInterface.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Lua, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Lua.1.0.0\lib\net46\Realm.Library.Lua.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Command, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Command.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Decorator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Decorator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Factory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Factory.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Repository.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Realm.Library.Patterns.Singleton, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Library.Common.1.0.0\lib\net46\Realm.Library.Patterns.Singleton.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
-    <Reference Include="VikingErik.LuaInterface, Version=1.0.4213.34901, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VikingErik.LuaInterface.1.0.4213.34901\lib\net35\VikingErik.LuaInterface.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LuaModule.cs" />
@@ -112,6 +72,34 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
+      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
+      <Name>Realm.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj">
+      <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
+      <Name>Realm.Library.Lua</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
+      <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
+      <Name>Realm.Standard.Patterns.Command</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj">
+      <Project>{feab7c57-63f5-428c-a5d2-057d3240dcfa}</Project>
+      <Name>Realm.Standard.Patterns.Decorator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj">
+      <Project>{6937f92d-7ba3-4bba-852d-571ac0d6baf2}</Project>
+      <Name>Realm.Standard.Patterns.Factory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
+      <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
+      <Name>Realm.Standard.Patterns.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj">
+      <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
+      <Name>Realm.Standard.Patterns.Singleton</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
       <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
       <Name>SmaugCS.Data</Name>

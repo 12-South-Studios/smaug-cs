@@ -1,7 +1,7 @@
 ﻿using System;
-using LuaInterface;
 using Moq;
 using NUnit.Framework;
+using Realm.Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;

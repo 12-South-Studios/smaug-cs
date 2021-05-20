@@ -2,6 +2,7 @@
 using System.Timers;
 using Ninject;
 using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;

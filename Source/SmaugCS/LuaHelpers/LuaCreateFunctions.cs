@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
-using Realm.Library.Patterns.Command;
+using Realm.Standard.Patterns.Command;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;

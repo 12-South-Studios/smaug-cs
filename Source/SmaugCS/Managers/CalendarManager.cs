@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ninject;
-using Realm.Library.Common;
-using Realm.Library.Patterns.Repository;
+using Realm.Library.Common.Extensions;
+using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -14,6 +14,7 @@ using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Objects;
 using SmaugCS.Repository;
+using Realm.Library.Common.Objects;
 
 namespace SmaugCS.Managers
 {
