@@ -365,6 +365,18 @@ namespace Realm.Library.Common.Extensions
             return PadString(value, padChar, totalLength, true);
         }
 
+        public static string PadOrTrimToCharacters(this string value, int totalLength, string padChar = " ")
+        {
+            if (value.Length > totalLength)
+            {
+                return value.Substring(0, totalLength);
+            }
+            else
+            {
+                return value.PadString(padChar, totalLength);
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>

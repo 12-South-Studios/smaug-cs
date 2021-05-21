@@ -3,13 +3,11 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Commands
 {
     public static class AFK
     {
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_afk(CharacterInstance ch, string argument)
         {
             if (CheckFunctions.CheckIfNpc(ch, ch)) return;
