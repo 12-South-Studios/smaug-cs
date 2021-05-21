@@ -4,6 +4,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Data
 {
@@ -29,7 +30,7 @@ namespace SmaugCS.Data
         public string filename { get; set; }
         public string rank { get; set; }
         public string Title { get; set; }
-        public string bestowments { get; set; }
+        public List<string> Bestowments { get; set; } = new List<string>();
         public DateTime outcast_time { get; set; }
         public DateTime restore_time { get; set; }
         public int Flags { get; set; }
@@ -47,7 +48,7 @@ namespace SmaugCS.Data
         public int WizardInvisible { get; set; }
         public int min_snoop { get; set; }
         public Dictionary<ConditionTypes, int> ConditionTable { get; private set; }
-        public IEnumerable<long> Learned { get; private set; }
+        public List<Tuple<long, int>> Learned { get; private set; }
         public int quest_number { get; set; }
         public int quest_curr { get; set; }
         public int quest_accum { get; set; }
@@ -78,7 +79,7 @@ namespace SmaugCS.Data
         {
             Killed = new List<KilledData>();
             ConditionTable = new Dictionary<ConditionTypes, int>();
-            Learned = new List<long>(maxSkills);
+            Learned = new List<Tuple<long, int>>(maxSkills);
             SpecialSkills = new SkillData[maxPersonal];
             TellHistory = new List<string>();
             Ignored = new List<IgnoreData>();
@@ -94,6 +95,38 @@ namespace SmaugCS.Data
         public void SetConditionValue(ConditionTypes condition, int value)
         {
             ConditionTable[condition] = value;
+        }
+
+        public void ClearLearnedSkills()
+        {
+            var learnedIDs = Learned.Select(x => x.Item1);
+            Learned.Clear();
+
+            foreach (var learnedID in learnedIDs)
+                Learned.Add(new Tuple<long, int>(learnedID, 0));
+        }
+
+        public int GetSkillMastery(long skillID)
+        {
+            if (!Learned.Any(x => x.Item1 == skillID)) return 0;
+            return Learned.First(x => x.Item1 == skillID).Item2;
+        }
+
+        public void UpdateSkillMastery(long skillID, int value, bool additive = false)
+        {
+            int newValue = value;
+            if (Learned.Any(x => x.Item1 == skillID))
+            {
+                if (additive)
+                {
+                    var learned = Learned.First(x => x.Item1 == skillID);
+                    newValue += learned.Item2;
+                }
+
+                Learned.Remove(Learned.First(x => x.Item1 == skillID));
+            }
+
+            Learned.Add(new Tuple<long, int>(skillID, newValue));
         }
     }
 }

@@ -55,5 +55,10 @@ namespace SmaugCS.Managers
         {
             return attrib.NoNpc && actor.IsNpc();
         }
+
+        public CommandData FindCommand(string command)
+        {
+            return _dbManager.GetEntity<CommandData>(command);
+        }
     }
 }

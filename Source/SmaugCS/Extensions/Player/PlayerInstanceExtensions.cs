@@ -38,10 +38,7 @@ namespace SmaugCS.Extensions.Player
 
         public static long GetLearned(this PlayerInstance ch, long skillId)
         {
-            if (ch.PlayerData?.Learned == null) return 0;
-            return !ch.PlayerData.Learned.Contains(skillId)
-                ? 0
-                : ch.PlayerData.Learned.ToList().FirstOrDefault(x => x == skillId);
+            return ch.PlayerData == null ? 0 : ch.PlayerData.GetSkillMastery(skillId);
         }
 
         public static int CalculateAge(this PlayerInstance ch)

@@ -103,6 +103,10 @@ namespace SmaugCS.Helpers
             return value && SendToChar(ch, message);
         }
 
+        public static bool CheckIfInsufficientTrust(CharacterInstance ch, CharacterInstance victim, string message = "")
+        {
+            return (victim == ch || victim.Trust >= ch.Trust) && SendToChar(ch, message);
+        }
         #endregion
 
         #region Check Casting Functions

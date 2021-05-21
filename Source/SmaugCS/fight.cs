@@ -919,7 +919,7 @@ namespace SmaugCS
             if (!ch.IsNpc())
             {
                 var skill = RepositoryManager.Instance.GetEntity<SkillData>("enhanced damage");
-                if (((PlayerInstance)ch).PlayerData.Learned.ToList().FirstOrDefault(x => x == skill.ID) > 0)
+                if (((PlayerInstance)ch).PlayerData.GetSkillMastery(skill.ID) > 0)
                 {
                     damage += damage * (int)Macros.LEARNED(ch, (int)skill.ID);
                     skill.LearnFromSuccess(ch);

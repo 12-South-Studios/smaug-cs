@@ -36,7 +36,7 @@ namespace SmaugCS.Extensions
 
         private static void GainExperienceFromSkill(SkillData skill, PlayerInstance ch, int mastery, int skillLevel)
         {
-            var gain = ch.PlayerData.Learned.ToList().FirstOrDefault(x => x == skill.ID) == mastery
+            var gain = ch.PlayerData.GetSkillMastery(skill.ID) == mastery
                 ? GainMasteryOfSkill(skill, ch, skillLevel)
                 : GainExperienceInSkill(ch, skillLevel);
 
@@ -149,8 +149,9 @@ namespace SmaugCS.Extensions
         public static void AbilityLearnFromSuccess(this SkillData skill, PlayerInstance ch)
         {
             var sn = (int)skill.ID;
+            var skillMastery = ch.PlayerData.GetSkillMastery(sn);
 
-            if (ch.IsNpc() || ch.PlayerData.Learned.ToList()[sn] <= 0)
+            if (ch.IsNpc() || skillMastery <= 0)
                 return;
 
             var adept = skill.RaceAdept.ToList()[(int)ch.CurrentRace];
@@ -158,9 +159,9 @@ namespace SmaugCS.Extensions
 
             if (skillLevel == 0)
                 skillLevel = ch.Level;
-            if (ch.PlayerData.Learned.ToList()[sn] < adept)
+            if (skillMastery < adept)
             {
-                var schance = ch.PlayerData.Learned.ToList()[sn] + 5 * skill.difficulty;
+                var schance = skillMastery + 5 * skill.difficulty;
                 var percent = SmaugRandom.D100();
 
                 var learn = 1;
@@ -169,10 +170,10 @@ namespace SmaugCS.Extensions
                 else if (schance - percent > 25)
                     return;
 
-                ch.PlayerData.Learned.ToList()[sn] = adept.GetLowestOfTwoNumbers((int)ch.PlayerData.Learned.ToList()[sn] + learn);
+                ch.PlayerData.UpdateSkillMastery(sn, adept.GetLowestOfTwoNumbers(skillMastery + learn));
 
                 int gain;
-                if (ch.PlayerData.Learned.ToList()[sn] == adept)
+                if (ch.PlayerData.GetSkillMastery(sn) == adept)
                 {
                     gain = 1000 * skillLevel;
                     ch.SetColor(ATTypes.AT_WHITE);

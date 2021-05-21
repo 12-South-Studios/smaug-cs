@@ -484,7 +484,7 @@ namespace SmaugCS
                 .Where(x => x.DoFunction.Value == Switch.do_switch)
                 .Where(x => x.Level > ch.Trust))
             {
-                if (!ch.IsNpc() && cmd.Name.IsAnyEqual(((PlayerInstance)ch).PlayerData.bestowments)
+                if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Bestowments.Any(x => cmd.Name.EqualsIgnoreCase(x))
                     && cmd.Level <= ch.Trust + GameManager.Instance.SystemData.BestowDifference)
                     return;
             }

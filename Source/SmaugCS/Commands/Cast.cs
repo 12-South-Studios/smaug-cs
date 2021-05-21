@@ -56,7 +56,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            if (!ch.IsNpc() && SmaugRandom.D100() + _skill.difficulty * 5 > pch.PlayerData.Learned.ToList().FirstOrDefault(x => x == _skill.ID))
+            if (!ch.IsNpc() && SmaugRandom.D100() + _skill.difficulty * 5 > pch.PlayerData.GetSkillMastery(_skill.ID))
             {
 
             }

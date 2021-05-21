@@ -6,14 +6,11 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Spells
 {
     public static class AstralWalk
     {
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo"),
-        SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);

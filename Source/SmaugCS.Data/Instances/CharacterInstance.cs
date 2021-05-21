@@ -25,7 +25,7 @@ namespace SmaugCS.Data.Instances
         public int mpactnum { get; set; }
         public uint mpscriptpos { get; set; }
 
-        public IEnumerable<ObjectInstance> Carrying { get; set; }
+        public List<ObjectInstance> Carrying { get; set; }
         public RoomTemplate CurrentRoom { get; set; }
         public RoomTemplate PreviousRoom { get; set; }
 

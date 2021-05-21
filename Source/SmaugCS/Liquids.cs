@@ -99,7 +99,7 @@ namespace SmaugCS
 
             objectLiq.Value.ToList()[1] += sourceObj.Value.ToList()[1];
             objectLiq.Value.ToList()[2] = liquid.Vnum;
-            //handler.separate_obj(sourceObj);
+            // todo handler.separate_obj(sourceObj);
             sourceObj.RemoveFrom();
             sourceObj.Extract();
             return liquid;

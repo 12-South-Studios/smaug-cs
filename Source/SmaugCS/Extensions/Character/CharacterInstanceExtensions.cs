@@ -581,7 +581,7 @@ namespace SmaugCS.Extensions.Character
         public static bool CouldDualWield(this CharacterInstance ch)
         {
             return ch.IsNpc() ||
-                   ((PlayerInstance)ch).PlayerData.Learned.ToList().FirstOrDefault(x => x == RepositoryManager.Instance.GetEntity<SkillData>("dual wield").ID) > 0;
+                   ((PlayerInstance)ch).PlayerData.GetSkillMastery(RepositoryManager.Instance.GetEntity<SkillData>("dual wield").ID) > 0;
         }
 
         public static bool CanDualWield(this CharacterInstance ch)
@@ -915,9 +915,16 @@ namespace SmaugCS.Extensions.Character
 
             var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             if (add)
-                ((PlayerInstance)ch).PlayerData.Learned.ToList()[sn] += mod;
+                ((PlayerInstance)ch).PlayerData.UpdateSkillMastery(sn, mod, true);
             else
-                ((PlayerInstance)ch).PlayerData.Learned.ToList()[sn] = (((PlayerInstance)ch).PlayerData.Learned.ToList()[sn] + mod).GetNumberThatIsBetween(0, skill.GetMasteryLevel((PlayerInstance)ch));
+            {
+                var mastery = skill.GetMasteryLevel((PlayerInstance)ch);
+                var current = ((PlayerInstance)ch).PlayerData.GetSkillMastery(sn);
+                if (current + mod > mastery)
+                    current = mastery;
+
+                ((PlayerInstance)ch).PlayerData.UpdateSkillMastery(sn, current);
+            }  
         }
 
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, WearLocations location)

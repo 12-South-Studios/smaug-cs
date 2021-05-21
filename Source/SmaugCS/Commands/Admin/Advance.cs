@@ -101,8 +101,10 @@ namespace SmaugCS.Commands.Admin
 
             if (victim.Level >= LevelConstants.AvatarLevel && victim.IsImmortal())
             {
-                if (((PlayerInstance)victim).PlayerData.bestowments != string.Empty)
-                    ((PlayerInstance)victim).PlayerData.bestowments = string.Empty;
+                var victimPc = (PlayerInstance)victim;
+
+                if (victimPc.PlayerData.Bestowments.Any())
+                    victimPc.PlayerData.Bestowments.Clear();
 
                 NumberExtensions.RemoveBit(victim.Act, PlayerFlags.HolyLight);
                 if (!((PlayerInstance)victim).IsRetired())
@@ -137,9 +139,11 @@ namespace SmaugCS.Commands.Admin
             victim.MaximumMana = GameConstants.GetConstant<int>("DefaultMaximumMana");
             victim.MaximumMovement = GameConstants.GetConstant<int>("DefaultMaximumMovement");
 
-            // todo zero skills
-            //for (sn = 0; sn < num_skills; ++sn)
-            //    victim->pcdata->learned[sn] = 0;
+            if (victim is PlayerInstance)
+            {
+                var player = victim as PlayerInstance;
+                player.PlayerData.ClearLearnedSkills();
+            }
 
             victim.Practice = 0;
             victim.CurrentHealth = victim.MaximumHealth;

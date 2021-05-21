@@ -356,7 +356,7 @@ namespace SmaugCS
                 show_list_to_char(victim.Carrying.ToList(), ch, true, true);
                 skill.LearnFromSuccess(ch);
             }
-            else if (ch.PlayerData.Learned.ToList()[0] > (int)skill.ID)
+            else if (ch.PlayerData.GetSkillMastery(skill.ID) > skill.GetMasteryLevel(ch))
                 skill.LearnFromFailure(ch);
         }
 

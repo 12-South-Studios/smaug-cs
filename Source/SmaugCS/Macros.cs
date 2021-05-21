@@ -134,7 +134,7 @@ namespace SmaugCS
 
         public static long LEARNED(CharacterInstance ch, int sn)
         {
-            return ch.IsNpc() ? 80 : ((PlayerInstance)ch).PlayerData.Learned.ToList()[sn].GetNumberThatIsBetween(0, 101);
+            return ch.IsNpc() ? 80 : ((PlayerInstance)ch).PlayerData.GetSkillMastery(sn).GetNumberThatIsBetween(0, 101);
         }
     }
 }
