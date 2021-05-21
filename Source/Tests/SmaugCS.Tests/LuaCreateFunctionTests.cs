@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using LuaInterface.Exceptions;
 using Moq;
 using Ninject;
 using NUnit.Framework;
@@ -455,7 +456,7 @@ namespace SmaugCS.Tests
 			var script = GetClassLuaScript();
 			script += "class.this:AddSkill(\"aggressive style\", 20, 50);";
 
-			Assert.Throws<InvalidDataException>(() => LuaMgr.Proxy.DoString(script));
+			Assert.Throws<LuaScriptException>(() => LuaMgr.Proxy.DoString(script));
 		}
 		#endregion
 

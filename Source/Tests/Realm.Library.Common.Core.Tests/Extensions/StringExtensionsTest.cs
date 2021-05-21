@@ -42,15 +42,6 @@ namespace Realm.Library.Common.Test.Extensions
             Action act = () => StringExtensions.Contains(string.Empty, target, StringComparison.OrdinalIgnoreCase);
             act.Should().Throw<ArgumentNullException>();
         }
-
-        [Fact]
-        public void ContainsNullToCheckTest()
-        {
-            const string source = "TEST";
-
-            Action act = () => source.Contains(string.Empty, StringComparison.OrdinalIgnoreCase);
-            act.Should().Throw<ArgumentNullException>();
-        }
         #endregion
 
         #region ReplaceFirst

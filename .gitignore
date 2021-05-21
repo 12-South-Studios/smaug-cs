@@ -76,3 +76,5 @@ Source/packages/EntityFramework.6.1.3/tools/EntityFramework.psm1
 Source/packages/EntityFramework.6.1.3/tools/init.ps1
 Source/packages/EntityFramework.6.1.3/tools/install.ps1
 Source/packages/EntityFramework.6.1.3/tools/migrate.exe
+Source/.vs/SmaugCS/v16/TestStore/0/009.testlog
+Source/.vs/SmaugCS/v16/TestStore/0/010.testlog

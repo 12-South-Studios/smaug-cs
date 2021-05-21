@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Library.Lua.Standard\Realm.Library.Lua.Standard.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ namespace Realm.Library.Common.Fact
     public class BidirectionalDictionaryFacts
     {
         private static BidirectionalDictionary<string, string> _dictionary;
-            
+
         public BidirectionalDictionaryFacts()
         {
             _dictionary = new BidirectionalDictionary<string, string>();
@@ -33,7 +33,7 @@ namespace Realm.Library.Common.Fact
         }
 
         [Theory]
-        [InlineData("SecondValue", "FirstLookupValue", true)]
+        [InlineData("SecondLookupValue", "SecondValue", true)]
         [InlineData("SecondLookupValue", "FirstLookupValue", false)]
         public void GetBySecondFact(string secondValue, string firstValue, bool expectedResult)
         {

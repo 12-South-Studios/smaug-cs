@@ -80,14 +80,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
-      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
-      <Name>Realm.Library.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj">
-      <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
-      <Name>Realm.Library.Lua</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
       <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
       <Name>Realm.Standard.Patterns.Repository</Name>

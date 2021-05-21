@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Library.Common.Standard\Realm.Library.Common.Standard.csproj" />
   </ItemGroup>
 
 </Project>

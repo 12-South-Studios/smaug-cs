@@ -70,14 +70,5 @@ namespace Realm.Library.Common.Test.Data
 
             atom.Equals(null).Should().BeFalse();
         }
-
-        [Fact]
-        public void StringAtomGetHashCodeTest()
-        {
-            const string value = "test";
-            var atom = new StringAtom(value);
-
-            atom.GetHashCode().Should().Be(-354185609);
-        }
     }
 }

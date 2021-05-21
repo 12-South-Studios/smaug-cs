@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Network\Realm.Library.Network.csproj" />
+    <ProjectReference Include="..\..\Libaries\Realm.Library.Network.Standard\Realm.Library.Network.Standard.csproj" />
   </ItemGroup>
 
 </Project>

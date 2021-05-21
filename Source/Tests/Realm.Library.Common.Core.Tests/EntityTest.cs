@@ -48,13 +48,5 @@ namespace Realm.Library.Common.Fact
 
             entity1.Equals(entity2).Should().BeTrue();
         }
-
-        [Fact]
-        public void EntityGetHashCodeFact()
-        {
-            var entity = new FakeEntity(1, "Fact");
-
-            entity.GetHashCode().Should().Be(358537656);
-        }
     }
 }

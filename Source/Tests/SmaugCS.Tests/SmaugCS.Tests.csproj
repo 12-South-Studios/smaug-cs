@@ -122,13 +122,13 @@
     <Compile Include="LuaLookupFunctionTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
-      <Project>{1fdee5bd-a724-4478-bca3-4c49daea291d}</Project>
-      <Name>Realm.Library.Common</Name>
+    <ProjectReference Include="..\..\Libaries\Realm.Library.Common.Standard\Realm.Library.Common.Standard.csproj">
+      <Project>{0bcd8318-9f1e-473e-9eb6-c00bf4945bf2}</Project>
+      <Name>Realm.Library.Common.Standard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj">
-      <Project>{02b1394b-866d-42ad-b187-ef9d9d459eb0}</Project>
-      <Name>Realm.Library.Lua</Name>
+    <ProjectReference Include="..\..\Libaries\Realm.Library.Lua.Standard\Realm.Library.Lua.Standard.csproj">
+      <Project>{79bbe47d-5ba3-4013-bb40-18794e7272ba}</Project>
+      <Name>Realm.Library.Lua.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
       <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
