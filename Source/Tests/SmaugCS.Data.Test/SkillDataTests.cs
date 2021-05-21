@@ -10,7 +10,7 @@ namespace SmaugCS.Data.Test
         public void Compare_NullSkill1_Test()
         {
             var sk = new SkillData(1, "Test");
-            
+
             Assert.That(SkillData.Compare(null, sk), Is.EqualTo(1));
         }
 
@@ -65,8 +65,8 @@ namespace SmaugCS.Data.Test
         [TestCase(SkillTypes.Tongue, SkillTypes.Skill, 1)]
         public void CompareByType_Test(SkillTypes type1, SkillTypes type2, int expectedValue)
         {
-            var sk1 = new SkillData(1, "Test1") {Type = type1};
-            var sk2 = new SkillData(2, "Test2") {Type = type2};
+            var sk1 = new SkillData(1, "Test1") { Type = type1 };
+            var sk2 = new SkillData(2, "Test2") { Type = type2 };
 
             Assert.That(SkillData.CompareByType(sk1, sk2), Is.EqualTo(expectedValue));
         }
@@ -76,8 +76,8 @@ namespace SmaugCS.Data.Test
         [TestCase("Test", "Test", 0)]
         public void CompareByType_CheckName_Test(string name1, string name2, int expectedValue)
         {
-            var sk1 = new SkillData(1, name1) {Type = SkillTypes.Herb};
-            var sk2 = new SkillData(2, name2) {Type = SkillTypes.Herb};
+            var sk1 = new SkillData(1, name1) { Type = SkillTypes.Herb };
+            var sk2 = new SkillData(2, name2) { Type = SkillTypes.Herb };
 
             Assert.That(SkillData.CompareByType(sk1, sk2), Is.EqualTo(expectedValue));
         }

@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
 using SmaugCS.Weather;
+using System.Linq;
 
 namespace SmaugCS.Extensions
 {

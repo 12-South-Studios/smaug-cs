@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Config;
 using SmaugCS.Constants.Enums;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 
 namespace SmaugCS.Constants.Constants
 {
@@ -20,7 +20,7 @@ namespace SmaugCS.Constants.Constants
         private static readonly Dictionary<SystemFileTypes, KeyValuePair<string, bool>> SystemFiles =
             new Dictionary<SystemFileTypes, KeyValuePair<string, bool>>();
 
-        private static readonly string[] BooleanConstants = {"true", "false", "1", "0", "yes", "no"};
+        private static readonly string[] BooleanConstants = { "true", "false", "1", "0", "yes", "no" };
 
         public static string GetSystemDirectory(string directory)
         {
@@ -87,7 +87,7 @@ namespace SmaugCS.Constants.Constants
 
         public static int LoadSystemDirectoriesFromConfig(string path)
         {
-            var section = (SystemDataConfigurationSection) ConfigurationManager.GetSection("SystemDataSection");
+            var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
             var collection = section.SystemDirectories;
 
             foreach (SystemDirectoryElement element in collection)

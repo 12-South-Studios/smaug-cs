@@ -24,7 +24,7 @@ namespace SmaugCS.Commands.Combat
             var msg = GetLevelConsiderMessage(levelDiff);
             comm.act(ATTypes.AT_CONSIDER, msg, ch, null, victim, ToTypes.Character);
 
-            levelDiff = (victim.MaximumHealth - ch.MaximumHealth)/6;
+            levelDiff = (victim.MaximumHealth - ch.MaximumHealth) / 6;
             msg = GetHealthConsiderMessage(levelDiff);
             comm.act(ATTypes.AT_CONSIDER, msg, ch, null, victim, ToTypes.Character);
         }

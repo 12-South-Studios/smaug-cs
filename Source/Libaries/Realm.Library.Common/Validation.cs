@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
 
 namespace Realm.Library.Common
 {
@@ -20,7 +18,7 @@ namespace Realm.Library.Common
         /// <param name="parameterName"></param>
         public static void IsNotNull(object obj, string parameterName)
         {
-            if (obj.IsNull()) throw new ArgumentNullException(parameterName, Resources.ERR_NULL_PARAMETER);
+            if (obj.IsNull()) throw new ArgumentNullException(parameterName, "Parameter is null");
         }
 
         /// <summary>
@@ -30,10 +28,10 @@ namespace Realm.Library.Common
         /// <param name="type"></param>
         public static void IsInstanceOfType(object obj, Type type)
         {
-            if (obj.IsNull()) throw new ArgumentNullException(nameof(obj), Resources.ERR_NULL_PARAMETER);
-            if (type.IsNull()) throw new ArgumentNullException(nameof(type), Resources.ERR_NULL_PARAMETER);
+            if (obj.IsNull()) throw new ArgumentNullException(nameof(obj), "Parameter is null");
+            if (type.IsNull()) throw new ArgumentNullException(nameof(type), "Parameter is null");
             if (obj.GetType() != type && !obj.GetType().IsSubclassOf(type))
-                throw new ArgumentException(string.Format(Resources.ERR_INVALID_TYPE, type));
+                throw new ArgumentException(string.Format("Object is not and does not derive from type {0}.", type));
         }
 
         /// <summary>
@@ -43,7 +41,7 @@ namespace Realm.Library.Common
         /// <param name="parameterName"></param>
         public static void IsNotNullOrEmpty(string obj, string parameterName)
         {
-            if (string.IsNullOrEmpty(obj)) throw new ArgumentNullException(parameterName, Resources.ERR_NULL_PARAMETER);
+            if (string.IsNullOrEmpty(obj)) throw new ArgumentNullException(parameterName, "Parameter is null");
         }
 
         /// <summary>
@@ -53,8 +51,8 @@ namespace Realm.Library.Common
         /// <param name="parameterName"></param>
         public static void IsNotEmpty<T>(ICollection<T> value, string parameterName = "")
         {
-            if (value.IsNull()) throw new ArgumentNullException(parameterName, Resources.ERR_NULL_PARAMETER);
-            if (value.Count == 0) throw new ArgumentException(Resources.ERR_EMPTY_COLLECTION, parameterName);
+            if (value.IsNull()) throw new ArgumentNullException(parameterName, "Parameter is null");
+            if (value.Count == 0) throw new ArgumentException("Collection contains no values", parameterName);
         }
 
         /// <summary>
@@ -64,8 +62,8 @@ namespace Realm.Library.Common
         /// <param name="parameterName"></param>
         public static void IsNotEmpty(ICollection value, string parameterName = "")
         {
-            if (value.IsNull()) throw new ArgumentNullException(parameterName, Resources.ERR_NULL_PARAMETER);
-            if (value.Count == 0) throw new ArgumentException(Resources.ERR_EMPTY_COLLECTION, parameterName);
+            if (value.IsNull()) throw new ArgumentNullException(parameterName, "Parameter is null");
+            if (value.Count == 0) throw new ArgumentException("Collection contains no values", parameterName);
         }
 
         /// <summary>
@@ -85,7 +83,6 @@ namespace Realm.Library.Common
         /// <param name="arg"></param>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        [SuppressMessage("Microsoft.Design", "CA1004")]
         public static void Validate<T>(bool arg, string message = "", params object[] args) where T : Exception
         {
             if (!arg) throw typeof(T).Instantiate<T>(string.Format(message, args));

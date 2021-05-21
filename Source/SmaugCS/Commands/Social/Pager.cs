@@ -1,10 +1,10 @@
-﻿using System;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System;
 
 namespace SmaugCS.Commands.Social
 {
@@ -14,7 +14,7 @@ namespace SmaugCS.Commands.Social
         {
             if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
-           ch.SetColor(ATTypes.AT_NOTE);
+            ch.SetColor(ATTypes.AT_NOTE);
             var firstArg = argument.FirstWord();
 
             if (string.IsNullOrEmpty(firstArg))

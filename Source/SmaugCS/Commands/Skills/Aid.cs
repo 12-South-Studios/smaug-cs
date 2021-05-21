@@ -29,7 +29,7 @@ namespace SmaugCS.Commands.Skills
             if (CheckFunctions.CheckIfNotNullObject(ch, ch.CurrentMount, "You can't do that while mounted.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "Aid yourself?")) return;
 
-            if ((int)victim.CurrentPosition >= (int) PositionTypes.Stunned)
+            if ((int)victim.CurrentPosition >= (int)PositionTypes.Stunned)
             {
                 comm.act(ATTypes.AT_PLAIN, "$N doesn't need your help.", ch, null, victim, ToTypes.Character);
                 return;
@@ -51,7 +51,7 @@ namespace SmaugCS.Commands.Skills
             if (!ch.CanUseSkill(percent, skill))
             {
                 ch.SendTo("You fail.");
-               skill.LearnFromFailure((PlayerInstance)ch);
+                skill.LearnFromFailure((PlayerInstance)ch);
                 return;
             }
 

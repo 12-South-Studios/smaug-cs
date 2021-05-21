@@ -1,5 +1,4 @@
-﻿using System;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
@@ -9,6 +8,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using System;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Repository
@@ -57,7 +57,7 @@ namespace SmaugCS.Repository
 
             if (isMobile)
             {
-                var mi = (MobileInstance) mob;
+                var mi = (MobileInstance)mob;
                 mi.SpecialFunction = mobParent.SpecialFunction;
 
                 if (!string.IsNullOrEmpty(mobParent.SpecFun))
@@ -72,9 +72,9 @@ namespace SmaugCS.Repository
                                  : mob.Level.Interpolate(100, -100);
 
             if (mobParent.HitDice == null || mobParent.HitDice.NumberOf == 0)
-                mob.MaximumHealth = mob.Level*8 + SmaugRandom.Between(mob.Level*mob.Level/4, mob.Level*mob.Level);
+                mob.MaximumHealth = mob.Level * 8 + SmaugRandom.Between(mob.Level * mob.Level / 4, mob.Level * mob.Level);
             else
-                mob.MaximumHealth = mobParent.HitDice.NumberOf*SmaugRandom.Between(1, mobParent.HitDice.SizeOf) +
+                mob.MaximumHealth = mobParent.HitDice.NumberOf * SmaugRandom.Between(1, mobParent.HitDice.SizeOf) +
                                     mobParent.HitDice.Bonus;
 
             mob.CurrentCoin = mobParent.GetStatistic<int>(StatisticTypes.Coin);
@@ -83,7 +83,7 @@ namespace SmaugCS.Repository
             mob.CurrentDefensivePosition = mobParent.GetDefensivePosition();
             mob.BareDice = new DiceData
             {
-                NumberOf = mobParent.DamageDice.NumberOf, 
+                NumberOf = mobParent.DamageDice.NumberOf,
                 SizeOf = mobParent.DamageDice.SizeOf
             };
             mob.ToHitArmorClass0 = mobParent.GetStatistic<int>(StatisticTypes.ToHitArmorClass0);

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
+using System;
+using System.Collections.Generic;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Extensions.Character
@@ -518,7 +517,7 @@ namespace SmaugCS.Extensions.Character
         }
         private static void ItemWearWield(ObjectInstance obj, CharacterInstance ch, bool replace, ItemWearFlags wearFlag)
         {
-            var strWieldMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var strWieldMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Wield);
 
             if (!ch.CouldDualWield())
@@ -555,7 +554,7 @@ namespace SmaugCS.Extensions.Character
                         comm.act(ATTypes.AT_ACTION, "You dual-wield $p.", ch, obj, null, ToTypes.Character);
                     }
 
-                    ch.Equip(obj, wearFlag == ItemWearFlags.MissileWield 
+                    ch.Equip(obj, wearFlag == ItemWearFlags.MissileWield
                         ? WearLocations.WieldMissile : WearLocations.DualWield);
                     MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
                     return;
@@ -590,7 +589,7 @@ namespace SmaugCS.Extensions.Character
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.MissileWeapon,
                 "You're already wielding a missile weapon.")) return;
 
-            var strWieldMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var strWieldMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Wield);
 
             if (CheckFunctions.CheckIfTrue(ch,
@@ -599,7 +598,7 @@ namespace SmaugCS.Extensions.Character
             if (CheckFunctions.CheckIfNotNullObject(ch, dw, "You're already wielding two weapons.")) return;
             if (CheckFunctions.CheckIfTrue(ch, hd != null || sd != null,
                 "You're already wielding a weapon AND holding something.")) return;
-            
+
             if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wields $p.", ch, obj, null, ToTypes.Room);

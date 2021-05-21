@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Shops;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data.Templates
 {
@@ -55,10 +55,10 @@ namespace SmaugCS.Data.Templates
         }
 
         public T GetStatistic<T>(StatisticTypes type)
-            => Statistics.ContainsKey(type) ? (T) Statistics[type] : default(T);
+            => Statistics.ContainsKey(type) ? (T)Statistics[type] : default(T);
 
         public void SetStatistic(string name, object value)
-            => Statistics[(StatisticTypes) EnumerationFunctions.GetEnumByName<StatisticTypes>(name)] = value;
+            => Statistics[(StatisticTypes)EnumerationFunctions.GetEnumByName<StatisticTypes>(name)] = value;
 
         public void SetStats1(int align, int level, int thac0, int ac, int gold, int xp)
         {
@@ -74,7 +74,7 @@ namespace SmaugCS.Data.Templates
         {
             HitDice = new DiceData
             {
-                NumberOf = numberHitDice, 
+                NumberOf = numberHitDice,
                 SizeOf = sizeHitDice,
                 Bonus = bonusHitDice
             };
@@ -84,7 +84,7 @@ namespace SmaugCS.Data.Templates
         {
             DamageDice = new DiceData
             {
-                NumberOf = numberDmgDice, 
+                NumberOf = numberDmgDice,
                 SizeOf = sizeDmgDice,
                 Bonus = bonusDmgDice
             };

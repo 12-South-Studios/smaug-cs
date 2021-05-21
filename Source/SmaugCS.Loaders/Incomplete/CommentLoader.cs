@@ -1,9 +1,9 @@
-﻿using System.IO;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Loaders.Loaders;
+using System.IO;
 
 namespace SmaugCS.Loaders.Incomplete
 {

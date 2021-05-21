@@ -13,7 +13,7 @@ namespace SmaugCS.Skills
 {
     public static class Dodge
     {
-        public static bool CheckDodge(CharacterInstance ch, CharacterInstance victim, 
+        public static bool CheckDodge(CharacterInstance ch, CharacterInstance victim,
             IRepositoryManager databaseManager = null, IGameManager gameManager = null)
         {
             if (!victim.IsAwake())
@@ -29,9 +29,9 @@ namespace SmaugCS.Skills
             int chances;
 
             if (victim.IsNpc())
-                chances = 60.GetLowestOfTwoNumbers(2*victim.Level);
+                chances = 60.GetLowestOfTwoNumbers(2 * victim.Level);
             else
-                chances = (int)Macros.LEARNED(victim, (int) skill.ID)/
+                chances = (int)Macros.LEARNED(victim, (int)skill.ID) /
                           (gameManager ?? GameManager.Instance).SystemData.DodgeMod;
 
             if (chances != 0 && victim.CurrentMorph != null)

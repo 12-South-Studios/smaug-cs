@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Xml.Serialization;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace SmaugCS.Data.Instances
 {

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Serialization;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace SmaugCS.Data
 {
@@ -60,7 +60,7 @@ namespace SmaugCS.Data
         public int Age { get; set; }
 
         [XmlIgnore]
-        public int NumberOfPlayers 
+        public int NumberOfPlayers
         {
             get { return Rooms.Sum(room => room.Persons.Count(x => !x.IsNpc())); }
         }

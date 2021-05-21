@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SmaugCS.Common.Enumerations;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.DAL.Models
 {

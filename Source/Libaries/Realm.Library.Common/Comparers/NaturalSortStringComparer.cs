@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Realm.Library.Common.Comparers
@@ -35,9 +34,6 @@ namespace Realm.Library.Common.Comparers
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [Obsolete("This compare function is not used")]
-        [SuppressMessage("Microsoft.Performance", "CA1822")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "x")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "y")]
         public int Compare(string x, string y)
         {
             throw new NotImplementedException();
@@ -52,15 +48,13 @@ namespace Realm.Library.Common.Comparers
             if (x == y)
                 return 0;
 
-            string[] x1, y1;
-
-            if (!_table.TryGetValue(x, out x1))
+            if (!_table.TryGetValue(x, out string[] x1))
             {
                 x1 = Regex.Split(x.Replace(" ", ""), "([0-9]+)");
                 _table.Add(x, x1);
             }
 
-            if (!_table.TryGetValue(y, out y1))
+            if (!_table.TryGetValue(y, out string[] y1))
             {
                 y1 = Regex.Split(y.Replace(" ", ""), "([0-9]+)");
                 _table.Add(y, y1);
@@ -88,11 +82,10 @@ namespace Realm.Library.Common.Comparers
 
         private static int PartCompare(string left, string right)
         {
-            int x, y;
-            if (!int.TryParse(left, out x))
+            if (!int.TryParse(left, out int x))
                 return string.Compare(left, right, StringComparison.Ordinal);
 
-            return !int.TryParse(right, out y)
+            return !int.TryParse(right, out int y)
                 ? string.Compare(left, right, StringComparison.Ordinal)
                 : x.CompareTo(y);
         }

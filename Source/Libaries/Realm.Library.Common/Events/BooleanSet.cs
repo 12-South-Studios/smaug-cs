@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Realm.Library.Common.Objects;
+using System.Collections.Generic;
 using System.Data;
-using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
 
 namespace Realm.Library.Common.Events
 
@@ -77,8 +76,8 @@ namespace Realm.Library.Common.Events
         public void CompleteItem(string itemName)
         {
             Validation.IsNotNullOrEmpty(itemName, "itemName");
-            Validation.Validate<KeyNotFoundException>(_set.ContainsKey(itemName), Resources.ERR_KEY_NOT_FOUND, itemName);
-            Validation.Validate<NoNullAllowedException>(_callback.IsNotNull(), Resources.ERR_NULL_CALLBACK);
+            Validation.Validate<KeyNotFoundException>(_set.ContainsKey(itemName), "{0} not found", itemName);
+            Validation.Validate<NoNullAllowedException>(_callback.IsNotNull(), "Callback function was null");
 
             _set.Remove(itemName);
 

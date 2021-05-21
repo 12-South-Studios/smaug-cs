@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Realm.Library.Common.Extensions
 {
@@ -14,8 +13,6 @@ namespace Realm.Library.Common.Extensions
         /// <typeparam name="T">Type</typeparam>
         /// <param name="action">Func to execute</param>
         /// <returns></returns>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-                 Justification = "Retries execution three times and rethrows the Exception.")]
         public static T WithRetry<T>(this Func<T> action)
         {
             var result = default(T);
@@ -78,7 +75,6 @@ namespace Realm.Library.Common.Extensions
         /// <typeparam name="TResult">Type of result</typeparam>
         /// <param name="func">Func that expects to be passed the paramter and returns a result</param>
         /// <returns></returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static Func<TParam1, Func<TResult>> Curry<TParam1, TResult>
             (this Func<TParam1, TResult> func)
         {

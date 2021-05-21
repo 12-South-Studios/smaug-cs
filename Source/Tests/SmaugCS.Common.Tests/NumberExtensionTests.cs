@@ -1,5 +1,5 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
 
 namespace SmaugCS.Common.Tests
 {
@@ -42,7 +42,7 @@ namespace SmaugCS.Common.Tests
         [TestCase(2, FakeEnumWithFlags.Two, true)]
         public void IsSetEnum(int val, Enum bit, bool expected)
         {
-            Assert.That(val.IsSet(bit), Is.EqualTo(expected));    
+            Assert.That(val.IsSet(bit), Is.EqualTo(expected));
         }
 
         [Test]

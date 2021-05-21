@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
+using System.Collections.Generic;
 
 namespace SmaugCS
 {

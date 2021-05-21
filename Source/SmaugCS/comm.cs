@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
@@ -13,6 +8,10 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace SmaugCS
 {
@@ -207,8 +206,8 @@ namespace SmaugCS
             if (string.IsNullOrEmpty(format) || ch == null)
                 return;
 
-            var flags1 = (int) ActFFlags.None;
-            var flags2 = (int) ActFFlags.None;
+            var flags1 = (int)ActFFlags.None;
+            var flags2 = (int)ActFFlags.None;
             var obj1 = arg1.CastAs<ObjectInstance>();
             var obj2 = arg2.CastAs<ObjectInstance>();
             var vch = arg2.CastAs<CharacterInstance>();
@@ -221,12 +220,12 @@ namespace SmaugCS
             // to pass like 8 different NULL parameters every time we need to call act()..
             if (format.Contains("$t"))
             {
-                flags1 |= (int) ActFFlags.Text;
+                flags1 |= (int)ActFFlags.Text;
                 obj1 = null;
             }
             if (format.Contains("$T") || format.Contains("$d"))
             {
-                flags2 |= (int) ActFFlags.Text;
+                flags2 |= (int)ActFFlags.Text;
                 vch = null;
                 obj2 = null;
             }
@@ -237,28 +236,28 @@ namespace SmaugCS
                 || format.Contains("$S")
                 || format.Contains("$Q"))
             {
-                flags2 |= (int) ActFFlags.CH;
+                flags2 |= (int)ActFFlags.CH;
                 obj2 = null;
             }
 
             if (format.Contains("$p"))
-                flags1 |= (int) ActFFlags.OBJ;
+                flags1 |= (int)ActFFlags.OBJ;
 
             if (format.Contains("$P"))
             {
-                flags2 |= (int) ActFFlags.OBJ;
+                flags2 |= (int)ActFFlags.OBJ;
                 vch = null;
             }
 
-            if (flags1 != (int) ActFFlags.None && flags1 != (int) ActFFlags.Text
-                && flags1 != (int) ActFFlags.CH && flags1 != (int) ActFFlags.OBJ)
+            if (flags1 != (int)ActFFlags.None && flags1 != (int)ActFFlags.Text
+                && flags1 != (int)ActFFlags.CH && flags1 != (int)ActFFlags.OBJ)
             {
                 LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags1);
                 obj1 = null;
             }
 
-            if (flags2 != (int) ActFFlags.None && flags2 != (int) ActFFlags.Text
-                && flags2 != (int) ActFFlags.CH && flags2 != (int) ActFFlags.OBJ)
+            if (flags2 != (int)ActFFlags.None && flags2 != (int)ActFFlags.Text
+                && flags2 != (int)ActFFlags.CH && flags2 != (int)ActFFlags.OBJ)
             {
                 LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags2);
                 vch = null;
@@ -289,24 +288,24 @@ namespace SmaugCS
             {
                 txt = act_string(format, null, ch, arg1, arg2, Program.STRING_IMM);
                 if (to.CurrentRoom.HasProg(MudProgTypes.Act))
-                    MudProgHandler.ExecuteRoomProg(MudProgTypes.Act, txt, to.CurrentRoom, ch, (ObjectInstance) arg1, arg2);
+                    MudProgHandler.ExecuteRoomProg(MudProgTypes.Act, txt, to.CurrentRoom, ch, (ObjectInstance)arg1, arg2);
 
                 foreach (var toObj in to.CurrentRoom.Contents
                     .Where(toObj => to.CurrentRoom.HasProg(MudProgTypes.Act)))
                 {
-                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Act, txt, toObj, ch, (ObjectInstance) arg1, arg2);
+                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Act, txt, toObj, ch, (ObjectInstance)arg1, arg2);
                 }
             }
 
             if (type == ToTypes.Character || type == ToTypes.Victim)
                 return;
 
-            foreach(var rch in ch.CurrentRoom.Persons)
+            foreach (var rch in ch.CurrentRoom.Persons)
             {
                 var playerInstance = to as PlayerInstance;
                 if (playerInstance != null && playerInstance.Descriptor == null)
                     continue;
-                
+
                 var instance = to as MobileInstance;
                 if (instance != null && !instance.MobIndex.HasProg(MudProgTypes.Act))
                     continue;
@@ -341,7 +340,7 @@ namespace SmaugCS
                 MudProgHandler.ExecuteMobileProg(MudProgTypes.Act, txt, to, ch, arg1, arg2);
             }
         }
-    
+
         public static string default_fprompt(CharacterInstance ch)
         {
             var sb = new StringBuilder("&w<&Y%hhp ");

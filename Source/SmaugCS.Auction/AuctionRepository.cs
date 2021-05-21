@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SmaugCS.DAL.Interfaces;
+using SmaugCS.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using SmaugCS.DAL.Interfaces;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Auction
 {

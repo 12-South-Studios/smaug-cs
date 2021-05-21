@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Realm.Library.Common;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -6,9 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Realm.Library.Common.Logging;
-using Realm.Library.Common.Exceptions;
-using Realm.Library.Common.Extensions;
 
 namespace Realm.Library.Network
 {
@@ -72,7 +72,6 @@ namespace Realm.Library.Network
         /// Writes a given message to the buffer which will be queued to send to the client stream.
         /// </summary>
         [ExcludeFromCodeCoverage]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502")]
         public void WriteToBuffer(string msg)
         {
             if (string.IsNullOrEmpty(msg)) return;

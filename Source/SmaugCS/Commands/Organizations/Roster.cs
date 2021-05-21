@@ -14,14 +14,14 @@ namespace SmaugCS.Commands.Organizations
         {
             if (ch.IsNpc())
             {
-               ch.SendTo("NPCs can't use this command.\r\n");
+                ch.SendTo("NPCs can't use this command.\r\n");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(argument))
             {
-               ch.SendTo("Usage: roster <clanname>\r\n");
-               ch.SendTo("Usage: roster <clanname> remove <name>\r\n");
+                ch.SendTo("Usage: roster <clanname>\r\n");
+                ch.SendTo("Usage: roster <clanname> remove <name>\r\n");
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace SmaugCS.Commands.Organizations
                     clan.ClanType == ClanTypes.Order ? "Guild" : "Clan");
                 ch.Printf("%-15.15s  %-15.15s %-6.6s %-6.6s %-6.6s %s\r\n",
                     "Name", "Class", "Level", "Kills", "Deaths", "Joined on");
-               ch.SendTo("-------------------------------------------------------------------------------------\r\n");
+                ch.SendTo("-------------------------------------------------------------------------------------\r\n");
 
                 var total = 0;
                 foreach (var member in clan.Members)
@@ -64,7 +64,7 @@ namespace SmaugCS.Commands.Organizations
             {
                 if (string.IsNullOrWhiteSpace(argument))
                 {
-                   ch.SendTo("Remove who from the roster?");
+                    ch.SendTo("Remove who from the roster?");
                     return;
                 }
 

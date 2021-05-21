@@ -36,7 +36,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                var pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance)ch;
                 if (CheckFunctions.CheckIfTrue(ch, pch.PlayerData.GetConditionValue(ConditionTypes.Full) >= 48
                     || pch.PlayerData.GetConditionValue(ConditionTypes.Thirsty) >= 48,
                     "Your stomach cannot contain any more.")) return;
@@ -62,7 +62,7 @@ namespace SmaugCS.Commands.Liquids
             if (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_FLASK_BREWING)
                 GameManager.Instance.SystemData.brewed_used++;
             else
-                GameManager.Instance.SystemData.upotion_val += obj.Cost/100;
+                GameManager.Instance.SystemData.upotion_val += obj.Cost / 100;
 
             // TODO global_objcode?
 
@@ -88,21 +88,21 @@ namespace SmaugCS.Commands.Liquids
             }
 
             if (ch.GetMyTarget() != null && ch.IsPKill())
-                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/5);
+                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond") / 5);
             else
-                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond")/3);
+                Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulsesPerSecond") / 3);
 
-            ((PlayerInstance) ch).GainCondition(ConditionTypes.Thirsty, 1);
+            ((PlayerInstance)ch).GainCondition(ConditionTypes.Thirsty, 1);
 
-            if (!ch.IsNpc() && ((PlayerInstance) ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
+            if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.GetConditionValue(ConditionTypes.Thirsty) > 43)
                 comm.act(ATTypes.AT_ACTION, "Your stomach is nearing its capacity.", ch, null, null,
                     ToTypes.Character);
 
-            var retcode = ch.ObjectCastSpell((int) obj.Values.Skill1ID, (int) obj.Values.SpellLevel, ch);
+            var retcode = ch.ObjectCastSpell((int)obj.Values.Skill1ID, (int)obj.Values.SpellLevel, ch);
             if (retcode == ReturnTypes.None)
-                retcode = ch.ObjectCastSpell((int) obj.Values.Skill2ID, (int) obj.Values.SpellLevel, ch);
+                retcode = ch.ObjectCastSpell((int)obj.Values.Skill2ID, (int)obj.Values.SpellLevel, ch);
             if (retcode == ReturnTypes.None)
-                retcode = ch.ObjectCastSpell((int) obj.Values.Skill3ID, (int) obj.Values.SpellLevel, ch);
+                retcode = ch.ObjectCastSpell((int)obj.Values.Skill3ID, (int)obj.Values.SpellLevel, ch);
         }
 
         private static void FumblePotion(CharacterInstance ch, ObjectInstance obj, bool hgFlag)
@@ -115,7 +115,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static bool PotionWasFumbled(CharacterInstance ch)
         {
-            return SmaugRandom.D100() > ch.GetCurrentDexterity()*2 + 48;
+            return SmaugRandom.D100() > ch.GetCurrentDexterity() * 2 + 48;
         }
 
         private static void QuaffNonPotion(CharacterInstance ch, ObjectInstance obj)

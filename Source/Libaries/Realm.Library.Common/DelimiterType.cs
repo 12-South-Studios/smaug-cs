@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Attributes;
+using System;
 using System.ComponentModel;
-using Realm.Library.Common.Attributes;
 
 namespace Realm.Library.Common
 {
@@ -11,8 +11,6 @@ namespace Realm.Library.Common
     [Flags]
     public enum DelimiterType
     {
-#pragma warning disable 1591
-
         [Enum("Whitespace", Value = 1)]
         [Description("\t\n\r ")]
         Whitespace,
@@ -43,7 +41,5 @@ namespace Realm.Library.Common
 
         [Enum("None", Value = 128)]
         None
-
-#pragma warning restore 1591
     }
 }

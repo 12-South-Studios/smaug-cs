@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using NCalc;
+﻿using NCalc;
 using Realm.Library.NCalc;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SmaugCS
 {
     public static class ExpressionTableInitializer
     {
-    public static ExpressionTable GetExpressionTable()
-    {
-      var table = new ExpressionTable();
-      table.Add(new CustomExpression
-      {
-        Name = "Level", 
-        RegexPattern = @"^?\b\w*[l|L]\w*\b$?",
+        public static ExpressionTable GetExpressionTable()
+        {
+            var table = new ExpressionTable();
+            table.Add(new CustomExpression
+            {
+                Name = "Level",
+                RegexPattern = @"^?\b\w*[l|L]\w*\b$?",
                 ExpressionFunction = LevelFunction,
                 ReplacementFunction = ReplaceLevelCall
             });

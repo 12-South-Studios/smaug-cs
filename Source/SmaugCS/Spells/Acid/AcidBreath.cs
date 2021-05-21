@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
+using System.Linq;
 
 namespace SmaugCS.Spells.Acid
 {
@@ -12,12 +12,12 @@ namespace SmaugCS.Spells.Acid
     {
         public static ReturnTypes spell_acid_breath(int sn, int level, CharacterInstance ch, object vo)
         {
-            var victim = (CharacterInstance) vo;
+            var victim = (CharacterInstance)vo;
 
             int chance;
             checked
             {
-                chance = 2*level;
+                chance = 2 * level;
             }
 
             if (ch.Chance(chance) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
@@ -37,7 +37,7 @@ namespace SmaugCS.Spells.Acid
             }
 
             var hpChange = 10.GetHighestOfTwoNumbers(ch.CurrentHealth);
-            var damage = SmaugRandom.Between(hpChange/16 + 1, hpChange/8);
+            var damage = SmaugRandom.Between(hpChange / 16 + 1, hpChange / 8);
 
             if (victim.SavingThrows.CheckSaveVsBreath(level, victim))
                 damage /= 2;
@@ -57,7 +57,7 @@ namespace SmaugCS.Spells.Acid
         private static void CheckDamageArmor(ObjectInstance obj, CharacterInstance victim)
         {
             if (obj.Value.ToList()[0] <= 0) return;
-            
+
             obj.Split();
             comm.act(ATTypes.AT_DAMAGE, "$p is pitted and etched!", victim, obj, null, ToTypes.Character);
 

@@ -1,7 +1,6 @@
-﻿using System;
-using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common.Attributes;
 using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
+using System;
 
 namespace Realm.Library.Common.Extensions
 
@@ -13,26 +12,20 @@ namespace Realm.Library.Common.Extensions
     {
         private static readonly string[] UnitsMap =
         {
-            Resources.MSG_ZERO, Resources.MSG_ONE, Resources.MSG_TWO, Resources.MSG_THREE,
-            Resources.MSG_FOUR, Resources.MSG_FIVE, Resources.MSG_SIX, Resources.MSG_SEVEN, Resources.MSG_EIGHT,
-            Resources.MSG_NINE, Resources.MSG_TEN, Resources.MSG_ELEVEN, Resources.MSG_TWELVE,
-            Resources.MSG_THIRTEEN, Resources.MSG_FOURTEEN, Resources.MSG_FIFTEEN, Resources.MSG_SIXTEEN,
-            Resources.MSG_SEVENTEEN, Resources.MSG_EIGHTEEN, Resources.MSG_NINETEEN
+            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen",
+            "nineteen"
         };
 
         private static readonly string[] TensMap =
         {
-            Resources.MSG_ZERO, Resources.MSG_TEN, Resources.MSG_TWENTY, Resources.MSG_THIRTY,
-            Resources.MSG_FORTY, Resources.MSG_FIFTY, Resources.MSG_SIXTY, Resources.MSG_SEVENTY,
-            Resources.MSG_EIGHTY, Resources.MSG_NINETY
+            "zero", "ten", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"
         };
 
         private static readonly string[] HourMap =
         {
-            Resources.MSG_ZERO, Resources.MSG_ONE, Resources.MSG_TWO, Resources.MSG_THREE,
-            Resources.MSG_FOUR, Resources.MSG_FIVE, Resources.MSG_SIX, Resources.MSG_SEVEN,
-            Resources.MSG_EIGHT, Resources.MSG_NINE, Resources.MSG_TEN, Resources.MSG_ELEVEN,
-            Resources.MSG_TWELVE
+            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+            "eleven", "twelve"
         };
 
         /// <summary>
@@ -42,8 +35,7 @@ namespace Realm.Library.Common.Extensions
         /// <returns>Returns true if the string is an integer</returns>
         public static bool IsNumeric(this object value)
         {
-            double result;
-            return value.IsNotNull() && double.TryParse(value.ToString(), out result);
+            return value.IsNotNull() && double.TryParse(value.ToString(), out _);
         }
 
         /// <summary>
@@ -55,42 +47,42 @@ namespace Realm.Library.Common.Extensions
         {
             string returnVal;
             if (value == 0)
-                returnVal = Resources.MSG_ZERO;
+                returnVal = "zero";
             else if (value < 0)
-                returnVal = $"{Resources.MSG_MINUS} {ToWords(Math.Abs(value))}";
+                returnVal = $"minus {ToWords(Math.Abs(value))}";
             else
             {
                 var words = string.Empty;
-                if (value/1000000 > 0)
+                if (value / 1000000 > 0)
                 {
-                    words += $"{ToWords(value/1000000)} {Resources.MSG_MILLION} ";
+                    words += $"{ToWords(value / 1000000)} million ";
                     value %= 1000000;
                 }
 
-                if (value/1000 > 0)
+                if (value / 1000 > 0)
                 {
-                    words += $"{ToWords(value/1000)} {Resources.MSG_THOUSAND} ";
+                    words += $"{ToWords(value / 1000)} thousand ";
                     value %= 1000;
                 }
 
-                if (value/100 > 0)
+                if (value / 100 > 0)
                 {
-                    words += $"{ToWords(value/100)} {Resources.MSG_HUNDRED} ";
+                    words += $"{ToWords(value / 100)} hundred ";
                     value %= 100;
                 }
 
                 if (value > 0)
                 {
                     if (!string.IsNullOrEmpty(words))
-                        words += Resources.MSG_AND + " ";
+                        words += "and ";
 
                     if (value < 20)
                         words += UnitsMap[value];
                     else
                     {
-                        words += TensMap[value/10];
-                        if (value%10 > 0)
-                            words += "-" + UnitsMap[value%10];
+                        words += TensMap[value / 10];
+                        if (value % 10 > 0)
+                            words += "-" + UnitsMap[value % 10];
                     }
                 }
 
@@ -107,7 +99,7 @@ namespace Realm.Library.Common.Extensions
         /// <returns></returns>
         public static string ConvertHour(this int hour)
         {
-            Validation.Validate(hour > 0 && hour <= 24, Resources.ERR_INVALID_HOUR);
+            Validation.Validate(hour > 0 && hour <= 24, "Invalid hour (must be between 0 and 24)");
 
             return hour > 12 ? HourMap[hour - 12] : HourMap[hour];
         }
@@ -120,10 +112,10 @@ namespace Realm.Library.Common.Extensions
         public static string ToPeriodOfDay(this int hour)
         {
             if (hour > 21 || hour < 5)
-                return Resources.MSG_NIGHT;
+                return "at night";
             if (hour < 12)
-                return Resources.MSG_MORNING;
-            return hour < 17 ? Resources.MSG_AFTERNOON : Resources.MSG_EVENING;
+                return "in the morning";
+            return hour < 17 ? "in the afternoon" : "in the evening";
         }
 
         /// <summary>
@@ -134,7 +126,7 @@ namespace Realm.Library.Common.Extensions
         public static string GetOrdinal(this int number)
         {
             var suf = "th";
-            if (number%100/10 == 1) return number + suf;
+            if (number % 100 / 10 == 1) return number + suf;
             switch (number % 10)
             {
                 case 1:

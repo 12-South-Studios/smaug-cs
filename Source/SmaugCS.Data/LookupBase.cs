@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
-    public abstract class LookupBase<T, TK> 
+    public abstract class LookupBase<T, TK>
         where T : Entity
         where TK : class, new()
     {

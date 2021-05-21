@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
+using System.Linq;
 
 namespace SmaugCS.Extensions
 {
@@ -14,7 +14,7 @@ namespace SmaugCS.Extensions
         public static void LearnFromSuccess(this SkillData skill, CharacterInstance ch)
         {
             if (ch.IsNpc()) return;
-            
+
             var pch = (PlayerInstance)ch;
             if (pch.PlayerData == null) return;
 
@@ -23,7 +23,7 @@ namespace SmaugCS.Extensions
                 return;
 
             int mastery = skill.GetMasteryLevel(pch);
-            var skillLevel = skill.SkillLevels.ToList()[(int) ch.CurrentClass];
+            var skillLevel = skill.SkillLevels.ToList()[(int)ch.CurrentClass];
             if (skillLevel == 0)
                 skillLevel = ch.Level;
 
@@ -45,33 +45,33 @@ namespace SmaugCS.Extensions
 
         private static int GainExperienceInSkill(CharacterInstance ch, int skillLevel)
         {
-            var gain = 20*skillLevel;
+            var gain = 20 * skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
                 gain *= 6;
             if (ch.CurrentClass == ClassTypes.Cleric)
                 gain *= 3;
 
-           ch.SetColor(ATTypes.AT_WHITE);
+            ch.SetColor(ATTypes.AT_WHITE);
             ch.Printf("You gain %d experience points from your success!", gain);
             return gain;
         }
 
         private static int GainMasteryOfSkill(SkillData skill, CharacterInstance ch, int skillLevel)
         {
-            var gain = 1000*skillLevel;
+            var gain = 1000 * skillLevel;
             if (ch.CurrentClass == ClassTypes.Mage)
                 gain *= 5;
             if (ch.CurrentClass == ClassTypes.Cleric)
                 gain *= 2;
 
-           ch.SetColor(ATTypes.AT_WHITE);
+            ch.SetColor(ATTypes.AT_WHITE);
             ch.Printf("You are now an adept of %s!  You gain %d bonus experience!", skill.Name, gain);
             return gain;
         }
 
         private static void GainLearningInSkill(SkillData skill, PlayerInstance ch, int mastery)
         {
-            var chance = ch.GetLearned((int) skill.ID) + 5*skill.difficulty;
+            var chance = ch.GetLearned((int)skill.ID) + 5 * skill.difficulty;
             var percent = SmaugRandom.D100();
             int learn;
 
@@ -88,18 +88,18 @@ namespace SmaugCS.Extensions
         public static void LearnFromFailure(this SkillData skill, CharacterInstance ch)
         {
             if (ch.IsNpc()) return;
-            
+
             var pch = (PlayerInstance)ch;
             if (pch.PlayerData == null) return;
 
-            var val = pch.GetLearned((int) skill.ID);
+            var val = pch.GetLearned((int)skill.ID);
             if (val <= 0) return;
 
-            var chance = pch.GetLearned((int) skill.ID) + 5*skill.difficulty;
+            var chance = pch.GetLearned((int)skill.ID) + 5 * skill.difficulty;
             if (chance - SmaugRandom.D100() > 25) return;
 
             int mastery = skill.GetMasteryLevel(pch);
-            if (pch.GetLearned((int) skill.ID) < mastery - 1)
+            if (pch.GetLearned((int)skill.ID) < mastery - 1)
             {
                 //pch.PlayerData.Learned.ToList().First(x => x == skill.ID) =
                 //    mastery.GetLowestOfTwoNumbers((int)(pch.GetLearned(skill.ID) + 1));
@@ -148,7 +148,7 @@ namespace SmaugCS.Extensions
 
         public static void AbilityLearnFromSuccess(this SkillData skill, PlayerInstance ch)
         {
-            var sn = (int) skill.ID;
+            var sn = (int)skill.ID;
 
             if (ch.IsNpc() || ch.PlayerData.Learned.ToList()[sn] <= 0)
                 return;
@@ -175,7 +175,7 @@ namespace SmaugCS.Extensions
                 if (ch.PlayerData.Learned.ToList()[sn] == adept)
                 {
                     gain = 1000 * skillLevel;
-                   ch.SetColor(ATTypes.AT_WHITE);
+                    ch.SetColor(ATTypes.AT_WHITE);
                     ch.Printf("You are now an adept of %s!  You gain %d bonus experience!", skill.Name,
                                     gain);
                 }

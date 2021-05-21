@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Exceptions;
+using System;
 using System.Runtime.Serialization;
-using Realm.Library.Common.Exceptions;
 
 namespace SmaugCS.Config
 {

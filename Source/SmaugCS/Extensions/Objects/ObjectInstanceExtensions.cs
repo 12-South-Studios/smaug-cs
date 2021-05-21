@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Ninject;
-using Realm.Library.Common.Extensions;
+﻿using Ninject;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
@@ -21,6 +16,10 @@ using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace SmaugCS.Extensions.Objects
 {
@@ -185,7 +184,7 @@ namespace SmaugCS.Extensions.Objects
             foreach (var relation in db.RELATIONS
                                                 .Where(relation => relation.Types == RelationTypes.OSet_On))
             {
-                if (obj == (ObjectInstance) relation.Subject)
+                if (obj == (ObjectInstance)relation.Subject)
                     relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
                 else
                     continue;
@@ -229,7 +228,7 @@ namespace SmaugCS.Extensions.Objects
             var wearLoc = (int)obj.WearLocation;
             var extraFlags = obj.ExtraFlags;
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.IsImmortal() 
+            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.IsImmortal()
                 && (!ch.IsNpc() || !ch.Act.IsSet(ActFlags.Prototype)))
                 return ch.CurrentRoom.AddTo(obj);
 
@@ -402,7 +401,7 @@ namespace SmaugCS.Extensions.Objects
         public static ObjectInstance Clone(this ObjectInstance obj)
         {
             var repo =
-                (ObjInstanceRepository) Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
+                (ObjInstanceRepository)Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
             return repo.Clone(obj);
         }
 

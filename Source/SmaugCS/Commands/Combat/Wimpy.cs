@@ -16,21 +16,21 @@ namespace SmaugCS.Commands.Combat
 
             int wimpy;
             if (firstArg.IsNullOrEmpty())
-                wimpy = ch.MaximumHealth/5;
+                wimpy = ch.MaximumHealth / 5;
             else if (firstArg.EqualsIgnoreCase("max"))
             {
                 if (ch.IsPKill())
-                    wimpy = (int) (ch.MaximumHealth/2.25f);
+                    wimpy = (int)(ch.MaximumHealth / 2.25f);
                 else
-                    wimpy = (int) (ch.MaximumHealth/1.2f);
+                    wimpy = (int)(ch.MaximumHealth / 1.2f);
             }
             else
                 wimpy = firstArg.ToInt32();
 
             if (CheckFunctions.CheckIfTrue(ch, wimpy < 0, "Your courage exceeds your wisdom.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, ch.IsPKill() && wimpy > (int) (ch.MaximumHealth/2.25f),
+            if (CheckFunctions.CheckIfTrue(ch, ch.IsPKill() && wimpy > (int)(ch.MaximumHealth / 2.25f),
                 "Such cowardice ill becomes you.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, wimpy > (int) (ch.MaximumHealth/1.2f), "Such cowardice ill becomes you."))
+            if (CheckFunctions.CheckIfTrue(ch, wimpy > (int)(ch.MaximumHealth / 1.2f), "Such cowardice ill becomes you."))
                 return;
 
             ch.wimpy = wimpy;

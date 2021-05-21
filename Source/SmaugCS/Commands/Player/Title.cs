@@ -13,7 +13,7 @@ namespace SmaugCS.Commands.Player
             if (ch.IsNpc())
                 return;
 
-           ch.SetColor(ATTypes.AT_SCORE);
+            ch.SetColor(ATTypes.AT_SCORE);
 
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < 5,
                 "Sorry... you must be at least level 5 to set your title...")) return;

@@ -51,8 +51,7 @@ namespace Realm.Library.Common.Extensions
         {
             try
             {
-                int val;
-                return int.TryParse(value, out val);
+                return int.TryParse(value, out int val);
             }
             catch (Exception)
             {

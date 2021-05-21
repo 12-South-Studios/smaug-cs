@@ -57,7 +57,7 @@ namespace SmaugCS.Tests.SpecFuns
         public void GetSpecFun_Invalid_Test()
         {
             GetSpecFun();
-            MockDbManager.Setup(x => x.GetEntity<SpecialFunction>(It.IsAny<string>())).Returns((SpecialFunction) null);
+            MockDbManager.Setup(x => x.GetEntity<SpecialFunction>(It.IsAny<string>())).Returns((SpecialFunction)null);
 
             Assert.That(Handler.GetSpecFun("spec_cast_cleric"), Is.Null);
         }

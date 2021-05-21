@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using log4net;
+﻿using log4net;
 using Ninject.Modules;
 using Realm.Library.Common.Logging;
+using System.Linq;
 
 namespace Integration.Tests
 {

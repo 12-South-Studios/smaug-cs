@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
-  public class CommandData : Entity
+    public class CommandData : Entity
     {
         public CommandData(long id, string name) : base(id, name)
         {

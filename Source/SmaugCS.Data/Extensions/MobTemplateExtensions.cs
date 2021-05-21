@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Data.Extensions
@@ -10,7 +10,7 @@ namespace SmaugCS.Data.Extensions
     public static class MobTemplateExtensions
     {
         public static int GetRace(this MobileTemplate template)
-            => (int) EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
+            => (int)EnumerationExtensions.GetEnumIgnoreCase<RaceTypes>(template.Race);
 
         public static PositionTypes GetPosition(this MobileTemplate template)
             => EnumerationExtensions.GetEnumIgnoreCase<PositionTypes>(template.Position);

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
@@ -21,7 +21,7 @@ namespace SmaugCS.Data
 
         public Dictionary<StatisticTypes, int> Statistics { get; private set; }
         public SavingThrowData SavingThrows { get; set; }
-        
+
         public CharacterMorph()
         {
             Statistics = new Dictionary<StatisticTypes, int>();

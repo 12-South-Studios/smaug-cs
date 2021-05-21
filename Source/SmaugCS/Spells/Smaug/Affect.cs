@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -8,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
@@ -29,7 +29,7 @@ namespace SmaugCS.Spells.Smaug
 
             if (!skill.Affects.Any())
                 return ReturnTypes.None;
-            
+
             var target = new TargetBooleanValues();
             if (skill.Flags.IsSet(SkillFlags.GroupSpell))
                 target.GroupSpell = true;
@@ -67,7 +67,7 @@ namespace SmaugCS.Spells.Smaug
                 CastTargetSpellAtVictim(ch, victim.CurrentRoom.Persons.First(), skill, target, level);
             else
                 victim.CurrentRoom.Persons.ToList().ForEach(vch => CastTargetSpellAtVictim(ch, vch, skill, target, level));
-            
+
             return ReturnTypes.None;
         }
 
@@ -129,12 +129,12 @@ namespace SmaugCS.Spells.Smaug
                     skill, ch, CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
             if (CheckFunctions.CheckIfTrueCasting(
-                    victim.IsAffectedBy((int) skill.ID) && !skill.Flags.IsSet(SkillFlags.Accumulative)
+                    victim.IsAffectedBy((int)skill.ID) && !skill.Flags.IsSet(SkillFlags.Accumulative)
                     && !skill.Flags.IsSet(SkillFlags.ReCastable), skill, ch, CastingFunctionType.Failed, victim))
                 return ReturnTypes.SpellFailed;
 
             var saf = skill.Affects.FirstOrDefault();
-            if (CheckFunctions.CheckIfTrueCasting(saf != null && saf.Location == (int) ApplyTypes.StripSN
+            if (CheckFunctions.CheckIfTrueCasting(saf != null && saf.Location == (int)ApplyTypes.StripSN
                                                   && !victim.IsAffectedBy(magic.ParseDiceExpression(ch, saf.Modifier)),
                 skill, ch, CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 

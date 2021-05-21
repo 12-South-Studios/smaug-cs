@@ -25,7 +25,7 @@ namespace Realm.Standard.Patterns.Factory
             var createFunctor = _products[key];
             return createFunctor();
         }
-        
+
         public virtual TV Creator<TU>() where TU : TV, new()
         {
             return new TU();

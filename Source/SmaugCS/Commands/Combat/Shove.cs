@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -47,7 +46,7 @@ namespace SmaugCS.Commands.Combat
                 "That character cannot be shoved right now.")) return;
 
             victim.CurrentPosition = PositionTypes.Shove;
-            
+
             var exitDir = EnumerationExtensions.GetEnumByName<DirectionTypes>(secondArg);
             var exit = ch.CurrentRoom.GetExit(exitDir);
             if (CheckFunctions.CheckIfNullObject(ch, exit, "There's no exit in that direction."))
@@ -80,7 +79,7 @@ namespace SmaugCS.Commands.Combat
             }
 
             var chance = GetChanceByCharacterClass(ch);
-            chance += (ch.GetCurrentStrength() - 15)*3;
+            chance += (ch.GetCurrentStrength() - 15) * 3;
             chance += ch.Level - victim.Level;
             chance += GetBonusByCharacterRace(ch);
 

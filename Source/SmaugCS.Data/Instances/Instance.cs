@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using SmaugCS.Data.Templates;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data.Instances
 {
@@ -24,22 +24,14 @@ namespace SmaugCS.Data.Instances
             if (obj == null) return false;
             if (obj.GetType() != GetType()) return false;
 
-            var objToCheck = (Instance) obj;
+            var objToCheck = (Instance)obj;
             return (objToCheck.ID == ID) && objToCheck.Name.Equals(Name);
-        }
-
-        public override int GetHashCode()
-        {
-            var hash = 13;
-            hash = hash * 7 + ID.GetHashCode();
-            hash = hash * 7 + Name.GetHashCode();
-            return hash;
         }
 
         public static bool operator ==(Instance a, Instance b)
         {
             if (ReferenceEquals(a, b)) return true;
-            if (((object)a == null) || ((object)b == null)) return false;
+            if (a is null || b is null) return false;
             return a.ID == b.ID && a.Name.Equals(b.Name);
         }
 

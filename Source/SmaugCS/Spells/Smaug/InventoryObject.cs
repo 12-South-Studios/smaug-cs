@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -9,6 +8,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
+using System.Linq;
 
 namespace SmaugCS.Spells.Smaug
 {
@@ -16,7 +16,7 @@ namespace SmaugCS.Spells.Smaug
     {
         public static ReturnTypes spell_obj_inv(int sn, int level, CharacterInstance ch, object vo)
         {
-            var obj = (ObjectInstance) vo;
+            var obj = (ObjectInstance)vo;
             var skill = RepositoryManager.Instance.SKILLS.Get(sn);
             var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
 
@@ -27,18 +27,18 @@ namespace SmaugCS.Spells.Smaug
                 case (int)SpellActTypes.Create:
                     if (skill.Flags.IsSet(SkillFlags.Water))
                         return CreateWaterSpellAction(skill, level, ch, obj, cell);
-                    if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Fire)
+                    if (Macros.SPELL_DAMAGE(skill) == (int)SpellDamageTypes.Fire)
                         return BurnObjectSpellAction(skill, ch, obj);
-                    if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison
-                        || Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Death)
+                    if (Macros.SPELL_DAMAGE(skill) == (int)SpellDamageTypes.Poison
+                        || Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Death)
                         return PoisonOrDeathSpellAction(skill, ch, obj);
-                    if (Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Life
+                    if (Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Life
                         &&
                         (obj.ItemType == ItemTypes.Food || obj.ItemType == ItemTypes.Cook ||
                          obj.ItemType == ItemTypes.DrinkContainer))
                         return PurifySpellAction(skill, ch, obj);
 
-                    return CheckFunctions.CheckIfTrueCasting(Macros.SPELL_CLASS(skill) != (int) SpellClassTypes.None,
+                    return CheckFunctions.CheckIfTrueCasting(Macros.SPELL_CLASS(skill) != (int)SpellClassTypes.None,
                         skill, ch, CastingFunctionType.Failed, null, obj)
                         ? ReturnTypes.None
                         : CloneObjectSpellAction(skill, level, ch, obj);
@@ -78,12 +78,12 @@ namespace SmaugCS.Spells.Smaug
             {
                 case (int)SpellPowerTypes.Minor:
                     if (CheckFunctions.CheckIfTrueCasting(
-                            (ch.Level - obj.Level < 20) || (obj.Cost > ch.Level*ch.GetCurrentIntelligence()/5),
+                            (ch.Level - obj.Level < 20) || (obj.Cost > ch.Level * ch.GetCurrentIntelligence() / 5),
                             skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
                 case (int)SpellPowerTypes.Greater:
                     if (CheckFunctions.CheckIfTrueCasting((ch.Level - obj.Level < 5) ||
-                        (obj.Cost > ch.Level*10*ch.GetCurrentIntelligence()*ch.GetCurrentWisdom()),
+                        (obj.Cost > ch.Level * 10 * ch.GetCurrentIntelligence() * ch.GetCurrentWisdom()),
                         skill, ch, CastingFunctionType.Failed, null, obj)) return ReturnTypes.None;
                     break;
                 case (int)SpellPowerTypes.Major:
@@ -137,7 +137,7 @@ namespace SmaugCS.Spells.Smaug
             if (CheckFunctions.CheckIfTrue(ch, obj.Value.ToList()[2] != 0 && obj.Value.ToList()[1] != 0, "It contains some other liquid."))
                 return ReturnTypes.SpellFailed;
 
-            var minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : level)*
+            var minVal = (!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : level) *
                          (cell.Precipitation >= 0 ? 2 : 1);
             var water = minVal.GetLowestOfTwoNumbers(obj.Value.ToList()[0] - obj.Value.ToList()[1]);
 
@@ -170,7 +170,7 @@ namespace SmaugCS.Spells.Smaug
 
         private static ReturnTypes OtherSpellAction(SkillData skill, CharacterInstance ch, ObjectInstance obj)
         {
-            if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison)
+            if (Macros.SPELL_DAMAGE(skill) == (int)SpellDamageTypes.Poison)
             {
                 if (CheckFunctions.CheckIfTrue(ch,
                     obj.ItemType != ItemTypes.DrinkContainer && obj.ItemType != ItemTypes.Food &&

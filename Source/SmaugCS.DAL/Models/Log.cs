@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SmaugCS.Common.Enumerations;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.DAL.Models
 {
@@ -19,7 +19,7 @@ namespace SmaugCS.DAL.Models
         public string Text { get; set; }
 
         public int SessionId { get; set; }
-        
+
         [ForeignKey("SessionId")]
         public virtual Session Session { get; set; }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -8,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
+using System.Collections.Generic;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Movement
 
             if (!ch.IsNpc())
             {
-                var pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance)ch;
 
                 if (ch.IsDrunk(2) && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag)
@@ -30,7 +30,7 @@ namespace SmaugCS.Commands.Movement
                 if (pch.PlayerData.Nuisance != null && pch.PlayerData.Nuisance.Flags > 8
                     && ch.CurrentPosition != PositionTypes.Shove
                     && ch.CurrentPosition != PositionTypes.Drag
-                    && SmaugRandom.D100() > pch.PlayerData.Nuisance.Flags*pch.PlayerData.Nuisance.Power)
+                    && SmaugRandom.D100() > pch.PlayerData.Nuisance.Flags * pch.PlayerData.Nuisance.Power)
                     nuisance = true;
             }
 
@@ -153,7 +153,7 @@ namespace SmaugCS.Commands.Movement
             }
 
             if (CheckFunctions.CheckIfTrue(ch, fall == 0 && ch.IsAffected(AffectedByTypes.Charm)
-                && ch.Master != null && inRoom == ch.Master.CurrentRoom, "What?  And leave your beloved master?")) 
+                && ch.Master != null && inRoom == ch.Master.CurrentRoom, "What?  And leave your beloved master?"))
                 return ReturnTypes.None;
 
             if (CheckFunctions.CheckIfTrue(ch, toRoom.IsPrivate(), "That room is private right now."))

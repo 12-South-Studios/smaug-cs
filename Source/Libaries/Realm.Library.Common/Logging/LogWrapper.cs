@@ -1,7 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using log4net;
+﻿using log4net;
 using log4net.Core;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Realm.Library.Common.Logging
 {

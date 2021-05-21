@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
-using Realm.Standard.Patterns.Command;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -13,12 +7,16 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SmaugCS
 {
     public static class interp
     {
-        private static readonly List<KeyValuePair<PositionTypes, string>> PositionMap 
+        private static readonly List<KeyValuePair<PositionTypes, string>> PositionMap
             = new List<KeyValuePair<PositionTypes, string>>
             {
                 new KeyValuePair<PositionTypes, string>(PositionTypes.Dead, "A little difficult to do when you are DEAD...\r\n"),
@@ -157,7 +155,7 @@ namespace SmaugCS
 
             ch.PreviousCommand = ch.LastCommand;
             ch.LastCommand = foundCmd.DoFunction;
-            
+
             // TODO Timer
 
             // tail_chain();

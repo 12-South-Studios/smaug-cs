@@ -2,9 +2,9 @@
 {
     public class ExtendedBitvector
     {
-        private ulong _bits; 
+        private ulong _bits;
 
-        public ExtendedBitvector() {}
+        public ExtendedBitvector() { }
 
         public ExtendedBitvector(ExtendedBitvector clone)
         {
@@ -17,7 +17,7 @@
 
         public bool IsSet(ulong bit) => (_bits & bit) > 0;
 
-        public bool IsSet(int bit) => IsSet((ulong) bit);
+        public bool IsSet(int bit) => IsSet((ulong)bit);
 
         #endregion
 
@@ -29,7 +29,7 @@
             return _bits;
         }
 
-        public ulong SetBit(int bit) => SetBit((ulong) bit);
+        public ulong SetBit(int bit) => SetBit((ulong)bit);
         #endregion
 
         #region RemoveBit
@@ -40,7 +40,7 @@
             return _bits;
         }
 
-        public ulong RemoveBit(int bit) => RemoveBit((ulong) bit);
+        public ulong RemoveBit(int bit) => RemoveBit((ulong)bit);
         #endregion
 
         #region ToggleBit
@@ -51,7 +51,7 @@
             return _bits;
         }
 
-        public ulong ToggleBit(int bit) => ToggleBit((ulong) bit);
+        public ulong ToggleBit(int bit) => ToggleBit((ulong)bit);
         #endregion
 
         /*#region Extended Bitvectors

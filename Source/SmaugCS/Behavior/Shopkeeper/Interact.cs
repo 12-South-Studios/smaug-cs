@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SmaugCS.Commands.Social;
+﻿using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -7,6 +6,7 @@ using SmaugCS.Data.Interfaces;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using System.Linq;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
@@ -24,7 +24,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (DoesKeeperHateFighting(keeper, ch)) return null;
             if (IsKeeperFighting(keeper, ch)) return null;
             if (IsShopClosed(keeper, ch, (gameManager ?? GameManager.Instance).GameTime.Hour)) return null;
-            if (CheckFunctions.CheckIfTrue(ch, keeper.CurrentPosition == PositionTypes.Sleeping, 
+            if (CheckFunctions.CheckIfTrue(ch, keeper.CurrentPosition == PositionTypes.Sleeping,
                 "While they're asleep?")) return null;
             if (CheckFunctions.CheckIfTrue(ch, (int)keeper.CurrentPosition < (int)PositionTypes.Sleeping,
                 "I don't think they can hear you...")) return null;

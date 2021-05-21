@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Commands.Movement
 {

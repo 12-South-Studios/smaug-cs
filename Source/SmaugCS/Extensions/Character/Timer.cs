@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using System;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -19,7 +19,7 @@ namespace SmaugCS.Extensions.Character
                 Count = count,
                 Type = type,
                 Value = value,
-                Action = new DoFunction {Value = fun}
+                Action = new DoFunction { Value = fun }
             };
             ch.Timers.ToList().Add(timer);
             return true;

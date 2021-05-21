@@ -5,7 +5,7 @@ namespace SmaugCS.Constants.Enums
     public enum StyleTypes
     {
         [Name("berserk")]
-        Berserk, 
+        Berserk,
 
         [Name("aggressive")]
         Aggressive,

@@ -28,7 +28,7 @@ namespace SmaugCS.Commands.MudProgs
             if (!victim.IsNpc() && ((PlayerInstance)victim).PlayerData.AuthState != AuthorizationStates.None) return;
 
             var buf =
-                $"{victim.Name}@{(victim.IsNpc() ? string.Empty : ((PlayerInstance) victim).Descriptor.host)} new {victim.CurrentRace.GetName()} {victim.CurrentClass.GetName()} {(victim.IsPKill() ? "(Deadly)" : "(Peaceful)")} applying...";
+                $"{victim.Name}@{(victim.IsNpc() ? string.Empty : ((PlayerInstance)victim).Descriptor.host)} new {victim.CurrentRace.GetName()} {victim.CurrentClass.GetName()} {(victim.IsPKill() ? "(Deadly)" : "(Peaceful)")} applying...";
 
             ChatManager.to_channel(buf, ChannelTypes.Auth, "Auth", LevelConstants.ImmortalLevel);
             if (!victim.IsNpc())

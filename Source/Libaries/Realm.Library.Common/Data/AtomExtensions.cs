@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common.Objects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common.Objects;
 
 namespace Realm.Library.Common.Data
 {
@@ -114,11 +114,11 @@ namespace Realm.Library.Common.Data
             list.Cast<object>().Where(value => value != null).ToList().ForEach(value =>
                 {
                     if (value is int)
-                        atom.Add(((int) value).ToAtom<IntAtom>());
+                        atom.Add(((int)value).ToAtom<IntAtom>());
                     else if (value is long || value is double || value is float)
-                        atom.Add(((long) value).ToAtom<RealAtom>());
+                        atom.Add(((long)value).ToAtom<RealAtom>());
                     else if (value is bool)
-                        atom.Add(((bool) value).ToAtom<BoolAtom>());
+                        atom.Add(((bool)value).ToAtom<BoolAtom>());
                     else
                     {
                         var s = value as string;
@@ -178,7 +178,7 @@ namespace Realm.Library.Common.Data
                     else if (value is bool)
                         atom.Set(info.Name, ((bool)value).ToAtom<BoolAtom>());
                     else
-                        atom.Set(info.Name, value.ToDictionaryAtom());  
+                        atom.Set(info.Name, value.ToDictionaryAtom());
                 });
 
             return atom;

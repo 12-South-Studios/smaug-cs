@@ -37,18 +37,18 @@ namespace SmaugCS.Spells.Smaug
         private static ReturnTypes CastIgnoreTargetSpell(SkillData skill, int level, CharacterInstance ch, object vo)
         {
             if (skill.Flags.IsSet(SkillFlags.Area)
-                && ((Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Destroy
-                     && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Life)
-                    || (Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Create
-                        && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Death)))
+                && ((Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Destroy
+                     && Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Life)
+                    || (Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Create
+                        && Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Death)))
                 return AreaAttack.spell_area_attack((int)skill.ID, level, ch, vo);
 
-            if (Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Create)
+            if (Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Create)
             {
                 if (skill.Flags.IsSet(SkillFlags.Object))
-                    return CreateObject.spell_create_obj((int) skill.ID, level, ch, vo);
-                if (Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Life)
-                    return CreateMob.spell_create_mob((int) skill.ID, level, ch, vo);
+                    return CreateObject.spell_create_obj((int)skill.ID, level, ch, vo);
+                if (Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Life)
+                    return CreateMob.spell_create_mob((int)skill.ID, level, ch, vo);
             }
 
             if (skill.Flags.IsSet(SkillFlags.Distant))
@@ -56,43 +56,43 @@ namespace SmaugCS.Spells.Smaug
                 var victim = ch.GetCharacterInWorld(Cast.TargetName);
                 if (victim != null && !victim.CurrentRoom.Flags.IsSet(RoomFlags.NoAstral)
                     && skill.Flags.IsSet(SkillFlags.Character))
-                    return Affect.spell_affect((int) skill.ID, level, ch, victim);
+                    return Affect.spell_affect((int)skill.ID, level, ch, victim);
             }
 
             if (skill.Flags.IsSet(SkillFlags.Character))
             {
                 var victim = ch.GetCharacterInWorld(Cast.TargetName);
                 if (victim != null)
-                    return Affect.spell_affect((int) skill.ID, level, ch, victim);
+                    return Affect.spell_affect((int)skill.ID, level, ch, victim);
             }
 
             if (skill.range > 0
-                && ((Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Destroy
-                     && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Life)
-                    || (Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Create
-                        && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Death)))
+                && ((Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Destroy
+                     && Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Life)
+                    || (Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Create
+                        && Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Death)))
                 return skills.ranged_attack(ch, Cast.RangedTargetName, null, null, (int)skill.ID, skill.range);
 
-            return Affect.spell_affect((int) skill.ID, level, ch, vo);
+            return Affect.spell_affect((int)skill.ID, level, ch, vo);
         }
 
         private static ReturnTypes CastOffensiveSpell(SkillData skill, int level, CharacterInstance ch, object vo)
         {
-            if ((Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Destroy
-                 && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Life)
-                || (Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Create
-                    && Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Death))
-                return Attack.spell_attack((int) skill.ID, level, ch, vo);
-            return Affect.spell_affect((int) skill.ID, level, ch, vo);
+            if ((Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Destroy
+                 && Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Life)
+                || (Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Create
+                    && Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Death))
+                return Attack.spell_attack((int)skill.ID, level, ch, vo);
+            return Affect.spell_affect((int)skill.ID, level, ch, vo);
         }
 
         private static ReturnTypes CastDefensiveOrSelfSpell(SkillData skill, int level, CharacterInstance ch, object vo)
         {
             if (CheckFunctions.CheckIfTrue(ch, skill.Flags.IsSet(SkillFlags.NoFight) && ch.IsInCombatPosition(),
                 "You can't concentrate enough for that!")) return ReturnTypes.None;
-            if (vo != null && Macros.SPELL_ACTION(skill) == (int) SpellActTypes.Destroy)
+            if (vo != null && Macros.SPELL_ACTION(skill) == (int)SpellActTypes.Destroy)
             {
-                if (Macros.SPELL_DAMAGE(skill) == (int) SpellDamageTypes.Poison)
+                if (Macros.SPELL_DAMAGE(skill) == (int)SpellDamageTypes.Poison)
                 {
                     var poisonSkill = RepositoryManager.Instance.GetEntity<SkillData>("poison");
                     if (poisonSkill == null)
@@ -101,7 +101,7 @@ namespace SmaugCS.Spells.Smaug
                     // TODO Do something with poison skill
                 }
 
-                if (Macros.SPELL_CLASS(skill) == (int) SpellClassTypes.Illusion)
+                if (Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Illusion)
                 {
                     var blindSkill = RepositoryManager.Instance.GetEntity<SkillData>("blindness");
                     if (blindSkill == null)
@@ -110,7 +110,7 @@ namespace SmaugCS.Spells.Smaug
                     // TODO Do something with blindness skill
                 }
             }
-            return Affect.spell_affect((int) skill.ID, level, ch, vo);
+            return Affect.spell_affect((int)skill.ID, level, ch, vo);
         }
     }
 }

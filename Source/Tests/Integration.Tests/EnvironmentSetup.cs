@@ -1,9 +1,9 @@
-﻿using System.Configuration;
-using System.Data.Entity;
-using System.Data.SqlClient;
-using Ninject;
+﻿using Ninject;
 using NUnit.Framework;
 using SmaugCS.DAL;
+using System.Configuration;
+using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace Integration.Tests
 {

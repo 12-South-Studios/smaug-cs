@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.MudProgs
 {

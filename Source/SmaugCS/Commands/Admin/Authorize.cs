@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.Commands.Admin
 {
@@ -36,7 +36,7 @@ namespace SmaugCS.Commands.Admin
 
             if (AuthorizeFunctionTable.ContainsKey(secondArg.ToLower()))
             {
-                AuthorizeFunctionTable[secondArg.ToLower()].Invoke((PlayerInstance) ch, (PlayerInstance) victim);
+                AuthorizeFunctionTable[secondArg.ToLower()].Invoke((PlayerInstance)ch, (PlayerInstance)victim);
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace SmaugCS.Commands.Admin
         private static void NameDenied_SimilarToImmortal(PlayerInstance ch, PlayerInstance victim)
         {
             victim.PlayerData.AuthState = AuthorizationStates.Denied;
-            
+
             throw new NotImplementedException();
         }
 

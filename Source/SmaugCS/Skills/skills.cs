@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
@@ -14,6 +13,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Spells.Smaug;
+using System.Linq;
 
 namespace SmaugCS.Skills
 {
@@ -70,8 +70,8 @@ namespace SmaugCS.Skills
                 return true;
             if (!ch.IsPKill() || !vch.IsPKill())
                 return false;
-            return ((PlayerInstance) ch).PlayerData.Clan == null ||
-                   ((PlayerInstance) ch).PlayerData.Clan != ((PlayerInstance) vch).PlayerData.Clan;
+            return ((PlayerInstance)ch).PlayerData.Clan == null ||
+                   ((PlayerInstance)ch).PlayerData.Clan != ((PlayerInstance)vch).PlayerData.Clan;
         }
 
 
@@ -79,9 +79,9 @@ namespace SmaugCS.Skills
         public static bool check_illegal_psteal(CharacterInstance ch, CharacterInstance victim)
         {
             if (victim.IsNpc() || ch.IsNpc()) return false;
-            return (!((PlayerInstance) victim).PlayerData.Flags.IsSet(PCFlags.Deadly)
+            return (!((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly)
                     || ch.Level - victim.Level > 10
-                    || !((PlayerInstance) victim).PlayerData.Flags.IsSet(PCFlags.Deadly))
+                    || !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly))
                    && (ch.CurrentRoom.ID < 29 || ch.CurrentRoom.ID > 43)
                    && ch != victim;
         }
@@ -218,7 +218,7 @@ namespace SmaugCS.Skills
                     projectile.Extract();
                 else
                 {
-                    if (projectile.InObject != null) 
+                    if (projectile.InObject != null)
                         projectile.RemoveFrom(projectile.InObject);
                     if (projectile.CarriedBy != null)
                         projectile.RemoveFrom();
@@ -314,7 +314,7 @@ namespace SmaugCS.Skills
             {
                 if (exit.Flags.IsSet(ExitFlags.Secret) || exit.Flags.IsSet(ExitFlags.Dig))
                     ch.SendTo("Are you expecting to fire through a wall?!");
-                else 
+                else
                     ch.SendTo("Are you expecting to fire through a door?!");
                 return ReturnTypes.None;
             }
@@ -427,7 +427,7 @@ namespace SmaugCS.Skills
 
                     if (projectile != null)
                     {
-                        
+
                     }
                 }
             }

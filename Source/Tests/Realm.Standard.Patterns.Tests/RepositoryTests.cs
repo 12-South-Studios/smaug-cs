@@ -1,6 +1,6 @@
+using FluentAssertions;
 using Realm.Standard.Patterns.Repository;
 using System.Collections.Generic;
-using FluentAssertions;
 using Xunit;
 
 namespace Realm.Standard.Patterns.Tests
@@ -27,7 +27,7 @@ namespace Realm.Standard.Patterns.Tests
             var repository = new TestRepository();
 
             var result = repository.Add("Test", new object());
-            result.Should().BeTrue();;
+            result.Should().BeTrue(); ;
         }
 
         [Fact]

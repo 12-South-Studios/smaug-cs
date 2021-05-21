@@ -14,7 +14,7 @@ namespace SmaugCS.Spells.Acid
 
             var lvl = 0.GetHighestOfTwoNumbers(level);
             lvl = 19.GetLowestOfTwoNumbers(lvl);
-            var damage = (int) (1.3f*(2*lvl*SmaugRandom.Roll(7, 1) + 11));
+            var damage = (int)(1.3f * (2 * lvl * SmaugRandom.Roll(7, 1) + 11));
 
             if (victim.SavingThrows.CheckSaveVsSpellStaff(lvl, victim))
                 damage /= 4;

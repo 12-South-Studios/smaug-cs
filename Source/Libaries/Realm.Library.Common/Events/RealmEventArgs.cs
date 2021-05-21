@@ -1,5 +1,5 @@
-using System;
 using Realm.Library.Common.Objects;
+using System;
 
 namespace Realm.Library.Common.Events
 

@@ -2,7 +2,6 @@
 
 namespace SmaugCS.Config
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface")]
     public class SystemDirectoryElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

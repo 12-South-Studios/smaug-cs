@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Commands.Liquids
 {
@@ -28,7 +28,7 @@ namespace SmaugCS.Commands.Liquids
                     comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, obj.Name, ToTypes.Character);
                     return;
                 }
-                if (CheckFunctions.CheckIfTrue(ch, obj.GetRealWeight()/obj.Count >= obj.Values.Capacity,
+                if (CheckFunctions.CheckIfTrue(ch, obj.GetRealWeight() / obj.Count >= obj.Values.Capacity,
                     "It's already full as it can be.")) return;
             }
             else
@@ -59,7 +59,7 @@ namespace SmaugCS.Commands.Liquids
                     all = true;
                 else if (obj.ItemType == ItemTypes.Pipe)
                 {
-                    source =ch.GetCarriedObject(secondArg);
+                    source = ch.GetCarriedObject(secondArg);
                     if (CheckFunctions.CheckIfNullObject(ch, source, "You don't have that item.")) return;
                     if (sourceItemTypes.All(x => x != source.ItemType))
                     {
@@ -90,13 +90,13 @@ namespace SmaugCS.Commands.Liquids
             switch (obj.ItemType)
             {
                 case ItemTypes.Container:
-                    return new List<ItemTypes> {ItemTypes.Container, ItemTypes.NpcCorpse, ItemTypes.PlayerCorpse};
+                    return new List<ItemTypes> { ItemTypes.Container, ItemTypes.NpcCorpse, ItemTypes.PlayerCorpse };
                 case ItemTypes.DrinkContainer:
-                    return new List<ItemTypes> {ItemTypes.Fountain, ItemTypes.Blood};
+                    return new List<ItemTypes> { ItemTypes.Fountain, ItemTypes.Blood };
                 case ItemTypes.HerbContainer:
-                    return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
+                    return new List<ItemTypes> { ItemTypes.Herb, ItemTypes.HerbContainer };
                 case ItemTypes.Pipe:
-                    return new List<ItemTypes> {ItemTypes.Herb, ItemTypes.HerbContainer};
+                    return new List<ItemTypes> { ItemTypes.Herb, ItemTypes.HerbContainer };
             }
 
             comm.act(ATTypes.AT_ACTION, "$n tries to fill $p... (Don't ask me how)", ch, obj, null, ToTypes.Room);

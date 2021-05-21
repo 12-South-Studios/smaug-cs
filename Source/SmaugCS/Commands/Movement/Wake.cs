@@ -29,7 +29,7 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            if (victim.IsAffected(AffectedByTypes.Sleep) || (int) victim.CurrentPosition < (int) PositionTypes.Sleeping)
+            if (victim.IsAffected(AffectedByTypes.Sleep) || (int)victim.CurrentPosition < (int)PositionTypes.Sleeping)
             {
                 comm.act(ATTypes.AT_PLAIN, "You can't seem to wake $M!", ch, null, victim, ToTypes.Character);
                 return;

@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using Realm.Library.Common.Objects;
+using System.Threading;
 using System.Threading.Tasks;
-using Realm.Library.Common.Objects;
 
 namespace Realm.Library.Common.Extensions
 

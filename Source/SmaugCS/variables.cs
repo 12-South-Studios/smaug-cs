@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
+using System;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
@@ -16,16 +15,16 @@ namespace SmaugCS
         public static VariableData make_variable(VariableTypes type, int vnum, string tag)
         {
             var var = new VariableData
-                                   {
-                                       Type = type,
-                                       Flags = 0,
-                                       vnum = vnum,
-                                       Tag = tag,
-                                       CTime = DateTime.Now,
-                                       MTime = DateTime.Now,
-                                       RTime = DateTime.MinValue,
-                                       Timer = 0
-                                   };
+            {
+                Type = type,
+                Flags = 0,
+                vnum = vnum,
+                Tag = tag,
+                CTime = DateTime.Now,
+                MTime = DateTime.Now,
+                RTime = DateTime.MinValue,
+                Timer = 0
+            };
 
             if (type == VariableTypes.ExtendedBit)
                 var.Data = new ExtendedBitvector();

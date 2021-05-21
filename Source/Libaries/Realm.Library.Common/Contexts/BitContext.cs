@@ -1,6 +1,6 @@
-﻿using System;
-using Realm.Library.Common.Entities;
+﻿using Realm.Library.Common.Entities;
 using Realm.Library.Common.Extensions;
+using System;
 
 namespace Realm.Library.Common.Contexts
 

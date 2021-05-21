@@ -65,11 +65,11 @@ namespace Realm.Library.Common.Security
                 var tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
 
                 using (var tdesAlgorithm = new TripleDESCryptoServiceProvider
-                    {
-                        Key = tdesKey,
-                        Mode = CipherMode.ECB,
-                        Padding = PaddingMode.PKCS7
-                    })
+                {
+                    Key = tdesKey,
+                    Mode = CipherMode.ECB,
+                    Padding = PaddingMode.PKCS7
+                })
                 {
                     var dataToEncrypt = utf8.GetBytes(message);
 
@@ -103,11 +103,11 @@ namespace Realm.Library.Common.Security
                 var tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
 
                 using (var tdesAlgorithm = new TripleDESCryptoServiceProvider
-                    {
-                        Key = tdesKey,
-                        Mode = CipherMode.ECB,
-                        Padding = PaddingMode.PKCS7
-                    })
+                {
+                    Key = tdesKey,
+                    Mode = CipherMode.ECB,
+                    Padding = PaddingMode.PKCS7
+                })
                 {
                     var dataToDecrypt = Convert.FromBase64String(message);
 

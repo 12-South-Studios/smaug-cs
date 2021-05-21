@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
@@ -22,6 +17,10 @@ using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
@@ -117,7 +116,7 @@ namespace SmaugCS
         }
 
         public static readonly List<DescriptorData> DESCRIPTORS = new List<DescriptorData>();
-        
+
         public static List<WatchData> WATCHES = new List<WatchData>();
 
         public static Dictionary<string, Dictionary<string, string>> TITLES = new Dictionary<string, Dictionary<string, string>>();
@@ -158,7 +157,7 @@ namespace SmaugCS
                         }*/
 
                         LogManager.Instance.Bug("Deleting %s exit in room %d",
-                                                LookupManager.Instance.GetLookup("DirectionNames", (int) exit.Direction),
+                                                LookupManager.Instance.GetLookup("DirectionNames", (int)exit.Direction),
                                                 room.ID);
                         exit.Extract();
                     }
@@ -209,10 +208,10 @@ namespace SmaugCS
             do
             {
                 var help = new HelpData
-                    {
-                        Level = proxy.ReadNumber(),
-                        Keyword = proxy.ReadToEndOfLine()
-                    };
+                {
+                    Level = proxy.ReadNumber(),
+                    Keyword = proxy.ReadToEndOfLine()
+                };
 
                 if (help.Keyword.StartsWith("#$"))
                     break;
@@ -347,8 +346,8 @@ namespace SmaugCS
                             && pch.CurrentRoom != null
                             && pch.CurrentRoom.Area == area))
                     {
-                       pch.SetColor(ATTypes.AT_RESET);
-                       pch.SendTo(buffer);
+                        pch.SetColor(ATTypes.AT_RESET);
+                        pch.SendTo(buffer);
                     }
                 }
 
@@ -863,45 +862,45 @@ namespace SmaugCS
             return newExit;
         }
 
-       /* public static void fix_area_exits(AreaData area)
-        {
-            for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
-            {
-                RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
-                if (room == null)
-                    continue;
+        /* public static void fix_area_exits(AreaData area)
+         {
+             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
+             {
+                 RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
+                 if (room == null)
+                     continue;
 
-                bool fexit = false;
-                foreach (ExitData exit in room.Exits)
-                {
-                    fexit = true;
-                    exit.Room_vnum = room.Vnum;
-                    exit.Destination = exit.vnum <= 0 ? 0 : RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
-                }
-                if (!fexit)
-                    room.Flags.SetBit((int)RoomFlags.NoMob);
-            }
+                 bool fexit = false;
+                 foreach (ExitData exit in room.Exits)
+                 {
+                     fexit = true;
+                     exit.Room_vnum = room.Vnum;
+                     exit.Destination = exit.vnum <= 0 ? 0 : RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
+                 }
+                 if (!fexit)
+                     room.Flags.SetBit((int)RoomFlags.NoMob);
+             }
 
-            for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
-            {
-                RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
-                if (room == null)
-                    continue;
+             for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
+             {
+                 RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
+                 if (room == null)
+                     continue;
 
-                foreach (ExitData exit in room.Exits)
-                {
-                    if (exit.Reverse < -0)
-                    {
-                        ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[(int)exit.Direction], room.Vnum);
-                        if (reverseExit != null)
-                        {
-                            exit.Reverse = reverseExit.ID;
-                            reverseExit.Reverse = exit.ID;
-                        }
-                    }
-                }
-            }
-        }*/
+                 foreach (ExitData exit in room.Exits)
+                 {
+                     if (exit.Reverse < -0)
+                     {
+                         ExitData reverseExit = exit.GetDestination().GetExitTo(GameConstants.rev_dir[(int)exit.Direction], room.Vnum);
+                         if (reverseExit != null)
+                         {
+                             exit.Reverse = reverseExit.ID;
+                             reverseExit.Reverse = exit.ID;
+                         }
+                     }
+                 }
+             }
+         }*/
 
         public static void process_sorting(AreaData area)
         {
@@ -960,7 +959,7 @@ namespace SmaugCS
 
 
 
- 
+
 
 
         public static void check_loginmsg(CharacterInstance ch)

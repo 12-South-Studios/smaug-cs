@@ -1,3 +1,7 @@
+using Realm.Library.Common;
+using Realm.Library.Common.Exceptions;
+using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -7,10 +11,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Realm.Library.Common.Exceptions;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Logging;
-using Realm.Library.Network.Properties;
 
 namespace Realm.Library.Network
 {
@@ -102,7 +102,7 @@ namespace Realm.Library.Network
             try
             {
                 //// configure the listener thread on the pre-defined port
-                Log.InfoFormat(Resources.MSG_TCPSERVER_START, port);
+                Log.InfoFormat("TcpServer starting up on port {0}", port);
                 Status = TcpServerStatus.Starting;
                 OnTcpServerStatusChanged?.Invoke(this, new NetworkEventArgs { ServerStatus = Status });
 
@@ -146,7 +146,7 @@ namespace Realm.Library.Network
                 _tcpListener = null;
             }
 
-            Log.Info(Resources.MSG_TCPSERVER_STOP);
+            Log.Info("TcpServer Shutdown.");
             Status = TcpServerStatus.Shutdown;
 
             OnTcpServerStatusChanged?.Invoke(this, new NetworkEventArgs { ServerStatus = Status });
@@ -171,7 +171,7 @@ namespace Realm.Library.Network
             try
             {
                 _tcpListener.Start();
-                Log.InfoFormat(Resources.MSG_TCPSERVER_LISTEN, _tcpListener.LocalEndpoint);
+                Log.InfoFormat("TcpServer Listening on {0}", _tcpListener.LocalEndpoint);
                 Status = TcpServerStatus.Listening;
 
                 OnTcpServerStatusChanged?.Invoke(this, new NetworkEventArgs { ServerStatus = Status });
@@ -181,7 +181,7 @@ namespace Realm.Library.Network
                     //// blocks until a client has connected to the server
                     if (_listenerThread.ThreadState != ThreadState.Running)
                     {
-                        Log.InfoFormat(Resources.MSG_TCPSERVER_STATE, _listenerThread.ThreadState);
+                        Log.InfoFormat("Listener Thread state {0}", _listenerThread.ThreadState);
                         break;
                     }
 
@@ -207,7 +207,7 @@ namespace Realm.Library.Network
             try
             {
                 if (!(client is TcpUser user))
-                    throw new InstanceNotFoundException(Resources.ERR_NO_TCPUSER);
+                    throw new InstanceNotFoundException("TcpUser was not found");
 
                 var clientStream = user.ClientStream;
 
@@ -236,7 +236,7 @@ namespace Realm.Library.Network
                     if (bytesRead == 0)
                     {
                         //// the client has disconnected from the server
-                        Log.InfoFormat(Resources.MSG_TCPUSER_DISCONNECT, user.Id, user.IpAddress);
+                        Log.InfoFormat("Client[{0}, {1}] disconnected.", user.Id, user.IpAddress);
                         break;
                     }
 
@@ -249,7 +249,7 @@ namespace Realm.Library.Network
 
                 //// lost the user
                 Repository.Delete(user.Id);
-                Log.InfoFormat(Resources.MSG_CONNECTION_LOST, user.IpAddress);
+                Log.InfoFormat("Connection Lost from {0}", user.IpAddress);
             }
             catch (InstanceNotFoundException ex)
             {

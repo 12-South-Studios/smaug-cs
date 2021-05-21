@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Commands;
@@ -20,6 +17,8 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
+using System;
+using System.Linq;
 
 namespace SmaugCS
 {
@@ -50,7 +49,7 @@ namespace SmaugCS
                 pre = result == 3 ? "You see " : "You notice ";
             }
 
-            return $"{pre}{LookupConstants.RoomSents[(int) sector][x]}{post}";
+            return $"{pre}{LookupConstants.RoomSents[(int)sector][x]}{post}";
         }
         private static string GetDecorateRoom_PreAndPost_2(SectorTypes sector, int x)
         {
@@ -67,13 +66,13 @@ namespace SmaugCS
                 pre = random == 1 ? "you see " : "over yonder ";
             }
 
-            return $"{pre}{LookupConstants.RoomSents[(int) sector][x]}{post}";
+            return $"{pre}{LookupConstants.RoomSents[(int)sector][x]}{post}";
         }
         private static string GetDecorateRoom_PreAndPost_3(SectorTypes sector, int x)
         {
             string[] outputArray = { ".", " not too far away.", ", and ", " nearby." };
 
-            return $"{string.Empty}{LookupConstants.RoomSents[(int) sector][x]}{outputArray[SmaugRandom.Between(0, 3)]}";
+            return $"{string.Empty}{LookupConstants.RoomSents[(int)sector][x]}{outputArray[SmaugRandom.Between(0, 3)]}";
         }
 
         public static void decorate_room(RoomTemplate room)
@@ -113,7 +112,7 @@ namespace SmaugCS
                             ? GetDecorateRoom_PreAndPost_2(sector, x)
                             : GetDecorateRoom_PreAndPost_3(sector, x);
                     else
-                        buf2 = $"{LookupConstants.RoomSents[(int) sector][x]}.";
+                        buf2 = $"{LookupConstants.RoomSents[(int)sector][x]}.";
 
                     if (len > 5 && buf2.EndsWith("."))
                     {
@@ -238,10 +237,10 @@ namespace SmaugCS
                 && !ch.IsImmortal())
             {
                 comm.act(ATTypes.AT_DEAD, "$n falls prey to a terrible death!", ch, null, null, ToTypes.Room);
-               ch.SetColor(ATTypes.AT_DEAD);
-               ch.SendTo("Oopsie... you're dead!");
+                ch.SetColor(ATTypes.AT_DEAD);
+                ch.SendTo("Oopsie... you're dead!");
 
-               var buffer = $"{ch.Name} hit a DEATH TRAP in room {ch.CurrentRoom.ID}!";
+                var buffer = $"{ch.Name} hit a DEATH TRAP in room {ch.CurrentRoom.ID}!";
                 ChatManager.to_channel(buffer, ChannelTypes.Monitor, "Monitor", (short)LevelConstants.ImmortalLevel);
                 ch.Extract(false);
             }
@@ -407,12 +406,12 @@ namespace SmaugCS
                 if (!string.IsNullOrEmpty(msg.ToChar))
                 {
                     comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null,
-                             LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Character);
+                             LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Character);
                     ch.SendTo("\r\n");
                 }
                 if (!string.IsNullOrEmpty(msg.ToRoom))
                     comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null,
-                             LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Room);
+                             LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Room);
 
                 if (!string.IsNullOrEmpty(msg.DestRoom)
                                           && xit.GetDestination().Persons.Any())
@@ -477,10 +476,10 @@ namespace SmaugCS
                         && ch.CurrentRoom.Persons.Any())
                     {
                         comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj,
-                                 LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction),
+                                 LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction),
                                  ToTypes.Character);
                         comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj,
-                                 LookupManager.Instance.GetLookup("DirectionNames", (int) xit.Direction), ToTypes.Room);
+                                 LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Room);
                     }
 
                     if (!string.IsNullOrEmpty(msg.DestObj) && ch.CurrentRoom.Persons.Any())

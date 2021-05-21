@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -11,6 +8,8 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System;
+using System.Collections.Generic;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Commands.Combat
@@ -23,7 +22,7 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, ch.HasTimer(TimerTypes.PKilled), "You can't drag a player right now."))
                 return;
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
 
             var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(pch, firstArg, "Drag whom?")) return;
@@ -39,10 +38,10 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, victim.HasTimer(TimerTypes.PKilled),
                 "You can't drag that player right now.")) return;
             if (CheckFunctions.CheckIf(ch, HelperFunctions.IsFighting,
-                "You try, but can't get close enough.", new List<object> {ch})) return;
+                "You try, but can't get close enough.", new List<object> { ch })) return;
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !victim.IsDeadly() && ch.IsDeadly(),
                 "You can't drag a deadly character.")) return;
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !ch.IsDeadly() && (int)ch.CurrentPosition > 3, 
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !ch.IsDeadly() && (int)ch.CurrentPosition > 3,
                 "They don't seem to need your assistance.")) return;
 
             var secondArg = argument.SecondWord();
@@ -77,7 +76,7 @@ namespace SmaugCS.Commands.Combat
                 return;
             }
 
-            if ((int) victim.CurrentPosition < (int) PositionTypes.Standing)
+            if ((int)victim.CurrentPosition < (int)PositionTypes.Standing)
             {
                 DragIntoNextRoom(ch, victim, exit);
                 return;
@@ -97,7 +96,7 @@ namespace SmaugCS.Commands.Combat
         private static int CalculateChanceToDrag(CharacterInstance ch, CharacterInstance victim)
         {
             var chance = GetChanceByCharacterClass(ch);
-            chance += (ch.GetCurrentStrength() - 15)*3;
+            chance += (ch.GetCurrentStrength() - 15) * 3;
             chance += ch.Level - victim.Level;
             chance += GetBonusByCharacterRace(ch);
             return chance;

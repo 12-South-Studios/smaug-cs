@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using SmaugCS.Common.Enumerations;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using SmaugCS.Common.Enumerations;
 
 namespace SmaugCS.Board
 {
@@ -39,7 +39,7 @@ namespace SmaugCS.Board
         }
 
         public void AddNotes(IEnumerable<NoteData> notes) => Notes.ToList().AddRange(notes);
-       
+
         public void RemoveNote(NoteData note)
         {
             if (note == null) return;

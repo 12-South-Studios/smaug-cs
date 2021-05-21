@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -9,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.Spells
 {
@@ -23,7 +22,7 @@ namespace SmaugCS.Spells
 
             if (CheckFunctions.CheckIfTrueCasting(victim.Immunity.IsSet(ResistanceTypes.Magic), skill, ch, CastingFunctionType.Immune, victim))
                 return ReturnTypes.SpellFailed;
-            
+
             if (CheckFunctions.CheckIfTrueCasting(victim.IsNpc() && victim.IsAffected(AffectedByTypes.Possess), skill,
                 ch, CastingFunctionType.Immune, victim))
                 return ReturnTypes.SpellFailed;
@@ -53,7 +52,7 @@ namespace SmaugCS.Spells
             }
 
             bool continueOuterLoop = true;
-            int affectedBy ;
+            int affectedBy;
             bool found = false;
             int cnt = 0, times = 0;
 
@@ -64,7 +63,7 @@ namespace SmaugCS.Spells
                 // grab affected_by from mobs first
                 if (victim.IsNpc() && victim.AffectedBy > 0)
                 {
-                    for (;;)
+                    for (; ; )
                     {
                         affectedBy = SmaugRandom.Between(0, EnumerationFunctions.MaximumEnumValue<AffectedByTypes>() - 1);
                         if (victim.IsAffectedBy(affectedBy))
@@ -82,7 +81,7 @@ namespace SmaugCS.Spells
                     // is it a spell?
                     if (found)
                     {
-                        foreach(var af in victim.Affects)
+                        foreach (var af in victim.Affects)
                         {
                             paf = af;
                             if (paf.Type.IsSet(affectedBy))
@@ -105,7 +104,7 @@ namespace SmaugCS.Spells
                                 return ReturnTypes.SpellFailed;
                             }
 
-                            if (magic.dispel_casting(paf, ch, victim, 0, true) != 0 && times == 0) 
+                            if (magic.dispel_casting(paf, ch, victim, 0, true) != 0 && times == 0)
                                 ch.SuccessfulCast(skill, victim);
                             victim.RemoveAffect(paf);
 

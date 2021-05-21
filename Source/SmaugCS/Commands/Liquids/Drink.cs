@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -11,6 +10,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System.Linq;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Liquids
@@ -42,7 +42,7 @@ namespace SmaugCS.Commands.Liquids
             DrinkFrom(ch, obj);
 
             var pulsesPerSecond = GameConstants.GetSystemValue<int>("PulsesPerSecond");
-            Macros.WAIT_STATE(ch, ch.GetMyTarget() != null && ch.IsPKill() ? pulsesPerSecond/3 : pulsesPerSecond);
+            Macros.WAIT_STATE(ch, ch.GetMyTarget() != null && ch.IsPKill() ? pulsesPerSecond / 3 : pulsesPerSecond);
         }
 
         private static ObjectInstance GetDrinkSource(CharacterInstance ch, string arg)
@@ -89,7 +89,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                var pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance)ch;
                 if (CheckFunctions.CheckIfTrue(ch, pch.GetCondition(ConditionTypes.Full) == GetMaximumCondition()
                     || pch.GetCondition(ConditionTypes.Thirsty) == GetMaximumCondition(),
                     "Your stomach is too full to drink more!")) return;
@@ -106,7 +106,7 @@ namespace SmaugCS.Commands.Liquids
 
             if (!ch.IsNpc())
             {
-                var pch = (PlayerInstance) ch;
+                var pch = (PlayerInstance)ch;
                 pch.GainCondition(ConditionTypes.Thirsty, liquid.GetMod(ConditionTypes.Thirsty));
                 pch.GainCondition(ConditionTypes.Full, liquid.GetMod(ConditionTypes.Full));
                 pch.GainCondition(ConditionTypes.Drunk, liquid.GetMod(ConditionTypes.Drunk));
@@ -172,9 +172,9 @@ namespace SmaugCS.Commands.Liquids
             var cond = ch.GetCondition(ConditionTypes.Drunk);
             var maxCond = GetMaximumCondition();
 
-            if (cond > maxCond/2 && cond < maxCond*0.4f)
+            if (cond > maxCond / 2 && cond < maxCond * 0.4f)
                 ch.SendTo("You feel quite sloshed.");
-            else if (cond >= maxCond*0.4f && cond < maxCond*0.6f)
+            else if (cond >= maxCond * 0.4f && cond < maxCond * 0.6f)
                 ch.SendTo("You start to feel a little drunk.");
             else if (cond >= maxCond * 0.6f && cond < maxCond * 0.9f)
                 ch.SendTo("Your vision starts to get blurry.");
@@ -241,7 +241,7 @@ namespace SmaugCS.Commands.Liquids
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsVampire(), "It is not in your nature to do such things.")) return;
 
-            if (obj.Timer < 0 && ch.Level > 5 && ch.GetCondition(ConditionTypes.Bloodthirsty) > 5 + ch.Level/10)
+            if (obj.Timer < 0 && ch.Level > 5 && ch.GetCondition(ConditionTypes.Bloodthirsty) > 5 + ch.Level / 10)
             {
                 ch.SendTo("It is beneath you to stoop to drinking blood from the ground!");
                 ch.SendTo("Unless in dire need, you'd much rather have blood from a victim's neck!");

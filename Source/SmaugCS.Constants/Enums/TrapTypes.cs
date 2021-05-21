@@ -5,7 +5,7 @@
         None = 0,
 
         [Descriptor("surrounded by a green cloud of gas", "poison")]
-        PoisonGas = 1, 
+        PoisonGas = 1,
 
         [Descriptor("hit by a dart", "poison")]
         PoisonDart,
@@ -14,10 +14,10 @@
         PoisonNeedle,
 
         [Descriptor("stabbed by a dagger", "poison")]
-        PoisonDagger, 
+        PoisonDagger,
 
         [Descriptor("struck with an arrow", "poison")]
-        PoisonArrow, 
+        PoisonArrow,
 
         [Descriptor("surrounded by a red cloud of gas", "blindness")]
         BlindnessGas,
@@ -32,7 +32,7 @@
         Explosion,
 
         [Descriptor("covered by a spray of acid", "acid blast")]
-        AcidSpray, 
+        AcidSpray,
 
         [Descriptor("suddenly shocked", "")]
         ElectricShock,

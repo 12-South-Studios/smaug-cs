@@ -14,7 +14,7 @@ namespace SmaugCS.SpecFuns
             if (!ch.IsInCombatPosition()) return false;
 
             var victim = ch.GetMyTarget();
-            if (victim == null || (SmaugRandom.D100() > 2*ch.Level)) return false;
+            if (victim == null || (SmaugRandom.D100() > 2 * ch.Level)) return false;
 
             comm.act(ATTypes.AT_HIT, "You bite $N!", ch, null, victim, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n bites $N!", ch, null, victim, ToTypes.NotVictim);

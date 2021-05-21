@@ -161,9 +161,9 @@ namespace Realm.Library.Common.Collections
         /// <summary>
         /// 
         /// </summary>
-        private XmlSerializer ValueSerializer => _valueSerializer ?? (_valueSerializer = new XmlSerializer(typeof (TVal)));
+        private XmlSerializer ValueSerializer => _valueSerializer ?? (_valueSerializer = new XmlSerializer(typeof(TVal)));
 
-        private XmlSerializer KeySerializer => _keySerializer ?? (_keySerializer = new XmlSerializer(typeof (TKey)));
+        private XmlSerializer KeySerializer => _keySerializer ?? (_keySerializer = new XmlSerializer(typeof(TKey)));
 
         #endregion
 

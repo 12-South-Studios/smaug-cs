@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Logging;
-using Realm.Library.Common.Properties;
 
 namespace Realm.Library.Common.Data
 {
@@ -42,7 +41,7 @@ namespace Realm.Library.Common.Data
         {
             Validation.IsNotNull(log, "log");
 
-            log.InfoFormat(Resources.LOG_REAL_ATOM_FORMAT, prefix, Value);
+            log.InfoFormat("{0}:{1}(RealAtom)", prefix, Value);
         }
     }
 }

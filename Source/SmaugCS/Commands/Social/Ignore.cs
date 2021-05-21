@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
+using System;
+using System.Linq;
 
 namespace SmaugCS.Commands.Social
 {
@@ -15,7 +15,7 @@ namespace SmaugCS.Commands.Social
         {
             var arg = argument.FirstWord();
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
             if (string.IsNullOrEmpty(arg))
             {
                 DisplayIgnoreList(pch);
@@ -30,7 +30,7 @@ namespace SmaugCS.Commands.Social
 
             if (arg.EqualsIgnoreCase("self") || pch.Name.IsAnyEqual(arg))
             {
-               pch.SetColor(ATTypes.AT_IGNORE);
+                pch.SetColor(ATTypes.AT_IGNORE);
                 pch.Printf("Did you type something?");
                 return;
             }
@@ -40,13 +40,13 @@ namespace SmaugCS.Commands.Social
 
         private static void DisplayIgnoreList(PlayerInstance ch)
         {
-           ch.SetColor(ATTypes.AT_DIVIDER);
+            ch.SetColor(ATTypes.AT_DIVIDER);
             ch.Printf("----------------------------------------");
-           ch.SetColor(ATTypes.AT_DGREEN);
+            ch.SetColor(ATTypes.AT_DGREEN);
             ch.Printf("You are currently ignoring:");
-           ch.SetColor(ATTypes.AT_DIVIDER);
+            ch.SetColor(ATTypes.AT_DIVIDER);
             ch.Printf("----------------------------------------");
-           ch.SetColor(ATTypes.AT_IGNORE);
+            ch.SetColor(ATTypes.AT_IGNORE);
 
             foreach (var ignore in ch.PlayerData.Ignored)
             {
@@ -57,7 +57,7 @@ namespace SmaugCS.Commands.Social
         private static void ClearIgnoreList(PlayerInstance ch)
         {
             ch.PlayerData.Ignored.Clear();
-           ch.SetColor(ATTypes.AT_IGNORE);
+            ch.SetColor(ATTypes.AT_IGNORE);
             ch.Printf("You now ignore no one.");
         }
 
@@ -69,7 +69,7 @@ namespace SmaugCS.Commands.Social
             {
                 if (ch.ReplyTo == null)
                 {
-                   ch.SetColor(ATTypes.AT_IGNORE);
+                    ch.SetColor(ATTypes.AT_IGNORE);
                     ch.Printf("They're not here.");
                     return;
                 }
@@ -87,7 +87,7 @@ namespace SmaugCS.Commands.Social
                 RepositoryManager.Instance.CHARACTERS.Values.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
             if (victim == null)
             {
-               ch.SetColor(ATTypes.AT_IGNORE);
+                ch.SetColor(ATTypes.AT_IGNORE);
                 ch.SendTo("No player exists by that name.");
                 return;
             }
@@ -103,7 +103,7 @@ namespace SmaugCS.Commands.Social
 
             // TODO Save it to the database?
 
-           ch.SetColor(ATTypes.AT_IGNORE);
+            ch.SetColor(ATTypes.AT_IGNORE);
             ch.Printf("You now ignore %s.", name);
         }
 
@@ -112,7 +112,7 @@ namespace SmaugCS.Commands.Social
             var ignore = ch.PlayerData.Ignored.First(x => x.Name.EqualsIgnoreCase(name));
             ch.PlayerData.Ignored.Remove(ignore);
 
-           ch.SetColor(ATTypes.AT_IGNORE);
+            ch.SetColor(ATTypes.AT_IGNORE);
             ch.Printf("You no longer ignore %s.", name);
         }
     }

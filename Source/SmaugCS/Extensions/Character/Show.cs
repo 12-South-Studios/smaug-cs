@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -9,6 +7,8 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions.Player;
+using System;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -66,7 +66,7 @@ namespace SmaugCS.Extensions.Character
                 || (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.MobInvisibility)))
             {
                 if (!victim.IsNpc())
-                    buffer += $"(Invis {((PlayerInstance) victim).PlayerData.WizardInvisible}) ";
+                    buffer += $"(Invis {((PlayerInstance)victim).PlayerData.WizardInvisible}) ";
                 else
                     buffer += $"(MobInvis {victim.MobInvisible}) ";
             }

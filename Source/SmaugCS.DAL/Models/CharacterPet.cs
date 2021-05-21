@@ -28,6 +28,6 @@ namespace SmaugCS.DAL.Models
 
         public int Flags { get; set; }
 
-        public virtual ICollection<CharacterItem> Items { get; set; } 
+        public virtual ICollection<CharacterItem> Items { get; set; }
     }
 }

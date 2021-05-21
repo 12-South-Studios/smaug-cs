@@ -1,7 +1,7 @@
 ﻿namespace SmaugCS.Data
 {
-  public enum LogAction 
-  {
-    Never, Normal, Always
-  }
+    public enum LogAction
+    {
+        Never, Normal, Always
+    }
 }

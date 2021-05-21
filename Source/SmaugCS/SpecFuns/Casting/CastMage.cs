@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Mobile;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.SpecFuns.Casting
 {

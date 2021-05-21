@@ -7,8 +7,8 @@ namespace SmaugCS.MudProgs.MobileProgs
     {
         public static bool Execute(object[] args)
         {
-            var killer = (CharacterInstance) args[0];
-            var mob = (MobileInstance) args[1];
+            var killer = (CharacterInstance)args[0];
+            var mob = (MobileInstance)args[1];
 
             if (mob.IsNpc() && killer != mob &&
                 mob.MobIndex.HasProg(MudProgTypes.Death))

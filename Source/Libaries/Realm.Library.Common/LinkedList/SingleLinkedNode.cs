@@ -14,6 +14,6 @@ namespace Realm.Library.Common.LinkedList
         /// <summary>
         /// 
         /// </summary>
-        public SingleLinkedNode<T> Next { get; set; } 
+        public SingleLinkedNode<T> Next { get; set; }
     }
 }

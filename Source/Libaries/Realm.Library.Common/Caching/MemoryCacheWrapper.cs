@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Realm.Library.Common.Objects;
+using System;
 using System.Collections.Specialized;
 using System.Runtime.Caching;
-using Realm.Library.Common.Objects;
 
 namespace Realm.Library.Common.Caching
 
@@ -29,9 +29,9 @@ namespace Realm.Library.Common.Caching
 
             _isDisposed = false;
             CacheItemPolicy = new CacheItemPolicy
-                                {
-                                    SlidingExpiration = new TimeSpan(1, 0, 0)
-                                };
+            {
+                SlidingExpiration = new TimeSpan(1, 0, 0)
+            };
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Realm.Library.Common.Caching
         /// <returns></returns>
         public bool TryGetValue(string key, out T value)
         {
-            value = default(T);
+            value = default;
 
             object item = _memoryCache.Get(key);
             if (!item.IsNotNull()) return false;
@@ -111,7 +111,7 @@ namespace Realm.Library.Common.Caching
         /// <returns></returns>
         public bool TryRemove(string key, out T value)
         {
-            value = default(T);
+            value = default;
 
             object item = _memoryCache.Remove(key);
             if (!item.IsNotNull()) return false;

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using HemisphereTypes = SmaugCS.Common.Enumerations.HemisphereTypes;
 
 namespace SmaugCS.Weather

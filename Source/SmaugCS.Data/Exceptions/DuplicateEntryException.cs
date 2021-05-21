@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Exceptions;
+using System;
 using System.Runtime.Serialization;
-using Realm.Library.Common.Exceptions;
 
 namespace SmaugCS.Data.Exceptions
 {
@@ -15,7 +15,7 @@ namespace SmaugCS.Data.Exceptions
         public DuplicateEntryException(string message, params object[] args)
             : base(string.Format(message, args)) { }
 
-        protected DuplicateEntryException(SerializationInfo info, StreamingContext context) 
+        protected DuplicateEntryException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
 
         public DuplicateEntryException(string message, Exception inner) : base(message, inner) { }

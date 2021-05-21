@@ -1,5 +1,5 @@
-﻿using System;
-using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common.Attributes;
+using System;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -7,32 +7,32 @@ namespace SmaugCS.Constants.Enums
     public enum AffectedByTypes : long
     {
         None = 0,
-        Blind = 1, 
+        Blind = 1,
 
         [Descriptor("(Invis) ")]
         Invisible = 2,
 
         [Name("detect_evil")]
         [Descriptor("(Red Aura) ")]
-        DetectEvil = 4, 
+        DetectEvil = 4,
 
         [Name("detect_invis")]
         DetectInvisibility = 8,
 
-        [Name("detect_magic")] 
+        [Name("detect_magic")]
         DetectMagic = 16,
 
         [Name("detect_hidden")]
         DetectHidden = 32,
-        Hold = 64,     
+        Hold = 64,
         Sanctuary = 128,
 
         [Name("faerie_fire")]
         [Descriptor("(Pink Aura) ")]
-        FaerieFire = 256,    
-        Infrared = 512,  
-        Curse = 1024, 
-        Flaming = 2048, 
+        FaerieFire = 256,
+        Infrared = 512,
+        Curse = 1024,
+        Flaming = 2048,
         Poison = 4096,
         Protect = 8192,
         Paralysis = 16384,

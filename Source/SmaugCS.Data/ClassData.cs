@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace SmaugCS.Data
 {
@@ -48,7 +48,7 @@ namespace SmaugCS.Data
 
         public ICollection<ClassSkillAdeptData> Skills { get; private set; }
         public Dictionary<int, Tuple<string, string>> Titles { get; private set; }
- 
+
         public ClassData(long id, string name) : base(id, name)
         {
             Skills = new List<ClassSkillAdeptData>();
@@ -76,11 +76,11 @@ namespace SmaugCS.Data
                 throw new InvalidDataException($"Skill {name} is already found on Class {Name}");
 
             ClassSkillAdeptData data = new ClassSkillAdeptData
-                {
-                    Skill = name,
-                    Level = level, 
-                    Adept = adept
-                };
+            {
+                Skill = name,
+                Level = level,
+                Adept = adept
+            };
 
             Skills.Add(data);
         }

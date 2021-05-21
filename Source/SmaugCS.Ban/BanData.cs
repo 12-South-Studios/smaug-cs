@@ -1,5 +1,5 @@
-﻿using System;
-using SmaugCS.Common.Enumerations;
+﻿using SmaugCS.Common.Enumerations;
+using System;
 
 namespace SmaugCS.Ban
 {

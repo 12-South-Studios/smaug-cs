@@ -8,7 +8,7 @@ namespace SmaugCS.Commands
     {
         public static void do_rent(CharacterInstance ch, string argument)
         {
-           ch.SetColor(ATTypes.AT_WHITE);
+            ch.SetColor(ATTypes.AT_WHITE);
             ch.SendTo("There is no rent here. Just save and quit.");
         }
     }

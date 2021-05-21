@@ -1,5 +1,5 @@
-﻿using System;
-using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common.Attributes;
+using System;
 
 namespace SmaugCS.Language
 {

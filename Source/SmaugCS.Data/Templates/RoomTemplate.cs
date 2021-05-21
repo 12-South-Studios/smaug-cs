@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Data.Templates
 {
@@ -38,7 +37,7 @@ namespace SmaugCS.Data.Templates
                 if (Contents.Any())
                 {
                     total += Contents.Where(x => x.ItemType == ItemTypes.Light)
-                            .Sum(item => item.Values.HoursLeft*item.Count);
+                            .Sum(item => item.Values.HoursLeft * item.Count);
 
                     total += Contents.Sum(item => item.Affects.Where(affect => affect.Location == ApplyTypes.RoomLight)
                                     .Sum(affect => affect.Modifier));
@@ -58,7 +57,7 @@ namespace SmaugCS.Data.Templates
                             total += item.Affects.Where(affect => affect.Location == ApplyTypes.RoomLight)
                                 .Sum(affect => affect.Modifier);
                             if (item.ItemType == ItemTypes.Light)
-                                total += item.Values.HoursLeft*item.Count;
+                                total += item.Values.HoursLeft * item.Count;
                         }
                     }
                 }
@@ -123,7 +122,7 @@ namespace SmaugCS.Data.Templates
         public ExitData GetExit(DirectionTypes dir) => Exits.FirstOrDefault(exit => exit.Direction == dir);
 
         public ExitData GetExitTo(int dir, long vnumTo)
-            => Exits.FirstOrDefault(exit => (int) exit.Direction == dir && exit.vnum == vnumTo);
+            => Exits.FirstOrDefault(exit => (int)exit.Direction == dir && exit.vnum == vnumTo);
 
         public ExitData GetExitNumber(int count)
         {
@@ -170,7 +169,7 @@ namespace SmaugCS.Data.Templates
 
                 foundEd = new ExtraDescriptionData
                 {
-                    Keyword = keywords, 
+                    Keyword = keywords,
                     Description = description
                 };
                 ExtraDescriptions.Add(foundEd);

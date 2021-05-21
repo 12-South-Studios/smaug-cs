@@ -1,10 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using log4net;
+﻿using log4net;
 using log4net.Appender;
 using log4net.Config;
 using Ninject;
@@ -30,6 +24,12 @@ using SmaugCS.News;
 using SmaugCS.Repository;
 using SmaugCS.Time;
 using SmaugCS.Weather;
+using System;
+using System.Configuration;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Text;
 
 namespace SmaugCS
 {
@@ -70,7 +70,7 @@ namespace SmaugCS
                 while (true)
                 {
                     GameManager.StartMainGameLoop();
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -145,12 +145,12 @@ namespace SmaugCS
             LookupManager = Kernel.Get<ILookupManager>();
 
             LuaManager = Kernel.Get<ILuaManager>();
-            
+
             NetworkManager = Kernel.Get<ITcpServer>();
             NetworkManager.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
                            IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
             NetworkManager.OnTcpUserStatusChanged += NetworkManager_OnOnTcpUserStatusChanged;
-            
+
             RepositoryManager = Kernel.Get<IRepositoryManager>();
 
             var luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
@@ -176,7 +176,7 @@ namespace SmaugCS
 
             AuctionManager = Kernel.Get<IAuctionManager>();
 
-            InitializeStaticGameData();           
+            InitializeStaticGameData();
         }
 
         private static void InitializeStaticGameData()
@@ -241,7 +241,7 @@ namespace SmaugCS
 
         private static void NetworkManager_OnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
         {
-            var user = (ITcpUser) sender;
+            var user = (ITcpUser)sender;
 
             if (networkEventArgs.SocketStatus == TcpSocketStatus.Disconnected)
                 DisconnectUser(user);
@@ -251,7 +251,7 @@ namespace SmaugCS
 
         private static void ConnectUser(ITcpUser user)
         {
-            var descrip = new DescriptorData(9999, 9999, 9999) {User = user};
+            var descrip = new DescriptorData(9999, 9999, 9999) { User = user };
             db.DESCRIPTORS.Add(descrip);
         }
 

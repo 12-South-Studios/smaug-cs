@@ -1,9 +1,9 @@
-﻿using System;
-using SmaugCS.Constants.Constants;
+﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System;
 
 namespace SmaugCS.Commands
 {

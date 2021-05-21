@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Ninject;
+﻿using Ninject;
 using SmaugCS.Common;
 using SmaugCS.Loaders.Loaders;
 using SmaugCS.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.Loaders
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Commands;
@@ -27,6 +23,9 @@ using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Extensions.Character
@@ -104,11 +103,11 @@ namespace SmaugCS.Extensions.Character
         }
 
         public static void SendTo(this CharacterInstance ch, string txt)
-        {            
+        {
             if (ch.IsNpc() || string.IsNullOrEmpty(txt))
                 return;
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
             if (pch.Descriptor != null && !string.IsNullOrEmpty(txt))
                 pch.Descriptor.WriteToBuffer(color.colorize(txt, pch.Descriptor), 0);
         }
@@ -152,9 +151,9 @@ namespace SmaugCS.Extensions.Character
             foreach (var relation in db.RELATIONS
                                                 .Where(relation => fPull && relation.Types == RelationTypes.MSet_On))
             {
-                if (ch == (CharacterInstance) relation.Subject)
+                if (ch == (CharacterInstance)relation.Subject)
                     relation.Actor.CastAs<CharacterInstance>().DestinationBuffer = null;
-                else if (ch != (CharacterInstance) relation.Actor)
+                else if (ch != (CharacterInstance)relation.Actor)
                     continue;
 
                 db.RELATIONS.Remove(relation);
@@ -240,12 +239,12 @@ namespace SmaugCS.Extensions.Character
             }
 
             if (ch.IsNpc())
-                --((MobileInstance) ch).MobIndex.Count;
+                --((MobileInstance)ch).MobIndex.Count;
 
-            if (!ch.IsNpc() && ((PlayerInstance) ch).Descriptor?.Original != null)
+            if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor?.Original != null)
                 Return.do_return(ch, "");
 
-            if (((PlayerInstance) ch.Switched)?.Descriptor != null)
+            if (((PlayerInstance)ch.Switched)?.Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
             foreach (var wch in RepositoryManager.Instance.CHARACTERS.Values)
@@ -410,7 +409,7 @@ namespace SmaugCS.Extensions.Character
             if (!ch.IsNpc()
                 && ch.PlayerData.Nuisance != null
                 && ch.PlayerData.Nuisance.Flags > 2)
-                c += (int) (0.4f*((ch.PlayerData.Nuisance.Flags - 2)*ch.PlayerData.Nuisance.Power));
+                c += (int)(0.4f * ((ch.PlayerData.Nuisance.Flags - 2) * ch.PlayerData.Nuisance.Power));
 
             if (ch.MentalState < 0)
                 ch.MentalState = -100.GetNumberThatIsBetween(ch.MentalState - c, 100);
@@ -515,8 +514,8 @@ namespace SmaugCS.Extensions.Character
             {
                 if (ch.IsNotAuthorized() || ch.IsImmortal() || ch.IsNpc())
                     return true;
-                return ((PlayerInstance) ch).PlayerData.Council != null &&
-                       ((PlayerInstance) ch).PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council");
+                return ((PlayerInstance)ch).PlayerData.Council != null &&
+                       ((PlayerInstance)ch).PlayerData.Council.Name.EqualsIgnoreCase("Newbie Council");
             }
 
             return true;
@@ -635,11 +634,11 @@ namespace SmaugCS.Extensions.Character
                 return false;
             if (morph.pkill == Program.ONLY_PEACEFULL && ch.IsPKill())
                 return false;
-            if (morph.sex != -1 && morph.sex != (int) ch.Gender)
+            if (morph.sex != -1 && morph.sex != (int)ch.Gender)
                 return false;
-            if (morph.Class != 0 && !morph.Class.IsSet(1 << (int) ch.CurrentClass))
+            if (morph.Class != 0 && !morph.Class.IsSet(1 << (int)ch.CurrentClass))
                 return false;
-            if (morph.race != 0 && morph.race.IsSet(1 << (int) ch.CurrentRace))
+            if (morph.race != 0 && morph.race.IsSet(1 << (int)ch.CurrentRace))
                 return false;
             if (!string.IsNullOrWhiteSpace(morph.deity) &&
                 (((PlayerInstance)ch).PlayerData.CurrentDeity != null || RepositoryManager.Instance.GetEntity<DeityData>(morph.deity) == null))
@@ -735,22 +734,22 @@ namespace SmaugCS.Extensions.Character
         {
             return !ch.IsNpc() && (ch.CurrentRace == RaceTypes.Vampire) || ch.CurrentClass == ClassTypes.Vampire;
         }
-        
+
         public static bool IsGood(this CharacterInstance ch)
         {
             return ch.CurrentAlignment >= 350;
         }
-        
+
         public static bool IsEvil(this CharacterInstance ch)
         {
             return ch.CurrentAlignment <= -350;
         }
-        
+
         public static bool IsNeutral(this CharacterInstance ch)
         {
             return !ch.IsGood() && !ch.IsEvil();
         }
-        
+
         public static bool IsAwake(this CharacterInstance ch)
         {
             return ch.CurrentPosition > PositionTypes.Sleeping;
@@ -766,7 +765,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
             return SmaugRandom.D100() < (pch.GetCondition(ConditionTypes.Drunk) & 2 / drunk);
         }
 
@@ -798,7 +797,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (ch.IsNpc()) return false;
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
             return pch.IsPKill() && pch.Level >= 5 && pch.CalculateAge() >= 18;
         }
 
@@ -853,14 +852,14 @@ namespace SmaugCS.Extensions.Character
 
         public static int GetHitroll(this CharacterInstance ch)
         {
-            var toHitMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var toHitMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.ToHit);
-            return ch.HitRoll.SizeOf + toHitMod + (2 - Math.Abs(ch.MentalState)/10);
+            return ch.HitRoll.SizeOf + toHitMod + (2 - Math.Abs(ch.MentalState) / 10);
         }
 
         public static int GetDamroll(this CharacterInstance ch)
         {
-            var toDamMod = (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var toDamMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.ToDam);
             return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + toDamMod +
                    (ch.MentalState > 5 && ch.MentalState < 15 ? 1 : 0);
@@ -942,16 +941,16 @@ namespace SmaugCS.Extensions.Character
                 var max = ch.CanCarryMaxWeight();
 
                 if (ch.CarryWeight >= max)
-                    return Convert.ToInt16(movement*4);
-                if (ch.CarryWeight >= max*0.95)
-                    return Convert.ToInt16(movement*3.5);
-                if (ch.CarryWeight >= max*0.90)
-                    return Convert.ToInt16(movement*3);
-                if (ch.CarryWeight >= max*0.85)
-                    return Convert.ToInt16(movement*2.5);
-                if (ch.CarryWeight >= max*0.80)
-                    return Convert.ToInt16(movement*2);
-                return ch.CarryWeight >= max*0.75 ? Convert.ToInt16(movement*1.5) : movement;
+                    return Convert.ToInt16(movement * 4);
+                if (ch.CarryWeight >= max * 0.95)
+                    return Convert.ToInt16(movement * 3.5);
+                if (ch.CarryWeight >= max * 0.90)
+                    return Convert.ToInt16(movement * 3);
+                if (ch.CarryWeight >= max * 0.85)
+                    return Convert.ToInt16(movement * 2.5);
+                if (ch.CarryWeight >= max * 0.80)
+                    return Convert.ToInt16(movement * 2);
+                return ch.CarryWeight >= max * 0.75 ? Convert.ToInt16(movement * 1.5) : movement;
             }
         }
 
@@ -998,8 +997,8 @@ namespace SmaugCS.Extensions.Character
                     ? $"Your gain is: {add_hp}/{ch.MaximumHealth} hp, {1}/{ch.Level + 10} bp, {add_move}/{ch.MaximumMovement} mv, {add_prac}/{ch.Practice} prac.\r\n"
                     : $"Your gain is: {add_hp}/{ch.MaximumHealth} hp, {add_mana}/{ch.MaximumMana} mana, {add_move}/{ch.MaximumMovement} mv, {add_prac}/{ch.Practice} prac.\r\n";
 
-               ch.SetColor(ATTypes.AT_WHITE);
-               ch.SendTo(buffer);
+                ch.SetColor(ATTypes.AT_WHITE);
+                ch.SendTo(buffer);
             }
         }
 
@@ -1014,7 +1013,7 @@ namespace SmaugCS.Extensions.Character
                 d.Character.Printf("%s has just achieved Avatarhood!", ch.Name);
             }
 
-           ch.SetColor(ATTypes.AT_WHITE);
+            ch.SetColor(ATTypes.AT_WHITE);
             Help.do_help(ch, "M_ADVHERO_");
         }
 
@@ -1072,7 +1071,7 @@ namespace SmaugCS.Extensions.Character
 
             while (ch.Level < LevelConstants.AvatarLevel && ch.Experience >= ch.GetExperienceLevel(ch.Level + 1))
             {
-               ch.SetColor(ATTypes.AT_WHITE | ATTypes.AT_BLINK);
+                ch.SetColor(ATTypes.AT_WHITE | ATTypes.AT_BLINK);
                 ch.Level += 1;
                 ch.Printf("You have not obtained experience level %d!", ch.Level);
                 ch.AdvanceLevel();
@@ -1231,24 +1230,24 @@ namespace SmaugCS.Extensions.Character
             if (ch.CurrentAlignment < RepositoryManager.Instance.GetRace(ch.CurrentRace).MinimumAlignment
                 || ch.CurrentAlignment > RepositoryManager.Instance.GetRace(ch.CurrentRace).MaximumAlignment)
             {
-               ch.SetColor(ATTypes.AT_BLOOD);
-               ch.SendTo("Your actions have been incompatible with the ideals of your race. This troubles you.");
+                ch.SetColor(ATTypes.AT_BLOOD);
+                ch.SendTo("Your actions have been incompatible with the ideals of your race. This troubles you.");
             }
 
             if (ch.CurrentClass == ClassTypes.Paladin)
             {
                 if (ch.CurrentAlignment < 250)
                 {
-                   ch.SetColor(ATTypes.AT_BLOOD);
-                   ch.SendTo("You are wracked with guilt and remorse for your craven actions!");
+                    ch.SetColor(ATTypes.AT_BLOOD);
+                    ch.SendTo("You are wracked with guilt and remorse for your craven actions!");
                     comm.act(ATTypes.AT_BLOOD, "$n prostrates $mself, seeking forgiveness from $s Lord.", ch, null, null, ToTypes.Room);
                     ((PlayerInstance)ch).WorsenMentalState(15);
                     return;
                 }
                 if (ch.CurrentAlignment < 500)
                 {
-                   ch.SetColor(ATTypes.AT_BLOOD);
-                   ch.SendTo("As you betray your faith, your mind begins to betray you.");
+                    ch.SetColor(ATTypes.AT_BLOOD);
+                    ch.SendTo("As you betray your faith, your mind begins to betray you.");
                     comm.act(ATTypes.AT_BLOOD, "$n shudders, judging $s actions unworthy of a Paladin.", ch, null, null, ToTypes.Room);
                     ((PlayerInstance)ch).WorsenMentalState(6);
                 }
@@ -1270,8 +1269,8 @@ namespace SmaugCS.Extensions.Character
                     return true;
                 }
 
-               ch.SetColor(ATTypes.AT_FALLING);
-               ch.SendTo("You're falling down...");
+                ch.SetColor(ATTypes.AT_FALLING);
+                ch.SendTo("You're falling down...");
                 Move.move_char(ch, ch.CurrentRoom.GetExit(DirectionTypes.Down), ++fall);
                 return true;
             }

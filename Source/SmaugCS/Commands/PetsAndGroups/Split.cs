@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System;
+using System.Linq;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -34,7 +34,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             ch.CurrentCoin -= amount;
             ch.CurrentCoin += share + extra;
 
-           ch.SetColor(ATTypes.AT_GOLD);
+            ch.SetColor(ATTypes.AT_GOLD);
             ch.Printf("You split %d gold coins.  Your share is %d gold coins.\r\n", amount, share + extra);
 
             var buffer = $"$n splits {amount} gold coins. Your share is {share} gold coins.";

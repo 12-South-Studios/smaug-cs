@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -9,6 +6,8 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
+using System;
+using System.Linq;
 using NumberExtensions = SmaugCS.Common.NumberExtensions;
 
 namespace SmaugCS.Commands.Admin
@@ -63,7 +62,7 @@ namespace SmaugCS.Commands.Admin
                 victim.SetColor(ATTypes.AT_WHITE);
                 comm.act(ATTypes.AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s finger at you!",
                     ch, null, victim, ToTypes.Victim);
-                comm.act(ATTypes.AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s finger at $N!", 
+                comm.act(ATTypes.AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s finger at $N!",
                     ch, null, victim, ToTypes.NotVictim);
                 victim.SetColor(ATTypes.AT_WHITE);
                 victim.SendTo("You suddenly feel very strange...");
@@ -73,11 +72,11 @@ namespace SmaugCS.Commands.Admin
             try
             {
                 var immortalType = EnumerationExtensions.GetEnum<ImmortalTypes>(level);
-                
+
                 var attrib = Common.EnumerationExtensions.GetAttribute<ImmortalHelpCategoryAttribute>(immortalType);
                 if (attrib != null)
                     Help.do_help(victim, attrib.Value);
-                else 
+                else
                     victim.SendTo("The gods feel fit to raise your level!");
 
                 if (immortalType != ImmortalTypes.Immortal) return;
@@ -95,18 +94,18 @@ namespace SmaugCS.Commands.Admin
                 victim.SendTo("The gods feel fit to raise your level!");
             }
         }
- 
+
         private static void LowerVictimLevel(CharacterInstance ch, CharacterInstance victim, int level)
         {
             victim.SetColor(ATTypes.AT_IMMORT);
 
             if (victim.Level >= LevelConstants.AvatarLevel && victim.IsImmortal())
             {
-                if (((PlayerInstance) victim).PlayerData.bestowments != string.Empty)
-                    ((PlayerInstance) victim).PlayerData.bestowments = string.Empty;
+                if (((PlayerInstance)victim).PlayerData.bestowments != string.Empty)
+                    ((PlayerInstance)victim).PlayerData.bestowments = string.Empty;
 
                 NumberExtensions.RemoveBit(victim.Act, PlayerFlags.HolyLight);
-                if (!((PlayerInstance) victim).IsRetired())
+                if (!((PlayerInstance)victim).IsRetired())
                 {
                     // todo remove immortal data
                     // snprintf(buf, MAX_INPUT_LENGTH, "%s%s", GOD_DIR, capitalize(victim->name));
@@ -149,7 +148,7 @@ namespace SmaugCS.Commands.Admin
 
             if (!(victim is PlayerInstance)) return;
 
-            PlayerInstance playerVictim = (PlayerInstance) victim;
+            PlayerInstance playerVictim = (PlayerInstance)victim;
             playerVictim.AdvanceLevel();
             playerVictim.PlayerData.rank = string.Empty;
             playerVictim.PlayerData.WizardInvisible = playerVictim.Trust;

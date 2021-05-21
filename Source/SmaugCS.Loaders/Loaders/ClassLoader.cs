@@ -1,6 +1,6 @@
-﻿using System;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
+using System;
 
 namespace SmaugCS.Loaders.Loaders
 {

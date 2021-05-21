@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
@@ -15,6 +12,9 @@ using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Spells
@@ -46,7 +46,7 @@ namespace SmaugCS.Spells
                 var skill in
                     ch.PlayerData.SpecialSkills.Where(skill => (char.ToLower(name[0]) == char.ToLower(skill.Name[0]))
                                                                 && name.StartsWithIgnoreCase(skill.Name)))
-                return (int) skill.ID;
+                return (int)skill.ID;
             return -1;
         }
 
@@ -61,7 +61,7 @@ namespace SmaugCS.Spells
                 skill = RepositoryManager.Instance.GetEntity<SkillData>(ch.GetIDOfSkillCharacterKnows(skillName));
 
             if (skill == null) return 0;
-            return skill.Type == expectedType ? (int) skill.ID : 0;
+            return skill.Type == expectedType ? (int)skill.ID : 0;
         }
 
         public static int find_spell(CharacterInstance ch, string name, bool know)
@@ -94,7 +94,7 @@ namespace SmaugCS.Spells
             if (slot <= 0)
                 return -1;
             foreach (var skill in RepositoryManager.Instance.SKILLS.Values.Where(skill => skill.Slot == slot))
-                return (int) skill.ID;
+                return (int)skill.ID;
             return -1;
         }
 
@@ -114,7 +114,7 @@ namespace SmaugCS.Spells
             string spell;
             if (paf != null)
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>((int) paf.Type);
+                var skill = RepositoryManager.Instance.GetEntity<SkillData>((int)paf.Type);
                 if (skill == null)
                     return 0;
                 spell = skill.Name;
@@ -122,8 +122,8 @@ namespace SmaugCS.Spells
             else
                 spell = EnumerationExtensions.GetEnum<AffectedByTypes>(affect).GetName().ToLower();
 
-           ch.SetColor(ATTypes.AT_MAGIC);
-           victim.SetColor(ATTypes.AT_HITME);
+            ch.SetColor(ATTypes.AT_MAGIC);
+            victim.SetColor(ATTypes.AT_HITME);
 
             var buffer = !ch.CanSee(victim)
                          ? "Someone"
@@ -135,7 +135,7 @@ namespace SmaugCS.Spells
             {
                 victim.Printf("Your %s vanishes.", spell);
                 if (isMage && hasDetect)
-                   ch.Printf("%s's %s vanishes.", buffer, spell);
+                    ch.Printf("%s's %s vanishes.", buffer, spell);
                 else
                     return 0;
             }
@@ -492,8 +492,8 @@ namespace SmaugCS.Spells
                                     "Something disrupts the casting of this spell...")) return false;
                             if (consume)
                             {
-                               ch.SetColor(ATTypes.AT_GOLD);
-                               ch.SendTo("You feel a little lighter...");
+                                ch.SetColor(ATTypes.AT_GOLD);
+                                ch.SendTo("You feel a little lighter...");
                                 ch.CurrentCoin -= component.RequiredData.ToInt32();
                             }
                             continue;
@@ -506,8 +506,8 @@ namespace SmaugCS.Spells
                                     "Something disrupts the casting of this spell...")) return false;
                             if (consume)
                             {
-                               ch.SetColor(ATTypes.AT_BLOOD);
-                               ch.SendTo("You feel a little weaker...");
+                                ch.SetColor(ATTypes.AT_BLOOD);
+                                ch.SendTo("You feel a little weaker...");
                                 ch.CurrentHealth -= component.RequiredData.ToInt32();
                                 ch.UpdatePositionByCurrentHealth();
                             }
@@ -656,7 +656,7 @@ namespace SmaugCS.Spells
             return victim;
         }
 
-        private static object TargetCharacterWithDefensiveSpell(string arg, CharacterInstance ch, bool silence, 
+        private static object TargetCharacterWithDefensiveSpell(string arg, CharacterInstance ch, bool silence,
             SkillData skill)
         {
             CharacterInstance victim;
@@ -705,8 +705,8 @@ namespace SmaugCS.Spells
                 || (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
                     && skill.Target == TargetTypes.OffensiveCharacter))
             {
-               ch.SetColor(ATTypes.AT_MAGIC);
-               ch.SendTo("Nothing seems to happen...");
+                ch.SetColor(ATTypes.AT_MAGIC);
+                ch.SendTo("Nothing seems to happen...");
                 return ReturnTypes.None;
             }
 

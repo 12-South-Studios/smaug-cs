@@ -89,7 +89,7 @@ namespace SmaugCS.Commands.Social
             {
                 if (!ch.IsImmortal() || victim.Trust > ch.Trust)
                 {
-                   ch.SetColor(ATTypes.AT_IGNORE);
+                    ch.SetColor(ATTypes.AT_IGNORE);
                     ch.Printf("%s is ignoring you.\r\n", victim.Name);
                     return;
                 }

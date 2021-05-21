@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Timers;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Extensions;
 using Realm.Library.NCalc;
 using SmaugCS.Common;
@@ -21,6 +16,10 @@ using SmaugCS.Logging;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Timers;
 
 namespace SmaugCS.Managers
 {
@@ -141,7 +140,7 @@ namespace SmaugCS.Managers
 
         private static void UpdateTick(int pulseValue)
         {
-            SetPulseTimer(PulseTypes.Point, SmaugRandom.Between((int) (pulseValue*0.75f), (int) (pulseValue*1.2f)));
+            SetPulseTimer(PulseTypes.Point, SmaugRandom.Between((int)(pulseValue * 0.75f), (int)(pulseValue * 1.2f)));
 
             update.auth_update();
             update.time_update();
@@ -149,14 +148,14 @@ namespace SmaugCS.Managers
             update.hint_update();
             update.char_update();
             update.obj_update();
-           
+
             _logger.Info("Update Tick");
         }
 
         private static void UpdateViolence(int pulseValue)
         {
             SetPulseTimer(PulseTypes.Violence, pulseValue);
-            
+
             fight.violence_update();
 
             _logger.Info("Update Violence");
@@ -188,7 +187,7 @@ namespace SmaugCS.Managers
 
         private static void UpdateArea(int pulseValue)
         {
-            SetPulseTimer(PulseTypes.Area, SmaugRandom.Between(pulseValue/2, 3*pulseValue/2));
+            SetPulseTimer(PulseTypes.Area, SmaugRandom.Between(pulseValue / 2, 3 * pulseValue / 2));
 
             var updated = 0;
             var notified = 0;
@@ -203,7 +202,7 @@ namespace SmaugCS.Managers
                         ? area.ResetMessage
                         : "You hear some squeaking sounds...";
 
-                    foreach(var pch in _dbManager.CHARACTERS.Values
+                    foreach (var pch in _dbManager.CHARACTERS.Values
                         .Where(x => !x.IsNpc())
                         .Where(x => x.IsAwake())
                         .Where(x => x.CurrentRoom != null)
@@ -221,7 +220,7 @@ namespace SmaugCS.Managers
                     _logger.Info("Updated Area {0}/{1}", area.ID, area.Name);
 
                     updated++;
-                    area.Age = resetAge == -1 ? -1 : SmaugRandom.Between(0, resetAge/5);
+                    area.Age = resetAge == -1 ? -1 : SmaugRandom.Between(0, resetAge / 5);
                 }
             }
 

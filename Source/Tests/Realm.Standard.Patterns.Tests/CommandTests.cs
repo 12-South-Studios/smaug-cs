@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Realm.Standard.Patterns.Tests

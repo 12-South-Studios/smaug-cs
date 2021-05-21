@@ -1,11 +1,11 @@
-﻿using System.IO;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System.IO;
 
 namespace SmaugCS.Commands
 {
@@ -13,7 +13,7 @@ namespace SmaugCS.Commands
     {
         public static void do_typo(CharacterInstance ch, string argument)
         {
-           ch.SetColor(ATTypes.AT_PLAIN);
+            ch.SetColor(ATTypes.AT_PLAIN);
 
             if (CheckFunctions.CheckIfEmptyString(ch, argument,
                 "Usage:  'typo <message>'  (your location is automatically recorded)"))

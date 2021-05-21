@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Timers;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
+using System.Linq;
+using System.Timers;
 
 namespace SmaugCS.Ban
 {
@@ -136,12 +136,12 @@ namespace SmaugCS.Ban
         }
 
         private bool CheckClassBans(PlayerInstance ch) => Repository.Bans.Where(x => x.Type == BanTypes.Class)
-            .Where(ban => ban.Flag == (int) ch.CurrentClass)
+            .Where(ban => ban.Flag == (int)ch.CurrentClass)
             .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
             .FirstOrDefault();
 
         private bool CheckRaceBans(PlayerInstance ch) => Repository.Bans.Where(x => x.Type == BanTypes.Race)
-            .Where(ban => ban.Flag == (int) ch.CurrentRace)
+            .Where(ban => ban.Flag == (int)ch.CurrentRace)
             .Select(ban => CheckBanExpireAndLevel(ban, ch.Level))
             .FirstOrDefault();
     }

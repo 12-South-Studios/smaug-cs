@@ -1,7 +1,7 @@
-﻿using System;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Board;
 using SmaugCS.Data.Instances;
+using System;
 
 namespace SmaugCS.Extensions
 {

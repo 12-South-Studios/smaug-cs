@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using SmaugCS.Common.Enumerations;
+﻿using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
@@ -56,7 +56,7 @@ namespace SmaugCS.Data
         public DateTime release_date { get; set; }
         public string helled_by { get; set; }
         public string bio { get; set; }
-        
+
         public ICollection<SkillData> SpecialSkills { get; private set; }
         public string Prompt { get; set; }
         public string FPrompt { get; set; }

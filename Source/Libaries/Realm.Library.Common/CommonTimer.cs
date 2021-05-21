@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Realm.Library.Common.Objects;
+using System.Diagnostics.CodeAnalysis;
 using System.Timers;
-using Realm.Library.Common.Objects;
 
 namespace Realm.Library.Common
 {
@@ -15,7 +15,7 @@ namespace Realm.Library.Common
         /// <summary>
         /// 
         /// </summary>
-        public CommonTimer() {}
+        public CommonTimer() { }
 
         /// <summary>
         /// 

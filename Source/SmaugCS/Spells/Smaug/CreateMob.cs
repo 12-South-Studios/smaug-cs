@@ -39,7 +39,7 @@ namespace SmaugCS.Spells.Smaug
 
             mob.Level = lvl.GetLowestOfTwoNumbers(!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : mob.Level);
             mob.ArmorClass = mob.Level.Interpolate(100, -100);
-            mob.MaximumHealth = mob.Level*8 + SmaugRandom.Between(mob.Level*mob.Level/4, mob.Level*mob.Level);
+            mob.MaximumHealth = mob.Level * 8 + SmaugRandom.Between(mob.Level * mob.Level / 4, mob.Level * mob.Level);
             mob.CurrentHealth = mob.MaximumHealth;
             mob.CurrentCoin = 0;
 
@@ -49,8 +49,8 @@ namespace SmaugCS.Spells.Smaug
 
             var af = new AffectData
             {
-                Type = EnumerationExtensions.GetEnum<AffectedByTypes>((int) skill.ID),
-                Duration = (SmaugRandom.Fuzzy((level + 1)/3) + 1)*
+                Type = EnumerationExtensions.GetEnum<AffectedByTypes>((int)skill.ID),
+                Duration = (SmaugRandom.Fuzzy((level + 1) / 3) + 1) *
                            GameConstants.GetConstant<int>("AffectDurationConversionValue")
             };
             mob.AddAffect(af);
@@ -65,7 +65,7 @@ namespace SmaugCS.Spells.Smaug
                 case (int)SpellPowerTypes.Major:
                     return level;
                 case (int)SpellPowerTypes.Greater:
-                    return level/2;
+                    return level / 2;
                 case (int)SpellPowerTypes.Minor:
                     return 5;
                 default:

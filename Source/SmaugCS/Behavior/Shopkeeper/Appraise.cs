@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -8,6 +6,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
+using System.Linq;
 
 namespace SmaugCS.Behavior.Shopkeeper
 {
@@ -21,7 +20,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             var cost = buy ? GetCostIfBuying(ch, keeper, obj) : GetCostIfSelling(ch, keeper, obj);
 
             if (obj.ItemType == ItemTypes.Staff || obj.ItemType == ItemTypes.Wand)
-                cost = cost * (obj.Values.Charges / obj.Values.MaxCharges);
+                cost *= (obj.Values.Charges / obj.Values.MaxCharges);
 
             return cost;
         }
@@ -58,7 +57,7 @@ namespace SmaugCS.Behavior.Shopkeeper
             if (obj == null || keeper.MobIndex.Shop == null) return 0;
 
             var shop = keeper.MobIndex.RepairShop;
-            var cost = shop.ItemTypes.ToList().Any(x => x == obj.ItemType) ? obj.Cost*shop.ProfitFix/1000 : 0;
+            var cost = shop.ItemTypes.ToList().Any(x => x == obj.ItemType) ? obj.Cost * shop.ProfitFix / 1000 : 0;
             if (cost <= 0)
                 cost = 1;
 

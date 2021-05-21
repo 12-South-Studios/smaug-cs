@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
 using SmaugCS.SpecFuns.Breaths;
 using SmaugCS.SpecFuns.Casting;
 using SmaugCS.SpecFuns.Professions;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.SpecFuns
 {

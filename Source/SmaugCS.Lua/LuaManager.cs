@@ -1,8 +1,8 @@
-﻿using System;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Data.Interfaces;
+using System;
 
 namespace SmaugCS.Lua
 {

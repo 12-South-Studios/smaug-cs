@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Weather.Enums;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 using HemisphereTypes = SmaugCS.Common.Enumerations.HemisphereTypes;
 
@@ -72,7 +72,7 @@ namespace SmaugCS.Weather
             Height = height;
 
             _map = new WeatherCell[width][];
-            for(var i=0;i<width;i++)
+            for (var i = 0; i < width; i++)
                 _map[i] = new WeatherCell[height];
 
             _delta = new WeatherCell[width][];
@@ -84,7 +84,7 @@ namespace SmaugCS.Weather
             MoonMap = new List<string>();
         }
 
-        public WeatherMap(TimeInfoData gameTime, int width, int height, IEnumerable<WeatherCell> cells) 
+        public WeatherMap(TimeInfoData gameTime, int width, int height, IEnumerable<WeatherCell> cells)
             : this(gameTime, width, height)
         {
             foreach (var cell in cells)
@@ -96,7 +96,7 @@ namespace SmaugCS.Weather
         public void LoadMap(SystemFileTypes fileType, IEnumerable<string> map)
         {
             var path = SystemConstants.GetSystemFile(fileType);
-            
+
             using (var proxy = new TextReaderProxy(new StreamReader(path)))
             {
                 IEnumerable<string> lines = proxy.ReadIntoList();
@@ -279,7 +279,7 @@ namespace SmaugCS.Weather
                         continue;
 
                     PrecipFuncs[precipType].Invoke(cell, delta);
-                    
+
                     cell.Temperature = (cell.Temperature + delta.Temperature).GetNumberThatIsBetween(-30, 100);
                     cell.Pressure = (cell.Pressure + delta.Pressure).GetNumberThatIsBetween(0, 100);
                     cell.CloudCover = (cell.CloudCover + delta.CloudCover).GetNumberThatIsBetween(0, 100);
@@ -439,26 +439,26 @@ namespace SmaugCS.Weather
 
         private static void ChangePressure(WeatherCell delta, int totalPressure, int numPressureCells, WeatherCell cell)
         {
-            delta.Pressure = totalPressure/numPressureCells - cell.Pressure;
+            delta.Pressure = totalPressure / numPressureCells - cell.Pressure;
 
             if (cell.Precipitation >= 70)
-                delta.ChangePressure(0 - cell.Pressure/2);
+                delta.ChangePressure(0 - cell.Pressure / 2);
             else if (cell.Pressure < 70 && cell.Precipitation > 30)
                 delta.ChangePressure(SmaugRandom.Between(-5, 5));
             else
-                delta.ChangePressure(cell.Pressure/2);
+                delta.ChangePressure(cell.Pressure / 2);
         }
 
         private static int AdjustWindSpeedsBasedOnPressure(WeatherCell cell, WeatherCell neighborCell, int dx, WeatherCell delta,
             int dy, int totalPressure)
         {
             var pressureDelta = cell.Pressure - neighborCell.Pressure;
-            var windSpeedDleta = pressureDelta/4;
+            var windSpeedDleta = pressureDelta / 4;
 
             if (dx != 0)
-                delta.ChangeWindSpeedX(windSpeedDleta*dx);
+                delta.ChangeWindSpeedX(windSpeedDleta * dx);
             if (dy != 0)
-                delta.ChangeWindSpeedY(windSpeedDleta*dy);
+                delta.ChangeWindSpeedY(windSpeedDleta * dy);
 
             totalPressure += neighborCell.Pressure;
             return totalPressure;
@@ -490,29 +490,29 @@ namespace SmaugCS.Weather
         private static void AdjustCloudCoverForHumitityAndPrecipitation(WeatherCell cell, WeatherCell delta)
         {
             var humidityAndPrecip = cell.Humidity + cell.Precipitation;
-            if (humidityAndPrecip/2 >= 60)
-                delta.ChangeCloudCover(0 - cell.Humidity/10);
-            else if ((humidityAndPrecip/2 < 60) && (humidityAndPrecip/2 > 40))
+            if (humidityAndPrecip / 2 >= 60)
+                delta.ChangeCloudCover(0 - cell.Humidity / 10);
+            else if ((humidityAndPrecip / 2 < 60) && (humidityAndPrecip / 2 > 40))
                 delta.ChangeCloudCover(SmaugRandom.Between(-2, 2));
             else
-                delta.ChangeCloudCover(cell.Humidity/5);
+                delta.ChangeCloudCover(cell.Humidity / 5);
         }
 
         private static void AdjustPrecipitationForHumidityAndPressure(WeatherCell cell)
         {
             var humidityAndPressure = cell.Humidity + cell.Pressure;
-            if (humidityAndPressure/2 >= 60)
-                cell.ChangePrecip(cell.Humidity/10);
-            else if ((humidityAndPressure/2 < 60) && (humidityAndPressure/2 > 40))
+            if (humidityAndPressure / 2 >= 60)
+                cell.ChangePrecip(cell.Humidity / 10);
+            else if ((humidityAndPressure / 2 < 60) && (humidityAndPressure / 2 > 40))
                 cell.ChangePrecip(SmaugRandom.Between(-2, 2));
             else
-                cell.ChangePrecip(0 - cell.Humidity/5);
+                cell.ChangePrecip(0 - cell.Humidity / 5);
         }
 
         private static void AdjustHumidityForPrecipitation(WeatherCell cell, WeatherCell delta)
         {
             if (cell.Precipitation > 40)
-                delta.ChangeHumidity(0 - cell.Precipitation/20);
+                delta.ChangeHumidity(0 - cell.Precipitation / 20);
             else
                 delta.ChangeHumidity(SmaugRandom.Between(0, 3));
         }
@@ -521,9 +521,9 @@ namespace SmaugCS.Weather
         {
             if (gameTime.Sunlight == SunPositionTypes.Sunrise
                 || gameTime.Sunlight == SunPositionTypes.Light)
-                delta.ChangeTemperature(SmaugRandom.Between(-1, 2) + (cell.CloudCover/10 > 5 ? -1 : 1));
+                delta.ChangeTemperature(SmaugRandom.Between(-1, 2) + (cell.CloudCover / 10 > 5 ? -1 : 1));
             else
-                delta.ChangeTemperature(SmaugRandom.Between(-2, 0) + (cell.CloudCover/10 > 5 ? 2 : -3));
+                delta.ChangeTemperature(SmaugRandom.Between(-2, 0) + (cell.CloudCover / 10 > 5 ? 2 : -3));
         }
 
         public void ClearWeatherDeltas()

@@ -1,9 +1,9 @@
-﻿using System;
-using Realm.Library.Lua;
+﻿using Realm.Library.Lua;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
+using System;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -15,7 +15,7 @@ namespace SmaugCS.LuaHelpers
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager, 
+        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager,
             ILogManager logManager)
         {
             _luaManager = luaManager;
@@ -26,7 +26,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LGetLastMob", "Retrieves the Last Mob")]
         public static MobileTemplate LuaGetLastMob()
         {
-            return (MobileTemplate) LastObject;
+            return (MobileTemplate)LastObject;
         }
 
         [LuaFunction("LProcessMob", "Processes a mob script", "script text")]

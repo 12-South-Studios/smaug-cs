@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace SmaugCS.Data

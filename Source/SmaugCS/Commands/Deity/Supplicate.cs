@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -13,19 +10,22 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Commands.Deity
 {
     public static class Supplicate
     {
-        private static readonly Dictionary<string, Action<PlayerInstance, string>> SupplicateTable 
+        private static readonly Dictionary<string, Action<PlayerInstance, string>> SupplicateTable
             = new Dictionary<string, Action<PlayerInstance, string>>
         {
             {"corpse", SupplicateForCorpse},
             {"avatar", SupplicateForAvatar},
             {"object", SupplicateForObject},
             {"recall", SupplicateForRecall}
-        }; 
+        };
 
         public static void do_supplicate(CharacterInstance ch, string argument)
         {
@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Deity
 
             if (SupplicateTable.ContainsKey(firstArg.ToLower()))
                 SupplicateTable[firstArg.ToLower()].Invoke((PlayerInstance)ch, argument);
-            else 
+            else
                 ch.SendTo("You cannot supplicate for that.");
         }
 
@@ -81,7 +81,7 @@ namespace SmaugCS.Commands.Deity
             mob.AddFollower(ch);
             mob.AffectedBy.SetBit(AffectedByTypes.Charm);
             mob.Level = 10;
-            mob.MaximumHealth = ch.MaximumHealth*6 + ch.PlayerData.Favor;
+            mob.MaximumHealth = ch.MaximumHealth * 6 + ch.PlayerData.Favor;
             mob.CurrentAlignment = ch.PlayerData.CurrentDeity.Alignment;
             ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateAvatarCost;
 

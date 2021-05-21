@@ -31,26 +31,26 @@ namespace SmaugCS.Commands.Movement
                 return;
             }
 
-            ch.Printf( "You see no %s here.", firstArg);
+            ch.Printf("You see no %s here.", firstArg);
         }
 
         private static void CloseObject(CharacterInstance ch, ObjectInstance obj)
         {
             if (obj.ItemType != ItemTypes.Container)
             {
-                ch.Printf( "%s is not a container.", obj.ShortDescription.CapitalizeFirst());
+                ch.Printf("%s is not a container.", obj.ShortDescription.CapitalizeFirst());
                 return;
             }
 
             if (obj.Values.Flags.IsSet(ContainerFlags.Closed))
             {
-                ch.Printf( "%s is already closed.", obj.ShortDescription.CapitalizeFirst());
+                ch.Printf("%s is already closed.", obj.ShortDescription.CapitalizeFirst());
                 return;
             }
 
             if (!obj.Values.Flags.IsSet(ContainerFlags.Closeable))
             {
-                ch.Printf( "%s cannot be opened or closed.", obj.ShortDescription.CapitalizeFirst());
+                ch.Printf("%s cannot be opened or closed.", obj.ShortDescription.CapitalizeFirst());
                 return;
             }
 
@@ -65,7 +65,7 @@ namespace SmaugCS.Commands.Movement
             if (exit.Flags.IsSet(ExitFlags.Secret)
                 && !exit.Keywords.IsAnyEqual(firstArg))
             {
-                ch.Printf( "You see no %s here.", firstArg);
+                ch.Printf("You see no %s here.", firstArg);
                 return;
             }
 
@@ -79,12 +79,12 @@ namespace SmaugCS.Commands.Movement
             if (reverseExit != null)
             {
                 reverseExit.Flags.SetBit(ExitFlags.Closed);
-                foreach(var vch in exit.GetDestination(RepositoryManager.Instance).Persons)
+                foreach (var vch in exit.GetDestination(RepositoryManager.Instance).Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d closes.", vch, null, reverseExit.Keywords, ToTypes.Character);
             }
 
             exit.SetFlagOnSelfAndReverseExit(ExitFlags.Closed);
-            
+
             // TODO Check room for traps
         }
     }

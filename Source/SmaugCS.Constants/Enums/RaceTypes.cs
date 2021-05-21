@@ -1,5 +1,5 @@
-﻿using System;
-using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common.Attributes;
+using System;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -63,7 +63,7 @@ namespace SmaugCS.Constants.Enums
         [Name("vlatur")]
         [ShoveValue(ModValue = 4)]
         Valatur = 1024,
-        
+
         Monster = 2048
     }
 }

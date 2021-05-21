@@ -1,12 +1,11 @@
-﻿using System;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
+using System;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -18,7 +17,7 @@ namespace SmaugCS.LuaHelpers
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager, 
+        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager,
             ILogManager logManager)
         {
             _luaManager = luaManager;
@@ -29,7 +28,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LGetLastRoom", "Retrieves the Last Room")]
         public static RoomTemplate LuaGetLastRoom()
         {
-            return (RoomTemplate) LastObject;
+            return (RoomTemplate)LastObject;
         }
 
         [LuaFunction("LProcessRoom", "Processes a room script", "script text")]

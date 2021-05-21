@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using SmaugCS.Commands;
+﻿using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -9,6 +6,9 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Spells.Air
 {
@@ -25,7 +25,7 @@ namespace SmaugCS.Spells.Air
             {"calmer", DecreaseEnergy}
         };
 
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level"), 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level"),
         SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_control_weather(int sn, int level, CharacterInstance ch, object vo)
         {
@@ -35,12 +35,12 @@ namespace SmaugCS.Spells.Air
 
             var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
             var change = 5.GetNumberThatIsBetween(SmaugRandom.Between(5, 15) + ch.Level / 10, 15);
-            
+
             WeatherChangeTable[Cast.TargetName.ToLower()].Invoke(cell, change);
 
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
             ch.SuccessfulCast(skill);
-            
+
             return ReturnTypes.None;
         }
 
@@ -51,7 +51,7 @@ namespace SmaugCS.Spells.Air
 
         private static void DecreaseTemp(WeatherCell cell, int change)
         {
-            cell.ChangeTemperature(-1*change);
+            cell.ChangeTemperature(-1 * change);
         }
 
         private static void IncreasePrecip(WeatherCell cell, int change)

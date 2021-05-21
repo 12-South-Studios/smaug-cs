@@ -19,12 +19,12 @@ namespace SmaugCS.Tests.Extensions
         {
             LevelConstants.MaxLevel = 65;
             _area = new AreaData(1, "Test")
-                {
-                    LowSoftRange = 5,
-                    HighSoftRange = 10,
-                    LowHardRange = 20,
-                    HighHardRange = 30
-                };
+            {
+                LowSoftRange = 5,
+                HighSoftRange = 10,
+                LowHardRange = 20,
+                HighHardRange = 30
+            };
             _ch = new CharacterInstance(1, "Tester");
         }
 

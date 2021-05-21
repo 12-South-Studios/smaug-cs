@@ -124,7 +124,7 @@ namespace Realm.Library.Common
             {
                 if (headerChars.Any(c => line.StartsWith(c)))
                 {
-                    section = new TextSection {Header = line.Substring(1)};
+                    section = new TextSection { Header = line.Substring(1) };
                     sections.Add(section);
                     continue;
                 }

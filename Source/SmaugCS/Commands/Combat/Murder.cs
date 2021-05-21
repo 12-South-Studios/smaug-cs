@@ -44,7 +44,7 @@ namespace SmaugCS.Commands.Combat
             var buf = $"Help!  I am being attacked by {(ch.IsNpc() ? ch.ShortDescription : ch.Name)}!";
             if (victim.IsPKill())
                 Wartalk.do_wartalk(victim, buf);
-            else 
+            else
                 Yell.do_yell(victim, buf);
 
             fight.check_illegal_pk(ch, victim);

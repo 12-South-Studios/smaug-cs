@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.MudProgs;
+using System.Collections.Generic;
+using System.Linq;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Social
@@ -26,8 +26,8 @@ namespace SmaugCS.Commands.Social
 
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Say what?")) return;
             if (CheckFunctions.CheckIf(ch,
-                args => ((CharacterInstance) args[0]).CurrentRoom.Flags.IsSet((int) RoomFlags.Silence),
-                "You can't do that here.", new List<object> {ch})) return;
+                args => ((CharacterInstance)args[0]).CurrentRoom.Flags.IsSet((int)RoomFlags.Silence),
+                "You can't do that here.", new List<object> { ch })) return;
 
             var actflags = ch.Act;
             if (ch.IsNpc())

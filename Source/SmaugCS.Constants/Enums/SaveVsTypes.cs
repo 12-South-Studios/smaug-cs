@@ -2,11 +2,11 @@
 {
     public enum SaveVsTypes
     {
-        None, 
+        None,
         PoisonOrDeath,
-        RodsOrWands, 
+        RodsOrWands,
         ParalysisOrPetrification,
-        Breath, 
+        Breath,
         SpellsOrStaves
     }
 }

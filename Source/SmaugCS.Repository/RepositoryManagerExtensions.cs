@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Language;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Repository
 {
@@ -64,7 +63,7 @@ namespace SmaugCS.Repository
                 langList.Count(
                     lang =>
                     lang.Type != LanguageTypes.Clan && lang.Type != LanguageTypes.None &&
-                    ((int) lang.Type & languages) > 0);
+                    ((int)lang.Type & languages) > 0);
         }
 
         public static RaceData GetRace(this IRepositoryManager repoManager, RaceTypes type)

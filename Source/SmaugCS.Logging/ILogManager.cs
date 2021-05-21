@@ -1,5 +1,5 @@
-﻿using System;
-using Realm.Library.Common.Logging;
+﻿using Realm.Library.Common.Logging;
+using System;
 
 namespace SmaugCS.Logging
 {

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Extensions
 {

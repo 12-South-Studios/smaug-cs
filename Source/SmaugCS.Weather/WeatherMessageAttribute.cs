@@ -1,5 +1,5 @@
-﻿using System;
-using SmaugCS.Weather.Enums;
+﻿using SmaugCS.Weather.Enums;
+using System;
 
 namespace SmaugCS.Weather
 {

@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Lookup;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Managers
 {
     public sealed class LookupManager : ILookupManager
     {
         private static Dictionary<string, List<string>> _lookupTable;
-         
+
         public LookupManager()
         {
             _lookupTable = new Dictionary<string, List<string>>();
@@ -30,7 +30,7 @@ namespace SmaugCS.Managers
         public LookupBase<SkillData, DoFunction> SkillLookup { get; }
         public LookupBase<SkillData, SpellFunction> SpellLookup { get; }
         public Dictionary<string, List<StatModLookup>> StatModLookup { get; }
-         
+
         public ResistanceTypes GetResistanceType(SpellDamageTypes type)
         {
             var attrib = type.GetAttribute<DamageResistanceAttribute>();

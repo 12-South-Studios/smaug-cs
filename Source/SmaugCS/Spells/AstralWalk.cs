@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SmaugCS.Commands;
+﻿using SmaugCS.Commands;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -7,12 +6,13 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Spells
 {
     public static class AstralWalk
     {
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo"), 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo"),
         SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level")]
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
@@ -23,7 +23,7 @@ namespace SmaugCS.Spells
                                                   || !ch.CanAstral(victim)
                                                   || !victim.CurrentRoom.Area.IsInHardRange(ch), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
-            
+
 
             if (!string.IsNullOrEmpty(skill.HitCharacterMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitCharacterMessage, ch, null, victim, ToTypes.Character);
@@ -32,7 +32,7 @@ namespace SmaugCS.Spells
 
             if (!string.IsNullOrEmpty(skill.HitRoomMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, victim, ToTypes.NotVictim);
-            else 
+            else
                 comm.act(ATTypes.AT_MAGIC, "$n disappears in a flash of light!", ch, null, victim, ToTypes.Room);
 
             ch.CurrentRoom.RemoveFrom(ch);
@@ -40,7 +40,7 @@ namespace SmaugCS.Spells
 
             if (!string.IsNullOrEmpty(skill.HitDestinationMessage))
                 comm.act(ATTypes.AT_MAGIC, skill.HitDestinationMessage, ch, null, victim, ToTypes.NotVictim);
-            else 
+            else
                 comm.act(ATTypes.AT_MAGIC, "$n appears in a flash of light!", ch, null, victim, ToTypes.Room);
 
             Look.do_look(ch, "auto");

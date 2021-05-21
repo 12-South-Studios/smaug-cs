@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Exceptions;
+using System;
 using System.Runtime.Serialization;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Exceptions;
 
 namespace SmaugCS.Exceptions
 {
@@ -12,7 +11,7 @@ namespace SmaugCS.Exceptions
 
         public RoomMismatchException(string message) : base(message) { }
 
-        public RoomMismatchException(string format, params object[] args) 
+        public RoomMismatchException(string format, params object[] args)
             : base(string.Format(format, args)) { }
 
         public RoomMismatchException(string message, Exception inner) : base(message, inner) { }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -11,6 +7,9 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -27,7 +26,7 @@ namespace SmaugCS.Extensions.Character
             {
                 ch.AffectedBy.RemoveBit(affect.Type);
 
-                if ((int) affect.Location%Program.REVERSE_APPLY == (int) ApplyTypes.RecurringSpell)
+                if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
                     var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
@@ -38,23 +37,23 @@ namespace SmaugCS.Extensions.Character
                     return;
                 }
 
-                switch ((int) affect.Location%Program.REVERSE_APPLY)
+                switch ((int)affect.Location % Program.REVERSE_APPLY)
                 {
-                    case (int) ApplyTypes.Affect:
+                    case (int)ApplyTypes.Affect:
                         return;
-                    case (int) ApplyTypes.ExtendedAffect:
+                    case (int)ApplyTypes.ExtendedAffect:
                         ch.AffectedBy.RemoveBit(mod);
                         return;
-                    case (int) ApplyTypes.Resistance:
+                    case (int)ApplyTypes.Resistance:
                         ch.Resistance.RemoveBit(mod);
                         return;
-                    case (int) ApplyTypes.Immunity:
+                    case (int)ApplyTypes.Immunity:
                         ch.Immunity.RemoveBit(mod);
                         return;
-                    case (int) ApplyTypes.Susceptibility:
+                    case (int)ApplyTypes.Susceptibility:
                         ch.Susceptibility.RemoveBit(mod);
                         return;
-                    case (int) ApplyTypes.Remove:
+                    case (int)ApplyTypes.Remove:
                         return;
                 }
                 mod = 0 - mod;
@@ -245,7 +244,7 @@ namespace SmaugCS.Extensions.Character
         private static int ModifyAndAddAffect(CharacterInstance ch, AffectData affect, int mod)
         {
             ch.AffectedBy.SetBit(affect.Type);
-            if ((int) affect.Location%Program.REVERSE_APPLY == (int) ApplyTypes.RecurringSpell)
+            if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
             {
                 mod = Math.Abs(mod);
                 var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];

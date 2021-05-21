@@ -1,5 +1,5 @@
-﻿using System.Net.Sockets;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
+using System.Net.Sockets;
 
 namespace Realm.Library.Network
 {

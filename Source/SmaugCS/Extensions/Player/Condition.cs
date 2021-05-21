@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Player
 {
@@ -35,8 +35,8 @@ namespace SmaugCS.Extensions.Player
                 LogManager.Instance.Bug("Invalid condition type {0}", condition);
         }
 
-        private static readonly Dictionary<ConditionTypes, Func<PlayerInstance, int, ReturnTypes>> ConditionTable 
-            = new Dictionary <ConditionTypes, Func<PlayerInstance, int, ReturnTypes>>
+        private static readonly Dictionary<ConditionTypes, Func<PlayerInstance, int, ReturnTypes>> ConditionTable
+            = new Dictionary<ConditionTypes, Func<PlayerInstance, int, ReturnTypes>>
         {
             {ConditionTypes.Full, ConditionFull},
             {ConditionTypes.Thirsty, ConditionThirsty},
@@ -50,7 +50,7 @@ namespace SmaugCS.Extensions.Player
 
             if (ch.Level >= LevelConstants.AvatarLevel || ch.CurrentClass == ClassTypes.Vampire) return retcode;
 
-           ch.SetColor(ATTypes.AT_HUNGRY);
+            ch.SetColor(ATTypes.AT_HUNGRY);
             var attrib = ConditionTypes.Full.GetAttribute<DescriptorAttribute>();
 
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
@@ -78,7 +78,7 @@ namespace SmaugCS.Extensions.Player
 
             if (ch.Level >= LevelConstants.AvatarLevel || ch.CurrentClass == ClassTypes.Vampire) return retcode;
 
-           ch.SetColor(ATTypes.AT_THIRSTY);
+            ch.SetColor(ATTypes.AT_THIRSTY);
             var attrib = ConditionTypes.Thirsty.GetAttribute<DescriptorAttribute>();
 
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
@@ -102,7 +102,7 @@ namespace SmaugCS.Extensions.Player
 
             if (ch.Level >= LevelConstants.AvatarLevel) return retcode;
 
-           ch.SetColor(ATTypes.AT_BLOOD);
+            ch.SetColor(ATTypes.AT_BLOOD);
             var attrib = ConditionTypes.Bloodthirsty.GetAttribute<DescriptorAttribute>();
 
             ch.SendTo(attrib.Messages.ToList()[conditionValue * 2]);
@@ -124,7 +124,7 @@ namespace SmaugCS.Extensions.Player
         {
             if (conditionValue < 0 || conditionValue > 1) return ReturnTypes.None;
 
-           ch.SetColor(ATTypes.AT_SOBER);
+            ch.SetColor(ATTypes.AT_SOBER);
 
             var attrib = ConditionTypes.Drunk.GetAttribute<DescriptorAttribute>();
             ch.SendTo(attrib.Messages.ToList()[conditionValue]);

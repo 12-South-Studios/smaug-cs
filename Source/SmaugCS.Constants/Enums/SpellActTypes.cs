@@ -2,13 +2,13 @@
 {
     public enum SpellActTypes
     {
-        None, 
-        Create, 
-        Destroy, 
-        Resist, 
+        None,
+        Create,
+        Destroy,
+        Resist,
         Suscept,
         Divinate,
-        Obscure, 
+        Obscure,
         Change
     }
 }

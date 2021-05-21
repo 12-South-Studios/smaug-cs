@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Data.Instances;
@@ -8,6 +6,8 @@ using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace SmaugCS.LuaHelpers
 {

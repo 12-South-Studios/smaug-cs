@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Objects;
+using System;
 using System.Data;
-using Realm.Library.Common.Objects;
 
 namespace SmaugCS.Common
 {
@@ -10,8 +10,8 @@ namespace SmaugCS.Common
         {
             if (!dataRow.Table.Columns.Contains(columnName))
                 return defaultValue;
-            return dataRow[columnName] == DBNull.Value 
-                ? defaultValue 
+            return dataRow[columnName] == DBNull.Value
+                ? defaultValue
                 : dataRow[columnName].CastAs<T>();
         }
     }

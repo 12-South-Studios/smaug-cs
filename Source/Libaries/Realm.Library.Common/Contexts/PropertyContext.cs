@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Entities;
+﻿using Realm.Library.Common.Entities;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
+using System;
+using System.Collections.Generic;
 
 namespace Realm.Library.Common.Contexts
 
@@ -31,7 +31,7 @@ namespace Realm.Library.Common.Contexts
         /// <returns></returns>
         public T GetProperty<T>(string name)
         {
-            return _properties.ContainsKey(name) ? (T)_properties[name].Value : default(T);
+            return _properties.ContainsKey(name) ? (T)_properties[name].Value : default;
         }
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace Realm.Library.Common.Contexts
             else
             {
                 _properties.Add(name, new Property(name)
-                    {
-                        Value = value,
-                        Persistable = (bits & PropertyTypeOptions.Persistable) != 0,
-                        Volatile = (bits & PropertyTypeOptions.Volatile) != 0,
-                        Visible = (bits & PropertyTypeOptions.Visible) != 0
-                    });
+                {
+                    Value = value,
+                    Persistable = (bits & PropertyTypeOptions.Persistable) != 0,
+                    Volatile = (bits & PropertyTypeOptions.Volatile) != 0,
+                    Visible = (bits & PropertyTypeOptions.Visible) != 0
+                });
             }
         }
 

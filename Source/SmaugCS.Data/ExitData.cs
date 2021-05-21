@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Xml.Serialization;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace SmaugCS.Data
 {
@@ -57,18 +57,10 @@ namespace SmaugCS.Data
             return (objToCheck.ID == ID) && objToCheck.Name.Equals(Name);
         }
 
-        public override int GetHashCode()
-        {
-            var hash = 13;
-            hash = hash * 7 + ID.GetHashCode();
-            hash = hash * 7 + Name.GetHashCode();
-            return hash;
-        }
-
         public static bool operator ==(ExitData a, ExitData b)
         {
             if (ReferenceEquals(a, b)) return true;
-            if (((object)a == null) || ((object)b == null)) return false;
+            if (a is null || b is null) return false;
             return a.ID == b.ID && a.Name.Equals(b.Name);
         }
 

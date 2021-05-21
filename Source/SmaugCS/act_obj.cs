@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
@@ -11,6 +9,8 @@ using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System;
+using System.Linq;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS
@@ -19,8 +19,8 @@ namespace SmaugCS
     {
         public static void get_obj(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
         {
-            if (CheckFunctions.CheckIfTrue(ch, !obj.WearFlags.IsSet(ItemWearFlags.Take) 
-                && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)), 
+            if (CheckFunctions.CheckIfTrue(ch, !obj.WearFlags.IsSet(ItemWearFlags.Take)
+                && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)),
                 "You can't take that.")) return;
 
             if (obj.MagicFlags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
@@ -46,7 +46,7 @@ namespace SmaugCS
 
             if (CheckFunctions.CheckIfTrue(ch, obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.CanTakePrototype(),
                 "A godly force prevents you from getting close to it.")) return;
-            
+
             if (ch.CarryNumber + obj.ObjectNumber > ch.CanCarryN())
             {
                 comm.act(ATTypes.AT_PLAIN, "$d: you can't carry that many items.", ch, null, obj.ShortDescription, ToTypes.Character);

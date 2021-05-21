@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Data.Instances;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Data.Instances;
 
 namespace SmaugCS.Data.Organizations
 {
@@ -86,14 +85,14 @@ namespace SmaugCS.Data.Organizations
         public void AddToRoster(string name, int Class, int level, int kills, int deaths)
         {
             Members.ToList().Add(new RosterData
-                            {
-                                Name = name,
-                                Class = Class,
-                                Level = level,
-                                Kills = kills,
-                                Deaths = deaths,
-                                Joined = DateTime.Now
-                            });
+            {
+                Name = name,
+                Class = Class,
+                Level = level,
+                Kills = kills,
+                Deaths = deaths,
+                Joined = DateTime.Now
+            });
         }
 
         public void RemoveFromRoster(string name)

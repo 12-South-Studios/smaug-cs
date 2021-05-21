@@ -1,5 +1,4 @@
-﻿using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Weather.Enums;

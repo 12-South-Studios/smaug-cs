@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Helpers
 {
@@ -19,7 +19,7 @@ namespace SmaugCS.Helpers
         private static bool SendToChar(CharacterInstance actor, string message, ATTypes atType = ATTypes.AT_PLAIN)
         {
             if (atType != ATTypes.AT_PLAIN)
-               actor.SetColor(atType);
+                actor.SetColor(atType);
             if (!string.IsNullOrEmpty(message))
                 actor.SendTo(message);
             return true;
@@ -57,7 +57,7 @@ namespace SmaugCS.Helpers
             return firstObj != secondObj && SendToChar(actor, message);
         }
 
-        public static bool CheckIf(CharacterInstance actor, Func<object[], bool> funcToCheck, string message = "", 
+        public static bool CheckIf(CharacterInstance actor, Func<object[], bool> funcToCheck, string message = "",
             IEnumerable<object> args = null, ATTypes atType = ATTypes.AT_PLAIN)
         {
             return funcToCheck.Invoke(args?.ToArray()) && SendToChar(actor, message, atType);

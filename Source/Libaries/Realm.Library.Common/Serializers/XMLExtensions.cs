@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using Realm.Library.Common.Objects;
+using System.IO;
 using System.Xml.Serialization;
-using Realm.Library.Common.Objects;
 
 namespace Realm.Library.Common.Serializers
 

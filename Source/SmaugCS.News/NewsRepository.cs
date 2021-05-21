@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using SmaugCS.DAL.Interfaces;
+using SmaugCS.Logging;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using SmaugCS.DAL.Interfaces;
-using SmaugCS.Logging;
 
 namespace SmaugCS.News
 {
@@ -43,7 +43,7 @@ namespace SmaugCS.News
                     };
                     News.ToList().Add(newNews);
 
-                    foreach(DAL.Models.NewsEntry entry in news.Entries) 
+                    foreach (DAL.Models.NewsEntry entry in news.Entries)
                     {
                         var newEntry = new NewsEntryData
                         {

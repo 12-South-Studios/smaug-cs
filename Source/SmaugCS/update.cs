@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SmaugCS.Commands;
+﻿using SmaugCS.Commands;
 using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
@@ -20,6 +16,10 @@ using SmaugCS.Extensions.Player;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SmaugCS
 {
@@ -32,7 +32,7 @@ namespace SmaugCS
             foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
             {
                 if (ch is PlayerInstance)
-                    ((PlayerInstance) ch).ProcessUpdate();
+                    ((PlayerInstance)ch).ProcessUpdate();
                 else
                     (ch as MobileInstance)?.ProcessUpdate(RepositoryManager.Instance);
             }
@@ -75,7 +75,7 @@ namespace SmaugCS
                     MudProgHandler.ExecuteRoomProg(MudProgTypes.Random, ch);
                 if (ch.CharDied())
                     continue;
-                
+
                 if (ch.IsNpc())
                     MudProgHandler.ExecuteMobileProg(MudProgTypes.Time, ch);
                 if (ch.CharDied())
@@ -90,7 +90,7 @@ namespace SmaugCS
                     && ch.Level >= 2 && CheckSaveFrequency(ch))
                     ch_save = ch;
 
-                if ((int) ch.CurrentPosition >= (int) PositionTypes.Stunned)
+                if ((int)ch.CurrentPosition >= (int)PositionTypes.Stunned)
                 {
                     if (ch.CurrentHealth < ch.MaximumHealth)
                         ch.CurrentHealth += ch.HealthGain();
@@ -174,7 +174,7 @@ namespace SmaugCS
                     ((PlayerInstance)ch).PlayerData.release_date <= DateTime.Now)
                 {
                     var location =
-                        RepositoryManager.Instance.ROOMS.Get(((PlayerInstance) ch).PlayerData.Clan?.RecallRoom ??
+                        RepositoryManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan?.RecallRoom ??
                                                              VnumConstants.ROOM_VNUM_TEMPLE) ?? ch.CurrentRoom;
 
                     ch.CurrentRoom.RemoveFrom(ch);
@@ -198,14 +198,14 @@ namespace SmaugCS
                         ch.CauseDamageTo(ch, 6, RepositoryManager.Instance.LookupSkill("poison"));
                     }
                     else switch (ch.CurrentPosition)
-                    {
-                        case PositionTypes.Incapacitated:
-                            ch.CauseDamageTo(ch, 1, Program.TYPE_UNDEFINED);
-                            break;
-                        case PositionTypes.Mortal:
-                            ch.CauseDamageTo(ch, 4, Program.TYPE_UNDEFINED);
-                            break;
-                    }
+                        {
+                            case PositionTypes.Incapacitated:
+                                ch.CauseDamageTo(ch, 1, Program.TYPE_UNDEFINED);
+                                break;
+                            case PositionTypes.Mortal:
+                                ch.CauseDamageTo(ch, 4, Program.TYPE_UNDEFINED);
+                                break;
+                        }
                     if (ch.CharDied())
                         continue;
 
@@ -238,7 +238,7 @@ namespace SmaugCS
 
                     if (ch.MentalState >= 30)
                     {
-                        var val = (ch.MentalState + 5)/10;
+                        var val = (ch.MentalState + 5) / 10;
                         if (HighMentalStateTable.ContainsKey(val))
                         {
                             ch.SendTo(HighMentalStateTable[val].Key);
@@ -248,16 +248,16 @@ namespace SmaugCS
 
                     if (ch.MentalState <= -30)
                     {
-                        var val = (Math.Abs(ch.MentalState) + 5)/10;
+                        var val = (Math.Abs(ch.MentalState) + 5) / 10;
                         if (LowMentalStateTable.ContainsKey(val))
                         {
                             if (val > 7)
                             {
-                                if ((int) ch.CurrentPosition > (int) PositionTypes.Sleeping)
+                                if ((int)ch.CurrentPosition > (int)PositionTypes.Sleeping)
                                 {
                                     if ((ch.CurrentPosition == PositionTypes.Standing ||
-                                         (int) ch.CurrentPosition < (int) PositionTypes.Fighting) &&
-                                        (SmaugRandom.D100() + (100 - val*10) + 10 < Math.Abs(ch.MentalState)))
+                                         (int)ch.CurrentPosition < (int)PositionTypes.Fighting) &&
+                                        (SmaugRandom.D100() + (100 - val * 10) + 10 < Math.Abs(ch.MentalState)))
                                         Sleep.do_sleep(ch, string.Empty);
                                     else
                                         ch.SendTo(LowMentalStateTable[val]);
@@ -265,7 +265,7 @@ namespace SmaugCS
                             }
                             else
                             {
-                                if ((int) ch.CurrentPosition > (int) PositionTypes.Resting)
+                                if ((int)ch.CurrentPosition > (int)PositionTypes.Resting)
                                     ch.SendTo(LowMentalStateTable[val]);
                             }
                         }
@@ -293,7 +293,7 @@ namespace SmaugCS
             {10, "You're barely conscious."}
         };
 
-        private static readonly Dictionary<int, KeyValuePair<string, string>> HighMentalStateTable = 
+        private static readonly Dictionary<int, KeyValuePair<string, string>> HighMentalStateTable =
             new Dictionary<int, KeyValuePair<string, string>>
         {
             {3, new KeyValuePair<string, string>("You feel feverish.", "$n looks kind of out of it.")},
@@ -439,7 +439,7 @@ namespace SmaugCS
         {
             var timer = 1.GetHighestOfTwoNumbers(obj.Timer - 1);
             if (obj.ItemType == ItemTypes.PlayerCorpse)
-                timer = obj.Timer/8 + 1;
+                timer = obj.Timer / 8 + 1;
 
             if (obj.Timer > 0 && obj.Value.ToList()[2] > timer)
             {
@@ -487,7 +487,7 @@ namespace SmaugCS
         private static int _charCounter = 0;
         public static void char_check()
         {
-            _charCounter = (_charCounter + 1)%GameConstants.GetSystemValue<int>("SecondsPerTick");
+            _charCounter = (_charCounter + 1) % GameConstants.GetSystemValue<int>("SecondsPerTick");
 
             // lc1 = trworld_create(TR_CHAR_WORLD_FORW);
 
@@ -525,7 +525,7 @@ namespace SmaugCS
                     && ch.CurrentFighting == null
                     && ch.CurrentHunting != null)
                 {
-                    Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
+                    Macros.WAIT_STATE(ch, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));
                     track.hunt_victim(ch);
                     return;
                 }
@@ -602,7 +602,7 @@ namespace SmaugCS
         public static void remove_portal(ObjectInstance portal)
         {
             if (portal == null)
-                 throw new ArgumentNullException(nameof(portal));
+                throw new ArgumentNullException(nameof(portal));
 
             var fromRoom = portal.InRoom;
             if (fromRoom == null)

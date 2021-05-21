@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -13,12 +10,15 @@ using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Skills
 {
     public static class Ability
     {
-        public static bool CheckAbility(CharacterInstance ch, string command, string argument, 
+        public static bool CheckAbility(CharacterInstance ch, string command, string argument,
             IRepositoryManager databaseManager = null)
         {
             var sn = ch.GetIDOfSkillCharacterKnows(command);
@@ -182,7 +182,7 @@ namespace SmaugCS.Skills
                     retcode = ReturnTypes.None;
                 }
                 else
-                   skill.AbilityLearnFromSuccess((PlayerInstance)ch);
+                    skill.AbilityLearnFromSuccess((PlayerInstance)ch);
 
                 if (skill.Target == TargetTypes.OffensiveCharacter
                     && victim != ch

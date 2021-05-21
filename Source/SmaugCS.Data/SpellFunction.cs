@@ -1,6 +1,6 @@
-﻿using System;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using System;
 
 namespace SmaugCS.Data
 {

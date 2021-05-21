@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using SmaugCS.DAL.Interfaces;
+using SmaugCS.Logging;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using SmaugCS.DAL.Interfaces;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
 {
@@ -30,7 +30,7 @@ namespace SmaugCS.Ban
 
                 foreach (var newBan in _dbContext.Bans.Select(ban => new BanData
                 {
-                    Id = ban.Id, 
+                    Id = ban.Id,
                     Type = ban.BanType,
                     BannedBy = ban.BannedBy,
                     BannedOn = ban.BannedOn,

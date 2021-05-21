@@ -14,7 +14,7 @@ namespace SmaugCS.Commands.Social
             if (firstArg.EqualsIgnoreCase("all")
                 || ch.IsImmortal())
             {
-               ch.SetColor(ATTypes.AT_SAY);
+                ch.SetColor(ATTypes.AT_SAY);
                 ch.Speaking = ~(int)LanguageTypes.Clan;
                 ch.SendTo("Now speaking all languages.\r\n");
                 return;
@@ -38,8 +38,8 @@ namespace SmaugCS.Commands.Social
                 }
             }*/
 
-           ch.SetColor(ATTypes.AT_SAY);
-           ch.SendTo("You do not know that language.\r\n");
+            ch.SetColor(ATTypes.AT_SAY);
+            ch.SendTo("You do not know that language.\r\n");
         }
     }
 }

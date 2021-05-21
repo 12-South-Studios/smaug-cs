@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using System.Collections.Generic;
 
 namespace SmaugCS.Tests
 {
@@ -22,7 +22,7 @@ namespace SmaugCS.Tests
             actor.PlayerData.ConditionTable.Clear();
             actor.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = currentBlood;
 
-            var list = new List<object> {actor, useBlood};
+            var list = new List<object> { actor, useBlood };
 
             Assert.That(Helpers.HelperFunctions.HasSufficientBloodPower(list), Is.EqualTo(expectedValue));
         }
@@ -68,7 +68,7 @@ namespace SmaugCS.Tests
                 }
             };
 
-            var list = new List<object> {actor};
+            var list = new List<object> { actor };
 
             Assert.That(Helpers.HelperFunctions.IsFighting(list), Is.True);
         }
@@ -81,9 +81,9 @@ namespace SmaugCS.Tests
         [TestCase(PositionTypes.Dead, false)]
         public void IsInFightingPosition(PositionTypes position, bool expectedValue)
         {
-            var actor = new CharacterInstance(1, "TestNpc") {CurrentPosition = position};
+            var actor = new CharacterInstance(1, "TestNpc") { CurrentPosition = position };
 
-            var list = new List<object> {actor};
+            var list = new List<object> { actor };
 
             Assert.That(Helpers.HelperFunctions.IsInFightingPosition(list), Is.EqualTo(expectedValue));
         }

@@ -71,7 +71,7 @@ namespace Realm.Library.Common.Extensions
             Validation.IsNotNull(sb, "sb");
             Validation.Validate(sb.Length > 0);
 
-            for (var i = 0; i < sb.Length; )
+            for (var i = 0; i < sb.Length;)
             {
                 if (sb[i] == value)
                     sb.Remove(i, 1);

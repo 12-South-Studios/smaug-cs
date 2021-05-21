@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -15,6 +12,8 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
+using System;
+using System.Linq;
 
 namespace SmaugCS.Extensions
 {

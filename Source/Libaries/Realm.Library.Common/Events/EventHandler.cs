@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Timers;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common.Exceptions;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Timers;
 
 namespace Realm.Library.Common.Events
 
@@ -54,12 +53,12 @@ namespace Realm.Library.Common.Events
             get { return _frequency.GetValueOrDefault(0); }
             set
             {
-                Validation.Validate<ArgumentOutOfRangeException>(value >= 50, Resources.ERR_INVALID_FREQUENCY, value);
+                Validation.Validate<ArgumentOutOfRangeException>(value >= 50, "Frequency value of {0} is not allowed.", value);
                 if (_frequency != null) return;
                 _frequency = value;
                 Timer.Interval = value;
                 Log.DebugFormat("Event Timer setup with Interval frequency of {0}", Timer.Interval);
-            } 
+            }
         }
         private int? _frequency;
 
@@ -75,8 +74,7 @@ namespace Realm.Library.Common.Events
                 _events.TryAdd(eventListener.EventType, new List<EventListener> { eventListener });
             else
             {
-                IList<EventListener> tupleList;
-                _events.TryGetValue(eventListener.EventType, out tupleList);
+                _events.TryGetValue(eventListener.EventType, out IList<EventListener> tupleList);
                 if (tupleList.IsNotNull())
                     tupleList.Add(eventListener);
             }
@@ -90,8 +88,7 @@ namespace Realm.Library.Common.Events
             if (listener.IsNull()) return false;
             if (!_events.ContainsKey(listenToEventType)) return false;
 
-            IList<EventListener> tupleList;
-            _events.TryGetValue(listenToEventType, out tupleList);
+            _events.TryGetValue(listenToEventType, out IList<EventListener> tupleList);
 
             return tupleList.IsNotNull() && tupleList.Any(tuple => tuple.Listener == listener);
         }
@@ -104,8 +101,7 @@ namespace Realm.Library.Common.Events
             if (listener.IsNull() || listenTo.IsNull()) return false;
             if (!_events.ContainsKey(listenToEventType)) return false;
 
-            IList<EventListener> tupleList;
-            _events.TryGetValue(listenToEventType, out tupleList);
+            _events.TryGetValue(listenToEventType, out IList<EventListener> tupleList);
 
             return tupleList.IsNotNull() && tupleList.Any(tuple => tuple.Listener == listener && tuple.ListenTo == listenTo);
         }
@@ -117,8 +113,7 @@ namespace Realm.Library.Common.Events
         {
             if (!IsListening(listener, listenTo, listenToEventType)) return;
 
-            IList<EventListener> tupleList;
-            _events.TryGetValue(listenToEventType, out tupleList);
+            _events.TryGetValue(listenToEventType, out IList<EventListener> tupleList);
             if (tupleList.IsNull()) return;
 
             tupleList.Where(x => x.Listener == listener && x.ListenTo == listenTo && x.EventType == listenToEventType)
@@ -133,8 +128,7 @@ namespace Realm.Library.Common.Events
         {
             if (!IsListening(listener, listenToEventType)) return;
 
-            IList<EventListener> tupleList;
-            _events.TryGetValue(listenToEventType, out tupleList);
+            _events.TryGetValue(listenToEventType, out IList<EventListener> tupleList);
             if (tupleList.IsNull()) return;
 
             tupleList.Where(x => x.Listener == listener && x.EventType == listenToEventType)
@@ -149,8 +143,7 @@ namespace Realm.Library.Common.Events
         {
             _events.Keys.ToList().ForEach(eventType =>
                                               {
-                                                  IList<EventListener> tupleList;
-                                                  _events.TryGetValue(eventType, out tupleList);
+                                                  _events.TryGetValue(eventType, out IList<EventListener> tupleList);
                                                   if (tupleList.IsNotNull())
                                                       tupleList.Where(x => x.Listener == listener)
                                                                .ToList()
@@ -168,8 +161,7 @@ namespace Realm.Library.Common.Events
 
             Log.DebugFormat("Locate Event to Throw {0}", thrownEvent.GetType());
 
-            IList<EventListener> tupleList;
-            _events.TryGetValue(thrownEvent.GetType(), out tupleList);
+            _events.TryGetValue(thrownEvent.GetType(), out IList<EventListener> tupleList);
             if (tupleList.IsNull() || tupleList.Count == 0) return;
 
             Log.DebugFormat("ThrowEvent {0}/{1}", sender.GetType(), thrownEvent.GetType());
@@ -212,11 +204,11 @@ namespace Realm.Library.Common.Events
             {
                 evt = Activator.CreateInstance<T>();
                 if (evt.IsNull())
-                    throw new InstanceNotFoundException(string.Format(Resources.ERR_EVENT_INSTANTIATE_FAILURE, typeof(T)));
+                    throw new InstanceNotFoundException(string.Format("Failed to create Event of type {0}.", typeof(T)));
             }
             catch
             {
-                throw new InstanceNotFoundException(string.Format(Resources.ERR_EVENT_INSTANTIATE_FAILURE, typeof(T)));
+                throw new InstanceNotFoundException(string.Format("Failed to create Event of type {0}.", typeof(T)));
             }
 
             evt.Args = new RealmEventArgs(table);
@@ -235,11 +227,11 @@ namespace Realm.Library.Common.Events
             {
                 evt = Activator.CreateInstance<T>();
                 if (evt.IsNull())
-                    throw new InstanceNotFoundException(string.Format(Resources.ERR_EVENT_INSTANTIATE_FAILURE, typeof(T)));
+                    throw new InstanceNotFoundException(string.Format("Failed to create Event of type {0}.", typeof(T)));
             }
             catch
             {
-                throw new InstanceNotFoundException(string.Format(Resources.ERR_EVENT_INSTANTIATE_FAILURE, typeof(T)));
+                throw new InstanceNotFoundException(string.Format("Failed to create Event of type {0}.", typeof(T)));
             }
 
             evt.Args = new RealmEventArgs();
@@ -255,9 +247,8 @@ namespace Realm.Library.Common.Events
             if (!_eventQueue.Any()) return;
             Log.DebugFormat("EventTimer found {0} events in the queue.", _eventQueue.Count);
 
-            IEventBase thrownEvent;
-            if (!_eventQueue.TryDequeue(out thrownEvent))
-                throw new InvalidOperationException(Resources.ERR_EVENT_DEQUEUE_FAILURE);
+            if (!_eventQueue.TryDequeue(out IEventBase thrownEvent))
+                throw new InvalidOperationException("Failed to dequeue event from EventQueue");
 
             if (thrownEvent.IsNull()) return;
             Log.DebugFormat("EventHandler got Event {0} to process", thrownEvent.Name);
@@ -269,8 +260,7 @@ namespace Realm.Library.Common.Events
                 thrownEvent.Args = new RealmEventArgs();
             thrownEvent.Args.Sender = thrownEvent.Sender;
 
-            IList<EventListener> tupleList;
-            _events.TryGetValue(thrownEvent.GetType(), out tupleList);
+            _events.TryGetValue(thrownEvent.GetType(), out IList<EventListener> tupleList);
             if (tupleList.IsNull()) return;
             Log.DebugFormat("EventHandler got Event {0} and it has {1} listeners.", thrownEvent.GetType(),
                              tupleList.Count);

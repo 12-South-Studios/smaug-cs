@@ -1,8 +1,8 @@
-﻿using System.Collections.Concurrent;
+﻿using Ninject;
+using Realm.Library.Common;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
-using Ninject;
-using Realm.Library.Common;
 
 namespace SmaugCS.Time
 {
@@ -31,7 +31,7 @@ namespace SmaugCS.Time
         {
             var newId = GetNextId;
 
-            var newTimer = new CommonTimer(newId) {Interval = duration};
+            var newTimer = new CommonTimer(newId) { Interval = duration };
             newTimer.Elapsed += callback;
 
             _timerTable.GetOrAdd(newId, newTimer);
@@ -41,15 +41,13 @@ namespace SmaugCS.Time
 
         public CommonTimer GetTimer(int timerId)
         {
-            CommonTimer timer;
-            _timerTable.TryGetValue(timerId, out timer);
+            _timerTable.TryGetValue(timerId, out CommonTimer timer);
             return timer;
         }
 
         public void DeleteTimer(int timerId)
         {
-            CommonTimer timer;
-            _timerTable.TryRemove(timerId, out timer);
+            _timerTable.TryRemove(timerId, out CommonTimer timer);
             timer?.Dispose();
         }
     }

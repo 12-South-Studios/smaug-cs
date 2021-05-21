@@ -15,11 +15,11 @@ namespace SmaugCS.Spells.Smaug
         public static ReturnTypes spell_attack(int sn, int level, CharacterInstance ch, object vo)
         {
             var skill = RepositoryManager.Instance.SKILLS.Get(sn);
-            var vch = (CharacterInstance) vo;
+            var vch = (CharacterInstance)vo;
 
             var saved = skill.CheckSave(level, ch, vch);
             if (CheckFunctions.CheckIfTrueCasting(
-                saved && Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate, skill, ch,
+                saved && Macros.SPELL_SAVE(skill) == (int)SpellSaveEffectTypes.Negate, skill, ch,
                 CastingFunctionType.Failed, vch)) return ReturnTypes.SpellFailed;
 
             var damage = GetBaseDamage(level, ch, skill);
@@ -77,7 +77,7 @@ namespace SmaugCS.Spells.Smaug
                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))
             {
                 var xp = ch.CurrentFighting?.Experience ?? vch.CurrentFighting.Experience;
-                var xpGain = xp*damage*2/vch.MaximumHealth;
+                var xpGain = xp * damage * 2 / vch.MaximumHealth;
 
                 ((PlayerInstance)ch).GainXP(0 - xpGain);
             }
@@ -103,14 +103,14 @@ namespace SmaugCS.Spells.Smaug
 
         private static int GetThreeQuartersDamage(int damage)
         {
-            return damage*3/4;
+            return damage * 3 / 4;
         }
 
         private static int GetBaseDamage(int level, CharacterInstance ch, SkillData skill)
         {
             return !string.IsNullOrEmpty(skill.Dice)
                 ? magic.ParseDiceExpression(ch, skill.DieCharacterMessage)
-                : SmaugRandom.Between(1, level/2);
+                : SmaugRandom.Between(1, level / 2);
         }
     }
 }

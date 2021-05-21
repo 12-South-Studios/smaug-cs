@@ -1,12 +1,11 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.Commands.PetsAndGroups
 {
@@ -30,7 +29,7 @@ namespace SmaugCS.Commands.PetsAndGroups
                 return;
             }
 
-            if (ch.Act.IsSet((int) PlayerFlags.NoTell))
+            if (ch.Act.IsSet((int)PlayerFlags.NoTell))
             {
                 ch.SendTo("Your message didn't get through!\r\n");
                 return;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Admin;
 using SmaugCS.Common;
@@ -19,6 +14,10 @@ using SmaugCS.Managers;
 using SmaugCS.Objects;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
@@ -40,7 +39,7 @@ namespace SmaugCS
 
         public static Queue<ObjectInstance> ExtractedObjectQueue { get; set; }
         public static Queue<ExtracedCharacterData> ExtractedCharacterQueue { get; set; }
- 
+
         public static int falling = 0;
 
         private static readonly Dictionary<int, string> ObjectMessageLargeMap = new Dictionary<int, string>
@@ -136,7 +135,7 @@ namespace SmaugCS
                 comm.act(ATTypes.AT_PLAIN, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
                     ? "I see nothing like that beneath $p."
                     : "I see nothing like that in $p.", ch, container, null, ToTypes.Character);
-            
+
             return obj;
         }
 
@@ -149,9 +148,9 @@ namespace SmaugCS
         public static string affect_bit_name(ExtendedBitvector vector)
         {
             var sb = new StringBuilder();
-            foreach (var type in Enum.GetValues(typeof (AffectedByTypes))
+            foreach (var type in Enum.GetValues(typeof(AffectedByTypes))
                         .Cast<AffectedByTypes>()
-                        .Where(type => vector.IsSet((int) type)))
+                        .Where(type => vector.IsSet((int)type)))
             {
                 sb.AppendFormat(" {0}", type.GetName());
             }
@@ -161,9 +160,9 @@ namespace SmaugCS
         public static string extra_bit_name(ExtendedBitvector extra_flags)
         {
             var sb = new StringBuilder();
-            foreach (var type in Enum.GetValues(typeof (ItemExtraFlags))
+            foreach (var type in Enum.GetValues(typeof(ItemExtraFlags))
                         .Cast<ItemExtraFlags>()
-                        .Where(type => extra_flags.IsSet((int) type)))
+                        .Where(type => extra_flags.IsSet((int)type)))
             {
                 sb.AppendFormat(" {0}", type.GetName());
             }
@@ -172,14 +171,14 @@ namespace SmaugCS
 
         public static string magic_bit_name(int magic_flags)
         {
-            return (magic_flags & (int) ItemMagicFlags.Returning) > 0 ? " returning" : "none";
+            return (magic_flags & (int)ItemMagicFlags.Returning) > 0 ? " returning" : "none";
         }
 
         public static string pull_type_name(int pulltype)
         {
-            foreach (DirectionPullTypes type in Enum.GetValues(typeof (DirectionPullTypes)))
+            foreach (DirectionPullTypes type in Enum.GetValues(typeof(DirectionPullTypes)))
             {
-                if ((int) type == pulltype || pulltype == type.GetValue())
+                if ((int)type == pulltype || pulltype == type.GetValue())
                     return type.GetName();
             }
             return "ERROR";
@@ -209,8 +208,8 @@ namespace SmaugCS
 
             foreach (var c in ch.Name)
             {
-                var b = c%14;
-                var a = c%1 + 1;
+                var b = c % 14;
+                var a = c % 1 + 1;
 
                 switch (b)
                 {
@@ -264,7 +263,7 @@ namespace SmaugCS
         {
             save.de_equip_char(ch);
 
-            foreach(var af in ch.Affects)
+            foreach (var af in ch.Affects)
                 ch.ModifyAffect(af, false);
 
             if (ch.CurrentRoom != null)
@@ -350,10 +349,10 @@ namespace SmaugCS
             switch (paf.Location)
             {
                 default:
-                    buf = $"Affects {affect_loc_name((int) paf.Location)} by {paf.Modifier}.";
+                    buf = $"Affects {affect_loc_name((int)paf.Location)} by {paf.Modifier}.";
                     break;
                 case ApplyTypes.Affect:
-                    buf = $"Affects {affect_loc_name((int) paf.Location)} by {paf.Modifier}.";
+                    buf = $"Affects {affect_loc_name((int)paf.Location)} by {paf.Modifier}.";
 
                     for (var i = 0; i < 32; i++)
                     {
@@ -375,18 +374,18 @@ namespace SmaugCS
                 case ApplyTypes.Resistance:
                 case ApplyTypes.Immunity:
                 case ApplyTypes.Susceptibility:
-                    buf = $"Affects {affect_loc_name((int) paf.Location)} by {paf.Modifier}";
+                    buf = $"Affects {affect_loc_name((int)paf.Location)} by {paf.Modifier}";
 
                     for (var i = 0; i < 32; i++)
                     {
                         if (paf.Modifier.IsSet(1 << i))
                             buf += " " + BuilderConstants.ris_flags[i];
                     }
-                    
+
                     break;
             }
 
-            ch.SendTo(buf);            
+            ch.SendTo(buf);
         }
 
         public static void set_cur_obj(ObjectInstance obj)
@@ -451,19 +450,19 @@ namespace SmaugCS
 
         public static void economize_mobgold(CharacterInstance mob)
         {
-            mob.CurrentCoin = mob.CurrentCoin.GetLowestOfTwoNumbers(mob.Level*mob.Level*400);
+            mob.CurrentCoin = mob.CurrentCoin.GetLowestOfTwoNumbers(mob.Level * mob.Level * 400);
             if (mob.CurrentRoom == null)
                 return;
 
-            var gold = (mob.CurrentRoom.Area.HighEconomy > 0 ? 1 : 0)*1000000000*mob.CurrentRoom.Area.LowEconomy;
-            mob.CurrentCoin = 0.GetNumberThatIsBetween(mob.CurrentCoin, gold/10);
+            var gold = (mob.CurrentRoom.Area.HighEconomy > 0 ? 1 : 0) * 1000000000 * mob.CurrentRoom.Area.LowEconomy;
+            mob.CurrentCoin = 0.GetNumberThatIsBetween(mob.CurrentCoin, gold / 10);
             if (mob.CurrentCoin > 0)
                 mob.CurrentRoom.Area.LowerEconomy(mob.CurrentCoin);
         }
 
         public static void check_switches(bool possess)
         {
-            foreach(var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
                 check_switch(ch, possess);
         }
 
@@ -474,7 +473,7 @@ namespace SmaugCS
             {
                 foreach (var af in ch.Switched.Affects.Where(x => x.Duration != -1))
                 {
-                    var skill = RepositoryManager.Instance.SKILLS.Get((int) af.Type);
+                    var skill = RepositoryManager.Instance.SKILLS.Get((int)af.Type);
                     if (af.Type != AffectedByTypes.None && skill != null &&
                         skill.SpellFunction.Value == Possess.spell_possess)
                         return;

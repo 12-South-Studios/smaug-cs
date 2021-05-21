@@ -13,7 +13,7 @@ namespace SmaugCS.Skills
 {
     public static class Parry
     {
-        public static bool CheckParry(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null, 
+        public static bool CheckParry(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null,
             IGameManager gameManager = null)
         {
             if (!victim.IsAwake())
@@ -29,12 +29,12 @@ namespace SmaugCS.Skills
                 throw new ObjectNotFoundException("Skill 'parry' not found");
 
             if (victim.IsNpc())
-                chances = 60.GetLowestOfTwoNumbers(2*victim.Level);
+                chances = 60.GetLowestOfTwoNumbers(2 * victim.Level);
             else
             {
                 if (victim.GetEquippedItem(WearLocations.Wield) == null)
                     return false;
-                chances = (int)Macros.LEARNED(victim, (int) skill.ID)/
+                chances = (int)Macros.LEARNED(victim, (int)skill.ID) /
                           (gameManager ?? GameManager.Instance).SystemData.ParryMod;
             }
 

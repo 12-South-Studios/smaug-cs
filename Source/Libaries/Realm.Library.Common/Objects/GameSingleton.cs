@@ -1,11 +1,9 @@
 ﻿using Realm.Library.Common.Data;
 using Realm.Library.Common.Events;
 using Realm.Library.Common.Logging;
-using Realm.Library.Common.Properties;
 using Realm.Standard.Patterns.Singleton;
 
 namespace Realm.Library.Common.Objects
-
 {
     /// <summary>
     /// 
@@ -25,7 +23,7 @@ namespace Realm.Library.Common.Objects
 
             var initAtom = args.GetValue("InitAtom") as DictionaryAtom;
             var logger = initAtom.GetObject("Logger").CastAs<LogWrapper>();
-            logger.InfoFormat(Resources.MSG_INITIALIZE_MANAGER, GetType());
+            logger.InfoFormat("Manager {0} initialized.", GetType());
         }
     }
 }

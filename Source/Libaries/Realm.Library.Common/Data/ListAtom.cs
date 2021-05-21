@@ -1,9 +1,8 @@
-﻿using System.Collections;
+﻿using Realm.Library.Common.Logging;
+using Realm.Library.Common.Objects;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common.Logging;
-using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
 
 namespace Realm.Library.Common.Data
 {
@@ -266,7 +265,7 @@ namespace Realm.Library.Common.Data
         {
             Validation.IsNotNull(log, "log");
 
-            log.InfoFormat(Resources.LOG_LIST_ATOM_FORMAT, prefix);
+            log.InfoFormat("{0}(ListAtom)", prefix);
             Enumerable.Range(1, Count).ToList().ForEach(i =>
                 {
                     var atom = Get(i - 1);

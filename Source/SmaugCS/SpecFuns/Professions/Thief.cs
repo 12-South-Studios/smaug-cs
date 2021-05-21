@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using System.Linq;
 
 namespace SmaugCS.SpecFuns.Professions
 {
@@ -28,16 +28,16 @@ namespace SmaugCS.SpecFuns.Professions
                     return true;
                 }
 
-                var maxgold = ch.Level*ch.Level*1000;
-                var gold = victim.CurrentCoin*
-                           SmaugRandom.Between(1, 2.GetNumberThatIsBetween(ch.Level/4, 10))/100;
+                var maxgold = ch.Level * ch.Level * 1000;
+                var gold = victim.CurrentCoin *
+                           SmaugRandom.Between(1, 2.GetNumberThatIsBetween(ch.Level / 4, 10)) / 100;
 
-                ch.CurrentCoin += 9*gold/10;
+                ch.CurrentCoin += 9 * gold / 10;
                 victim.CurrentCoin -= gold;
                 if (ch.CurrentCoin <= maxgold) return true;
 
-                ch.CurrentRoom.Area.BoostEconomy(ch.CurrentCoin - maxgold/2);
-                ch.CurrentCoin = maxgold/2;
+                ch.CurrentRoom.Area.BoostEconomy(ch.CurrentCoin - maxgold / 2);
+                ch.CurrentCoin = maxgold / 2;
                 return true;
             }
             return false;

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using log4net;
+﻿using log4net;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Logging;
-using Realm.Library.Common.Properties;
+using System;
+using System.Diagnostics;
 
-#pragma warning disable 1591
-
-// ReSharper disable CheckNamespace
 namespace Realm.Library.Common
-// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Class that handles extension functions to Exception objects
@@ -34,7 +30,7 @@ namespace Realm.Library.Common
             }
 
             if (exceptionBehavior == ExceptionHandlingOptions.RecordAndThrow || exceptionBehavior == ExceptionHandlingOptions.ThrowOnly)
-                throw (T)Activator.CreateInstance(typeof(T), string.Format(Resources.MSG_EXCEPTION_LOCATION, caller), exception);
+                throw (T)Activator.CreateInstance(typeof(T), string.Format("Exception occurred in {0}", caller), exception);
         }
 
         /// <summary>
@@ -78,5 +74,3 @@ namespace Realm.Library.Common
         }
     }
 }
-
-#pragma warning restore 1591

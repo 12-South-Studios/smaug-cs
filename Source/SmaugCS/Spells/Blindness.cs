@@ -13,10 +13,10 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_blindness(int sn, int level, CharacterInstance ch, object vo)
         {
-            var victim = (CharacterInstance) vo;
+            var victim = (CharacterInstance)vo;
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
-            var tmp = skill.Flags.IsSet(SkillFlags.PKSensitive) ? level/2 : level;
+            var tmp = skill.Flags.IsSet(SkillFlags.PKSensitive) ? level / 2 : level;
 
             if (victim.IsImmune(ResistanceTypes.Magic))
             {
@@ -53,7 +53,7 @@ namespace SmaugCS.Spells
 
         private static int GetDuration(int level)
         {
-            return (1 + level/3)*GameConstants.GetConstant<int>("AffectDurationConversionValue");
+            return (1 + level / 3) * GameConstants.GetConstant<int>("AffectDurationConversionValue");
         }
     }
 }

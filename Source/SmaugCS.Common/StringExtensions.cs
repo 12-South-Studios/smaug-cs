@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Common
 {
@@ -23,8 +23,7 @@ namespace SmaugCS.Common
 
             if (words.Length < 2 || !words[0].IsNumber()) return new Tuple<int, string>(1, value);
 
-            int val;
-            if (!int.TryParse(words[0], out val))
+            if (!int.TryParse(words[0], out int val))
                 return null;
 
             string outVal = string.Empty;
@@ -46,8 +45,7 @@ namespace SmaugCS.Common
 
             if (words.Length < 2 || !words[0].IsNumber()) return 0;
 
-            int val;
-            return !int.TryParse(words[0], out val) ? 0 : val;
+            return !int.TryParse(words[0], out int val) ? 0 : val;
         }
 
         public static string StripNumberArgument(this string value)
@@ -112,8 +110,7 @@ namespace SmaugCS.Common
 
             foreach (string number in numbers)
             {
-                ulong num;
-                if (!ulong.TryParse(number, out num))
+                if (!ulong.TryParse(number, out ulong num))
                     continue;
 
                 bit.SetBit(num);

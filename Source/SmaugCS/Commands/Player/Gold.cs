@@ -9,7 +9,7 @@ namespace SmaugCS.Commands.Player
     {
         public static void do_gold(CharacterInstance ch, string argument)
         {
-           ch.SetColor(ATTypes.AT_GOLD);
+            ch.SetColor(ATTypes.AT_GOLD);
             ch.Printf("You have {0} gold pieces.", ch.CurrentCoin.ToPunctuation());
         }
     }

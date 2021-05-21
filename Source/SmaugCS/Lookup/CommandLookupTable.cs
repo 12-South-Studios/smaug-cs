@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Social;
 using SmaugCS.Data;
 using SmaugCS.Extensions.Character;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Lookup
 {
@@ -12,7 +12,7 @@ namespace SmaugCS.Lookup
         public CommandLookupTable()
             : base(new DoFunction { Value = (ch, arg) => ch.SendTo("Huh?") })
         {
-            LookupTable.Add("do_say", new DoFunction {Value = Say.do_say});
+            LookupTable.Add("do_say", new DoFunction { Value = Say.do_say });
 
             // TODO Add command references here
         }

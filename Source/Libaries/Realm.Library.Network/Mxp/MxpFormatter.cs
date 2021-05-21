@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Realm.Library.Common;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-using Realm.Library.Common;
 
 namespace Realm.Library.Network.Mxp
 {

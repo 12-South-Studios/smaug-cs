@@ -2,7 +2,7 @@
 {
     public static class SqlQueries
     {
-        public const string START_SESSION = 
+        public const string START_SESSION =
             @"INSERT INTO SystemData (SessionStart) 
                 VALUES (CURRENT_TIMESTAMP);";
 

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Commands;
@@ -13,6 +11,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS
 {
@@ -65,9 +64,9 @@ namespace SmaugCS
                 if (tar == (int)EchoTypes.Immortal && !d.Character.IsImmortal())
                     continue;
 
-               d.Character.SetColor(atColor);
-               d.Character.SendTo(argument);
-               d.Character.SendTo("\r\n");
+                d.Character.SetColor(atColor);
+                d.Character.SendTo(argument);
+                d.Character.SendTo("\r\n");
             }
         }
 
@@ -75,9 +74,9 @@ namespace SmaugCS
         {
             foreach (var ch in room.Persons)
             {
-               ch.SetColor(atcolor);
-               ch.SendTo(argument);
-               ch.SendTo("\r\n");
+                ch.SetColor(atcolor);
+                ch.SendTo(argument);
+                ch.SendTo("\r\n");
             }
         }
 

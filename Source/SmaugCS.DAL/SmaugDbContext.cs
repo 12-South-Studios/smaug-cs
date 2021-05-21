@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Realm.Library.Common.Logging;
+using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL.Models;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
@@ -6,9 +9,6 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
-using Realm.Library.Common.Logging;
-using SmaugCS.DAL.Interfaces;
-using SmaugCS.DAL.Models;
 
 namespace SmaugCS.DAL
 {
@@ -26,7 +26,7 @@ namespace SmaugCS.DAL
         public SmaugDbContext(ILogWrapper logger) : base("Smaug")
         {
             Logger = logger;
-            ObjectContext = ((IObjectContextAdapter) this).ObjectContext;
+            ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
         }
 
         public override Task<int> SaveChangesAsync()
@@ -46,7 +46,7 @@ namespace SmaugCS.DAL
 
             try
             {
-               return base.SaveChanges();
+                return base.SaveChanges();
             }
             catch (DbEntityValidationException e)
             {
@@ -99,7 +99,7 @@ namespace SmaugCS.DAL
 
             if (entry.State == EntityState.Modified && !entity.CreateDateUtc.HasValue)//Migration entities don't have create date.
                 entity.CreateDateUtc = entry.OriginalValues.GetValue<DateTime>("CreateDateUtc");
-            
+
             if (entry.State == EntityState.Added)
                 entity.CreateDateUtc = _lastSaveTimeUtc;
 
@@ -118,9 +118,9 @@ namespace SmaugCS.DAL
         public IDbSet<Log> Logs { get; set; }
         public IDbSet<News> News { get; set; }
         public IDbSet<NewsEntry> NewsEntries { get; set; }
-        public IDbSet<Note> Notes { get; set; } 
+        public IDbSet<Note> Notes { get; set; }
         public IDbSet<Organization> Organizations { get; set; }
         public IDbSet<WeatherCell> Weather { get; set; }
-        public IDbSet<Session> Sessions { get; set; } 
+        public IDbSet<Session> Sessions { get; set; }
     }
 }

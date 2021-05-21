@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
@@ -10,6 +7,8 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -35,9 +34,9 @@ namespace SmaugCS.Extensions.Character
                 return null;
 
             var door = (from key in DoorDirectionMap.Keys
-                let words = key.Split(';')
-                where words.Any(x => x.EqualsIgnoreCase(arg))
-                select DoorDirectionMap[key]).FirstOrDefault();
+                        let words = key.Split(';')
+                        where words.Any(x => x.EqualsIgnoreCase(arg))
+                        select DoorDirectionMap[key]).FirstOrDefault();
 
             if (door == 0)
             {

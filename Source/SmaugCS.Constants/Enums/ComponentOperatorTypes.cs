@@ -9,13 +9,13 @@ namespace SmaugCS.Constants.Enums
 
         [Name("+")]
         DoNotConsume,
- 
+
         [Name("@")]
         DecreaseValue0,
 
         [Name("#")]
         DecreaseValue1,
- 
+
         [Name("$")]
         DecreaseValue2,
 

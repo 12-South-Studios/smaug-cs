@@ -44,7 +44,7 @@ namespace SmaugCS.Tests
             LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
             // Add it again to verify an exception is logged
-            LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry"); 
+            LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
             Assert.That(callbackValue, Is.True);
         }

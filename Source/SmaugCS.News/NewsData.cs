@@ -6,7 +6,7 @@ namespace SmaugCS.News
     public class NewsData
     {
         private readonly List<NewsEntryData> _entries;
- 
+
         public int Id { get; private set; }
         public string Header { get; set; }
         public string Name { get; set; }

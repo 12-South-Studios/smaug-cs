@@ -6,7 +6,7 @@ namespace SmaugCS.MudProgs.ObjectProgs
     {
         public static void Execute(CharacterInstance actor, string txt)
         {
-            
+
         }
     }
 }

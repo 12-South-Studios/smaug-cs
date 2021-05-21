@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Exceptions;
+using System;
 using System.Runtime.Serialization;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Exceptions;
 
 namespace SmaugCS.Exceptions
 {
@@ -12,7 +11,7 @@ namespace SmaugCS.Exceptions
 
         public ObjectAlreadyExtractedException(string message) : base(message) { }
 
-        public ObjectAlreadyExtractedException(string format, params object[] args) 
+        public ObjectAlreadyExtractedException(string format, params object[] args)
             : base(string.Format(format, args)) { }
 
         public ObjectAlreadyExtractedException(string message, Exception inner) : base(message, inner) { }

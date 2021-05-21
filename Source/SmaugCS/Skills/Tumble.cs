@@ -14,7 +14,7 @@ namespace SmaugCS.Skills
 {
     public static class Tumble
     {
-        public static bool CheckTumble(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null, 
+        public static bool CheckTumble(CharacterInstance ch, CharacterInstance victim, IRepositoryManager dbManager = null,
             IGameManager gameManager = null)
         {
             if (victim.CurrentClass != ClassTypes.Thief || !victim.IsAwake())
@@ -24,14 +24,14 @@ namespace SmaugCS.Skills
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'tumble' not found");
 
-            if (!victim.IsNpc() && !(((PlayerInstance)victim).GetLearned((int) skill.ID) > 0))
+            if (!victim.IsNpc() && !(((PlayerInstance)victim).GetLearned((int)skill.ID) > 0))
                 return false;
 
             int chances;
             if (victim.IsNpc())
-                chances = 60.GetLowestOfTwoNumbers(2*victim.Level);
+                chances = 60.GetLowestOfTwoNumbers(2 * victim.Level);
             else
-                chances = (int)Macros.LEARNED(victim, (int) skill.ID)/
+                chances = (int)Macros.LEARNED(victim, (int)skill.ID) /
                           (gameManager ?? GameManager.Instance).SystemData.TumbleMod +
                           (victim.GetCurrentDexterity() - 13);
 

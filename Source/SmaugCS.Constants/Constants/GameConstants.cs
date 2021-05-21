@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Config;
+using System;
 using System.Configuration;
 using System.Linq;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Config;
 
 namespace SmaugCS.Constants.Constants
 {
@@ -29,7 +29,7 @@ namespace SmaugCS.Constants.Constants
         public static T GetConstant<T>(string name)
         {
             var element = GetConfigConstant(name);
-            return element != null ? (T)Convert.ChangeType(element.Value, typeof(T)) : default(T);
+            return element != null ? (T)Convert.ChangeType(element.Value, typeof(T)) : default;
         }
 
         private static SystemDataConfigurationSection _dataSection;
@@ -41,7 +41,7 @@ namespace SmaugCS.Constants.Constants
                     ConfigurationManagerFunctions.GetSection<SystemDataConfigurationSection>("SystemDataSection");
             var element =
                 _dataSection.SystemValues.Cast<SystemValueElement>().FirstOrDefault(e => e.Name.EqualsIgnoreCase(name));
-            return element != null ? (T)Convert.ChangeType(element.Value, typeof(T)) : default(T);
+            return element != null ? (T)Convert.ChangeType(element.Value, typeof(T)) : default;
         }
 
         private static VnumConfigurationSection _vnumSection;

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
 
 namespace SmaugCS.Commands.Player
 {
@@ -23,7 +23,7 @@ namespace SmaugCS.Commands.Player
                 if (obj.GetType() != typeof(LookupLevel))
                     throw new InvalidCastException();
 
-                var compareTo = (LookupLevel) obj;
+                var compareTo = (LookupLevel)obj;
 
                 if (Level < compareTo.Level)
                     return -1;
@@ -94,7 +94,7 @@ namespace SmaugCS.Commands.Player
             ch.SendToPager(" ----------------------------------------------------------------------------\r\n");
 
             if (ch.Level < 15 && !ch.IsPKill())
-               ch.PagerPrintf("|            |Hitroll: -------- |Damroll: ----------- |                     |\r\n");
+                ch.PagerPrintf("|            |Hitroll: -------- |Damroll: ----------- |                     |\r\n");
             else
                 ch.PagerPrintf("|            |Hitroll: {0} |Damroll: {1} |                     |\r\n",
                                    ch.GetHitroll().ToString(CultureInfo.InvariantCulture).PadLeft(8),

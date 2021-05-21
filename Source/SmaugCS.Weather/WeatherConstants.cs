@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Weather.Enums;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SmaugCS.Weather
 {
@@ -19,9 +19,9 @@ namespace SmaugCS.Weather
             => WeatherMessages.ContainsKey(precip) ? WeatherMessages[precip] : new List<string>();
 
         public static int GetHemisphere(string type)
-            => (int) EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
+            => (int)EnumerationExtensions.GetEnumIgnoreCase<HemisphereTypes>(type);
 
-        public static int GetClimate(string type) => (int) EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
+        public static int GetClimate(string type) => (int)EnumerationExtensions.GetEnumIgnoreCase<ClimateTypes>(type);
 
         public static void InitializeWeatherMessages(string filename)
         {

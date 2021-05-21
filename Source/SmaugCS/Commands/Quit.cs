@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using SmaugCS.Commands.Combat;
+﻿using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Constants;
@@ -11,6 +8,9 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace SmaugCS.Commands
 {
@@ -22,35 +22,35 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
             if (CheckFunctions.CheckIf(ch, HelperFunctions.IsInFightingPosition,
-                "No way! You are fighting.", new List<object> {ch}, ATTypes.AT_RED)) return;
+                "No way! You are fighting.", new List<object> { ch }, ATTypes.AT_RED)) return;
 
             if (CheckFunctions.CheckIf(ch, args => ((CharacterInstance)args[0]).CurrentPosition == PositionTypes.Stunned,
-                "You're not DEAD yet.", new List<object> {ch}, ATTypes.AT_BLOOD)) return;
+                "You're not DEAD yet.", new List<object> { ch }, ATTypes.AT_BLOOD)) return;
 
             var timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
             if (timer != null && !ch.IsImmortal())
             {
-               ch.SetColor(ATTypes.AT_RED);
-               ch.SendTo("Your adrenaline is pumping too hard to quit now!");
+                ch.SetColor(ATTypes.AT_RED);
+                ch.SendTo("Your adrenaline is pumping too hard to quit now!");
                 return;
             }
 
             // TODO: auction
             if (CheckFunctions.CheckIf(ch, args =>
             {
-                var actor = (CharacterInstance) args[0];
-                return actor.IsPKill() && actor.wimpy > actor.MaximumHealth/2.25f;
-            }, "Your wimpy has been adjusted to the maximum level for deadlies.", new List<object> {ch}))
+                var actor = (CharacterInstance)args[0];
+                return actor.IsPKill() && actor.wimpy > actor.MaximumHealth / 2.25f;
+            }, "Your wimpy has been adjusted to the maximum level for deadlies.", new List<object> { ch }))
                 Wimpy.do_wimpy(ch, "max");
 
             if (ch.CurrentPosition == PositionTypes.Mounted)
                 Dismount.do_dismount(ch, string.Empty);
 
-           ch.SetColor(ATTypes.AT_WHITE);
-           ch.SendTo("Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n");
+            ch.SetColor(ATTypes.AT_WHITE);
+            ch.SendTo("Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n");
             comm.act(ATTypes.AT_SAY, "A strange voice says, 'We await your return, $n...'", ch, null, null, ToTypes.Character);
             comm.act(ATTypes.AT_BYE, "$n has left the game.", ch, null, null, ToTypes.CanSee);
-           ch.SetColor(ATTypes.AT_GREY);
+            ch.SetColor(ATTypes.AT_GREY);
 
             // TODO quitting_char = ch;
             save.save_char_obj(ch);

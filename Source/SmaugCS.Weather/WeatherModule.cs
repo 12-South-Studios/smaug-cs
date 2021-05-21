@@ -1,8 +1,8 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using SmaugCS.Constants.Constants;
-using SmaugCS.Data.Interfaces;
 using SmaugCS.DAL.Interfaces;
+using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Weather

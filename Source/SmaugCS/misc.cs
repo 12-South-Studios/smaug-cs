@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS
 {

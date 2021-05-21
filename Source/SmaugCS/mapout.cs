@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Data.Instances;
+﻿using SmaugCS.Data.Instances;
 using SmaugCS.Objects;
+using System.Collections.Generic;
 
 namespace SmaugCS
 {

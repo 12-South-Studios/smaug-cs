@@ -15,14 +15,14 @@ namespace Realm.Library.Common.LinkedList
         /// <param name="p"></param>
         public void Push(T p)
         {
-            SingleLinkedNode<T> node = new SingleLinkedNode<T> {Data = p};
+            SingleLinkedNode<T> node = new SingleLinkedNode<T> { Data = p };
             if (Head == null)
                 Head = node;
             else
             {
                 SingleLinkedNode<T> current = Last;
                 current.Next = node;
-            } 
+            }
         }
 
         /// <summary>

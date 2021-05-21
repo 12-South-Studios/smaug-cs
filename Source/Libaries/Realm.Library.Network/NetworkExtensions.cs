@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using Realm.Library.Network.Properties;
 
 namespace Realm.Library.Network
 {
@@ -22,11 +21,11 @@ namespace Realm.Library.Network
             try
             {
                 return IPAddress.Parse(ipAddress.Equals("localhost", StringComparison.OrdinalIgnoreCase)
-                    ? Resources.LOCALHOST_IP : ipAddress);
+                    ? "127.0.0.1" : ipAddress);
             }
             catch (FormatException)
             {
-                return IPAddress.Parse(Resources.LOCALHOST_IP);
+                return IPAddress.Parse("127.0.0.1");
             }
         }
     }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Mobile;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.SpecFuns.Casting
 {
@@ -33,7 +33,7 @@ namespace SmaugCS.SpecFuns.Casting
             return true;
         }
 
-        private static readonly Dictionary<int, SpecFunSpell> SpellLevelLookupTable 
+        private static readonly Dictionary<int, SpecFunSpell> SpellLevelLookupTable
             = new Dictionary<int, SpecFunSpell>
             {
                 {0, new SpecFunSpell {Level = 0, Spell = "chill touch"}},

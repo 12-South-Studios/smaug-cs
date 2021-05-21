@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -8,6 +7,7 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -16,7 +16,7 @@ namespace SmaugCS.Commands.Movement
         public static void do_bashdoor(CharacterInstance ch, string argument)
         {
             var skill = RepositoryManager.Instance.GetEntity<SkillData>("bashdoor");
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Level < skill.SkillLevels.ToList()[(int) ch.CurrentClass],
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Level < skill.SkillLevels.ToList()[(int)ch.CurrentClass],
                 "You're not enough of a warrior to bash doors!")) return;
 
             var firstArg = argument.FirstWord();
@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Movement
             comm.act(ATTypes.AT_SKILL, "WHAAAAM!!! $n bashes against the $d, but it holds strong.", actor, null, arg,
                 ToTypes.Room);
 
-            var damage = actor.MaximumHealth/20 + 10;
+            var damage = actor.MaximumHealth / 20 + 10;
             actor.CauseDamageTo(actor, damage, (int)skill.ID);
             skill.LearnFromFailure(actor);
         }
@@ -52,7 +52,7 @@ namespace SmaugCS.Commands.Movement
             var keyword = exit.Flags.IsSet(ExitFlags.Secret) ? "wall" : exit.Keywords;
 
             var chance = !actor.IsNpc()
-                ? Macros.LEARNED(actor, (int) skill.ID)/2
+                ? Macros.LEARNED(actor, (int)skill.ID) / 2
                 : 90;
 
             if (exit.Flags.IsSet(ExitFlags.Locked))
@@ -60,7 +60,7 @@ namespace SmaugCS.Commands.Movement
 
             if (exit.Flags.IsSet(ExitFlags.BashProof)
                 || actor.CurrentMovement < 15
-                || SmaugRandom.D100() >= chance + 4*(actor.GetCurrentStrength() - 19))
+                || SmaugRandom.D100() >= chance + 4 * (actor.GetCurrentStrength() - 19))
             {
                 Bash(actor, skill, arg);
                 return;
@@ -76,12 +76,12 @@ namespace SmaugCS.Commands.Movement
             BashExit(reverseExit);
 
             var destination = exit.GetDestination(RepositoryManager.Instance);
-            foreach(var ch in destination.Persons)
+            foreach (var ch in destination.Persons)
                 comm.act(ATTypes.AT_SKILL, "The $d crashes open!", ch, null, reverseExit.Keywords, ToTypes.Character);
-            
-            actor.CauseDamageTo(actor, actor.CurrentHealth/20, (int) skill.ID);
+
+            actor.CauseDamageTo(actor, actor.CurrentHealth / 20, (int)skill.ID);
         }
-       
+
         private static void BashExit(ExitData exit)
         {
             exit.Flags.RemoveBit(ExitFlags.Closed);

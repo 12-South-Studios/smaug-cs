@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -12,6 +8,9 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
@@ -194,7 +193,7 @@ namespace SmaugCS
                         buffer = argument.PadLeft(len);
                     break;
                 case (int)TextAlignmentStyle.Center:
-                    buffer = $"{c.Repeat(space/2)}{argument}{c.Repeat(space/2*2 == space ? space/2 : space/2 + 1)}";
+                    buffer = $"{c.Repeat(space / 2)}{argument}{c.Repeat(space / 2 * 2 == space ? space / 2 : space / 2 + 1)}";
                     break;
                 case (int)TextAlignmentStyle.Left:
                     buffer = argument.PadRight(space);

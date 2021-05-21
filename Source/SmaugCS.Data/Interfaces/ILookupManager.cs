@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SmaugCS.Constants.Enums;
+using System;
 using System.Collections.Generic;
-using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data.Interfaces
 {

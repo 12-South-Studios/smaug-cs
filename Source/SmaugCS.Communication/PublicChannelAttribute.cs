@@ -1,5 +1,5 @@
-﻿using System;
-using SmaugCS.Data.Instances;
+﻿using SmaugCS.Data.Instances;
+using System;
 
 namespace SmaugCS.Communication
 {

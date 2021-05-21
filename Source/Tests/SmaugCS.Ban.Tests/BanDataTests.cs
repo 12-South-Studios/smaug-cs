@@ -1,6 +1,6 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SmaugCS.Common.Enumerations;
+using System;
 
 namespace SmaugCS.Ban.Tests
 {

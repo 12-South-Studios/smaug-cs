@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using System.Collections.Generic;
 
 namespace SmaugCS.Helpers
 {
@@ -26,19 +26,19 @@ namespace SmaugCS.Helpers
 
         public static bool IsCharmedOrPossessed(IList<object> args)
         {
-            var actor = (CharacterInstance) args[0];
+            var actor = (CharacterInstance)args[0];
             return actor.IsNpc() && actor.IsAffected(AffectedByTypes.Charm) || actor.IsAffected(AffectedByTypes.Possess);
         }
 
         public static bool IsFighting(IList<object> args)
         {
-            var actor = (CharacterInstance) args[0];
+            var actor = (CharacterInstance)args[0];
             return actor.CurrentFighting != null;
         }
 
         public static bool IsInFightingPosition(IList<object> args)
         {
-            var actor = (CharacterInstance) args[0];
+            var actor = (CharacterInstance)args[0];
             var position = actor.CurrentPosition;
             return position == PositionTypes.Aggressive
                    || position == PositionTypes.Berserk

@@ -27,7 +27,7 @@ namespace SmaugCS.Commands
         {
             ch.SendRIPScreen();
             ch.Act.IsSet(PlayerFlags.Rip);
-            ch.Act.IsSet(PlayerFlags.Ansi); 
+            ch.Act.IsSet(PlayerFlags.Ansi);
         }
 
         private static void DisableRip(PlayerInstance ch)

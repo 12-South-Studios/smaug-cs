@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
@@ -63,7 +62,7 @@ namespace SmaugCS.Data
         public char difficulty { get; set; }
         public ICollection<SmaugAffect> Affects { get; private set; }
         public ICollection<SpellComponent> Components { get; private set; }
-        public ICollection<string> Teachers { get; private set; } 
+        public ICollection<string> Teachers { get; private set; }
         public char participants { get; set; }
         public UseHistory UseHistory { get; set; }
         public string NounDamage { get; set; }
@@ -125,7 +124,7 @@ namespace SmaugCS.Data
 
         public void AddTeacher(string value)
         {
-            if(!Teachers.Contains(value))
+            if (!Teachers.Contains(value))
                 Teachers.Add(value);
         }
 

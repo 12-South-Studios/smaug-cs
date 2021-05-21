@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -7,6 +6,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
+using System.Linq;
 
 namespace SmaugCS.Commands.Liquids
 {
@@ -85,7 +85,7 @@ namespace SmaugCS.Commands.Liquids
                 if (destObj.CarriedBy == null && GetSaveFlags().IsSet(AutoSaveFlags.Empty))
                     save.save_char_obj(ch);
             }
-            else 
+            else
                 comm.act(ATTypes.AT_ACTION, "$P is too full.", ch, obj, destObj, ToTypes.Character);
         }
 
@@ -111,7 +111,7 @@ namespace SmaugCS.Commands.Liquids
 
             comm.act(ATTypes.AT_ACTION, "You empty $p.", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n empties $p.", ch, obj, null, ToTypes.Room);
-                
+
             if (GetSaveFlags().IsSet(AutoSaveFlags.Empty))
                 save.save_char_obj(ch);
         }

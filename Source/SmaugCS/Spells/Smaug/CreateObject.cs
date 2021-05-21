@@ -43,7 +43,7 @@ namespace SmaugCS.Spells.Smaug
                 obj.AddTo(ch);
             else
                 ch.CurrentRoom.AddTo(obj);
-            
+
             return ReturnTypes.None;
         }
 

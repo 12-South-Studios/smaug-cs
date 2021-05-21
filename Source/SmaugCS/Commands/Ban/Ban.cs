@@ -1,5 +1,4 @@
-﻿using System;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Ban;
 using SmaugCS.Common.Enumerations;
@@ -9,6 +8,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using SmaugCS.Managers;
+using System;
 
 namespace SmaugCS.Commands.Ban
 {
@@ -18,7 +18,7 @@ namespace SmaugCS.Commands.Ban
         {
             if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc(), "Monsters are too dumb to do that!")) return;
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
 
             ch.SetColor(ATTypes.AT_IMMORT);
             var args = new string[4];
@@ -40,7 +40,7 @@ namespace SmaugCS.Commands.Ban
             switch (pch.SubState)
             {
                 case CharacterSubStates.None:
-                    pch.tempnum = (int) CharacterSubStates.None;
+                    pch.tempnum = (int)CharacterSubStates.None;
                     break;
                 case CharacterSubStates.BanDescription:
                     // TODO: add_ban(ch, "", "", 0, 0);
@@ -65,7 +65,7 @@ namespace SmaugCS.Commands.Ban
                 DoClassBan(ch, args, duration);
             else if (args[0].EqualsIgnoreCase("show") || args[0].IsNullOrWhitespace())
                 DoShowBans(ch, args);
-            else 
+            else
                 SendSyntaxMessage(ch);
         }
 
@@ -101,7 +101,7 @@ namespace SmaugCS.Commands.Ban
                 SendSyntaxMessage(ch);
                 return;
             }
-            
+
             // TODO: add_ban(ch, args[1], arg[2], duration, BanTypes.Site);
         }
 
@@ -122,7 +122,7 @@ namespace SmaugCS.Commands.Ban
 
         private static void ShowBans(CharacterInstance ch, BanTypes type)
         {
-            
+
         }
 
         public static int AddBan(PlayerInstance ch, string arg1, string arg2, int duration, BanTypes type)
@@ -161,7 +161,7 @@ namespace SmaugCS.Commands.Ban
 
             if (ban.Duration > 0)
                 ch.Printf("{0} is banned for {1} days.\r\n", ban.Name, ban.Duration / 86400);
-            else 
+            else
                 ch.Printf("{0} is banned forever.\r\n", ban.Name);
 
             return 1;

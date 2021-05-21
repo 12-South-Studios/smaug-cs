@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -10,6 +7,9 @@ using SmaugCS.Repository;
 using SmaugCS.Spells;
 using SmaugCS.Spells.Poison;
 using SmaugCS.Spells.Smaug;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.SpecFuns.Casting
 {
@@ -41,7 +41,7 @@ namespace SmaugCS.SpecFuns.Casting
             var actLookupValue = ActLookupTable[bits];
 
             comm.act(ATTypes.AT_MAGIC,
-                $"$n utters the word '{actLookupValue.Item1}'.", 
+                $"$n utters the word '{actLookupValue.Item1}'.",
                 ch, null, null, ToTypes.Room);
             return CastSpell(ch, victim, bits, actLookupValue.Item2, dbManager);
         }
@@ -50,7 +50,7 @@ namespace SmaugCS.SpecFuns.Casting
         {
             var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
             var skill = databaseMgr.GetEntity<SkillData>(spellName);
-            
+
             switch (bitFlag)
             {
                 case 0:

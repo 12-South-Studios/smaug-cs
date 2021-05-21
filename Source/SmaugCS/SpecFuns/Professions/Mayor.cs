@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using SmaugCS.Commands.Movement;
+﻿using SmaugCS.Commands.Movement;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Managers;
 using SmaugCS.SpecFuns.Casting;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.SpecFuns.Professions
 {
@@ -34,7 +34,7 @@ namespace SmaugCS.SpecFuns.Professions
             if (ch.CurrentFighting != null)
                 return CastCleric.Execute(ch, dbManager);
 
-            if (!_move || (int)ch.CurrentPosition < (int) PositionTypes.Sleeping)
+            if (!_move || (int)ch.CurrentPosition < (int)PositionTypes.Sleeping)
                 return false;
 
             if (ActionLookupTable.ContainsKey(_path[_index]))

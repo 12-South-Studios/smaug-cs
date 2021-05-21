@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
@@ -17,6 +13,10 @@ using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
 using SmaugCS.Weather.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS
@@ -107,7 +107,7 @@ namespace SmaugCS
             }
         }
 
-        
+
 
         public static string hallucinated_object(int ms, bool fShort)
         {
@@ -121,10 +121,10 @@ namespace SmaugCS
             return fShort
                        ? LookupManager.Instance.GetLookup("HallucinatedShortNames",
                                                           SmaugRandom.Between(
-                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1)
+                                                              6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1)
                        : LookupManager.Instance.GetLookup("HallucinatedLongNames",
                                                           SmaugRandom.Between(
-                                                              6 - (sms/2).GetNumberThatIsBetween(1, 5), sms) - 1);
+                                                              6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1);
         }
 
         public static void show_list_to_char(List<ObjectInstance> list, PlayerInstance ch, bool fShort, bool fShowNothing)
@@ -138,17 +138,17 @@ namespace SmaugCS
                 {
                     if (ch.Act.IsSet(PlayerFlags.Combine))
                         ch.SendTo("     ");
-                   ch.SetColor(ATTypes.AT_OBJECT);
-                   ch.SendTo("Nothing.");
+                    ch.SetColor(ATTypes.AT_OBJECT);
+                    ch.SendTo("Nothing.");
                 }
                 return;
             }
 
             var count = list.Count;
 
-            var ms = (ch.MentalState > 0 ? ch.MentalState : 1)*
+            var ms = (ch.MentalState > 0 ? ch.MentalState : 1) *
                      (ch.PlayerData.GetConditionValue(ConditionTypes.Drunk) > 0
-                         ? ch.PlayerData.GetConditionValue(ConditionTypes.Drunk)/12
+                         ? ch.PlayerData.GetConditionValue(ConditionTypes.Drunk) / 12
                          : 1);
 
             int offcount;
@@ -169,8 +169,8 @@ namespace SmaugCS
                 {
                     if (ch.Act.IsSet(PlayerFlags.Combine))
                         ch.SendTo("     ");
-                   ch.SetColor(ATTypes.AT_OBJECT);
-                   ch.SendTo("Nothing.");
+                    ch.SetColor(ATTypes.AT_OBJECT);
+                    ch.SendTo("Nothing.");
                 }
                 return;
             }
@@ -259,8 +259,8 @@ namespace SmaugCS
             {
                 if (ch.Act.IsSet(PlayerFlags.Combine))
                     ch.SendTo("     ");
-               ch.SetColor(ATTypes.AT_OBJECT);
-               ch.SendTo("Nothing.");
+                ch.SetColor(ATTypes.AT_OBJECT);
+                ch.SendTo("Nothing.");
             }
         }
 
@@ -350,7 +350,7 @@ namespace SmaugCS
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'peek' not found");
 
-            if (SmaugRandom.D100() < Macros.LEARNED(ch, (int) skill.ID))
+            if (SmaugRandom.D100() < Macros.LEARNED(ch, (int)skill.ID))
             {
                 ch.Printf("\r\nYou peek at %s inventory:\r\n", victim.Gender.PossessivePronoun());
                 show_list_to_char(victim.Carrying.ToList(), ch, true, true);
@@ -368,8 +368,8 @@ namespace SmaugCS
                     rch.ShowToCharacter(ch);
                 else if (ch.CurrentRoom.IsDark() && ch.IsAffected(AffectedByTypes.Infrared))
                 {
-                   ch.SetColor(ATTypes.AT_BLOOD);
-                   ch.SendTo("The red form of a living creature is here.");
+                    ch.SetColor(ATTypes.AT_BLOOD);
+                    ch.SendTo("The red form of a living creature is here.");
                 }
             }
         }
@@ -428,7 +428,7 @@ namespace SmaugCS
                     exitInfo[(int)exit.Direction] = 1;
             }
 
-           ch.SetColor(ATTypes.AT_RMNAME);
+            ch.SetColor(ATTypes.AT_RMNAME);
             ch.PrintfColor("\r\n%-50s         %s%s    %s%s    %s%s\r\n",
                                   ch.CurrentRoom.Name, exitColors[exitInfo[(int)DirectionTypes.Northwest]],
                                   exitInfo[(int)DirectionTypes.Northwest] > 0 ? "NW" : "- ",
@@ -490,7 +490,7 @@ namespace SmaugCS
             else
                 lev = -2;
 
-            
+
             var argall = string.Empty;
             // TODO
 

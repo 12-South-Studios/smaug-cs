@@ -1,5 +1,4 @@
-﻿using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Data;
@@ -31,7 +30,7 @@ namespace SmaugCS.Managers
             }
         }
 
-        public void Initialize(IRepositoryManager dbManager) 
+        public void Initialize(IRepositoryManager dbManager)
         {
             _dbManager = dbManager;
         }

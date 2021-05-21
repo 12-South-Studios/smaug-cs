@@ -37,7 +37,7 @@ namespace SmaugCS.Commands.Deity
             if (CheckFunctions.CheckIfTrue(ch, WillDeityDenyPlayerRace(ch, deity),
                 "That deity will not accept worshippers of your race.")) return;
 
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
             pch.PlayerData.CurrentDeity = deity;
 
             if (pch.PlayerData.Favor > deity.AffectedNum)
@@ -102,13 +102,13 @@ namespace SmaugCS.Commands.Deity
                 Type = AffectedByTypes.Blind,
                 Location = ApplyTypes.HitRoll,
                 Modifier = -4,
-                Duration = 50*GameConstants.GetConstant<int>("AffectDurationConversionValue")
+                Duration = 50 * GameConstants.GetConstant<int>("AffectDurationConversionValue")
             };
             // TODO af.bitvecotr = meb(AFF_BLIND);
             ch.AddAffect(af);
 
             // TODO Save the deity data to the database
- 
+
             ch.SendTo("You cease to worship any deity.");
             ch.PlayerData.CurrentDeity = null;
             save.save_char_obj(ch);

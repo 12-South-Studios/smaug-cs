@@ -1,9 +1,9 @@
-﻿using System.IO;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
+using System.IO;
 
 namespace SmaugCS.Spells
 {
@@ -21,7 +21,7 @@ namespace SmaugCS.Spells
 
         public static ReturnTypes spell_colour_spray(int sn, int level, CharacterInstance ch, object vo)
         {
-            var victim = (CharacterInstance) vo;
+            var victim = (CharacterInstance)vo;
 
             var modLevel = level.GetLowestOfTwoNumbers(DamageValues.Length * 2 / 2 - 1);
             modLevel = modLevel.GetHighestOfTwoNumbers(0);
@@ -30,7 +30,7 @@ namespace SmaugCS.Spells
                 throw new InvalidDataException(
                     $"ModLevel {modLevel} is larger than the Damage Array size of {DamageValues.Length}");
 
-            var dam = SmaugRandom.Between(DamageValues[modLevel]/2, DamageValues[modLevel]*2);
+            var dam = SmaugRandom.Between(DamageValues[modLevel] / 2, DamageValues[modLevel] * 2);
             if (victim.SavingThrows.CheckSaveVsSpellStaff(modLevel, victim))
                 dam /= 2;
 

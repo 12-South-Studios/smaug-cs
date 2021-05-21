@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
 using System.Xml.Serialization;
-using Realm.Library.Common;
-using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data.Shops
 {
@@ -9,7 +8,7 @@ namespace SmaugCS.Data.Shops
     public abstract class ShopData
     {
         private readonly List<ItemTypes> _itemTypes;
- 
+
         public int Keeper { get; set; }
         public IEnumerable<ItemTypes> ItemTypes => _itemTypes;
         public int OpenHour { get; set; }

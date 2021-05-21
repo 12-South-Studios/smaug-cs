@@ -29,9 +29,9 @@ namespace SmaugCS.Commands.Combat
                 "Flee while berserking? You aren't thinking very clearly...")) return;
             if (CheckFunctions.CheckIfTrue(ch, ch.CurrentMovement <= 0, "You're too exhausted to flee from combat!"))
                 return;
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && (int) ch.CurrentPosition < (int) PositionTypes.Fighting,
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && (int)ch.CurrentPosition < (int)PositionTypes.Fighting,
                 "You can't flee in an aggressive stance...")) return;
-            if (ch.IsNpc() && (int) ch.CurrentPosition <= (int) PositionTypes.Sleeping)
+            if (ch.IsNpc() && (int)ch.CurrentPosition <= (int)PositionTypes.Sleeping)
                 return;
 
             var wasIn = ch.CurrentRoom;
@@ -47,7 +47,7 @@ namespace SmaugCS.Commands.Combat
 
         private static void LoseExperience(PlayerInstance ch)
         {
-            var lostXp = (int) ((ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level))*0.1f);
+            var lostXp = (int)((ch.GetExperienceLevel(ch.Level + 1) - ch.GetExperienceLevel(ch.Level)) * 0.1f);
             comm.act(ATTypes.AT_FLEE, $"Curse the gods, you've lost {lostXp} experience!", ch, null,
                 null, ToTypes.Character);
             ch.GainXP(0 - lostXp);

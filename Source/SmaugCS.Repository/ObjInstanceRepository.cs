@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
@@ -11,6 +8,9 @@ using SmaugCS.Data;
 using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Repository
 {
@@ -39,7 +39,7 @@ namespace SmaugCS.Repository
             var obj = new ObjectInstance(id, name, 99, 99)
             {
                 Parent = parent,
-                Level = args == null || args.Length == 0 ? 1 : (int) args[0],
+                Level = args == null || args.Length == 0 ? 1 : (int)args[0],
                 WearLocation = WearLocations.None,
                 Count = 1,
                 ShortDescription = objParent.ShortDescription,
@@ -53,7 +53,7 @@ namespace SmaugCS.Repository
             };
 
             foreach (var wearLoc in objParent.GetWearFlags())
-                obj.WearFlags += (int) wearLoc;
+                obj.WearFlags += (int)wearLoc;
 
             //Array.Copy(objParent.Value, obj.Value, 5);
 

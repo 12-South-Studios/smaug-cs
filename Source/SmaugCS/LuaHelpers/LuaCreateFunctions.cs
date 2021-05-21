@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
-using Realm.Standard.Patterns.Command;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -15,6 +11,8 @@ using SmaugCS.Language;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -25,7 +23,7 @@ namespace SmaugCS.LuaHelpers
         private static ILogManager _logManager;
 
         #region LastObject
-        private static readonly Dictionary<Type, object> LastObjects = new Dictionary<Type, object>(); 
+        private static readonly Dictionary<Type, object> LastObjects = new Dictionary<Type, object>();
         public static object LastObject { get; private set; }
 
         private static void AddLastObject(object obj)
@@ -81,13 +79,13 @@ namespace SmaugCS.LuaHelpers
         public static ShopData LuaCreateShop(int buyRate, int sellRate, int openHour, int closeHour)
         {
             var newShop = new ItemShopData
-                                       {
-                                           ShopType = ShopTypes.Item,
-                                           OpenHour = openHour,
-                                           CloseHour = closeHour,
-                                           ProfitBuy = buyRate,
-                                           ProfitSell = sellRate
-                                       };
+            {
+                ShopType = ShopTypes.Item,
+                OpenHour = openHour,
+                CloseHour = closeHour,
+                ProfitBuy = buyRate,
+                ProfitSell = sellRate
+            };
 
             _luaManager.Proxy.CreateTable("shop");
             AddLastObject(newShop);
@@ -134,7 +132,7 @@ namespace SmaugCS.LuaHelpers
 
             if (type.EqualsIgnoreCase("herb"))
                 throw new InvalidOperationException("Use of LCreateSkill for Herbs is deprecated");
-            
+
             _dbManager.AddToRepository(newSkill);
             _luaManager.Proxy.CreateTable("skill");
 
@@ -163,12 +161,12 @@ namespace SmaugCS.LuaHelpers
         public static SmaugAffect LuaCreateSmaugAffect(string duration, int location, string modifier, int flags)
         {
             var newAffect = new SmaugAffect
-                {
-                    Duration = duration,
-                    Location = location,
-                    Modifier = modifier,
-                    Flags = flags
-                };
+            {
+                Duration = duration,
+                Location = location,
+                Modifier = modifier,
+                Flags = flags
+            };
 
             _luaManager.Proxy.CreateTable("affect");
             AddLastObject(newAffect);
@@ -180,7 +178,8 @@ namespace SmaugCS.LuaHelpers
         public static SpecialFunction LuaCreateSpecialFunction(string name)
         {
             var newSpecFun = new SpecialFunction(_dbManager.GenerateNewId<SpecialFunction>(),
-                                                             name) {Value = SpecFunHandler.GetSpecFunReference(name)};
+                                                             name)
+            { Value = SpecFunHandler.GetSpecFunReference(name) };
 
             if (newSpecFun.Value == null)
                 throw new EntryNotFoundException("SpecFun {0} not found", name);
@@ -198,13 +197,13 @@ namespace SmaugCS.LuaHelpers
                                                    int flags)
         {
             var newCommand = new CommandData(_dbManager.GenerateNewId<CommandData>(), name)
-                {
-                    Flags = flags,
-                    Position = position,
-                    Level = level,
-                    Log = EnumerationExtensions.GetEnum<LogAction>(log),
-                    FunctionName = function
-                };
+            {
+                Flags = flags,
+                Position = position,
+                Level = level,
+                Log = EnumerationExtensions.GetEnum<LogAction>(log),
+                FunctionName = function
+            };
             newCommand.Position = newCommand.ModifiedPosition;
 
             _luaManager.Proxy.CreateTable("command");
@@ -233,10 +232,10 @@ namespace SmaugCS.LuaHelpers
         public static SpellComponent LuaCreateSpellComponent(string requiredType, string data, string operatorType)
         {
             var newComponent = new SpellComponent
-                {
-                    RequiredType = EnumerationExtensions.GetEnumByName<ComponentRequiredTypes>(requiredType),
-                    RequiredData = data
-                };
+            {
+                RequiredType = EnumerationExtensions.GetEnumByName<ComponentRequiredTypes>(requiredType),
+                RequiredData = data
+            };
 
             if (!operatorType.IsNullOrEmpty())
                 newComponent.OperatorType = EnumerationExtensions.GetEnumByName<ComponentOperatorTypes>(operatorType);
@@ -250,9 +249,9 @@ namespace SmaugCS.LuaHelpers
         public static ClassData LuaCreateClass(string name, int type)
         {
             var newClass = new ClassData(_dbManager.GenerateNewId<ClassData>(), name)
-                {
-                    Type = EnumerationExtensions.GetEnum<ClassTypes>(type)
-                };
+            {
+                Type = EnumerationExtensions.GetEnum<ClassTypes>(type)
+            };
 
             _luaManager.Proxy.CreateTable("class");
             AddLastObject(newClass);
@@ -266,9 +265,9 @@ namespace SmaugCS.LuaHelpers
         public static RaceData LuaCreateRace(string name, int type)
         {
             var newRace = new RaceData(_dbManager.GenerateNewId<RaceData>(), name)
-                {
-                    Type = EnumerationExtensions.GetEnum<RaceTypes>(type)
-                };
+            {
+                Type = EnumerationExtensions.GetEnum<RaceTypes>(type)
+            };
 
             _luaManager.Proxy.CreateTable("race");
             AddLastObject(newRace);

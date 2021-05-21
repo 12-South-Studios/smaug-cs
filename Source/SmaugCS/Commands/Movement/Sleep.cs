@@ -46,7 +46,7 @@ namespace SmaugCS.Commands.Movement
             }
             return false;
         }
-        
+
         private static void FromStanding(CharacterInstance ch)
         {
             if (CantSleepDueToMentalState(ch, 0)) return;

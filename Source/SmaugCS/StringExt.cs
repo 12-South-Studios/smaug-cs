@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using System;
+using System.Text;
 using Random = Realm.Library.Common.Random;
 
 namespace SmaugCS

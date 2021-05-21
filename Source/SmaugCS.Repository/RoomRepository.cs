@@ -1,11 +1,11 @@
-﻿using System;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
+using System;
 
 namespace SmaugCS.Repository
 {

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -9,6 +7,8 @@ using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Smaug
@@ -37,7 +37,7 @@ namespace SmaugCS.Spells.Smaug
             {
                 var saved = skill.CheckSave(level, ch, vch);
                 if (saved &&
-                    CheckFunctions.CheckIfTrueCasting(Macros.SPELL_SAVE(skill) == (int) SpellSaveEffectTypes.Negate,
+                    CheckFunctions.CheckIfTrueCasting(Macros.SPELL_SAVE(skill) == (int)SpellSaveEffectTypes.Negate,
                         skill, ch, CastingFunctionType.Failed, vch))
                     continue;
 
@@ -98,7 +98,7 @@ namespace SmaugCS.Spells.Smaug
         {
             return !string.IsNullOrEmpty(skill.Dice)
                 ? magic.ParseDiceExpression(ch, skill.DieCharacterMessage)
-                : SmaugRandom.Between(1, level/2);
+                : SmaugRandom.Between(1, level / 2);
         }
 
         private static bool ReflectDamage(int sn, int level, CharacterInstance ch, CharacterInstance vch)
@@ -120,7 +120,7 @@ namespace SmaugCS.Spells.Smaug
                                || (vch.CurrentFighting != null && vch.CurrentFighting.Who == ch)))
             {
                 var xp = ch.CurrentFighting?.Experience ?? vch.CurrentFighting.Experience;
-                var xpGain = xp*damage*2/vch.MaximumHealth;
+                var xpGain = xp * damage * 2 / vch.MaximumHealth;
 
                 ((PlayerInstance)ch).GainXP(0 - xpGain);
             }

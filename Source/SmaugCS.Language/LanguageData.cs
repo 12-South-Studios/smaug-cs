@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Language
 {
@@ -30,7 +30,7 @@ namespace SmaugCS.Language
         {
             _preConversion.Add(new LanguageConversionData
             {
-                OldValue = part1, 
+                OldValue = part1,
                 NewValue = part2
             });
         }
@@ -39,7 +39,7 @@ namespace SmaugCS.Language
         {
             _conversion.Add(new LanguageConversionData
             {
-                OldValue = part1, 
+                OldValue = part1,
                 NewValue = part2
             });
         }
@@ -103,7 +103,7 @@ namespace SmaugCS.Language
             {
                 postConversion = postConversion.Replace(lcd.OldValue, lcd.NewValue);
             }
-            return postConversion; 
+            return postConversion;
         }
 
         private const string EnglishAlphabet = "abcdefghijklmnopqrtsuvwxyz";

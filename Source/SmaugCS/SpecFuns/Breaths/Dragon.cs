@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.SpecFuns.Breaths
 {

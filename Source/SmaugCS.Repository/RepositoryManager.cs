@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
@@ -9,6 +6,9 @@ using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Language;
 using SmaugCS.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using EnumerationExtensions = SmaugCS.Common.EnumerationExtensions;
 
 namespace SmaugCS.Repository
@@ -144,7 +144,7 @@ namespace SmaugCS.Repository
         public T GetEntity<T>(string name) where T : class
         {
             return
-                GetRepository<T>(ObjectTypeToRepositoryType(typeof (T)))
+                GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)))
                     .Values.FirstOrDefault(x => x.CastAs<Entity>().Name.EqualsIgnoreCase(name));
         }
 
@@ -157,7 +157,7 @@ namespace SmaugCS.Repository
         public T GetEntity<T>(long id) where T : class
         {
             return
-                GetRepository<T>(ObjectTypeToRepositoryType(typeof (T)))
+                GetRepository<T>(ObjectTypeToRepositoryType(typeof(T)))
                     .Values.FirstOrDefault(x => x.CastAs<Entity>().ID == id);
         }
 

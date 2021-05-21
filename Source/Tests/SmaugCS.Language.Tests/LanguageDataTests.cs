@@ -31,7 +31,7 @@ namespace SmaugCS.Language.Tests
             var lang = GetLanguageData();
 
             var result = lang.Translate(0, "The star and moon are up.");
-  
+
             Assert.That(result, Is.EqualTo("Sta elen ihd isin ira yp."));
         }
 

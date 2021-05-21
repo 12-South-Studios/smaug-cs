@@ -8,7 +8,7 @@ namespace SmaugCS.Config
         {
             var section = ConfigurationManager.GetSection(sectionName);
             if (section != null)
-                return (T) section;
+                return (T)section;
 
             throw new ConfigurationSectionNotFoundException("Section {0} was not found", sectionName);
         }

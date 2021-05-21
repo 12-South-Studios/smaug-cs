@@ -18,7 +18,7 @@ namespace SmaugCS.DAL.Migrations
             }
             catch (Exception ex)
             {
-                
+
             }
         }
 

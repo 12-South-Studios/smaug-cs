@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
@@ -10,6 +9,7 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System.Linq;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Objects

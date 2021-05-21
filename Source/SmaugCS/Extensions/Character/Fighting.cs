@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SmaugCS.Commands;
+﻿using SmaugCS.Commands;
 using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
@@ -9,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -63,7 +63,7 @@ namespace SmaugCS.Extensions.Character
                 return corpse;
             }
 
-           victim.SetColor(ATTypes.AT_DIEMSG);
+            victim.SetColor(ATTypes.AT_DIEMSG);
             Help.do_help(victim,
                          ((PlayerInstance)victim).PlayerData.PvEDeaths + ((PlayerInstance)victim).PlayerData.PvPDeaths < 3 ? "new_death" : "_DIEMSG_");
 
@@ -146,8 +146,8 @@ namespace SmaugCS.Extensions.Character
         private static void EndFight(CharacterInstance ch)
         {
             if (ch.CurrentFighting != null && ch.CurrentFighting.Who.CharDied())
-                    --ch.CurrentFighting.Who.NumberFighting;
-            
+                --ch.CurrentFighting.Who.NumberFighting;
+
             ch.CurrentFighting = null;
             ch.CurrentPosition = ch.CurrentMount != null
                 ? PositionTypes.Mounted
@@ -156,9 +156,9 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsAffected(AffectedByTypes.Berserk))
             {
                 // TODO affect_strip
-               ch.SetColor(ATTypes.AT_WEAROFF);
-               ch.SendTo(RepositoryManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage);
-               ch.SendTo("\r\n");
+                ch.SetColor(ATTypes.AT_WEAROFF);
+                ch.SendTo(RepositoryManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage);
+                ch.SendTo("\r\n");
             }
         }
 
@@ -236,7 +236,7 @@ namespace SmaugCS.Extensions.Character
                 xp /= 4;
             else if (!ch.IsNpc())
                 xp = ReduceXPForKillingSameMobRepeatedly(ch, (MobileInstance)victim, xp);
-            
+
             if (!ch.IsNpc() && ch.Level > 5)
                 xp = ModifyXPForExperiencedVsNovicePlayer(ch, xp);
 
@@ -263,9 +263,9 @@ namespace SmaugCS.Extensions.Character
             var xpRatio = ((PlayerInstance)ch).PlayedDuration / ch.Level;
 
             if (xpRatio > 20000)
-                modXp = modXp*5/4; //// 5/4
+                modXp = modXp * 5 / 4; //// 5/4
             else if (xpRatio > 16000)
-                modXp = modXp*3/4; //// 3/4
+                modXp = modXp * 3 / 4; //// 3/4
             else if (xpRatio > 10000)
                 modXp >>= 1; //// 1/2
             else if (xpRatio > 5000)

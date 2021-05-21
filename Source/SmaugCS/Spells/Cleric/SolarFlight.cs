@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SmaugCS.Commands;
+﻿using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -11,6 +10,7 @@ using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Spells.Cleric
 {
@@ -28,8 +28,8 @@ namespace SmaugCS.Spells.Cleric
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null || victim == ch, skill, ch, CastingFunctionType.Failed,
                 victim)) return ReturnTypes.SpellFailed;
-            if (CheckFunctions.CheckIfTrueCasting(GameManager.Instance.GameTime.Hour > 18 
-                || GameManager.Instance.GameTime.Hour < 8, skill, ch, CastingFunctionType.Failed, victim)) 
+            if (CheckFunctions.CheckIfTrueCasting(GameManager.Instance.GameTime.Hour > 18
+                || GameManager.Instance.GameTime.Hour < 8, skill, ch, CastingFunctionType.Failed, victim))
                 return ReturnTypes.SpellFailed;
             if (CheckFunctions.CheckIfNullObjectCasting(victim.CurrentRoom, skill, ch, CastingFunctionType.Failed,
                 victim)) return ReturnTypes.SpellFailed;
@@ -45,8 +45,8 @@ namespace SmaugCS.Spells.Cleric
                 return ReturnTypes.SpellFailed;
             if (CheckFunctions.CheckIfTrueCasting(victim.CanPKill() && !ch.IsNpc() && !ch.IsPKill(), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
-            if (CheckFunctions.CheckIfTrueCasting(victim.IsNpc() 
-                && victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch,CastingFunctionType.Failed, 
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsNpc()
+                && victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch, CastingFunctionType.Failed,
                 victim)) return ReturnTypes.SpellFailed;
             if (CheckFunctions.CheckIfTrueCasting(!victim.CurrentRoom.Area.IsInHardRange(ch), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;

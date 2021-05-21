@@ -1,9 +1,9 @@
-﻿using System;
-using Realm.Library.Lua;
+﻿using Realm.Library.Lua;
 using SmaugCS.Data;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
+using System;
 
 namespace SmaugCS.LuaHelpers
 {
@@ -15,7 +15,7 @@ namespace SmaugCS.LuaHelpers
 
         public static object LastObject { get; private set; }
 
-        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager, 
+        public static void InitializeReferences(ILuaManager luaManager, IRepositoryManager dbManager,
             ILogManager logManager)
         {
             _luaManager = luaManager;
@@ -26,7 +26,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LGetLastArea", "Retrieves the Last Area")]
         public static AreaData LuaGetLastArea()
         {
-            return (AreaData) LastObject;
+            return (AreaData)LastObject;
         }
 
         [LuaFunction("LProcessArea", "Processes an area script", "script text")]

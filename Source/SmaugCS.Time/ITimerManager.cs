@@ -1,5 +1,5 @@
-﻿using System.Timers;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
+using System.Timers;
 
 namespace SmaugCS.Time
 {

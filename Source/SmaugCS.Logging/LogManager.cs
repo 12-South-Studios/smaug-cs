@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Timers;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Timers;
 
 namespace SmaugCS.Logging
 {
@@ -61,7 +61,7 @@ namespace SmaugCS.Logging
             {
                 foreach (var log in logsToDump)
                 {
-                    var logToSave = new DAL.Models.Log {LogType = log.LogType, Text = log.Text, SessionId = _sessionId};
+                    var logToSave = new DAL.Models.Log { LogType = log.LogType, Text = log.Text, SessionId = _sessionId };
                     _dbContext.Logs.Add(logToSave);
                 }
                 _dbContext.SaveChanges();
@@ -103,7 +103,7 @@ namespace SmaugCS.Logging
         {
             var entry = new LogEntry
             {
-                LogType = logType, 
+                LogType = logType,
                 Text = string.Format(str, args)
             };
             _pendingLogs.Add(entry);

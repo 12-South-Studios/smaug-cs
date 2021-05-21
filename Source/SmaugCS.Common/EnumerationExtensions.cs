@@ -1,6 +1,6 @@
 ﻿using Realm.Library.Common;
-using System;
 using Realm.Library.Common.Extensions;
+using System;
 
 namespace SmaugCS.Common
 {
@@ -26,7 +26,7 @@ namespace SmaugCS.Common
         public static bool IsSet(this Enum value, Enum bit) => value.HasFlag(bit);
 
         public static bool IsSet(this Enum value, int bit) => value.HasBit(bit);
-   
+
         public static T GetEnum<T>(long value)
         {
             if (Enum.IsDefined(typeof(T), value))

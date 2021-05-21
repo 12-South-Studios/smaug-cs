@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Communication;
@@ -19,7 +18,7 @@ namespace SmaugCS.Managers
         private ChatManager()
         {
         }
-        
+
         public static ChatManager Instance
         {
             get
@@ -57,8 +56,8 @@ namespace SmaugCS.Managers
                     && !och.Deaf.IsSet((int)channel)
                     && vch.Trust >= level)
                 {
-                   vch.SetColor(ATTypes.AT_LOG);
-                   vch.SendTo(buf);
+                    vch.SetColor(ATTypes.AT_LOG);
+                    vch.SendTo(buf);
                 }
             }
         }
@@ -144,7 +143,7 @@ namespace SmaugCS.Managers
 
             ch.Deaf.RemoveBit((int)channel);
 
-           ch.SetColor(GetColorForChannelTalk(channel));
+            ch.SetColor(GetColorForChannelTalk(channel));
 
             var buffer = string.Empty;
 
@@ -235,7 +234,7 @@ namespace SmaugCS.Managers
                     if (ch.Act.IsSet((int)PlayerFlags.WizardInvisibility)
                         && vch.CanSee(ch) && vch.IsImmortal())
                     {
-                        lbuf = $"({(!ch.IsNpc() ? ((PlayerInstance) ch).PlayerData.WizardInvisible : ch.MobInvisible)})";
+                        lbuf = $"({(!ch.IsNpc() ? ((PlayerInstance)ch).PlayerData.WizardInvisible : ch.MobInvisible)})";
                     }
 
                     var position = vch.CurrentPosition;

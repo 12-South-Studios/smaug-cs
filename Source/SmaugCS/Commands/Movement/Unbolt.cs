@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Movement
                 ch.Printf("You see no %s here.", firstArg);
                 return;
             }
-            
+
             if (exit.Flags.IsSet(ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(firstArg))
             {
                 ch.Printf("You see no %s here.", firstArg);
@@ -40,7 +40,7 @@ namespace SmaugCS.Commands.Movement
                 ch.SendTo("*Clunk*");
                 comm.act(ATTypes.AT_ACTION, "$n unbolts the $d.", ch, null, exit.Keywords, ToTypes.Room);
                 exit.RemoveFlagFromSelfAndReverseExit(ExitFlags.Bolted);
-            }   
+            }
         }
     }
 }

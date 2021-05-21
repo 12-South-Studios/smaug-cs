@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SmaugCS.DAL.Models;
+using System;
 using System.Data.Entity;
-using SmaugCS.DAL.Models;
 
 namespace SmaugCS.DAL.Interfaces
 {
@@ -17,6 +17,6 @@ namespace SmaugCS.DAL.Interfaces
         IDbSet<Note> Notes { get; set; }
         IDbSet<Organization> Organizations { get; set; }
         IDbSet<WeatherCell> Weather { get; set; }
-        IDbSet<Session> Sessions { get; set; } 
+        IDbSet<Session> Sessions { get; set; }
     }
 }

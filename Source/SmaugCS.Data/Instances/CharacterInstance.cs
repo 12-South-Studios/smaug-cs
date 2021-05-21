@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using Realm.Library.Lua;
+﻿using Realm.Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SmaugCS.Data.Instances
 {
@@ -29,12 +28,12 @@ namespace SmaugCS.Data.Instances
         public IEnumerable<ObjectInstance> Carrying { get; set; }
         public RoomTemplate CurrentRoom { get; set; }
         public RoomTemplate PreviousRoom { get; set; }
-        
+
         public DoFunction LastCommand { get; set; }
         public DoFunction PreviousCommand { get; set; }
         public object DestinationBuffer { get; set; }
 
-        
+
         public IEnumerable<TimerData> Timers { get; private set; }
         public CharacterMorph CurrentMorph { get; set; }
         public string LongDescription { get; set; }
@@ -66,7 +65,7 @@ namespace SmaugCS.Data.Instances
         public int Immunity { get; set; }
         public int Resistance { get; set; }
         public int Susceptibility { get; set; }
-        
+
         public int Defenses { get; set; }
         public int Speaks { get; set; }
         public int Speaking { get; set; }
@@ -103,7 +102,7 @@ namespace SmaugCS.Data.Instances
         public int retran { get; set; }
         public int regoto { get; set; }
         public int MobInvisible { get; set; }
-        
+
         public long HomeVNum { get; set; }
         public long ResetVnum { get; set; }
         public int ResetNum { get; set; }
@@ -117,17 +116,17 @@ namespace SmaugCS.Data.Instances
             Timers = new List<TimerData>();
         }
 
-    #region IVerifiable
-    public bool IsNpc() => Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
+        #region IVerifiable
+        public bool IsNpc() => Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
 
         public bool IsAffected(AffectedByTypes affectedBy) => AffectedBy.IsSet(affectedBy);
 
         public bool IsFloating() => IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
 
-        public virtual bool IsImmortal(int level = 51) =>false;
+        public virtual bool IsImmortal(int level = 51) => false;
 
         public virtual bool IsHero(int hero = 50) => false;
 
-    #endregion
-  }
+        #endregion
+    }
 }

@@ -2,14 +2,14 @@
 {
     public static class boards
     {
-       /* public static void RemoveComment(this CharacterInstance ch, NoteData note)
-        {
-            if (ch.Comments == null || ch.Comments.Count == 0 || note == null)
-                return;
+        /* public static void RemoveComment(this CharacterInstance ch, NoteData note)
+         {
+             if (ch.Comments == null || ch.Comments.Count == 0 || note == null)
+                 return;
 
-            ch.Comments.Remove(note);
-            save.save_char_obj(ch);
-        }*/
+             ch.Comments.Remove(note);
+             save.save_char_obj(ch);
+         }*/
 
         /*public static void delete_project(ProjectData project)
         {

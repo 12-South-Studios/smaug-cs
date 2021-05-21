@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Exceptions;
+using System;
 using System.Runtime.Serialization;
-using Realm.Library.Common;
-using Realm.Library.Common.Exceptions;
 
 namespace SmaugCS.Repository
 {
@@ -16,7 +15,7 @@ namespace SmaugCS.Repository
         public DuplicateIndexException(string message, params object[] args)
             : base(string.Format(message, args)) { }
 
-        protected DuplicateIndexException(SerializationInfo info, StreamingContext context) 
+        protected DuplicateIndexException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
 
         public DuplicateIndexException(string message, Exception inner) : base(message, inner) { }

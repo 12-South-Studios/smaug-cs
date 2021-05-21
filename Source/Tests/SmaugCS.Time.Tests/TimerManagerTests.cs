@@ -1,7 +1,7 @@
-﻿using System.Timers;
-using Moq;
+﻿using Moq;
 using Ninject;
 using NUnit.Framework;
+using System.Timers;
 
 namespace SmaugCS.Time.Tests
 {

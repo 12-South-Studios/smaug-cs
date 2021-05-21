@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using System.Collections.Generic;
 
 namespace SmaugCS.SpecFuns.Breaths
 {

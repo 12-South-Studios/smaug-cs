@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Templates;
+using System.Collections.Generic;
+using System.Linq;
 using NumberExtensions = SmaugCS.Common.NumberExtensions;
 
 namespace SmaugCS.Data.Extensions

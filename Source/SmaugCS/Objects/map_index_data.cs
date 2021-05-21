@@ -7,7 +7,7 @@
 
         public map_index_data()
         {
-            map_of_vnums = new int[49,81];
+            map_of_vnums = new int[49, 81];
         }
     }
 }

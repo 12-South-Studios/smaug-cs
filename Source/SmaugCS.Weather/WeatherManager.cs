@@ -1,9 +1,9 @@
-﻿using System.Data.Common;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data;
 using SmaugCS.Logging;
+using System.Data.Common;
+using System.Linq;
 
 namespace SmaugCS.Weather
 {

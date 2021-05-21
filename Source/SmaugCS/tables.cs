@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using System;
+using System.Collections.Generic;
 
 namespace SmaugCS
 {
@@ -184,7 +184,7 @@ namespace SmaugCS
         //#endregion
 
         //public static readonly string[, ,] TitleTable = new string[Program.MAX_CLASS, Program.MAX_LEVEL + 1, 2];
-        public static readonly string[, ,] TitleTable;
+        public static readonly string[,,] TitleTable;
         public static string GetTitle(ClassTypes type, int level, GenderTypes gender)
         {
             return TitleTable[(int)type, level, gender == GenderTypes.Female ? 1 : 0];
@@ -290,8 +290,8 @@ namespace SmaugCS
 
         public static void save_classes()
         {
-           // foreach (ClassData data in RepositoryManager.Instance.CLASSES)
-           //     write_class_file((int)data.Type);
+            // foreach (ClassData data in RepositoryManager.Instance.CLASSES)
+            //     write_class_file((int)data.Type);
         }
 
         public static void save_races()

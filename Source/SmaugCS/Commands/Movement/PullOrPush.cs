@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -13,6 +10,9 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace SmaugCS.Commands.Movement
 {
@@ -92,22 +92,22 @@ namespace SmaugCS.Commands.Movement
         {
             if (obj.Values.Flags.IsSet(TriggerFlags.D_North))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.North, "to the north");
-            
+
             if (obj.Values.Flags.IsSet(TriggerFlags.D_South))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.South, "to the south");
-            
+
             if (obj.Values.Flags.IsSet(TriggerFlags.D_East))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.East, "to the east");
-            
+
             if (obj.Values.Flags.IsSet(TriggerFlags.D_West))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.West, "to the west");
-            
+
             if (obj.Values.Flags.IsSet(TriggerFlags.D_Up))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.Up, "from above");
-            
+
             if (obj.Values.Flags.IsSet(TriggerFlags.D_Down))
                 return new Tuple<DirectionTypes, string>(DirectionTypes.Down, "from below");
-            
+
             throw new InvalidDataException($"Object {obj.ID} has invalid direction");
         }
 
@@ -119,7 +119,7 @@ namespace SmaugCS.Commands.Movement
             var sourceRoom = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
             if (sourceRoom == null)
                 throw new InvalidDataException($"Source Room {obj.Value.ToList()[1]} was null");
-            
+
             var destRoom = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
             if (destRoom == null)
                 throw new InvalidDataException($"Destination Room {obj.Value.ToList()[2]} was null");
@@ -154,7 +154,7 @@ namespace SmaugCS.Commands.Movement
             if (room == null)
                 throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
-            foreach(var rch in room.Persons)
+            foreach (var rch in room.Persons)
                 comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, exit.Keywords, ToTypes.Character);
 
             var reverseExit = exit.GetReverse();
@@ -163,7 +163,7 @@ namespace SmaugCS.Commands.Movement
                 reverseExit.Flags = reverseExit.Flags.RemoveBit(ExitFlags.Closed);
 
                 var destRoom = exit.GetDestination(RepositoryManager.Instance);
-                foreach(var rch in destRoom.Persons)
+                foreach (var rch in destRoom.Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, reverseExit.Keywords, ToTypes.Character);
             }
 
@@ -211,7 +211,7 @@ namespace SmaugCS.Commands.Movement
                 if (container.ItemType != ItemTypes.Container)
                     throw new InvalidDataException($"Container {container.ID} is not of type 'Container'");
 
-                if (obj.Value.ToList()[3].IsSet( ContainerFlags.Closeable))
+                if (obj.Value.ToList()[3].IsSet(ContainerFlags.Closeable))
                     container.Value.ToList()[1].ToggleBit(ContainerFlags.Closeable);
                 if (obj.Value.ToList()[3].IsSet(ContainerFlags.PickProof))
                     container.Value.ToList()[1].ToggleBit(ContainerFlags.PickProof);
@@ -307,7 +307,7 @@ namespace SmaugCS.Commands.Movement
 
         private static bool CheckAndFireObjectLoading(CharacterInstance ch, ObjectInstance obj)
         {
-            if (obj.Value.ToList()[0].IsSet((int) TriggerFlags.ObjectLoad))
+            if (obj.Value.ToList()[0].IsSet((int)TriggerFlags.ObjectLoad))
             {
                 var template = RepositoryManager.Instance.OBJECTTEMPLATES.Get(obj.Value.ToList()[1]);
                 if (template == null)
@@ -408,7 +408,7 @@ namespace SmaugCS.Commands.Movement
                 if (obj.Value.ToList()[0].IsSet(TriggerFlags.TeleportPlus))
                     flags.SetBit(TeleportTriggerFlags.TransportAllPlus);
 
-               act_move.teleport(ch, obj.Value.ToList()[1], flags);
+                act_move.teleport(ch, obj.Value.ToList()[1], flags);
                 return true;
             }
             return false;

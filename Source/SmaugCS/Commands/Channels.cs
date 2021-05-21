@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Communication;
 using SmaugCS.Constants;
@@ -9,6 +6,8 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
+using System;
+using System.Collections.Generic;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Commands
@@ -18,7 +17,7 @@ namespace SmaugCS.Commands
         [Command(NoNpc = true)]
         public static void do_channels(CharacterInstance ch, string argument)
         {
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
 
             var firstWord = argument.FirstWord();
             if (firstWord.IsNullOrEmpty())
@@ -42,7 +41,7 @@ namespace SmaugCS.Commands
 
             ch.SendTo(" %gChannels  %G:\r\n  ");
 
-            foreach(var channelType in EnumerationExtensions.GetValues<ChannelTypes>())
+            foreach (var channelType in EnumerationExtensions.GetValues<ChannelTypes>())
             {
                 var msg = GetChannelText(channelType, ch);
                 if (!string.IsNullOrEmpty(msg))

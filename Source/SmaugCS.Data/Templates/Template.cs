@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Data.Templates
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
@@ -13,6 +11,8 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS
 {
@@ -164,7 +164,7 @@ namespace SmaugCS
         public static void CreateBlood(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
             var databaseMgr = dbManager ?? RepositoryManager.Instance;
-            var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, 
+            var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long,
                 ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
 
             obj.Timer = SmaugRandom.Between(2, 4);

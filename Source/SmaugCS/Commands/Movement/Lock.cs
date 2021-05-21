@@ -17,7 +17,7 @@ namespace SmaugCS.Commands.Movement
 
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Lock what?")) return;
 
-            var exit =ch.FindExit(firstArg, true);
+            var exit = ch.FindExit(firstArg, true);
             if (exit != null)
             {
                 LockDoor(ch, exit, firstArg);
@@ -57,7 +57,7 @@ namespace SmaugCS.Commands.Movement
         {
             if (exit.Flags.IsSet(ExitFlags.Secret) && !exit.Keywords.IsAnyEqual(arg))
             {
-                ch.Printf( "You see no %s here.", arg);
+                ch.Printf("You see no %s here.", arg);
                 return;
             }
 

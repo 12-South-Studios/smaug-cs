@@ -94,7 +94,7 @@ namespace SmaugCS.Commands.Movement
                 if (reverseExit != null)
                 {
                     var room = exit.GetDestination(RepositoryManager.Instance);
-                    foreach(var vch in room.Persons)
+                    foreach (var vch in room.Persons)
                         comm.act(ATTypes.AT_ACTION, "The $d opens.", vch, null, reverseExit.Keywords, ToTypes.Character);
                 }
 

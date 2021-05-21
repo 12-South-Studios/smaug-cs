@@ -1,6 +1,6 @@
-﻿using System;
-using SmaugCS.Common.Enumerations;
+﻿using SmaugCS.Common.Enumerations;
 using SmaugCS.Logging;
+using System;
 
 // ReSharper disable CheckNamespace
 namespace SmaugCS

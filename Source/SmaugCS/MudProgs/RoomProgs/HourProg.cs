@@ -6,7 +6,7 @@ namespace SmaugCS.MudProgs.RoomProgs
     {
         public static void Execute(MobileInstance mob)
         {
-            
+
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -13,25 +12,24 @@ namespace SmaugCS.Common
             if (string.IsNullOrEmpty(memberName))
             {
                 attributes = value.GetType().GetCustomAttributes(typeof(T), false);
-                return (T)attributes.ToList().FirstOrDefault(x => x.GetType() == typeof (T));
+                return (T)attributes.ToList().FirstOrDefault(x => x.GetType() == typeof(T));
             }
 
             MemberInfo[] members = value.GetType().GetMember(memberName);
             if (!members.Any())
                 return null;
 
-            attributes = members.First().GetCustomAttributes(typeof (T), false);
-            return (T)attributes.ToList().FirstOrDefault(x => x.GetType() == typeof (T));
+            attributes = members.First().GetCustomAttributes(typeof(T), false);
+            return (T)attributes.ToList().FirstOrDefault(x => x.GetType() == typeof(T));
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static bool HasAttribute<T>(this object value, string memberName = "") where T : Attribute
         {
             object[] attributes;
             if (string.IsNullOrEmpty(memberName))
             {
                 attributes = value.GetType().GetCustomAttributes(typeof(T), false);
-                return attributes.Any(x => x.GetType() == typeof (T));
+                return attributes.Any(x => x.GetType() == typeof(T));
             }
 
             MemberInfo[] members = value.GetType().GetMember(memberName);

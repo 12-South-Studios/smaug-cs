@@ -14,21 +14,21 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_curse(int sn, int level, CharacterInstance ch, object vo)
         {
-            var victim = (CharacterInstance) vo;
+            var victim = (CharacterInstance)vo;
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(victim.Immunity.IsSet(ResistanceTypes.Magic), skill, ch,
                 CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;
 
-            if (CheckFunctions.CheckIfTrueCasting(victim.IsAffected(AffectedByTypes.Curse) 
-                || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch, 
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsAffected(AffectedByTypes.Curse)
+                || victim.SavingThrows.CheckSaveVsSpellStaff(level, victim), skill, ch,
                 CastingFunctionType.Failed, victim)) return ReturnTypes.SpellFailed;
 
             AddAffectToTarget(ch, sn, level, ApplyTypes.HitRoll);
             AddAffectToTarget(victim, sn, level, ApplyTypes.SaveVsSpell);
 
-           victim.SetColor(ATTypes.AT_MAGIC);
-           victim.SendTo("You feel unclean.");
+            victim.SetColor(ATTypes.AT_MAGIC);
+            victim.SendTo("You feel unclean.");
 
             if (ch != victim)
             {

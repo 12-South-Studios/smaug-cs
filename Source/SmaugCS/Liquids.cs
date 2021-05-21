@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Objects;
+﻿using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -8,6 +6,7 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS
 {

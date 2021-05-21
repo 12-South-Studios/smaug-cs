@@ -227,7 +227,7 @@ namespace SmaugCS.Tests.Extensions
         public void CanCast_Test(bool isSpellcaster, ClassTypes clsType, bool expectedValue)
         {
             var classRepo = new GenericRepository<ClassData>();
-            classRepo.Add(1, new ClassData(1, "Test") {IsSpellcaster = isSpellcaster, Type = clsType});
+            classRepo.Add(1, new ClassData(1, "Test") { IsSpellcaster = isSpellcaster, Type = clsType });
 
             var mockDb = new Mock<IRepositoryManager>();
             mockDb.SetupGet(x => x.CLASSES).Returns(classRepo);

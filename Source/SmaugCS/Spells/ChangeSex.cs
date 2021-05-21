@@ -31,7 +31,7 @@ namespace SmaugCS.Spells
 
             do
             {
-                af.Modifier = SmaugRandom.Between(0, 2) - (int) victim.Gender;
+                af.Modifier = SmaugRandom.Between(0, 2) - (int)victim.Gender;
             } while (af.Modifier == 0);
 
             victim.AddAffect(af);
@@ -44,7 +44,7 @@ namespace SmaugCS.Spells
         {
             checked
             {
-                return 10*level*GameConstants.GetConstant<int>("AffectDurationConversionValue");
+                return 10 * level * GameConstants.GetConstant<int>("AffectDurationConversionValue");
             }
         }
     }

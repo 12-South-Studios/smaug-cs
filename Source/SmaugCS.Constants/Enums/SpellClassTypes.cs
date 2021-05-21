@@ -2,13 +2,13 @@
 {
     public enum SpellClassTypes
     {
-        None, 
-        Lunar, 
-        Solar, 
-        Travel, 
+        None,
+        Lunar,
+        Solar,
+        Travel,
         Summon,
-        Life, 
-        Death, 
+        Life,
+        Death,
         Illusion
     }
 }

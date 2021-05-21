@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Entities;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Realm.Library.Common.Entities;
 
 namespace Realm.Library.Common.Objects
 
@@ -40,17 +40,6 @@ namespace Realm.Library.Common.Objects
         }
 
         /// <summary>
-        /// Overrides the GetHashCode to incorporate a true hash of the object properties
-        /// </summary>
-        public override int GetHashCode()
-        {
-            var result = 0;
-            result = (result * 397) ^ ID.GetHashCode();
-            result = (result * 397) ^ Name.GetHashCode();
-            return result;
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="a"></param>
@@ -59,7 +48,7 @@ namespace Realm.Library.Common.Objects
         public static bool operator ==(Entity a, Entity b)
         {
             if (ReferenceEquals(a, b)) return true;
-            if (((object)a == null) || ((object)b == null)) return false;
+            if (a is null || b is null) return false;
             return a.ID == b.ID && a.Name.Equals(b.Name);
         }
 

@@ -1,9 +1,8 @@
-﻿using System.Collections.Concurrent;
+﻿using Realm.Library.Common.Logging;
+using Realm.Library.Common.Objects;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common.Logging;
-using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
 
 namespace Realm.Library.Common.Data
 {
@@ -141,8 +140,7 @@ namespace Realm.Library.Common.Data
         {
             if (value.IsNull())
             {
-                Atom atom;
-                _map.TryRemove(key, out atom);
+                _map.TryRemove(key, out _);
             }
             else
                 _map.TryAdd(key, value);
@@ -266,7 +264,7 @@ namespace Realm.Library.Common.Data
         {
             Validation.IsNotNull(log, "log");
 
-            log.InfoFormat(Resources.LOG_DICT_ATOM_FORMAT, prefix);
+            log.InfoFormat("{0} (DictionaryAtom)", prefix);
             _map.Keys.ToList().ForEach(key =>
                 {
                     var value = _map[key];
@@ -276,9 +274,9 @@ namespace Realm.Library.Common.Data
                             {
                                 var stringKey = (StringAtom)key;
                                 if (value.IsNotNull())
-                                    value.Dump(log, string.Format(Resources.LOG_DICT_ATOM_KEY, prefix, stringKey.Value));
+                                    value.Dump(log, string.Format("{0}.{1}", prefix, stringKey.Value));
                                 else
-                                    log.InfoFormat(Resources.LOG_DICT_ATOM_NULL_KEY, prefix, stringKey.Value);
+                                    log.InfoFormat("{0}.{1} (null)", prefix, stringKey.Value);
                             }
                             break;
 
@@ -286,9 +284,9 @@ namespace Realm.Library.Common.Data
                             {
                                 var intKey = (IntAtom)key;
                                 if (value.IsNotNull())
-                                    value.Dump(log, string.Format(Resources.LOG_DICT_ATOM_KEY, prefix, intKey.Value));
+                                    value.Dump(log, string.Format("{0}.{1}", prefix, intKey.Value));
                                 else
-                                    log.InfoFormat(Resources.LOG_DICT_ATOM_NULL_KEY, prefix, intKey.Value);
+                                    log.InfoFormat("{0}.{1} (null)", prefix, intKey.Value);
                             }
                             break;
                     }

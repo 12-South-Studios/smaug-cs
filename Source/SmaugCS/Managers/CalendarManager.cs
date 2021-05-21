@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common.Extensions;
+using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
+using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
-using SmaugCS.DAL.Interfaces;
 using SmaugCS.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Objects;
 using SmaugCS.Repository;
-using Realm.Library.Common.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Managers
 {
@@ -49,7 +49,7 @@ namespace SmaugCS.Managers
 
                 var gameState = _dbContext.GameStates.FirstOrDefault();
                 if (gameState == null)
-                    timeInfo = new TimeInfoData {Day = 28, Hour = 0, Month = 6, Year = 628};
+                    timeInfo = new TimeInfoData { Day = 28, Hour = 0, Month = 6, Year = 628 };
                 else
                 {
                     timeInfo = new TimeInfoData
@@ -147,9 +147,9 @@ namespace SmaugCS.Managers
         private static void StartSpringSeason()
         {
             act_wiz.echo_to_all(ATTypes.AT_DGREEN, "The chill recedes from the air as spring begins to take hold.",
-                                (int) EchoTypes.All);
+                                (int)EchoTypes.All);
             act_wiz.echo_to_all(ATTypes.AT_BLUE, "Freshwater bodies everywhere have thawed out.\r\n",
-                                (int) EchoTypes.All);
+                                (int)EchoTypes.All);
 
             _winterFreeze = true;
             foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
@@ -164,13 +164,13 @@ namespace SmaugCS.Managers
         private static void StartSummerSeason()
         {
             act_wiz.echo_to_all(ATTypes.AT_YELLOW, "The days grow longer and hotter as summer grips the world.\r\n",
-                                (int) EchoTypes.All);
+                                (int)EchoTypes.All);
         }
 
         private static void StartFallSeason()
         {
             act_wiz.echo_to_all(ATTypes.AT_ORANGE, "The leaves begin changing colors signaling the start of fall.\r\n",
-                                (int) EchoTypes.All);
+                                (int)EchoTypes.All);
         }
 
         private static void UpdateSeason(TimeInfoData gameTime)

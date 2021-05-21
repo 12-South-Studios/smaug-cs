@@ -5,17 +5,17 @@ namespace SmaugCS.Constants.Enums
     public enum ComponentRequiredTypes
     {
         [Name("T")]
-        ItemType, 
+        ItemType,
 
         [Name("V")]
-        ItemVnum, 
+        ItemVnum,
 
         [Name("K")]
         ItemKeyword,
- 
+
         [Name("G")]
         PlayerCoin,
- 
+
         [Name("H")]
         PlayerHealth
     }

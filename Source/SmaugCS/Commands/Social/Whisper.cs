@@ -102,19 +102,19 @@ namespace SmaugCS.Commands.Social
             victim.CurrentPosition = PositionTypes.Standing;
 
 #if !SCRAMBLE
-           /* if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
-            {
-                int speakswell = victim.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, victim));
-                if (speakswell < 85)
-                    comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'",
-                             ch, act_comm.TranslateLanguage(speakswell, argumentString,
-                                           GameConstants.LanguageTable[speaking]), victim, ToTypes.Victim);
-                else
-                    comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'",
-                             ch, argumentString, victim, ToTypes.Victim);
-            }
-            else
-                comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, ToTypes.Victim);*/
+            /* if (speaking != -1 && (!ch.IsNpc() || ch.Speaking > 0))
+             {
+                 int speakswell = victim.KnowsLanguage(ch.Speaking, ch).GetLowestOfTwoNumbers(ch.KnowsLanguage(ch.Speaking, victim));
+                 if (speakswell < 85)
+                     comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'",
+                              ch, act_comm.TranslateLanguage(speakswell, argumentString,
+                                            GameConstants.LanguageTable[speaking]), victim, ToTypes.Victim);
+                 else
+                     comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'",
+                              ch, argumentString, victim, ToTypes.Victim);
+             }
+             else
+                 comm.act(ATTypes.AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, ToTypes.Victim);*/
 #else
             int speakswell = SmaugCS.Common.Check.Minimum(KnowsLanguage(victim, ch.Speaking, ch),
                                               KnowsLanguage(ch, ch.Speaking, victim));

@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -44,7 +43,7 @@ namespace SmaugCS.Commands.Admin
 
             if (worldCharacter != null && !worldCharacter.IsNpc())
             {
-                if (((PlayerInstance) worldCharacter).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb))
+                if (((PlayerInstance)worldCharacter).PlayerData.Flags.IsSet(PCFlags.DoNotDisturb))
                 {
                     ch.PagerPrintf("Sorry. %s does not wish to be disturbed.", worldCharacter.Name);
                     worldCharacter.PagerPrintf("Your Do-Not-Disturb flag just foiled %s's AT command.", ch.Name);

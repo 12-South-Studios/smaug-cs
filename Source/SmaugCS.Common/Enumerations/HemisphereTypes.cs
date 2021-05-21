@@ -3,7 +3,7 @@
 namespace SmaugCS.Common.Enumerations
 {
     public enum HemisphereTypes
-    {  
+    {
         [Name("Northern")]
         North = 0,
 

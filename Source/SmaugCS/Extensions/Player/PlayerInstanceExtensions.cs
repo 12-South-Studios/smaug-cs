@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
@@ -9,6 +6,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Managers;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Player
 {
@@ -57,8 +57,8 @@ namespace SmaugCS.Extensions.Player
             return age;
         }
 
-        private static readonly List<AffectedByTypes> AffectedByList = new List<AffectedByTypes> 
-        { 
+        private static readonly List<AffectedByTypes> AffectedByList = new List<AffectedByTypes>
+        {
             AffectedByTypes.FireShield, AffectedByTypes.ShockShield, AffectedByTypes.AcidMist,
             AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
         };

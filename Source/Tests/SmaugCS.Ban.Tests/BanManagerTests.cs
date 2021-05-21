@@ -1,10 +1,10 @@
-﻿using System;
-using Moq;
+﻿using Moq;
 using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Logging;
+using System;
 
 namespace SmaugCS.Ban.Tests
 {
@@ -16,15 +16,15 @@ namespace SmaugCS.Ban.Tests
         private static BanData GetBan()
         {
             return new BanData
-                {
-                    Id = 1,
-                    Type = BanTypes.Race,
-                    Name = "Tester",
-                    Note = "Tester was very bad",
-                    BannedBy = "BigWig",
-                    BannedOn = DateTime.Now,
-                    Duration = int.MaxValue
-                };
+            {
+                Id = 1,
+                Type = BanTypes.Race,
+                Name = "Tester",
+                Note = "Tester was very bad",
+                BannedBy = "BigWig",
+                BannedOn = DateTime.Now,
+                Duration = int.MaxValue
+            };
         }
 
         [SetUp]

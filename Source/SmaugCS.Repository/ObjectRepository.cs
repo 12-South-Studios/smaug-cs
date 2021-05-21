@@ -1,12 +1,12 @@
-﻿using System.IO;
-using System.Linq;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Templates;
+using System.IO;
+using System.Linq;
 
 namespace SmaugCS.Repository
 {

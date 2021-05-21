@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using Realm.Library.Lua;
+﻿using Realm.Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 using SmaugCS.Extensions.Character;
+using System.Linq;
 using EnumerationExtensions = SmaugCS.Common.EnumerationExtensions;
 
 namespace SmaugCS.LuaHelpers
@@ -32,7 +32,7 @@ namespace SmaugCS.LuaHelpers
         [LuaFunction("LIsPacifist", "Gets if the mobile is a pacifist", "Character")]
         public static bool LuaIsPacifist(CharacterInstance ch)
         {
-            if (ch == null) 
+            if (ch == null)
                 throw new LuaException("Character cannot be null");
 
             return ch.IsNpc() && ch.Act.IsSet(ActFlags.Pacifist);
@@ -74,9 +74,9 @@ namespace SmaugCS.LuaHelpers
                 throw new LuaException("Target cannot be null");
 
             if (target is CharacterInstance)
-                return ch.CanSee((CharacterInstance) target);
+                return ch.CanSee((CharacterInstance)target);
             if (target is ObjectInstance)
-                return ch.CanSee((ObjectInstance) target);
+                return ch.CanSee((ObjectInstance)target);
 
             return false;
         }
@@ -133,7 +133,7 @@ namespace SmaugCS.LuaHelpers
             var exit = room.GetExit(direction);
             if (exit == null) return false;
 
-            return !exit.Flags.IsSet(ExitFlags.Locked);  
+            return !exit.Flags.IsSet(ExitFlags.Locked);
         }
 
         [LuaFunction("LIsObjectLocked", "Gets if the object is locked", "Object")]
@@ -146,7 +146,7 @@ namespace SmaugCS.LuaHelpers
 
             return !obj.Values.Flags.IsSet(ContainerFlags.Locked);
         }
-        
+
         [LuaFunction("LIsPKil", "Gets if the player is PKill", "Character")]
         public static bool LuaIsPKill(CharacterInstance ch)
         {
@@ -200,7 +200,7 @@ namespace SmaugCS.LuaHelpers
 
             if (ch.IsNpc()) return false;
 
-            var player = (PlayerInstance) ch;
+            var player = (PlayerInstance)ch;
             return player.PlayerData.Nuisance != null;
         }
 
@@ -415,7 +415,7 @@ namespace SmaugCS.LuaHelpers
         // Time
         // Name
         // Rank
-        
+
 
     }
 }

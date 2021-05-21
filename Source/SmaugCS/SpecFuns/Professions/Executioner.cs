@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SmaugCS.Commands.Social;
+﻿using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -8,6 +7,7 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Extensions;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.SpecFuns.Professions
 {

@@ -2,9 +2,9 @@
 {
     public enum SpellPowerTypes
     {
-        None, 
-        Minor, 
-        Greater, 
+        None,
+        Minor,
+        Greater,
         Major
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Commands
 {
@@ -16,7 +16,7 @@ namespace SmaugCS.Commands
 
             if (ch.Act.IsSet(PlayerFlags.AwayFromKeyboard))
                 ch.Act.RemoveBit(PlayerFlags.AwayFromKeyboard);
-            else 
+            else
                 ch.Act.SetBit(PlayerFlags.AwayFromKeyboard);
 
             var isAfkSet = ch.Act.IsSet(PlayerFlags.AwayFromKeyboard);

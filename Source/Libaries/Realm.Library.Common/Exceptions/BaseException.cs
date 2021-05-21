@@ -15,14 +15,14 @@ namespace Realm.Library.Common.Exceptions
         /// 
         /// </summary>
         public string ResourceReferenceProperty { get; }
- 
+
         /// <summary>
         /// 
         /// </summary>
         protected BaseException()
         {
         }
- 
+
         /// <summary>
         /// 
         /// </summary>
@@ -31,7 +31,7 @@ namespace Realm.Library.Common.Exceptions
             : base(message)
         {
         }
- 
+
         /// <summary>
         /// 
         /// </summary>
@@ -52,7 +52,7 @@ namespace Realm.Library.Common.Exceptions
         {
             ResourceReferenceProperty = info.GetString("ResourceReferenceProperty");
         }
- 
+
         /// <summary>
         /// 
         /// </summary>

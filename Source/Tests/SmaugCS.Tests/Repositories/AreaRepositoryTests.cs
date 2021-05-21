@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-using Moq;
+﻿using Moq;
 using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
@@ -14,6 +12,8 @@ using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Repository;
+using System.Linq;
+using System.Text;
 
 namespace SmaugCS.Tests.Repositories
 {
@@ -60,7 +60,7 @@ namespace SmaugCS.Tests.Repositories
 
             var luaProxy = new LuaInterfaceProxy();
 
-            var luaFuncRepo = LuaHelper.Register( typeof(LuaAreaFunctions), null);
+            var luaFuncRepo = LuaHelper.Register(typeof(LuaAreaFunctions), null);
             luaFuncRepo = LuaHelper.Register(typeof(LuaRoomFunctions), luaFuncRepo);
             luaProxy.RegisterFunctions(luaFuncRepo);
 

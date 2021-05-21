@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SmaugCS.Commands.Movement;
+﻿using SmaugCS.Commands.Movement;
 using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -10,6 +9,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
+using System.Linq;
 
 namespace SmaugCS.Extensions.Mobile
 {
@@ -38,7 +38,7 @@ namespace SmaugCS.Extensions.Mobile
             if (!ch.Act.IsSet(ActFlags.Running) && !ch.Act.IsSet(ActFlags.Sentinel) && ch.CurrentFighting == null &&
                 ch.CurrentHunting == null)
             {
-                Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
+                Macros.WAIT_STATE(ch, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));
                 track.hunt_victim(ch);
                 return;
             }
@@ -82,7 +82,7 @@ namespace SmaugCS.Extensions.Mobile
                 MudProgHandler.ExecuteMobileProg(MudProgTypes.Random, ch);
                 if (ch.CharDied())
                     return;
-                if ((int) ch.CurrentPosition < (int) PositionTypes.Standing)
+                if ((int)ch.CurrentPosition < (int)PositionTypes.Standing)
                     return;
             }
 
@@ -94,7 +94,7 @@ namespace SmaugCS.Extensions.Mobile
             if (ch.CharDied())
                 return;
 
-            if ((int) ch.CurrentPosition < (int) PositionTypes.Standing)
+            if ((int)ch.CurrentPosition < (int)PositionTypes.Standing)
                 return;
 
             if (ch.Act.IsSet(ActFlags.Scavenger) && ch.CurrentRoom.Contents.Any() && SmaugRandom.Bits(2) == 0)
@@ -130,11 +130,11 @@ namespace SmaugCS.Extensions.Mobile
                 if (ch.CharDied())
                     return;
                 if (retcode != ReturnTypes.None || ch.Act.IsSet(ActFlags.Sentinel) ||
-                    (int) ch.CurrentPosition < (int) PositionTypes.Standing)
+                    (int)ch.CurrentPosition < (int)PositionTypes.Standing)
                     return;
             }
 
-            if (ch.CurrentHealth < ch.MaximumHealth/2)
+            if (ch.CurrentHealth < ch.MaximumHealth / 2)
             {
                 var door = SmaugRandom.Bits(4);
                 if (door > 9)

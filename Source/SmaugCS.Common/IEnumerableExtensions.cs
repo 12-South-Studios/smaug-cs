@@ -7,8 +7,8 @@ namespace SmaugCS.Common
     {
         public static T GetValue<T>(this IEnumerable<object> objects, int index)
         {
-            if (index >= objects.Count()) return default(T);
-            if (objects.ToList()[index] == null) return default(T);
+            if (index >= objects.Count()) return default;
+            if (objects.ToList()[index] == null) return default;
             return (T)objects.ToList()[index];
         }
     }

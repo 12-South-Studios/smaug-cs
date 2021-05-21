@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Timers;
-using Ninject;
+﻿using Ninject;
 using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Data.Instances;
+using System.Linq;
+using System.Timers;
 
 namespace SmaugCS.Auction
 {

@@ -1,6 +1,6 @@
-﻿using System;
-using SmaugCS.Data;
+﻿using SmaugCS.Data;
 using SmaugCS.Loaders.Obsolete;
+using System;
 
 namespace SmaugCS.Loaders.Incomplete
 {

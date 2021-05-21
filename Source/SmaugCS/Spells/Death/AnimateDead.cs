@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -14,6 +12,8 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Spells.Death
@@ -51,13 +51,13 @@ namespace SmaugCS.Spells.Death
 
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, template.Level / 3);
                 }
-                else if (ch.CurrentMana - template.Level/4 < 0)
+                else if (ch.CurrentMana - template.Level / 4 < 0)
                 {
                     ch.SendTo("You do not have enough mana to reanimate this corpse.");
                     return ReturnTypes.SpellFailed;
                 }
                 else
-                    ch.CurrentMana -= template.Level*4;
+                    ch.CurrentMana -= template.Level * 4;
             }
 
             if (ch.IsImmortal() || (ch.Chance(75) && template.Level - ch.Level < 10))
@@ -87,17 +87,17 @@ namespace SmaugCS.Spells.Death
                 $"animated corpse {template.PlayerName}");
 
             ch.CurrentRoom.AddTo(mob);
-            mob.Level = (ch.Level/2).GetLowestOfTwoNumbers(template.Level);
+            mob.Level = (ch.Level / 2).GetLowestOfTwoNumbers(template.Level);
             mob.CurrentRace = EnumerationExtensions.GetEnumByName<RaceTypes>(template.Race);
 
-            mob.MaximumHealth = template.Level*8 +
-                                SmaugRandom.Between(template.Level*template.Level/4, template.Level*template.Level);
-            mob.MaximumHealth = (mob.MaximumHealth/4).GetNumberThatIsBetween(
+            mob.MaximumHealth = template.Level * 8 +
+                                SmaugRandom.Between(template.Level * template.Level / 4, template.Level * template.Level);
+            mob.MaximumHealth = (mob.MaximumHealth / 4).GetNumberThatIsBetween(
                 mob.MaximumHealth * corpse.Value.ToList()[3] / 100, ch.Level * SmaugRandom.D20(10));
             mob.MaximumHealth = mob.MaximumHealth.GetHighestOfTwoNumbers(1);
             mob.CurrentHealth = mob.MaximumHealth;
-            mob.DamageRoll = new DiceData {SizeOf = ch.Level/8};
-            mob.HitRoll = new DiceData {SizeOf = ch.Level/6};
+            mob.DamageRoll = new DiceData { SizeOf = ch.Level / 8 };
+            mob.HitRoll = new DiceData { SizeOf = ch.Level / 6 };
             mob.CurrentAlignment = ch.CurrentAlignment;
             mob.ShortDescription = $"The animated corpse of {template.ShortDescription}";
             mob.LongDescription =
@@ -113,7 +113,7 @@ namespace SmaugCS.Spells.Death
             var af = new AffectData
             {
                 Type = AffectedByTypes.Charm,
-                Duration = (SmaugRandom.Fuzzy((level + 1)/4) + 1)*
+                Duration = (SmaugRandom.Fuzzy((level + 1) / 4) + 1) *
                            GameConstants.GetSystemValue<int>("AffectDurationConversionValue")
             };
             mob.AddAffect(af);

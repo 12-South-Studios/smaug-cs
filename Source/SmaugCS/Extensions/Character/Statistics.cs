@@ -1,6 +1,5 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -72,9 +71,9 @@ namespace SmaugCS.Extensions.Character
             var penalty = 0;
 
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
-                return ch.Trust*200;
+                return ch.Trust * 200;
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
-                return ch.Level*200;
+                return ch.Level * 200;
             if (ch.GetEquippedItem(WearLocations.Wield) != null)
                 ++penalty;
             if (ch.GetEquippedItem(WearLocations.DualWield) != null)
@@ -85,7 +84,7 @@ namespace SmaugCS.Extensions.Character
                 ++penalty;
             if (ch.GetEquippedItem(WearLocations.Shield) != null)
                 ++penalty;
-            return ((ch.Level + 15)/5 + ch.GetCurrentDexterity() - 13 - penalty).GetNumberThatIsBetween(5, 20);
+            return ((ch.Level + 15) / 5 + ch.GetCurrentDexterity() - 13 - penalty).GetNumberThatIsBetween(5, 20);
         }
 
         public static int CanCarryMaxWeight(this CharacterInstance ch)
@@ -95,7 +94,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
                 return 1000000;
 
-            return (int) LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            return (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Carry);
         }
     }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
@@ -33,9 +33,9 @@ namespace SmaugCS.Data
         public int ObjStat { get; set; }
 
         private readonly Dictionary<DeityFieldTypes, int> _values;
- 
+
         public DeityData(long id, string name) : base(id, name)
-        { 
+        {
             _values = new Dictionary<DeityFieldTypes, int>();
         }
 

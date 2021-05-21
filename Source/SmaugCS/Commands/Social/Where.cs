@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Extensions.Character;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Commands.Social
 {
@@ -52,7 +52,7 @@ namespace SmaugCS.Commands.Social
             {
                 ch.PagerPrintfColor("&P{0}  ", victim.Name.PadRight(13, ' '));
                 if (victim.IsImmortal() && victim.Level > LevelConstants.AvatarLevel)
-                   ch.SendToPagerColor("&P(&WImmortal&P)\t");
+                    ch.SendToPagerColor("&P(&WImmortal&P)\t");
                 else if (victim.CanPKill() && ((PlayerInstance)victim).PlayerData.Clan != null
                          && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Order
                          && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Guild)

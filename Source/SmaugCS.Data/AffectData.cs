@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
+using System.Xml.Serialization;
 
 namespace SmaugCS.Data
 {

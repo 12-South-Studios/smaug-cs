@@ -1,5 +1,4 @@
-﻿using Realm.Library.Common;
-using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common.Attributes;
 
 namespace SmaugCS.Weather.Enums
 {
@@ -11,23 +10,23 @@ namespace SmaugCS.Weather.Enums
         [Range(Minimum = 91)]
         [WeatherMessage(Threshold = WeatherThresholdTypes.DropsBelowTempThreshold,
             Message = "&WThe rain turns to snow as it continues to come down blizzard-like.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsTempThreshold, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsTempThreshold,
             Message = "&BThe blizzard turns to a cold rain as it continues to come in a torrential downpour.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThresholdInStorm, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThresholdInStorm,
             Message = "&BThe rain begins to increase in intensity falling heavily and quickly.&D\r\n&YThunder and lightning shake the ground and light up the sky.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThreshold, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThreshold,
             Message = "&BThe rain begins to increase in intensity falling heavily and quickly.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThresholdAndDropsBelowFreezing, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThresholdAndDropsBelowFreezing,
             Message = "&WThe rain changes over to snow as the intensity increases, making a blinding white wall.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThresholdIsFreezing, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipThresholdIsFreezing,
             Message = "&WThe heavy snow increases and freezes creating a blizzard.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipAndTempThresholdsInStorm, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipAndTempThresholdsInStorm,
             Message = "&BThe snow changes over to rain as it pounds down heavier.&D\r\n&YThunder and lightning begin to shake the gound and light up the sky.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipAndTempThresholds, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.ExceedsPrecipAndTempThresholds,
             Message = "&BThe snow changes over to rain as it pounds down heavier.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.IsBelowFreezing, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.IsBelowFreezing,
             Message = "&WThe snow falls down fast and steady creating a blizzard.&D")]
-        [WeatherMessage(Threshold = WeatherThresholdTypes.IsStormy, 
+        [WeatherMessage(Threshold = WeatherThresholdTypes.IsStormy,
             Message = "&BThe rain continues to pound the earth in a downpour.&D\r\n&YThunder and lightning boom and cackle and light up the sky.&D")]
         [WeatherMessage(Threshold = WeatherThresholdTypes.None, Message = "&BThe rain continues to pound the earth in a downpour.&D")]
         Torrential,

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
@@ -10,6 +9,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
+using System.Linq;
 
 namespace SmaugCS.Commands
 {
@@ -26,7 +26,7 @@ namespace SmaugCS.Commands
         [Descriptor(" is here chanting.")]
         public static void do_cast(CharacterInstance ch, string argument)
         {
-            var pch = (PlayerInstance) ch;
+            var pch = (PlayerInstance)ch;
             switch (pch.SubState)
             {
                 case CharacterSubStates.TimerDoAbort:
@@ -51,7 +51,7 @@ namespace SmaugCS.Commands
                 if (ch.IsVampire())
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -1 * 1.GetHighestOfTwoNumbers(_blood / 2));
                 else if (ch.Level < LevelConstants.ImmortalLevel)
-                    ch.CurrentMana -= _mana/2;
+                    ch.CurrentMana -= _mana / 2;
                 //skills.learn_from_failure(ch, (int)_skill.ID);
                 return;
             }
@@ -62,13 +62,13 @@ namespace SmaugCS.Commands
             }
             else
             {
-                
+
             }
         }
 
         private static void DefaultCast(CharacterInstance ch, string argument)
         {
-            
+
         }
 
         private static void CastAbortTimer(PlayerInstance ch, string argument)
@@ -79,26 +79,26 @@ namespace SmaugCS.Commands
                 _skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
                 if (_skill == null)
                 {
-                    
+
                 }
 
                 _mana = ch.IsNpc()
                             ? 0
-                            : _skill.MinimumMana.GetHighestOfTwoNumbers(100/
+                            : _skill.MinimumMana.GetHighestOfTwoNumbers(100 /
                                                                         (2 + ch.Level -
-                                                                         _skill.SkillLevels.ToList()[(int) ch.CurrentClass]));
+                                                                         _skill.SkillLevels.ToList()[(int)ch.CurrentClass]));
 
             }
 
             ch.SetColor(ATTypes.AT_MAGIC);
             ch.SendTo("You stop chanting...");
-            
+
             // TODO: Add a chance to backfire here
         }
 
         private static void CastPause(CharacterInstance ch, string argument)
         {
-            
+
         }
 
     }

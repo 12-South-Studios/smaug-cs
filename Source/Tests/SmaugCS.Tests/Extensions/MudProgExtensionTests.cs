@@ -1,5 +1,4 @@
-﻿using System;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using Realm.Library.Lua;
 using SmaugCS.Common;
@@ -9,6 +8,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Extensions;
 using SmaugCS.Logging;
+using System;
 
 namespace SmaugCS.Tests.Extensions
 {
@@ -31,7 +31,7 @@ namespace SmaugCS.Tests.Extensions
             var actor = new CharacterInstance(1, "TestChar");
             actor.AffectedBy = actor.AffectedBy.SetBit(AffectedByTypes.Charm);
 
-            var mprog = new MudProgData {Type = MudProgTypes.Act};
+            var mprog = new MudProgData { Type = MudProgTypes.Act };
 
             Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.False);
         }
@@ -41,7 +41,7 @@ namespace SmaugCS.Tests.Extensions
         {
             var actor = new CharacterInstance(1, "TestChar");
 
-            var mprog = new MudProgData {Type = MudProgTypes.Act, IsFileProg = true};
+            var mprog = new MudProgData { Type = MudProgTypes.Act, IsFileProg = true };
 
             Assert.Throws<NotImplementedException>(
                 () => mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object),
@@ -55,7 +55,7 @@ namespace SmaugCS.Tests.Extensions
 
             var actor = new CharacterInstance(1, "TestChar");
 
-            var mprog = new MudProgData {Type = MudProgTypes.Act};
+            var mprog = new MudProgData { Type = MudProgTypes.Act };
 
             _mockedLuaManager.Setup(x => x.DoLuaScript(It.IsAny<string>())).Throws(new LuaException("Test Exception"));
 
@@ -70,7 +70,7 @@ namespace SmaugCS.Tests.Extensions
         {
             var actor = new CharacterInstance(1, "TestChar");
 
-            var mprog = new MudProgData {Type = MudProgTypes.Act};
+            var mprog = new MudProgData { Type = MudProgTypes.Act };
 
             Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.True);
         }

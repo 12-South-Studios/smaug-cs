@@ -2,13 +2,13 @@
 {
     public enum SpellSaveEffectTypes
     {
-        None, 
+        None,
         Negate,
         EighthDamage,
         QuarterDamage,
         HalfDamage,
-        ThreeQuartersDamage, 
-        Reflect, 
+        ThreeQuartersDamage,
+        Reflect,
         Absorb
     }
 }

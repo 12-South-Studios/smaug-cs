@@ -17,7 +17,7 @@ namespace SmaugCS.MudProgs.MobileProgs
             {
                 if (actor.IsNpc() && actor.Parent == mob.MobIndex) return false;
 
-               // todo finish this mud_prog.c:2743
+                // todo finish this mud_prog.c:2743
             }
 
             return true;

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Helpers;
+using System.Collections.Generic;
 
 namespace SmaugCS.Tests
 {
@@ -56,7 +56,7 @@ namespace SmaugCS.Tests
         [Test]
         public void CheckIf_NoArgs()
         {
-            var actor = new CharacterInstance(1, "TestNpc") {PermanentStrength = 25};
+            var actor = new CharacterInstance(1, "TestNpc") { PermanentStrength = 25 };
 
             Assert.That(CheckFunctions.CheckIf(actor, () => 5 * 10 == 50, string.Empty), Is.True);
         }
@@ -64,11 +64,11 @@ namespace SmaugCS.Tests
         [Test]
         public void CheckIf_WithArgs()
         {
-            var actor = new CharacterInstance(1, "TestNpc") {PermanentStrength = 25};
+            var actor = new CharacterInstance(1, "TestNpc") { PermanentStrength = 25 };
 
             Assert.That(
                 CheckFunctions.CheckIf(actor, args => ((CharacterInstance)args[0]).PermanentStrength == 25, string.Empty,
-                    new List<object> {actor}), Is.True);
+                    new List<object> { actor }), Is.True);
         }
 
         [Test]

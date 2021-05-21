@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Commands.Combat;
 using SmaugCS.Commands.Skills;
 using SmaugCS.Common;
@@ -13,6 +10,8 @@ using SmaugCS.Extensions.Mobile;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
 namespace SmaugCS.Extensions.Character
@@ -93,8 +92,8 @@ namespace SmaugCS.Extensions.Character
 
             if (victim == ch) return ReturnTypes.None;
 
-            if (!victim.IsNpc() && ((PlayerInstance) victim).Descriptor == null &&
-                !((PlayerInstance) victim).PlayerData.Flags.IsSet(PCFlags.NoRecall))
+            if (!victim.IsNpc() && ((PlayerInstance)victim).Descriptor == null &&
+                !((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.NoRecall))
             {
                 if (SmaugRandom.Between(0, victim.wait) == 0)
                 {
@@ -118,11 +117,11 @@ namespace SmaugCS.Extensions.Character
 
         private static void DoFlee(CharacterInstance ch, CharacterInstance victim)
         {
-            if ((victim.Act.IsSet(ActFlags.Wimpy) && SmaugRandom.Bits(1) == 0 
-                && victim.CurrentHealth < victim.MaximumHealth/2) || (victim.IsAffected(AffectedByTypes.Charm) 
+            if ((victim.Act.IsSet(ActFlags.Wimpy) && SmaugRandom.Bits(1) == 0
+                && victim.CurrentHealth < victim.MaximumHealth / 2) || (victim.IsAffected(AffectedByTypes.Charm)
                 && victim.Master != null && victim.Master.CurrentRoom != victim.CurrentRoom))
             {
-                var mob = (MobileInstance) victim;
+                var mob = (MobileInstance)victim;
                 mob.StartFearing(ch);
                 mob.StopHunting();
                 Flee.do_flee(victim, string.Empty);
@@ -157,7 +156,7 @@ namespace SmaugCS.Extensions.Character
                     Modifier = -2
                 };
                 victim.AddAffect(af);
-                ((PlayerInstance) victim).WorsenMentalState(
+                ((PlayerInstance)victim).WorsenMentalState(
                     20.GetNumberThatIsBetween(victim.MentalState + (victim.IsPKill() ? 1 : 2),
                         100));
             }
@@ -165,7 +164,7 @@ namespace SmaugCS.Extensions.Character
 
         private static void DoHuntAndHate(CharacterInstance ch, CharacterInstance victim)
         {
-            var vict = (MobileInstance) victim;
+            var vict = (MobileInstance)victim;
             if (!vict.Act.IsSet(ActFlags.Sentinel))
             {
                 if (vict.CurrentHunting != null)
@@ -257,18 +256,18 @@ namespace SmaugCS.Extensions.Character
 
         private static void DamageAndDefault(CharacterInstance victim, int dam)
         {
-            if (dam > victim.MaximumHealth/4)
+            if (dam > victim.MaximumHealth / 4)
             {
                 comm.act(ATTypes.AT_HURT, "That really did HURT!", victim, null, null, ToTypes.Character);
                 if (SmaugRandom.Bits(3) == 0)
-                    ((PlayerInstance) victim).WorsenMentalState(1);
+                    ((PlayerInstance)victim).WorsenMentalState(1);
             }
-            if (victim.CurrentHealth < victim.MaximumHealth/4)
+            if (victim.CurrentHealth < victim.MaximumHealth / 4)
             {
                 comm.act(ATTypes.AT_HURT, "You wish that your wounds would stop BLEEDING so much!", victim, null, null,
                     ToTypes.Character);
                 if (SmaugRandom.Bits(2) == 0)
-                    ((PlayerInstance) victim).WorsenMentalState(1);
+                    ((PlayerInstance)victim).WorsenMentalState(1);
             }
         }
 
@@ -281,8 +280,8 @@ namespace SmaugCS.Extensions.Character
             {
                 ((PlayerInstance)victim).GainCondition(ConditionTypes.Bloodthirsty, -3.GetNumberThatIsBetween(victim.Level / 10, 8));
                 victim.CurrentHealth += 4.GetNumberThatIsBetween(victim.CurrentHealth / 30, 15);
-               victim.SetColor(ATTypes.AT_BLOOD);
-               victim.SendTo("You howl with rage as the beast within stirs!");
+                victim.SetColor(ATTypes.AT_BLOOD);
+                victim.SendTo("You howl with rage as the beast within stirs!");
             }
         }
 

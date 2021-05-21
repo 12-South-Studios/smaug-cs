@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Moq;
+﻿using Moq;
 using Ninject;
 using NUnit.Framework;
 using Realm.Library.Common;
@@ -17,6 +13,10 @@ using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Repository;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace SmaugCS.Tests.Repositories
 {

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Realm.Library.Common.Exceptions;
+using System;
 using System.Runtime.Serialization;
-using Realm.Library.Common.Exceptions;
 
 namespace SmaugCS.Data.Exceptions
 {
@@ -13,7 +13,7 @@ namespace SmaugCS.Data.Exceptions
         {
         }
 
-        public CharacterDiedException(string format, params object[] args) 
+        public CharacterDiedException(string format, params object[] args)
             : base(string.Format(format, args))
         {
         }

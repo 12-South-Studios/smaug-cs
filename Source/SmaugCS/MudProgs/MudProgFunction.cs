@@ -1,5 +1,5 @@
-﻿using System;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
+using System;
 
 namespace SmaugCS.MudProgs
 {

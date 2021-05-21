@@ -1,9 +1,8 @@
-﻿using System.IO;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using System.IO;
 
 namespace SmaugCS.Extensions.Player
 {
@@ -16,7 +15,7 @@ namespace SmaugCS.Extensions.Player
             {
                 var buffer = proxy.ReadToEnd();
                 ch.Descriptor.WriteToBuffer(buffer, buffer.Length);
-            } 
+            }
         }
 
         public static void SendRIPScreen(this PlayerInstance ch)

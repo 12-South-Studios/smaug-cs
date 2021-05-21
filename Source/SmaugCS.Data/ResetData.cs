@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Realm.Library.Common;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
+using System.Collections.Generic;
 
 namespace SmaugCS.Data
 {
@@ -21,7 +20,7 @@ namespace SmaugCS.Data
 
         public void SetArgs(int v1, int v2, int v3)
         {
-            Args = new List<int> {v1, v2, v3};
+            Args = new List<int> { v1, v2, v3 };
         }
 
         public void AddReset(string type, int extra, int arg1, int arg2, int arg3)

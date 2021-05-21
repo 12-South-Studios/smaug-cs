@@ -1,5 +1,4 @@
-﻿using Realm.Library.Common;
-using Realm.Library.Common.Attributes;
+﻿using Realm.Library.Common.Attributes;
 
 namespace SmaugCS.Weather.Enums
 {

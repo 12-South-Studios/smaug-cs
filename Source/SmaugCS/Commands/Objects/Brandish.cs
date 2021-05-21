@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -10,6 +7,9 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands.Objects
@@ -27,7 +27,7 @@ namespace SmaugCS.Commands.Objects
             if (obj.Value.ToList()[3] <= 0)
                 throw new InvalidDataException($"Object {obj.ID} has no skill ID assigned to Value[3]");
 
-            Macros.WAIT_STATE(ch, 2*GameConstants.GetSystemValue<int>("PulseViolence"));
+            Macros.WAIT_STATE(ch, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));
 
             if (obj.Value.ToList()[2] > 0)
                 BrandishStaff(ch, obj);
@@ -52,12 +52,12 @@ namespace SmaugCS.Commands.Objects
             {
                 if (!vch.IsNpc())
                 {
-                    var pch = (PlayerInstance) ch;
+                    var pch = (PlayerInstance)ch;
                     if (pch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
                         pch.PlayerData.WizardInvisible >= LevelConstants.ImmortalLevel)
                         continue;
                 }
-  
+
                 var skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
                 switch (skill.Target)
                 {

@@ -30,7 +30,7 @@ namespace SmaugCS.Commands
 
             if (string.IsNullOrEmpty(secondArg))
                 victim = ch;
-            else 
+            else
             {
                 victim = ch.GetCharacterInRoom(secondArg);
                 obj = ch.GetObjectOnMeOrInRoom(secondArg);
@@ -88,7 +88,7 @@ namespace SmaugCS.Commands
             }
 
             string notVictimOrRoomMessage, victimMessage, selfMessage;
-            
+
             if (salve.Values.Charges < 1)
             {
                 notVictimOrRoomMessage = victim != actor

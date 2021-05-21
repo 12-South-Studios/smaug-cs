@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Managers;
 using SmaugCS.Objects;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Constants
 {
@@ -539,8 +539,8 @@ namespace SmaugCS.Constants
 
         public static readonly Dictionary<char, string> StarCharacterMap = new Dictionary<char, string>
             {
-                {':', ":"}, {'.', "."}, {'*', "*"}, {'G', "&G"}, {'g', "&g"}, {'R', "&R"}, {'r', "&r"}, 
-                {'C', "&C"}, {'O', "&O"}, {'B', "&B"}, {'P', "&P"}, {'W', "&W"}, {'b', "&b"}, {'p', "&p"}, 
+                {':', ":"}, {'.', "."}, {'*', "*"}, {'G', "&G"}, {'g', "&g"}, {'R', "&R"}, {'r', "&r"},
+                {'C', "&C"}, {'O', "&O"}, {'B', "&B"}, {'P', "&P"}, {'W', "&W"}, {'b', "&b"}, {'p', "&p"},
                 {'Y', "&Y"}, {'c', "&c"}
             };
 

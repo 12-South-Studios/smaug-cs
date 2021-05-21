@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Sockets;
-using Realm.Library.Common.Logging;
-using Realm.Library.Network.Properties;
 
 namespace Realm.Library.Network
 {
@@ -37,9 +36,9 @@ namespace Realm.Library.Network
         /// </summary>
         public void OnConnect()
         {
-            foreach(var formatter in Formatters)
+            foreach (var formatter in Formatters)
                 formatter.Enable(this, ClientStream);
-            Log.InfoFormat(Resources.MSG_TCPUSER_CONNECT, Id, IpAddress);
+            Log.InfoFormat("TcpClient[{0}, {1}] connected.", Id, IpAddress);
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SmaugCS.Constants.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SmaugCS.Constants.Enums;
 
 namespace SmaugCS.Data.Templates
 {
@@ -167,7 +167,7 @@ namespace SmaugCS.Data.Templates
             valueProperty.MaximumBonus = list[2];
             valueProperty.SkillID = list[3];
             valueProperty.ProjectileType = list[4];
-        } 
+        }
         private static void SetQuiverDynamicValues(dynamic valueProperty, IEnumerable<int> values)
         {
             var list = values.ToList();

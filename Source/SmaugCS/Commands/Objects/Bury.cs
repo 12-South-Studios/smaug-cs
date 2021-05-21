@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -7,6 +6,7 @@ using SmaugCS.Extensions.Character;
 using SmaugCS.Extensions.Objects;
 using SmaugCS.Extensions.Player;
 using SmaugCS.Helpers;
+using System.Linq;
 
 namespace SmaugCS.Commands.Objects
 {
@@ -41,11 +41,11 @@ namespace SmaugCS.Commands.Objects
                 sectorType == SectorTypes.Underwater, "you cannot bury something here.")) return;
             if (CheckFunctions.CheckIfTrue(ch, sectorType == SectorTypes.Air, "What?  In the air?!")) return;
 
-            var carryWeight = 5.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight()/10);
+            var carryWeight = 5.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight() / 10);
             if (CheckFunctions.CheckIfTrue(ch, shovel == null && obj.GetWeight() > carryWeight,
                 "You'd need a shovel to bury something that big.")) return;
 
-            var move = obj.GetWeight()*50*(shovel != null ? 1 : 5)/
+            var move = obj.GetWeight() * 50 * (shovel != null ? 1 : 5) /
                        1.GetHighestOfTwoNumbers(ch.CanCarryMaxWeight());
             move = 2.GetNumberThatIsBetween(move, 1000);
             if (CheckFunctions.CheckIfTrue(ch, move > ch.CurrentMovement,
@@ -58,7 +58,7 @@ namespace SmaugCS.Commands.Objects
             comm.act(ATTypes.AT_ACTION, "You solemnly bury $p...", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n solemnly buries $p...", ch, obj, null, ToTypes.Room);
             obj.ExtraFlags.SetBit(ItemExtraFlags.Buried);
-            Macros.WAIT_STATE(ch, 10.GetNumberThatIsBetween(move/2, 100));
+            Macros.WAIT_STATE(ch, 10.GetNumberThatIsBetween(move / 2, 100));
         }
     }
 }

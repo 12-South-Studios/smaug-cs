@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Realm.Library.Common.Attributes;
+using Realm.Library.Common.Exceptions;
+using Realm.Library.Common.Objects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Realm.Library.Common.Attributes;
-using Realm.Library.Common.Exceptions;
-using Realm.Library.Common.Objects;
-using Realm.Library.Common.Properties;
 
 namespace Realm.Library.Common.Extensions
 {
@@ -37,7 +36,7 @@ namespace Realm.Library.Common.Extensions
             Validation.IsNotNull(value, "value");
 
             var field = value.GetType().GetField(value.ToString());
-            var attribute = Attribute.GetCustomAttribute(field, typeof (RangeAttribute)) as RangeAttribute;
+            var attribute = Attribute.GetCustomAttribute(field, typeof(RangeAttribute)) as RangeAttribute;
             return attribute?.Minimum ?? int.MinValue;
         }
 
@@ -66,7 +65,7 @@ namespace Realm.Library.Common.Extensions
             var field = value.GetType().GetField(value.ToString());
             var enumAttrib = Attribute.GetCustomAttribute(field, typeof(EnumAttribute)) as EnumAttribute;
             if (enumAttrib != null) return enumAttrib.Value;
-            var valueAttrib = Attribute.GetCustomAttribute(field, typeof (ValueAttribute)) as ValueAttribute;
+            var valueAttrib = Attribute.GetCustomAttribute(field, typeof(ValueAttribute)) as ValueAttribute;
             return valueAttrib?.Value ?? 0;
         }
 
@@ -120,7 +119,7 @@ namespace Realm.Library.Common.Extensions
         {
             if (Enum.IsDefined(typeof(T), value))
                 return (T)Enum.ToObject(typeof(T), value);
-            throw new ArgumentException(string.Format(Resources.ERR_NO_VALUE, typeof(T), value));
+            throw new ArgumentException(string.Format("{0} does not contain a value member = {1}", typeof(T), value));
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace Realm.Library.Common.Extensions
         {
             if (Enum.IsDefined(typeof(T), name))
                 return (T)Enum.Parse(typeof(T), name);
-            throw new ArgumentException(string.Format(Resources.ERR_NO_VALUE, typeof(T), name));
+            throw new ArgumentException(string.Format("{0} does not contain a value member = {1}", typeof(T), name));
         }
 
         /// <summary>
@@ -171,7 +170,7 @@ namespace Realm.Library.Common.Extensions
             foreach (T value in GetValues<T>().Where(value => value.ToString().EqualsIgnoreCase(name)))
                 return value;
 
-            throw new InvalidEnumArgumentException($"{name} not found in Enum Type {typeof (T)}");
+            throw new InvalidEnumArgumentException($"{name} not found in Enum Type {typeof(T)}");
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
-﻿using System.IO;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Realm.Library.Common;
+using System.IO;
 
 namespace SmaugCS.Common.Tests
 {

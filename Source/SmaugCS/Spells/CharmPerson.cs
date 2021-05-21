@@ -21,8 +21,8 @@ namespace SmaugCS.Spells
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You like yourself even better!"))
                 return ReturnTypes.SpellFailed;
 
-            if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic) 
-                || victim.IsImmune(ResistanceTypes.Charm), skill, ch, CastingFunctionType.Immune, victim)) 
+            if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic)
+                || victim.IsImmune(ResistanceTypes.Charm), skill, ch, CastingFunctionType.Immune, victim))
                 return ReturnTypes.SpellFailed;
 
             if (!victim.IsNpc() && !ch.IsNpc())
@@ -56,14 +56,14 @@ namespace SmaugCS.Spells
                 Duration = GetDuration(level)
             };
             victim.AddAffect(af);
-            
+
             ch.SuccessfulCast(skill, victim);
 
             if (!ch.IsNpc())
                 ((PlayerInstance)ch).PlayerData.NumberOfCharmies++;
             if (!victim.IsNpc()) return ReturnTypes.None;
 
-            var mob = (MobileInstance) victim;
+            var mob = (MobileInstance)victim;
             mob.StartHating(ch);
             mob.StartHunting(ch);
 
@@ -72,7 +72,7 @@ namespace SmaugCS.Spells
 
         private static int GetDuration(int level)
         {
-            return (SmaugRandom.Fuzzy((level + 1)/5) + 1)*
+            return (SmaugRandom.Fuzzy((level + 1) / 5) + 1) *
                    GameConstants.GetConstant<int>("AffectDurationConversionValue");
         }
     }

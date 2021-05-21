@@ -158,149 +158,149 @@ namespace SmaugCS.MudProgs
             // TODO
         }*/
 
-       /* public static void init_supermob()
-        {
-            db.Supermob = RepositoryManager.Instance.CHARACTERS.Create(RepositoryManager.Instance.MOBILE_INDEXES.Get(3));
-            RoomTemplate office = RepositoryManager.Instance.ROOMS.Get(3);
-            office.AddTo(db.Supermob);
-        }
+        /* public static void init_supermob()
+         {
+             db.Supermob = RepositoryManager.Instance.CHARACTERS.Create(RepositoryManager.Instance.MOBILE_INDEXES.Get(3));
+             RoomTemplate office = RepositoryManager.Instance.ROOMS.Get(3);
+             office.AddTo(db.Supermob);
+         }
 
-        public static string mprog_next_command(string clist)
-        {
-            // TODO
-            return string.Empty;
-        }
+         public static string mprog_next_command(string clist)
+         {
+             // TODO
+             return string.Empty;
+         }
 
-        /// <summary>
-        /// These two functions do the basic evaluation of ifcheck operators. 
-        /// It is important to note that the string operations are not what you probably expect.  
-        /// Equality is exact and division is substring. remember that lhs has been stripped 
-        /// of leading space, but can still have trailing spaces so be careful when editing since: 
-        /// "guard" and "guard " are not equal.
-        /// </summary>
-        /// <param name="lhs"></param>
-        /// <param name="opr"></param>
-        /// <param name="rhs"></param>
-        /// <param name="mob"></param>
-        /// <returns></returns>
-        public static bool mprog_seval(string lhs, string opr, string rhs, CharacterInstance mob)
-        {
-            if (opr.Equals("=="))
-                return lhs.Equals(rhs);
-            if (opr.Equals("!="))
-                return !lhs.Equals(rhs);
-            if (opr.Equals("/"))
-                return !lhs.Contains(rhs);
-            if (opr.Equals("!/"))
-                return lhs.Contains(rhs);
+         /// <summary>
+         /// These two functions do the basic evaluation of ifcheck operators. 
+         /// It is important to note that the string operations are not what you probably expect.  
+         /// Equality is exact and division is substring. remember that lhs has been stripped 
+         /// of leading space, but can still have trailing spaces so be careful when editing since: 
+         /// "guard" and "guard " are not equal.
+         /// </summary>
+         /// <param name="lhs"></param>
+         /// <param name="opr"></param>
+         /// <param name="rhs"></param>
+         /// <param name="mob"></param>
+         /// <returns></returns>
+         public static bool mprog_seval(string lhs, string opr, string rhs, CharacterInstance mob)
+         {
+             if (opr.Equals("=="))
+                 return lhs.Equals(rhs);
+             if (opr.Equals("!="))
+                 return !lhs.Equals(rhs);
+             if (opr.Equals("/"))
+                 return !lhs.Contains(rhs);
+             if (opr.Equals("!/"))
+                 return lhs.Contains(rhs);
 
-            progbug(string.Format("Improper MOBprog operator '{0}'", opr), mob);
-            return false;
-        }
+             progbug(string.Format("Improper MOBprog operator '{0}'", opr), mob);
+             return false;
+         }
 
-        /// <summary>
-        /// These two functions do the basic evaluation of ifcheck operators. 
-        /// It is important to note that the string operations are not what you probably expect.  
-        /// Equality is exact and division is substring. remember that lhs has been stripped 
-        /// of leading space, but can still have trailing spaces so be careful when editing since: 
-        /// "guard" and "guard " are not equal.
-        /// </summary>
-        /// <param name="lhs"></param>
-        /// <param name="opr"></param>
-        /// <param name="rhs"></param>
-        /// <param name="mob"></param>
-        /// <returns></returns>
-        public static bool mprog_veval(int lhs, string opr, int rhs, CharacterInstance mob)
-        {
-            if (opr.Equals("=="))
-                return lhs == rhs;
-            if (opr.Equals("!="))
-                return lhs != rhs;
-            if (opr.Equals(">"))
-                return lhs > rhs;
-            if (opr.Equals("<"))
-                return lhs < rhs;
-            if (opr.Equals("<="))
-                return lhs <= rhs;
-            if (opr.Equals(">="))
-                return lhs >= rhs;
-            if (opr.Equals("&"))
-                return (lhs & rhs) > 0;
-            if (opr.Equals("|"))
-                return (lhs | rhs) > 0;
+         /// <summary>
+         /// These two functions do the basic evaluation of ifcheck operators. 
+         /// It is important to note that the string operations are not what you probably expect.  
+         /// Equality is exact and division is substring. remember that lhs has been stripped 
+         /// of leading space, but can still have trailing spaces so be careful when editing since: 
+         /// "guard" and "guard " are not equal.
+         /// </summary>
+         /// <param name="lhs"></param>
+         /// <param name="opr"></param>
+         /// <param name="rhs"></param>
+         /// <param name="mob"></param>
+         /// <returns></returns>
+         public static bool mprog_veval(int lhs, string opr, int rhs, CharacterInstance mob)
+         {
+             if (opr.Equals("=="))
+                 return lhs == rhs;
+             if (opr.Equals("!="))
+                 return lhs != rhs;
+             if (opr.Equals(">"))
+                 return lhs > rhs;
+             if (opr.Equals("<"))
+                 return lhs < rhs;
+             if (opr.Equals("<="))
+                 return lhs <= rhs;
+             if (opr.Equals(">="))
+                 return lhs >= rhs;
+             if (opr.Equals("&"))
+                 return (lhs & rhs) > 0;
+             if (opr.Equals("|"))
+                 return (lhs | rhs) > 0;
 
-            progbug(string.Format("Improper MOBprog operator '{0}'", opr), mob);
-            return false;
-        }
+             progbug(string.Format("Improper MOBprog operator '{0}'", opr), mob);
+             return false;
+         }
 
-        /// <summary>
-        ///This function performs the evaluation of the if checks.  It is here that you can add any 
-        /// ifchecks which you so desire. Hopefully it is clear from what follows how one would 
-        /// go about adding your own. The syntax for an if check is: ifcheck ( arg ) [opr val]
-        /// where the parenthesis are required and the opr and val fields are optional but if one 
-        /// is there then both must be. The spaces are all optional. The evaluation of the opr 
-        /// expressions is farmed out to reduce the redundancy of the mammoth if statement list.
-        ///  If there are errors, then return BERR otherwise return boolean 1,0 Redone by Altrag.. 
-        /// kill all that big copy-code that performs the same action on each variable..
-        /// </summary>
-        /// <param name="ifcheck"></param>
-        /// <param name="mob"></param>
-        /// <param name="actor"></param>
-        /// <param name="object"></param>
-        /// <param name="vo"></param>
-        /// <param name="rndm"></param>
-        /// <returns></returns>
-        public static int mprog_do_ifcheck(string ifcheck, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
-                                           CharacterInstance rndm)
-        {
-            if (ifcheck.IsNullOrEmpty())
-            {
-                progbug("Null ifcheck", mob);
-                return Program.BERR;
-            }
+         /// <summary>
+         ///This function performs the evaluation of the if checks.  It is here that you can add any 
+         /// ifchecks which you so desire. Hopefully it is clear from what follows how one would 
+         /// go about adding your own. The syntax for an if check is: ifcheck ( arg ) [opr val]
+         /// where the parenthesis are required and the opr and val fields are optional but if one 
+         /// is there then both must be. The spaces are all optional. The evaluation of the opr 
+         /// expressions is farmed out to reduce the redundancy of the mammoth if statement list.
+         ///  If there are errors, then return BERR otherwise return boolean 1,0 Redone by Altrag.. 
+         /// kill all that big copy-code that performs the same action on each variable..
+         /// </summary>
+         /// <param name="ifcheck"></param>
+         /// <param name="mob"></param>
+         /// <param name="actor"></param>
+         /// <param name="object"></param>
+         /// <param name="vo"></param>
+         /// <param name="rndm"></param>
+         /// <returns></returns>
+         public static int mprog_do_ifcheck(string ifcheck, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
+                                            CharacterInstance rndm)
+         {
+             if (ifcheck.IsNullOrEmpty())
+             {
+                 progbug("Null ifcheck", mob);
+                 return Program.BERR;
+             }
 
-            string buffer = ifcheck;
-            string opr = string.Empty;
+             string buffer = ifcheck;
+             string opr = string.Empty;
 
-            return 0;
-        }
+             return 0;
+         }
 
-        public static void mprog_translate(char ch, string t, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
-                                           CharacterInstance rndm)
-        {
-            // TODO
-        }
+         public static void mprog_translate(char ch, string t, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
+                                            CharacterInstance rndm)
+         {
+             // TODO
+         }
 
-        public static void mprog_driver(string com_list, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
-                                        bool single_step)
-        {
-            // TODO
-        }
+         public static void mprog_driver(string com_list, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
+                                         bool single_step)
+         {
+             // TODO
+         }
 
-        public static int mprog_do_command(string cmnd, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
-                                           CharacterInstance rndm, bool ignore, bool ignore_ors)
-        {
-            // TODO
-            return 0;
-        }*/
+         public static int mprog_do_command(string cmnd, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
+                                            CharacterInstance rndm, bool ignore, bool ignore_ors)
+         {
+             // TODO
+             return 0;
+         }*/
 
         public static void mpsleep_update()
         {
             // TODO
         }
 
-       /* public static bool mprog_keyword_check(string argu, string arg1)
-        {
-            // TODO
-            return false;
-        }
+        /* public static bool mprog_keyword_check(string argu, string arg1)
+         {
+             // TODO
+             return false;
+         }
 
-        public static bool mprog_wordlist_check(string arg, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
-                                                int type)
-        {
-            // TODO
-            return false;
-        }*/
+         public static bool mprog_wordlist_check(string arg, CharacterInstance mob, CharacterInstance actor, ObjectInstance obj, object vo,
+                                                 int type)
+         {
+             // TODO
+             return false;
+         }*/
 
 
 

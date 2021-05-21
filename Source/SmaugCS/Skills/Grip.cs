@@ -25,11 +25,11 @@ namespace SmaugCS.Skills
 
             int chance;
             if (victim.IsNpc())
-                chance = 60.GetLowestOfTwoNumbers(2*victim.Level);
+                chance = 60.GetLowestOfTwoNumbers(2 * victim.Level);
             else
-                chance =(int) Macros.LEARNED(victim, (int) skill.ID)/2;
+                chance = (int)Macros.LEARNED(victim, (int)skill.ID) / 2;
 
-            chance += 2*(victim.GetCurrentLuck()-13);
+            chance += 2 * (victim.GetCurrentLuck() - 13);
 
             if (SmaugRandom.D100() >= chance + victim.Level - ch.Level)
             {

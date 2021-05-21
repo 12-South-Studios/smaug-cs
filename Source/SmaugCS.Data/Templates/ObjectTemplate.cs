@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
-using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Constants.Enums;
-using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Data.Templates
 {
@@ -47,11 +46,11 @@ namespace SmaugCS.Data.Templates
 
         public void SetType(string type) => Type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<ItemTypes>(type);
 
-        [SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray", 
+        [SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray",
             Justification = "This function is required by LUA and cannot handle lists or parameter arrays")]
         public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
         {
-            var valuesToSet = new List<int> {v1, v2, v3, v4, v5, v6};
+            var valuesToSet = new List<int> { v1, v2, v3, v4, v5, v6 };
             ObjectTemplateValueFunctions.SetObjectTemplateValues(this, valuesToSet);
         }
 
@@ -96,7 +95,7 @@ namespace SmaugCS.Data.Templates
 
                 foundEd = new ExtraDescriptionData
                 {
-                    Keyword = word, 
+                    Keyword = word,
                     Description = description
                 };
                 ExtraDescriptions.Add(foundEd);

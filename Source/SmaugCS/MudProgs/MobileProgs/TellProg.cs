@@ -6,7 +6,7 @@ namespace SmaugCS.MudProgs.MobileProgs
     {
         public static void Execute(string txt, CharacterInstance actor)
         {
-            
+
         }
     }
 }

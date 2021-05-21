@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Auction;
 using SmaugCS.Common;
 using SmaugCS.Constants;
@@ -14,6 +11,9 @@ using SmaugCS.Extensions.Objects;
 using SmaugCS.Helpers;
 using SmaugCS.Managers;
 using SmaugCS.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Commands.Objects
 {
@@ -22,7 +22,7 @@ namespace SmaugCS.Commands.Objects
         public static void do_auction(CharacterInstance ch, string argument, IAuctionManager auctionManager = null)
         {
             if (ch.IsNpc()) return;
-            
+
             ch.SetColor(ATTypes.AT_LBLUE);
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < GameConstants.GetSystemValue<int>("MinimumAuctionLevel"),
                 "You need to gain more experience to use the auction...")) return;
@@ -160,7 +160,7 @@ namespace SmaugCS.Commands.Objects
             var auction = (auctionManager ?? AuctionManager.Instance).Auction;
             if (auction.BidAmount > 0)
                 ch.Printf("Current bid on this item is %s coin.", auction.BidAmount);
-            else 
+            else
                 ch.SendTo("No bids on this item have been received.");
 
             ch.SetColor(ATTypes.AT_LBLUE);
@@ -184,7 +184,7 @@ namespace SmaugCS.Commands.Objects
 
             if ((auction.ItemForSale.ItemType == ItemTypes.Container
                 || auction.ItemForSale.ItemType == ItemTypes.KeyRing
-                || auction.ItemForSale.ItemType == ItemTypes.Quiver) 
+                || auction.ItemForSale.ItemType == ItemTypes.Quiver)
                 && auction.ItemForSale.Contents.Any())
             {
                 ch.SetColor(ATTypes.AT_OBJECT);
@@ -218,7 +218,7 @@ namespace SmaugCS.Commands.Objects
 
         private static void DisplayContainerDetails(CharacterInstance ch, ObjectInstance obj)
         {
-            ch.Printf("%s appears to %s.", obj.ShortDescription.CapitalizeFirst(), 
+            ch.Printf("%s appears to %s.", obj.ShortDescription.CapitalizeFirst(),
                 GetObjectValueText(obj.Value.ToList()[0]));
         }
 
@@ -287,7 +287,7 @@ namespace SmaugCS.Commands.Objects
         private static void DisplayWeaponDetails(CharacterInstance ch, ObjectInstance obj)
         {
             ch.Printf("Damage is %d to %d (Average %d).%s",
-                obj.Value.ToList()[1], obj.Value.ToList()[2], (obj.Value.ToList()[1] + obj.Value.ToList()[2])/2,
+                obj.Value.ToList()[1], obj.Value.ToList()[2], (obj.Value.ToList()[1] + obj.Value.ToList()[2]) / 2,
                 obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned) ? "This weapon is poisoned." : string.Empty);
         }
 

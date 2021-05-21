@@ -1,10 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Extensions.Character;
 using SmaugCS.Helpers;
 using SmaugCS.Repository;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SmaugCS.Spells
 {
@@ -25,7 +25,7 @@ namespace SmaugCS.Spells
                 ch != victim
                     ? "You work your cure, but it has no apparent effect."
                     : "You don't seem to be blind.")) return ReturnTypes.SpellFailed;
-            
+
             victim.StripAffects((int)AffectedByTypes.Blind);
             victim.SetColor(ATTypes.AT_MAGIC);
             victim.SendTo("Your vision returns!");

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Realm.Library.Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Realm.Library.Common.Extensions;
 
 namespace SmaugCS.Common
 {
@@ -12,7 +12,7 @@ namespace SmaugCS.Common
 
         public static string ToPercent(this int value, int total) => ((double)value).ToPercent(total);
 
-        public static string ToPercent(this double value, double total) => $"{value/total:0.00%}";
+        public static string ToPercent(this double value, double total) => $"{value / total:0.00%}";
 
         public static string GetFlagString(this int value, IEnumerable<string> flags)
         {
@@ -37,7 +37,7 @@ namespace SmaugCS.Common
 
         public static bool IsSet(this int value, Enum bit)
         {
-            if (!bit.GetType().GetCustomAttributes(typeof (FlagsAttribute), true).Any()) return false;
+            if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return false;
             int bitValue = bit.GetValue();
             return (value & (bitValue == 0 ? Convert.ToInt32(bit) : bitValue)) > 0;
         }
@@ -55,7 +55,7 @@ namespace SmaugCS.Common
         #region SetBit
         public static int SetBit(this int value, int bit)
         {
-            value = value | bit;
+            value |= bit;
             return value;
         }
 
@@ -63,7 +63,7 @@ namespace SmaugCS.Common
         {
             if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
             int bitValue = bit.GetValue();
-            value = value | (bitValue == 0 ? Convert.ToInt32(bit) : bitValue);
+            value |= (bitValue == 0 ? Convert.ToInt32(bit) : bitValue);
             return value;
         }
 
@@ -71,13 +71,13 @@ namespace SmaugCS.Common
         {
             if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
             int bitValue = bit.GetValue();
-            value = value | (bitValue == 0 ? Convert.ToInt64(bit) : bitValue);
+            value |= (bitValue == 0 ? Convert.ToInt64(bit) : bitValue);
             return value;
         }
 
         public static long SetBit(this long value, long bit)
         {
-            value = value | bit;
+            value |= bit;
             return value;
         }
         #endregion
@@ -89,7 +89,7 @@ namespace SmaugCS.Common
         {
             if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
             int bitValue = bit.GetValue();
-            return value &= ~(bitValue == 0 ? Convert.ToInt32(bit) : bitValue); 
+            return value &= ~(bitValue == 0 ? Convert.ToInt32(bit) : bitValue);
         }
 
         public static long RemoveBit(this long value, long bit) => value &= ~bit;
@@ -109,7 +109,7 @@ namespace SmaugCS.Common
         {
             if (!bit.GetType().GetCustomAttributes(typeof(FlagsAttribute), true).Any()) return 0;
             int bitValue = bit.GetValue();
-            return value ^= bitValue == 0 ? Convert.ToInt32(bit) : bitValue;  
+            return value ^= bitValue == 0 ? Convert.ToInt32(bit) : bitValue;
         }
         #endregion
 

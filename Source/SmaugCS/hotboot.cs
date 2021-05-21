@@ -1,5 +1,5 @@
-﻿using System.IO;
-using SmaugCS.Data.Instances;
+﻿using SmaugCS.Data.Instances;
+using System.IO;
 
 namespace SmaugCS
 {

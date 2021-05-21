@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Realm.Library.Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Realm.Library.Common.Extensions;
 
 namespace Realm.Library.Common
 {
