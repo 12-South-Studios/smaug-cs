@@ -35,7 +35,7 @@ namespace SmaugCS.Skills
             comm.act(ATTypes.AT_SKILL, "You trip $N's mount and $N falls off!", ch, null, victim, ToTypes.Character);
             comm.act(ATTypes.AT_SKILL, "$n trips $N's mount and $N falls off!", ch, null, victim, ToTypes.Room);
 
-            victim.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
+            victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
             victim.CurrentMount = null;
 
             Macros.WAIT_STATE(ch, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));

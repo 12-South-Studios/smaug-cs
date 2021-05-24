@@ -106,7 +106,7 @@ namespace SmaugCS.Extensions.Character
                     else
                     {
                         buffer += Macros.PERS(victim, ch);
-                        if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
+                        if (!victim.IsNpc() && !ch.Act.IsSet((int)PlayerFlags.Brief))
                             buffer += ((PlayerInstance)victim).PlayerData.Title;
                         buffer += ".\r\n";
                     }
@@ -123,7 +123,7 @@ namespace SmaugCS.Extensions.Character
             else
                 buffer += Macros.PERS(victim, ch);
 
-            if (!victim.IsNpc() && !ch.Act.IsSet(PlayerFlags.Brief))
+            if (!victim.IsNpc() && !ch.Act.IsSet((int)PlayerFlags.Brief))
                 buffer += ((PlayerInstance)victim).PlayerData.Title;
 
             var timer = ch.GetTimer(TimerTypes.DoFunction);

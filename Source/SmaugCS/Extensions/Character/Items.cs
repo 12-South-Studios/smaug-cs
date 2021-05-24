@@ -29,7 +29,7 @@ namespace SmaugCS.Extensions.Character
             if (!replace)
                 return false;
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.NoRemove))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.NoRemove))
             {
                 comm.act(ATTypes.AT_PLAIN, "You can't remove $p.", ch, obj, null, ToTypes.Character);
                 return false;
@@ -70,7 +70,7 @@ namespace SmaugCS.Extensions.Character
                 return;
             }
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Personal) && ch.Name.EqualsIgnoreCase(obj.Owner))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Personal) && ch.Name.EqualsIgnoreCase(obj.Owner))
             {
                 ch.SendTo("That item is personalized and belongs to someone else.");
                 if (obj.CarriedBy != null)

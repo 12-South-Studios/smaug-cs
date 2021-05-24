@@ -25,7 +25,7 @@ namespace SmaugCS.Commands.Objects
             obj.Split();
             if (!obj.WearFlags.IsSet(ItemWearFlags.Take))
             {
-                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse) || ch.IsNpc() ||
+                if (!obj.ExtraFlags.IsSet((int)ItemExtraFlags.ClanCorpse) || ch.IsNpc() ||
                     !((PlayerInstance)ch).PlayerData.Flags.IsSet(PCFlags.Deadly))
                 {
                     comm.act(ATTypes.AT_PLAIN, "You cannot bury $p.", ch, obj, null, ToTypes.Character);
@@ -57,7 +57,7 @@ namespace SmaugCS.Commands.Objects
 
             comm.act(ATTypes.AT_ACTION, "You solemnly bury $p...", ch, obj, null, ToTypes.Character);
             comm.act(ATTypes.AT_ACTION, "$n solemnly buries $p...", ch, obj, null, ToTypes.Room);
-            obj.ExtraFlags.SetBit(ItemExtraFlags.Buried);
+            obj.ExtraFlags.SetBit((int)ItemExtraFlags.Buried);
             Macros.WAIT_STATE(ch, 10.GetNumberThatIsBetween(move / 2, 100));
         }
     }

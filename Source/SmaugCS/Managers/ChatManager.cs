@@ -129,7 +129,7 @@ namespace SmaugCS.Managers
                 ch.SendTo("You can't do that here.");
                 return;
             }
-            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Silence))
+            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Silence))
             {
                 ch.Printf("You can't %s.\r\n", verb);
                 return;

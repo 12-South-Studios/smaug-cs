@@ -106,7 +106,7 @@ namespace SmaugCS.Commands.Admin
                 if (victimPc.PlayerData.Bestowments.Any())
                     victimPc.PlayerData.Bestowments.Clear();
 
-                NumberExtensions.RemoveBit(victim.Act, PlayerFlags.HolyLight);
+                victim.Act.RemoveBit((int)PlayerFlags.HolyLight);
                 if (!((PlayerInstance)victim).IsRetired())
                 {
                     // todo remove immortal data
@@ -158,7 +158,7 @@ namespace SmaugCS.Commands.Admin
             playerVictim.PlayerData.WizardInvisible = playerVictim.Trust;
             if (playerVictim.Level > LevelConstants.AvatarLevel) return;
 
-            NumberExtensions.RemoveBit(playerVictim.Act, PlayerFlags.WizardInvisibility);
+            playerVictim.Act.RemoveBit((int)PlayerFlags.WizardInvisibility);
             playerVictim.PlayerData.WizardInvisible = 0;
         }
     }

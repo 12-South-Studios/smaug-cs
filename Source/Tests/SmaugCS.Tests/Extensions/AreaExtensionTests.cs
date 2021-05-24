@@ -35,7 +35,7 @@ namespace SmaugCS.Tests.Extensions
         {
             _ch.Trust = trust;
             _ch.Level = level;
-            _ch.Act = _ch.Act.SetBit(flags);
+            _ch.Act.SetBit((int)flags);
 
             Assert.That(_area.IsInSoftRange(_ch), Is.EqualTo(expectedValue));
         }
@@ -43,11 +43,11 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(35, 35, ActFlags.IsNpc, true)]
         [TestCase(27, 27, ActFlags.NoWander, true)]
         [TestCase(1, 1, ActFlags.NoWander, false)]
-        public void Area_InHardRange_Test(int trust, int level, ActFlags flags, bool expectedValue)
+        public void Area_InHardRange_Test(int trust, int level, ActFlags flag, bool expectedValue)
         {
             _ch.Trust = trust;
             _ch.Level = level;
-            _ch.Act = _ch.Act.SetBit(flags);
+            _ch.Act.SetBit((int)flag);
 
             Assert.That(_area.IsInHardRange(_ch), Is.EqualTo(expectedValue));
         }

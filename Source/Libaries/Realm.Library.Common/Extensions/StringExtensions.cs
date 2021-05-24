@@ -568,11 +568,9 @@ namespace Realm.Library.Common.Extensions
         {
             Validation.IsNotNullOrEmpty(value, "value");
 
-            if (value.Equals(toCompare, StringComparison.OrdinalIgnoreCase))
-                return CaseCompareResult.Equal;
-            return value.ToLower().GetHashCode() < toCompare.ToLower().GetHashCode()
-                ? CaseCompareResult.LessThan
-                : CaseCompareResult.GreaterThan;
+            var result = string.Compare(value.ToLower(), toCompare.ToLower());
+            if (result == 0) return CaseCompareResult.Equal;
+            return result < 0 ? CaseCompareResult.LessThan : CaseCompareResult.GreaterThan;
         }
     }
 }

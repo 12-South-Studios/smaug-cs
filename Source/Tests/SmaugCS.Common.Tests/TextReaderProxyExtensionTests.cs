@@ -18,7 +18,7 @@ namespace SmaugCS.Common.Tests
             ExtendedBitvector result = proxy.ReadBitvector();
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.IsSet((ulong)valueToCheck), Is.EqualTo(expectedValue));
+            Assert.That(result.IsSet((int)valueToCheck), Is.EqualTo(expectedValue));
         }
 
         [TestCase("2 & 4 & 8~", 2, true)]
@@ -32,7 +32,7 @@ namespace SmaugCS.Common.Tests
             ExtendedBitvector result = proxy.ReadBitvector();
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.IsSet((ulong)valueToCheck), Is.EqualTo(expectedValue));
+            Assert.That(result.IsSet((int)valueToCheck), Is.EqualTo(expectedValue));
         }
     }
 }

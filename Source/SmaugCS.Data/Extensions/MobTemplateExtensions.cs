@@ -37,24 +37,24 @@ namespace SmaugCS.Data.Extensions
                 .Select(EnumerationExtensions.GetEnumIgnoreCase<ResistanceTypes>)
                 .Aggregate(0, (current, resType) => current.SetBit(resType));
 
-        public static int GetActFlags(this MobileTemplate template)
+        public static ExtendedBitvector GetActFlags(this MobileTemplate template)
         {
-            var bv = 0;
+            var bv = new ExtendedBitvector();
             var words = template.GetStatistic<string>(StatisticTypes.ActFlags).Split(' ');
             foreach (var word in words)
             {
-                bv.SetBit(EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
+                bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<ActFlags>(word));
             }
             return bv;
         }
 
-        public static int GetAffected(this MobileTemplate template)
+        public static ExtendedBitvector GetAffected(this MobileTemplate template)
         {
-            var bv = 0;
+            var bv = new ExtendedBitvector();
             var words = template.GetStatistic<string>(StatisticTypes.AffectedByFlags).Split(' ');
             foreach (var word in words)
             {
-                bv.SetBit(EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
+                bv.SetBit((int)EnumerationExtensions.GetEnumIgnoreCase<AffectedByTypes>(word));
             }
             return bv;
         }
@@ -70,9 +70,9 @@ namespace SmaugCS.Data.Extensions
             return bv;
         }
 
-        public static int GetDefenses(this MobileTemplate template)
+        public static ExtendedBitvector GetDefenses(this MobileTemplate template)
         {
-            var flags = 0;
+            var flags = new ExtendedBitvector();
             var words = template.Defenses.Split(' ');
 
             foreach (var word in words)

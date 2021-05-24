@@ -10,6 +10,8 @@ using SmaugCS.Repository;
 using System;
 using System.IO;
 using System.Linq;
+using Realm.Library.Common.Extensions;
+using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Extensions.Character
 {
@@ -24,7 +26,7 @@ namespace SmaugCS.Extensions.Character
                 mod = ModifyAndAddAffect(ch, affect, mod);
             else
             {
-                ch.AffectedBy.RemoveBit(affect.Type);
+                ch.AffectedBy.RemoveBit((int)affect.Type);
 
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
@@ -33,7 +35,7 @@ namespace SmaugCS.Extensions.Character
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         throw new InvalidDataException($"RecurringSpell with bad SN {mod}");
-                    ch.AffectedBy.RemoveBit(AffectedByTypes.RecurringSpell);
+                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.RecurringSpell);
                     return;
                 }
 
@@ -59,30 +61,31 @@ namespace SmaugCS.Extensions.Character
                 mod = 0 - mod;
             }
 
-            switch ((int)affect.Location % Program.REVERSE_APPLY)
+            var applyType = Common.EnumerationExtensions.GetEnum<ApplyTypes>((int)affect.Location % Program.REVERSE_APPLY);
+            switch (applyType)
             {
-                case (int)ApplyTypes.Strength:
+                case ApplyTypes.Strength:
                     ch.ModStrength += mod;
                     break;
-                case (int)ApplyTypes.Dexterity:
+                case ApplyTypes.Dexterity:
                     ch.ModDexterity += mod;
                     break;
-                case (int)ApplyTypes.Intelligence:
+                case ApplyTypes.Intelligence:
                     ch.ModIntelligence += mod;
                     break;
-                case (int)ApplyTypes.Wisdom:
+                case ApplyTypes.Wisdom:
                     ch.ModWisdom += mod;
                     break;
-                case (int)ApplyTypes.Constitution:
+                case ApplyTypes.Constitution:
                     ch.ModConstitution += mod;
                     break;
-                case (int)ApplyTypes.Charisma:
+                case ApplyTypes.Charisma:
                     ch.ModCharisma += mod;
                     break;
-                case (int)ApplyTypes.Luck:
+                case ApplyTypes.Luck:
                     ch.ModLuck += mod;
                     break;
-                case (int)ApplyTypes.Gender:
+                case ApplyTypes.Gender:
                     //ch.Gender = (ch.Gender + mod) % 3;
                     // TODO Fix this
                     //if (ch.Gender < 0)
@@ -90,107 +93,93 @@ namespace SmaugCS.Extensions.Character
                     //ch.Gender = Check.Range(0, ch.Gender, 2);
                     break;
 
-                case (int)ApplyTypes.Height:
+                case ApplyTypes.Height:
                     ch.Height += mod;
                     break;
-                case (int)ApplyTypes.Weight:
+                case ApplyTypes.Weight:
                     ch.Weight += mod;
                     break;
-                case (int)ApplyTypes.Mana:
+                case ApplyTypes.Mana:
                     ch.MaximumMana += mod;
                     break;
-                case (int)ApplyTypes.Hit:
+                case ApplyTypes.Hit:
                     ch.MaximumHealth += mod;
                     break;
-                case (int)ApplyTypes.Movement:
+                case ApplyTypes.Movement:
                     ch.MaximumMovement += mod;
                     break;
-                case (int)ApplyTypes.ArmorClass:
+                case ApplyTypes.ArmorClass:
                     ch.ArmorClass += mod;
                     break;
-                case (int)ApplyTypes.HitRoll:
+                case ApplyTypes.HitRoll:
                     ch.HitRoll.SizeOf += mod;
                     break;
-                case (int)ApplyTypes.DamageRoll:
+                case ApplyTypes.DamageRoll:
                     ch.DamageRoll.SizeOf += mod;
                     break;
 
-                case (int)ApplyTypes.SaveVsPoison:
+                case ApplyTypes.SaveVsPoison:
                     ch.SavingThrows.SaveVsPoisonDeath += mod;
                     break;
-                case (int)ApplyTypes.SaveVsRod:
+                case ApplyTypes.SaveVsRod:
                     ch.SavingThrows.SaveVsWandRod += mod;
                     break;
-                case (int)ApplyTypes.SaveVsParalysis:
+                case ApplyTypes.SaveVsParalysis:
                     ch.SavingThrows.SaveVsParalysisPetrify += mod;
                     break;
-                case (int)ApplyTypes.SaveVsBreath:
+                case ApplyTypes.SaveVsBreath:
                     ch.SavingThrows.SaveVsBreath += mod;
                     break;
-                case (int)ApplyTypes.SaveVsSpell:
+                case ApplyTypes.SaveVsSpell:
                     ch.SavingThrows.SaveVsSpellStaff += mod;
                     break;
 
-                case (int)ApplyTypes.Affect:
-                    //ch.AffectedBy.Bits[0].SetBit(mod);
+                case ApplyTypes.Affect:
+                    ch.AffectedBy.Bits[0].SetBit(mod);
                     break;
-                case (int)ApplyTypes.ExtendedAffect:
+                case ApplyTypes.ExtendedAffect:
                     ch.AffectedBy.SetBit(mod);
                     break;
-                case (int)ApplyTypes.Resistance:
+                case ApplyTypes.Resistance:
                     ch.Resistance.SetBit(mod);
                     break;
-                case (int)ApplyTypes.Immunity:
+                case ApplyTypes.Immunity:
                     ch.Immunity.SetBit(mod);
                     break;
-                case (int)ApplyTypes.Susceptibility:
+                case ApplyTypes.Susceptibility:
                     ch.Susceptibility.SetBit(mod);
                     break;
-                case (int)ApplyTypes.Remove:
-                    //ch.AffectedBy.Bits[0].RemoveBit(mod);
+                case ApplyTypes.Remove:
+                    ch.AffectedBy.Bits[0].RemoveBit(mod);
                     break;
 
-                case (int)ApplyTypes.Full:
-                    if (!ch.IsNpc())
-                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Full] =
-                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Full] + mod).GetNumberThatIsBetween(0, 48);
-                    break;
-                case (int)ApplyTypes.Thirst:
-                    if (!ch.IsNpc())
-                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] =
-                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Thirsty] + mod).GetNumberThatIsBetween(0, 48);
-                    break;
-                case (int)ApplyTypes.Drunk:
-                    if (!ch.IsNpc())
-                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk] =
-                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk] + mod).GetNumberThatIsBetween(0, 48);
-                    break;
-                case (int)ApplyTypes.Blood:
-                    if (!ch.IsNpc())
-                        ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] =
-                            (((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] + mod).GetNumberThatIsBetween(0, ch.Level + 10);
+                case ApplyTypes.Full:
+                case ApplyTypes.Thirst:
+                case ApplyTypes.Drunk:
+                case ApplyTypes.Blood:
+                    HandlePlayerCondition(ch, applyType, mod);
                     break;
 
-                case (int)ApplyTypes.MentalState:
+                case ApplyTypes.MentalState:
                     ch.MentalState = (ch.MentalState + mod).GetNumberThatIsBetween(-100, 100);
                     break;
-                case (int)ApplyTypes.Emotion:
+                case ApplyTypes.Emotion:
                     ch.EmotionalState = ch.EmotionalState.GetNumberThatIsBetween(-100, 100);
                     break;
 
-                case (int)ApplyTypes.StripSN:
+                case ApplyTypes.StripSN:
                     if (Macros.IS_VALID_SN(mod))
                         ch.StripAffects(mod);
                     else
                         LogManager.Instance.Bug("apply_modify: ApplyTypes.StripSN invalid SN %d", mod);
                     break;
 
-                case (int)ApplyTypes.WearSpell:
-                case (int)ApplyTypes.RemoveSpell:
+                case ApplyTypes.WearSpell:
+                case ApplyTypes.RemoveSpell:
                     if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoMagic)
                         || ch.Immunity.IsSet(ResistanceTypes.Magic)
-                        || ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.WearSpell && !add)
-                        || ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RemoveSpell && add)
+                        || (applyType == ApplyTypes.WearSpell && !add)
+                        || (applyType == ApplyTypes.RemoveSpell && add)
                         || handler.SavingCharacter == ch
                         || handler.LoadingCharacter == ch)
                         return;
@@ -212,15 +201,13 @@ namespace SmaugCS.Extensions.Character
                     }
                     break;
 
-                case (int)ApplyTypes.Track:
-                    ch.ModifySkill((int)RepositoryManager.Instance.GetEntity<SkillData>("track").Type, mod, add);
-                    break;
-
-                // TODO Add the rest
-
                 default:
-                    LogManager.Instance.Bug("affect_modify: unknown location %d", affect.Location);
-                    return;
+                    var skillData = RepositoryManager.Instance.GetEntity<SkillData>(applyType.GetName());
+                    if (skillData != null)
+                        ch.ModifySkill((int)skillData.Type, mod, add);
+                    else
+                        LogManager.Instance.Bug("affect_modify: unknown location %d", affect.Location);
+                    break;
             }
 
             var wield = ch.GetEquippedItem(WearLocations.Wield);
@@ -241,16 +228,45 @@ namespace SmaugCS.Extensions.Character
             }
         }
 
+        private static void HandlePlayerCondition(CharacterInstance ch, ApplyTypes applyType, int mod)
+        {
+            var pc = (PlayerInstance)ch;
+
+            switch (applyType)
+            {
+                case ApplyTypes.Full:
+                    if (!ch.IsNpc())
+                        pc.PlayerData.ConditionTable[ConditionTypes.Full] =
+                            (pc.PlayerData.ConditionTable[ConditionTypes.Full] + mod).GetNumberThatIsBetween(0, 48);
+                    break;
+                case ApplyTypes.Thirst:
+                    if (!ch.IsNpc())
+                        pc.PlayerData.ConditionTable[ConditionTypes.Thirsty] =
+                            (pc.PlayerData.ConditionTable[ConditionTypes.Thirsty] + mod).GetNumberThatIsBetween(0, 48);
+                    break;
+                case ApplyTypes.Drunk:
+                    if (!ch.IsNpc())
+                        pc.PlayerData.ConditionTable[ConditionTypes.Drunk] =
+                            (pc.PlayerData.ConditionTable[ConditionTypes.Drunk] + mod).GetNumberThatIsBetween(0, 48);
+                    break;
+                case ApplyTypes.Blood:
+                    if (!ch.IsNpc())
+                        pc.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] =
+                            (pc.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] + mod).GetNumberThatIsBetween(0, ch.Level + 10);
+                    break;
+            }
+        }
+
         private static int ModifyAndAddAffect(CharacterInstance ch, AffectData affect, int mod)
         {
-            ch.AffectedBy.SetBit(affect.Type);
+            ch.AffectedBy.SetBit((int)affect.Type);
             if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
             {
                 mod = Math.Abs(mod);
                 var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
 
                 if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
-                    ch.AffectedBy.SetBit(AffectedByTypes.RecurringSpell);
+                    ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
                 else
                     throw new InvalidDataException($"RecurringSpell with bad SN {mod}");
             }
@@ -280,7 +296,7 @@ namespace SmaugCS.Extensions.Character
                 Duration = affect.Duration,
                 Location = affect.Location,
                 Modifier = affect.Modifier,
-                Flags = affect.Flags
+                BitVector = affect.BitVector
             };
 
             ch.Affects.Add(newAffect);
@@ -314,11 +330,11 @@ namespace SmaugCS.Extensions.Character
 
         public static void aris_affect(this CharacterInstance ch, AffectData paf)
         {
-            //ch.AffectedBy.SetBits(paf.BitVector);
+            ch.AffectedBy.SetBits(paf.BitVector);
             switch ((int)paf.Location % Program.REVERSE_APPLY)
             {
                 case (int)ApplyTypes.Affect:
-                    //ch.AffectedBy.Bits[0].SetBit(paf.Modifier);
+                    ch.AffectedBy.Bits[0].SetBit(paf.Modifier);
                     break;
                 case (int)ApplyTypes.Resistance:
                     ch.Resistance.SetBit(paf.Modifier);
@@ -339,56 +355,79 @@ namespace SmaugCS.Extensions.Character
 
             var hiding = ch.IsAffected(AffectedByTypes.Hide);
 
-            //ch.AffectedBy.ClearBits();
+            ch.AffectedBy.ClearBits();
             ch.Resistance = 0;
             ch.Immunity = 0;
             ch.Susceptibility = 0;
-            //ch.NoAffectedBy.ClearBits();
+            ch.NoAffectedBy.ClearBits();
             ch.NoResistance = 0;
             ch.NoImmunity = 0;
             ch.NoSusceptibility = 0;
 
+            // Race Affects
             var myRace = RepositoryManager.Instance.GetRace(ch.CurrentRace);
-            //ch.AffectedBy.SetBits(myRace.AffectedBy);
+            ch.AffectedBy.SetBits(myRace.AffectedBy);
             ch.Resistance.SetBit(myRace.Resistance);
             ch.Susceptibility.SetBit(myRace.Susceptibility);
 
+            // Class Affects
             var myClass = RepositoryManager.Instance.GetClass(ch.CurrentClass);
-            //ch.AffectedBy.SetBits(myClass.AffectedBy);
+            ch.AffectedBy.SetBits(myClass.AffectedBy);
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);
 
+            // Deity Affects
             if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.CurrentDeity != null)
             {
-                // if (ch.PlayerData.Favor > ch.PlayerData.CurrentDeity.AffectedNum)
-                //    ch.AffectedBy.SetBits(ch.PlayerData.CurrentDeity.AffectedBy);
-                if (((PlayerInstance)ch).PlayerData.Favor > ((PlayerInstance)ch).PlayerData.CurrentDeity.ElementNum)
-                    ch.Resistance.SetBit(((PlayerInstance)ch).PlayerData.CurrentDeity.Element);
-                if (((PlayerInstance)ch).PlayerData.Favor < ((PlayerInstance)ch).PlayerData.CurrentDeity.SusceptNum)
-                    ch.Susceptibility.SetBit(((PlayerInstance)ch).PlayerData.CurrentDeity.Suscept);
+                var pc = (PlayerInstance)ch;
+
+                if (pc.PlayerData.Favor > pc.PlayerData.CurrentDeity.AffectedNum)
+                    ch.AffectedBy.SetBits(pc.PlayerData.CurrentDeity.Affected);
+                if (pc.PlayerData.Favor > pc.PlayerData.CurrentDeity.ElementNum)
+                    ch.Resistance.SetBit(pc.PlayerData.CurrentDeity.Element);
+                if (pc.PlayerData.Favor < pc.PlayerData.CurrentDeity.SusceptNum)
+                    ch.Susceptibility.SetBit(pc.PlayerData.CurrentDeity.Suscept);
             }
 
+            // Spell Affects
             foreach (var affect in ch.Affects)
                 ch.aris_affect(affect);
 
-            foreach (var obj in ch.Carrying
-                .Where(x => x.WearLocation != WearLocations.None))
-            {
-                foreach (var affect in obj.Affects)
-                    ch.aris_affect(affect);
-                // TODO figure this out
-            }
-
+            // Room Affects
             if (ch.CurrentRoom != null)
             {
                 foreach (var affect in ch.CurrentRoom.Affects)
                     ch.aris_affect(affect);
             }
 
-            // TODO: Polymorph
+            // Equipment Affects
+            foreach (var obj in ch.Carrying
+                .Where(x => x.WearLocation != WearLocations.None))
+            {
+                foreach (var affect in obj.Affects)
+                    ch.aris_affect(affect);
 
+                foreach (var affect in ((ObjectTemplate)obj.Parent).Affects)
+                    ch.aris_affect(affect);
+            }
+
+            // Polymorph Affects
+            if (ch.CurrentMorph != null)
+            {
+                ch.AffectedBy.SetBits(ch.CurrentMorph.AffectedBy);
+                ch.Immunity.SetBit(ch.CurrentMorph.immune);
+                ch.Resistance.SetBit(ch.CurrentMorph.resistant);
+                ch.Susceptibility.SetBit(ch.CurrentMorph.suscept);
+
+                ch.NoAffectedBy.SetBits(ch.CurrentMorph.NotAffectedBy);
+                ch.NoImmunity.SetBit(ch.CurrentMorph.no_immune);
+                ch.NoResistance.SetBit(ch.CurrentMorph.no_resistant);
+                ch.NoSusceptibility.SetBit(ch.CurrentMorph.no_suscept);
+            }
+
+            // If the player was hiding before, make them hiding again
             if (hiding)
-                ch.AffectedBy = ch.AffectedBy.SetBit(AffectedByTypes.Hide);
+                ch.AffectedBy.SetBit((int)AffectedByTypes.Hide);
         }
     }
 }

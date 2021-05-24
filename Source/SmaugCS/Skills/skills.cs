@@ -208,7 +208,7 @@ namespace SmaugCS.Skills
 
             var skill = RepositoryManager.Instance.GetEntity<SkillData>("MissileWeapons");
 
-            if (victim.IsNpc() && victim.Act.IsSet(ActFlags.Sentinel)
+            if (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.Sentinel)
                 && ch.CurrentRoom != victim.CurrentRoom)
             {
                 if (projectile == null) return ch.CauseDamageTo(victim, 0, dt);
@@ -344,7 +344,7 @@ namespace SmaugCS.Skills
 
             if (vch != null)
             {
-                if (!vch.IsNpc() && !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Nice))
+                if (!vch.IsNpc() && !ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Nice))
                 {
                     ch.SendTo("You're too nice to do that!");
                     return ReturnTypes.None;

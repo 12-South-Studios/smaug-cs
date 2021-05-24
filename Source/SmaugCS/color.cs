@@ -118,7 +118,7 @@ namespace SmaugCS
 
         public static string color_str(ATTypes attype, CharacterInstance ch)
         {
-            if (ch.IsNpc() || ch.Act.IsSet(PlayerFlags.Ansi))
+            if (ch.IsNpc() || ch.Act.IsSet((int)PlayerFlags.Ansi))
                 return string.Empty;
 
             var code = EnumerationExtensions.GetEnum<AnsiCodes>((int)attype);

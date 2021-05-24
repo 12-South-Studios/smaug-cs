@@ -40,7 +40,7 @@ namespace SmaugCS.Commands.Admin
 
             phrase = bag ? "Bagging" : "Corpse";
             var color = bag ? "&Y" : "&w";
-            var clanPhrase = obj.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse) ? "&RPK" : "&R";
+            var clanPhrase = obj.ExtraFlags.IsSet((int)ItemExtraFlags.ClanCorpse) ? "&RPK" : "&R";
             var areaPhrase = $"&PIn: &w{ch.CurrentRoom.Area.Name} &P[&w{ch.CurrentRoom.Area.ID}&P]";
 
             var timerPhrase = $"&PTimer: ";

@@ -44,7 +44,7 @@ namespace SmaugCS
                 return;
             }
 
-            if (CheckFunctions.CheckIfTrue(ch, obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.CanTakePrototype(),
+            if (CheckFunctions.CheckIfTrue(ch, obj.ExtraFlags.IsSet((int)ItemExtraFlags.Prototype) && !ch.CanTakePrototype(),
                 "A godly force prevents you from getting close to it.")) return;
 
             if (ch.CarryNumber + obj.ObjectNumber > ch.CanCarryN())
@@ -53,7 +53,7 @@ namespace SmaugCS
                 return;
             }
 
-            var weight = obj.ExtraFlags.IsSet(ItemExtraFlags.Covering)
+            var weight = obj.ExtraFlags.IsSet((int)ItemExtraFlags.Covering)
                              ? obj.Weight
                              : obj.GetWeight();
 
@@ -64,7 +64,7 @@ namespace SmaugCS
                     var tObject = obj.InObject;
                     var inobj = 1;
                     var checkweight = tObject.ItemType == ItemTypes.Container
-                                       && tObject.ExtraFlags.IsSet(ItemExtraFlags.Magical);
+                                       && tObject.ExtraFlags.IsSet((int)ItemExtraFlags.Magical);
 
                     while (tObject.InObject != null)
                     {
@@ -72,7 +72,7 @@ namespace SmaugCS
                         inobj++;
 
                         checkweight = tObject.ItemType == ItemTypes.Container
-                                      && tObject.ExtraFlags.IsSet(ItemExtraFlags.Magical);
+                                      && tObject.ExtraFlags.IsSet((int)ItemExtraFlags.Magical);
                     }
 
                     if (tObject.CarriedBy == null || tObject.CarriedBy != ch || checkweight)
@@ -136,22 +136,22 @@ namespace SmaugCS
         private static void GetObjectFromContainer(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
         {
             if (container.ItemType == ItemTypes.KeyRing
-                && !container.ExtraFlags.IsSet(ItemExtraFlags.Covering))
+                && !container.ExtraFlags.IsSet((int)ItemExtraFlags.Covering))
             {
                 comm.act(ATTypes.AT_ACTION, "You remove $p from $P", ch, obj, container, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n removes $p from $P", ch, obj, container, ToTypes.Room);
             }
             else
             {
-                comm.act(ATTypes.AT_ACTION, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
+                comm.act(ATTypes.AT_ACTION, container.ExtraFlags.IsSet((int)ItemExtraFlags.Covering)
                     ? "You get $p from beneath $P."
                     : "You get $p from $P", ch, obj, container, ToTypes.Character);
-                comm.act(ATTypes.AT_ACTION, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
+                comm.act(ATTypes.AT_ACTION, container.ExtraFlags.IsSet((int)ItemExtraFlags.Covering)
                     ? "$n gets $p from beneath $P."
                     : "$n gets $p from $P", ch, obj, container, ToTypes.Room);
             }
 
-            if (container.ExtraFlags.IsSet(ItemExtraFlags.ClanCorpse)
+            if (container.ExtraFlags.IsSet((int)ItemExtraFlags.ClanCorpse)
                 && !ch.IsNpc() && container.Name.Contains(ch.Name))
                 container.Value.ToList()[5]++;
             obj.InObject.RemoveFrom(obj);
@@ -176,7 +176,7 @@ namespace SmaugCS
 
             if (obj.InRoom.Flags.IsSet((int)RoomFlags.NoFloor)
                 //&& Macros.CAN_GO(obj, (int) DirectionTypes.Down)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
             {
                 var exit = obj.InRoom.GetExit(DirectionTypes.Down);
                 var to_room = exit.GetDestination();

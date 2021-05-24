@@ -33,5 +33,12 @@ namespace SmaugCS.Common
                 return (T)Enum.ToObject(typeof(T), value);
             throw new ArgumentException("value");
         }
+
+        public static T GetEnum<T>(int value)
+        {
+            if (Enum.IsDefined(typeof(T), value))
+                return (T)Enum.ToObject(typeof(T), value);
+            throw new ArgumentException("value");
+        }
     }
 }

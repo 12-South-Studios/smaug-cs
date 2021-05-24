@@ -53,13 +53,13 @@ namespace SmaugCS.Skills
 
             obj.RemoveFrom();
 
-            if (!victim.IsNpc() && victim.CanPKill() && !obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal))
+            if (!victim.IsNpc() && victim.CanPKill() && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Loyal))
             {
                 obj.MagicFlags.SetBit(ItemMagicFlags.PKDisarmed);
                 obj.Value.ToList()[5] = victim.Level;
             }
 
-            if (victim.IsNpc() || (obj.ExtraFlags.IsSet(ItemExtraFlags.Loyal) && victim.IsPKill() && !ch.IsNpc()))
+            if (victim.IsNpc() || (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Loyal) && victim.IsPKill() && !ch.IsNpc()))
                 obj.AddTo(victim);
             else
                 victim.CurrentRoom.AddTo(obj);

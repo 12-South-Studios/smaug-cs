@@ -636,7 +636,7 @@ namespace SmaugCS.Spells
                     if (CheckFunctions.CheckIfTrue(ch, victim.GetTimer(TimerTypes.PKilled) != null,
                         !silence ? "This player has been killed in the last 5 minutes." : "")) return null;
 
-                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet(PlayerFlags.Nice) && ch != victim,
+                    if (CheckFunctions.CheckIfTrue(ch, ch.Act.IsSet((int)PlayerFlags.Nice) && ch != victim,
                         !silence ? "You are too nice to attack another player." : "")) return null;
 
                     if (victim != ch)

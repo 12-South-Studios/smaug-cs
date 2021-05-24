@@ -72,7 +72,7 @@ namespace SmaugCS.Extensions.Character
 
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return ch.Trust * 200;
-            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return ch.Level * 200;
             if (ch.GetEquippedItem(WearLocations.Wield) != null)
                 ++penalty;
@@ -91,7 +91,7 @@ namespace SmaugCS.Extensions.Character
         {
             if (!ch.IsNpc() && ch.Level >= LevelConstants.ImmortalLevel)
                 return 1000000;
-            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Immortal))
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return 1000000;
 
             return (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),

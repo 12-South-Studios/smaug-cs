@@ -167,7 +167,7 @@ namespace SmaugCS
             if (social == null)
                 return false;
 
-            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.NoEmote), "You are anti-social!"))
+            if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.NoEmote), "You are anti-social!"))
                 return true;
 
             switch (ch.CurrentPosition)

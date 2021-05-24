@@ -16,7 +16,7 @@ namespace SmaugCS.Tests
         public void CheckIfNpc()
         {
             var actor = new CharacterInstance(1, "TestNpc");
-            actor.Act = actor.Act.SetBit(ActFlags.IsNpc);
+            actor.Act.SetBit((int)ActFlags.IsNpc);
 
             Assert.That(CheckFunctions.CheckIfNpc(actor, actor), Is.True);
         }
@@ -75,7 +75,7 @@ namespace SmaugCS.Tests
         public void CheckIfNotAuthorized_IsNpc()
         {
             var actor = new CharacterInstance(1, "TestNpc");
-            actor.Act = actor.Act.SetBit(ActFlags.IsNpc);
+            actor.Act.SetBit((int)ActFlags.IsNpc);
 
             Assert.That(CheckFunctions.CheckIfNotAuthorized(actor, actor), Is.False);
         }

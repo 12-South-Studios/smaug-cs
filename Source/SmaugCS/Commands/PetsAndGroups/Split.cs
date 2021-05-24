@@ -22,7 +22,7 @@ namespace SmaugCS.Commands.PetsAndGroups
             if (CheckFunctions.CheckIfTrue(ch, ch.CurrentCoin < amount, "You don't have that much coin.")) return;
 
             var members = ch.CurrentRoom.Persons.Count(x => x.IsSameGroup(ch));
-            if (ch.Act.IsSet(PlayerFlags.AutoGold) && members < 2)
+            if (ch.Act.IsSet((int)PlayerFlags.AutoGold) && members < 2)
                 return;
 
             if (CheckFunctions.CheckIfTrue(ch, members < 2, "Just keep it all.")) return;

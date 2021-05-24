@@ -29,7 +29,7 @@ namespace SmaugCS.Tests.Extensions
         public void Execute_IsCharmed_Test()
         {
             var actor = new CharacterInstance(1, "TestChar");
-            actor.AffectedBy = actor.AffectedBy.SetBit(AffectedByTypes.Charm);
+            actor.AffectedBy.SetBit((int)AffectedByTypes.Charm);
 
             var mprog = new MudProgData { Type = MudProgTypes.Act };
 

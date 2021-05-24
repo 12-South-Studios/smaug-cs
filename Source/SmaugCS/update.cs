@@ -233,7 +233,7 @@ namespace SmaugCS
 
                         if (died) continue;
                         if (!found)
-                            ch.AffectedBy.RemoveBit(AffectedByTypes.RecurringSpell);
+                            ch.AffectedBy.RemoveBit((int)AffectedByTypes.RecurringSpell);
                     }
 
                     if (ch.MentalState >= 30)
@@ -378,10 +378,10 @@ namespace SmaugCS
                 if (obj.ItemType == ItemTypes.PlayerCorpse || obj.ItemType == ItemTypes.NpcCorpse)
                     UpdateCorpse(obj);
 
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory))
+                if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Inventory))
                     continue;
 
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.GroundRot) && obj.InRoom == null)
+                if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.GroundRot) && obj.InRoom == null)
                     continue;
 
                 if (obj.Timer <= 0 || --obj.Timer > 0)
@@ -404,7 +404,7 @@ namespace SmaugCS
 
                 if (obj.CarriedBy != null)
                     comm.act(AT_TEMP, message, obj.CarriedBy, obj, null, ToTypes.Character);
-                else if (obj.InRoom != null && obj.InRoom.Persons.Any() && !obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                else if (obj.InRoom != null && obj.InRoom.Persons.Any() && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Buried))
                 {
                     var rch = obj.InRoom.Persons.FirstOrDefault();
                     comm.act(AT_TEMP, message, rch, obj, null, ToTypes.Room);
@@ -517,11 +517,11 @@ namespace SmaugCS
             if ((_charCounter & 1) > 0)
                 return;
 
-            if (ch.Act.IsSet(ActFlags.Running))
+            if (ch.Act.IsSet((int)ActFlags.Running))
             {
-                if (!ch.Act.IsSet(ActFlags.Sentinel)
+                if (!ch.Act.IsSet((int)ActFlags.Sentinel)
                     && ch.CurrentPosition == PositionTypes.Standing
-                    && !ch.Act.IsSet(ActFlags.Mounted)
+                    && !ch.Act.IsSet((int)ActFlags.Mounted)
                     && ch.CurrentFighting == null
                     && ch.CurrentHunting != null)
                 {
@@ -538,10 +538,10 @@ namespace SmaugCS
                         return;
                 }
 
-                if (!ch.Act.IsSet(ActFlags.Sentinel)
+                if (!ch.Act.IsSet((int)ActFlags.Sentinel)
                     && ch.CurrentPosition == PositionTypes.Standing
-                    && !ch.Act.IsSet(ActFlags.Mounted)
-                    && !ch.Act.IsSet(ActFlags.Prototype))
+                    && !ch.Act.IsSet((int)ActFlags.Mounted)
+                    && !ch.Act.IsSet((int)ActFlags.Prototype))
                 {
                     var door = SmaugRandom.Bits(4);
                     if (door >= 9)
@@ -561,7 +561,7 @@ namespace SmaugCS
                     if (room.Flags.IsSet(RoomFlags.NoMob) || room.Flags.IsSet(RoomFlags.Death))
                         return;
 
-                    if (ch.Act.IsSet(ActFlags.StayArea) && ch.CurrentRoom.Area != room.Area)
+                    if (ch.Act.IsSet((int)ActFlags.StayArea) && ch.CurrentRoom.Area != room.Area)
                         return;
 
                     Move.move_char(ch, exit, 0);

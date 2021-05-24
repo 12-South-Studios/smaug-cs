@@ -126,7 +126,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.That(result.Affects.ToList()[0].Duration, Is.EqualTo(-1));
             Assert.That(result.Affects.ToList()[0].Modifier, Is.EqualTo(60));
             Assert.That(result.Affects.ToList()[0].Location, Is.EqualTo(ApplyTypes.Hit));
-            Assert.That(result.Affects.ToList()[0].Flags, Is.EqualTo(32));
+            Assert.That(result.Affects.ToList()[0].BitVector.IsSet(32), Is.True);
         }
 
         [Test]

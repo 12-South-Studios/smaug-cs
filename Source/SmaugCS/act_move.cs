@@ -440,12 +440,12 @@ namespace SmaugCS
 
             foreach (var obj in ch.CurrentRoom.Contents)
             {
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried)
+                if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Buried)
                     || !obj.WearFlags.IsSet(ItemWearFlags.Take))
                     continue;
 
                 var resistance = obj.GetWeight();
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
+                if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Metallic))
                     resistance = resistance * 6 / 5;
 
                 switch (obj.ItemType)

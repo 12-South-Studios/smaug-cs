@@ -34,14 +34,14 @@ namespace SmaugCS.Commands
 
         private static void AnsiOn(CharacterInstance actor)
         {
-            actor.Act.IsSet(PlayerFlags.Ansi);
+            actor.Act.IsSet((int)PlayerFlags.Ansi);
             actor.SetColor(ATTypes.AT_WHITE | ATTypes.AT_BLINK);
             actor.SendTo("ANSI ON!!!");
         }
 
         private static void AnsiOff(CharacterInstance actor)
         {
-            actor.Act.RemoveBit(PlayerFlags.Ansi);
+            actor.Act.RemoveBit((int)PlayerFlags.Ansi);
             actor.SendTo("Okay... ANSI support is now off.");
         }
     }

@@ -11,6 +11,25 @@ namespace SmaugCS
 {
     public static class Macros
     {
+        public static int URANGE(int minCheck, int check, int maxCheck)
+        {
+            if (check < minCheck) return minCheck;
+            if (check > maxCheck) return maxCheck;
+            return check;
+        }
+
+        public static int UMAX(int check, int ncheck)
+        {
+            if (check > ncheck) return check;
+            return ncheck;
+        }
+
+        public static int UMIN(int check, int ncheck)
+        {
+            if (check < ncheck) return check;
+            return ncheck;
+        }
+
         public static string PERS(CharacterInstance ch, CharacterInstance looker)
         {
             return ch.CanSee(looker)

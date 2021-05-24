@@ -21,7 +21,7 @@ namespace SmaugCS.Commands.Objects
             var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "Drop what?")) return;
             if (handler.FindObject_CheckMentalState(ch)) return;
-            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Litterbug))
+            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Litterbug))
             {
                 ch.SetColor(ATTypes.AT_YELLOW);
                 ch.SendTo("A godly force prevents you from dropping anything...");

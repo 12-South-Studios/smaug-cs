@@ -61,7 +61,7 @@ namespace SmaugCS.Spells
                 AffectData paf = null;
 
                 // grab affected_by from mobs first
-                if (victim.IsNpc() && victim.AffectedBy > 0)
+                if (victim.IsNpc() && victim.AffectedBy.IsEmpty())
                 {
                     for (; ; )
                     {

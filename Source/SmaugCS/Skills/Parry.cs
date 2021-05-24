@@ -19,7 +19,7 @@ namespace SmaugCS.Skills
             if (!victim.IsAwake())
                 return false;
 
-            if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Parry))
+            if (victim.IsNpc() && !victim.Defenses.IsSet((int)DefenseTypes.Parry))
                 return false;
 
             int chances;

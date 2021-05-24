@@ -26,13 +26,13 @@ namespace SmaugCS.Commands
         private static void EnableRip(PlayerInstance ch)
         {
             ch.SendRIPScreen();
-            ch.Act.IsSet(PlayerFlags.Rip);
-            ch.Act.IsSet(PlayerFlags.Ansi);
+            ch.Act.IsSet((int)PlayerFlags.Rip);
+            ch.Act.IsSet((int)PlayerFlags.Ansi);
         }
 
         private static void DisableRip(PlayerInstance ch)
         {
-            ch.Act.RemoveBit(PlayerFlags.Rip);
+            ch.Act.RemoveBit((int)PlayerFlags.Rip);
             ch.SendTo("!|*\r\nRIP now off...");
         }
     }

@@ -16,7 +16,7 @@ namespace SmaugCS.Extensions.Character
             ch.Master = master;
             ch.Leader = null;
 
-            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Pet) && !master.IsNpc())
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Pet) && !master.IsNpc())
                 ((PlayerInstance)master).PlayerData.Pet = ch;
 
             if (master.CanSee(ch))
@@ -35,7 +35,7 @@ namespace SmaugCS.Extensions.Character
 
             if (ch.IsAffected(AffectedByTypes.Charm))
             {
-                ch.AffectedBy.RemoveBit(AffectedByTypes.Charm);
+                ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                 //ch.RemoveAffect(gsn_charm_person);    TODO Fix this!
                 if (!ch.Master.IsNpc())
                     ((PlayerInstance)ch.Master).PlayerData.NumberOfCharmies--;

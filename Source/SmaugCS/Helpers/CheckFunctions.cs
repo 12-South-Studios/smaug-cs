@@ -83,6 +83,11 @@ namespace SmaugCS.Helpers
             return bitField.IsSet(bitToCheck) && SendToChar(ch, message);
         }
 
+        public static bool CheckIfSet(CharacterInstance ch, ExtendedBitvector bits, int bitToCheck, string message = "")
+        {
+            return bits.IsSet(bitToCheck) && SendToChar(ch, message);
+        }
+
         public static bool CheckIfSet(CharacterInstance ch, int bitField, Enum bitToCheck, string message = "")
         {
             return bitField.IsSet(bitToCheck) && SendToChar(ch, message);

@@ -54,8 +54,8 @@ namespace SmaugCS.SpecFuns.Professions
 
         private static string GetCrime(CharacterInstance victim)
         {
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Killer)) return "KILLER";
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Thief)) return "THIEF";
+            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Killer)) return "KILLER";
+            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Thief)) return "THIEF";
             return string.Empty;
         }
     }

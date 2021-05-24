@@ -27,7 +27,7 @@ namespace SmaugCS.SpecFuns.Professions
             if (SmaugRandom.D100() <= 50) return false;
 
             foreach (var obj in ch.CurrentRoom.Contents
-                .Where(obj => obj.WearFlags.IsSet(ItemWearFlags.Take) && !obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                .Where(obj => obj.WearFlags.IsSet(ItemWearFlags.Take) && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Buried))
                 .Where(obj => obj.ItemType == ItemTypes.Weapon || obj.ItemType == ItemTypes.Armor || obj.ItemType == ItemTypes.Light))
             {
                 obj.Split();

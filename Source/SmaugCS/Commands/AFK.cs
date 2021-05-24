@@ -12,12 +12,12 @@ namespace SmaugCS.Commands
         {
             if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
-            if (ch.Act.IsSet(PlayerFlags.AwayFromKeyboard))
-                ch.Act.RemoveBit(PlayerFlags.AwayFromKeyboard);
+            if (ch.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
+                ch.Act.RemoveBit((int)PlayerFlags.AwayFromKeyboard);
             else
-                ch.Act.SetBit(PlayerFlags.AwayFromKeyboard);
+                ch.Act.SetBit((int)PlayerFlags.AwayFromKeyboard);
 
-            var isAfkSet = ch.Act.IsSet(PlayerFlags.AwayFromKeyboard);
+            var isAfkSet = ch.Act.IsSet((int)PlayerFlags.AwayFromKeyboard);
             ch.SendTo(isAfkSet ? "You are no longer afk." : "You are now afk.");
             comm.act(ATTypes.AT_GREY, isAfkSet ? "$n is no longer afk." : "$n is now afk.", ch, null, null,
                 ToTypes.CanSee);

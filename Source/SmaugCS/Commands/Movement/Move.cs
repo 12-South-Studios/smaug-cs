@@ -51,7 +51,7 @@ namespace SmaugCS.Commands.Movement
             }
 #endif
 
-            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Mounted))
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Mounted))
                 return ReturnTypes.None;
 
             var inRoom = ch.CurrentRoom;

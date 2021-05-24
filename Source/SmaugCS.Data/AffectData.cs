@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Common;
+using SmaugCS.Constants.Enums;
 using System.Xml.Serialization;
 
 namespace SmaugCS.Data
@@ -19,9 +20,14 @@ namespace SmaugCS.Data
         public int Modifier { get; set; }
 
         [XmlElement]
-        public int Flags { get; set; }
+        public ExtendedBitvector BitVector { get; set; }
 
         [XmlElement]
         public int SkillNumber { get; set; }
+
+        public AffectData()
+        {
+            BitVector = new ExtendedBitvector();
+        }
     }
 }

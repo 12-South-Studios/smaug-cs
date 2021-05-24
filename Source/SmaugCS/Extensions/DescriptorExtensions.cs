@@ -70,9 +70,9 @@ namespace SmaugCS.Extensions
                 d.WriteToBuffer("Press enter...", 0);
             else
             {
-                if (ch.Act.IsSet(PlayerFlags.Rip))
+                if (ch.Act.IsSet((int)PlayerFlags.Rip))
                     ch.SendRIPTitle();
-                else if (ch.Act.IsSet(PlayerFlags.Ansi))
+                else if (ch.Act.IsSet((int)PlayerFlags.Ansi))
                     ch.SendANSITitle();
                 else
                     ch.SendASCIITitle();

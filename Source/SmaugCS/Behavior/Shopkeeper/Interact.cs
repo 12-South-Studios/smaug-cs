@@ -52,7 +52,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool DoesKeeperHateKillers(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (!ch.Act.IsSet(PlayerFlags.Killer)) return true;
+            if (!ch.Act.IsSet((int)PlayerFlags.Killer)) return true;
 
             Say.do_say(keeper, "Murderers are not welcome here!");
             Shout.do_shout(keeper, $"{ch.Name} the KILLER is over here!");
@@ -61,7 +61,7 @@ namespace SmaugCS.Behavior.Shopkeeper
 
         private static bool DoesKeeperHateThieves(CharacterInstance keeper, CharacterInstance ch)
         {
-            if (!ch.Act.IsSet(PlayerFlags.Thief)) return false;
+            if (!ch.Act.IsSet((int)PlayerFlags.Thief)) return false;
 
             Say.do_say(keeper, "Thieves are not welcome here!");
             Shout.do_shout(keeper, $"{ch.Name} the THIEF is over here!");

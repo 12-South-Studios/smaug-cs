@@ -29,7 +29,7 @@ namespace SmaugCS.Spells.Smaug
                 comm.act(ATTypes.AT_MAGIC, skill.HitRoomMessage, ch, null, null, ToTypes.Room);
 
             foreach (var vch in ch.CurrentRoom.Persons
-                .Where(x => x.IsNpc() || !x.Act.IsSet(PlayerFlags.WizardInvisibility) ||
+                .Where(x => x.IsNpc() || !x.Act.IsSet((int)PlayerFlags.WizardInvisibility) ||
                     ((PlayerInstance)x).PlayerData.WizardInvisible < LevelConstants.ImmortalLevel)
                 .Where(x => x != ch)
                 .Where(x => !fight.is_safe(ch, x, false))

@@ -40,16 +40,8 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(ActFlags.IsNpc, true)]
         public void IsNpc_Test(int flags, bool expectedValue)
         {
-            _ch.Act = _ch.Act.SetBit(flags);
+            _ch.Act.SetBit(flags);
             Assert.That(_ch.IsNpc(), Is.EqualTo(expectedValue));
-        }
-
-        [TestCase(AffectedByTypes.Blind | AffectedByTypes.Invisible, AffectedByTypes.DetectEvil, false)]
-        [TestCase(AffectedByTypes.Blind | AffectedByTypes.Invisible, AffectedByTypes.Blind, true)]
-        public void IsAffected_Test(long flags, AffectedByTypes affectedBy, bool expectedValue)
-        {
-            _ch.AffectedBy = _ch.AffectedBy.SetBit(flags);
-            Assert.That(_ch.IsAffected(affectedBy), Is.EqualTo(expectedValue));
         }
 
         [Test]
@@ -72,7 +64,7 @@ namespace SmaugCS.Tests.Extensions
         {
             PlayerInstance pch = new PlayerInstance(1, "TestChar");
             MobileInstance mob = new MobileInstance(2, "TesterMob");
-            mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
+            mob.Act.SetBit((int)ActFlags.IsNpc);
             mob.Parent = new MobileTemplate(2, "Template");
 
             pch.PlayerData = new PlayerData(1, 1);
@@ -85,7 +77,7 @@ namespace SmaugCS.Tests.Extensions
         {
             PlayerInstance pch = new PlayerInstance(1, "TestChar");
             MobileInstance mob = new MobileInstance(2, "TesterMob");
-            mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
+            mob.Act.SetBit((int)ActFlags.IsNpc);
             mob.Parent = new MobileTemplate(2, "Template");
 
             pch.PlayerData = new PlayerData(1, 1);
@@ -130,7 +122,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(AffectedByTypes.Blind, false)]
         public void IsFloating_Test(AffectedByTypes type, bool expectedValue)
         {
-            _ch.AffectedBy = _ch.AffectedBy.SetBit(type);
+            _ch.AffectedBy.SetBit((int)type);
 
             Assert.That(_ch.IsFloating(), Is.EqualTo(expectedValue));
         }
@@ -175,7 +167,7 @@ namespace SmaugCS.Tests.Extensions
         [TestCase(ActFlags.Immortal, RaceTypes.Caorlei, ClassTypes.Vampire, true)]
         public void IsVampire_Test(ActFlags actFlag, RaceTypes race, ClassTypes cls, bool expectedValue)
         {
-            _ch.Act = _ch.Act.SetBit(actFlag);
+            _ch.Act.SetBit((int)actFlag);
             _ch.CurrentRace = race;
             _ch.CurrentClass = cls;
             Assert.That(_ch.IsVampire(), Is.EqualTo(expectedValue));
@@ -185,7 +177,7 @@ namespace SmaugCS.Tests.Extensions
         public void IsDevoted_IsNpc_Test()
         {
             MobileInstance mob = new MobileInstance(1, "TestChar");
-            mob.Act = mob.Act.SetBit(ActFlags.IsNpc);
+            mob.Act.SetBit((int)ActFlags.IsNpc);
             Assert.That(mob.IsDevoted(), Is.False);
         }
 

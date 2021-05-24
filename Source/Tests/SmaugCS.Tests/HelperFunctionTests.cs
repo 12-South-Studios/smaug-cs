@@ -47,8 +47,8 @@ namespace SmaugCS.Tests
         public void IsCharmedOrPossessed(AffectedByTypes affectedBy, bool expectedValue)
         {
             var actor = new CharacterInstance(1, "TestNpc");
-            actor.Act = actor.Act.SetBit(ActFlags.IsNpc);
-            actor.AffectedBy = actor.AffectedBy.SetBit(affectedBy);
+            actor.Act.SetBit((int)ActFlags.IsNpc);
+            actor.AffectedBy.SetBit((int)affectedBy);
 
             var list = new List<object> { actor };
 

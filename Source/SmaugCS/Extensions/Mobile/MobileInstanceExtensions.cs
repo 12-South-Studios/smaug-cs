@@ -35,7 +35,7 @@ namespace SmaugCS.Extensions.Mobile
                 return;
             }
 
-            if (!ch.Act.IsSet(ActFlags.Running) && !ch.Act.IsSet(ActFlags.Sentinel) && ch.CurrentFighting == null &&
+            if (!ch.Act.IsSet((int)ActFlags.Running) && !ch.Act.IsSet((int)ActFlags.Sentinel) && ch.CurrentFighting == null &&
                 ch.CurrentHunting == null)
             {
                 Macros.WAIT_STATE(ch, 2 * GameConstants.GetSystemValue<int>("PulseViolence"));
@@ -43,7 +43,7 @@ namespace SmaugCS.Extensions.Mobile
                 return;
             }
 
-            if (!ch.Act.IsSet(ActFlags.Running) && ch.SpecialFunction != null)
+            if (!ch.Act.IsSet((int)ActFlags.Running) && ch.SpecialFunction != null)
             {
                 if (ch.SpecialFunction.Value.Invoke(ch, dbManager))
                     return;
@@ -66,15 +66,15 @@ namespace SmaugCS.Extensions.Mobile
             if (ch.CurrentPosition != PositionTypes.Standing)
                 return;
 
-            if (ch.Act.IsSet(ActFlags.Mounted))
+            if (ch.Act.IsSet((int)ActFlags.Mounted))
             {
-                if (ch.Act.IsSet(ActFlags.Aggressive) || ch.Act.IsSet(ActFlags.MetaAggr))
+                if (ch.Act.IsSet((int)ActFlags.Aggressive) || ch.Act.IsSet((int)ActFlags.MetaAggr))
                     Emote.do_emote(ch, "snarls and growls.");
                 return;
             }
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe)
-                && (ch.Act.IsSet(ActFlags.Aggressive) || ch.Act.IsSet(ActFlags.MetaAggr)))
+                && (ch.Act.IsSet((int)ActFlags.Aggressive) || ch.Act.IsSet((int)ActFlags.MetaAggr)))
                 Emote.do_emote(ch, "glares around and snarls.");
 
             if (ch.CurrentRoom.Area.NumberOfPlayers > 0)
@@ -97,13 +97,13 @@ namespace SmaugCS.Extensions.Mobile
             if ((int)ch.CurrentPosition < (int)PositionTypes.Standing)
                 return;
 
-            if (ch.Act.IsSet(ActFlags.Scavenger) && ch.CurrentRoom.Contents.Any() && SmaugRandom.Bits(2) == 0)
+            if (ch.Act.IsSet((int)ActFlags.Scavenger) && ch.CurrentRoom.Contents.Any() && SmaugRandom.Bits(2) == 0)
                 Scavenge(ch);
 
-            if (!ch.Act.IsSet(ActFlags.Running)
-                && !ch.Act.IsSet(ActFlags.Sentinel)
-                && !ch.Act.IsSet(ActFlags.Prototype)
-                && !ch.Act.IsSet(ActFlags.StayArea))
+            if (!ch.Act.IsSet((int)ActFlags.Running)
+                && !ch.Act.IsSet((int)ActFlags.Sentinel)
+                && !ch.Act.IsSet((int)ActFlags.Prototype)
+                && !ch.Act.IsSet((int)ActFlags.StayArea))
             {
                 var door = SmaugRandom.Bits(5);
                 if (door > 9)
@@ -129,7 +129,7 @@ namespace SmaugCS.Extensions.Mobile
                 var retcode = Move.move_char(ch, exit, 0);
                 if (ch.CharDied())
                     return;
-                if (retcode != ReturnTypes.None || ch.Act.IsSet(ActFlags.Sentinel) ||
+                if (retcode != ReturnTypes.None || ch.Act.IsSet((int)ActFlags.Sentinel) ||
                     (int)ch.CurrentPosition < (int)PositionTypes.Standing)
                     return;
             }
@@ -194,10 +194,10 @@ namespace SmaugCS.Extensions.Mobile
 
             foreach (var obj in ch.CurrentRoom.Contents)
             {
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.Act.IsSet(ActFlags.Prototype))
+                if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Prototype) && !ch.Act.IsSet((int)ActFlags.Prototype))
                     continue;
                 if (obj.WearFlags.IsSet(ItemWearFlags.Take) && obj.Cost > max &&
-                    !obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                    !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Buried))
                 {
                     best = obj;
                     max = obj.Cost;

@@ -105,7 +105,7 @@ namespace SmaugCS.Extensions.Character
 
         public static void CheckAttackForAttackerFlag(this CharacterInstance ch, CharacterInstance victim)
         {
-            if (victim.IsNpc() || victim.Act.IsSet(PlayerFlags.Killer) || victim.Act.IsSet(PlayerFlags.Thief))
+            if (victim.IsNpc() || victim.Act.IsSet((int)PlayerFlags.Killer) || victim.Act.IsSet((int)PlayerFlags.Thief))
                 return;
 
             if (!ch.IsNpc() && !victim.IsNpc() && ch.CanPKill() && victim.CanPKill())
@@ -117,7 +117,7 @@ namespace SmaugCS.Extensions.Character
                 {
                     LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
                     // TODO affect_strip
-                    ch.AffectedBy.RemoveBit(AffectedByTypes.Charm);
+                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                     return;
                 }
 
@@ -125,10 +125,10 @@ namespace SmaugCS.Extensions.Character
             }
 
             if (ch.IsNpc() || ch == victim || ch.Level >= LevelConstants.ImmortalLevel ||
-                ch.Act.IsSet(PlayerFlags.Attacker) || ch.Act.IsSet(PlayerFlags.Killer))
+                ch.Act.IsSet((int)PlayerFlags.Attacker) || ch.Act.IsSet((int)PlayerFlags.Killer))
                 return;
 
-            ch.Act.SetBit(PlayerFlags.Attacker);
+            ch.Act.SetBit((int)PlayerFlags.Attacker);
             save.save_char_obj(ch);
         }
 
@@ -178,7 +178,7 @@ namespace SmaugCS.Extensions.Character
                 if (victim.CurrentMount != null)
                 {
                     comm.act(ATTypes.AT_ACTION, "$n falls from $N.", victim, null, victim.CurrentMount, ToTypes.Room);
-                    victim.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
+                    victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
                     victim.CurrentMount = null;
                 }
 
@@ -199,7 +199,7 @@ namespace SmaugCS.Extensions.Character
             if (victim.CurrentMount != null)
             {
                 comm.act(ATTypes.AT_ACTION, "$n falls unconcious from $N.", victim, null, victim.CurrentMount, ToTypes.Room);
-                victim.CurrentMount.Act.RemoveBit(ActFlags.Mounted);
+                victim.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
                 victim.CurrentMount = null;
             }
         }

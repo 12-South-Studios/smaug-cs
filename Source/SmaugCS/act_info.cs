@@ -136,7 +136,7 @@ namespace SmaugCS
             {
                 if (fShowNothing)
                 {
-                    if (ch.Act.IsSet(PlayerFlags.Combine))
+                    if (ch.Act.IsSet((int)PlayerFlags.Combine))
                         ch.SendTo("     ");
                     ch.SetColor(ATTypes.AT_OBJECT);
                     ch.SendTo("Nothing.");
@@ -167,7 +167,7 @@ namespace SmaugCS
             {
                 if (fShowNothing)
                 {
-                    if (ch.Act.IsSet(PlayerFlags.Combine))
+                    if (ch.Act.IsSet((int)PlayerFlags.Combine))
                         ch.SendTo("     ");
                     ch.SetColor(ATTypes.AT_OBJECT);
                     ch.SendTo("Nothing.");
@@ -206,7 +206,7 @@ namespace SmaugCS
                     string pstrShow = obj.GetFormattedDescription(ch, fShort);
                     bool fCombine = false;
 
-                    if (ch.Act.IsSet(PlayerFlags.Combine))
+                    if (ch.Act.IsSet((int)PlayerFlags.Combine))
                     {
                         for (var i = nShow - 1; i >= 0; i--)
                         {
@@ -257,7 +257,7 @@ namespace SmaugCS
 
             if (fShowNothing && nShow == 0)
             {
-                if (ch.Act.IsSet(PlayerFlags.Combine))
+                if (ch.Act.IsSet((int)PlayerFlags.Combine))
                     ch.SendTo("     ");
                 ch.SetColor(ATTypes.AT_OBJECT);
                 ch.SendTo("Nothing.");
@@ -274,7 +274,7 @@ namespace SmaugCS
         public static void show_char_to_char_1(CharacterInstance victim, PlayerInstance ch)
         {
             if (victim.CanSee(ch) && !ch.IsNpc()
-                && !ch.Act.IsSet(PlayerFlags.WizardInvisibility))
+                && !ch.Act.IsSet((int)PlayerFlags.WizardInvisibility))
             {
                 comm.act(ATTypes.AT_ACTION, "$n looks at you.", ch, null, victim, ToTypes.Victim);
                 comm.act(ATTypes.AT_ACTION, victim != ch ? "$n looks at $N." : "$n looks at $mself.", ch, null, victim,

@@ -30,11 +30,11 @@ namespace SmaugCS.Commands.Combat
                     return;
                 }
 
-                ch.Master?.Act.SetBit(PlayerFlags.Attacker);
+                ch.Master?.Act.SetBit((int)PlayerFlags.Attacker);
             }
 
             if (CheckFunctions.CheckIfTrue(ch, ch.IsInCombatPosition(), "You do the best you can!")) return;
-            if (CheckFunctions.CheckIfTrue(ch, !victim.IsNpc() && ch.Act.IsSet(PlayerFlags.Nice),
+            if (CheckFunctions.CheckIfTrue(ch, !victim.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Nice),
                 "You feel too nice to do that!")) return;
 
             // TODO Log the murder

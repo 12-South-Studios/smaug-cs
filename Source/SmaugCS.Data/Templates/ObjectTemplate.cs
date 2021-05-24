@@ -1,9 +1,9 @@
 ﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 
@@ -13,7 +13,7 @@ namespace SmaugCS.Data.Templates
     {
         public ICollection<ExtraDescriptionData> ExtraDescriptions { get; }
         public ICollection<AffectData> Affects { get; }
-        public int ExtraFlags { get; set; }
+        public ExtendedBitvector ExtraFlags { get; set; }
         public string Flags { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
@@ -37,6 +37,7 @@ namespace SmaugCS.Data.Templates
             ExtraDescriptions = new List<ExtraDescriptionData>();
             Affects = new List<AffectData>();
             Spells = new List<string>();
+            ExtraFlags = new ExtendedBitvector();
 
             ShortDescription = $"A newly created {name}";
             Description = $"Somebody dropped a newly created {name} here.";
@@ -46,8 +47,6 @@ namespace SmaugCS.Data.Templates
 
         public void SetType(string type) => Type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<ItemTypes>(type);
 
-        [SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray",
-            Justification = "This function is required by LUA and cannot handle lists or parameter arrays")]
         public void SetValues(int v1, int v2, int v3, int v4, int v5, int v6)
         {
             var valuesToSet = new List<int> { v1, v2, v3, v4, v5, v6 };
@@ -60,7 +59,7 @@ namespace SmaugCS.Data.Templates
                 Spells.Add(spell.ToLower());
         }
 
-        public void AddAffect(long type, int duration, int modifier, int location, int flags)
+        public void AddAffect(int type, int duration, int modifier, int location, int bits)
         {
             if (type < 0) throw new InvalidEnumArgumentException(nameof(type), (int)type, typeof(AffectedByTypes));
 
@@ -69,9 +68,10 @@ namespace SmaugCS.Data.Templates
                 Type = Common.EnumerationExtensions.GetEnum<AffectedByTypes>(type),
                 Duration = duration,
                 Modifier = modifier,
-                Location = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<ApplyTypes>(location),
-                Flags = flags
+                Location = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnum<ApplyTypes>(location)
             };
+            newAffect.BitVector.SetBit(bits);
+
             Affects.Add(newAffect);
         }
 

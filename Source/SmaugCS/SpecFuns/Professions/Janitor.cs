@@ -19,7 +19,7 @@ namespace SmaugCS.SpecFuns.Professions
 
             foreach (var trash in ch.CurrentRoom.Contents
                 .Where(x => x.WearFlags.IsSet(ItemWearFlags.Take))
-                .Where(x => !x.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+                .Where(x => !x.ExtraFlags.IsSet((int)ItemExtraFlags.Buried))
                 .Where(trash => trash.ItemType == ItemTypes.DrinkContainer || trash.ItemType == ItemTypes.Trash
                     || trash.Cost < 10 || (trash.ObjectIndex.ID == shoppingBagId && trash.Contents.First() == null)))
             {

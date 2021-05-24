@@ -29,7 +29,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (!ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Silence))
+            if (!ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Silence))
             {
                 ch.SendTo("Your message didn't get through.\r\n");
                 return;
@@ -57,7 +57,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.AwayFromKeyboard))
+            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
             {
                 ch.SendTo("That player is afk.\r\n");
                 return;

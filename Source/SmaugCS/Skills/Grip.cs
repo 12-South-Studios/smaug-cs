@@ -16,7 +16,7 @@ namespace SmaugCS.Skills
             if (!victim.IsAwake())
                 return false;
 
-            if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Grip))
+            if (victim.IsNpc() && !victim.Defenses.IsSet((int)DefenseTypes.Grip))
                 return false;
 
             var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("grip");

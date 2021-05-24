@@ -31,7 +31,7 @@ namespace SmaugCS.Commands.Social
 
             var actflags = ch.Act;
             if (ch.IsNpc())
-                ch.Act.RemoveBit(ActFlags.Secretive);
+                ch.Act.RemoveBit((int)ActFlags.Secretive);
 
             foreach (var vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
             {

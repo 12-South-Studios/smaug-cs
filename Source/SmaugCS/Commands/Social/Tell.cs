@@ -31,7 +31,7 @@ namespace SmaugCS.Commands.Social
             }
 
             if (!ch.IsNpc() &&
-                (ch.Act.IsSet(PlayerFlags.Silence) || ch.Act.IsSet(PlayerFlags.NoTell)))
+                (ch.Act.IsSet((int)PlayerFlags.Silence) || ch.Act.IsSet((int)PlayerFlags.NoTell)))
             {
                 ch.SendTo("You can't do that.\r\n");
                 return;
@@ -84,7 +84,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.AwayFromKeyboard))
+            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
             {
                 ch.SendTo("That player is afk.");
                 return;

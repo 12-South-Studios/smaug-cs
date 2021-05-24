@@ -77,7 +77,7 @@ namespace SmaugCS.Commands.Combat
             if (sneak == null) return false;
 
             ch.StripAffects((int)sneak.ID);
-            ch.AffectedBy = ch.AffectedBy.RemoveBit(AffectedByTypes.Sneak);
+            ch.AffectedBy.RemoveBit((int)AffectedByTypes.Sneak);
 
             if (ch.CurrentMount?.CurrentFighting != null)
                 ch.CurrentMount.StopFighting(true);

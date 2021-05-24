@@ -273,7 +273,7 @@ namespace SmaugCS
 
             #endregion
 
-            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.Secretive) && type != ToTypes.Character)
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Secretive) && type != ToTypes.Character)
                 return;
 
             if (type == ToTypes.Victim)
@@ -323,7 +323,7 @@ namespace SmaugCS
                     continue;
                 if (type == ToTypes.CanSee &&
                     (to == ch ||
-                     (!to.IsImmortal() && !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.WizardInvisibility) && to.Trust <
+                     (!to.IsImmortal() && !ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.WizardInvisibility) && to.Trust <
                       (playerInstance != null
                           ? (playerInstance.PlayerData?.WizardInvisible ?? 0)
                           : 0))))
@@ -374,7 +374,7 @@ namespace SmaugCS
             var och = d.Original ?? d.Character;
             var buffer = string.Empty;
 
-            var ansi = !och.IsNpc() && och.Act.IsSet(PlayerFlags.Ansi);
+            var ansi = !och.IsNpc() && och.Act.IsSet((int)PlayerFlags.Ansi);
 
             const string helpstart = "<Type HELP START>";
 

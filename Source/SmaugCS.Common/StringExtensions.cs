@@ -110,7 +110,7 @@ namespace SmaugCS.Common
 
             foreach (string number in numbers)
             {
-                if (!ulong.TryParse(number, out ulong num))
+                if (!int.TryParse(number, out int num))
                     continue;
 
                 bit.SetBit(num);

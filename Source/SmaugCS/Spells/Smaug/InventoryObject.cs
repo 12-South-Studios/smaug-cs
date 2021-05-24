@@ -160,11 +160,11 @@ namespace SmaugCS.Spells.Smaug
         {
             var percent = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 20;
             if (CheckFunctions.CheckIfTrueCasting(
-                    obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible) || ch.Chance(percent), skill, ch))
+                    obj.ExtraFlags.IsSet((int)ItemExtraFlags.Invisible) || ch.Chance(percent), skill, ch))
                 return ReturnTypes.SpellFailed;
 
             ch.SuccessfulCast(skill, null, obj);
-            obj.ExtraFlags.SetBit(ItemExtraFlags.Invisible);
+            obj.ExtraFlags.SetBit((int)ItemExtraFlags.Invisible);
             return ReturnTypes.None;
         }
 

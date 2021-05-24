@@ -33,45 +33,45 @@ namespace SmaugCS.Extensions.Objects
 
             var sb = new StringBuilder();
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Invisible))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 0));
             if ((ch.IsAffected(AffectedByTypes.DetectEvil)
                  || ch.CurrentClass == ClassTypes.Paladin)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.Evil))
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Evil))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 1));
 
             if (ch.CurrentClass == ClassTypes.Paladin)
                 GetPaladinDescriptions(obj, sb, lookupMgr);
 
             if ((ch.IsAffected(AffectedByTypes.DetectMagic)
-                 || ch.Act.IsSet(PlayerFlags.HolyLight))
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+                 || ch.Act.IsSet((int)PlayerFlags.HolyLight))
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 8));
-            if (!glowsee && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow))
+            if (!glowsee && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Glow))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 9));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hum))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Hum))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 10));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Hidden))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Hidden))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 11));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Buried))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Buried))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 12));
-            if (ch.IsImmortal() && obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype))
+            if (ch.IsImmortal() && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Prototype))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 13));
             if ((ch.IsAffected(AffectedByTypes.DetectTraps)
-                 || ch.Act.IsSet(PlayerFlags.HolyLight))
+                 || ch.Act.IsSet((int)PlayerFlags.HolyLight))
                 && obj.IsTrapped())
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 14));
 
             if (isShortDescription)
             {
-                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet(PlayerFlags.HolyLight)))
+                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
                     sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 15));
                 else if (!string.IsNullOrWhiteSpace(obj.ShortDescription))
                     sb.Append(obj.ShortDescription);
             }
             else
             {
-                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet(PlayerFlags.HolyLight)))
+                if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
                     sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 16));
                 else if (!string.IsNullOrWhiteSpace(obj.Description))
                     sb.Append(obj.Description);
@@ -82,36 +82,36 @@ namespace SmaugCS.Extensions.Objects
 
         private static void GetPaladinDescriptions(ObjectInstance obj, StringBuilder sb, ILookupManager lookupMgr)
         {
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil)
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 2));
-            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+            if (!obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 3));
-            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+            if (!obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 4));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral)
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 5));
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                && !obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil)
+                && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral)
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 6));
-            if (!obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral)
-                && obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood))
+            if (!obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil)
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral)
+                && obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood))
                 sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 7));
         }
 
         private static bool IsGlowingOrCanSee(ObjectInstance obj, CharacterInstance ch)
         {
-            return obj.ExtraFlags.IsSet(ItemExtraFlags.Invisible)
-                    && obj.ExtraFlags.IsSet(ItemExtraFlags.Glow)
+            return obj.ExtraFlags.IsSet((int)ItemExtraFlags.Invisible)
+                    && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Glow)
                     && !ch.IsAffected(AffectedByTypes.TrueSight)
                     && !ch.IsAffected(AffectedByTypes.DetectInvisibility);
         }
@@ -204,6 +204,11 @@ namespace SmaugCS.Extensions.Objects
                 handler.GlobalObjectCode = ReturnTypes.ObjectExtracted;
         }
 
+        public static bool IsObjStat(this ObjectInstance obj, ItemExtraFlags flag)
+        {
+            return obj.ExtraFlags.IsSet((int)flag);
+        }
+
         public static bool IsTrapped(this ObjectInstance obj)
         {
             return obj.Contents.Any(check => check.ItemType == ItemTypes.Trap);
@@ -216,7 +221,7 @@ namespace SmaugCS.Extensions.Objects
 
         public static bool IsInMagicContainer(this ObjectInstance obj)
         {
-            if (obj.ItemType == ItemTypes.Container && obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+            if (obj.ItemType == ItemTypes.Container && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
                 return true;
             return obj.InObject != null && obj.InObject.IsInMagicContainer();
         }
@@ -228,8 +233,8 @@ namespace SmaugCS.Extensions.Objects
             var wearLoc = (int)obj.WearLocation;
             var extraFlags = obj.ExtraFlags;
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && !ch.IsImmortal()
-                && (!ch.IsNpc() || !ch.Act.IsSet(ActFlags.Prototype)))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Prototype) && !ch.IsImmortal()
+                && (!ch.IsNpc() || !ch.Act.IsSet((int)ActFlags.Prototype)))
                 return ch.CurrentRoom.AddTo(obj);
 
             var skipGroup = false;
@@ -311,7 +316,7 @@ namespace SmaugCS.Extensions.Objects
                 ch.CarryNumber += onum;
                 ch.CarryWeight += oweight;
             }
-            else if (!extraFlags.IsSet(ItemExtraFlags.Magical))
+            else if (!extraFlags.IsSet((int)ItemExtraFlags.Magical))
                 ch.CarryWeight += oweight;
 
             return groupObj ?? obj;
@@ -334,7 +339,7 @@ namespace SmaugCS.Extensions.Objects
 
             ch.Carrying.ToList().Remove(obj);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null && obj.Contents.Count > 0)
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Covering) && obj.Contents != null && obj.Contents.Count > 0)
                 obj.Empty();
 
             obj.InRoom = null;
@@ -379,7 +384,7 @@ namespace SmaugCS.Extensions.Objects
 
             o.Contents.Remove(obj);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null)
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Covering) && obj.Contents != null)
                 obj.Empty(o);
 
             obj.InObject = null;

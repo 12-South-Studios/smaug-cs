@@ -42,12 +42,12 @@ namespace SmaugCS.Commands.Social
 
         private static void GlanceAtRoom(CharacterInstance ch)
         {
-            var brief = ch.Act.IsSet(PlayerFlags.Brief);
+            var brief = ch.Act.IsSet((int)PlayerFlags.Brief);
 
-            ch.Act.SetBit(PlayerFlags.Brief);
+            ch.Act.SetBit((int)PlayerFlags.Brief);
             Look.do_look(ch, "auto");
             if (!brief)
-                ch.Act.RemoveBit(PlayerFlags.Brief);
+                ch.Act.RemoveBit((int)PlayerFlags.Brief);
         }
 
         private static void GlanceFromImmortal(CharacterInstance ch, CharacterInstance victim)

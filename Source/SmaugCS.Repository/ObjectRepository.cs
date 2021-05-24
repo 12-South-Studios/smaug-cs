@@ -25,7 +25,7 @@ namespace SmaugCS.Repository
 
 
             var newObject = new ObjectTemplate(id, name);
-            newObject.ExtraFlags.SetBit(ItemExtraFlags.Prototype);
+            newObject.ExtraFlags.SetBit((int)ItemExtraFlags.Prototype);
 
             Add(id, newObject);
             LastObject = newObject;

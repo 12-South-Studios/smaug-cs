@@ -46,7 +46,7 @@ namespace SmaugCS.Commands.Objects
 
             if (CheckFunctions.CheckIfNullObject(ch, obj, "You aren't carrying that.")) return;
             if (CheckFunctions.CheckIfTrue(ch, obj.Timer > 0, "You can't auction objects that are decaying.")) return;
-            if (CheckFunctions.CheckIfSet(ch, obj.ExtraFlags, ItemExtraFlags.Personal,
+            if (CheckFunctions.CheckIfSet(ch, obj.ExtraFlags, (int)ItemExtraFlags.Personal,
                 "Personal items may not be auctioned.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch,
@@ -288,7 +288,7 @@ namespace SmaugCS.Commands.Objects
         {
             ch.Printf("Damage is %d to %d (Average %d).%s",
                 obj.Value.ToList()[1], obj.Value.ToList()[2], (obj.Value.ToList()[1] + obj.Value.ToList()[2]) / 2,
-                obj.ExtraFlags.IsSet(ItemExtraFlags.Poisoned) ? "This weapon is poisoned." : string.Empty);
+                obj.ExtraFlags.IsSet((int)ItemExtraFlags.Poisoned) ? "This weapon is poisoned." : string.Empty);
         }
 
         private static void DisplayArmorDetails(CharacterInstance ch, ObjectInstance obj)

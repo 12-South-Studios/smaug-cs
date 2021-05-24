@@ -64,7 +64,7 @@ namespace SmaugCS.Repository
                     mi.SpecialFunctionName = mobParent.SpecFun;
             }
 
-            if (mob.Act.IsSet(ActFlags.MobInvisibility))
+            if (mob.Act.IsSet((int)ActFlags.MobInvisibility))
                 mob.MobInvisible = mob.Level;
 
             mob.ArmorClass = mobParent.GetStatistic<int>(StatisticTypes.ArmorClass) > 0

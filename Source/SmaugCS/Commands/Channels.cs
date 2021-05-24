@@ -32,7 +32,7 @@ namespace SmaugCS.Commands
 
         private static void ListChannels(PlayerInstance ch, string argument)
         {
-            if (string.IsNullOrEmpty(argument) && ch.Act.IsSet(PlayerFlags.Silence))
+            if (string.IsNullOrEmpty(argument) && ch.Act.IsSet((int)PlayerFlags.Silence))
             {
                 ch.SetColor(ATTypes.AT_GREEN);
                 ch.SendTo("You are silenced.");

@@ -46,7 +46,7 @@ namespace SmaugCS
                         x.WearFlags.IsSet(ItemWearFlags.Take) &&
                         ch.Level <
                         GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake))
-                .Where(x => x.ExtraFlags.IsSet(ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
+                .Where(x => x.ExtraFlags.IsSet((int)ItemExtraFlags.Prototype) && ch.CanTakePrototype()))
             {
                 comm.act(ATTypes.AT_ACTION, "You get $p from $P", ch, content, corpse, ToTypes.Character);
                 comm.act(ATTypes.AT_ACTION, "$n gets $p from $P", ch, content, corpse, ToTypes.Room);
@@ -253,7 +253,7 @@ namespace SmaugCS
             //// Add a timer to pkillers
             if (!ch.IsNpc() && !victim.IsNpc())
             {
-                if (ch.Act.IsSet(PlayerFlags.Nice))
+                if (ch.Act.IsSet((int)PlayerFlags.Nice))
                     return ReturnTypes.None;
 
                 ch.AddTimer(TimerTypes.RecentFight, 11);
@@ -263,7 +263,7 @@ namespace SmaugCS
             if (ch.IsAttackSuppressed())
                 return ReturnTypes.None;
 
-            if (ch.IsNpc() && ch.Act.IsSet(ActFlags.NoAttack))
+            if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.NoAttack))
                 return ReturnTypes.None;
 
             var retcode = one_hit(ch, victim, dt);
@@ -718,7 +718,7 @@ namespace SmaugCS
             var plusRIS = 0;
             if (wield != null)
             {
-                damage = wield.ExtraFlags.IsSet(ItemExtraFlags.Magical)
+                damage = wield.ExtraFlags.IsSet((int)ItemExtraFlags.Magical)
                     ? victim.ModifyDamageWithResistance(damage, ResistanceTypes.Magic)
                     : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
 
@@ -931,7 +931,7 @@ namespace SmaugCS
             if (damage <= 0)
                 damage = 1;
 
-            damage = projectile.ExtraFlags.IsSet(ItemExtraFlags.Magical)
+            damage = projectile.ExtraFlags.IsSet((int)ItemExtraFlags.Magical)
                 ? victim.ModifyDamageWithResistance(damage, ResistanceTypes.Magic)
                 : victim.ModifyDamageWithResistance(damage, ResistanceTypes.NonMagic);
 
@@ -1189,7 +1189,7 @@ namespace SmaugCS
             }
 
             // killers and thieves are okay to kill 
-            if (victim.Act.IsSet(PlayerFlags.Killer) || victim.Act.IsSet(PlayerFlags.Thief))
+            if (victim.Act.IsSet((int)PlayerFlags.Killer) || victim.Act.IsSet((int)PlayerFlags.Thief))
             {
                 if (!ch.IsNpc())
                 {
@@ -1292,7 +1292,7 @@ namespace SmaugCS
                 {
                     LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
                     // TODO: affect_strip
-                    ch.AffectedBy.RemoveBit(AffectedByTypes.Charm);
+                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                     return;
                 }
 
@@ -1365,9 +1365,9 @@ namespace SmaugCS
             ch.SendTo("A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'");
             ch.SetColor(ATTypes.AT_WHITE);
             ch.SendTo("You feel as if your soul has been revealed for all to see.");
-            ch.Act.SetBit(PlayerFlags.Killer);
-            if (ch.Act.IsSet(PlayerFlags.Attacker))
-                ch.Act.RemoveBit(PlayerFlags.Attacker);
+            ch.Act.SetBit((int)PlayerFlags.Killer);
+            if (ch.Act.IsSet((int)PlayerFlags.Attacker))
+                ch.Act.RemoveBit((int)PlayerFlags.Attacker);
             save.save_char_obj(ch);
         }
 
@@ -1559,9 +1559,9 @@ namespace SmaugCS
             foreach (
                 var obj in
                     gch.Carrying.Where(obj => obj.WearLocation != WearLocations.None)
-                       .Where(obj => (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiEvil) && gch.IsEvil())
-                                     || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiGood) && gch.IsGood())
-                                     || (obj.ExtraFlags.IsSet(ItemExtraFlags.AntiNeutral) && gch.IsNeutral())))
+                       .Where(obj => (obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiEvil) && gch.IsEvil())
+                                     || (obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiGood) && gch.IsGood())
+                                     || (obj.ExtraFlags.IsSet((int)ItemExtraFlags.AntiNeutral) && gch.IsNeutral())))
             {
                 comm.act(ATTypes.AT_MAGIC, "You are zapped by $p.", gch, obj, null, ToTypes.Character);
                 comm.act(ATTypes.AT_MAGIC, "$n is zapped by $p.", gch, obj, null, ToTypes.Room);

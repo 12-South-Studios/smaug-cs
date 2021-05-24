@@ -96,7 +96,7 @@ namespace SmaugCS.Commands.Liquids
 
         private static void EmptyToGround(CharacterInstance ch, ObjectInstance obj)
         {
-            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDrop) || ch.Act.IsSet(PlayerFlags.Litterbug))
+            if (ch.CurrentRoom.Flags.IsSet(RoomFlags.NoDrop) || ch.Act.IsSet((int)PlayerFlags.Litterbug))
             {
                 ch.SendTo("&[magic]A magical force stops you!");
                 ch.SendTo("&[tell]Someone tells you, 'No littering here!");

@@ -20,8 +20,8 @@ namespace SmaugCS.Commands.Combat
             if (CheckFunctions.CheckIfTrue(ch, victim.IsNpc() && victim.CurrentMorph != null,
                 "This creature appears strange to you. Look upon it more closely before attempting to kill it."))
                 return;
-            if (CheckFunctions.CheckIfTrue(ch, !victim.IsNpc() && !victim.Act.IsSet(PlayerFlags.Killer)
-                && !victim.Act.IsSet(PlayerFlags.Thief), "You must MURDER a player.")) return;
+            if (CheckFunctions.CheckIfTrue(ch, !victim.IsNpc() && !victim.Act.IsSet((int)PlayerFlags.Killer)
+                && !victim.Act.IsSet((int)PlayerFlags.Thief), "You must MURDER a player.")) return;
             if (CheckFunctions.CheckIfEquivalent(ch, ch, victim, "You hit yourself.  Ouch!"))
             {
                 fight.multi_hit(ch, ch, Program.TYPE_UNDEFINED);

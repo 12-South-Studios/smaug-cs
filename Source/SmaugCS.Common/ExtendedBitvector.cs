@@ -1,213 +1,211 @@
-﻿namespace SmaugCS.Common
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace SmaugCS.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExtendedBitvector
     {
-        private ulong _bits;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const int INTBITS = 32;
 
-        public ExtendedBitvector() { }
+        /// <summary>
+        /// Extended Bitmask (INTBITS - 1)
+        /// </summary>
+        public const int XBM = INTBITS - 1;
 
-        public ExtendedBitvector(ExtendedBitvector clone)
-        {
-            _bits = clone._bits;
-        }
+        /// <summary>
+        /// Right-Shift Value.  Square-Root of XBM + 1
+        /// </summary>
+        public const int RSV = 5;
 
-        public bool IsEmpty() => _bits == 0;
+        /// <summary>
+        /// Integers in an ExtendedBitvector
+        /// </summary>
+        public const int XBI = 4;
 
-        #region IsSet
-
-        public bool IsSet(ulong bit) => (_bits & bit) > 0;
-
-        public bool IsSet(int bit) => IsSet((ulong)bit);
-
-        #endregion
-
-        #region SetBit
-
-        public ulong SetBit(ulong bit)
-        {
-            _bits |= bit;
-            return _bits;
-        }
-
-        public ulong SetBit(int bit) => SetBit((ulong)bit);
-        #endregion
-
-        #region RemoveBit
-
-        public ulong RemoveBit(ulong bit)
-        {
-            _bits &= ~bit;
-            return _bits;
-        }
-
-        public ulong RemoveBit(int bit) => RemoveBit((ulong)bit);
-        #endregion
-
-        #region ToggleBit
-
-        public ulong ToggleBit(ulong bit)
-        {
-            _bits ^= bit;
-            return _bits;
-        }
-
-        public ulong ToggleBit(int bit) => ToggleBit((ulong)bit);
-        #endregion
-
-        /*#region Extended Bitvectors
-#if !INTBITS
-        private const int INTBITS = 32;
-#endif
-
-        public const int XBM = 31; // extended bitmask (INTBITS - 1)
-        public const int RSV = 5; // Right-shift value (sqrt(XBM+1))
-        public const int XBI = 4; // Integers in an extended bitvector
+        /// <summary>
+        /// 
+        /// </summary>
         public const int MAX_BITS = XBI * INTBITS;
 
-        #endregion
+        private int[] _bits;
 
-        public uint[] Bits { get; private set; }
-
-        public ExtendedBitvector()
+        /// <summary>
+        /// 
+        /// </summary>
+        public ExtendedBitvector() 
         {
-            Bits = new uint[XBI];
-        }
-
-        public ExtendedBitvector(ExtendedBitvector exBV)
-        {
-            Bits = new uint[XBI];
-            SetBits(exBV);    
-        }
-
-        public bool IsEmpty()
-        {
-            return !Bits.Any(x => x != 0);
-        }
-
-        public uint HasBits(ExtendedBitvector checkBits)
-        {
-            uint bit;
-            for (int x = 0; x < XBI; x++)
-                if ((bit = (Bits[x] & checkBits.Bits[x])) != 0)
-                    return bit;
-            return 0;
-        }
-
-        public bool SameBits(ExtendedBitvector checkBits)
-        {
-            for (int x = 0; x < XBI; x++)
-                if (Bits[x] != checkBits.Bits[x])
-                    return false;
-            return true;
-        }
-
-        public void SetBits(ExtendedBitvector bitsToSet)
-        {
-            for (int x = 0; x < XBI; x++)
-                Bits[x] |= bitsToSet.Bits[x];
-        }
-
-        public void RemoveBits(ExtendedBitvector bitsToRemove)
-        {
-            for (int x = 0; x < XBI; x++)
-                Bits[x] &= ~(bitsToRemove.Bits[x]);
-        }
-
-        public void ToggleBits(ExtendedBitvector bitsToToggle)
-        {
-            for (int x = 0; x < XBI; x++)
-                Bits[x] ^= bitsToToggle.Bits[x];
-        }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            int counter;
-
-            for (counter = XBI - 1; counter > 0; counter--)
-            {
-                if (Bits[counter] == 0)
-                    break;
-            }
-
-            for (int x = 0; x <= counter; x++)
-            {
-                sb.Append(Bits[x]);
-                if (x < counter)
-                    sb.Append("&");
-            }
-
-            return sb.ToString();
+            _bits = new int[XBI];
+            ClearBits();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="flags"></param>
+        /// <param name="clone"></param>
+        public ExtendedBitvector(ExtendedBitvector clone)
+        {
+            _bits = new int[XBI];
+            for(var x=0; x<XBI;x++)
+                _bits[x] = clone.Bits[x];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int[] Bits => _bits.ToArray();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bit"></param>
         /// <returns></returns>
-        public string GetFlagString(IEnumerable<string> flags)
+        public bool IsSet(int bit)
         {
-            string flagString = string.Empty;
-            string[] flagArray = flags.ToArray();
-
-            for (int x = 0; x < MAX_BITS; ++x)
-            {
-                if (IsSet(x))
-                    flagString += flagArray[x] + " ";
-            }
-
-            return flagString;
+            var result = _bits[bit >> RSV] & 1 << (bit & XBM);
+            return result != 0;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bit"></param>
+        public void SetBit(int bit)
+        {
+            _bits[bit >> RSV] |= 1 << (bit & XBM);
         }
 
-        public bool IsSet(uint bit)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bits"></param>
+        public void SetBits(ExtendedBitvector bits)
         {
-            return (Bits[bit >> RSV] & 1 << (bit & XBM)) > 0;
+            for (var x = 0; x < XBI; x++)
+                _bits[x] |= bits.Bits[x];
         }
 
-        public uint SetBit(uint bit)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bit"></param>
+        public void RemoveBit(int bit)
         {
-            return (Bits[bit >> RSV] |= (uint)1 << (bit & XBM));
+            _bits[bit >> RSV] &= ~(1 << (bit & XBM));
         }
 
-        public uint RemoveBit(uint bit)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bits"></param>
+        public void RemoveBits(ExtendedBitvector bits)
         {
-            return (Bits[bit >> RSV] &= ~((uint)1 << (bit & XBM)));
+            for (var x = 0; x < XBI; x++)
+                _bits[x] &= ~bits.Bits[x];
         }
 
-        public uint ToggleBit(uint bit)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bit"></param>
+        public void ToggleBit(int bit)
         {
-            return (Bits[bit >> RSV] ^= (uint)1 << (bit & XBM));
+            _bits[bit >> RSV] ^= 1 << (bit & XBM);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bits"></param>
+        public void ToggleBits(ExtendedBitvector bits)
+        {
+            for (var x = 0; x < XBI; x++)
+                _bits[x] ^= bits.Bits[x];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void ClearBits()
         {
-            for (int x = 0; x < XBI; x++)
-                Bits[x] = 0;
+            for (var x = 0; x < XBI; x++)
+                _bits[x] = 0;
         }
 
-        public static ExtendedBitvector Meb(uint bit)
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsEmpty() => _bits.All(x => x == 0);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bits"></param>
+        /// <returns></returns>
+        public int HasBits(ExtendedBitvector bits)
         {
-            ExtendedBitvector bits = new ExtendedBitvector();
-            bits.ClearBits();
-            if (bit >= 0)
-                bits.SetBit(bit);
-            return bits;
-        }
-
-        public static ExtendedBitvector MultiMeb(uint bit, params object[] args)
-        {
-            if (bit < 0)
-                return new ExtendedBitvector();
-
-            ExtendedBitvector bits = new ExtendedBitvector();
-            bits.SetBit(bit);
-
-            foreach (uint val in args.Cast<uint>().Where(val => val != -1))
+            for(var x=0; x<XBI; x++)
             {
-                bits.SetBit(val);
+                var bit = _bits[x] & bits.Bits[x];
+                if (bit != 0) return bit;
             }
 
+            return 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bits"></param>
+        /// <returns></returns>
+        public bool SameBits(ExtendedBitvector bits)
+        {
+            for(var x=0; x<XBI; x++)
+            {
+                if (_bits[x] != bits.Bits[x])
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// AKA meb
+        /// </summary>
+        /// <param name="bit"></param>
+        public static ExtendedBitvector Meb(int bit)
+        {
+            var bits = new ExtendedBitvector();
+            bits.ClearBits();
+
+            if (bit >= 0)
+                bits.SetBit(bit);
+
             return bits;
-        }*/
+        }
+
+        /// <summary>
+        /// AKA multimeb
+        /// </summary>
+        /// <param name="bit"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static ExtendedBitvector MultiMeb(int bit, params int[] args)
+        {
+            var bits = new ExtendedBitvector();
+            bits.ClearBits();
+
+            if (bit < 0) return bits;
+
+            bits.SetBit(bit);
+
+            foreach (var arg in args)
+                bits.SetBit(arg);
+
+            return bits;
+        }
     }
 }

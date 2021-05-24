@@ -52,8 +52,22 @@ namespace SmaugCS.Extensions.Character
             if (modifiedDamage > maxDamage)
                 modifiedDamage = maxDamage;
 
-            // TODO damage someone else
+            if (victim != ch)
+            {
+                if (IsSafe(ch, victim, true))
+                    return ReturnTypes.None;
+                CheckAttacker(ch, victim);
 
+                if (victim.CurrentPosition == PositionTypes.Stunned)
+                {
+                    if (victim.CurrentFighting == null && victim.CurrentRoom == ch.CurrentRoom)
+                        StartFighting(victim, ch);
+                }
+                
+            }
+
+            // Code to handle equipment getting damaged, and also support bonuses / penalties
+            // for having or not having equipment where hit
             if (modifiedDamage > 10 && dt != Program.TYPE_UNDEFINED)
                 modifiedDamage = ModifyDamageForEquipment(victim, modifiedDamage);
 
@@ -107,7 +121,7 @@ namespace SmaugCS.Extensions.Character
 
             if (!victim.IsNpc() && victim.CurrentHealth > 0 && victim.CurrentHealth <= victim.wimpy && victim.wait == 0)
                 Flee.do_flee(victim, string.Empty);
-            else if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.Flee))
+            else if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Flee))
                 Flee.do_flee(victim, string.Empty);
 
             // TODO tail_chain();
@@ -117,7 +131,7 @@ namespace SmaugCS.Extensions.Character
 
         private static void DoFlee(CharacterInstance ch, CharacterInstance victim)
         {
-            if ((victim.Act.IsSet(ActFlags.Wimpy) && SmaugRandom.Bits(1) == 0
+            if ((victim.Act.IsSet((int)ActFlags.Wimpy) && SmaugRandom.Bits(1) == 0
                 && victim.CurrentHealth < victim.MaximumHealth / 2) || (victim.IsAffected(AffectedByTypes.Charm)
                 && victim.Master != null && victim.Master.CurrentRoom != victim.CurrentRoom))
             {
@@ -126,6 +140,11 @@ namespace SmaugCS.Extensions.Character
                 mob.StopHunting();
                 Flee.do_flee(victim, string.Empty);
             }
+        }
+
+        private static int GetMaximumFight()
+        {
+            return GameConstants.GetConstant<int>("MaximumFight");
         }
 
         private static void StopFighting(CharacterInstance ch, CharacterInstance victim)
@@ -142,6 +161,141 @@ namespace SmaugCS.Extensions.Character
             }
 
             victim.StopFighting(!victim.IsNpc() && ch.IsNpc());
+        }
+
+        private static void StartFighting(CharacterInstance ch, CharacterInstance victim)
+        {
+            if (ch.CurrentFighting != null) return;
+
+            if (ch.AffectedBy.IsSet((int)AffectedByTypes.Sleep))
+            {
+                // TODO affect_strip(ch, gsn_sleep);
+            }
+
+            if (victim.NumberFighting > GetMaximumFight())
+            {
+                ch.SendTo("There are too many people fighting for you to join in.");
+                return;
+            }
+
+            var fight = new FightingData
+            {
+                Who = victim,
+                Experience = (int)(CalculateXP(ch, victim) * 0.85),
+                Alignment = CalculateAlign(ch, victim)
+            };
+
+            if (!ch.IsNpc() && victim.IsNpc())
+                fight.TimesKilled = handler.times_killed(ch, victim);
+
+            ch.NumberFighting = 1;
+            ch.CurrentFighting = fight;
+
+            if (ch.IsNpc())
+                ch.CurrentPosition = PositionTypes.Fighting;
+            else
+            {
+                if (StyleToPositionTable.TryGetValue(ch.CurrentStyle, out var position))
+                    ch.CurrentPosition = position;
+                else
+                    ch.CurrentPosition = PositionTypes.Fighting;
+            }
+
+            victim.NumberFighting++;
+            if (victim.Switched != null && victim.Switched.IsAffected(AffectedByTypes.Possess))
+            {
+                victim.Switched.SendTo("You are disturbed!");
+                // TODO do_return(victim.Switched, "");
+            }
+        }
+
+        private static Dictionary<StyleTypes, PositionTypes> StyleToPositionTable =
+            new Dictionary<StyleTypes, PositionTypes>
+            {
+                { StyleTypes.Evasive, PositionTypes.Evasive },
+                { StyleTypes.Defensive, PositionTypes.Defensive },
+                { StyleTypes.Aggressive, PositionTypes.Aggressive },
+                { StyleTypes.Berserk, PositionTypes.Berserk }
+            };
+
+        private static int CalculateXP(CharacterInstance gch, CharacterInstance victim)
+        {
+            int xp = victim.GetExperienceWorth() * Macros.URANGE(0, victim.Level - gch.Level + 10, 13) / 10;
+            int align = gch.CurrentAlignment - victim.CurrentAlignment;
+
+            // Bonus for opposite alignment
+            if (align > 990 || align < -990)
+                xp = (xp * 5) >> 2;
+            else
+            {
+                // Penalty for good attacking same alignment
+                if (gch.CurrentAlignment > 300 && align < 250)
+                    xp = (xp * 3) >> 2;
+            }
+            xp = SmaugRandom.Between((xp * 3) >> 2, (xp * 5) >> 2);
+
+
+            // 1/4 XP for players
+            if (!victim.IsNpc())
+                xp /= 4;
+            else
+            {
+                // Reduce XP for killing the same mob repeatedly
+                if (!gch.IsNpc())
+                {
+                    int times = handler.times_killed(gch, victim);
+                    if (times >= 20)
+                        xp = 0;
+                    else if (times > 0)
+                    {
+                        xp = (xp * (20 - times)) / 20;
+                        if (times > 15)
+                            xp /= 3;
+                        else if (times > 10)
+                            xp >>= 1;
+                    }
+                }
+            }
+
+            // Semi-intelligent experienced player vs notice player
+            if (!gch.IsNpc() && gch.Level > 5)
+            {
+                var xp_ratio = (int)((PlayerInstance)gch).TotalPlayedTime / gch.Level;
+                if (xp_ratio > 20000)
+                    xp = (xp * 5) >> 2;
+                else if (xp_ratio > 16000)
+                    xp = (xp * 3) >> 2;
+                else if (xp_ratio > 10000)
+                    xp >>= 1;
+                else if (xp_ratio > 5000)
+                    xp >>= 2;
+                else if (xp_ratio > 3500)
+                    xp >>= 3;
+                else if (xp_ratio > 2000)
+                    xp >>= 4;
+            }
+
+            // Level based xp gain cap
+            return Macros.URANGE(0, xp, handler.exp_level(gch, gch.Level + 1) - handler.exp_level(gch, gch.Level));
+        }
+
+        private static int CalculateAlign(CharacterInstance gch, CharacterInstance victim)
+        {
+            var align = gch.CurrentAlignment - victim.CurrentAlignment;
+
+            var divalign = 20;
+            if (gch.CurrentAlignment > -350 && gch.CurrentAlignment < 350)
+                divalign = 4;
+
+            var newAlign = 0;
+            if (align > 500)
+                newAlign = Macros.UMIN(gch.CurrentAlignment + (align - 500) / divalign, 1000);
+            else if (align < -500)
+                newAlign = Macros.UMAX(gch.CurrentAlignment + (align + 500) / divalign, -1000);
+            else
+                newAlign = gch.CurrentAlignment - (int)(gch.CurrentAlignment / divalign);
+
+            return newAlign;
         }
 
         private static void InflictPoison(CharacterInstance ch, CharacterInstance victim)
@@ -162,10 +316,132 @@ namespace SmaugCS.Extensions.Character
             }
         }
 
+        private static bool IsSafe(CharacterInstance ch, CharacterInstance victim, bool showMessage)
+        {
+            if (victim == null) return true;
+            if (victim.CurrentRoom == null) return true;
+
+            if (victim.CharDied() || ch.CharDied())
+                return true;
+
+            if (ch.CurrentFighting.Who == ch)
+                return false;
+
+            if (victim.CurrentRoom.Flags.IsSet((int)RoomFlags.Safe))
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_MAGIC);
+                    ch.SendTo("A magical force prevents you from attackking.");
+                }
+                return true;
+            }
+
+            if (ch.IsPacifist())
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_MAGIC);
+                    ch.SendTo("You are a pacifist and will not fight.");
+                }
+                return true;
+            }
+
+            if (victim.IsPacifist())
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_MAGIC);
+                    ch.SendTo($"{victim.ShortDescription.CapitalizeFirst()} is a pacifist and will not fight.");
+                }
+                return true;
+            }
+
+            if (!ch.IsNpc() && ch.IsImmortal())
+                return false;
+
+            if (!ch.IsNpc() && !victim.IsNpc() && ch != victim && victim.CurrentRoom.Area.Flags.IsSet(AreaFlags.NoPlayerVsPlayer))
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_IMMORT);
+                    ch.SendTo("The gods have forbidden player killing in this area.");
+                }
+                return true;
+            }
+
+            if (ch.IsNpc() || victim.IsNpc())
+                return false;
+
+            // TODO age (fight.c lines 2507 to 2525)
+
+            if (ch.Level - victim.Level > 5 | victim.Level - ch.Level > 5)
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_IMMORT);
+                    ch.SendTo("The gods do not allow murder when there is such a difference in level.");
+                }
+                return true;
+            }
+
+            if (victim.GetTimer(TimerTypes.PKilled) != null)
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_GREEN);
+                    ch.SendTo("That character has died within the last 5 minutes.");
+                }
+                return true;
+            }
+
+            if (ch.GetTimer(TimerTypes.PKilled) != null)
+            {
+                if (showMessage)
+                {
+                    ch.SetColor(ATTypes.AT_GREEN);
+                    ch.SendTo("You have been killed within the last 5 minutes.");
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void CheckAttacker(CharacterInstance ch, CharacterInstance victim)
+        {
+            // NPCs, Killers and Theives are fair game
+            if (victim.IsNpc() || victim.Act.IsSet((int)PlayerFlags.Killer) || victim.Act.IsSet((int)PlayerFlags.Thief))
+                return;
+
+            // Deadly character
+            if (!ch.IsNpc() && !victim.IsNpc() && ch.CanPKill() && victim.CanPKill())
+                return;
+
+            if (ch.IsAffected(AffectedByTypes.Charm))
+            {
+                if (ch.Master == null)
+                {
+                    // TODO affect_strip(ch, gsn_charm_person);
+                    ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
+                    return;
+                }
+                return;
+            }
+
+            if (ch.IsNpc() || ch == victim || ch.IsImmortal()
+                || ch.Act.IsSet((int)PlayerFlags.Attacker)
+                || ch.Act.IsSet((int)PlayerFlags.Killer))
+                return;
+
+            ch.Act.SetBit((int)PlayerFlags.Attacker);
+            // TODO save_char_obj(ch);
+        }
+
         private static void DoHuntAndHate(CharacterInstance ch, CharacterInstance victim)
         {
             var vict = (MobileInstance)victim;
-            if (!vict.Act.IsSet(ActFlags.Sentinel))
+            if (!vict.Act.IsSet((int)ActFlags.Sentinel))
             {
                 if (vict.CurrentHunting != null)
                 {
@@ -175,7 +451,7 @@ namespace SmaugCS.Extensions.Character
                         vict.CurrentHunting.Who = ch;
                     }
                 }
-                else if (!vict.Act.IsSet(ActFlags.Pacifist))
+                else if (!vict.Act.IsSet((int)ActFlags.Pacifist))
                     vict.StartHunting(ch);
             }
 
@@ -187,7 +463,7 @@ namespace SmaugCS.Extensions.Character
                     vict.CurrentHating.Who = ch;
                 }
             }
-            else if (!vict.Act.IsSet(ActFlags.Pacifist))
+            else if (!vict.Act.IsSet((int)ActFlags.Pacifist))
                 vict.StartHating(ch);
         }
 

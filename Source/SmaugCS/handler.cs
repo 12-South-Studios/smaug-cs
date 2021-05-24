@@ -124,7 +124,7 @@ namespace SmaugCS
                 return null;
             }
 
-            if (!container.ExtraFlags.IsSet(ItemExtraFlags.Covering) && container.Value.ToList()[1].IsSet(ContainerFlags.Closed))
+            if (!container.ExtraFlags.IsSet((int)ItemExtraFlags.Covering) && container.Value.ToList()[1].IsSet(ContainerFlags.Closed))
             {
                 comm.act(ATTypes.AT_PLAIN, "The $d is closed.", ch, null, container.Name, ToTypes.Character);
                 return null;
@@ -132,7 +132,7 @@ namespace SmaugCS
 
             obj = ch.GetObjectInList(container.Contents, arg1);
             if (obj == null)
-                comm.act(ATTypes.AT_PLAIN, container.ExtraFlags.IsSet(ItemExtraFlags.Covering)
+                comm.act(ATTypes.AT_PLAIN, container.ExtraFlags.IsSet((int)ItemExtraFlags.Covering)
                     ? "I see nothing like that beneath $p."
                     : "I see nothing like that in $p.", ch, container, null, ToTypes.Character);
 
@@ -285,10 +285,10 @@ namespace SmaugCS
                 }
             }
 
-            ch.AffectedBy = 0;
+            ch.AffectedBy = new ExtendedBitvector();
 
             var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
-            ch.AffectedBy.SetBit(race.AffectedBy);
+            ch.AffectedBy.SetBits(race.AffectedBy);
             ch.MentalState = -10;
             ch.CurrentHealth = 1.GetHighestOfTwoNumbers(ch.CurrentHealth);
             ch.CurrentMana = 1.GetHighestOfTwoNumbers(ch.CurrentMana);
@@ -330,7 +330,7 @@ namespace SmaugCS
             {
                 if (obj.WearLocation == WearLocations.None)
                     ch.CarryNumber += obj.ObjectNumber;
-                if (!obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+                if (!obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
                     ch.CarryWeight += obj.GetWeight();
             }
 
@@ -496,6 +496,48 @@ namespace SmaugCS
             }
 
             Return.do_return(ch.Switched, string.Empty);
+        }
+
+        public static void separate_obj(ObjectInstance obj)
+        {
+            obj.Split(1);
+        }
+
+        private static int GetMaxKillTrack()
+        {
+            return GameConstants.GetConstant<int>("MaxKillTrack");
+        }
+
+        private static int GetLevelAvatar()
+        {
+            return GameConstants.GetConstant<int>("level_avatar");
+        }
+
+        /// <summary>
+        /// How much experience is required for CH to get to a certain level
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static int exp_level(CharacterInstance ch, int level)
+        {
+            var lvl = Macros.UMAX(0, level - 1);
+            return lvl * lvl * lvl * ch.GetExperienceBase();
+        }
+
+        public static int times_killed(CharacterInstance ch, CharacterInstance mob)
+        {
+            if (ch.IsNpc()) return 0;
+            if (!mob.IsNpc()) return 0;
+
+            var templateId = (mob.Parent as MobileTemplate).ID;
+            var track = Macros.URANGE(2, ((ch.Level + 3) * GetMaxKillTrack()) / GetLevelAvatar(), GetMaxKillTrack());
+
+            var pc = (PlayerInstance)ch;
+            var killedData = pc.PlayerData.Killed.FirstOrDefault(y => y.ID == templateId);
+            if (killedData != null)
+                return killedData.Count;
+            return 0;
         }
     }
 }

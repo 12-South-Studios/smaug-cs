@@ -510,7 +510,7 @@ namespace SmaugCS.Tests
             var result = LuaCreateFunctions.LastObject.CastAs<RaceData>();
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.AffectedBy.IsSet(AffectedByTypes.Infrared), Is.True);
+            Assert.That(result.AffectedBy.IsSet((int)AffectedByTypes.Infrared), Is.True);
         }
         #endregion
 

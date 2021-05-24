@@ -35,7 +35,7 @@ namespace SmaugCS.LuaHelpers
             if (ch == null)
                 throw new LuaException("Character cannot be null");
 
-            return ch.IsNpc() && ch.Act.IsSet(ActFlags.Pacifist);
+            return ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Pacifist);
         }
 
         [LuaFunction("LIsMobInvis", "Gets if the mobile is invisible", "Character")]
@@ -44,7 +44,7 @@ namespace SmaugCS.LuaHelpers
             if (ch == null)
                 throw new LuaException("Character cannot be null");
 
-            return ch.IsNpc() && ch.Act.IsSet(ActFlags.MobInvisibility);
+            return ch.IsNpc() && ch.Act.IsSet((int)ActFlags.MobInvisibility);
         }
 
         [LuaFunction("LIsPC", "Gets if the character is a player", "Character")]
@@ -273,7 +273,7 @@ namespace SmaugCS.LuaHelpers
             if (ch == null)
                 throw new LuaException("Character cannot be null");
 
-            return !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Thief);
+            return !ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Thief);
         }
 
         [LuaFunction("LIsAttacker", "Gets if the player is an attacker", "Character")]
@@ -282,7 +282,7 @@ namespace SmaugCS.LuaHelpers
             if (ch == null)
                 throw new LuaException("Character cannot be null");
 
-            return !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Attacker);
+            return !ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Attacker);
         }
 
         [LuaFunction("LIsKiller", "Gets if the player is a killer", "Character")]
@@ -291,7 +291,7 @@ namespace SmaugCS.LuaHelpers
             if (ch == null)
                 throw new LuaException("Character cannot be null");
 
-            return !ch.IsNpc() && ch.Act.IsSet(PlayerFlags.Killer);
+            return !ch.IsNpc() && ch.Act.IsSet((int)PlayerFlags.Killer);
         }
 
         [LuaFunction("LIsFollowing", "Gets if the player is a follower", "Character")]

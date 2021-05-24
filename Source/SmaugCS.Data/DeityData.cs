@@ -26,7 +26,7 @@ namespace SmaugCS.Data
         public RaceTypes NPCFoe { get; set; }
         public int Suscept { get; set; }
         public int Element { get; set; }
-        public ExtendedBitvector AffectedBy { get; set; }
+        public ExtendedBitvector Affected { get; set; }
         public int SusceptNum { get; set; }
         public int ElementNum { get; set; }
         public int AffectedNum { get; set; }

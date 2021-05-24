@@ -58,7 +58,7 @@ namespace SmaugCS.Commands.Social
                 return;
             }
 
-            if (!victim.IsNpc() && victim.Act.IsSet(PlayerFlags.AwayFromKeyboard))
+            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.AwayFromKeyboard))
             {
                 ch.SendTo("That player is afk.");
                 return;

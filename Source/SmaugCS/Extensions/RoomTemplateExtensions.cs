@@ -104,7 +104,7 @@ namespace SmaugCS.Extensions
             obj.ObjectIndex.Affects.ToList().ForEach(room.RemoveAffect);
             room.Contents.Remove(obj);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Covering) && obj.Contents != null)
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Covering) && obj.Contents != null)
                 obj.Empty(null, room);
 
             obj.CarriedBy = null;

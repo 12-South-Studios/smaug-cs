@@ -19,7 +19,7 @@ namespace SmaugCS.Skills
             if (!victim.IsAwake())
                 return false;
 
-            if (victim.IsNpc() && !victim.Defenses.IsSet(DefenseTypes.Dodge))
+            if (victim.IsNpc() && !victim.Defenses.IsSet((int)DefenseTypes.Dodge))
                 return false;
 
             var skill = (databaseManager ?? RepositoryManager.Instance).GetEntity<SkillData>("dodge");

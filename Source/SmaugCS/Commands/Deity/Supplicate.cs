@@ -43,6 +43,8 @@ namespace SmaugCS.Commands.Deity
 
         private static void SupplicateForCorpse(PlayerInstance ch, string argument)
         {
+            var oldfavor = ch.PlayerData.Favor;
+
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateCorpseCost,
                 "You are not favored enough for a corpse retrieval.")) return;
             if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.ClanStoreroom,
@@ -59,15 +61,28 @@ namespace SmaugCS.Commands.Deity
             comm.act(ATTypes.AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, null, null, ToTypes.Room);
             corpse.InRoom.RemoveFrom(corpse);
             ch.CurrentRoom.AddTo(corpse);
-            corpse.ExtraFlags.RemoveBit(ItemExtraFlags.Buried);
+            corpse.ExtraFlags.RemoveBit((int)ItemExtraFlags.Buried);
 
             ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateCorpseCost;
 
-            // TODO Do suscept, element and affects
+            if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)
+                ch.Susceptibility.SetBit(ch.PlayerData.CurrentDeity.Suscept);
+
+            if ((oldfavor > ch.PlayerData.CurrentDeity.AffectedNum 
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.AffectedNum) 
+                || (oldfavor > ch.PlayerData.CurrentDeity.ElementNum 
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.ElementNum)
+                || (oldfavor < ch.PlayerData.CurrentDeity.SusceptNum 
+                && ch.PlayerData.Favor >= ch.PlayerData.CurrentDeity.SusceptNum))
+            {
+                ch.update_aris();
+            }
         }
 
         private static void SupplicateForAvatar(PlayerInstance ch, string argument)
         {
+            var oldfavor = ch.PlayerData.Favor;
+
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateAvatarCost,
                 "You are not favored enough for that.")) return;
 
@@ -79,17 +94,30 @@ namespace SmaugCS.Commands.Deity
             comm.act(ATTypes.AT_MAGIC, "$n summons a powerful avatar!", ch, null, null, ToTypes.Room);
             comm.act(ATTypes.AT_MAGIC, "You summon a powerful avatar!", ch, null, null, ToTypes.Character);
             mob.AddFollower(ch);
-            mob.AffectedBy.SetBit(AffectedByTypes.Charm);
+            mob.AffectedBy.SetBit((int)AffectedByTypes.Charm);
             mob.Level = 10;
             mob.MaximumHealth = ch.MaximumHealth * 6 + ch.PlayerData.Favor;
             mob.CurrentAlignment = ch.PlayerData.CurrentDeity.Alignment;
             ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateAvatarCost;
 
-            // TODO Do suscept, element and affects
+            if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)
+                ch.Susceptibility.SetBit(ch.PlayerData.CurrentDeity.Suscept);
+
+            if ((oldfavor > ch.PlayerData.CurrentDeity.AffectedNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.AffectedNum)
+                || (oldfavor > ch.PlayerData.CurrentDeity.ElementNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.ElementNum)
+                || (oldfavor < ch.PlayerData.CurrentDeity.SusceptNum
+                && ch.PlayerData.Favor >= ch.PlayerData.CurrentDeity.SusceptNum))
+            {
+                ch.update_aris();
+            }
         }
 
         private static void SupplicateForObject(PlayerInstance ch, string argument)
         {
+            var oldfavor = ch.PlayerData.Favor;
+
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost,
                 "You are not favored enough for that.")) return;
 
@@ -102,7 +130,18 @@ namespace SmaugCS.Commands.Deity
             comm.act(ATTypes.AT_MAGIC, "You weave $p from divine matter!", ch, obj, null, ToTypes.Character);
             ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost;
 
-            // TODO Do suscept, element and affects
+            if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)
+                ch.Susceptibility.SetBit(ch.PlayerData.CurrentDeity.Suscept);
+
+            if ((oldfavor > ch.PlayerData.CurrentDeity.AffectedNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.AffectedNum)
+                || (oldfavor > ch.PlayerData.CurrentDeity.ElementNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.ElementNum)
+                || (oldfavor < ch.PlayerData.CurrentDeity.SusceptNum
+                && ch.PlayerData.Favor >= ch.PlayerData.CurrentDeity.SusceptNum))
+            {
+                ch.update_aris();
+            }
 
             var af = new AffectData
             {
@@ -111,6 +150,7 @@ namespace SmaugCS.Commands.Deity
                 Location = GetApplyTypeForDeity(ch.PlayerData.CurrentDeity),
                 Modifier = 1
             };
+            af.BitVector.ClearBits();
             obj.Affects.Add(af);
         }
 
@@ -138,6 +178,8 @@ namespace SmaugCS.Commands.Deity
 
         private static void SupplicateForRecall(PlayerInstance ch, string argument)
         {
+            var oldfavor = ch.PlayerData.Favor;
+
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateRecallCost,
                    "Your favor is inadequate for such a supplication.")) return;
             if (CheckFunctions.CheckIfSet(ch, ch.CurrentRoom.Flags, RoomFlags.NoSupplicate, "You have been forsaken!"))
@@ -181,7 +223,18 @@ namespace SmaugCS.Commands.Deity
             Look.do_look(ch, "auto");
             ch.PlayerData.Favor -= ch.PlayerData.CurrentDeity.SupplicateRecallCost;
 
-            // TODO Do suscept, element and affects
+            if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)
+                ch.Susceptibility.SetBit(ch.PlayerData.CurrentDeity.Suscept);
+
+            if ((oldfavor > ch.PlayerData.CurrentDeity.AffectedNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.AffectedNum)
+                || (oldfavor > ch.PlayerData.CurrentDeity.ElementNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.ElementNum)
+                || (oldfavor < ch.PlayerData.CurrentDeity.SusceptNum
+                && ch.PlayerData.Favor >= ch.PlayerData.CurrentDeity.SusceptNum))
+            {
+                ch.update_aris();
+            }
         }
     }
 }

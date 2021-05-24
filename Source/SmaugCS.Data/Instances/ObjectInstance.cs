@@ -1,11 +1,13 @@
 ﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Numerics;
 using System.Xml.Serialization;
 
 namespace SmaugCS.Data.Instances
@@ -30,7 +32,7 @@ namespace SmaugCS.Data.Instances
         public string Owner { get; set; }
         public ItemTypes ItemType { get; set; }
         public int mpscriptpos { get; set; }
-        public int ExtraFlags { get; set; }
+        public ExtendedBitvector ExtraFlags { get; set; }
         public int MagicFlags { get; set; }
         public int WearFlags { get; set; }
         public MudProgActData mpact { get; set; }
@@ -38,7 +40,7 @@ namespace SmaugCS.Data.Instances
         public WearLocations WearLocation { get; set; }
         public int Weight { get; set; }
         public int Cost { get; set; }
-        public IEnumerable<int> Value { get; set; }
+        public List<int> Value { get; set; }
         public dynamic Values { get; set; }
         public int Count { get; set; }
 

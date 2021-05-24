@@ -33,7 +33,7 @@ namespace SmaugCS.Commands.Combat
                 "You take yourself by the scruff of your neck, but go nowhere.")) return;
             if (CheckFunctions.CheckIfNpc(ch, victim, "You can only drag characters.")) return;
             if (CheckFunctions.CheckIfTrue(ch,
-                !victim.Act.IsSet(PlayerFlags.ShoveDrag) || (!victim.IsNpc() && !victim.IsDeadly()),
+                !victim.Act.IsSet((int)PlayerFlags.ShoveDrag) || (!victim.IsNpc() && !victim.IsDeadly()),
                 "That character doesn't seem to appreciate your attentions.")) return;
             if (CheckFunctions.CheckIfTrue(ch, victim.HasTimer(TimerTypes.PKilled),
                 "You can't drag that player right now.")) return;

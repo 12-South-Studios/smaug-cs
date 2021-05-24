@@ -53,9 +53,9 @@ namespace SmaugCS.Data.Instances
         public int NumberOfAttacks { get; set; }
         public int CurrentCoin { get; set; }
         public int Experience { get; set; }
-        public int Act { get; set; }
-        public long AffectedBy { get; set; }
-        public long NoAffectedBy { get; set; }
+        public ExtendedBitvector Act { get; set; }
+        public ExtendedBitvector AffectedBy { get; set; }
+        public ExtendedBitvector NoAffectedBy { get; set; }
         public int CarryWeight { get; set; }
         public int CarryNumber { get; set; }
         public int ExtraFlags { get; set; }
@@ -66,7 +66,7 @@ namespace SmaugCS.Data.Instances
         public int Resistance { get; set; }
         public int Susceptibility { get; set; }
 
-        public int Defenses { get; set; }
+        public ExtendedBitvector Defenses { get; set; }
         public int Speaks { get; set; }
         public int Speaking { get; set; }
         public SavingThrowData SavingThrows { get; set; }
@@ -114,12 +114,14 @@ namespace SmaugCS.Data.Instances
             SavingThrows = new SavingThrowData();
             LuaVM = new LuaInterfaceProxy();
             Timers = new List<TimerData>();
+            Act = new ExtendedBitvector();
+            AffectedBy = new ExtendedBitvector();
         }
 
         #region IVerifiable
-        public bool IsNpc() => Act.IsSet(ActFlags.IsNpc) && !(this is PlayerInstance);
+        public bool IsNpc() => Act.IsSet((int)ActFlags.IsNpc) && !(this is PlayerInstance);
 
-        public bool IsAffected(AffectedByTypes affectedBy) => AffectedBy.IsSet(affectedBy);
+        public bool IsAffected(AffectedByTypes affectedBy) => AffectedBy.IsSet((int)affectedBy);
 
         public bool IsFloating() => IsAffected(AffectedByTypes.Flying) || IsAffected(AffectedByTypes.Floating);
 

@@ -28,8 +28,8 @@ namespace SmaugCS.Data.Test
             Assert.That(SkillData.Compare(null, null), Is.EqualTo(0));
         }
 
-        [TestCase("Test", "Tester", 1)]
-        [TestCase("Tester", "Test", -1)]
+        [TestCase("Test", "Tester", -1)]
+        [TestCase("Tester", "Test", 1)]
         [TestCase("Test", "Test", 0)]
         public void Compare_Test(string name1, string name2, int expectedValue)
         {
@@ -71,8 +71,8 @@ namespace SmaugCS.Data.Test
             Assert.That(SkillData.CompareByType(sk1, sk2), Is.EqualTo(expectedValue));
         }
 
-        [TestCase("Test", "Tester", 1)]
-        [TestCase("Tester", "Test", -1)]
+        [TestCase("Test", "Tester", -1)]
+        [TestCase("Tester", "Test", 1)]
         [TestCase("Test", "Test", 0)]
         public void CompareByType_CheckName_Test(string name1, string name2, int expectedValue)
         {

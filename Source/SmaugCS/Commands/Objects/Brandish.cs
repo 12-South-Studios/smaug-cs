@@ -53,7 +53,7 @@ namespace SmaugCS.Commands.Objects
                 if (!vch.IsNpc())
                 {
                     var pch = (PlayerInstance)ch;
-                    if (pch.Act.IsSet(PlayerFlags.WizardInvisibility) &&
+                    if (pch.Act.IsSet((int)PlayerFlags.WizardInvisibility) &&
                         pch.PlayerData.WizardInvisible >= LevelConstants.ImmortalLevel)
                         continue;
                 }

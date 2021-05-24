@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -42,21 +43,22 @@ namespace SmaugCS.Commands.Deity
 
             if (pch.PlayerData.Favor > deity.AffectedNum)
             {
-                // TODO Transfer Deity affecteds to player
+                pch.AffectedBy.SetBits(deity.Affected);
             }
             if (pch.PlayerData.Favor > deity.ElementNum)
             {
-                // TODO Transfer Deity elements to player resistance
+                pch.Resistance.SetBit(deity.Element);
             }
             if (pch.PlayerData.Favor > deity.SusceptNum)
             {
-                // TODO Transfer Deity suscept to player susceptible
+                pch.Susceptibility.SetBit(deity.Suscept);
             }
 
             comm.act(ATTypes.AT_MAGIC, "Body and soul, you devote yourself to $t!", ch, deity.Name, null, ToTypes.Character);
             deity.Worshippers++;
 
             // TODO: Save deity worshipper data to database
+            // save_deity( ch->pcdata->deity );
 
             save.save_char_obj(ch);
         }
@@ -64,18 +66,18 @@ namespace SmaugCS.Commands.Deity
         private static bool WillDeityDenyPlayerRace(CharacterInstance ch, DeityData deity)
         {
             return deity.Race != -1 && deity.Race2 != -1
-                   && (EnumerationExtensions.GetEnum<RaceTypes>(deity.Race) != ch.CurrentRace)
-                   && (EnumerationExtensions.GetEnum<RaceTypes>(deity.Race2) != ch.CurrentRace);
+                   && (Common.EnumerationExtensions.GetEnum<RaceTypes>(deity.Race) != ch.CurrentRace)
+                   && (Common.EnumerationExtensions.GetEnum<RaceTypes>(deity.Race2) != ch.CurrentRace);
         }
 
         private static bool WillDeityDenyPlayerGender(CharacterInstance ch, DeityData deity)
         {
-            return deity.Gender != -1 && (EnumerationExtensions.GetEnum<GenderTypes>(deity.Gender) != ch.Gender);
+            return deity.Gender != -1 && (Common.EnumerationExtensions.GetEnum<GenderTypes>(deity.Gender) != ch.Gender);
         }
 
         private static bool WillDeityDenyPlayerClass(CharacterInstance ch, DeityData deity)
         {
-            return deity.Class != -1 && (EnumerationExtensions.GetEnum<ClassTypes>(deity.Class) != ch.CurrentClass);
+            return deity.Class != -1 && (Common.EnumerationExtensions.GetEnum<ClassTypes>(deity.Class) != ch.CurrentClass);
         }
 
         private static void RemoveDevotion(PlayerInstance ch)
@@ -93,21 +95,23 @@ namespace SmaugCS.Commands.Deity
             ch.MentalState = -80;
             ch.SendTo("A terrible curse afflicts you as you forsake a deity!");
 
-            // TODO Remove deity affects from player
-            // TODO Remove deity resistances from player
-            // TODO Remove deity susceptibles from player
+            ch.AffectedBy.RemoveBits(deity.Affected);
+            ch.Resistance.RemoveBit(deity.Element);
+            ch.Susceptibility.RemoveBit(deity.Suscept);
 
             var af = new AffectData
             {
                 Type = AffectedByTypes.Blind,
                 Location = ApplyTypes.HitRoll,
                 Modifier = -4,
-                Duration = 50 * GameConstants.GetConstant<int>("AffectDurationConversionValue")
+                Duration = 50 * GameConstants.GetConstant<int>("AffectDurationConversionValue"),
+                BitVector = ExtendedBitvector.Meb((int)AffectedByTypes.Blind)
             };
-            // TODO af.bitvecotr = meb(AFF_BLIND);
+            
             ch.AddAffect(af);
 
             // TODO Save the deity data to the database
+            // save_deity(ch->pcdata->deity);
 
             ch.SendTo("You cease to worship any deity.");
             ch.PlayerData.CurrentDeity = null;

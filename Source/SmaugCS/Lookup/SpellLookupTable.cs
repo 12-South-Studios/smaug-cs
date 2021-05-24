@@ -14,10 +14,10 @@ namespace SmaugCS.Lookup
             : base(new SpellFunction
             {
                 Value = (id, level, ch, vo) =>
-{
-    ch.SendTo("That's not a spell!");
-    return ReturnTypes.None;
-}
+                {
+                    ch.SendTo("That's not a spell!");
+                    return ReturnTypes.None;
+                }
             })
         {
             LookupTable.Add("spell_smaug", new SpellFunction { Value = Smaug.spell_smaug });

@@ -11,19 +11,19 @@ namespace SmaugCS.Extensions.Objects
         {
             var resist = SmaugRandom.Fuzzy(Program.MAX_ITEM_IMPACT);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
                 resist += SmaugRandom.Fuzzy(12);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Metallic))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Metallic))
                 resist += SmaugRandom.Fuzzy(5);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Organic))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Organic))
                 resist -= SmaugRandom.Fuzzy(5);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Blessed))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Blessed))
                 resist += SmaugRandom.Fuzzy(5);
 
-            if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory))
+            if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Inventory))
                 resist += 20;
 
             resist += obj.Level / 10 - 2;
@@ -37,7 +37,7 @@ namespace SmaugCS.Extensions.Objects
         public static int GetWeight(this ObjectInstance obj)
         {
             var weight = obj.Count * obj.Weight;
-            if (obj.ItemType != ItemTypes.Container || !obj.ExtraFlags.IsSet(ItemExtraFlags.Magical))
+            if (obj.ItemType != ItemTypes.Container || !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
                 weight += obj.Contents.Sum(o => o.GetWeight());
 
             return weight;

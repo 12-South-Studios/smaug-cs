@@ -12,7 +12,7 @@ namespace SmaugCS.Data
         [XmlElement("RaceType")]
         public RaceTypes Type { get; set; }
 
-        public int AffectedBy { get; set; }
+        public ExtendedBitvector AffectedBy { get; set; }
 
         [XmlElement]
         public int StrengthBonus { get; set; }
@@ -71,6 +71,7 @@ namespace SmaugCS.Data
         {
             WhereNames = new List<string>();
             SavingThrows = new SavingThrowData();
+            AffectedBy = new ExtendedBitvector();
         }
 
         public void AddWhereName(string name)
@@ -81,7 +82,7 @@ namespace SmaugCS.Data
         public void AddAffectedBy(string name)
         {
             AffectedByTypes type = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumByName<AffectedByTypes>(name);
-            AffectedBy = AffectedBy.SetBit(type);
+            AffectedBy.SetBit((int)type);
         }
     }
 }

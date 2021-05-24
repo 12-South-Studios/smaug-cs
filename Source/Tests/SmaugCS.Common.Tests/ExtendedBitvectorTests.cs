@@ -17,8 +17,9 @@ namespace SmaugCS.Common.Tests
         public void SetBitTest()
         {
             var xbit = new ExtendedBitvector();
+            xbit.SetBit(8);
 
-            Assert.That(xbit.SetBit(8), Is.EqualTo(8));
+            Assert.That(xbit.IsSet(8), Is.True);
         }
 
         [Test]
@@ -48,7 +49,9 @@ namespace SmaugCS.Common.Tests
             xbit.SetBit(8);
 
             Assert.That(xbit.IsSet(2), Is.True);
-            Assert.That(xbit.ToggleBit(8), Is.EqualTo(2));
+            xbit.ToggleBit(8);
+
+            Assert.That(xbit.IsSet(8), Is.True);
         }
 
         /*[Test]

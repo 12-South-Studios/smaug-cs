@@ -14,7 +14,7 @@ namespace SmaugCS.Spells
             comm.act(ATTypes.AT_MAGIC, "You conjure a cloud of purple smoke.", ch, null, null, ToTypes.Character);
 
             foreach (var person in ch.CurrentRoom.Persons
-                .Where(person => person.IsNpc() || !person.Act.IsSet(PlayerFlags.WizardInvisibility))
+                .Where(person => person.IsNpc() || !person.Act.IsSet((int)PlayerFlags.WizardInvisibility))
                 .Where(person => person != ch && !person.SavingThrows.CheckSaveVsSpellStaff(level, person)))
             {
                 // todo finish this magic.c:3127
@@ -22,9 +22,9 @@ namespace SmaugCS.Spells
                 // affect_strip(person, gsn_mass_invis)
                 // affect_strip(person, gsn_sneak)
 
-                person.AffectedBy = person.AffectedBy.RemoveBit(AffectedByTypes.Hide);
-                person.AffectedBy = person.AffectedBy.RemoveBit(AffectedByTypes.Invisible);
-                person.AffectedBy = person.AffectedBy.RemoveBit(AffectedByTypes.Sneak);
+                person.AffectedBy.RemoveBit((int)AffectedByTypes.Hide);
+                person.AffectedBy.RemoveBit((int)AffectedByTypes.Invisible);
+                person.AffectedBy.RemoveBit((int)AffectedByTypes.Sneak);
 
                 comm.act(ATTypes.AT_MAGIC, "$n is revealed!", person, null, null, ToTypes.Room);
                 comm.act(ATTypes.AT_MAGIC, "You are revealed!", person, null, null, ToTypes.Character);

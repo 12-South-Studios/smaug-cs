@@ -33,7 +33,7 @@ namespace SmaugCS
             var trap = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_TRAP), 0);
             trap.Timer = 0;
-            trap.Value = values.ToArray();
+            trap.Value = values.ToList();
             return trap;
         }
 
@@ -136,7 +136,7 @@ namespace SmaugCS
                 corpse.Value.ToList()[2] = corpse.Timer / 8;
                 corpse.Value.ToList()[4] = ch.Level;
                 if (ch.CanPKill() && GameManager.Instance.SystemData.PlayerKillLoot > 0)
-                    corpse.ExtraFlags.SetBit(ItemExtraFlags.ClanCorpse);
+                    corpse.ExtraFlags.SetBit((int)ItemExtraFlags.ClanCorpse);
 
                 corpse.Value.ToList()[3] = !ch.IsNpc() && !killer.IsNpc() ? 1 : 0;
             }
@@ -151,8 +151,8 @@ namespace SmaugCS
             foreach (var obj in ch.Carrying)
             {
                 obj.RemoveFrom();
-                if (obj.ExtraFlags.IsSet(ItemExtraFlags.Inventory)
-                    || obj.ExtraFlags.IsSet(ItemExtraFlags.DeathRot))
+                if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Inventory)
+                    || obj.ExtraFlags.IsSet((int)ItemExtraFlags.DeathRot))
                     obj.Extract();
                 else
                     obj.AddTo(corpse);
