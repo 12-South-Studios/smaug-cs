@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace SmaugCS.Common
 {
@@ -38,7 +37,7 @@ namespace SmaugCS.Common
         /// <summary>
         /// 
         /// </summary>
-        public ExtendedBitvector() 
+        public ExtendedBitvector()
         {
             _bits = new int[XBI];
             ClearBits();
@@ -51,7 +50,7 @@ namespace SmaugCS.Common
         public ExtendedBitvector(ExtendedBitvector clone)
         {
             _bits = new int[XBI];
-            for(var x=0; x<XBI;x++)
+            for (var x = 0; x < XBI; x++)
                 _bits[x] = clone.Bits[x];
         }
 
@@ -148,7 +147,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public int HasBits(ExtendedBitvector bits)
         {
-            for(var x=0; x<XBI; x++)
+            for (var x = 0; x < XBI; x++)
             {
                 var bit = _bits[x] & bits.Bits[x];
                 if (bit != 0) return bit;
@@ -164,7 +163,7 @@ namespace SmaugCS.Common
         /// <returns></returns>
         public bool SameBits(ExtendedBitvector bits)
         {
-            for(var x=0; x<XBI; x++)
+            for (var x = 0; x < XBI; x++)
             {
                 if (_bits[x] != bits.Bits[x])
                     return false;

@@ -1,4 +1,4 @@
-﻿namespace SmaugCS.Objects
+﻿namespace SmaugCS
 {
     public class act_prog_data
     {

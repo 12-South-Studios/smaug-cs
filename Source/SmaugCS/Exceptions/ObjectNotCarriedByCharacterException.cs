@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace SmaugCS.Exceptions
+namespace SmaugCS
 {
     [Serializable]
     public sealed class ObjectNotCarriedByCharacterException : BaseException

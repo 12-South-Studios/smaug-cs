@@ -20,27 +20,27 @@ namespace SmaugCS.MudProgs
             {
                 MudProgLocationTypes.Mobile, new List<MudProgFunction>
                 {
-                    new MudProgFunction {Type = MudProgTypes.Act, Function = MobileProgs.ActProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Bribe, Function = MobileProgs.BribeProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Command, Function = MobileProgs.CommandProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Death, Function = MobileProgs.DeathProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Entry, Function = MobileProgs.EntryProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Fight, Function = MobileProgs.FightProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Give, Function = MobileProgs.GiveProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Greet, Function = MobileProgs.GreetProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.HitPercent, Function = MobileProgs.HitPercentProg.Execute}
+                    new MudProgFunction {Type = MudProgTypes.Act, Function = Mobile.ActProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Bribe, Function = Mobile.BribeProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Command, Function = Mobile.CommandProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Death, Function = Mobile.DeathProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Entry, Function = Mobile.EntryProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Fight, Function = Mobile.FightProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Give, Function = Mobile.GiveProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.Greet, Function = Mobile.GreetProg.Execute},
+                    new MudProgFunction {Type = MudProgTypes.HitPercent, Function = Mobile.HitPercentProg.Execute}
                 }
             },
             {
                 MudProgLocationTypes.Object, new List<MudProgFunction>
                 {
-                    new MudProgFunction {Type = MudProgTypes.Act, Function = ObjectProgs.ActProg.Execute}
+                    new MudProgFunction {Type = MudProgTypes.Act, Function = Object.ActProg.Execute}
                 }
             },
             {
                 MudProgLocationTypes.Room, new List<MudProgFunction>
                 {
-                    new MudProgFunction {Type = MudProgTypes.Act, Function = RoomProgs.ActProg.Execute}
+                    new MudProgFunction {Type = MudProgTypes.Act, Function = Room.ActProg.Execute}
                 }
             }
         };

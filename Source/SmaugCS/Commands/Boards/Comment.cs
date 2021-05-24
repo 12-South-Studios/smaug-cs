@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Boards
+namespace SmaugCS.Commands
 {
     class Comment
     {

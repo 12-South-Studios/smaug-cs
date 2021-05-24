@@ -1,12 +1,9 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using System.Linq;
 
-namespace SmaugCS.Spells.Acid
+namespace SmaugCS.Spells
 {
     public static class AcidBreath
     {

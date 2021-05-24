@@ -1,11 +1,9 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Helpers;
 using System.Linq;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands
 {
     public static class Balzhur
     {
@@ -25,7 +23,7 @@ namespace SmaugCS.Commands.Admin
             victim.Level = 2;
             victim.Trust = 0;
             // TODO check_switch(victim, true)
-            
+
             ch.SetColor(ATTypes.AT_WHITE);
             ch.SendTo("You summon the demon Balzhur to wreak your wrath!");
             ch.SendTo("Balzhur sneers at you evilly, then vanishes in a puff of smoke");
@@ -59,7 +57,7 @@ namespace SmaugCS.Commands.Admin
             if (victim.Carrying.Any())
             {
                 //extract_obj(victim.Carrying.First());
-            }    
+            }
         }
     }
 }

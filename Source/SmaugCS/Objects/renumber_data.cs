@@ -1,5 +1,5 @@
 ﻿
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class renumber_data
     {

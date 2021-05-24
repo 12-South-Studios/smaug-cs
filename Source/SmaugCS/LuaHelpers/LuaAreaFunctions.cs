@@ -5,7 +5,7 @@ using SmaugCS.Logging;
 using SmaugCS.Repository;
 using System;
 
-namespace SmaugCS.LuaHelpers
+namespace SmaugCS
 {
     public static class LuaAreaFunctions
     {

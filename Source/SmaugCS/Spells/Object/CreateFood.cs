@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Object
+namespace SmaugCS.Spells
 {
     class CreateFood
     {

@@ -5,7 +5,7 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Extensions.Mobile
+namespace SmaugCS
 {
     public static class HuntHateFear
     {

@@ -5,7 +5,7 @@ using SmaugCS.Constants.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class WizardData
     {

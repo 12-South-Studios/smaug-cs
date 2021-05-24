@@ -3,10 +3,9 @@ using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Statistics
     {

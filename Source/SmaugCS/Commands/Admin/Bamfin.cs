@@ -1,8 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands
 {
     public static class Bamfin
     {

@@ -4,13 +4,11 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Managers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Player
+namespace SmaugCS
 {
     public static class PlayerInstanceExtensions
     {

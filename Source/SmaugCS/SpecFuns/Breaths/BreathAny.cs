@@ -1,9 +1,8 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using System.Collections.Generic;
 
-namespace SmaugCS.SpecFuns.Breaths
+namespace SmaugCS.SpecFuns
 {
     public static class BreathAny
     {

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Mind
+namespace SmaugCS.Spells
 {
     class MindWrench
     {

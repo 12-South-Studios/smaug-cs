@@ -1,9 +1,8 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using System.Collections.Generic;
 
-namespace SmaugCS.Helpers
+namespace SmaugCS
 {
     /// <summary>
     /// These functions are designed to work in conjunction with the CheckHelpers

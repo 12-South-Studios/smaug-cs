@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands
 {
     class WizHelp
     {

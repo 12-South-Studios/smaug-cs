@@ -5,7 +5,7 @@ using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using System.Collections.Generic;
 
-namespace SmaugCS.LuaHelpers
+namespace SmaugCS
 {
     public static class LuaLookupFunctions
     {

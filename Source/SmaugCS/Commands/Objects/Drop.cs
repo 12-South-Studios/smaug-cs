@@ -1,18 +1,12 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System.Linq;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
-namespace SmaugCS.Commands.Objects
+namespace SmaugCS.Commands
 {
     public static class Drop
     {

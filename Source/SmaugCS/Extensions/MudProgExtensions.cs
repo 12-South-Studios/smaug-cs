@@ -6,7 +6,7 @@ using SmaugCS.Logging;
 using SmaugCS.Lua;
 using System;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class MudProgExtensions
     {

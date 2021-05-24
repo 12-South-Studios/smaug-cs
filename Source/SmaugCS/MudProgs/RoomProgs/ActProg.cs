@@ -2,7 +2,7 @@
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS.MudProgs.RoomProgs
+namespace SmaugCS.MudProgs.Room
 {
     public static class ActProg
     {

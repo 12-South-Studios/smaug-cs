@@ -1,7 +1,7 @@
 ﻿
 using SmaugCS.Data;
 
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class whogr_s
     {

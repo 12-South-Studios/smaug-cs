@@ -1,5 +1,4 @@
 ﻿using SmaugCS.Commands;
-using SmaugCS.Commands.Polymorph;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -10,12 +9,14 @@ using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Fighting
     {
         public static ObjectInstance RawKill(this CharacterInstance ch, CharacterInstance victim)
         {
+            var victimPc = (PlayerInstance)victim;
+
             if (victim.IsNotAuthorized())
             {
                 LogManager.Instance.Bug("Killing unauthorized");
@@ -72,11 +73,62 @@ namespace SmaugCS.Extensions.Character
             while (victim.Affects.Count > 0)
                 victim.RemoveAffect(victim.Affects.First());
 
-            // TODO: Finish reset of victim
+            var victimRace = RepositoryManager.Instance.GetRace(victim.CurrentRace);
+            victim.AffectedBy = victimRace.AffectedBy;
+            victim.Resistance = 0;
+            victim.Susceptibility = 0;
+            victim.Immunity = 0;
+            victim.CarryWeight = 0;
+            victim.ArmorClass = 100 + victimRace.ArmorClassBonus;
+            victim.Attacks = victimRace.Attacks;
+            victim.Defenses = victimRace.Defenses;
+            victim.ModStrength = 0;
+            victim.ModDexterity = 0;
+            victim.ModWisdom = 0;
+            victim.ModIntelligence = 0;
+            victim.ModConstitution = 0;
+            victim.ModCharisma = 0;
+            victim.ModLuck = 0;
+            victim.DamageRoll = new DiceData();
+            victim.HitRoll = new DiceData();
+            victim.MentalState = -10;
+            victim.CurrentAlignment = Macros.URANGE(-1000, victim.CurrentAlignment, 1000);
+            victim.SavingThrows = victimRace.SavingThrows;
+            victim.CurrentPosition = PositionTypes.Resting;
+            victim.CurrentHealth = Macros.UMAX(1, victim.CurrentHealth);
+            victim.CurrentMana = victim.Level < GetLevelAvatar() ? Macros.UMAX(1, victim.CurrentMana) : 1;
+            victim.CurrentMovement = Macros.UMAX(1, victim.CurrentMovement);
 
-            return null;
+            if (victim.Act.IsSet((int)PlayerFlags.Killer))
+            {
+                victim.Act.RemoveBit((int)PlayerFlags.Killer);
+                victim.SendTo("The gods have pardoned you for your murderous acts.");
+            }
+
+            if (victim.Act.IsSet((int)PlayerFlags.Thief))
+            {
+                victim.Act.RemoveBit((int)PlayerFlags.Thief);
+                victim.SendTo("The gods have pardoned you for your thievery.");
+            }
+
+            victimPc.PlayerData.SetConditionValue(ConditionTypes.Full, 12);
+            victimPc.PlayerData.SetConditionValue(ConditionTypes.Thirsty, 12);
+
+            if (victimPc.IsVampire())
+                victimPc.PlayerData.SetConditionValue(ConditionTypes.Bloodthirsty, victim.Level / 2);
+
+            // TODO if (IS_SET(sysdata.save_flags, SV_DEATH))
+            //      save_char_obj(victim);
+
+            return corpse;
 
         }
+
+        private static int GetLevelAvatar()
+        {
+            return GameConstants.GetConstant<int>("level_avatar");
+        }
+
         public static CharacterInstance GetMyTarget(this CharacterInstance ch)
         {
             return ch?.CurrentFighting?.Who;

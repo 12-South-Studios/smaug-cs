@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Vampire
+namespace SmaugCS.Spells
 {
     class Mistwalk
     {

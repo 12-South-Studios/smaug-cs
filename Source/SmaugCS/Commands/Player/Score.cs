@@ -1,8 +1,7 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Commands.Player
+namespace SmaugCS.Commands
 {
     public static class Score
     {

@@ -1,13 +1,9 @@
-﻿using SmaugCS.Data.Instances;
-using SmaugCS.Helpers;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Managers;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Common;
+using SmaugCS.Data.Instances;
 using System.Linq;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands
 {
     public static class BodyBag
     {
@@ -74,7 +70,7 @@ namespace SmaugCS.Commands.Admin
 
             if (ownerPc.PlayerData.CurrentDeity != null)
             {
-                ch.SendToPagerColor($"&P{owner.Name} ({owner.Level}) has {ownerPc.PlayerData.Favor} favor with " + 
+                ch.SendToPagerColor($"&P{owner.Name} ({owner.Level}) has {ownerPc.PlayerData.Favor} favor with " +
                     $"{ownerPc.PlayerData.CurrentDeity.Name} (needed to supplicate: {ownerPc.PlayerData.CurrentDeity.SupplicateCorpseCost}");
                 return;
             }

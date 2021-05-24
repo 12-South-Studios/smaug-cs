@@ -1,10 +1,8 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using System.Linq;
 
-namespace SmaugCS.Commands.Social
+namespace SmaugCS.Commands
 {
     public static class Repeat
     {

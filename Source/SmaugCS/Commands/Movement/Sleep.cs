@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.MudProgs;
 
-namespace SmaugCS.Commands.Movement
+namespace SmaugCS.Commands
 {
     public static class Sleep
     {

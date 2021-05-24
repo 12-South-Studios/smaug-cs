@@ -2,14 +2,13 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
-namespace SmaugCS.Commands.Player
+namespace SmaugCS.Commands
 {
     public static class Worth
     {

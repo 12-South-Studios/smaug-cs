@@ -24,5 +24,12 @@ namespace SmaugCS.Data
         }
 
         public abstract void UpdateFunctionReferences(IEnumerable<T> values);
+
+        public virtual TK Get(string name)
+        {
+            if (LookupTable.TryGetValue(name, out var value))
+                return value;
+            throw new KeyNotFoundException($"invalid entity '{name}'");
+        }
     }
 }

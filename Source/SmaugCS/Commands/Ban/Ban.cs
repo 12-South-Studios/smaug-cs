@@ -4,13 +4,10 @@ using SmaugCS.Ban;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using System;
 
-namespace SmaugCS.Commands.Ban
+namespace SmaugCS.Commands
 {
     public static class Ban
     {

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Building
+namespace SmaugCS.Commands
 {
     class AStat
     {

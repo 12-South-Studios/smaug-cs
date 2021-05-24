@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Building.Shop
+namespace SmaugCS.Commands
 {
     class RepairStat
     {

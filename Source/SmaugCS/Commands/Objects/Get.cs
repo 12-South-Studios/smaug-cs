@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Objects
+namespace SmaugCS.Commands
 {
     class Get
     {

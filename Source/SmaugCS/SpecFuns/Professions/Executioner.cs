@@ -1,15 +1,13 @@
-﻿using SmaugCS.Commands.Social;
+﻿using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.SpecFuns.Professions
+namespace SmaugCS.SpecFuns
 {
     public static class Executioner
     {

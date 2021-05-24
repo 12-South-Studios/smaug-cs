@@ -1,7 +1,7 @@
 ﻿using SmaugCS.Constants;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Skills
+namespace SmaugCS.Commands
 {
     public static class Dig
     {

@@ -2,11 +2,8 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Spells;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS.Commands
 {

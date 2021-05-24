@@ -4,11 +4,9 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Shops;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using System.Linq;
 
-namespace SmaugCS.Behavior.Shopkeeper
+namespace SmaugCS.Behavior
 {
     public static class Appraise
     {

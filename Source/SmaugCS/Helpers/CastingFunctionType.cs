@@ -1,4 +1,4 @@
-﻿namespace SmaugCS.Helpers
+﻿namespace SmaugCS
 {
     public enum CastingFunctionType
     {

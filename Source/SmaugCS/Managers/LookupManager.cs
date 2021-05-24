@@ -4,12 +4,11 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Lookup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Managers
+namespace SmaugCS
 {
     public sealed class LookupManager : ILookupManager
     {

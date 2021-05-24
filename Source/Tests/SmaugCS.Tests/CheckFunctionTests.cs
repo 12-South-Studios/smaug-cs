@@ -4,7 +4,6 @@ using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Helpers;
 using System.Collections.Generic;
 
 namespace SmaugCS.Tests

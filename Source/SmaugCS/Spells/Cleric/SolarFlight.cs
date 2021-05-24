@@ -4,19 +4,13 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
-using System.Diagnostics.CodeAnalysis;
 
-namespace SmaugCS.Spells.Cleric
+namespace SmaugCS.Spells
 {
     public static class SolarFlight
     {
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_solar_flight(int sn, int level, CharacterInstance ch, object vo)
         {
             var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);

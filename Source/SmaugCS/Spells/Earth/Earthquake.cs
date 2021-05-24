@@ -2,10 +2,9 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Spells.Earth
+namespace SmaugCS.Spells
 {
     public static class Earthquake
     {

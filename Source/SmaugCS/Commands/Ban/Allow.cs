@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Ban
+namespace SmaugCS.Commands
 {
     class Allow
     {

@@ -1,11 +1,10 @@
 ﻿using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
-using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Followers
     {
@@ -36,7 +35,7 @@ namespace SmaugCS.Extensions.Character
             if (ch.IsAffected(AffectedByTypes.Charm))
             {
                 ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
-                //ch.RemoveAffect(gsn_charm_person);    TODO Fix this!
+                //TODO ch.RemoveAffect(gsn_charm_person);
                 if (!ch.Master.IsNpc())
                     ((PlayerInstance)ch.Master).PlayerData.NumberOfCharmies--;
             }

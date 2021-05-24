@@ -8,15 +8,13 @@ using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
-using SmaugCS.Interfaces;
 using SmaugCS.Logging;
-using SmaugCS.Objects;
 using SmaugCS.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Managers
+namespace SmaugCS
 {
     public sealed class CalendarManager : ICalendarManager
     {

@@ -3,13 +3,10 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Commands.Liquids
+namespace SmaugCS.Commands
 {
     public static class Fill
     {
@@ -84,7 +81,7 @@ namespace SmaugCS.Commands.Liquids
             bool found = false;
             if (source != null)
             {
-                foreach(var sourceObj in ch.CurrentRoom.Contents)
+                foreach (var sourceObj in ch.CurrentRoom.Contents)
                 {
                     source = sourceObj;
                     if (obj.ItemType == ItemTypes.Container)
@@ -140,7 +137,7 @@ namespace SmaugCS.Commands.Liquids
                     return;
                 }
 
-                switch(source.ItemType)
+                switch (source.ItemType)
                 {
                     case ItemTypes.Money:
                         ch.SendTo("You can't do that... yet.");
@@ -183,7 +180,7 @@ namespace SmaugCS.Commands.Liquids
                         handler.separate_obj(obj);
 
                         bool wasFound = false;
-                        foreach(var contentObj in source.Contents)
+                        foreach (var contentObj in source.Contents)
                         {
                             if (!ch.CanWear(contentObj, ItemWearFlags.Take)
                                 || (contentObj.IsObjStat(ItemExtraFlags.Prototype) && !ch.CanTakePrototype())

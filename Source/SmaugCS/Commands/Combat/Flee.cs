@@ -1,17 +1,12 @@
-﻿using SmaugCS.Commands.Movement;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Player;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Commands.Combat
+namespace SmaugCS.Commands
 {
     public static class Flee
     {

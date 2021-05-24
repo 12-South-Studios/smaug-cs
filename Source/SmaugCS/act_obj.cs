@@ -2,16 +2,11 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System;
 using System.Linq;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
 namespace SmaugCS
 {

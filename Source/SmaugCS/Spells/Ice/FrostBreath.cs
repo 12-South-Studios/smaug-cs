@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Ice
+namespace SmaugCS.Spells
 {
     class FrostBreath
     {

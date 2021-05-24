@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Interfaces;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class GameManagerExtensions
     {

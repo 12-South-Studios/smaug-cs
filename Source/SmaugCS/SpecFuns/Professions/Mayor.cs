@@ -1,13 +1,11 @@
-﻿using SmaugCS.Commands.Movement;
+﻿using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Managers;
-using SmaugCS.SpecFuns.Casting;
 using System;
 using System.Collections.Generic;
 
-namespace SmaugCS.SpecFuns.Professions
+namespace SmaugCS.SpecFuns
 {
     public static class Mayor
     {
@@ -65,7 +63,7 @@ namespace SmaugCS.SpecFuns.Professions
 
         private static void Move(MobileInstance ch)
         {
-            Commands.Movement.Move.move_char(ch, ch.CurrentRoom.GetExit(_path[_index]), 0);
+            Commands.Move.move_char(ch, ch.CurrentRoom.GetExit(_path[_index]), 0);
         }
 
         private static void Wake(MobileInstance ch)

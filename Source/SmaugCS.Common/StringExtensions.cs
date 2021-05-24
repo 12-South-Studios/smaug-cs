@@ -143,5 +143,22 @@ namespace SmaugCS.Common
         /// <param name="hiddenChar"></param>
         /// <returns></returns>
         public static string UnhideTilde(this string str, string hiddenChar = "*") => str.Replace(hiddenChar, "~");
+    
+        /// <summary>
+        /// Picks off one argument from a string and returns the rest
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="firstWord"></param>
+        /// <returns></returns>
+        public static string OneArgument(this string str, out string firstWord)
+        {
+            firstWord = string.Empty;
+            if (!str.IsNullOrEmpty()) return string.Empty;
+
+            firstWord = str.FirstWord();
+            return str.RemoveWord(0);
+        }
+
+
     }
 }

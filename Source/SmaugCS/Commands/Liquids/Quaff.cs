@@ -1,17 +1,11 @@
 ﻿using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Extensions.Player;
-using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Spells;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
-namespace SmaugCS.Commands.Liquids
+namespace SmaugCS.Commands
 {
     public static class Quaff
     {

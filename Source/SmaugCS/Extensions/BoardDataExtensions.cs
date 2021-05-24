@@ -3,7 +3,7 @@ using SmaugCS.Board;
 using SmaugCS.Data.Instances;
 using System;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class BoardDataExtensions
     {

@@ -3,14 +3,12 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using SmaugCS.Weather;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
-namespace SmaugCS.Spells.Air
+namespace SmaugCS.Spells
 {
     public static class ControlWeather
     {
@@ -25,8 +23,6 @@ namespace SmaugCS.Spells.Air
             {"calmer", DecreaseEnergy}
         };
 
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "level"),
-        SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "vo")]
         public static ReturnTypes spell_control_weather(int sn, int level, CharacterInstance ch, object vo)
         {
             if (CheckFunctions.CheckIfTrue(ch, !WeatherChangeTable.ContainsKey(Cast.TargetName.ToLower()),

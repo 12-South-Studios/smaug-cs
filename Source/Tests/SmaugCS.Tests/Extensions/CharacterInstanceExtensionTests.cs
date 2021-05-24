@@ -7,7 +7,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 
 namespace SmaugCS.Tests.Extensions

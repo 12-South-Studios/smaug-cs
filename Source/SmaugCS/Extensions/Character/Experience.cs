@@ -6,7 +6,7 @@ using SmaugCS.Repository;
 using System;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Experience
     {
@@ -41,13 +41,12 @@ namespace SmaugCS.Extensions.Character
         public static int GetLevelExperience(this CharacterInstance ch, int cexp)
         {
             var x = LevelConstants.GetLevel(ImmortalTypes.Supreme);
-            var lastx = x;
             var y = 0;
 
             while (y == 0)
             {
                 var tmp = ch.GetExperienceLevel(x);
-                lastx = x;
+                int lastx = x;
                 if (tmp > cexp)
                     x /= 2;
                 else if (lastx != x)

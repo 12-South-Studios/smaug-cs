@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.MudProgs;
 
-namespace SmaugCS.Behavior.Shopkeeper
+namespace SmaugCS.Behavior
 {
     public static class RepairObject
     {

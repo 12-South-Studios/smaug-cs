@@ -1,12 +1,9 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using System.Linq;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands
 {
     public static class Bestow
     {
@@ -49,7 +46,7 @@ namespace SmaugCS.Commands.Admin
                 return;
             }
 
-            foreach(var arg in allArgsExceptFirst)
+            foreach (var arg in allArgsExceptFirst)
             {
                 var command = CommandManager.Instance.FindCommand(arg);
                 if (command == null)

@@ -1,12 +1,11 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Spells.Smaug;
+using SmaugCS.Spells;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Lookup
+namespace SmaugCS
 {
     public class SpellLookupTable : LookupBase<SkillData, SpellFunction>
     {

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Life
+namespace SmaugCS.Spells
 {
     class Harm
     {

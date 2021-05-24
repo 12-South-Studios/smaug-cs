@@ -6,7 +6,7 @@ using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Managers
+namespace SmaugCS
 {
     public sealed class CommandManager : GameSingleton
     {

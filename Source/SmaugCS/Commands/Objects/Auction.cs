@@ -6,16 +6,12 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Commands.Objects
+namespace SmaugCS.Commands
 {
     public static class Auction
     {

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Constants.Constants;
 
-namespace SmaugCS.Constants
+namespace SmaugCS
 {
     public static class VnumConstants
     {

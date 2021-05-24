@@ -1,12 +1,10 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using System;
 using System.Collections.Generic;
 
-namespace SmaugCS.Commands.Combat
+namespace SmaugCS.Commands
 {
     public static class Slay
     {

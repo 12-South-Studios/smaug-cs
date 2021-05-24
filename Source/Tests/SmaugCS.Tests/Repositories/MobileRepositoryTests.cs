@@ -14,7 +14,6 @@ using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
-using SmaugCS.LuaHelpers;
 using SmaugCS.Repository;
 using System;
 using System.IO;

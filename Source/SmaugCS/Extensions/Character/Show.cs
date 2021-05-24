@@ -6,11 +6,10 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Extensions.Player;
 using System;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Show
     {

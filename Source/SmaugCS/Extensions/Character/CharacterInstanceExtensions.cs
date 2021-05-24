@@ -2,9 +2,6 @@
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Commands;
-using SmaugCS.Commands.Admin;
-using SmaugCS.Commands.Movement;
-using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
@@ -16,19 +13,14 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class CharacterInstanceExtensions
     {
@@ -418,6 +410,7 @@ namespace SmaugCS.Extensions.Character
             else
                 ch.MentalState -= c;
         }
+
 
         public static bool CanAstral(this CharacterInstance ch, CharacterInstance victim)
         {
@@ -929,7 +922,7 @@ namespace SmaugCS.Extensions.Character
                     current = mastery;
 
                 ((PlayerInstance)ch).PlayerData.UpdateSkillMastery(sn, current);
-            }  
+            }
         }
 
         public static ObjectInstance GetEquippedItem(this CharacterInstance ch, WearLocations location)

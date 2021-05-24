@@ -1,13 +1,10 @@
 ﻿using Realm.Library.Common.Extensions;
-using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using System;
 using System.Linq;
 
-namespace SmaugCS.Commands.PetsAndGroups
+namespace SmaugCS.Commands
 {
     public static class Split
     {

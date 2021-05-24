@@ -1,17 +1,13 @@
-﻿using SmaugCS.Commands.Movement;
-using SmaugCS.Commands.Social;
+﻿using SmaugCS.Commands;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Mobile
+namespace SmaugCS
 {
     public static class MobileInstanceExtensions
     {

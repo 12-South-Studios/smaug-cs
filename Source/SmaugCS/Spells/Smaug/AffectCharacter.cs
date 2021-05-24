@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Spells.Smaug
+namespace SmaugCS.Spells
 {
     public static class AffectCharacter
     {

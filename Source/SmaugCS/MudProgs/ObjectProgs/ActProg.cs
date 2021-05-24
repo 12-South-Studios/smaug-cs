@@ -1,7 +1,7 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.ObjectProgs
+namespace SmaugCS.MudProgs.Object
 {
     public static class ActProg
     {

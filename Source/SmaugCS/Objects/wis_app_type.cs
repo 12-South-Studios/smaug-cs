@@ -1,5 +1,5 @@
 ﻿
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class wis_app_type
     {

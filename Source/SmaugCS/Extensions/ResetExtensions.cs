@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class ResetExtensions
     {

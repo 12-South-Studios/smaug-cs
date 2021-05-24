@@ -1,12 +1,10 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.Commands.Deity
+namespace SmaugCS.Commands
 {
     public static class Deities
     {

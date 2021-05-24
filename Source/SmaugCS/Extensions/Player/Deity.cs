@@ -1,9 +1,8 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Extensions.Player
+namespace SmaugCS
 {
     public static class Deity
     {

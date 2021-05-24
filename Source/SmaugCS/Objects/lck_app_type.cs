@@ -1,5 +1,5 @@
 ﻿
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class lck_app_type
     {

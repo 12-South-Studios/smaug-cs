@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Attributes;
-using System;
 
 namespace SmaugCS.Constants.Enums
 {
@@ -74,7 +73,7 @@ namespace SmaugCS.Constants.Enums
         Berserk,
 
         [Name("aqua_breath")]
-        AquaBreath ,
+        AquaBreath,
 
         [Name("recurring_spell")]
         RecurringSpell,

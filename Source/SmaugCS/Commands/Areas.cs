@@ -1,12 +1,10 @@
-﻿using SmaugCS.Data.Instances;
-using Realm.Library.Common.Extensions;
-using System.Collections.Generic;
-using SmaugCS.Data;
-using SmaugCS.Managers;
-using SmaugCS.Repository;
-using System.Linq;
+﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Extensions.Character;
+using SmaugCS.Data;
+using SmaugCS.Data.Instances;
+using SmaugCS.Repository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmaugCS.Commands
 {

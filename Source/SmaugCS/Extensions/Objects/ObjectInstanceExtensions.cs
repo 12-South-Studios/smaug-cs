@@ -3,17 +3,13 @@ using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Auction;
-using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System;
@@ -21,7 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SmaugCS.Extensions.Objects
+namespace SmaugCS
 {
     public static class ObjectInstanceExtensions
     {
@@ -163,7 +159,7 @@ namespace SmaugCS.Extensions.Objects
                 update.remove_portal(obj);
 
             if (AuctionManager.Instance.Auction.ItemForSale == obj)
-                Commands.Objects.Auction.StopAuction((auctionManager ?? AuctionManager.Instance).Auction.Seller,
+                SmaugCS.Commands.Auction.StopAuction((auctionManager ?? AuctionManager.Instance).Auction.Seller,
                     "Sale of {0} has been stopped by a system action.", auctionManager);
 
             if (obj.CarriedBy != null)

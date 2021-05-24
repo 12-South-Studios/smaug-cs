@@ -2,16 +2,13 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
-using SmaugCS.Spells.Poison;
-using SmaugCS.Spells.Smaug;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.SpecFuns.Casting
+namespace SmaugCS.SpecFuns
 {
     public static class CastAdept
     {

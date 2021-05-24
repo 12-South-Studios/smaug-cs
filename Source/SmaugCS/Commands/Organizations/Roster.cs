@@ -2,11 +2,9 @@
 using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Commands.Organizations
+namespace SmaugCS.Commands
 {
     public static class Roster
     {

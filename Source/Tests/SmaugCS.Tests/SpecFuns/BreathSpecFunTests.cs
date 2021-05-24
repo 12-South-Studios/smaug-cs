@@ -3,7 +3,7 @@ using NUnit.Framework;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.SpecFuns.Breaths;
+using SmaugCS.SpecFuns;
 
 namespace SmaugCS.Tests.SpecFuns
 {

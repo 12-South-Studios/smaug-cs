@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Weather
+namespace SmaugCS
 {
     public static class ShowWeather
     {

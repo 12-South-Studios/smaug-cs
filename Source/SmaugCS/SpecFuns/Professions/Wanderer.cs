@@ -1,16 +1,13 @@
 ﻿using Realm.Library.Common.Extensions;
-using SmaugCS.Commands.Social;
+using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.SpecFuns.Professions
+namespace SmaugCS.SpecFuns
 {
     public static class Wanderer
     {

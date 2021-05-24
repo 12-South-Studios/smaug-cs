@@ -1,21 +1,16 @@
 ﻿using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Exceptions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 using System;
 using System.Linq;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class RoomTemplateExtensions
     {

@@ -1,12 +1,10 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.Commands.Movement
+namespace SmaugCS.Commands
 {
     public static class Leave
     {

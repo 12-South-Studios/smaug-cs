@@ -1,11 +1,9 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Helpers;
 using System.Linq;
 
-namespace SmaugCS.Commands.Admin
+namespace SmaugCS.Commands
 {
     public static class BestowArea
     {

@@ -2,7 +2,7 @@
 using SmaugCS.Data.Instances;
 using System.Linq;
 
-namespace SmaugCS.MudProgs.MobileProgs
+namespace SmaugCS.MudProgs.Mobile
 {
     public static class SpeechProg
     {

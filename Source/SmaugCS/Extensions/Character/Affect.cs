@@ -1,19 +1,17 @@
-﻿using SmaugCS.Common;
+﻿using Realm.Library.Common.Extensions;
+using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Objects;
+using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
 using System;
 using System.IO;
 using System.Linq;
-using Realm.Library.Common.Extensions;
-using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Affect
     {

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Energy
+namespace SmaugCS.Spells
 {
     class Disruption
     {

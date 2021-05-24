@@ -1,4 +1,4 @@
-﻿namespace SmaugCS.Objects
+﻿namespace SmaugCS
 {
     public class map_stuff
     {

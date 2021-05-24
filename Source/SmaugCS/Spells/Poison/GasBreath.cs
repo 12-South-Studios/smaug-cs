@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Poison
+namespace SmaugCS.Spells
 {
     class GasBreath
     {

@@ -3,8 +3,6 @@ using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using System.IO;
 
 namespace SmaugCS.Commands

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells.Paladin
+namespace SmaugCS.Spells
 {
     class Expurgation
     {

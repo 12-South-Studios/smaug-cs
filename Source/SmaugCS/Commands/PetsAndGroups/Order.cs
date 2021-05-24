@@ -2,12 +2,10 @@
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using SmaugCS.Logging;
 using System.Linq;
 
-namespace SmaugCS.Commands.PetsAndGroups
+namespace SmaugCS.Commands
 {
     public static class Order
     {

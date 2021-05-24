@@ -4,9 +4,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
@@ -14,7 +11,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace SmaugCS.Commands.Movement
+namespace SmaugCS.Commands
 {
     public static class PullOrPush
     {

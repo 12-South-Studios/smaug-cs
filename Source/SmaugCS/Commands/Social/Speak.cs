@@ -1,10 +1,9 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Language;
 
-namespace SmaugCS.Commands.Social
+namespace SmaugCS.Commands
 {
     public static class Speak
     {

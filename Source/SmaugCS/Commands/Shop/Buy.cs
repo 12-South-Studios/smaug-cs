@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Shop
+namespace SmaugCS.Commands
 {
     class Buy
     {

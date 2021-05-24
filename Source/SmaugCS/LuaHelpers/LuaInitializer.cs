@@ -4,7 +4,7 @@ using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
 
-namespace SmaugCS.LuaHelpers
+namespace SmaugCS
 {
     public class LuaInitializer : IInitializer
     {

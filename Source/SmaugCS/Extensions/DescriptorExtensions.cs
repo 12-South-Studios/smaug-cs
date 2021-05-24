@@ -1,11 +1,10 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
-using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
 using System;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class DescriptorExtensions
     {

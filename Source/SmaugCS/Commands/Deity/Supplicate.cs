@@ -1,20 +1,15 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Commands.Deity
+namespace SmaugCS.Commands
 {
     public static class Supplicate
     {
@@ -68,11 +63,11 @@ namespace SmaugCS.Commands.Deity
             if (ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SusceptNum)
                 ch.Susceptibility.SetBit(ch.PlayerData.CurrentDeity.Suscept);
 
-            if ((oldfavor > ch.PlayerData.CurrentDeity.AffectedNum 
-                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.AffectedNum) 
-                || (oldfavor > ch.PlayerData.CurrentDeity.ElementNum 
+            if ((oldfavor > ch.PlayerData.CurrentDeity.AffectedNum
+                && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.AffectedNum)
+                || (oldfavor > ch.PlayerData.CurrentDeity.ElementNum
                 && ch.PlayerData.Favor <= ch.PlayerData.CurrentDeity.ElementNum)
-                || (oldfavor < ch.PlayerData.CurrentDeity.SusceptNum 
+                || (oldfavor < ch.PlayerData.CurrentDeity.SusceptNum
                 && ch.PlayerData.Favor >= ch.PlayerData.CurrentDeity.SusceptNum))
             {
                 ch.update_aris();

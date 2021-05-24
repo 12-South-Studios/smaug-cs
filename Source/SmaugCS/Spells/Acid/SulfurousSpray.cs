@@ -1,10 +1,8 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Spells.Acid
+namespace SmaugCS.Spells
 {
     public static class SulfurousSpray
     {

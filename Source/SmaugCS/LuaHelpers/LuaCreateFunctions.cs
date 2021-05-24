@@ -14,7 +14,7 @@ using SmaugCS.SpecFuns;
 using System;
 using System.Collections.Generic;
 
-namespace SmaugCS.LuaHelpers
+namespace SmaugCS
 {
     public static class LuaCreateFunctions
     {

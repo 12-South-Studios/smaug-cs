@@ -2,8 +2,6 @@
 using NUnit.Framework;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Logging;
-using SmaugCS.LuaHelpers;
-using SmaugCS.Managers;
 
 namespace SmaugCS.Tests
 {

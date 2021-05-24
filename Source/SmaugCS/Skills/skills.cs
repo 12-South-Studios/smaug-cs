@@ -2,17 +2,12 @@
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Managers;
 using SmaugCS.Repository;
-using SmaugCS.Spells.Smaug;
+using SmaugCS.Spells;
 using System.Linq;
 
 namespace SmaugCS.Skills

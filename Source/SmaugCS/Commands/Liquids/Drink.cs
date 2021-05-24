@@ -5,15 +5,11 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Extensions.Player;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System.Linq;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
-namespace SmaugCS.Commands.Liquids
+namespace SmaugCS.Commands
 {
     public static class Drink
     {

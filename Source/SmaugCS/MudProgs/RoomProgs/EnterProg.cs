@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.RoomProgs
+namespace SmaugCS.MudProgs.Room
 {
     public static class EnterProg
     {

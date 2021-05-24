@@ -1,11 +1,9 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
-using SmaugCS.Managers;
-using SmaugCS.Objects;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Constants
+namespace SmaugCS
 {
     public static class LookupConstants
     {

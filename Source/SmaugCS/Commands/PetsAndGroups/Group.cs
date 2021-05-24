@@ -4,12 +4,11 @@ using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 using System;
 using System.Linq;
 
-namespace SmaugCS.Commands.PetsAndGroups
+namespace SmaugCS.Commands
 {
     public static class Group
     {

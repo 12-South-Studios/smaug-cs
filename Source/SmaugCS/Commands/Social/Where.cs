@@ -4,11 +4,10 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
-using SmaugCS.Extensions.Character;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmaugCS.Commands.Social
+namespace SmaugCS.Commands
 {
     public static class Where
     {

@@ -7,7 +7,7 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Repository;
 using System.Linq;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class ExitDataExtensions
     {

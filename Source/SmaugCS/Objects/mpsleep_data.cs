@@ -2,7 +2,7 @@
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class mpsleep_data
     {

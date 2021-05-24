@@ -1,14 +1,11 @@
-﻿using SmaugCS.Commands.Social;
+﻿using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using System.Linq;
 
-namespace SmaugCS.Behavior.Shopkeeper
+namespace SmaugCS.Behavior
 {
     public static class Interact
     {

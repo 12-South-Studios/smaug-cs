@@ -142,7 +142,7 @@
     <Compile Include="Extensions\Objects\StatsAndValues.cs" />
     <Compile Include="Extensions\Objects\Damage.cs" />
     <Compile Include="Extensions\Player\Condition.cs" />
-    <Compile Include="Extensions\Character\Damage.cs" />
+    <Compile Include="Extensions\Character\DamageExtensions.cs" />
     <Compile Include="Extensions\Player\Deity.cs" />
     <Compile Include="Extensions\Character\Experience.cs" />
     <Compile Include="Extensions\Character\Fighting.cs" />
@@ -666,7 +666,7 @@
     <Compile Include="Commands\Help.cs" />
     <Compile Include="Commands\Ide.cs" />
     <Compile Include="Commands\Idea.cs" />
-    <Compile Include="Commands\Languages.cs" />
+    <Compile Include="Commands\Language.cs" />
     <Compile Include="Commands\Laws.cs" />
     <Compile Include="Commands\Look.cs" />
     <Compile Include="Commands\PetsAndGroups\Dismiss.cs" />

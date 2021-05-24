@@ -1,22 +1,16 @@
 ﻿using SmaugCS.Common;
-using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Extensions.Player;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
-namespace SmaugCS.Spells.Death
+namespace SmaugCS.Spells
 {
     public static class AnimateDead
     {

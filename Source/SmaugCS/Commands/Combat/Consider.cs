@@ -1,11 +1,8 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
-using SmaugCS.Managers;
 
-namespace SmaugCS.Commands.Combat
+namespace SmaugCS.Commands
 {
     public static class Consider
     {

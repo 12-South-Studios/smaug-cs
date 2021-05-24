@@ -3,7 +3,7 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Language;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Languages
     {
@@ -31,6 +31,7 @@ namespace SmaugCS.Extensions.Character
                 if (RepositoryManager.Instance.GetRace(ch.CurrentRace).Language.IsSet(language))
                     return 100;
 
+                // TODO
                 /*for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
                 {
                     if (i == (int)LanguageTypes.Unknown)
@@ -59,6 +60,7 @@ namespace SmaugCS.Extensions.Character
 
             if ((ch.Speaks & language) > 0)
             {
+                // TODO
                 /*for (int i = 0; i < GameConstants.LanguageTable.Keys.Count; i++)
                 {
                     if (i == (int)LanguageTypes.Unknown)

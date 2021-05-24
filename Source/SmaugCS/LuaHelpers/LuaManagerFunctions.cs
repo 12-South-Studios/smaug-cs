@@ -1,7 +1,7 @@
 ﻿using Realm.Library.Lua;
 using SmaugCS.Logging;
 
-namespace SmaugCS.LuaHelpers
+namespace SmaugCS
 {
     public static class LuaManagerFunctions
     {

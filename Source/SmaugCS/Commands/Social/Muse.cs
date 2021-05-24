@@ -1,9 +1,8 @@
 ﻿
 using SmaugCS.Communication;
 using SmaugCS.Data.Instances;
-using SmaugCS.Managers;
 
-namespace SmaugCS.Commands.Social
+namespace SmaugCS.Commands
 {
     public static class Muse
     {

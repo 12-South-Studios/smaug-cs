@@ -4,11 +4,10 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
-using SmaugCS.Extensions.Character;
 using System.Linq;
 using EnumerationExtensions = SmaugCS.Common.EnumerationExtensions;
 
-namespace SmaugCS.LuaHelpers
+namespace SmaugCS
 {
     public static class LuaMudProgFunctions
     {

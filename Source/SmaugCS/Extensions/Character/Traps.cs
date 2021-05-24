@@ -3,14 +3,13 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
 using System;
 using System.Linq;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
-namespace SmaugCS.Extensions.Character
+namespace SmaugCS
 {
     public static class Traps
     {

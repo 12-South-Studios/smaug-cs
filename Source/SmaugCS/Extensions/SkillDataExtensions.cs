@@ -3,11 +3,9 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Player;
 using System.Linq;
 
-namespace SmaugCS.Extensions
+namespace SmaugCS
 {
     public static class SkillDataExtensions
     {

@@ -1,22 +1,16 @@
-﻿using SmaugCS.Common;
-using SmaugCS.Constants.Constants;
+﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using SmaugCS.Spells;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using CheckFunctions = SmaugCS.Helpers.CheckFunctions;
 
-namespace SmaugCS.Commands.Objects
+namespace SmaugCS.Commands
 {
     public static class Brandish
     {
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument")]
         public static void do_brandish(CharacterInstance ch, string argument)
         {
             var obj = ch.GetEquippedItem(WearLocations.Hold);

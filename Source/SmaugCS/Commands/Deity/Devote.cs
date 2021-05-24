@@ -4,11 +4,9 @@ using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Commands.Deity
+namespace SmaugCS.Commands
 {
     public static class Devote
     {
@@ -107,7 +105,7 @@ namespace SmaugCS.Commands.Deity
                 Duration = 50 * GameConstants.GetConstant<int>("AffectDurationConversionValue"),
                 BitVector = ExtendedBitvector.Meb((int)AffectedByTypes.Blind)
             };
-            
+
             ch.AddAffect(af);
 
             // TODO Save the deity data to the database

@@ -1,11 +1,10 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.MudProgs;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Objects
+namespace SmaugCS
 {
     public static class Damage
     {

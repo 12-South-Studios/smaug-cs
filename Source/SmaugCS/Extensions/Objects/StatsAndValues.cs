@@ -3,7 +3,7 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using System.Linq;
 
-namespace SmaugCS.Extensions.Objects
+namespace SmaugCS
 {
     public static class StatsAndValues
     {

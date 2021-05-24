@@ -16,7 +16,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Interfaces;
 using SmaugCS.Loaders;
 using SmaugCS.Logging;
 using SmaugCS.Lua;

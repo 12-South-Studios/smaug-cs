@@ -2,7 +2,6 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
 using SmaugCS.Repository;
 
 namespace SmaugCS.SpecFuns
@@ -21,7 +20,7 @@ namespace SmaugCS.SpecFuns
             comm.act(ATTypes.AT_POISON, "$n bites you!", ch, null, victim, ToTypes.Victim);
 
             var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
-            Spells.Poison.Poison.spell_poison((int)databaseMgr.GetEntity<SkillData>("poison").ID, ch.Level, ch, victim);
+            Spells.Poison.spell_poison((int)databaseMgr.GetEntity<SkillData>("poison").ID, ch.Level, ch, victim);
 
             return true;
         }

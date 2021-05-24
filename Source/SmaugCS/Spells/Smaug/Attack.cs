@@ -2,13 +2,10 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Helpers;
 using SmaugCS.Repository;
 using EnumerationExtensions = Realm.Library.Common.Extensions.EnumerationExtensions;
 
-namespace SmaugCS.Spells.Smaug
+namespace SmaugCS.Spells
 {
     public static class Attack
     {

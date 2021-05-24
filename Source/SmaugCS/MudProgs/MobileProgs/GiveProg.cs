@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.MobileProgs
+namespace SmaugCS.MudProgs.Mobile
 {
     public static class GiveProg
     {

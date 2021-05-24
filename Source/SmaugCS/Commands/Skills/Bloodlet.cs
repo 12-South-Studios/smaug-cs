@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Skills
+namespace SmaugCS.Commands
 {
     class Bloodlet
     {

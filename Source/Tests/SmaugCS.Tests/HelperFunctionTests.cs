@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
@@ -24,7 +23,7 @@ namespace SmaugCS.Tests
 
             var list = new List<object> { actor, useBlood };
 
-            Assert.That(Helpers.HelperFunctions.HasSufficientBloodPower(list), Is.EqualTo(expectedValue));
+            Assert.That(HelperFunctions.HasSufficientBloodPower(list), Is.EqualTo(expectedValue));
         }
 
         [TestCase(50, 5, true)]
@@ -38,7 +37,7 @@ namespace SmaugCS.Tests
 
             var list = new List<object> { actor, useMana };
 
-            Assert.That(Helpers.HelperFunctions.HasSufficientMana(list), Is.EqualTo(expectedValue));
+            Assert.That(HelperFunctions.HasSufficientMana(list), Is.EqualTo(expectedValue));
         }
 
         [TestCase(AffectedByTypes.Charm, true)]
@@ -52,7 +51,7 @@ namespace SmaugCS.Tests
 
             var list = new List<object> { actor };
 
-            Assert.That(Helpers.HelperFunctions.IsCharmedOrPossessed(list), Is.EqualTo(expectedValue));
+            Assert.That(HelperFunctions.IsCharmedOrPossessed(list), Is.EqualTo(expectedValue));
         }
 
         [Test]
@@ -70,7 +69,7 @@ namespace SmaugCS.Tests
 
             var list = new List<object> { actor };
 
-            Assert.That(Helpers.HelperFunctions.IsFighting(list), Is.True);
+            Assert.That(HelperFunctions.IsFighting(list), Is.True);
         }
 
         [TestCase(PositionTypes.Aggressive, true)]
@@ -85,7 +84,7 @@ namespace SmaugCS.Tests
 
             var list = new List<object> { actor };
 
-            Assert.That(Helpers.HelperFunctions.IsInFightingPosition(list), Is.EqualTo(expectedValue));
+            Assert.That(HelperFunctions.IsInFightingPosition(list), Is.EqualTo(expectedValue));
         }
     }
 }

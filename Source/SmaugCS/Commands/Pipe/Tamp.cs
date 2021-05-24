@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Pipe
+namespace SmaugCS.Commands
 {
     class Tamp
     {

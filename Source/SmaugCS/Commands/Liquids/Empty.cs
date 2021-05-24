@@ -2,13 +2,9 @@
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Objects;
-using SmaugCS.Helpers;
-using SmaugCS.Managers;
 using System.Linq;
 
-namespace SmaugCS.Commands.Liquids
+namespace SmaugCS.Commands
 {
     public static class Empty
     {

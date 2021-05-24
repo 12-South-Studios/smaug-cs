@@ -4,14 +4,10 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Player;
-using SmaugCS.Helpers;
 using SmaugCS.Properties;
 using SmaugCS.Repository;
 
-namespace SmaugCS.Commands.Skills
+namespace SmaugCS.Commands
 {
     public static class Aid
     {

@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions;
 using System.IO;
 using System.Linq;
 
-namespace SmaugCS.MudProgs.MobileProgs
+namespace SmaugCS.MudProgs.Mobile
 {
     public static class HitPercentProg
     {

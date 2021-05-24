@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Objects;
-using SmaugCS.Common;
 using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Data.Instances
@@ -11,7 +10,6 @@ namespace SmaugCS.Data.Instances
         public HuntHateFearData CurrentHating { get; set; }
         public SpecialFunction SpecialFunction { get; set; }
         public string SpecialFunctionName { get; set; }
-        public ExtendedBitvector Attacks { get; set; }
 
         public override int Trust
         {

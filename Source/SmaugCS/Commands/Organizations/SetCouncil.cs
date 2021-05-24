@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Organizations
+namespace SmaugCS.Commands
 {
     class SetCouncil
     {

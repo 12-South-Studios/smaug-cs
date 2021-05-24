@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class dns_data
     {

@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Player
+namespace SmaugCS.Commands
 {
     class Inventory
     {

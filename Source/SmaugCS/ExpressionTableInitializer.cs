@@ -1,9 +1,6 @@
 ﻿using NCalc;
 using Realm.Library.NCalc;
 using SmaugCS.Data.Instances;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Player;
-using SmaugCS.Managers;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 

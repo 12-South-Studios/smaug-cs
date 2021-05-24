@@ -1,6 +1,6 @@
 ﻿using Realm.Library.Common.Attributes;
 
-namespace SmaugCS.Managers
+namespace SmaugCS
 {
     public enum PulseTypes
     {

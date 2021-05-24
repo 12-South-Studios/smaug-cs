@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Constants.Enums;
 
-namespace SmaugCS.Objects
+namespace SmaugCS
 {
     public class RelationData
     {

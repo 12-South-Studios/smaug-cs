@@ -1,6 +1,6 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands.Polymorph
+namespace SmaugCS.Commands
 {
     class ImmUnmorph
     {

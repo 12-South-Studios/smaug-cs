@@ -8,10 +8,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Extensions;
-using SmaugCS.Extensions.Character;
-using SmaugCS.Extensions.Mobile;
-using SmaugCS.Extensions.Player;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
@@ -21,7 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 
-namespace SmaugCS.Managers
+namespace SmaugCS
 {
     public sealed class GameManager : IGameManager
     {
