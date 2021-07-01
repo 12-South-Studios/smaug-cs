@@ -27,12 +27,12 @@ namespace SmaugCS.Loaders.Loaders
 
             var appSetting = GameConstants.GetAppSetting(AppSettingName);
             if (string.IsNullOrEmpty(appSetting))
-                throw new EntryNotFoundException("{0} not found in app.config", AppSettingName);
+                throw new EntryNotFoundException($"{AppSettingName} not found in app.config");
 
             IEnumerable<string> fileList = appSetting.Split(',');
             foreach (var fileName in fileList)
             {
-                _luaManager.DoLuaScript(path + "\\" + fileName + ".lua");
+                _luaManager.DoLuaScript($"{path}\\{fileName}.lua");
             }
         }
     }

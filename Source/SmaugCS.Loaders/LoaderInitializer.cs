@@ -38,7 +38,7 @@ namespace SmaugCS.Loaders
                 try
                 {
                     loader.Load();
-                    LogManager.Instance.Boot("Loaded {0}", loader.GetType().Name);
+                    LogManager.Instance.Boot($"Loaded {loader.GetType().Name}");
                 }
                 catch (Exception ex)
                 {
