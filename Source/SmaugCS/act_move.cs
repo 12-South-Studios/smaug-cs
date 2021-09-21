@@ -13,20 +13,33 @@ using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SmaugCS
 {
     public static class act_move
     {
-        public static string wordwrap(string txt, short wrap)
+        /// <summary>
+        /// https://gist.github.com/anderssonjohan/660952
+        /// </summary>
+        public static string wordwrap(string text, int maxLineLength)
         {
-            if (string.IsNullOrEmpty(txt))
-                return string.Empty;
+            var list = new List<string>();
 
-            // TODO do some crazy line wrap
+            int currentIndex;
+            var lastWrap = 0;
+            var whitespace = new[] { ' ', '\r', '\n', '\t' };
+            do
+            {
+                currentIndex = lastWrap + maxLineLength > text.Length ? text.Length : (text.LastIndexOfAny(new[] { ' ', ',', '.', '?', '!', ':', ';', '-', '\n', '\r', '\t' }, Math.Min(text.Length - 1, lastWrap + maxLineLength)) + 1);
+                if (currentIndex <= lastWrap)
+                    currentIndex = Math.Min(lastWrap + maxLineLength, text.Length);
+                list.Add(text.Substring(lastWrap, currentIndex - lastWrap).Trim(whitespace));
+                lastWrap = currentIndex;
+            } while (currentIndex < text.Length);
 
-            return string.Empty;
+            return string.Join("\n\r", list);
         }
 
         private static string GetDecorateRoom_PreAndPost_1(int iRand, int nRand, SectorTypes sector, int x)

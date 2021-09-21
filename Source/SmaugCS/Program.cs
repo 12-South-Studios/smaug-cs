@@ -7,6 +7,7 @@ using Realm.Library.Network;
 using SmaugCS.Auction;
 using SmaugCS.Ban;
 using SmaugCS.Board;
+using SmaugCS.Clans;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -49,6 +50,7 @@ namespace SmaugCS
         public static IWeatherManager WeatherManager { get; private set; }
         public static INewsManager NewsManager { get; private set; }
         public static IAuctionManager AuctionManager { get; private set; }
+        public static IClanManager ClanManager { get; private set; }
         public static int SessionId { get; private set; }
 
         static void Main()
@@ -127,7 +129,8 @@ namespace SmaugCS
                 new NewsModule(),
                 new TimeModule(),
                 new WeatherModule(),
-                new LoaderModule());
+                new LoaderModule(),
+                new ClanModule());
         }
 
         private static void InitializeManagersAndGameSettings()
@@ -174,6 +177,8 @@ namespace SmaugCS
             NewsManager = Kernel.Get<INewsManager>();
 
             AuctionManager = Kernel.Get<IAuctionManager>();
+
+            ClanManager = Kernel.Get<IClanManager>();
 
             InitializeStaticGameData();
         }

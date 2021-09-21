@@ -134,8 +134,6 @@
     <Compile Include="MudProgActData.cs" />
     <Compile Include="MudProgData.cs" />
     <Compile Include="nuisance_data.cs" />
-    <Compile Include="Organizations\ClanData.cs" />
-    <Compile Include="Organizations\ClanTypes.cs" />
     <Compile Include="Organizations\CouncilData.cs" />
     <Compile Include="Organizations\OrganizationData.cs" />
     <Compile Include="Organizations\RosterData.cs" />

@@ -153,5 +153,28 @@ namespace SmaugCS
         {
             return ch.IsNpc() ? 80 : ((PlayerInstance)ch).PlayerData.GetSkillMastery(sn).GetNumberThatIsBetween(0, 101);
         }
+
+        public static ExitData EXIT(Instance instance, int door)
+        {
+            if (instance is ObjectInstance)
+            {
+                var obj = instance as ObjectInstance;
+                return obj.InRoom.GetExit(EnumerationExtensions.GetEnum<DirectionTypes>(door));
+            }
+            if (instance is CharacterInstance)
+            {
+                var ch = instance as CharacterInstance;
+                return ch.CurrentRoom.GetExit(EnumerationExtensions.GetEnum<DirectionTypes>(door));
+            }
+            return null;
+        }
+
+        public static bool CAN_GO(Instance instance, int door)
+        {
+            var exit = EXIT(instance, door);
+            return exit != null && exit.Destination > 0 && !exit.Flags.IsSet((int)ExitFlags.Closed);
+        }
+
+
     }
 }

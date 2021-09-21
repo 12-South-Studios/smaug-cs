@@ -122,5 +122,6 @@ namespace SmaugCS.DAL
         public IDbSet<Organization> Organizations { get; set; }
         public IDbSet<WeatherCell> Weather { get; set; }
         public IDbSet<Session> Sessions { get; set; }
+        public IDbSet<Clan> Clans { get; set; }
     }
 }

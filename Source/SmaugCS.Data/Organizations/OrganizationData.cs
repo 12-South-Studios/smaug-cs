@@ -17,8 +17,5 @@ namespace SmaugCS.Data.Organizations
 
         [XmlElement]
         public int Board { get; set; }
-
-        // public abstract void Save();
-        // public abstract void Load();
     }
 }

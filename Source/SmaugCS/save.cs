@@ -1,5 +1,7 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.DAL.Interfaces;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
+using System;
 using System.IO;
 
 namespace SmaugCS
@@ -38,9 +40,9 @@ namespace SmaugCS
         }
 
         public static void fwrite_obj(CharacterInstance ch, ObjectInstance obj,
-                                      FileStream fs, int iNest, short os_type, bool hotboot)
+                                      ISmaugDbContext dbContext, int iNest, short os_type, bool hotboot)
         {
-            // TODO
+            throw new NotImplementedException();
         }
 
         public static void load_char_obj(DescriptorData d, string name,

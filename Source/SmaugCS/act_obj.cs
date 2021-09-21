@@ -96,8 +96,10 @@ namespace SmaugCS
             {
                 foreach (var clan in RepositoryManager.Instance.CLANS.Values)
                 {
-                    //if (clan.StoreRoom == ch.CurrentRoom.Vnum)
-                    //     clan.SaveStoreroom(ch);
+                    if (clan.StoreRoom == ch.CurrentRoom.ID)
+                    {
+                        save_clan_storeroom(ch, clan);
+                    }
                 }
             }
 
@@ -170,7 +172,7 @@ namespace SmaugCS
             }
 
             if (obj.InRoom.Flags.IsSet((int)RoomFlags.NoFloor)
-                //&& Macros.CAN_GO(obj, (int) DirectionTypes.Down)
+                && Macros.CAN_GO(obj, (int) DirectionTypes.Down)
                 && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
             {
                 var exit = obj.InRoom.GetExit(DirectionTypes.Down);
@@ -326,11 +328,6 @@ namespace SmaugCS
             }
 
             return string.Empty;
-        }
-
-        internal static void save_clan_storeroom(CharacterInstance ch, ClanData clan)
-        {
-            throw new NotImplementedException();
         }
     }
 }

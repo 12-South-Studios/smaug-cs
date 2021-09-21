@@ -85,6 +85,11 @@
     <Compile Include="Migrations\201508101456119_InitialSetup.Designer.cs">
       <DependentUpon>201508101456119_InitialSetup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Clan.cs" />
+    <Compile Include="Models\ClanItem.cs" />
+    <Compile Include="Models\ClanMember.cs" />
+    <Compile Include="Models\ClanRank.cs" />
+    <Compile Include="Models\ClanStats.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="SmaugDbContextModule.cs" />
     <Compile Include="ContextExtensions.cs" />

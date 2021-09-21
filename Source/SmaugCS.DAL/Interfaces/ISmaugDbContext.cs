@@ -18,5 +18,6 @@ namespace SmaugCS.DAL.Interfaces
         IDbSet<Organization> Organizations { get; set; }
         IDbSet<WeatherCell> Weather { get; set; }
         IDbSet<Session> Sessions { get; set; }
+        IDbSet<Clan> Clans { get; set; }
     }
 }
