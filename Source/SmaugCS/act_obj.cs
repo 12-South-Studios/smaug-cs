@@ -98,7 +98,7 @@ namespace SmaugCS
                 {
                     if (clan.StoreRoom == ch.CurrentRoom.ID)
                     {
-                        save_clan_storeroom(ch, clan);
+                        // TODO Fix save_clan_storeroom(ch, clan);
                     }
                 }
             }

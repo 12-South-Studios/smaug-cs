@@ -11,7 +11,7 @@ namespace SmaugCS.Data
     public class PlayerData
     {
         public CharacterInstance Pet { get; set; }
-        public ClanData Clan { get; set; }
+        //public ClanData Clan { get; set; }
         public CouncilData Council { get; set; }
         public AreaData BuilderArea { get; set; }
         public DeityData CurrentDeity { get; set; }

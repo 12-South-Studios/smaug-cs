@@ -1,4 +1,5 @@
 ﻿using Realm.Library.Common.Objects;
+using SmaugCS.Clans;
 using SmaugCS.Common;
 using SmaugCS.Data;
 using SmaugCS.Data.Organizations;

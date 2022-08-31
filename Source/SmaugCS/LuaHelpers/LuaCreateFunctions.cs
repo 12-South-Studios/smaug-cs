@@ -1,5 +1,6 @@
 ﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
+using SmaugCS.Clans;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;

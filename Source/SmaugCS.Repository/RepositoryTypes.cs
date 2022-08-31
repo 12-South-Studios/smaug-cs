@@ -1,4 +1,5 @@
-﻿using SmaugCS.Data;
+﻿using SmaugCS.Clans;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;

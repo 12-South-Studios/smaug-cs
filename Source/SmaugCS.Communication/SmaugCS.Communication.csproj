@@ -50,12 +50,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -102,6 +96,10 @@
       <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
       <Name>Realm.Standard.Patterns.Singleton</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SmaugCS.Clans\SmaugCS.Clans.csproj">
+      <Project>{cd5620f8-fd72-4dd7-bf00-80b847b112c1}</Project>
+      <Name>SmaugCS.Clans</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
       <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
       <Name>SmaugCS.Data</Name>
@@ -109,7 +107,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net">
+      <Version>2.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="Ninject">
+      <Version>3.3.6</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
