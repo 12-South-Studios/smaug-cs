@@ -20,9 +20,19 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore SmaugCS.sln
+
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build SmaugCS.sln --no-restore
+
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test SmaugCS.sln --logger trx --results-directory "TestResults" --no-build --verbosity normal
+
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-results
+        path: TestResults
+      if: ${{ always() }}
