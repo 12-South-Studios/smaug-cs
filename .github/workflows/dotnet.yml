@@ -22,13 +22,13 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Restore dependencies
-      run: dotnet restore SmaugCS.sln
+      run: dotnet restore ./Source/SmaugCS.sln
 
     - name: Build
-      run: dotnet build SmaugCS.sln --no-restore
+      run: dotnet build ./Source/SmaugCS.sln --no-restore
 
     - name: Test
-      run: dotnet test SmaugCS.sln --logger trx --results-directory "TestResults" --no-build --verbosity normal
+      run: dotnet test ./Source/SmaugCS.sln --logger trx --results-directory "TestResults" --no-build --verbosity normal
 
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
