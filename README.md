@@ -10,14 +10,18 @@ You should have received a copy of the GNU General Public License along with thi
 -----------------------------------------------------------------------------------------------------------------------------
 
 SmaugCS utilizes numerous third-party libraries including:
- * Ninject - https://github.com/ninject/ninject/blob/master/LICENSE.txt
- * NCalc - https://ncalc.codeplex.com/license
- * Log4Net - http://logging.apache.org/log4net/license.html
- * Lua - http://www.lua.org/license.html
- * MOQ - https://code.google.com/p/moq/source/browse/trunk/License.txt
- * NUnit - http://nunit.org/index.php?p=license&r=2.6.2
- * LuaInterface - https://code.google.com/p/luainterface/ 
-
+ * Ninject - https://github.com/ninject/Ninject/blob/main/LICENSE.txt
+ * CoreCLR-NCalc - https://github.com/sklose/NCalc2?tab=MIT-1-ov-file#readme
+ * Log4Net - https://logging.apache.org/log4net/license.html
+ * Lua - https://www.lua.org/license.html
+ * LuaInterface - https://github.com/Jakosa/LuaInterface
+ * MongoDB - https://www.mongodb.com/legal/licensing/community-edition
+   
+ * FluentAssertions - https://github.com/fluentassertions/fluentassertions.json/blob/master/LICENSE
+ * xUnit - https://github.com/xunit/xunit/blob/main/LICENSE
+ * AutoFixture - https://github.com/AutoFixture/AutoFixture/blob/master/LICENCE.txt
+ * FakeItEasy - https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt
+   
 Relevant License files are also included in the main repository folder.
 
 Obsolete Folders/Files - Because of the long-term nature of this project and the fact that its grown and evolved so much over the years (C, C++, C#, flat-files, Lua, database, etc) there are numerous legacy files remaining in the structure.  For example, nearly every file in the /Data/ folder is obsolete but has been left in place for reference.  
