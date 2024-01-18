@@ -1,4 +1,4 @@
-﻿using SmaugCS.DAL.Interfaces;
+﻿using SmaugCS.DAL;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using System;
@@ -40,7 +40,7 @@ namespace SmaugCS
         }
 
         public static void fwrite_obj(CharacterInstance ch, ObjectInstance obj,
-                                      ISmaugDbContext dbContext, int iNest, short os_type, bool hotboot)
+                                      IDbContext dbContext, int iNest, short os_type, bool hotboot)
         {
             throw new NotImplementedException();
         }

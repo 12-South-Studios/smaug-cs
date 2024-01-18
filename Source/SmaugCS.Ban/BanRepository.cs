@@ -1,4 +1,4 @@
-﻿using SmaugCS.DAL.Interfaces;
+﻿using SmaugCS.DAL;
 using SmaugCS.Logging;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -11,9 +11,9 @@ namespace SmaugCS.Ban
     {
         public IEnumerable<BanData> Bans { get; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
-        public BanRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public BanRepository(ILogManager logManager, IDbContext dbContext)
         {
             Bans = new List<BanData>();
             _logManager = logManager;
@@ -26,9 +26,10 @@ namespace SmaugCS.Ban
         {
             try
             {
-                if (!_dbContext.Bans.Any()) return;
+                if (_dbContext.Count<DAL.Models.Ban>() == 0) return;
 
-                foreach (var newBan in _dbContext.Bans.Select(ban => new BanData
+                var bans = _dbContext.GetAll<DAL.Models.Ban>();
+                foreach (var newBan in bans.Select(ban => new BanData
                 {
                     Id = ban.Id,
                     Type = ban.BanType,
@@ -72,9 +73,8 @@ namespace SmaugCS.Ban
                         Note = ban.Note
                     };
                     ban.Saved = true;
-                    _dbContext.Bans.Add(banToSave);
+                    _dbContext.AddOrUpdate<DAL.Models.Ban>(banToSave);
                 }
-                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {
@@ -91,11 +91,10 @@ namespace SmaugCS.Ban
                 if (localBan == null) return;
                 Bans.ToList().Remove(localBan);
 
-                var ban = _dbContext.Bans.FirstOrDefault(x => x.Id == id);
+                var ban = _dbContext.Get<DAL.Models.Ban>(id);
                 if (ban == null) return;
 
-                _dbContext.Bans.Remove(ban);
-                _dbContext.SaveChanges();
+                _dbContext.Delete<DAL.Models.Ban>(ban);
             }
             catch (DbException ex)
             {

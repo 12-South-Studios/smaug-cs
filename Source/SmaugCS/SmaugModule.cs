@@ -5,7 +5,7 @@ using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
@@ -36,7 +36,7 @@ namespace SmaugCS
             Kernel.Bind<ICalendarManager>().To<CalendarManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
                 .WithConstructorArgument("gameManager", Kernel.Get<IGameManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>())
+                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>())
                 .OnActivation(x => x.Initialize());
 
             Kernel.Bind<IInitializer>().To<LuaInitializer>().InSingletonScope()

@@ -1,8 +1,6 @@
 ﻿using Ninject;
 using SmaugCS.DAL;
 using System.Configuration;
-using System.Data.Entity;
-using System.Data.SqlClient;
 using Xunit;
 
 namespace Integration.Tests
@@ -14,7 +12,7 @@ namespace Integration.Tests
 
         public EnvironmentSetup()
         {
-            _kernel = new StandardKernel(new SmaugDbContextModule(), new IntegrationModule());
+            _kernel = new StandardKernel(new DbContextModule(), new IntegrationModule());
         }
 
         ~EnvironmentSetup()

@@ -1,5 +1,5 @@
 ﻿using Realm.Library.Common.Extensions;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.DAL.Models;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Logging;
@@ -13,9 +13,9 @@ namespace SmaugCS.Clans
     {
         public IEnumerable<ClanData> Clans { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
-        public ClanRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public ClanRepository(ILogManager logManager, IDbContext dbContext)
         {
             Clans = new List<ClanData>();
             _logManager = logManager;
@@ -31,9 +31,10 @@ namespace SmaugCS.Clans
         {
             try
             {
-                if (!_dbContext.Clans.Any()) return;
+                if (_dbContext.Count<DAL.Models.Clan>() == 0) return;
 
-                foreach (DAL.Models.Clan clan in _dbContext.Clans)
+                var clans = _dbContext.GetAll<DAL.Models.Clan>();
+                foreach (DAL.Models.Clan clan in clans)
                 {
                     var newClan = new ClanData(clan.Id, clan.Name);
                     newClan.Description = clan.Description;
@@ -100,8 +101,7 @@ namespace SmaugCS.Clans
             {
                 foreach (var clan in Clans.Where(x => !x.Saved).ToList())
                 {
-
-                    var clanToSave = _dbContext.Clans.FirstOrDefault(x => x.Id == clan.ID);
+                    var clanToSave = _dbContext.Get<DAL.Models.Clan>(clan.ID);
                     if (clanToSave == null)
                     {
                         clanToSave = new DAL.Models.Clan();
@@ -153,8 +153,8 @@ namespace SmaugCS.Clans
 
                     // Items
 
+                    _dbContext.AddOrUpdate<DAL.Models.Clan>(clanToSave);
                 }
-                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {

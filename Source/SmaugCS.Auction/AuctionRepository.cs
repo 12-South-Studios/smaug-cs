@@ -1,4 +1,4 @@
-﻿using SmaugCS.DAL.Interfaces;
+﻿using SmaugCS.DAL;
 using SmaugCS.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ namespace SmaugCS.Auction
     {
         public IEnumerable<AuctionHistory> History { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
-        public AuctionRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public AuctionRepository(ILogManager logManager, IDbContext dbContext)
         {
             History = new List<AuctionHistory>();
             _logManager = logManager;
@@ -39,9 +39,9 @@ namespace SmaugCS.Auction
         {
             try
             {
-                if (!_dbContext.Auctions.Any()) return;
+                if (_dbContext.Count<DAL.Models.Auction>() == 0) return;
 
-                var auctions = _dbContext.Auctions.Select(auction => new AuctionHistory
+                var auctions = _dbContext.GetAll<DAL.Models.Auction>().Select(auction => new AuctionHistory
                 {
                     BuyerName = auction.BuyerName,
                     ItemForSale = auction.ItemSoldId,
@@ -74,10 +74,9 @@ namespace SmaugCS.Auction
                         SoldFor = history.SoldFor,
                         SoldOn = history.SoldOn
                     };
-                    _dbContext.Auctions.Attach(auction);
+                    _dbContext.AddOrUpdate<DAL.Models.Auction>(auction);
                     history.Saved = true;
                 }
-                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {

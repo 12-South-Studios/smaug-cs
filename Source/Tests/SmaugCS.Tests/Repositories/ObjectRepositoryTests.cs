@@ -8,7 +8,7 @@ using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Enums;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
@@ -57,7 +57,7 @@ namespace SmaugCS.Tests.Repositories
         public ObjectRepositoryTests()
         {
             var mockKernel = A.Fake<IKernel>();
-            var mockCtx = A.Fake<ISmaugDbContext>();
+            var mockCtx = A.Fake<IDbContext>();
             var mockLogger = A.Fake<ILogWrapper>();
             var mockTimer = A.Fake<ITimer>();
 

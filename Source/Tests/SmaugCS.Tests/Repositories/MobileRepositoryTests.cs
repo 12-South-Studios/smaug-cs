@@ -8,7 +8,7 @@ using Realm.Library.Lua;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Shops;
 using SmaugCS.Data.Templates;
@@ -80,7 +80,7 @@ namespace SmaugCS.Tests.Repositories
         public MobileRepositoryTests()
         {
             var mockKernel = A.Fake<IKernel>();
-            var mockCtx = A.Fake<ISmaugDbContext>();
+            var mockCtx = A.Fake<IDbContext>();
             var mockLogger = A.Fake<ILogWrapper>();
             var mockTimer = A.Fake<ITimer>();
 

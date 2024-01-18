@@ -1,5 +1,5 @@
 ﻿using Ninject;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 using System.Data.Common;
@@ -14,9 +14,9 @@ namespace SmaugCS.Weather
 
         private static ILogManager _logManager;
         private static IKernel _kernel;
-        private static ISmaugDbContext _dbContext;
+        private static IDbContext _dbContext;
 
-        public WeatherManager(ILogManager logManager, IKernel kernel, ISmaugDbContext dbContext)
+        public WeatherManager(ILogManager logManager, IKernel kernel, IDbContext dbContext)
         {
             _logManager = logManager;
             _kernel = kernel;
@@ -37,9 +37,9 @@ namespace SmaugCS.Weather
         {
             try
             {
-                if (!_dbContext.Weather.Any()) return;
+                if (_dbContext.Count<DAL.Models.WeatherCell>() == 0) return;
 
-                var cells = _dbContext.Weather.Select(cell => new WeatherCell(cell.Id)
+                var cells = _dbContext.GetAll<DAL.Models.WeatherCell>().Select(cell => new WeatherCell(cell.Id)
                 {
                     XCoord = cell.CellXCoordinate,
                     YCoord = cell.CellYCoordinate,

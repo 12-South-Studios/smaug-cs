@@ -2,7 +2,7 @@
 using Ninject.Modules;
 using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Logging;
 
 namespace SmaugCS.Auction
@@ -16,7 +16,7 @@ namespace SmaugCS.Auction
 
             Kernel.Bind<IAuctionRepository>().To<AuctionRepository>()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
+                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>());
 
             Kernel.Bind<IAuctionManager>().To<AuctionManager>().InSingletonScope()
                 .WithConstructorArgument("kernel", Kernel)

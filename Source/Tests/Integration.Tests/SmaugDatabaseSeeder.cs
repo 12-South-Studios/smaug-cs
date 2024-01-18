@@ -1,5 +1,5 @@
 ﻿using Ninject;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 
 namespace Integration.Tests
 {

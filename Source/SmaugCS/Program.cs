@@ -12,7 +12,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.DAL;
-using SmaugCS.DAL.Interfaces;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
@@ -63,7 +62,7 @@ namespace SmaugCS
                 ConfigureLog4NetProperties();
 
                 InitializeCoreNinjectKernels();
-                StartNewSession(Kernel.Get<ISmaugDbContext>());
+                StartNewSession(Kernel.Get<IDbContext>());
                 InitializeSecondaryNinjectKernels();
                 InitializeManagersAndGameSettings();
                 LogManager.Boot("---------------------[ End Boot Log ]--------------------");
@@ -104,16 +103,15 @@ namespace SmaugCS
                 .WithConstructorArgument("log", _logger)
                 .WithConstructorArgument("level", LogLevel.Debug);
 
-            Kernel.Load(new SmaugDbContextModule());
+            Kernel.Load(new DbContextModule());
         }
 
-        private static void StartNewSession(ISmaugDbContext dbContext)
+        private static void StartNewSession(IDbContext dbContext)
         {
-            var newSession = dbContext.Sessions.Create();
+            var newSession = new DAL.Models.Session();
             newSession.IpAddress = ConfigurationManager.AppSettings["host"];
             newSession.Port = Convert.ToInt32(ConfigurationManager.AppSettings["port"]);
-            dbContext.Sessions.Add(newSession);
-            dbContext.SaveChanges();
+            dbContext.AddOrUpdate<DAL.Models.Session>(newSession);
             SessionId = newSession.Id;
         }
 

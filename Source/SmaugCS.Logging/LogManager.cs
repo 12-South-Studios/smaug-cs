@@ -3,7 +3,7 @@ using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
 using SmaugCS.Common.Enumerations;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -18,14 +18,14 @@ namespace SmaugCS.Logging
         public ILogWrapper LogWrapper { get; private set; }
 
         private static IKernel _kernel;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
         private readonly List<LogEntry> _pendingLogs;
         private readonly ITimer _dbDumpTimer;
         private readonly int _sessionId;
 
         public static ILogManager Instance => _kernel.Get<ILogManager>();
 
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, ISmaugDbContext dbContext, int sessionId)
+        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, IDbContext dbContext, int sessionId)
         {
             LogWrapper = logWrapper;
             _kernel = kernel;
@@ -62,9 +62,8 @@ namespace SmaugCS.Logging
                 foreach (var log in logsToDump)
                 {
                     var logToSave = new DAL.Models.Log { LogType = log.LogType, Text = log.Text, SessionId = _sessionId };
-                    _dbContext.Logs.Add(logToSave);
+                    _dbContext.AddOrUpdateAsync(logToSave);
                 }
-                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {

@@ -1,4 +1,4 @@
-﻿using SmaugCS.DAL.Interfaces;
+﻿using SmaugCS.DAL;
 using SmaugCS.Logging;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -10,9 +10,9 @@ namespace SmaugCS.News
     {
         public IEnumerable<NewsData> News { get; private set; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
-        public NewsRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public NewsRepository(ILogManager logManager, IDbContext dbContext)
         {
             News = new List<NewsData>();
             _logManager = logManager;
@@ -28,9 +28,9 @@ namespace SmaugCS.News
         {
             try
             {
-                if (!_dbContext.News.Any()) return;
+                if (_dbContext.Count<DAL.Models.News>() == 0) return;
 
-                foreach (DAL.Models.News news in _dbContext.News)
+                foreach (DAL.Models.News news in _dbContext.GetAll<DAL.Models.News>())
                 {
                     var newNews = new NewsData(news.Id)
                     {
@@ -83,7 +83,6 @@ namespace SmaugCS.News
                         Name = news.Name
                     };
                     news.Saved = true;
-                    _dbContext.News.Add(newsToSave);
 
                     foreach (var entry in news.Entries.Where(y => !y.Saved).ToList())
                     {
@@ -99,8 +98,9 @@ namespace SmaugCS.News
                         entry.Saved = true;
                         newsToSave.Entries.Add(entryToSave);
                     }
+
+                    _dbContext.AddOrUpdate<DAL.Models.News>(newsToSave);
                 }
-                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {

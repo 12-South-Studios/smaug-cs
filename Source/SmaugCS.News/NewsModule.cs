@@ -1,6 +1,6 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Logging;
 
 namespace SmaugCS.News
@@ -11,7 +11,7 @@ namespace SmaugCS.News
         {
             Kernel.Bind<INewsRepository>().To<NewsRepository>()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>());
+                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>());
 
             Kernel.Bind<INewsManager>().To<NewsManager>().InSingletonScope()
                 .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())

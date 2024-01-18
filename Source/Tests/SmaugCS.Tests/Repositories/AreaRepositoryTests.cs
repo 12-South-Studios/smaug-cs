@@ -6,7 +6,7 @@ using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
 using Realm.Standard.Patterns.Repository;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
@@ -50,7 +50,7 @@ namespace SmaugCS.Tests.Repositories
             RepositoryManager dbMgr = new RepositoryManager(A.Fake<IKernel>(), A.Fake<ILogManager>());
 
             LogManager logMgr = new LogManager(A.Fake<ILogWrapper>(), A.Fake<IKernel>(),
-                A.Fake<ITimer>(), A.Fake<ISmaugDbContext>(), 0);
+                A.Fake<ITimer>(), A.Fake<IDbContext>(), 0);
 
             LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

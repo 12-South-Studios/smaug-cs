@@ -4,7 +4,7 @@ using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 using SmaugCS.Data;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
@@ -23,11 +23,11 @@ namespace SmaugCS
 
         private readonly ILogManager _logManager;
         private readonly IGameManager _gameManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
         public TimeInfoData GameTime { get; private set; }
 
-        public CalendarManager(ILogManager logManager, IGameManager gameManager, ISmaugDbContext dbContext)
+        public CalendarManager(ILogManager logManager, IGameManager gameManager, IDbContext dbContext)
         {
             _logManager = logManager;
             _gameManager = gameManager;
@@ -45,7 +45,7 @@ namespace SmaugCS
             {
                 TimeInfoData timeInfo;
 
-                var gameState = _dbContext.GameStates.FirstOrDefault();
+                var gameState = _dbContext.GetAll<DAL.Models.GameState>().FirstOrDefault();
                 if (gameState == null)
                     timeInfo = new TimeInfoData { Day = 28, Hour = 0, Month = 6, Year = 628 };
                 else

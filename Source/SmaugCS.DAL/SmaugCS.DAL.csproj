@@ -10,9 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Migrations\201508101456119_InitialSetup.Designer.cs">
-      <DependentUpon>201508101456119_InitialSetup.cs</DependentUpon>
-    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -26,9 +23,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations\DatabaseScripts\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
     <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj" />
     <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj" />
@@ -38,20 +32,16 @@
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Migrations\201508101456119_InitialSetup.resx">
-      <DependentUpon>201508101456119_InitialSetup.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
     <PackageReference Include="Ninject">
       <Version>3.3.6</Version>
     </PackageReference>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
-    <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>

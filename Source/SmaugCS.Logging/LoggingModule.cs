@@ -3,7 +3,7 @@ using Ninject.Modules;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using SmaugCS.Constants.Constants;
-using SmaugCS.DAL.Interfaces;
+using SmaugCS.DAL;
 
 namespace SmaugCS.Logging
 {
@@ -25,7 +25,7 @@ namespace SmaugCS.Logging
                 .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
                 .WithConstructorArgument("kernel", Kernel)
                 .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"))
-                .WithConstructorArgument("dbContext", Kernel.Get<ISmaugDbContext>())
+                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>())
                 .WithConstructorArgument("sessionId", _sessionId);
         }
     }

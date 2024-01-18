@@ -1,4 +1,4 @@
-﻿using SmaugCS.DAL.Interfaces;
+﻿using SmaugCS.DAL;
 using SmaugCS.Logging;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -10,9 +10,9 @@ namespace SmaugCS.Board
     {
         public IEnumerable<BoardData> Boards { get; }
         private readonly ILogManager _logManager;
-        private readonly ISmaugDbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
-        public BoardRepository(ILogManager logManager, ISmaugDbContext dbContext)
+        public BoardRepository(ILogManager logManager, IDbContext dbContext)
         {
             Boards = new List<BoardData>();
             _logManager = logManager;
@@ -25,9 +25,9 @@ namespace SmaugCS.Board
         {
             try
             {
-                if (!_dbContext.Boards.Any()) return;
+                if (_dbContext.Count<DAL.Models.Board>() == 0) return;
 
-                foreach (DAL.Models.Board board in _dbContext.Boards)
+                foreach (DAL.Models.Board board in _dbContext.GetAll<DAL.Models.Board>())
                 {
                     var newBoard = new BoardData(board.Id, board.BoardType)
                     {
@@ -100,7 +100,6 @@ namespace SmaugCS.Board
                         BoardObjectId = board.BoardObjectId
                     };
                     board.Saved = true;
-                    _dbContext.Boards.Add(boardToSave);
 
                     foreach (var note in board.Notes.Where(y => !y.Saved).ToList())
                     {
@@ -116,8 +115,9 @@ namespace SmaugCS.Board
                         note.Saved = true;
                         boardToSave.Notes.Add(noteToSave);
                     }
+
+                    _dbContext.AddOrUpdate<DAL.Models.Board>(boardToSave);
                 }
-                _dbContext.SaveChanges();
             }
             catch (DbException ex)
             {
