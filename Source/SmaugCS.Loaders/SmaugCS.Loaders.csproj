@@ -1,141 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94200936-C954-4E8C-B703-C0A183F58244}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SmaugCS.Loaders</RootNamespace>
-    <AssemblyName>SmaugCS.Loaders</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>SmaugCS.Loaders</AssemblyTitle>
+    <Product>SmaugCS.Loaders</Product>
+    <Copyright>Copyright ©  2015</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj" />
+    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj" />
+    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj" />
+    <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Loaders\AreaListLoader.cs" />
-    <Compile Include="LoaderModule.cs" />
-    <Compile Include="Loaders\LanguageLoader.cs" />
-    <Compile Include="Loaders\ClanLoader.cs" />
-    <Compile Include="Loaders\ClassLoader.cs" />
-    <Compile Include="Loaders\CouncilLoader.cs" />
-    <Compile Include="Loaders\DeityListLoader.cs" />
-    <Compile Include="Incomplete\CommentLoader.cs" />
-    <Compile Include="Incomplete\HelpAreaLoader.cs" />
-    <Compile Include="Incomplete\HintLoader.cs" />
-    <Compile Include="Incomplete\HolidayLoader.cs" />
-    <Compile Include="Incomplete\MixtureLoader.cs" />
-    <Compile Include="Incomplete\ReservedLoader.cs" />
-    <Compile Include="Incomplete\TimeLoader.cs" />
-    <Compile Include="Incomplete\WatchListLoader.cs" />
-    <Compile Include="Loaders\BaseLoader.cs" />
-    <Compile Include="LoaderInitializer.cs" />
-    <Compile Include="Obsolete\AreaLoader.cs" />
-    <Compile Include="Obsolete\FUSSAreaLoader.cs" />
-    <Compile Include="Obsolete\PrototypeAreaLoader.cs" />
-    <Compile Include="Obsolete\SmaugAreaLoader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Loaders\RaceLoader.cs" />
+    <PackageReference Include="log4net">
+      <Version>2.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="Ninject">
+      <Version>3.3.6</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
-      <Project>{df798981-706a-4f60-a6ec-6ce00658d737}</Project>
-      <Name>Realm.Library.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
-      <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
-      <Name>Realm.Standard.Patterns.Command</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj">
-      <Project>{feab7c57-63f5-428c-a5d2-057d3240dcfa}</Project>
-      <Name>Realm.Standard.Patterns.Decorator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj">
-      <Project>{6937f92d-7ba3-4bba-852d-571ac0d6baf2}</Project>
-      <Name>Realm.Standard.Patterns.Factory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
-      <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
-      <Name>Realm.Standard.Patterns.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj">
-      <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
-      <Name>Realm.Standard.Patterns.Singleton</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
-      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
-      <Name>SmaugCS.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
-      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
-      <Name>SmaugCS.Constants</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
-      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
-      <Name>SmaugCS.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
-      <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
-      <Name>SmaugCS.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj">
-      <Project>{55dcebc5-8647-40f3-9fea-2886a9fa7396}</Project>
-      <Name>SmaugCS.Lua</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

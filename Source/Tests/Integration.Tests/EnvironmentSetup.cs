@@ -1,31 +1,29 @@
 ﻿using Ninject;
-using NUnit.Framework;
 using SmaugCS.DAL;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using Xunit;
 
 namespace Integration.Tests
 {
-    [TestFixture]
+
     public class EnvironmentSetup
     {
         private static IKernel _kernel;
 
-        [SetUp]
-        public static void Initialize()
+        public EnvironmentSetup()
         {
             _kernel = new StandardKernel(new SmaugDbContextModule(), new IntegrationModule());
         }
 
-        [TearDown]
-        public static void CleanUp()
+        ~EnvironmentSetup()
         {
             _kernel?.Dispose();
         }
 
-        [Test]
-        [Category("Integration")]
+        //[Fact(Skip = "Integration Test")]
+        [Trait("Category", "Integration")]
         public void CreateAndInitializeDatabase()
         {
             DropDatabase("SmaugDbContext");

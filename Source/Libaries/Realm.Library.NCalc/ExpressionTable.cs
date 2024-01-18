@@ -6,26 +6,23 @@ namespace Realm.Library.NCalc
 {
     public class ExpressionTable
     {
-        private readonly Dictionary<string, CustomExpression> _expressionMap;
+        private readonly Lazy<Dictionary<string, CustomExpression>> _expressionMap = new Lazy<Dictionary<string, CustomExpression>>();
 
-        public ExpressionTable()
-        {
-            _expressionMap = new Dictionary<string, CustomExpression>();
-        }
+        public ExpressionTable() { }
 
-        public IEnumerable<string> Keys => _expressionMap.Keys;
-        public IEnumerable<CustomExpression> Values => _expressionMap.Values;
+        public IEnumerable<string> Keys => _expressionMap.Value.Keys;
+        public IEnumerable<CustomExpression> Values => _expressionMap.Value.Values;
 
         public void Add(CustomExpression expression)
         {
-            if (_expressionMap.ContainsKey(expression.Name.ToLower()))
+            if (_expressionMap.Value.ContainsKey(expression.Name.ToLower()))
                 throw new ArgumentException($"Function Name '{expression.Name}' is already present in the collection.");
 
-            if (_expressionMap.Values.Any(expr => expr.RegexPattern.Equals(expression.RegexPattern)))
+            if (_expressionMap.Value.Values.Any(expr => expr.RegexPattern.Equals(expression.RegexPattern)))
                 throw new ArgumentException(
                     $"Regular Expression '{expression.RegexPattern}' is already present in the collection.");
 
-            _expressionMap.Add(expression.Name.ToLower(), expression);
+            _expressionMap.Value.Add(expression.Name.ToLower(), expression);
         }
 
         public CustomExpression Get(string value)
@@ -33,9 +30,9 @@ namespace Realm.Library.NCalc
             if (string.IsNullOrEmpty(value))
                 return null;
 
-            return _expressionMap.ContainsKey(value.ToLower())
-                ? _expressionMap[value.ToLower()]
-                : _expressionMap.Values.ToList()
+            return _expressionMap.Value.ContainsKey(value.ToLower())
+                ? _expressionMap.Value[value.ToLower()]
+                : _expressionMap.Value.Values.ToList()
                     .FirstOrDefault(x => x.RegexPattern.Equals(value));
         }
     }

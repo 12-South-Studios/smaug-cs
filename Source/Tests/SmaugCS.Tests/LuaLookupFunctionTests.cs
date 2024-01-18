@@ -1,42 +1,42 @@
-﻿using Moq;
-using NUnit.Framework;
+﻿using FakeItEasy;
+using FluentAssertions;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Logging;
+using Xunit;
 
 namespace SmaugCS.Tests
 {
-    [TestFixture]
+
     public class LuaLookupFunctionTests
     {
         private LookupManager LookupMgr { get; set; }
 
-        [SetUp]
-        public void OnSetup()
+        public LuaLookupFunctionTests()
         {
             LookupMgr = new LookupManager();
         }
 
-        [Test]
+        [Fact]
         public void LuaAddLookupTest()
         {
-            var mockLogger = new Mock<ILogManager>();
+            var mockLogger = A.Fake<ILogManager>();
 
-            LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger.Object);
+            LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger);
 
             LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
-            Assert.That(LookupMgr.HasLookup("TestTable", "This is a test entry"), Is.True);
+            LookupMgr.HasLookup("TestTable", "This is a test entry").Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void LuaAddLookup_AlreadyPresent_Test()
         {
             var callbackValue = false;
 
-            var mockLogger = new Mock<ILogManager>();
-            mockLogger.Setup(x => x.Boot(It.IsAny<DuplicateEntryException>())).Callback(() => callbackValue = true);
+            var mockLogger = A.Fake<ILogManager>();
+            A.CallTo(() => mockLogger.Boot(A<DuplicateEntryException>.Ignored)).Invokes(() => callbackValue = true);
 
-            LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger.Object);
+            LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger);
 
             // Add once to enter it into the list
             LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
@@ -44,7 +44,7 @@ namespace SmaugCS.Tests
             // Add it again to verify an exception is logged
             LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
-            Assert.That(callbackValue, Is.True);
+            callbackValue.Should().BeTrue();
         }
     }
 }

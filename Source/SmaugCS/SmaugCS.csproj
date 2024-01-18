@@ -1,18 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{30198591-FFF9-488C-AB88-2B02D58900D4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SmaugCS</RootNamespace>
-    <AssemblyName>SmaugCS</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -30,1053 +18,63 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\Build\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <DocumentationFile>..\Build\Debug\SmaugCS.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SmaugCS.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="KopiLua, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LuaInterfaceCore.1.0.0\lib\netstandard2.0\KopiLua.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="LuaInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LuaInterfaceCore.1.0.0\lib\netstandard2.0\LuaInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NCalc, Version=3.5.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CoreCLR-NCalc.2.2.92\lib\net45\NCalc.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.XML" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Commands\Player\Prompt.cs" />
-    <Compile Include="Commands\Player\FPrompt.cs" />
-    <Compile Include="Commands\Player\Report.cs" />
-    <Compile Include="Commands\Player\Stat.cs" />
-    <Compile Include="Commands\Player\StatReport.cs" />
-    <Compile Include="Commands\Player\Bio.cs" />
-    <Compile Include="Commands\Player\Description.cs" />
-    <Compile Include="Commands\Player\Homepage.cs" />
-    <Compile Include="Commands\Polymorph\UnmorphChar.cs" />
-    <Compile Include="Commands\Polymorph\MorphChar.cs" />
-    <Compile Include="Commands\Polymorph\Unmorph.cs" />
-    <Compile Include="Commands\Polymorph\Morph.cs" />
-    <Compile Include="Commands\Track.cs" />
-    <Compile Include="Exceptions\ObjectAlreadyEquippedException.cs" />
-    <Compile Include="Exceptions\RoomMismatchException.cs" />
-    <Compile Include="Extensions\BoardDataExtensions.cs" />
-    <Compile Include="Extensions\Character\Affect.cs" />
-    <Compile Include="Extensions\Character\Items.cs" />
-    <Compile Include="Extensions\Character\Show.cs" />
-    <Compile Include="Extensions\DescriptorExtensions.cs" />
-    <Compile Include="Extensions\Mobile\MobileInstanceExtensions.cs" />
-    <Compile Include="Extensions\Objects\StatsAndValues.cs" />
-    <Compile Include="Extensions\Objects\Damage.cs" />
-    <Compile Include="Extensions\Player\Condition.cs" />
-    <Compile Include="Extensions\Character\DamageExtensions.cs" />
-    <Compile Include="Extensions\Player\Deity.cs" />
-    <Compile Include="Extensions\Character\Experience.cs" />
-    <Compile Include="Extensions\Character\Fighting.cs" />
-    <Compile Include="Extensions\Character\Followers.cs" />
-    <Compile Include="Extensions\Mobile\HuntHateFear.cs" />
-    <Compile Include="Extensions\Character\Languages.cs" />
-    <Compile Include="Extensions\Character\ObjectLocator.cs" />
-    <Compile Include="Extensions\Character\Statistics.cs" />
-    <Compile Include="Extensions\Character\Timer.cs" />
-    <Compile Include="Extensions\Character\Traps.cs" />
-    <Compile Include="Extensions\Player\PlayerInstanceExtensions.cs" />
-    <Compile Include="Extensions\GameManagerExtensions.cs" />
-    <Compile Include="Exceptions\ObjectNotCarriedByCharacterException.cs" />
-    <Compile Include="Exceptions\ObjectAlreadyExtractedException.cs" />
-    <Compile Include="Extensions\ResetExtensions.cs" />
-    <Compile Include="LuaHelpers\LuaAreaFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaCreateFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaGetFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaInitializer.cs" />
-    <Compile Include="LuaHelpers\LuaLookupFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaManagerFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaMobFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaMudProgFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaObjectFunctions.cs" />
-    <Compile Include="LuaHelpers\LuaRoomFunctions.cs" />
-    <Compile Include="Behavior\Shopkeeper\Appraise.cs" />
-    <Compile Include="Behavior\Shopkeeper\AppraiseAll.cs" />
-    <Compile Include="Behavior\Shopkeeper\Interact.cs" />
-    <Compile Include="Behavior\Shopkeeper\RepairObject.cs" />
-    <Compile Include="Commands\Ban\Ban.cs" />
-    <Compile Include="Commands\Movement\PullOrPush.cs" />
-    <Compile Include="Commands\Player\Title.cs" />
-    <Compile Include="Extensions\MudProgExtensions.cs" />
-    <Compile Include="Extensions\SkillDataExtensions.cs" />
-    <Compile Include="Helpers\CastingFunctionType.cs" />
-    <Compile Include="Helpers\CheckFunctions.cs" />
-    <Compile Include="Commands\Player\Affected.cs" />
-    <Compile Include="Commands\Player\Equipment.cs" />
-    <Compile Include="Commands\Player\Gold.cs" />
-    <Compile Include="Commands\Player\Inventory.cs" />
-    <Compile Include="Commands\Player\Level.cs" />
-    <Compile Include="Commands\Player\Remains.cs" />
-    <Compile Include="Commands\Player\Score.cs" />
-    <Compile Include="Commands\Player\Worth.cs" />
-    <Compile Include="Commands\Polymorph\ImmMorph.cs" />
-    <Compile Include="Commands\Polymorph\ImmUnmorph.cs" />
-    <Compile Include="Commands\Polymorph\MorphCreate.cs" />
-    <Compile Include="Commands\Polymorph\MorphDestroy.cs" />
-    <Compile Include="Commands\Polymorph\MorphList.cs" />
-    <Compile Include="Commands\Polymorph\MorphSet.cs" />
-    <Compile Include="Commands\Polymorph\MorphStat.cs" />
-    <Compile Include="Commands\Polymorph\Revert.cs" />
-    <Compile Include="ExpressionTableInitializer.cs" />
-    <Compile Include="Extensions\AreaExtensions.cs" />
-    <Compile Include="Extensions\Character\CharacterInstanceExtensions.cs" />
-    <Compile Include="Extensions\ExitDataExtensions.cs" />
-    <Compile Include="Extensions\LogManagerExtensions.cs" />
-    <Compile Include="Extensions\Objects\ObjectInstanceExtensions.cs" />
-    <Compile Include="Extensions\RoomTemplateExtensions.cs" />
-    <Compile Include="Commands\Apply.cs" />
-    <Compile Include="Commands\MudProgs\MPAdvance.cs" />
-    <Compile Include="Commands\MudProgs\MPApply.cs" />
-    <Compile Include="Commands\MudProgs\MPApplyB.cs" />
-    <Compile Include="Commands\MudProgs\MPASound.cs" />
-    <Compile Include="Commands\MudProgs\MPAt.cs" />
-    <Compile Include="Commands\MudProgs\MPBodyBag.cs" />
-    <Compile Include="Commands\MudProgs\MPClosePassage.cs" />
-    <Compile Include="Commands\MudProgs\MPDamage.cs" />
-    <Compile Include="Commands\MudProgs\MPDelay.cs" />
-    <Compile Include="Commands\MudProgs\MPDeposit.cs" />
-    <Compile Include="Commands\MudProgs\MPDream.cs" />
-    <Compile Include="Commands\MudProgs\MPEcho.cs" />
-    <Compile Include="Commands\MudProgs\MPEchoAround.cs" />
-    <Compile Include="Commands\MudProgs\MPEchoAt.cs" />
-    <Compile Include="Commands\MudProgs\MPEchoZone.cs" />
-    <Compile Include="Commands\MudProgs\MPFavor.cs" />
-    <Compile Include="Commands\MudProgs\MPFear.cs" />
-    <Compile Include="Commands\MudProgs\MPFillIn.cs" />
-    <Compile Include="Commands\MudProgs\MPForce.cs" />
-    <Compile Include="Commands\MudProgs\MPGoto.cs" />
-    <Compile Include="Commands\MudProgs\MPHate.cs" />
-    <Compile Include="Commands\MudProgs\MPHunt.cs" />
-    <Compile Include="Commands\MudProgs\MPInvis.cs" />
-    <Compile Include="Commands\MudProgs\MPJunk.cs" />
-    <Compile Include="Commands\MudProgs\MPKill.cs" />
-    <Compile Include="Commands\MudProgs\MPLog.cs" />
-    <Compile Include="Commands\MudProgs\MPMLoad.cs" />
-    <Compile Include="Commands\MudProgs\MPMorph.cs" />
-    <Compile Include="Commands\MudProgs\MPMusic.cs" />
-    <Compile Include="Commands\MudProgs\MPMusicAround.cs" />
-    <Compile Include="Commands\MudProgs\MPMusicAt.cs" />
-    <Compile Include="Commands\MudProgs\MPNothing.cs" />
-    <Compile Include="Commands\MudProgs\MPNuisance.cs" />
-    <Compile Include="Commands\MudProgs\MPOLoad.cs" />
-    <Compile Include="Commands\MudProgs\MPOOwner.cs" />
-    <Compile Include="Commands\MudProgs\MPOpenPassage.cs" />
-    <Compile Include="Commands\MudProgs\MPPardon.cs" />
-    <Compile Include="Commands\MudProgs\MPPeace.cs" />
-    <Compile Include="Commands\MudProgs\MPPKSet.cs" />
-    <Compile Include="Commands\MudProgs\MPPractice.cs" />
-    <Compile Include="Commands\MudProgs\MPPurge.cs" />
-    <Compile Include="Commands\MudProgs\MPRestore.cs" />
-    <Compile Include="Commands\MudProgs\MPScatter.cs" />
-    <Compile Include="Commands\MudProgs\MPSlay.cs" />
-    <Compile Include="Commands\MudProgs\MPSound.cs" />
-    <Compile Include="Commands\MudProgs\MPSoundAround.cs" />
-    <Compile Include="Commands\MudProgs\MPSoundAt.cs" />
-    <Compile Include="Commands\MudProgs\MPStat.cs" />
-    <Compile Include="Commands\MudProgs\MPStrew.cs" />
-    <Compile Include="Commands\MudProgs\MPSupress.cs" />
-    <Compile Include="Commands\MudProgs\MPTransfer.cs" />
-    <Compile Include="Commands\MudProgs\MPUnmorph.cs" />
-    <Compile Include="Commands\MudProgs\MPUnnuisance.cs" />
-    <Compile Include="Commands\MudProgs\MPWithdraw.cs" />
-    <Compile Include="Commands\MudProgs\OPStat.cs" />
-    <Compile Include="Commands\MudProgs\RPStat.cs" />
-    <Compile Include="Commands\Pipe\Light.cs" />
-    <Compile Include="Commands\Liquids\Quaff.cs" />
-    <Compile Include="Commands\Movement\Pull.cs" />
-    <Compile Include="Commands\Movement\Push.cs" />
-    <Compile Include="Commands\Objects\Eat.cs" />
-    <Compile Include="Commands\Objects\Recite.cs" />
-    <Compile Include="Commands\Pipe\Rap.cs" />
-    <Compile Include="Commands\Pipe\Smoke.cs" />
-    <Compile Include="Commands\Pipe\Tamp.cs" />
-    <Compile Include="Extensions\SavingThrowDataExtensions.cs" />
-    <Compile Include="Extensions\WeatherManagerExtensions.cs" />
-    <Compile Include="Constants\LookupConstants.cs" />
-    <Compile Include="Helpers\HelperFunctions.cs" />
-    <Compile Include="Lookup\CommandLookupTable.cs" />
-    <Compile Include="Lookup\SkillLookupTable.cs" />
-    <Compile Include="Lookup\SpellLookupTable.cs" />
-    <Compile Include="Managers\CalendarManager.cs" />
-    <Compile Include="Managers\CommandManager.cs" />
-    <Compile Include="Interfaces\ICalendarManager.cs" />
-    <Compile Include="Managers\PulseTypes.cs" />
-    <Compile Include="MudProgs\CheckFunctions.cs" />
-    <Compile Include="MudProgs\IMudProgHandler.cs" />
-    <Compile Include="MudProgs\MobileProgs\CommandProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\EntryProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\ActProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\BribeProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\DeathProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\GreetProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\GiveProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\HourProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\ScriptProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\TellProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\TimeProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\RandomProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\SellProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\FightProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\HitPercentProg.cs" />
-    <Compile Include="MudProgs\MobileProgs\SpeechProg.cs" />
-    <Compile Include="MudProgs\MudProgFunction.cs" />
-    <Compile Include="MudProgs\MudProgHandler.cs" />
-    <Compile Include="MudProgs\MudProgLocationTypes.cs" />
-    <Compile Include="MudProgs\ObjectProgs\ActProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\CommandProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\PushProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\PullProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\ZapProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\ExamineProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\DropProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\RepairProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\DamageProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\GreetProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\GetProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\SacrificeProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\RemoveProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\UseProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\WearProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\RandomProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\ScriptProg.cs" />
-    <Compile Include="MudProgs\ObjectProgs\SpeechProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\ActProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\CommandProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\HourProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\RandomProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\SpeechProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\DeathProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\FightProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\RestProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\SleepProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\EnterProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\LeaveProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\ScriptProg.cs" />
-    <Compile Include="MudProgs\RoomProgs\TimeProg.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Skills\Ability.cs" />
-    <Compile Include="Skills\Disarm.cs" />
-    <Compile Include="Skills\Dodge.cs" />
-    <Compile Include="Skills\Grip.cs" />
-    <Compile Include="Skills\Skill.cs" />
-    <Compile Include="Skills\Parry.cs" />
-    <Compile Include="Skills\Trip.cs" />
-    <Compile Include="Skills\Tumble.cs" />
-    <Compile Include="SmaugModule.cs" />
-    <Compile Include="SpecFuns\Breaths\BreathAcid.cs" />
-    <Compile Include="SpecFuns\Breaths\BreathAny.cs" />
-    <Compile Include="SpecFuns\Breaths\BreathFire.cs" />
-    <Compile Include="SpecFuns\Breaths\BreathFrost.cs" />
-    <Compile Include="SpecFuns\Breaths\BreathGas.cs" />
-    <Compile Include="SpecFuns\Breaths\BreathLightning.cs" />
-    <Compile Include="SpecFuns\Casting\CastAdept.cs" />
-    <Compile Include="SpecFuns\Casting\CastCleric.cs" />
-    <Compile Include="SpecFuns\Casting\CastMage.cs" />
-    <Compile Include="SpecFuns\Casting\CastUndead.cs" />
-    <Compile Include="SpecFuns\Breaths\Dragon.cs" />
-    <Compile Include="SpecFuns\Professions\Executioner.cs" />
-    <Compile Include="SpecFuns\Professions\Fido.cs" />
-    <Compile Include="SpecFuns\Professions\Guard.cs" />
-    <Compile Include="SpecFuns\ISpecFunHandler.cs" />
-    <Compile Include="SpecFuns\Professions\Janitor.cs" />
-    <Compile Include="SpecFuns\Professions\Mayor.cs" />
-    <Compile Include="SpecFuns\Poison.cs" />
-    <Compile Include="SpecFuns\SpecFunSpell.cs" />
-    <Compile Include="SpecFuns\Professions\Thief.cs" />
-    <Compile Include="SpecFuns\Professions\Wanderer.cs" />
-    <Compile Include="Spells\Smaug\Affect.cs" />
-    <Compile Include="Spells\Smaug\AffectCharacter.cs" />
-    <Compile Include="Spells\Smaug\AreaAttack.cs" />
-    <Compile Include="Spells\Smaug\Attack.cs" />
-    <Compile Include="Commands\Admin\Advance.cs" />
-    <Compile Include="Commands\Admin\At.cs" />
-    <Compile Include="Commands\Admin\AtObj.cs" />
-    <Compile Include="Commands\Admin\Authorize.cs" />
-    <Compile Include="Commands\Admin\Balzhur.cs" />
-    <Compile Include="Commands\Admin\Bamfin.cs" />
-    <Compile Include="Commands\Admin\Bamfout.cs" />
-    <Compile Include="Commands\Admin\Bestow.cs" />
-    <Compile Include="Commands\Admin\BestowArea.cs" />
-    <Compile Include="Commands\Admin\BodyBag.cs" />
-    <Compile Include="Commands\Admin\DMesg.cs" />
-    <Compile Include="Commands\Admin\Fixed.cs" />
-    <Compile Include="Commands\Admin\FShow.cs" />
-    <Compile Include="Commands\Admin\HintEdit.cs" />
-    <Compile Include="Commands\Admin\IPCompare.cs" />
-    <Compile Include="Commands\Admin\KHistory.cs" />
-    <Compile Include="Commands\Admin\MakeWizList.cs" />
-    <Compile Include="Commands\Admin\Memory.cs" />
-    <Compile Include="Commands\Admin\Nuisance.cs" />
-    <Compile Include="Commands\Admin\PCRename.cs" />
-    <Compile Include="Commands\Admin\Project.cs" />
-    <Compile Include="Commands\Admin\Reserve.cs" />
-    <Compile Include="Commands\Admin\SaveHoliday.cs" />
-    <Compile Include="Commands\Admin\SetHoliday.cs" />
-    <Compile Include="Commands\Admin\Unnuisance.cs" />
-    <Compile Include="Commands\Ban\Allow.cs" />
-    <Compile Include="Commands\Ban\Warn.cs" />
-    <Compile Include="Commands\Boards\Boards.cs" />
-    <Compile Include="Commands\Boards\BSet.cs" />
-    <Compile Include="Commands\Boards\BStat.cs" />
-    <Compile Include="Commands\Boards\Comment.cs" />
-    <Compile Include="Commands\Boards\MailRoom.cs" />
-    <Compile Include="Commands\Boards\MakeBoard.cs" />
-    <Compile Include="Commands\Boards\Note.cs" />
-    <Compile Include="Commands\Boards\NoteRoom.cs" />
-    <Compile Include="Commands\Building\AAssign.cs" />
-    <Compile Include="Commands\Building\ALinks.cs" />
-    <Compile Include="Commands\Building\ASet.cs" />
-    <Compile Include="Commands\Building\AStat.cs" />
-    <Compile Include="Commands\Building\FindExit.cs" />
-    <Compile Include="Commands\Building\FoldArea.cs" />
-    <Compile Include="Commands\Building\Goto.cs" />
-    <Compile Include="Commands\Building\InstallArea.cs" />
-    <Compile Include="Commands\Building\LoadArea.cs" />
-    <Compile Include="Commands\Building\Shop\MakeRepair.cs" />
-    <Compile Include="Commands\Building\Shop\MakeShop.cs" />
-    <Compile Include="Commands\Building\MCreate.cs" />
-    <Compile Include="Commands\Building\MDelete.cs" />
-    <Compile Include="Commands\Building\MList.cs" />
-    <Compile Include="Commands\Building\MPCopy.cs" />
-    <Compile Include="Commands\Building\MPEdit.cs" />
-    <Compile Include="Commands\Building\MSet.cs" />
-    <Compile Include="Commands\Building\OCreate.cs" />
-    <Compile Include="Commands\Building\ODelete.cs" />
-    <Compile Include="Commands\Building\OList.cs" />
-    <Compile Include="Commands\Building\OOwner.cs" />
-    <Compile Include="Commands\Building\OPCopy.cs" />
-    <Compile Include="Commands\Building\OPEdit.cs" />
-    <Compile Include="Commands\Building\OSet.cs" />
-    <Compile Include="Commands\Building\RDelete.cs" />
-    <Compile Include="Commands\Building\RDig.cs" />
-    <Compile Include="Commands\Building\REdit.cs" />
-    <Compile Include="Commands\Building\Shop\RepairSet.cs" />
-    <Compile Include="Commands\Building\RGrid.cs" />
-    <Compile Include="Commands\Building\RList.cs" />
-    <Compile Include="Commands\Building\RPCopy.cs" />
-    <Compile Include="Commands\Building\RPEdit.cs" />
-    <Compile Include="Commands\Building\SaveArea.cs" />
-    <Compile Include="Commands\Building\SetLiquid.cs" />
-    <Compile Include="Commands\Building\SetMixture.cs" />
-    <Compile Include="Commands\Building\Shop\RepairShops.cs" />
-    <Compile Include="Commands\Building\Shop\RepairStat.cs" />
-    <Compile Include="Commands\Building\Shop\Shops.cs" />
-    <Compile Include="Commands\Building\Shop\ShopSet.cs" />
-    <Compile Include="Commands\Building\Shop\ShopStat.cs" />
-    <Compile Include="Commands\Building\ShowLiquid.cs" />
-    <Compile Include="Commands\Building\ShowMixture.cs" />
-    <Compile Include="Commands\Building\SSet.cs" />
-    <Compile Include="Commands\Building\UnfoldArea.cs" />
-    <Compile Include="Commands\Building\VAssign.cs" />
-    <Compile Include="Commands\Building\CEdit.cs" />
-    <Compile Include="Commands\Building\CmdTable.cs" />
-    <Compile Include="Commands\Building\CSet.cs" />
-    <Compile Include="Commands\Admin\Delay.cs" />
-    <Compile Include="Commands\Admin\Deny.cs" />
-    <Compile Include="Commands\Admin\Destroy.cs" />
-    <Compile Include="Commands\Admin\Disconnect.cs" />
-    <Compile Include="Commands\Admin\DoNotDisturb.cs" />
-    <Compile Include="Commands\Admin\Echo.cs" />
-    <Compile Include="Commands\Admin\Elevate.cs" />
-    <Compile Include="Commands\Admin\FixChar.cs" />
-    <Compile Include="Commands\Admin\For.cs" />
-    <Compile Include="Commands\Admin\Force.cs" />
-    <Compile Include="Commands\Admin\ForceClose.cs" />
-    <Compile Include="Commands\Admin\FormPassword.cs" />
-    <Compile Include="Commands\Admin\FQuit.cs" />
-    <Compile Include="Commands\Admin\Freeze.cs" />
-    <Compile Include="Commands\Admin\GFighting.cs" />
-    <Compile Include="Commands\Admin\Hell.cs" />
-    <Compile Include="Commands\Admin\HolyLight.cs" />
-    <Compile Include="Commands\Admin\Immortalize.cs" />
-    <Compile Include="Commands\Admin\Invis.cs" />
-    <Compile Include="Commands\Admin\Litterbug.cs" />
-    <Compile Include="Commands\Admin\Loadup.cs" />
-    <Compile Include="Commands\Admin\Log.cs" />
-    <Compile Include="Commands\Admin\Mortalize.cs" />
-    <Compile Include="Commands\Admin\NewbieSet.cs" />
-    <Compile Include="Commands\Admin\NoEmote.cs" />
-    <Compile Include="Commands\Admin\NoResolve.cs" />
-    <Compile Include="Commands\Admin\NoTell.cs" />
-    <Compile Include="Commands\Admin\NoTitle.cs" />
-    <Compile Include="Commands\Admin\Peace.cs" />
-    <Compile Include="Commands\Admin\Restore.cs" />
-    <Compile Include="Commands\Admin\RestoreTime.cs" />
-    <Compile Include="Commands\Admin\Scatter.cs" />
-    <Compile Include="Commands\Building\QPSet.cs" />
-    <Compile Include="Commands\Building\QPStat.cs" />
-    <Compile Include="Commands\Building\SEdit.cs" />
-    <Compile Include="Commands\Admin\SetBootTime.cs" />
-    <Compile Include="Commands\Building\SetClass.cs" />
-    <Compile Include="Commands\Building\SetRace.cs" />
-    <Compile Include="Commands\Building\ShowClass.cs" />
-    <Compile Include="Commands\Admin\Silence.cs" />
-    <Compile Include="Commands\Admin\Sober.cs" />
-    <Compile Include="Commands\Admin\Strew.cs" />
-    <Compile Include="Commands\Admin\Strip.cs" />
-    <Compile Include="Commands\Admin\Trust.cs" />
-    <Compile Include="Commands\Admin\Unhell.cs" />
-    <Compile Include="Commands\Admin\Unsilence.cs" />
-    <Compile Include="Commands\Admin\Users.cs" />
-    <Compile Include="Commands\Admin\VSearch.cs" />
-    <Compile Include="Commands\Admin\WizLock.cs" />
-    <Compile Include="Commands\Building\GWhere.cs" />
-    <Compile Include="Commands\Building\HEdit.cs" />
-    <Compile Include="Commands\Building\HList.cs" />
-    <Compile Include="Commands\Building\HSet.cs" />
-    <Compile Include="Commands\Admin\LowPurge.cs" />
-    <Compile Include="Commands\Building\MFind.cs" />
-    <Compile Include="Commands\Building\MInvoke.cs" />
-    <Compile Include="Commands\Building\MStat.cs" />
-    <Compile Include="Commands\Building\MWhere.cs" />
-    <Compile Include="Commands\Building\OClaim.cs" />
-    <Compile Include="Commands\Building\OFind.cs" />
-    <Compile Include="Commands\Building\OInvoke.cs" />
-    <Compile Include="Commands\Building\OStat.cs" />
-    <Compile Include="Commands\Building\OWhere.cs" />
-    <Compile Include="Commands\Admin\Pardon.cs" />
-    <Compile Include="Commands\Admin\Purge.cs" />
-    <Compile Include="Commands\Admin\Rank.cs" />
-    <Compile Include="Commands\Admin\Rat.cs" />
-    <Compile Include="Commands\Admin\Reboot.cs" />
-    <Compile Include="Commands\Admin\REcho.cs" />
-    <Compile Include="Commands\Admin\ReGoto.cs" />
-    <Compile Include="Commands\Admin\Restrict.cs" />
-    <Compile Include="Commands\Admin\Retire.cs" />
-    <Compile Include="Commands\Admin\ReTransfer.cs" />
-    <Compile Include="Commands\Admin\Return.cs" />
-    <Compile Include="Commands\Building\RStat.cs" />
-    <Compile Include="Commands\Admin\Shutdown.cs" />
-    <Compile Include="Commands\Admin\Snoop.cs" />
-    <Compile Include="Commands\Admin\StatShield.cs" />
-    <Compile Include="Commands\Admin\Switch.cs" />
-    <Compile Include="Commands\Admin\Transfer.cs" />
-    <Compile Include="Commands\Building\ShowRace.cs" />
-    <Compile Include="Commands\Building\VStat.cs" />
-    <Compile Include="Commands\Admin\Watch.cs" />
-    <Compile Include="Commands\Admin\WizHelp.cs" />
-    <Compile Include="Commands\AFK.cs" />
-    <Compile Include="Commands\ANSI.cs" />
-    <Compile Include="Commands\Areas.cs" />
-    <Compile Include="Commands\Bug.cs" />
-    <Compile Include="Commands\Cast.cs" />
-    <Compile Include="Commands\Channels.cs" />
-    <Compile Include="Commands\CheckVNums.cs" />
-    <Compile Include="Commands\Color.cs" />
-    <Compile Include="Commands\Combat\Drag.cs" />
-    <Compile Include="Commands\Combat\Flee.cs" />
-    <Compile Include="Commands\Combat\Kill.cs" />
-    <Compile Include="Commands\Combat\Murder.cs" />
-    <Compile Include="Commands\Combat\Shove.cs" />
-    <Compile Include="Commands\Combat\Slay.cs" />
-    <Compile Include="Commands\Combat\Wimpy.cs" />
-    <Compile Include="Commands\Commands.cs" />
-    <Compile Include="Commands\Compare.cs" />
-    <Compile Include="Commands\Combat\Consider.cs" />
-    <Compile Include="Commands\Config.cs" />
-    <Compile Include="Commands\Credits.cs" />
-    <Compile Include="Commands\Deity\Supplicate.cs" />
-    <Compile Include="Commands\Deity\Deities.cs" />
-    <Compile Include="Commands\Deity\Devote.cs" />
-    <Compile Include="Commands\Examine.cs" />
-    <Compile Include="Commands\Exits.cs" />
-    <Compile Include="Commands\Holidays.cs" />
-    <Compile Include="Commands\Liquids\Drink.cs" />
-    <Compile Include="Commands\Liquids\Fill.cs" />
-    <Compile Include="Commands\Liquids\Mix.cs" />
-    <Compile Include="Commands\Liquids\Empty.cs" />
-    <Compile Include="Commands\Movement\BashDoor.cs" />
-    <Compile Include="Commands\Movement\Bolt.cs" />
-    <Compile Include="Commands\Movement\Climb.cs" />
-    <Compile Include="Commands\Movement\Close.cs" />
-    <Compile Include="Commands\Movement\Enter.cs" />
-    <Compile Include="Commands\Movement\Leave.cs" />
-    <Compile Include="Commands\Movement\Lock.cs" />
-    <Compile Include="Commands\Movement\Move.cs" />
-    <Compile Include="Commands\Movement\Open.cs" />
-    <Compile Include="Commands\Movement\Rest.cs" />
-    <Compile Include="Commands\Movement\Sit.cs" />
-    <Compile Include="Commands\Movement\Sleep.cs" />
-    <Compile Include="Commands\Movement\Stand.cs" />
-    <Compile Include="Commands\Movement\Unbolt.cs" />
-    <Compile Include="Commands\Movement\Unlock.cs" />
-    <Compile Include="Commands\Movement\Wake.cs" />
-    <Compile Include="Commands\Name.cs" />
-    <Compile Include="Commands\Objects\Auction.cs" />
-    <Compile Include="Commands\Objects\Brandish.cs" />
-    <Compile Include="Commands\Objects\Bury.cs" />
-    <Compile Include="Commands\Objects\Drop.cs" />
-    <Compile Include="Commands\Objects\FindNote.cs" />
-    <Compile Include="Commands\Objects\Get.cs" />
-    <Compile Include="Commands\Objects\Give.cs" />
-    <Compile Include="Commands\Objects\Put.cs" />
-    <Compile Include="Commands\Objects\Remove.cs" />
-    <Compile Include="Commands\Objects\RollDie.cs" />
-    <Compile Include="Commands\Objects\Sacrifice.cs" />
-    <Compile Include="Commands\Objects\Wear.cs" />
-    <Compile Include="Commands\Objects\Zap.cs" />
-    <Compile Include="Commands\Organizations\Clans.cs" />
-    <Compile Include="Commands\Organizations\Councils.cs" />
-    <Compile Include="Commands\Organizations\Guilds.cs" />
-    <Compile Include="Commands\Organizations\Induct.cs" />
-    <Compile Include="Commands\Organizations\Make.cs" />
-    <Compile Include="Commands\Organizations\MakeClan.cs" />
-    <Compile Include="Commands\Organizations\MakeCouncil.cs" />
-    <Compile Include="Commands\Organizations\Orders.cs" />
-    <Compile Include="Commands\Organizations\Outcast.cs" />
-    <Compile Include="Commands\Organizations\SetClan.cs" />
-    <Compile Include="Commands\Organizations\SetCouncil.cs" />
-    <Compile Include="Commands\Organizations\ShowClan.cs" />
-    <Compile Include="Commands\Organizations\ShowCouncil.cs" />
-    <Compile Include="Commands\Organizations\Victories.cs" />
-    <Compile Include="Commands\Password.cs" />
-    <Compile Include="Commands\Practice.cs" />
-    <Compile Include="Commands\Shop\Appraise.cs" />
-    <Compile Include="Commands\Shop\Buy.cs" />
-    <Compile Include="Commands\Shop\List.cs" />
-    <Compile Include="Commands\Shop\Repair.cs" />
-    <Compile Include="Commands\Shop\Sell.cs" />
-    <Compile Include="Commands\Shop\Value.cs" />
-    <Compile Include="Commands\Skills\Aid.cs" />
-    <Compile Include="Commands\Skills\Berserk.cs" />
-    <Compile Include="Commands\Skills\Brew.cs" />
-    <Compile Include="Commands\Skills\Cook.cs" />
-    <Compile Include="Commands\Skills\Dismount.cs" />
-    <Compile Include="Commands\Skills\Fire.cs" />
-    <Compile Include="Commands\Skills\Hitall.cs" />
-    <Compile Include="Commands\Skills\Mount.cs" />
-    <Compile Include="Commands\Skills\Recall.cs" />
-    <Compile Include="Commands\Skills\Scan.cs" />
-    <Compile Include="Commands\Skills\Scribe.cs" />
-    <Compile Include="Commands\Skills\Slice.cs" />
-    <Compile Include="Commands\Skills\Style.cs" />
-    <Compile Include="Commands\Skills\Thief\Backstab.cs" />
-    <Compile Include="Commands\Skills\Bash.cs" />
-    <Compile Include="Commands\Skills\Bite.cs" />
-    <Compile Include="Commands\Skills\Bloodlet.cs" />
-    <Compile Include="Commands\Skills\Broach.cs" />
-    <Compile Include="Commands\Skills\Claw.cs" />
-    <Compile Include="Commands\Skills\Thief\Circle.cs" />
-    <Compile Include="Commands\Skills\Thief\DeTrap.cs" />
-    <Compile Include="Commands\Skills\Dig.cs" />
-    <Compile Include="Commands\Skills\Disarm.cs" />
-    <Compile Include="Commands\Skills\Feed.cs" />
-    <Compile Include="Commands\Skills\Gouge.cs" />
-    <Compile Include="Commands\Skills\Kick.cs" />
-    <Compile Include="Commands\Skills\MistWalk.cs" />
-    <Compile Include="Commands\Skills\Thief\Hide.cs" />
-    <Compile Include="Commands\Skills\Thief\Pick.cs" />
-    <Compile Include="Commands\Skills\Punch.cs" />
-    <Compile Include="Commands\Skills\Rescue.cs" />
-    <Compile Include="Commands\Skills\Search.cs" />
-    <Compile Include="Commands\Skills\Skin.cs" />
-    <Compile Include="Commands\Skills\SLookup.cs" />
-    <Compile Include="Commands\Skills\Thief\PoisonWeapon.cs" />
-    <Compile Include="Commands\Skills\Thief\Sneak.cs" />
-    <Compile Include="Commands\Skills\Thief\Steal.cs" />
-    <Compile Include="Commands\Skills\Sting.cs" />
-    <Compile Include="Commands\Skills\Stun.cs" />
-    <Compile Include="Commands\Skills\Tail.cs" />
-    <Compile Include="Commands\Skills\Thief\Visible.cs" />
-    <Compile Include="Commands\SList.cs" />
-    <Compile Include="Commands\Socials.cs" />
-    <Compile Include="Commands\Social\Glance.cs" />
-    <Compile Include="Commands\Help.cs" />
-    <Compile Include="Commands\Ide.cs" />
-    <Compile Include="Commands\Idea.cs" />
-    <Compile Include="Commands\Language.cs" />
-    <Compile Include="Commands\Laws.cs" />
-    <Compile Include="Commands\Look.cs" />
-    <Compile Include="Commands\PetsAndGroups\Dismiss.cs" />
-    <Compile Include="Commands\PetsAndGroups\Follow.cs" />
-    <Compile Include="Commands\PetsAndGroups\Group.cs" />
-    <Compile Include="Commands\PetsAndGroups\GTell.cs" />
-    <Compile Include="Commands\PetsAndGroups\Order.cs" />
-    <Compile Include="Commands\Organizations\Roster.cs" />
-    <Compile Include="Commands\PetsAndGroups\Split.cs" />
-    <Compile Include="Commands\Quit.cs" />
-    <Compile Include="Commands\Rent.cs" />
-    <Compile Include="Commands\RIP.cs" />
-    <Compile Include="Commands\Save.cs" />
-    <Compile Include="Commands\Social\AvTalk.cs" />
-    <Compile Include="Commands\Social\Chat.cs" />
-    <Compile Include="Commands\Social\ClanTalk.cs" />
-    <Compile Include="Commands\Social\Emote.cs" />
-    <Compile Include="Commands\Social\Ignore.cs" />
-    <Compile Include="Commands\Social\ImmTalk.cs" />
-    <Compile Include="Commands\Social\Muse.cs" />
-    <Compile Include="Commands\Social\Pager.cs" />
-    <Compile Include="Commands\Social\Racetalk.cs" />
-    <Compile Include="Commands\Social\Reply.cs" />
-    <Compile Include="Commands\Social\Repeat.cs" />
-    <Compile Include="Commands\Social\Retell.cs" />
-    <Compile Include="Commands\Social\Speak.cs" />
-    <Compile Include="Commands\Social\Tell.cs" />
-    <Compile Include="Commands\Social\Think.cs" />
-    <Compile Include="Commands\Social\Traffic.cs" />
-    <Compile Include="Commands\Social\Wartalk.cs" />
-    <Compile Include="Commands\Social\Whisper.cs" />
-    <Compile Include="Commands\Social\Shout.cs" />
-    <Compile Include="Commands\Social\Music.cs" />
-    <Compile Include="Commands\Social\Quest.cs" />
-    <Compile Include="Commands\Social\Ask.cs" />
-    <Compile Include="Commands\Social\Answer.cs" />
-    <Compile Include="Commands\Social\Whois.cs" />
-    <Compile Include="Commands\Social\Yell.cs" />
-    <Compile Include="Commands\Social\Say.cs" />
-    <Compile Include="Commands\Social\CouncilTalk.cs" />
-    <Compile Include="Commands\Social\GuildTalk.cs" />
-    <Compile Include="Commands\Social\NewbieChat.cs" />
-    <Compile Include="Commands\Social\OrderTalk.cs" />
-    <Compile Include="Commands\Time.cs" />
-    <Compile Include="Commands\Timezone.cs" />
-    <Compile Include="Commands\Typo.cs" />
-    <Compile Include="Commands\Version.cs" />
-    <Compile Include="Commands\Weather\SetWeather.cs" />
-    <Compile Include="Commands\Weather\ShowWeather.cs" />
-    <Compile Include="Commands\Weather\Weather.cs" />
-    <Compile Include="Commands\Social\Where.cs" />
-    <Compile Include="Commands\Social\Who.cs" />
-    <Compile Include="Commands\WizList.cs" />
-    <Compile Include="Managers\ChatManager.cs" />
-    <Compile Include="Managers\GameManager.cs" />
-    <Compile Include="Spells\Acid\AcetumPrimus.cs" />
-    <Compile Include="Spells\Acid\AcidBlast.cs" />
-    <Compile Include="Spells\Acid\AcidBreath.cs" />
-    <Compile Include="Spells\Death\AnimateDead.cs" />
-    <Compile Include="Spells\AstralWalk.cs" />
-    <Compile Include="Spells\Paladin\BethsaideanTouch.cs" />
-    <Compile Include="Spells\Death\BlackFist.cs" />
-    <Compile Include="Spells\Death\BlackHand.cs" />
-    <Compile Include="Spells\Death\BlackLightning.cs" />
-    <Compile Include="Spells\Blindness.cs" />
-    <Compile Include="Spells\Fire\BurningHands.cs" />
-    <Compile Include="Spells\Electrical\CallLightning.cs" />
-    <Compile Include="Spells\Life\CauseCritical.cs" />
-    <Compile Include="Spells\Life\CauseLight.cs" />
-    <Compile Include="Spells\Life\CauseSerious.cs" />
-    <Compile Include="Spells\Acid\CausticFount.cs" />
-    <Compile Include="Spells\ChangeSex.cs" />
-    <Compile Include="Spells\CharmPerson.cs" />
-    <Compile Include="Spells\Ice\ChillTouch.cs" />
-    <Compile Include="Spells\ColourSpray.cs" />
-    <Compile Include="Spells\Air\ControlWeather.cs" />
-    <Compile Include="Spells\Object\CreateFood.cs" />
-    <Compile Include="Spells\Object\CreateWater.cs" />
-    <Compile Include="Spells\CureBlindness.cs" />
-    <Compile Include="Spells\Poison\CurePoison.cs" />
-    <Compile Include="Spells\Curse.cs" />
-    <Compile Include="Spells\Poison\DetectPoison.cs" />
-    <Compile Include="Spells\Object\DisenchantWeapon.cs" />
-    <Compile Include="Spells\DispelEvil.cs" />
-    <Compile Include="Spells\DispelMagic.cs" />
-    <Compile Include="Spells\Energy\Disruption.cs" />
-    <Compile Include="Spells\Dream.cs" />
-    <Compile Include="Spells\Earth\Earthquake.cs" />
-    <Compile Include="Spells\Object\EnchantWeapon.cs" />
-    <Compile Include="Spells\Energy\EnergyDrain.cs" />
-    <Compile Include="Spells\Energy\EtherealFist.cs" />
-    <Compile Include="Spells\Paladin\Expurgation.cs" />
-    <Compile Include="Spells\Fire\FaerieFire.cs" />
-    <Compile Include="Spells\FaerieFog.cs" />
-    <Compile Include="Spells\FarSight.cs" />
-    <Compile Include="Spells\Fire\Fireball.cs" />
-    <Compile Include="Spells\Fire\FireBreath.cs" />
-    <Compile Include="Spells\Fire\FlameStrike.cs" />
-    <Compile Include="Spells\Electrical\GalvanicWhip.cs" />
-    <Compile Include="Spells\Poison\GasBreath.cs" />
-    <Compile Include="Spells\Gate.cs" />
-    <Compile Include="Spells\Energy\HandOfChaos.cs" />
-    <Compile Include="Spells\Life\Harm.cs" />
-    <Compile Include="Spells\Fire\HelicalFlow.cs" />
-    <Compile Include="Spells\Object\Identify.cs" />
-    <Compile Include="Spells\Invis.cs" />
-    <Compile Include="Spells\Knock.cs" />
-    <Compile Include="Spells\KnowAlignment.cs" />
-    <Compile Include="Spells\Electrical\LightningBolt.cs" />
-    <Compile Include="Spells\Electrical\LightningBreath.cs" />
-    <Compile Include="Spells\Object\LocateObject.cs" />
-    <Compile Include="Spells\Energy\MagicMissile.cs" />
-    <Compile Include="Spells\Electrical\MagneticThrust.cs" />
-    <Compile Include="Spells\MidasTouch.cs" />
-    <Compile Include="Spells\Mind\MindWrack.cs" />
-    <Compile Include="Spells\Mind\MindWrench.cs" />
-    <Compile Include="Spells\Smaug\CreateMob.cs" />
-    <Compile Include="Spells\Smaug\CreateObject.cs" />
-    <Compile Include="Spells\Smaug\InventoryObject.cs" />
-    <Compile Include="Spells\Smaug\Smaug.cs" />
-    <Compile Include="Spells\Vampire\Mistwalk.cs" />
-    <Compile Include="Spells\NotFound.cs" />
-    <Compile Include="Spells\PassDoor.cs" />
-    <Compile Include="Spells\PlantPass.cs" />
-    <Compile Include="Spells\Poison\Poison.cs" />
-    <Compile Include="Spells\Polymorph.cs" />
-    <Compile Include="Spells\Portal.cs" />
-    <Compile Include="Spells\Possess.cs" />
-    <Compile Include="Spells\Electrical\QuantumSpike.cs" />
-    <Compile Include="Spells\Object\Recharge.cs" />
-    <Compile Include="Spells\RemoveCurse.cs" />
-    <Compile Include="Spells\RemoveInvis.cs" />
-    <Compile Include="Spells\Object\RemoveTrap.cs" />
-    <Compile Include="Spells\Ice\FrostBreath.cs" />
-    <Compile Include="Spells\Life\Revive.cs" />
-    <Compile Include="Spells\Paladin\SacralDivinity.cs" />
-    <Compile Include="Spells\Fire\ScorchingSurge.cs" />
-    <Compile Include="Spells\Electrical\ShockingGrasp.cs" />
-    <Compile Include="Spells\Sleep.cs" />
-    <Compile Include="Spells\Cleric\SolarFlight.cs" />
-    <Compile Include="Spells\Energy\SonicResonance.cs" />
-    <Compile Include="Spells\Energy\SpectralFuror.cs" />
-    <Compile Include="Spells\SpiralBlast.cs" />
-    <Compile Include="Spells\Acid\SulfurousSpray.cs" />
-    <Compile Include="Spells\Summon.cs" />
-    <Compile Include="Spells\Teleport.cs" />
-    <Compile Include="Spells\Transport.cs" />
-    <Compile Include="Spells\Ventriloquate.cs" />
-    <Compile Include="Spells\Life\Weaken.cs" />
-    <Compile Include="Spells\WordOfRecall.cs" />
-    <Compile Include="SqlQueries.cs" />
-    <Compile Include="StringExt.cs" />
-    <Compile Include="Managers\LookupManager.cs" />
-    <Compile Include="Objects\BFSQueueData.cs" />
-    <Compile Include="track.cs" />
-    <Compile Include="Extensions\Player\Comm.cs" />
-    <Compile Include="act_info.cs" />
-    <Compile Include="act_move.cs" />
-    <Compile Include="act_obj.cs" />
-    <Compile Include="act_wiz.cs" />
-    <Compile Include="color.cs" />
-    <Compile Include="comm.cs" />
-    <Compile Include="db.cs" />
-    <Compile Include="fight.cs" />
-    <Compile Include="handler.cs" />
-    <Compile Include="hotboot.cs" />
-    <Compile Include="interp.cs" />
-    <Compile Include="Liquids.cs" />
-    <Compile Include="Macros.cs" />
-    <Compile Include="Spells\magic.cs" />
-    <Compile Include="ObjectFactory.cs" />
-    <Compile Include="mapout.cs" />
-    <Compile Include="mapper.cs" />
-    <Compile Include="misc.cs" />
-    <Compile Include="mpxset.cs" />
-    <Compile Include="MudProgs\mud_prog.cs" />
-    <Compile Include="Objects\act_prog_data.cs" />
-    <Compile Include="Objects\cha_app_type.cs" />
-    <Compile Include="Objects\con_app_type.cs" />
-    <Compile Include="Objects\coordinate.cs" />
-    <Compile Include="Objects\dex_app_type.cs" />
-    <Compile Include="Objects\dns_data.cs" />
-    <Compile Include="Objects\ExtractedCharacterData.cs" />
-    <Compile Include="Objects\game_board_data.cs" />
-    <Compile Include="Objects\godlist_data.cs" />
-    <Compile Include="Objects\hour_min_sec.cs" />
-    <Compile Include="Objects\immortal_host.cs" />
-    <Compile Include="Objects\int_app_type.cs" />
-    <Compile Include="Objects\ipcompare_data.cs" />
-    <Compile Include="Objects\lck_app_type.cs" />
-    <Compile Include="Objects\liq_type.cs" />
-    <Compile Include="Objects\LoginMessageData.cs" />
-    <Compile Include="Objects\map_data.cs" />
-    <Compile Include="Objects\map_index_data.cs" />
-    <Compile Include="Objects\map_stuff.cs" />
-    <Compile Include="Objects\map_type.cs" />
-    <Compile Include="Objects\mpsleep_data.cs" />
-    <Compile Include="Objects\RelationData.cs" />
-    <Compile Include="Objects\renumber_areas.cs" />
-    <Compile Include="Objects\renumber_data.cs" />
-    <Compile Include="Objects\str_app_type.cs" />
-    <Compile Include="Objects\TimezoneData.cs" />
-    <Compile Include="Objects\WatchData.cs" />
-    <Compile Include="Objects\whogr_s.cs" />
-    <Compile Include="Objects\who_data.cs" />
-    <Compile Include="Objects\wis_app_type.cs" />
-    <Compile Include="Objects\WizardData.cs" />
-    <Compile Include="planes.cs" />
-    <Compile Include="player.cs" />
-    <Compile Include="polymorph.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="renumber.cs" />
-    <Compile Include="reset.cs" />
-    <Compile Include="save.cs" />
-    <Compile Include="Skills\skills.cs" />
-    <Compile Include="SpecFuns\SpecFunHandler.cs" />
-    <Compile Include="tables.cs" />
-    <Compile Include="update.cs" />
-    <Compile Include="variables.cs" />
-    <Compile Include="Constants\VnumConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CCode\Header\bet.h" />
-    <None Include="CCode\Header\calendar.h" />
-    <None Include="CCode\Header\chess.h" />
-    <None Include="CCode\Header\color.h" />
-    <None Include="CCode\Header\dns.h" />
-    <None Include="CCode\Header\hint.h" />
-    <None Include="CCode\Header\hotboot.h" />
-    <None Include="CCode\Header\imc.h" />
-    <None Include="CCode\Header\imccfg.h" />
-    <None Include="CCode\Header\liquids.h" />
-    <None Include="CCode\Header\mapper.h" />
-    <None Include="CCode\Header\mccp.h" />
-    <None Include="CCode\Header\mud.h" />
-    <None Include="CCode\Header\news.h" />
-    <None Include="CCode\Header\planes.h" />
-    <None Include="CCode\Header\sha256.h" />
-    <None Include="CCode\Header\weather.h" />
-    <None Include="CCode\Source\act_comm.c" />
-    <None Include="CCode\Source\act_info.c" />
-    <None Include="CCode\Source\act_move.c" />
-    <None Include="CCode\Source\act_obj.c" />
-    <None Include="CCode\Source\act_wiz.c" />
-    <None Include="CCode\Source\ban.c" />
-    <None Include="CCode\Source\boards.c" />
-    <None Include="CCode\Source\build.c" />
-    <None Include="CCode\Source\calendar.c" />
-    <None Include="CCode\Source\chess.c" />
-    <None Include="CCode\Source\clans.c" />
-    <None Include="CCode\Source\color.c" />
-    <None Include="CCode\Source\comm.c" />
-    <None Include="CCode\Source\comments.c" />
-    <None Include="CCode\Source\const.c" />
-    <None Include="CCode\Source\db.c" />
-    <None Include="CCode\Source\deity.c" />
-    <None Include="CCode\Source\dns.c" />
-    <None Include="CCode\Source\fight.c" />
-    <None Include="CCode\Source\handler.c" />
-    <None Include="CCode\Source\hashstr.c" />
-    <None Include="CCode\Source\hint.c" />
-    <None Include="CCode\Source\hotboot.c" />
-    <None Include="CCode\Source\imc.c" />
-    <None Include="CCode\Source\imm_host.c" />
-    <None Include="CCode\Source\interp.c" />
-    <None Include="CCode\Source\liquids.c" />
-    <None Include="CCode\Source\magic.c" />
-    <None Include="CCode\Source\makeobjs.c" />
-    <None Include="CCode\Source\mapout.c" />
-    <None Include="CCode\Source\mapper.c" />
-    <None Include="CCode\Source\mccp.c" />
-    <None Include="CCode\Source\misc.c" />
-    <None Include="CCode\Source\mpxset.c" />
-    <None Include="CCode\Source\mud_comm.c" />
-    <None Include="CCode\Source\mud_prog.c" />
-    <None Include="CCode\Source\news.c" />
-    <None Include="CCode\Source\planes.c" />
-    <None Include="CCode\Source\player.c" />
-    <None Include="CCode\Source\polymorph.c" />
-    <None Include="CCode\Source\renumber.c" />
-    <None Include="CCode\Source\reset.c" />
-    <None Include="CCode\Source\resolver.c" />
-    <None Include="CCode\Source\save.c" />
-    <None Include="CCode\Source\services.c" />
-    <None Include="CCode\Source\sha256.c" />
-    <None Include="CCode\Source\shops.c" />
-    <None Include="CCode\Source\skills.c" />
-    <None Include="CCode\Source\special.c" />
-    <None Include="CCode\Source\tables.c" />
-    <None Include="CCode\Source\track.c" />
-    <None Include="CCode\Source\update.c" />
-    <None Include="CCode\Source\variables.c" />
-    <None Include="CCode\Source\weather.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
-      <Project>{df798981-706a-4f60-a6ec-6ce00658d737}</Project>
-      <Name>Realm.Library.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj">
-      <Project>{19331d54-f4b1-4532-9cc8-16945feb4a87}</Project>
-      <Name>Realm.Library.Lua</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Library.NCalc\Realm.Library.NCalc.csproj">
-      <Project>{afae630c-4c5e-4ae0-a3d0-f7a103ecac54}</Project>
-      <Name>Realm.Library.NCalc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Library.Network\Realm.Library.Network.csproj">
-      <Project>{da5e1e42-1280-49e1-b081-e7e42f9f6643}</Project>
-      <Name>Realm.Library.Network</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
-      <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
-      <Name>Realm.Standard.Patterns.Command</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj">
-      <Project>{feab7c57-63f5-428c-a5d2-057d3240dcfa}</Project>
-      <Name>Realm.Standard.Patterns.Decorator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj">
-      <Project>{6937f92d-7ba3-4bba-852d-571ac0d6baf2}</Project>
-      <Name>Realm.Standard.Patterns.Factory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
-      <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
-      <Name>Realm.Standard.Patterns.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj">
-      <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
-      <Name>Realm.Standard.Patterns.Singleton</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Auction\SmaugCS.Auction.csproj">
-      <Project>{101243bd-e350-43ff-944f-1a5a01d5b0d3}</Project>
-      <Name>SmaugCS.Auction</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Ban\SmaugCS.Ban.csproj">
-      <Project>{ada623a7-32ef-402d-9a12-db64077ed303}</Project>
-      <Name>SmaugCS.Ban</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Board\SmaugCS.Board.csproj">
-      <Project>{308d980e-af66-4f6b-9bb9-69e3dcdc05cf}</Project>
-      <Name>SmaugCS.Board</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Clans\SmaugCS.Clans.csproj">
-      <Project>{cd5620f8-fd72-4dd7-bf00-80b847b112c1}</Project>
-      <Name>SmaugCS.Clans</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
-      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
-      <Name>SmaugCS.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Communication\SmaugCS.Communication.csproj">
-      <Project>{f9affbf0-166c-4672-80ba-faba59ef9e07}</Project>
-      <Name>SmaugCS.Communication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Config\SmaugCS.Config.csproj">
-      <Project>{1841b62b-c81e-4e08-962f-62cdb15a248d}</Project>
-      <Name>SmaugCS.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj">
-      <Project>{09cb479e-4286-4168-94df-61777231f87c}</Project>
-      <Name>SmaugCS.Constants</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.DAL\SmaugCS.DAL.csproj">
-      <Project>{157b6b68-68f7-414b-ae04-9cb80b9c68b4}</Project>
-      <Name>SmaugCS.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj">
-      <Project>{68f2e535-38b5-4a0f-bb8b-74e3ff486e83}</Project>
-      <Name>SmaugCS.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj">
-      <Project>{0e01a79f-5582-4797-af09-12de27901885}</Project>
-      <Name>SmaugCS.Language</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Loaders\SmaugCS.Loaders.csproj">
-      <Project>{94200936-c954-4e8c-b703-c0a183f58244}</Project>
-      <Name>SmaugCS.Loaders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj">
-      <Project>{e2ea4786-9ef9-4fee-8067-ac05989ecc50}</Project>
-      <Name>SmaugCS.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj">
-      <Project>{55dcebc5-8647-40f3-9fea-2886a9fa7396}</Project>
-      <Name>SmaugCS.Lua</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.News\SmaugCS.News.csproj">
-      <Project>{6f43c8d6-b168-4e77-b12a-ebb49dce8019}</Project>
-      <Name>SmaugCS.News</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Repository\SmaugCS.Repository.csproj">
-      <Project>{97267dbc-9414-497b-ade8-9e3437da6a7f}</Project>
-      <Name>SmaugCS.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Time\SmaugCS.Time.csproj">
-      <Project>{f68d623f-3c9d-4dee-9c5c-d9673e3aba9f}</Project>
-      <Name>SmaugCS.Time</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj">
-      <Project>{149a131d-f10d-43c2-b49e-be0b56363a24}</Project>
-      <Name>SmaugCS.Weather</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Library.NCalc\Realm.Library.NCalc.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Library.Network\Realm.Library.Network.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj" />
+    <ProjectReference Include="..\SmaugCS.Auction\SmaugCS.Auction.csproj" />
+    <ProjectReference Include="..\SmaugCS.Ban\SmaugCS.Ban.csproj" />
+    <ProjectReference Include="..\SmaugCS.Board\SmaugCS.Board.csproj" />
+    <ProjectReference Include="..\SmaugCS.Clans\SmaugCS.Clans.csproj" />
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
+    <ProjectReference Include="..\SmaugCS.Communication\SmaugCS.Communication.csproj" />
+    <ProjectReference Include="..\SmaugCS.Config\SmaugCS.Config.csproj" />
+    <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj" />
+    <ProjectReference Include="..\SmaugCS.DAL\SmaugCS.DAL.csproj" />
+    <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj" />
+    <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj" />
+    <ProjectReference Include="..\SmaugCS.Loaders\SmaugCS.Loaders.csproj" />
+    <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj" />
+    <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj" />
+    <ProjectReference Include="..\SmaugCS.News\SmaugCS.News.csproj" />
+    <ProjectReference Include="..\SmaugCS.Repository\SmaugCS.Repository.csproj" />
+    <ProjectReference Include="..\SmaugCS.Time\SmaugCS.Time.csproj" />
+    <ProjectReference Include="..\SmaugCS.Weather\SmaugCS.Weather.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -1104,30 +102,51 @@
     <Content Include="NCalcLicense.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <ItemGroup>
+    <PackageReference Include="CoreCLR-NCalc">
+      <Version>3.0.119</Version>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="LuaInterfaceCore">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Ninject">
+      <Version>3.3.6</Version>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="act_comm.cs" />
+    <Compile Remove="Commands\Deity\MakeDeity.cs" />
+    <Compile Remove="Commands\Deity\SetDeity.cs" />
+    <Compile Remove="Commands\Deity\ShowDeity.cs" />
+    <Compile Remove="Extensions\Character\Condition.cs" />
+    <Compile Remove="Extensions\Character\Deity.cs" />
+    <Compile Remove="Extensions\Character\HuntHateFear.cs" />
+    <Compile Remove="Objects\mob_prog_act_list.cs" />
+    <Compile Remove="Objects\reserve_data.cs" />
+    <Compile Remove="Objects\specfun_list.cs" />
+  </ItemGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>SmaugCS</AssemblyTitle>
+    <Company>12 South Studios</Company>
+    <Product>SmaugCS</Product>
+    <Copyright>Copyright © 12 South Studios 2013</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-  </Target>
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

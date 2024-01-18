@@ -1,4 +1,4 @@
-﻿using SmaugCS.Data.Organizations;
+﻿using SmaugCS.Clans;
 using System;
 
 namespace SmaugCS.Communication

@@ -5,7 +5,6 @@ using SmaugCS.Constants;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
 using System;
 using System.Linq;
 
@@ -75,12 +74,13 @@ namespace SmaugCS
                 var vict = (PlayerInstance)victim;
                 if (vict.IsImmortal() && vict.Level > LevelConstants.GetLevel(ImmortalTypes.Avatar))
                     ch.SendTo("&P(&WImmortal&P) ");
-                if (vict.PlayerData.Clan != null
-                    && vict.PlayerData.Flags.IsSet(PCFlags.Deadly)
-                    && !string.IsNullOrEmpty(vict.PlayerData.Clan.Badge)
-                    && (vict.PlayerData.Clan.ClanType != ClanTypes.Order
-                    || vict.PlayerData.Clan.ClanType != ClanTypes.Guild))
-                    ch.PrintfColor("%s ", vict.PlayerData.Clan.Badge);
+                // TODO fix
+                //if (vict.PlayerData.Clan != null
+                //    && vict.PlayerData.Flags.IsSet(PCFlags.Deadly)
+                //    && !string.IsNullOrEmpty(vict.PlayerData.Clan.Badge)
+                //    && (vict.PlayerData.Clan.ClanType != ClanTypes.Order
+                //    || vict.PlayerData.Clan.ClanType != ClanTypes.Guild))
+                //    ch.PrintfColor("%s ", vict.PlayerData.Clan.Badge);
                 else if (vict.CanPKill() && vict.Level < LevelConstants.ImmortalLevel)
                     ch.SendTo("&P(&wUnclanned&P) ");
             }

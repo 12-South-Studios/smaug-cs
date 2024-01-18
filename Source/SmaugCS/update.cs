@@ -162,21 +162,22 @@ namespace SmaugCS
                     // TODO Nuisance
                 }
 
-                if (!ch.IsNpc() && !ch.IsImmortal() && ((PlayerInstance)ch).PlayerData.release_date > DateTime.MinValue &&
-                    ((PlayerInstance)ch).PlayerData.release_date <= DateTime.Now)
-                {
-                    var location =
-                        RepositoryManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan?.RecallRoom ??
-                                                             VnumConstants.ROOM_VNUM_TEMPLE) ?? ch.CurrentRoom;
+                // TODO fix
+                //if (!ch.IsNpc() && !ch.IsImmortal() && ((PlayerInstance)ch).PlayerData.release_date > DateTime.MinValue &&
+                //    ((PlayerInstance)ch).PlayerData.release_date <= DateTime.Now)
+                //{
+                //    var location =
+                //        RepositoryManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan?.RecallRoom ??
+                //                                             VnumConstants.ROOM_VNUM_TEMPLE) ?? ch.CurrentRoom;
 
-                    ch.CurrentRoom.RemoveFrom(ch);
-                    location.AddTo(ch);
-                    ch.SendTo("The gods have released you from hell as your sentence is up!");
-                    Look.do_look(ch, "auto");
-                    ((PlayerInstance)ch).PlayerData.helled_by = string.Empty;
-                    ((PlayerInstance)ch).PlayerData.release_date = DateTime.MinValue;
-                    save.save_char_obj(ch);
-                }
+                //    ch.CurrentRoom.RemoveFrom(ch);
+                //    location.AddTo(ch);
+                //    ch.SendTo("The gods have released you from hell as your sentence is up!");
+                //    Look.do_look(ch, "auto");
+                //    ((PlayerInstance)ch).PlayerData.helled_by = string.Empty;
+                //    ((PlayerInstance)ch).PlayerData.release_date = DateTime.MinValue;
+                //    save.save_char_obj(ch);
+                //}
 
                 if (!ch.CharDied())
                 {

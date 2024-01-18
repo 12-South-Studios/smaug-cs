@@ -103,8 +103,9 @@ namespace SmaugCS.Commands
             {
                 foreach (var clan in RepositoryManager.Instance.CLANS.Values)
                 {
-                    if (clan.StoreRoom == ch.CurrentRoom.ID)
-                        act_obj.save_clan_storeroom(ch, clan);
+                    // TODO Fix
+                    //if (clan.StoreRoom == ch.CurrentRoom.ID)
+                    //    act_obj.save_clan_storeroom(ch, clan);
                 }
             }
 

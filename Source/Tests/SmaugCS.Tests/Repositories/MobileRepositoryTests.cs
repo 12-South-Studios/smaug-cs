@@ -1,6 +1,6 @@
-﻿using Moq;
+﻿using FakeItEasy;
+using FluentAssertions;
 using Ninject;
-using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
@@ -19,10 +19,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Test.Common;
+using Xunit;
 
 namespace SmaugCS.Tests.Repositories
 {
-    [TestFixture]
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class MobileRepositoryTests
     {
         private static string GetMobLuaScript()
@@ -75,17 +77,16 @@ namespace SmaugCS.Tests.Repositories
 
         private LuaInterfaceProxy _proxy;
 
-        [SetUp]
-        public void OnSetup()
+        public MobileRepositoryTests()
         {
-            var mockKernel = new Mock<IKernel>();
-            var mockCtx = new Mock<ISmaugDbContext>();
-            var mockLogger = new Mock<ILogWrapper>();
-            var mockTimer = new Mock<ITimer>();
+            var mockKernel = A.Fake<IKernel>();
+            var mockCtx = A.Fake<ISmaugDbContext>();
+            var mockLogger = A.Fake<ILogWrapper>();
+            var mockTimer = A.Fake<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object);
-            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object, 0);
-            RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, new Mock<ILogManager>().Object);
+            LuaManager luaMgr = new LuaManager(A.Fake<IKernel>(), mockLogger);
+            LogManager logMgr = new LogManager(mockLogger, mockKernel, mockTimer, mockCtx, 0);
+            RepositoryManager dbMgr = new RepositoryManager(mockKernel, A.Fake<ILogManager>());
 
             LuaMobFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
@@ -101,147 +102,146 @@ namespace SmaugCS.Tests.Repositories
             luaMgr.InitializeLuaProxy(_proxy);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobileTest()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ID, Is.EqualTo(801));
-            Assert.That(result.Name, Is.EqualTo("nightmare"));
-            Assert.That(result.ShortDescription, Is.EqualTo("A pitch-black nightmare"));
-            Assert.That(result.LongDescription, Is.EqualTo("A nightmare is here, kicking at you with its flaming hooves."));
-            Assert.That(result.Description.StartsWith("The nightmare is a wholly evil being,"), Is.True);
-            Assert.That(result.Race, Is.EqualTo("magical"));
-            Assert.That(result.Class, Is.EqualTo("warrior"));
-            Assert.That(result.Position, Is.EqualTo("standing"));
-            Assert.That(result.DefensivePosition, Is.EqualTo("standing"));
-            Assert.That(result.GetGender(), Is.EqualTo(GenderTypes.Neuter));
-            Assert.That(result.SpecFun, Is.EqualTo("DoSpecCastMage"));
-            Assert.That(result.Speaks, Is.EqualTo("magical"));
-            Assert.That(result.Speaking, Is.EqualTo("magical"));
-            Assert.That(result.BodyParts, Is.EqualTo("head legs heart guts feet"));
-            Assert.That(result.Resistance, Is.EqualTo("sleep charm hold"));
-            Assert.That(result.Susceptibility, Is.EqualTo("fire blunt"));
-            Assert.That(result.Immunity, Is.EqualTo("nonmagic"));
-            Assert.That(result.Attacks, Is.EqualTo("kick firebreath"));
-            Assert.That(result.Defenses, Is.EqualTo("dodge"));
+            result.Should().NotBeNull();
+            result.ID.Should().Be(801);
+            result.Name.Should().Be("nightmare");
+            result.ShortDescription.Should().Be("A pitch-black nightmare");
+            result.LongDescription.Should().Be("A nightmare is here, kicking at you with its flaming hooves.");
+            result.Description.StartsWith("The nightmare is a wholly evil being,").Should().BeTrue();
+            result.Race.Should().Be("magical");
+            result.Class.Should().Be("warrior");
+            result.Position.Should().Be("standing");
+            result.DefensivePosition.Should().Be("standing");
+            result.GetGender().Should().Be(GenderTypes.Neuter);
+            result.SpecFun.Should().Be("DoSpecCastMage");
+            result.Speaks.Should().Be("magical");
+            result.Speaking.Should().Be("magical");
+            result.BodyParts.Should().Be("head legs heart guts feet");
+            result.Resistance.Should().Be("sleep charm hold");
+            result.Susceptibility.Should().Be("fire blunt");
+            result.Immunity.Should().Be("nonmagic");
+            result.Attacks.Should().Be("kick firebreath");
+            result.Defenses.Should().Be("dodge");
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_SetStats1_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Alignment), Is.EqualTo(-950));
-            Assert.That(result.Level, Is.EqualTo(18));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.ToHitArmorClass0), Is.EqualTo(2));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.ArmorClass), Is.EqualTo(-2));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Coin), Is.EqualTo(6000));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Experience), Is.EqualTo(32000));
+            result.Should().NotBeNull();
+            result.GetStatistic<int>(StatisticTypes.Alignment).Should().Be(-950);
+            result.Level.Should().Be(18);
+            result.GetStatistic<int>(StatisticTypes.ToHitArmorClass0).Should().Be(2);
+            result.GetStatistic<int>(StatisticTypes.ArmorClass).Should().Be(-2);
+            result.GetStatistic<int>(StatisticTypes.Coin).Should().Be(6000);
+            result.GetStatistic<int>(StatisticTypes.Experience).Should().Be(32000);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_SetStats2_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.HitDice, Is.Not.Null);
-            Assert.That(result.HitDice.NumberOf, Is.EqualTo(18));
-            Assert.That(result.HitDice.SizeOf, Is.EqualTo(18));
-            Assert.That(result.HitDice.Bonus, Is.EqualTo(180));
+            result.Should().NotBeNull();
+            result.HitDice.Should().NotBeNull();
+            result.HitDice.NumberOf.Should().Be(18);
+            result.HitDice.SizeOf.Should().Be(18);
+            result.HitDice.Bonus.Should().Be(180);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_SetStats3_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.DamageDice, Is.Not.Null);
-            Assert.That(result.DamageDice.NumberOf, Is.EqualTo(5));
-            Assert.That(result.DamageDice.SizeOf, Is.EqualTo(3));
-            Assert.That(result.DamageDice.Bonus, Is.EqualTo(10));
+            result.Should().NotBeNull();
+            result.DamageDice.Should().NotBeNull();
+            result.DamageDice.NumberOf.Should().Be(5);
+            result.DamageDice.SizeOf.Should().Be(3);
+            result.DamageDice.Bonus.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_SetStats4_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Height), Is.EqualTo(50));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Weight), Is.EqualTo(100));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.NumberOfAttacks), Is.EqualTo(2));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Hitroll), Is.EqualTo(5));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.Damroll), Is.EqualTo(6));
+            result.Should().NotBeNull();
+            result.GetStatistic<int>(StatisticTypes.Height).Should().Be(50);
+            result.GetStatistic<int>(StatisticTypes.Weight).Should().Be(100);
+            result.GetStatistic<int>(StatisticTypes.NumberOfAttacks).Should().Be(2);
+            result.GetStatistic<int>(StatisticTypes.Hitroll).Should().Be(5);
+            result.GetStatistic<int>(StatisticTypes.Damroll).Should().Be(6);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_SetAttribs_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentStrength), Is.EqualTo(11));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentIntelligence), Is.EqualTo(12));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentWisdom), Is.EqualTo(13));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentDexterity), Is.EqualTo(14));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentConstitution), Is.EqualTo(15));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentCharisma), Is.EqualTo(16));
-            Assert.That(result.GetStatistic<int>(StatisticTypes.PermanentLuck), Is.EqualTo(17));
+            result.Should().NotBeNull();
+            result.GetStatistic<int>(StatisticTypes.PermanentStrength).Should().Be(11);
+            result.GetStatistic<int>(StatisticTypes.PermanentIntelligence).Should().Be(12);
+            result.GetStatistic<int>(StatisticTypes.PermanentWisdom).Should().Be(13);
+            result.GetStatistic<int>(StatisticTypes.PermanentDexterity).Should().Be(14);
+            result.GetStatistic<int>(StatisticTypes.PermanentConstitution).Should().Be(15);
+            result.GetStatistic<int>(StatisticTypes.PermanentCharisma).Should().Be(16);
+            result.GetStatistic<int>(StatisticTypes.PermanentLuck).Should().Be(17);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_SetSaves_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.SavingThrows, Is.Not.Null);
-            Assert.That(result.SavingThrows.SaveVsPoisonDeath, Is.EqualTo(3));
-            Assert.That(result.SavingThrows.SaveVsWandRod, Is.EqualTo(5));
-            Assert.That(result.SavingThrows.SaveVsParalysisPetrify, Is.EqualTo(3));
-            Assert.That(result.SavingThrows.SaveVsBreath, Is.EqualTo(5));
-            Assert.That(result.SavingThrows.SaveVsSpellStaff, Is.EqualTo(3));
+            result.Should().NotBeNull();
+            result.SavingThrows.Should().NotBeNull();
+            result.SavingThrows.SaveVsPoisonDeath.Should().Be(3);
+            result.SavingThrows.SaveVsWandRod.Should().Be(5);
+            result.SavingThrows.SaveVsParalysisPetrify.Should().Be(3);
+            result.SavingThrows.SaveVsBreath.Should().Be(5);
+            result.SavingThrows.SaveVsSpellStaff.Should().Be(3);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_MudProgs_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.MudProgs.Count(), Is.EqualTo(1));
-            Assert.That(result.MudProgs.First().Type, Is.EqualTo(MudProgTypes.Greet));
-            Assert.That(result.MudProgs.First().ArgList, Is.EqualTo("100"));
-            Assert.That(result.MudProgs.First().Script,
-                Is.EqualTo("LMobCommand(\"cac\");LMobSay(\"Now your soul shall be mine!\");"));
+            result.Should().NotBeNull();
+            result.MudProgs.Count().Should().Be(1);
+            result.MudProgs.First().Type.Should().Be(MudProgTypes.Greet);
+            result.MudProgs.First().ArgList.Should().Be("100");
+            result.MudProgs.First().Script.Should().Be("LMobCommand(\"cac\");LMobSay(\"Now your soul shall be mine!\");");
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateMobile_Shop_Test()
         {
             var result = LuaMobFunctions.LuaProcessMob(GetMobLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Shop, Is.Not.Null);
-            Assert.That(result.Shop.ShopType, Is.EqualTo(ShopTypes.Item));
-            Assert.That(result.Shop.OpenHour, Is.EqualTo(7));
-            Assert.That(result.Shop.CloseHour, Is.EqualTo(21));
-            Assert.That(result.Shop.ItemTypes.Count(), Is.EqualTo(2));
-            Assert.That(result.Shop.ItemTypes.Contains(ItemTypes.Armor), Is.True);
-            Assert.That(result.Shop.ItemTypes.Contains(ItemTypes.Weapon), Is.True);
+            result.Should().NotBeNull();
+            result.Shop.Should().NotBeNull();
+            result.Shop.ShopType.Should().Be(ShopTypes.Item);
+            result.Shop.OpenHour.Should().Be(7);
+            result.Shop.CloseHour.Should().Be(21);
+            result.Shop.ItemTypes.Count().Should().Be(2);
+            result.Shop.ItemTypes.Contains(ItemTypes.Armor).Should().BeTrue();
+            result.Shop.ItemTypes.Contains(ItemTypes.Weapon).Should().BeTrue();
 
             var itemShop = result.Shop.CastAs<ItemShopData>();
-            Assert.That(itemShop, Is.Not.Null);
-            Assert.That(itemShop.ProfitBuy, Is.EqualTo(130));
-            Assert.That(itemShop.ProfitSell, Is.EqualTo(90));
+            itemShop.Should().NotBeNull();
+            itemShop.ProfitBuy.Should().Be(130);
+            itemShop.ProfitSell.Should().Be(90);
         }
 
-        /*[Test]
+        /*[Fact]
         [ExpectedException(typeof(DuplicateEntryException))]
         public void LuaCreateMobileDuplicateTest()
         {
@@ -251,21 +251,21 @@ namespace SmaugCS.Tests.Repositories
             Assert.Fail("Unit test expected a DuplicateEntryException to be thrown!");
         }*/
 
-        [Test]
+        [Fact]
         public void Create()
         {
             var repo = new MobileRepository();
 
             var actual = repo.Create(1, "Test");
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.ID, Is.EqualTo(1));
-            Assert.That(actual.Name, Is.EqualTo("Test"));
-            Assert.That(actual.ShortDescription, Is.EqualTo("A newly created Test"));
-            Assert.That(repo.Contains(1), Is.True);
+            actual.Should().NotBeNull();
+            actual.ID.Should().Be(1);
+            actual.Name.Should().Be("Test");
+            actual.ShortDescription.Should().Be("A newly created Test");
+            repo.Contains(1).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Create_CloneObject()
         {
             var repo = new MobileRepository();
@@ -275,15 +275,15 @@ namespace SmaugCS.Tests.Repositories
 
             var cloned = repo.Create(2, 1, "Test2");
 
-            Assert.That(cloned, Is.Not.Null);
-            Assert.That(cloned.ID, Is.EqualTo(2));
-            Assert.That(cloned.Name, Is.EqualTo("Test2"));
-            Assert.That(cloned.ShortDescription, Is.EqualTo("A newly created Test2"));
-            Assert.That(cloned.LongDescription, Is.EqualTo(source.LongDescription));
-            Assert.That(repo.Contains(2), Is.True);
+            cloned.Should().NotBeNull();
+            cloned.ID.Should().Be(2);
+            cloned.Name.Should().Be("Test2");
+            cloned.ShortDescription.Should().Be("A newly created Test2");
+            cloned.LongDescription.Should().Be(source.LongDescription);
+            repo.Contains(2).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Create_ThrowsException()
         {
             var repo = new MobileRepository();
@@ -291,7 +291,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(1, ""));
         }
 
-        [Test]
+        [Fact]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new MobileRepository();
@@ -299,7 +299,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(0, "Test"));
         }
 
-        [Test]
+        [Fact]
         public void Create_DuplicateVnum()
         {
             var repo = new MobileRepository();
@@ -308,7 +308,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<DuplicateIndexException>(() => repo.Create(1, "Test2"));
         }
 
-        [Test]
+        [Fact]
         public void Create_Clone_InvalidCloneVnum()
         {
             var repo = new MobileRepository();
@@ -316,7 +316,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(1, 1, "Test"));
         }
 
-        [Test]
+        [Fact]
         public void Create_Clone_MissingCloneMob()
         {
             var repo = new MobileRepository();

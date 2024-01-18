@@ -11,9 +11,10 @@ namespace SmaugCS
         {
             if (ch.Trust >= board.MinimumPostLevel) return true;
             if (string.IsNullOrWhiteSpace(board.PostGroup)) return false;
-            if (ch.PlayerData.Clan != null
-                && ch.PlayerData.Clan.Name.Equals(board.PostGroup, StringComparison.OrdinalIgnoreCase))
-                return true;
+            // TODO fix
+            //if (ch.PlayerData.Clan != null
+            //    && ch.PlayerData.Clan.Name.Equals(board.PostGroup, StringComparison.OrdinalIgnoreCase))
+            //    return true;
             return ch.PlayerData.Council != null
                    && ch.PlayerData.Council.Name.Equals(board.PostGroup, StringComparison.OrdinalIgnoreCase);
         }
@@ -30,9 +31,10 @@ namespace SmaugCS
 
             if (string.IsNullOrWhiteSpace(board.ReadGroup))
                 return !string.IsNullOrWhiteSpace(board.ExtraReaders) && ch.Name.IsEqual(board.ExtraReaders);
-            if (ch.PlayerData.Clan != null
-                && ch.PlayerData.Clan.Name.Equals(board.ReadGroup, StringComparison.OrdinalIgnoreCase))
-                return true;
+            // TODO fix
+            //if (ch.PlayerData.Clan != null
+            //    && ch.PlayerData.Clan.Name.Equals(board.ReadGroup, StringComparison.OrdinalIgnoreCase))
+            //    return true;
             if (ch.PlayerData.Council != null
                 && ch.PlayerData.Council.Name.Equals(board.ReadGroup, StringComparison.OrdinalIgnoreCase))
                 return true;

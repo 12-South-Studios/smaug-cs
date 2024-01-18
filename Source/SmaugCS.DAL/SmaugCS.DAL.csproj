@@ -1,141 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{157B6B68-68F7-414B-AE04-9CB80B9C68B4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SmaugCS.DAL</RootNamespace>
-    <AssemblyName>SmaugCS.DAL</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Migrations\201508101456119_InitialSetup.cs" />
-    <Compile Include="Migrations\201508101456119_InitialSetup.Designer.cs">
+    <Compile Update="Migrations\201508101456119_InitialSetup.Designer.cs">
       <DependentUpon>201508101456119_InitialSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Clan.cs" />
-    <Compile Include="Models\ClanItem.cs" />
-    <Compile Include="Models\ClanMember.cs" />
-    <Compile Include="Models\ClanRank.cs" />
-    <Compile Include="Models\ClanStats.cs" />
-    <Compile Include="Models\Session.cs" />
-    <Compile Include="SmaugDbContextModule.cs" />
-    <Compile Include="ContextExtensions.cs" />
-    <Compile Include="Exceptions\EntityAlreadyExistsException.cs" />
-    <Compile Include="Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="Interfaces\ISmaugDbContext.cs" />
-    <Compile Include="Interfaces\ISmaugContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Auction.cs" />
-    <Compile Include="Models\Ban.cs" />
-    <Compile Include="Models\Board.cs" />
-    <Compile Include="Models\Character.cs" />
-    <Compile Include="Models\CharacterActivity.cs" />
-    <Compile Include="Models\CharacterAffect.cs" />
-    <Compile Include="Models\CharacterFriend.cs" />
-    <Compile Include="Models\CharacterIgnore.cs" />
-    <Compile Include="Models\CharacterImmortal.cs" />
-    <Compile Include="Models\CharacterItem.cs" />
-    <Compile Include="Models\CharacterLanguage.cs" />
-    <Compile Include="Models\CharacterLogin.cs" />
-    <Compile Include="Models\CharacterPet.cs" />
-    <Compile Include="Models\CharacterPvEHistory.cs" />
-    <Compile Include="Models\CharacterSkill.cs" />
-    <Compile Include="Models\CharacterStatistic.cs" />
-    <Compile Include="Models\GameState.cs" />
-    <Compile Include="Models\IEntity.cs" />
-    <Compile Include="Models\Log.cs" />
-    <Compile Include="Models\News.cs" />
-    <Compile Include="Models\NewsEntry.cs" />
-    <Compile Include="Models\Note.cs" />
-    <Compile Include="Models\Organization.cs" />
-    <Compile Include="Models\WeatherCell.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmaugDbContext.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
+    <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
@@ -144,59 +29,37 @@
     <Folder Include="Migrations\DatabaseScripts\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
-      <Project>{df798981-706a-4f60-a6ec-6ce00658d737}</Project>
-      <Name>Realm.Library.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
-      <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
-      <Name>Realm.Standard.Patterns.Command</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj">
-      <Project>{feab7c57-63f5-428c-a5d2-057d3240dcfa}</Project>
-      <Name>Realm.Standard.Patterns.Decorator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj">
-      <Project>{6937f92d-7ba3-4bba-852d-571ac0d6baf2}</Project>
-      <Name>Realm.Standard.Patterns.Factory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
-      <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
-      <Name>Realm.Standard.Patterns.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj">
-      <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
-      <Name>Realm.Standard.Patterns.Singleton</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj">
-      <Project>{b89245a0-de06-4dd9-a02e-cbdeabc209c8}</Project>
-      <Name>SmaugCS.Common</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj" />
+    <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508101456119_InitialSetup.resx">
+    <EmbeddedResource Update="Migrations\201508101456119_InitialSetup.resx">
       <DependentUpon>201508101456119_InitialSetup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <ItemGroup>
+    <PackageReference Include="log4net">
+      <Version>2.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="Ninject">
+      <Version>3.3.6</Version>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+  </ItemGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>SmaugCS.DAL</AssemblyTitle>
+    <Copyright>Copyright ©</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-  </Target>
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

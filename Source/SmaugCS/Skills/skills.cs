@@ -65,8 +65,10 @@ namespace SmaugCS.Skills
                 return true;
             if (!ch.IsPKill() || !vch.IsPKill())
                 return false;
-            return ((PlayerInstance)ch).PlayerData.Clan == null ||
-                   ((PlayerInstance)ch).PlayerData.Clan != ((PlayerInstance)vch).PlayerData.Clan;
+            // TODO Fix
+            //return ((PlayerInstance)ch).PlayerData.Clan == null ||
+            //       ((PlayerInstance)ch).PlayerData.Clan != ((PlayerInstance)vch).PlayerData.Clan;
+            return false;
         }
 
 

@@ -1,21 +1,19 @@
-﻿using NUnit.Framework;
-
-namespace SmaugCS.Logging.Tests
+﻿namespace SmaugCS.Logging.Tests
 {
-    [TestFixture]
+
     public class LogEntryTests
     {
-        //[Test]
+        //[Fact]
         //public void BuildLogEntryDataTable()
         //{
         //    var result = LogEntry.BuildLogEntryDataTable();
 
-        //    Assert.That(result.Columns.Count, Is.EqualTo(2));
-        //    Assert.That(result.Columns[0].ColumnName, Is.EqualTo("LogTypeId"));
-        //    Assert.That(result.Columns[1].ColumnName, Is.EqualTo("Text"));
+        //    result.Columns.Count.Should().Be(2));
+        //    result.Columns[0].ColumnName.Should().Be("LogTypeId"));
+        //    result.Columns[1].ColumnName.Should().Be("Text"));
         //}
 
-        //[Test]
+        //[Fact]
         //public void GetLogEntryDataTable()
         //{
         //    var entryList = new List<LogEntry>
@@ -26,8 +24,8 @@ namespace SmaugCS.Logging.Tests
 
         //    var result = LogEntry.GetLogEntryDataTable(entryList);
 
-        //    Assert.That(result.Rows.Count, Is.EqualTo(2));
-        //    Assert.That(result.Rows[0]["Text"].ToString(), Is.EqualTo("This is a test bug"));
+        //    result.Rows.Count.Should().Be(2));
+        //    result.Rows[0]["Text"].ToString().Should().Be("This is a test bug"));
         //}
     }
 }

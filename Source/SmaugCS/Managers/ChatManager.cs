@@ -220,9 +220,10 @@ namespace SmaugCS
                         continue;
                     if (channel == ChannelTypes.Yell && vch.CurrentRoom.Area != ch.CurrentRoom.Area)
                         continue;
-                    if ((channel == ChannelTypes.Clan || channel == ChannelTypes.Order || channel == ChannelTypes.Guild)
-                        && (vch.IsNpc() || vch.PlayerData.Clan != ((PlayerInstance)ch).PlayerData.Clan))
-                        continue;
+                    // TODO fix
+                    //if ((channel == ChannelTypes.Clan || channel == ChannelTypes.Order || channel == ChannelTypes.Guild)
+                    //    && (vch.IsNpc() || vch.PlayerData.Clan != ((PlayerInstance)ch).PlayerData.Clan))
+                    //    continue;
                     if (channel == ChannelTypes.Council && (vch.IsNpc() || vch.PlayerData.Council != ((PlayerInstance)ch).PlayerData.Council))
                         continue;
                     if (channel == ChannelTypes.RaceTalk && vch.CurrentRace != ch.CurrentRace)

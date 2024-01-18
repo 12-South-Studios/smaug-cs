@@ -1,5 +1,5 @@
-﻿using Moq;
-using NUnit.Framework;
+﻿using FakeItEasy;
+using FluentAssertions;
 using Realm.Library.Lua;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -7,23 +7,23 @@ using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using System;
+using Xunit;
 
 namespace SmaugCS.Tests.Extensions
 {
-    [TestFixture]
+
     public class MudProgExtensionTests
     {
-        private static Mock<ILogManager> _mockedLogManager;
-        private static Mock<ILuaManager> _mockedLuaManager;
+        private static ILogManager _mockedLogManager;
+        private static ILuaManager _mockedLuaManager;
 
-        [SetUp]
-        public void OnSetup()
+        public MudProgExtensionTests()
         {
-            _mockedLogManager = new Mock<ILogManager>();
-            _mockedLuaManager = new Mock<ILuaManager>();
+            _mockedLogManager = A.Fake<ILogManager>();
+            _mockedLuaManager = A.Fake<ILuaManager>();
         }
 
-        [Test]
+        [Fact]
         public void Execute_IsCharmed_Test()
         {
             var actor = new CharacterInstance(1, "TestChar");
@@ -31,22 +31,21 @@ namespace SmaugCS.Tests.Extensions
 
             var mprog = new MudProgData { Type = MudProgTypes.Act };
 
-            Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.False);
+            mprog.Execute(actor, _mockedLuaManager, _mockedLogManager).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Execute_IsFileProg_Test()
         {
             var actor = new CharacterInstance(1, "TestChar");
 
             var mprog = new MudProgData { Type = MudProgTypes.Act, IsFileProg = true };
 
-            Assert.Throws<NotImplementedException>(
-                () => mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object),
-                "Unit test expected a NotImplementedException to be thrown!");
+            Action act = () => mprog.Execute(actor, _mockedLuaManager, _mockedLogManager);
+            act.Should().Throw<NotImplementedException>();
         }
 
-        [Test]
+        [Fact]
         public void Execute_CatchesAndLogsException_Test()
         {
             bool callback = false;
@@ -55,22 +54,21 @@ namespace SmaugCS.Tests.Extensions
 
             var mprog = new MudProgData { Type = MudProgTypes.Act };
 
-            _mockedLuaManager.Setup(x => x.DoLuaScript(It.IsAny<string>())).Throws(new LuaException("Test Exception"));
+            A.CallTo(() => _mockedLuaManager.DoLuaScript(A<string>.Ignored)).Throws(new LuaException("Test Exception"));
+            A.CallTo(() => _mockedLogManager.Error(A<LuaException>.Ignored)).Invokes(() => callback = true);
 
-            _mockedLogManager.Setup(x => x.Error(It.IsAny<LuaException>())).Callback(() => { callback = true; });
-
-            Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.False);
-            Assert.That(callback, Is.True);
+            mprog.Execute(actor, _mockedLuaManager, _mockedLogManager).Should().BeFalse();
+            callback.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Execute_Successful_Test()
         {
             var actor = new CharacterInstance(1, "TestChar");
 
             var mprog = new MudProgData { Type = MudProgTypes.Act };
 
-            Assert.That(mprog.Execute(actor, _mockedLuaManager.Object, _mockedLogManager.Object), Is.True);
+            mprog.Execute(actor, _mockedLuaManager, _mockedLogManager).Should().BeTrue();
         }
     }
 }

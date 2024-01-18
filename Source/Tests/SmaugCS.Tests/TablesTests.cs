@@ -1,17 +1,18 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using Xunit;
 
 namespace SmaugCS.Tests
 {
-    [TestFixture]
+
     public class TablesTests
     {
-        [Test]
+        [Fact]
         public void ConvertStringSyllablesTest()
         {
             const string inputString = "Protect Evil";
             const string outputString = "sfainfra zzur";
 
-            Assert.That(tables.ConvertStringSyllables(inputString), Is.EqualTo(outputString));
+            tables.ConvertStringSyllables(inputString).Should().Be(outputString);
         }
     }
 }

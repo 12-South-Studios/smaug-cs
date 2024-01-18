@@ -1,6 +1,7 @@
-﻿using Moq;
+﻿using FakeItEasy;
+using FluentAssertions;
+using FluentAssertions.Execution;
 using Ninject;
-using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
@@ -16,10 +17,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Test.Common;
+using Xunit;
 
 namespace SmaugCS.Tests.Repositories
 {
-    [TestFixture]
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class ObjectRepositoryTests
     {
         private static string GetObjectLuaScript()
@@ -51,19 +54,18 @@ namespace SmaugCS.Tests.Repositories
 
         private LuaInterfaceProxy _proxy;
 
-        [SetUp]
-        public void OnSetup()
+        public ObjectRepositoryTests()
         {
-            var mockKernel = new Mock<IKernel>();
-            var mockCtx = new Mock<ISmaugDbContext>();
-            var mockLogger = new Mock<ILogWrapper>();
-            var mockTimer = new Mock<ITimer>();
+            var mockKernel = A.Fake<IKernel>();
+            var mockCtx = A.Fake<ISmaugDbContext>();
+            var mockLogger = A.Fake<ILogWrapper>();
+            var mockTimer = A.Fake<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object);
-            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object, 0);
+            LuaManager luaMgr = new LuaManager(A.Fake<IKernel>(), mockLogger);
+            LogManager logMgr = new LogManager(mockLogger, mockKernel, mockTimer, mockCtx, 0);
 
-            var mockLogManager = new Mock<ILogManager>();
-            RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, mockLogManager.Object);
+            var mockLogManager = A.Fake<ILogManager>();
+            RepositoryManager dbMgr = new RepositoryManager(mockKernel, mockLogManager);
 
             LuaObjectFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
@@ -79,94 +81,93 @@ namespace SmaugCS.Tests.Repositories
             luaMgr.InitializeLuaProxy(_proxy);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateObjectTest()
         {
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ID, Is.EqualTo(800));
-            Assert.That(result.Name, Is.EqualTo("pearl wand"));
-            Assert.That(result.ShortDescription, Is.EqualTo("a pearl wand"));
-            Assert.That(result.LongDescription, Is.EqualTo("The ground seems to cradle a pearl wand here."));
-            Assert.That(result.Action, Is.EqualTo("blast"));
-            Assert.That(result.Flags, Is.EqualTo("magic antigood antievil"));
-            Assert.That(result.WearFlags, Is.EqualTo("take wield"));
-            Assert.That(result.Spells.Count, Is.GreaterThanOrEqualTo(1));
-            Assert.That(result.Spells.ToList()[0], Is.EqualTo("armor"));
-            Assert.That(result.Weight, Is.EqualTo(1));
-            Assert.That(result.Cost, Is.EqualTo(2500));
-            Assert.That(result.Rent, Is.EqualTo(250));
-            Assert.That(result.Level, Is.EqualTo(0));
-            Assert.That(result.Layers, Is.EqualTo(0));
+            result.Should().NotBeNull();
+            result.ID.Should().Be(800);
+            result.Name.Should().Be("pearl wand");
+            result.ShortDescription.Should().Be("a pearl wand");
+            result.LongDescription.Should().Be("The ground seems to cradle a pearl wand here.");
+            result.Action.Should().Be("blast");
+            result.Flags.Should().Be("magic antigood antievil");
+            result.WearFlags.Should().Be("take wield");
+            result.Spells.Count.Should().BeGreaterThanOrEqualTo(1);
+            result.Spells.ToList()[0].Should().Be("armor");
+            result.Weight.Should().Be(1);
+            result.Cost.Should().Be(2500);
+            result.Rent.Should().Be(250);
+            result.Level.Should().Be(0);
+            result.Layers.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateObject_Values_Test()
         {
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Values, Is.Not.Null);
-            Assert.That(result.Values.Condition, Is.EqualTo(12));
-            Assert.That(result.Values.NumberOfDice, Is.EqualTo(4));
-            Assert.That(result.Values.SizeOfDice, Is.EqualTo(8));
-            Assert.That(result.Values.WeaponType, Is.EqualTo(6));
+            result.Should().NotBeNull();
+            Assert.NotEqual(result.Values, null);
+            Assert.Equal(12, result.Values.Condition);
+            Assert.Equal(4, result.Values.NumberOfDice);
+            Assert.Equal(8, result.Values.SizeOfDice);
+            Assert.Equal(6, result.Values.WeaponType);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateObject_Affects_Test()
         {
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Affects.Count, Is.GreaterThanOrEqualTo(1));
-            Assert.That(result.Affects.ToList()[0].Type, Is.EqualTo(AffectedByTypes.None));
-            Assert.That(result.Affects.ToList()[0].Duration, Is.EqualTo(-1));
-            Assert.That(result.Affects.ToList()[0].Modifier, Is.EqualTo(60));
-            Assert.That(result.Affects.ToList()[0].Location, Is.EqualTo(ApplyTypes.Hit));
-            Assert.That(result.Affects.ToList()[0].BitVector.IsSet(32), Is.True);
+            result.Should().NotBeNull();
+            result.Affects.Count.Should().BeGreaterThanOrEqualTo(1);
+            result.Affects.ToList()[0].Type.Should().Be(AffectedByTypes.None);
+            result.Affects.ToList()[0].Duration.Should().Be(-1);
+            result.Affects.ToList()[0].Modifier.Should().Be(60);
+            result.Affects.ToList()[0].Location.Should().Be(ApplyTypes.Hit);
+            result.Affects.ToList()[0].BitVector.IsSet(32).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateObject_ExtraDescriptions_Test()
         {
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ExtraDescriptions.Count, Is.GreaterThanOrEqualTo(1));
-            Assert.That(result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("wand")), Is.Not.Null);
-            Assert.That(result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("pearl")), Is.Not.Null);
+            result.Should().NotBeNull();
+            result.ExtraDescriptions.Count.Should().BeGreaterThanOrEqualTo(1);
+            result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("wand")).Should().NotBeNull();
+            result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("pearl")).Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateObject_MudProgs_Test()
         {
             var result = LuaObjectFunctions.LuaProcessObject(GetObjectLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.MudProgs.Count(), Is.EqualTo(1));
-            Assert.That(result.MudProgs.First().Type, Is.EqualTo(MudProgTypes.Damage));
-            Assert.That(result.MudProgs.First().ArgList, Is.EqualTo("100"));
-            Assert.That(result.MudProgs.First().Script,
-                Is.EqualTo("local ch = GetLastCharacter();MPEcho(\"Testing\", ch);LObjectCommand(\"c fires $n\", ch);"));
+            result.Should().NotBeNull();
+            result.MudProgs.Count().Should().Be(1);
+            result.MudProgs.First().Type.Should().Be(MudProgTypes.Damage);
+            result.MudProgs.First().ArgList.Should().Be("100");
+            result.MudProgs.First().Script.Should().Be("local ch = GetLastCharacter();MPEcho(\"Testing\", ch);LObjectCommand(\"c fires $n\", ch);");
         }
 
-        [Test]
+        [Fact]
         public void Create()
         {
             var repo = new ObjectRepository();
 
             var actual = repo.Create(1, "Test");
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.ID, Is.EqualTo(1));
-            Assert.That(actual.Name, Is.EqualTo("Test"));
-            Assert.That(actual.ShortDescription, Is.EqualTo("A newly created Test"));
-            Assert.That(repo.Contains(1), Is.True);
+            actual.Should().NotBeNull();
+            actual.ID.Should().Be(1);
+            actual.Name.Should().Be("Test");
+            actual.ShortDescription.Should().Be("A newly created Test");
+            repo.Contains(1).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Create_CloneObject()
         {
             var repo = new ObjectRepository();
@@ -176,14 +177,14 @@ namespace SmaugCS.Tests.Repositories
 
             var cloned = repo.Create(2, 1, "Test2");
 
-            Assert.That(cloned, Is.Not.Null);
-            Assert.That(cloned.ID, Is.EqualTo(2));
-            Assert.That(cloned.Name, Is.EqualTo("Test2"));
-            Assert.That(cloned.ShortDescription, Is.EqualTo(source.ShortDescription));
-            Assert.That(repo.Contains(2), Is.True);
+            cloned.Should().NotBeNull();
+            cloned.ID.Should().Be(2);
+            cloned.Name.Should().Be("Test2");
+            cloned.ShortDescription.Should().Be(source.ShortDescription);
+            repo.Contains(2).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Create_ThrowsException()
         {
             var repo = new ObjectRepository();
@@ -191,7 +192,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(1, ""));
         }
 
-        [Test]
+        [Fact]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new ObjectRepository();
@@ -199,7 +200,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(0, "Test"));
         }
 
-        [Test]
+        [Fact]
         public void Create_DuplicateVnum()
         {
             var repo = new ObjectRepository();
@@ -208,7 +209,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<DuplicateIndexException>(() => repo.Create(1, "Test2"));
         }
 
-        [Test]
+        [Fact]
         public void Create_Clone_InvalidCloneVnum()
         {
             var repo = new ObjectRepository();
@@ -216,7 +217,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(1, 1, "Test"));
         }
 
-        [Test]
+        [Fact]
         public void Create_Clone_MissingCloneObject()
         {
             var repo = new ObjectRepository();

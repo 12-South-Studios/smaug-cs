@@ -143,7 +143,7 @@ namespace SmaugCS.Common
         /// <param name="hiddenChar"></param>
         /// <returns></returns>
         public static string UnhideTilde(this string str, string hiddenChar = "*") => str.Replace(hiddenChar, "~");
-    
+
         /// <summary>
         /// Picks off one argument from a string and returns the rest
         /// </summary>

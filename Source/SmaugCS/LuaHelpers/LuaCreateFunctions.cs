@@ -1,11 +1,11 @@
 ﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Lua;
+using SmaugCS.Clans;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
 using SmaugCS.Language;
 using SmaugCS.Logging;

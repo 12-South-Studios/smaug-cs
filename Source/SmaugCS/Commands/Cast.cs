@@ -59,7 +59,7 @@ namespace SmaugCS.Commands
 
             if (!ch.IsNpc() && SmaugRandom.D100() + _skill.difficulty * 5 > pch.PlayerData.GetSkillMastery(_skill.ID))
             {
-                
+
 
             }
             else
@@ -116,7 +116,7 @@ namespace SmaugCS.Commands
                 {
                     ch.SendTo("You can't do that.");
                     return false;
-                }                
+                }
             }
             else
             {
