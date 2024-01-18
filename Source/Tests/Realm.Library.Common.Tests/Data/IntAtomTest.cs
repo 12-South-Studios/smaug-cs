@@ -67,7 +67,6 @@ namespace Realm.Library.Common.Test.Data
         [Theory]
         [InlineData(5, 10, false)]
         [InlineData(5, 5, true)]
-        [InlineData(5, null, false)]
         public void IntAtomEqualsTest(int firstValue, int secondValue, bool expected)
         {
             var atom = new IntAtom(firstValue);

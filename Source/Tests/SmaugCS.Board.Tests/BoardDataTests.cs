@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
-
-namespace SmaugCS.Board.Tests
+﻿namespace SmaugCS.Board.Tests
 {
-    [TestFixture]
+
     public class BoardDataTests
     {
         //private static DataTable BuildDataTable()
@@ -28,7 +26,7 @@ namespace SmaugCS.Board.Tests
         //    return table;
         //}
 
-        //[Test]
+        //[Fact]
         //public void Translate_NoNulls_Test()
         //{
         //    var table = BuildDataTable();
@@ -54,26 +52,26 @@ namespace SmaugCS.Board.Tests
 
         //    var board = BoardData.Translate(row);
 
-        //    Assert.That(board.Id, Is.EqualTo(1));
-        //    Assert.That(board.ReadGroup, Is.EqualTo("GroupA"));
-        //    Assert.That(board.PostGroup, Is.EqualTo("GroupB"));
-        //    Assert.That(board.ExtraReaders, Is.EqualTo("Bob,John"));
-        //    Assert.That(board.ExtraRemovers, Is.EqualTo("Bill,Ted"));
-        //    Assert.That(board.OTakeMessage, Is.EqualTo("$N took a message."));
-        //    Assert.That(board.OPostMessage, Is.EqualTo("$N posted a message."));
-        //    Assert.That(board.ORemoveMessage, Is.EqualTo("$N removed a message."));
-        //    Assert.That(board.OCopyMessage, Is.EqualTo("$N copied a message."));
-        //    Assert.That(board.PostMessage, Is.EqualTo("What does this do?"));
-        //    Assert.That(board.OReadMessage, Is.EqualTo("$N read a message."));
-        //    Assert.That(board.MinimumReadLevel, Is.EqualTo(1));
-        //    Assert.That(board.MinimumPostLevel, Is.EqualTo(5));
-        //    Assert.That(board.MinimumRemoveLevel, Is.EqualTo(10));
-        //    Assert.That(board.MaximumPosts, Is.EqualTo(1000));
-        //    Assert.That(board.Type, Is.EqualTo(BoardTypes.Note));
-        //    Assert.That(board.OListMessage, Is.EqualTo("$N listed the messages."));
+        //    board.Id.Should().Be(1));
+        //    board.ReadGroup.Should().Be("GroupA"));
+        //    board.PostGroup.Should().Be("GroupB"));
+        //    board.ExtraReaders.Should().Be("Bob,John"));
+        //    board.ExtraRemovers.Should().Be("Bill,Ted"));
+        //    board.OTakeMessage.Should().Be("$N took a message."));
+        //    board.OPostMessage.Should().Be("$N posted a message."));
+        //    board.ORemoveMessage.Should().Be("$N removed a message."));
+        //    board.OCopyMessage.Should().Be("$N copied a message."));
+        //    board.PostMessage.Should().Be("What does this do?"));
+        //    board.OReadMessage.Should().Be("$N read a message."));
+        //    board.MinimumReadLevel.Should().Be(1));
+        //    board.MinimumPostLevel.Should().Be(5));
+        //    board.MinimumRemoveLevel.Should().Be(10));
+        //    board.MaximumPosts.Should().Be(1000));
+        //    board.Type.Should().Be(BoardTypes.Note));
+        //    board.OListMessage.Should().Be("$N listed the messages."));
         //}
 
-        //[Test]
+        //[Fact]
         //public void Translate_Nulls_Test()
         //{
         //    var table = BuildDataTable();
@@ -88,8 +86,8 @@ namespace SmaugCS.Board.Tests
 
         //    var board = BoardData.Translate(row);
 
-        //    Assert.That(board.Id, Is.EqualTo(1));
-        //    Assert.That(board.OPostMessage, Is.EqualTo(string.Empty));
+        //    board.Id.Should().Be(1));
+        //    board.OPostMessage.Should().Be(string.Empty));
         //}
     }
 }

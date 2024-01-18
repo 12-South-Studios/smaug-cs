@@ -21,9 +21,11 @@ namespace SmaugCS
             {
                 if (ch.IsNpc() || cch.IsNpc())
                     return 100;
-                if (((PlayerInstance)ch).PlayerData.Clan == ((PlayerInstance)cch).PlayerData.Clan
-                    && ((PlayerInstance)ch).PlayerData.Clan != null)
-                    return 100;
+
+                // TODO fix
+                //if (((PlayerInstance)ch).PlayerData.Clan == ((PlayerInstance)cch).PlayerData.Clan
+                //    && ((PlayerInstance)ch).PlayerData.Clan != null)
+                //    return 100;
             }
 
             if (!ch.IsNpc())

@@ -1,17 +1,18 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using Xunit;
 
 namespace SmaugCS.Language.Tests
 {
-    [TestFixture]
+
     public class LanguageConversionDataTests
     {
-        [Test]
+        [Fact]
         public void ConstructorSplitTest()
         {
             var lcv = new LanguageConversionData("OldWord NewWord");
 
-            Assert.That(lcv.NewValue, Is.EqualTo("NewWord"));
-            Assert.That(lcv.OldValue, Is.EqualTo("OldWord"));
+            lcv.NewValue.Should().Be("NewWord");
+            lcv.OldValue.Should().Be("OldWord");
         }
     }
 }

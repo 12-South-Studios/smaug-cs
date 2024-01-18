@@ -1,112 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1841B62B-C81E-4E08-962F-62CDB15A248D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SmaugCS.Config</RootNamespace>
-    <AssemblyName>SmaugCS.Config</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>SmaugCS.Config</AssemblyTitle>
+    <Product>SmaugCS.Config</Product>
+    <Copyright>Copyright ©  2014</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\Realm Ruleset.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ConfigurationManagerFunctions.cs" />
-    <Compile Include="ConfigurationSectionNotFoundException.cs" />
-    <Compile Include="ConstantConfigurationSection.cs" />
-    <Compile Include="ConstantElement.cs" />
-    <Compile Include="ConstantElementCollection.cs" />
-    <Compile Include="MayorTextStringElement.cs" />
-    <Compile Include="MayorTextStringsElementCollection.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticStringConfigurationSection.cs" />
-    <Compile Include="SystemDataConfigurationSection.cs" />
-    <Compile Include="SystemDirectoryElement.cs" />
-    <Compile Include="SystemDirectoryElementCollection.cs" />
-    <Compile Include="SystemFileElement.cs" />
-    <Compile Include="SystemFileElementCollection.cs" />
-    <Compile Include="SystemValueElement.cs" />
-    <Compile Include="SystemValueElementCollection.cs" />
-    <Compile Include="VnumConfigurationSection.cs" />
-    <Compile Include="VnumElement.cs" />
-    <Compile Include="VnumElementCollection.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj">
-      <Project>{df798981-706a-4f60-a6ec-6ce00658d737}</Project>
-      <Name>Realm.Library.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj">
-      <Project>{ac80b2f2-c251-40f8-aacb-6b4ece732433}</Project>
-      <Name>Realm.Standard.Patterns.Command</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj">
-      <Project>{feab7c57-63f5-428c-a5d2-057d3240dcfa}</Project>
-      <Name>Realm.Standard.Patterns.Decorator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj">
-      <Project>{6937f92d-7ba3-4bba-852d-571ac0d6baf2}</Project>
-      <Name>Realm.Standard.Patterns.Factory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj">
-      <Project>{58fe70dc-c36f-4515-91b2-f51669d5e7a0}</Project>
-      <Name>Realm.Standard.Patterns.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj">
-      <Project>{cb9c039e-10a7-4a07-bb17-47febc366ce5}</Project>
-      <Name>Realm.Standard.Patterns.Singleton</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
+    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net">
@@ -115,13 +25,6 @@
     <PackageReference Include="Ninject">
       <Version>3.3.6</Version>
     </PackageReference>
+    <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

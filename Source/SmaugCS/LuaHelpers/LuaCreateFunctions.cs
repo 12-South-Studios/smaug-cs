@@ -6,7 +6,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Shops;
 using SmaugCS.Language;
 using SmaugCS.Logging;

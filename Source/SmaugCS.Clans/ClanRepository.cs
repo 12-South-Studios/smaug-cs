@@ -1,5 +1,4 @@
 ﻿using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Serializers;
 using SmaugCS.DAL.Interfaces;
 using SmaugCS.DAL.Models;
 using SmaugCS.Data.Organizations;
@@ -34,7 +33,7 @@ namespace SmaugCS.Clans
             {
                 if (!_dbContext.Clans.Any()) return;
 
-                foreach(DAL.Models.Clan clan in _dbContext.Clans)
+                foreach (DAL.Models.Clan clan in _dbContext.Clans)
                 {
                     var newClan = new ClanData(clan.Id, clan.Name);
                     newClan.Description = clan.Description;
@@ -57,7 +56,7 @@ namespace SmaugCS.Clans
                     newClan.Alignment = clan.Stats.Alignment;
 
                     var members = new List<RosterData>();
-                    foreach(DAL.Models.ClanMember clanMember in clan.Members)
+                    foreach (DAL.Models.ClanMember clanMember in clan.Members)
                     {
                         var newMember = new RosterData();
                         newMember.Name = clanMember.Name;
@@ -99,7 +98,7 @@ namespace SmaugCS.Clans
         {
             try
             {
-                foreach(var clan in Clans.Where(x => !x.Saved).ToList())
+                foreach (var clan in Clans.Where(x => !x.Saved).ToList())
                 {
 
                     var clanToSave = _dbContext.Clans.FirstOrDefault(x => x.Id == clan.ID);
@@ -109,7 +108,7 @@ namespace SmaugCS.Clans
                         clanToSave.Name = clan.Name;
                         clanToSave.ClanType = (int)clan.ClanType;
                     }
-                    
+
                     clanToSave.Description = clan.Description;
                     clanToSave.BoardId = clan.Board;
                     clanToSave.Motto = clan.Motto;
@@ -131,7 +130,7 @@ namespace SmaugCS.Clans
                     clanToSave.Stats.Alignment = clan.Alignment;
 
                     // Members
-                    foreach(var member in clan.Members)
+                    foreach (var member in clan.Members)
                     {
                         var clanMember = clanToSave.Members.FirstOrDefault(x => x.Name == member.Name);
                         if (clanMember == null)
@@ -151,7 +150,7 @@ namespace SmaugCS.Clans
                     }
 
                     // Ranks
-                    
+
                     // Items
 
                 }

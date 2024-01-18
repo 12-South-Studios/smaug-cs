@@ -14,7 +14,7 @@ namespace SmaugCS.DAL.Models
         public DateTime? CreateDateUtc { get; set; }
 
         public int ClanId { get; set; }
-        public int ClanRank { get;set; }
+        public int ClanRank { get; set; }
 
         public string Name { get; set; }
         public DateTime Joined { get; set; }

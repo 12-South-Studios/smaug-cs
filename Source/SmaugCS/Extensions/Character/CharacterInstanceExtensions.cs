@@ -11,7 +11,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
@@ -202,8 +201,9 @@ namespace SmaugCS
             if (!fPull)
             {
                 RoomTemplate location = null;
-                if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Clan != null)
-                    location = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
+                // TODO fix
+                //if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Clan != null)
+                //    location = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
 
                 if (location == null)
                     location = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_ALTAR);
@@ -863,40 +863,44 @@ namespace SmaugCS
                    (ch.MentalState > 5 && ch.MentalState < 15 ? 1 : 0);
         }
 
-        public static bool IsClanned(this CharacterInstance ch)
-        {
-            if (ch.IsNpc())
-                return false;
-            return ((PlayerInstance)ch).PlayerData.Clan != null &&
-                ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Order &&
-                ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Guild;
-        }
+        // TODO fix
+        //public static bool IsClanned(this CharacterInstance ch)
+        //{
+        //    if (ch.IsNpc())
+        //        return false;
+        //    return ((PlayerInstance)ch).PlayerData.Clan != null &&
+        //        ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Order &&
+        //        ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Guild;
+        //}
 
-        public static bool IsOrdered(this CharacterInstance ch)
-        {
-            if (ch.IsNpc())
-                return false;
-            return ((PlayerInstance)ch).PlayerData.Clan != null &&
-                   ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Order;
-        }
+        // TODO Fix
+        //public static bool IsOrdered(this CharacterInstance ch)
+        //{
+        //    if (ch.IsNpc())
+        //        return false;
+        //    return ((PlayerInstance)ch).PlayerData.Clan != null &&
+        //           ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Order;
+        //}
 
-        public static bool IsGuilded(this CharacterInstance ch)
-        {
-            if (ch.IsNpc())
-                return false;
-            return ((PlayerInstance)ch).PlayerData.Clan != null &&
-                   ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Guild;
-        }
+        // TODO Fix
+        //public static bool IsGuilded(this CharacterInstance ch)
+        //{
+        //    if (ch.IsNpc())
+        //        return false;
+        //    return ((PlayerInstance)ch).PlayerData.Clan != null &&
+        //           ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Guild;
+        //}
 
-        public static bool IsDeadlyClan(this CharacterInstance ch)
-        {
-            if (ch.IsNpc())
-                return false;
-            return ((PlayerInstance)ch).PlayerData.Clan != null &&
-                   ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.NoKill &&
-                   ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Order &&
-                   ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Guild;
-        }
+        // TODO fix
+        //public static bool IsDeadlyClan(this CharacterInstance ch)
+        //{
+        //    if (ch.IsNpc())
+        //        return false;
+        //    return ((PlayerInstance)ch).PlayerData.Clan != null &&
+        //           ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.NoKill &&
+        //           ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Order &&
+        //           ((PlayerInstance)ch).PlayerData.Clan.ClanType != ClanTypes.Guild;
+        //}
 
         public static bool CanTakePrototype(this CharacterInstance ch)
         {
