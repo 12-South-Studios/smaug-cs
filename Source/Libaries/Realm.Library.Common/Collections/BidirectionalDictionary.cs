@@ -15,8 +15,8 @@ namespace Realm.Library.Common.Collections
         private IDictionary<TFirst, IEnumerable<TSecond>> Forward { get; }
         private IDictionary<TSecond, IEnumerable<TFirst>> Backward { get; }
 
-        private static readonly ConcurrentBag<TFirst> EmptyFirstList = new ConcurrentBag<TFirst>();
-        private static readonly ConcurrentBag<TSecond> EmptySecondList = new ConcurrentBag<TSecond>();
+        private static readonly ConcurrentBag<TFirst> EmptyFirstList = new();
+        private static readonly ConcurrentBag<TSecond> EmptySecondList = new();
 
         /// <summary>
         /// 
@@ -67,20 +67,14 @@ namespace Realm.Library.Common.Collections
         /// </summary>
         /// <param name="first"></param>
         /// <returns></returns>
-        public IEnumerable<TSecond> GetByFirst(TFirst first)
-        {
-            return Forward.ContainsKey(first) ? Forward[first] : EmptySecondList;
-        }
+        public IEnumerable<TSecond> GetByFirst(TFirst first) => Forward.ContainsKey(first) ? Forward[first] : EmptySecondList;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="second"></param>
         /// <returns></returns>
-        public IEnumerable<TFirst> GetBySecond(TSecond second)
-        {
-            return Backward.ContainsKey(second) ? Backward[second] : EmptyFirstList;
-        }
+        public IEnumerable<TFirst> GetBySecond(TSecond second) => Backward.ContainsKey(second) ? Backward[second] : EmptyFirstList;
 
         /// <summary>
         /// 

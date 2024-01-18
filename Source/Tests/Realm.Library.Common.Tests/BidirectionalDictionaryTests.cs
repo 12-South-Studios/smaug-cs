@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
 using Realm.Library.Common.Collections;
 using System.Linq;
+using Test.Common;
 using Xunit;
 
 namespace Realm.Library.Common.Fact
 {
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class BidirectionalDictionaryFacts
     {
         private static BidirectionalDictionary<string, string> _dictionary;

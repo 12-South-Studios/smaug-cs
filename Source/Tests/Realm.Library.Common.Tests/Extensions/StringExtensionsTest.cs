@@ -314,7 +314,6 @@ namespace Realm.Library.Common.Test.Extensions
         [InlineData("the big sword", "the big sword", false, false, false)]
         [InlineData("ancient sword", "an ancient sword", false, false, false)]
         [InlineData("big sword", "a big sword", false, false, false)]
-        [InlineData("first test", "\r\na first test", true, false, false)]
         [InlineData("big sword", "the big sword", false, true, false)]
         [InlineData("big sword", "A big sword", false, false, true)]
         public void AddArticleTest(string value, string expected, bool appendNewLine, bool appendThe, bool capitalizeFirst)
@@ -328,6 +327,16 @@ namespace Realm.Library.Common.Test.Extensions
                 options |= ArticleAppendOptions.CapitalizeFirstLetter;
 
             var result = value.AddArticle(options);
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void AddArticleTest_NewLine()
+        {
+            string value = "first test";
+            string expected = $"{Environment.NewLine}a first test";
+
+            var result = value.AddArticle(ArticleAppendOptions.NewLineToEnd);
             result.Should().Be(expected);
         }
 
