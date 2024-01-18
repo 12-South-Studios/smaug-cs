@@ -49,15 +49,14 @@ namespace Realm.Library.Common
         {
             string word = ReadNextWord();
 
-            int result;
-            Int32.TryParse(word, out result);
+            _ = int.TryParse(word, out int result);
             return result;
         }
 
         public virtual string ReadString(IEnumerable<char> terminatorChars = null)
         {
             string returnVal = string.Empty;
-            List<char> terminatorCharacters = new List<char> { '\r', '\n' };
+            List<char> terminatorCharacters = new() { '\r', '\n' };
             if (terminatorChars != null)
                 terminatorCharacters.AddRange(terminatorChars.ToList());
 
@@ -102,17 +101,19 @@ namespace Realm.Library.Common
                 new List<string>(
                     ReadToEnd()
                         .Replace(Environment.NewLine, "\n")
-                        .Replace("\n\r", "\n")
+                        .Replace("\r\n", "\n")
                         .Split(splitChars ?? charsToSplit, StringSplitOptions.RemoveEmptyEntries)
                         .ToList());
         }
 
         public List<TextSection> ReadSections(IEnumerable<string> headerChars = null,
                                               IEnumerable<string> commentChars = null,
-                                              IEnumerable<string> footerChars = null, string endOfFile = "")
+                                              IEnumerable<string> footerChars = null, 
+                                              string endOfFile = "",
+                                              char[] splitChars = null)
         {
-            List<string> lines = ReadIntoList();
-            List<TextSection> sections = new List<TextSection>();
+            List<string> lines = ReadIntoList(splitChars);
+            List<TextSection> sections = new();
 
             if (HasInvalidSectionParameters(headerChars, commentChars, footerChars, endOfFile))
                 return sections;
@@ -120,18 +121,18 @@ namespace Realm.Library.Common
             TextSection section = null;
             foreach (string line in lines
                 .Where(line => commentChars == null || !commentChars.Any(line.StartsWith))
-                .Where(line => String.IsNullOrWhiteSpace(endOfFile) || !line.StartsWith(endOfFile)))
+                .Where(line => string.IsNullOrWhiteSpace(endOfFile) || !line.StartsWith(endOfFile)))
             {
-                if (headerChars.Any(c => line.StartsWith(c)))
+                if (headerChars.Any(line.StartsWith))
                 {
-                    section = new TextSection { Header = line.Substring(1) };
+                    section = new TextSection { Header = line[1..] };
                     sections.Add(section);
                     continue;
                 }
 
-                if (footerChars != null && footerChars.Any(c => line.StartsWith(c)))
+                if (footerChars != null && footerChars.Any(line.StartsWith))
                 {
-                    section.Footer = line.Substring(1);
+                    section.Footer = line[1..];
                     continue;
                 }
 
@@ -147,7 +148,7 @@ namespace Realm.Library.Common
             return headerChars == null
                    || (commentChars != null && headerChars.Any(commentChars.Contains))
                    || (footerChars != null && headerChars.Any(footerChars.Contains))
-                   || (!String.IsNullOrWhiteSpace(endOfFile) && headerChars.Contains(endOfFile));
+                   || (!string.IsNullOrWhiteSpace(endOfFile) && headerChars.Contains(endOfFile));
         }
 
         #region Implementation of IDisposable

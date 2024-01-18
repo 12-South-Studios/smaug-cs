@@ -1,17 +1,20 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Test.Common;
 using Xunit;
 
 namespace Realm.Library.Common.Test
 {
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class TextReaderProxyTests
     {
         [Fact]
         public void ReadNextLetter_ReturnsValidChar()
         {
-            TextReaderProxy proxy = new TextReaderProxy(new StringReader("a word"));
+            TextReaderProxy proxy = new(new StringReader("a word"));
 
             var result = proxy.ReadNextLetter();
             result.Should().Be('a');
@@ -20,7 +23,7 @@ namespace Realm.Library.Common.Test
         [Fact]
         public void ReadNextLetter_ThrowsExceptionAtEndOfStream()
         {
-            TextReaderProxy proxy = new TextReaderProxy(new StringReader(""));
+            TextReaderProxy proxy = new(new StringReader(""));
 
             Action act = () => proxy.ReadNextLetter();
             act.Should().Throw<IOException>();
@@ -29,7 +32,7 @@ namespace Realm.Library.Common.Test
         [Fact]
         public void ReadNextWord_ReturnsValidString()
         {
-            TextReaderProxy proxy = new TextReaderProxy(new StringReader("first word"));
+            TextReaderProxy proxy = new(new StringReader("first word"));
 
             var result = proxy.ReadNextWord();
             result.Should().Be("first");
@@ -38,7 +41,7 @@ namespace Realm.Library.Common.Test
         [Fact]
         public void ReadNumber_ReturnsValidValue()
         {
-            TextReaderProxy proxy = new TextReaderProxy(new StringReader("100 words"));
+            TextReaderProxy proxy = new(new StringReader("100 words"));
 
             var result = proxy.ReadNumber();
             result.Should().Be(100);
@@ -47,22 +50,24 @@ namespace Realm.Library.Common.Test
         [Fact]
         public void ReadIntoList_ReturnsValidList()
         {
-            TextReaderProxy proxy =
-                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r"));
+            TextReaderProxy proxy = new(new StringReader("#common|~|abcdefghijklmnopqrstuvwxyz~|~|"));
 
-            List<string> results = proxy.ReadIntoList();
-
-            results.Should().NotBeNull();
-            results.Count.Should().Be(4);
-            results[0].Should().Be("#common");
-            results[3].Should().Be("~");
+            List<string> results = proxy.ReadIntoList(new char[] { '|' });
+             
+            using(new AssertionScope())
+            {
+                results.Should().NotBeNull();
+                results.Count.Should().Be(4);
+                results[0].Should().Be("#common");
+                results[3].Should().Be("~");
+            }
         }
 
         [Fact]
         public void ReadSections_HasInvalidSectionParameters()
         {
             TextReaderProxy proxy =
-                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
+                new(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
 
             List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
                                                            new List<string> { "#" }, "#end");
@@ -74,7 +79,7 @@ namespace Realm.Library.Common.Test
         public void ReadSections_HasFooter()
         {
             TextReaderProxy proxy =
-                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\r\n^end_common\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r^end_uncommon\r\n#end\n\r"));
+                new(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\r\n^end_common\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r^end_uncommon\r\n#end\n\r"));
 
             List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
                                                            new List<string> { "^" }, "#end");
@@ -87,21 +92,24 @@ namespace Realm.Library.Common.Test
         public void ReadSections_ReturnsValidList()
         {
             TextReaderProxy proxy =
-                new TextReaderProxy(new StringReader("#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
+                new(new StringReader("#common|~|abcdefghijklmnopqrstuvwxyz~|~|#uncommon|~|abcdefghijklmnopqrstuvwxyz~|~|#end|"));
 
-            List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" }, null, "#end");
+            List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" }, null, "#end", new char[] { '|' });
 
-            results.Should().NotBeNull();
-            results.Count.Should().Be(2);
-            results[0].Header.Should().Be("common");
-            results[0].Lines.Count.Should().Be(3);
+            using (new AssertionScope())
+            {
+                results.Should().NotBeNull();
+                results.Count.Should().Be(2);
+                results[0].Header.Should().Be("common");
+                results[0].Lines.Count.Should().Be(3);
+            }
         }
 
         [Fact]
         public void ReadEndOfLine_DoesntReadNextLine()
         {
             TextReaderProxy proxy =
-                   new TextReaderProxy(new StringReader("This is a test\n\rwith two lines."));
+                   new(new StringReader("This is a test\n\rwith two lines."));
 
             var result1 = proxy.ReadNextLetter();
             result1.Should().Be('T');

@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\Test.Common\Test.Common.csproj" />
   </ItemGroup>
 
 </Project>
