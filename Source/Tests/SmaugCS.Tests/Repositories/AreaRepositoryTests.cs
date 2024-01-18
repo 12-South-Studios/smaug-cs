@@ -1,6 +1,6 @@
-﻿using Moq;
+﻿using FakeItEasy;
+using FluentAssertions;
 using Ninject;
-using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
@@ -13,10 +13,12 @@ using SmaugCS.Lua;
 using SmaugCS.Repository;
 using System.Linq;
 using System.Text;
+using Test.Common;
+using Xunit;
 
 namespace SmaugCS.Tests.Repositories
 {
-    [TestFixture]
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class AreaRepositoryTests
     {
         private static string GetAreaLuaScript()
@@ -41,15 +43,14 @@ namespace SmaugCS.Tests.Repositories
             return sb.ToString();
         }
 
-        [SetUp]
-        public void OnSetup()
+        public AreaRepositoryTests()
         {
-            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, new Mock<ILogWrapper>().Object);
+            LuaManager luaMgr = new LuaManager(A.Fake<IKernel>(), A.Fake<ILogWrapper>());
 
-            RepositoryManager dbMgr = new RepositoryManager(new Mock<IKernel>().Object, new Mock<ILogManager>().Object);
+            RepositoryManager dbMgr = new RepositoryManager(A.Fake<IKernel>(), A.Fake<ILogManager>());
 
-            LogManager logMgr = new LogManager(new Mock<ILogWrapper>().Object, new Mock<IKernel>().Object,
-                new Mock<ITimer>().Object, new Mock<ISmaugDbContext>().Object, 0);
+            LogManager logMgr = new LogManager(A.Fake<ILogWrapper>(), A.Fake<IKernel>(),
+                A.Fake<ITimer>(), A.Fake<ISmaugDbContext>(), 0);
 
             LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
@@ -66,36 +67,36 @@ namespace SmaugCS.Tests.Repositories
             luaMgr.InitializeLuaProxy(luaProxy);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateAreaTest()
         {
             var result = LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ID, Is.EqualTo(1));
-            Assert.That(result.Name, Is.EqualTo("The Astral"));
-            Assert.That(result.Author, Is.EqualTo("Andi"));
-            Assert.That(result.HighEconomy, Is.EqualTo(2064393));
-            Assert.That(result.HighHardRange, Is.EqualTo(60));
-            Assert.That(result.ResetMessage, Is.EqualTo("The astral field glitters with a thousand points of light for a moment..."));
+            result.Should().NotBeNull();
+            result.ID.Should().Be(1);
+            result.Name.Should().Be("The Astral");
+            result.Author.Should().Be("Andi");
+            result.HighEconomy.Should().Be(2064393);
+            result.HighHardRange.Should().Be(60);
+            result.ResetMessage.Should().Be("The astral field glitters with a thousand points of light for a moment...");
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateArea_AddRoom_Test()
         {
             var result = LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Rooms.Count(), Is.EqualTo(1));
-            Assert.That(result.Rooms.First().ID, Is.EqualTo(801));
+            result.Should().NotBeNull();
+            result.Rooms.Count().Should().Be(1);
+            result.Rooms.First().ID.Should().Be(801);
         }
 
-        /*[Test]
+        /*[Fact]
         [ExpectedException(typeof(DuplicateEntryException))]
         public void LuaCreateAreaDuplicateTest()
         {
-            LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript());
-            LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript());
+            LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript();
+            LuaAreaFunctions.LuaProcessArea(GetAreaLuaScript();
 
             Assert.Fail("Unit test expected a DuplicateEntryException to be thrown!");
         }*/

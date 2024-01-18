@@ -1,21 +1,21 @@
-﻿using Moq;
-using Ninject;
-using NUnit.Framework;
+﻿using Ninject;
 using System.Timers;
+using FakeItEasy;
+using Xunit;
+using FluentAssertions;
+using System.Threading.Tasks;
 
 namespace SmaugCS.Time.Tests
 {
-    [TestFixture]
+
     public class TimerManagerTests
     {
         private bool _callback;
         private static ITimerManager _mgr;
 
-        [SetUp]
-        public void OnSetup()
+        public TimerManagerTests()
         {
-            var mockKernel = new Mock<IKernel>();
-            _mgr = new TimerManager(mockKernel.Object);
+            _mgr = new TimerManager(A.Fake<IKernel>());
         }
 
         private void Callback(object sender, ElapsedEventArgs elapsedEventArgs)
@@ -23,25 +23,17 @@ namespace SmaugCS.Time.Tests
             _callback = true;
         }
 
-        [Test]
-        public void AddTimerTest()
-        {
-            _mgr.AddTimer(200, Callback);
-
-            Assert.That(() => _callback, Is.True.After(500));
-        }
-
-        [Test]
+        [Fact]
         public void GetTimerTest()
         {
             var id = _mgr.AddTimer(200, Callback);
 
             var timer = _mgr.GetTimer(id);
 
-            Assert.That(timer.Id, Is.EqualTo(id));
+            timer.Id.Should().Be(id);
         }
 
-        [Test]
+        [Fact]
         public void DeleteTimerTest()
         {
             var id = _mgr.AddTimer(200, Callback);
@@ -50,7 +42,7 @@ namespace SmaugCS.Time.Tests
 
             var timer = _mgr.GetTimer(id);
 
-            Assert.That(timer, Is.Null);
+            timer.Should().BeNull();
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
 using System.Data;
+using Xunit;
 
 namespace SmaugCS.Common.Tests
 {
-    [TestFixture]
+
     public class DataRowExtensionsTests
     {
-        [Test]
+        [Fact]
         public void GetDataValue_MissingColumn_Test()
         {
             var table = new DataTable("TestTable");
@@ -14,10 +15,10 @@ namespace SmaugCS.Common.Tests
 
             var result = row.GetDataValue("Column1", "DefaultValue");
 
-            Assert.That(result, Is.EqualTo("DefaultValue"));
+            result.Should().Be("DefaultValue");
         }
 
-        [Test]
+        [Fact]
         public void GetDataValue_NullValue_Test()
         {
             var table = new DataTable("TestTable");
@@ -26,10 +27,10 @@ namespace SmaugCS.Common.Tests
 
             var result = row.GetDataValue("Column1", "DefaultValue");
 
-            Assert.That(result, Is.EqualTo("DefaultValue"));
+            result.Should().Be("DefaultValue");
         }
 
-        [Test]
+        [Fact]
         public void GetDataValue_GoodStringValue_Test()
         {
             var table = new DataTable("TestTable");
@@ -39,10 +40,10 @@ namespace SmaugCS.Common.Tests
 
             var result = row.GetDataValue("Column1", "DefaultValue");
 
-            Assert.That(result, Is.EqualTo("Testing 1 2 3"));
+            result.Should().Be("Testing 1 2 3");
         }
 
-        [Test]
+        [Fact]
         public void GetDataValue_GoodIntegerValue_Test()
         {
             var table = new DataTable("TestTable");
@@ -52,7 +53,7 @@ namespace SmaugCS.Common.Tests
 
             var result = row.GetDataValue("Column1", -1);
 
-            Assert.That(result, Is.EqualTo(256));
+            result.Should().Be(256);
         }
     }
 }

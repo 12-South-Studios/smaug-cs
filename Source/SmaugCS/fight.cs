@@ -10,7 +10,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Data.Templates;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
@@ -1148,8 +1147,9 @@ namespace SmaugCS
                         ? ch.Level.GetNumberThatIsBetween(1, LevelConstants.MaxLevel)
                         : (ch.Level / victim.Level).GetNumberThatIsBetween(1, LevelConstants.MaxLevel);
 
-                    if (ch.PlayerData.Clan != null)
-                        ch.PlayerData.Clan.PvEKills++;
+                    // TODO fix
+                    //if (ch.PlayerData.Clan != null)
+                    //    ch.PlayerData.Clan.PvEKills++;
                     ch.PlayerData.PvEKills++;
                     ch.CurrentRoom.Area.PvEKills++;
 
@@ -1186,23 +1186,24 @@ namespace SmaugCS
             {
                 if (!ch.IsNpc())
                 {
-                    if (ch.PlayerData.Clan != null)
-                    {
-                        if (victim.Level < 10)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[0]++;
-                        else if (victim.Level < 15)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[1]++;
-                        else if (victim.Level < 20)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[2]++;
-                        else if (victim.Level < 30)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[3]++;
-                        else if (victim.Level < 40)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[4]++;
-                        else if (victim.Level < 50)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[5]++;
-                        else
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[6]++;
-                    }
+                    // TODO Fix
+                    //if (ch.PlayerData.Clan != null)
+                    //{
+                    //    if (victim.Level < 10)
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[0]++;
+                    //    else if (victim.Level < 15)
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[1]++;
+                    //    else if (victim.Level < 20)
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[2]++;
+                    //    else if (victim.Level < 30)
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[3]++;
+                    //    else if (victim.Level < 40)
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[4]++;
+                    //    else if (victim.Level < 50)
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[5]++;
+                    //    else
+                    //        ch.PlayerData.Clan.PvPKillTable.ToList()[6]++;
+                    //}
 
                     ch.PlayerData.PvPKills++;
                     ch.CurrentRoom.Area.PvPKills++;
@@ -1215,68 +1216,69 @@ namespace SmaugCS
                 && ch.PlayerData.Flags.IsSet(PCFlags.Deadly)
                 && ((PlayerInstance)victim).PlayerData.Flags.IsSet(PCFlags.Deadly))
             {
-                if (ch.PlayerData.Clan == null
-                    || ((PlayerInstance)victim).PlayerData.Clan == null
-                    || (ch.PlayerData.Clan.ClanType != ClanTypes.NoKill
-                        && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.NoKill
-                        && ch.PlayerData.Clan != ((PlayerInstance)victim).PlayerData.Clan))
-                {
-                    if (ch.PlayerData.Clan != null)
-                    {
-                        if (victim.Level < 10)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[0]++;
-                        else if (victim.Level < 15)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[1]++;
-                        else if (victim.Level < 20)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[2]++;
-                        else if (victim.Level < 30)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[3]++;
-                        else if (victim.Level < 40)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[4]++;
-                        else if (victim.Level < 50)
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[5]++;
-                        else
-                            ch.PlayerData.Clan.PvPKillTable.ToList()[6]++;
-                    }
+                // TODO Fix
+                //if (ch.PlayerData.Clan == null
+                //    || ((PlayerInstance)victim).PlayerData.Clan == null
+                //    || (ch.PlayerData.Clan.ClanType != ClanTypes.NoKill
+                //        && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.NoKill
+                //        && ch.PlayerData.Clan != ((PlayerInstance)victim).PlayerData.Clan))
+                //{
+                //    if (ch.PlayerData.Clan != null)
+                //    {
+                //        if (victim.Level < 10)
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[0]++;
+                //        else if (victim.Level < 15)
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[1]++;
+                //        else if (victim.Level < 20)
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[2]++;
+                //        else if (victim.Level < 30)
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[3]++;
+                //        else if (victim.Level < 40)
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[4]++;
+                //        else if (victim.Level < 50)
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[5]++;
+                //        else
+                //            ch.PlayerData.Clan.PvPKillTable.ToList()[6]++;
+                //    }
 
-                    ch.PlayerData.PvPKills++;
-                    ch.CurrentHealth = ch.MaximumHealth;
-                    ch.CurrentMana = ch.MaximumMana;
-                    ch.CurrentMovement = ch.MaximumMovement;
-                    if (ch.PlayerData != null)
-                        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = 10 + ch.Level;
-                    victim.UpdatePositionByCurrentHealth();
-                    if (victim != ch)
-                    {
-                        comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into $n.", ch, victim.Name, null, ToTypes.Room);
-                        comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into you.", ch, victim.Name, null, ToTypes.Character);
-                    }
+                //    ch.PlayerData.PvPKills++;
+                //    ch.CurrentHealth = ch.MaximumHealth;
+                //    ch.CurrentMana = ch.MaximumMana;
+                //    ch.CurrentMovement = ch.MaximumMovement;
+                //    if (ch.PlayerData != null)
+                //        ch.PlayerData.ConditionTable[ConditionTypes.Bloodthirsty] = 10 + ch.Level;
+                //    victim.UpdatePositionByCurrentHealth();
+                //    if (victim != ch)
+                //    {
+                //        comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into $n.", ch, victim.Name, null, ToTypes.Room);
+                //        comm.act(ATTypes.AT_MAGIC, "Bolts of blue energy rise from the corpse, seeping into you.", ch, victim.Name, null, ToTypes.Character);
+                //    }
 
-                    if (((PlayerInstance)victim).PlayerData.Clan != null)
-                    {
-                        if (victim.Level < 10)
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[0]++;
-                        else if (victim.Level < 15)
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[1]++;
-                        else if (victim.Level < 20)
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[2]++;
-                        else if (victim.Level < 30)
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[3]++;
-                        else if (victim.Level < 40)
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[4]++;
-                        else if (victim.Level < 50)
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[5]++;
-                        else
-                            ch.PlayerData.Clan.PvPDeathTable.ToList()[6]++;
-                    }
+                //    if (((PlayerInstance)victim).PlayerData.Clan != null)
+                //    {
+                //        if (victim.Level < 10)
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[0]++;
+                //        else if (victim.Level < 15)
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[1]++;
+                //        else if (victim.Level < 20)
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[2]++;
+                //        else if (victim.Level < 30)
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[3]++;
+                //        else if (victim.Level < 40)
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[4]++;
+                //        else if (victim.Level < 50)
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[5]++;
+                //        else
+                //            ch.PlayerData.Clan.PvPDeathTable.ToList()[6]++;
+                //    }
 
-                    ((PlayerInstance)victim).PlayerData.PvPDeaths++;
-                    ((PlayerInstance)victim).AdjustFavor(DeityFieldTypes.Die, 1);
-                    ch.AdjustFavor(DeityFieldTypes.Kill, 1);
-                    victim.AddTimer(TimerTypes.PKilled, 115);
-                    Macros.WAIT_STATE(victim, 3 * GameConstants.GetSystemValue<int>("PulseViolence"));
-                    return;
-                }
+                //    ((PlayerInstance)victim).PlayerData.PvPDeaths++;
+                //    ((PlayerInstance)victim).AdjustFavor(DeityFieldTypes.Die, 1);
+                //    ch.AdjustFavor(DeityFieldTypes.Kill, 1);
+                //    victim.AddTimer(TimerTypes.PKilled, 115);
+                //    Macros.WAIT_STATE(victim, 3 * GameConstants.GetSystemValue<int>("PulseViolence"));
+                //    return;
+                //}
             }
 
             if (ch.IsAffected(AffectedByTypes.Charm))
@@ -1298,8 +1300,9 @@ namespace SmaugCS
                 if (!victim.IsNpc())
                 {
                     var vch = (PlayerInstance)victim;
-                    if (vch.PlayerData.Clan != null)
-                        vch.PlayerData.Clan.PvEDeaths++;
+                    // TODO Fix
+                    //if (vch.PlayerData.Clan != null)
+                    //    vch.PlayerData.Clan.PvEDeaths++;
                     vch.PlayerData.PvEDeaths++;
                     victim.CurrentRoom.Area.PvEDeaths++;
 
@@ -1319,31 +1322,33 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                if (ch.PlayerData.Clan != null)
-                    ch.PlayerData.Clan.IllegalPvPKill++;
+                // TODO Fix
+                //if (ch.PlayerData.Clan != null)
+                //    ch.PlayerData.Clan.IllegalPvPKill++;
                 ch.PlayerData.IllegalPvPKill++;
                 ch.CurrentRoom.Area.IllegalPvPKill++;
             }
 
             if (!victim.IsNpc())
             {
-                if (((PlayerInstance)victim).PlayerData.Clan != null)
-                {
-                    if (victim.Level < 10)
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[0]++;
-                    else if (victim.Level < 15)
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[1]++;
-                    else if (victim.Level < 20)
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[2]++;
-                    else if (victim.Level < 30)
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[3]++;
-                    else if (victim.Level < 40)
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[4]++;
-                    else if (victim.Level < 50)
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[5]++;
-                    else
-                        ch.PlayerData.Clan.PvPDeathTable.ToList()[6]++;
-                }
+                // TODO Fix
+                //if (((PlayerInstance)victim).PlayerData.Clan != null)
+                //{
+                //    if (victim.Level < 10)
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[0]++;
+                //    else if (victim.Level < 15)
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[1]++;
+                //    else if (victim.Level < 20)
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[2]++;
+                //    else if (victim.Level < 30)
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[3]++;
+                //    else if (victim.Level < 40)
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[4]++;
+                //    else if (victim.Level < 50)
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[5]++;
+                //    else
+                //        ch.PlayerData.Clan.PvPDeathTable.ToList()[6]++;
+                //}
 
                 ((PlayerInstance)victim).PlayerData.PvPDeaths++;
                 victim.CurrentRoom.Area.PvPDeaths++;

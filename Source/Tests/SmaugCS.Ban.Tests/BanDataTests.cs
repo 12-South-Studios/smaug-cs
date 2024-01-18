@@ -1,14 +1,17 @@
-﻿using NUnit.Framework;
+﻿
+using FluentAssertions;
 using SmaugCS.Common.Enumerations;
 using System;
+using Xunit;
 
 namespace SmaugCS.Ban.Tests
 {
-    [TestFixture]
+
     public class BanDataTests
     {
-        [TestCase(172800, false)]
-        [TestCase(3600, true)]
+        [Theory]
+        [InlineData(172800, false)]
+        [InlineData(3600, true)]
         public void IsExpired_Test(int duration, bool expected)
         {
             var ban = new BanData
@@ -19,10 +22,10 @@ namespace SmaugCS.Ban.Tests
                 Duration = duration
             };
 
-            Assert.That(ban.IsExpired(), Is.EqualTo(expected));
+            ban.IsExpired().Should().Be(expected);
         }
 
-        [Test]
+        [Fact]
         public void UnbanDate_Never_Test()
         {
             var ban = new BanData
@@ -33,8 +36,8 @@ namespace SmaugCS.Ban.Tests
                 Duration = 0
             };
 
-            Assert.That(ban.UnbanDate, Is.EqualTo(DateTime.MaxValue));
-            Assert.That(ban.IsExpired(), Is.False);
+            ban.UnbanDate.Should().Be(DateTime.MaxValue);
+            ban.IsExpired().Should().BeFalse();
         }
     }
 }

@@ -1,13 +1,15 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
 using SmaugCS.Repository;
 using System;
+using Test.Common;
+using Xunit;
 
 namespace SmaugCS.Tests.Repositories
 {
-    [TestFixture]
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class CharacterRepositoryTests
     {
-        //[Test]
+        //[Fact]
         public void Create()
         {
             var mobRepo = new MobileRepository();
@@ -16,16 +18,17 @@ namespace SmaugCS.Tests.Repositories
             var repo = new CharacterRepository();
             var actual = repo.Create(mob);
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.ID, Is.GreaterThanOrEqualTo(1));
+            actual.Should().NotBeNull();
+            actual.ID.Should().BeGreaterThanOrEqualTo(1);
         }
 
-        [Test]
+        [Fact]
         public void Create_InvalidParent()
         {
             var repo = new CharacterRepository();
-            Assert.Throws<ArgumentNullException>(() => repo.Create(null),
-                "Unit Test expected an ArgumentNullException to be thrown!");
+
+            Action act = () => repo.Create(null);
+            act.Should().Throw<ArgumentNullException>();
         }
     }
 }

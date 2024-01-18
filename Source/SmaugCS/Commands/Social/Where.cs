@@ -3,7 +3,6 @@ using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,10 +51,11 @@ namespace SmaugCS.Commands
                 ch.PagerPrintfColor("&P{0}  ", victim.Name.PadRight(13, ' '));
                 if (victim.IsImmortal() && victim.Level > LevelConstants.AvatarLevel)
                     ch.SendToPagerColor("&P(&WImmortal&P)\t");
-                else if (victim.CanPKill() && ((PlayerInstance)victim).PlayerData.Clan != null
-                         && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Order
-                         && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Guild)
-                    ch.PagerPrintfColor("{0}\t", ((PlayerInstance)victim).PlayerData.Clan.Badge.PadRight(18, ' '));
+                // TODO Fix
+                //else if (victim.CanPKill() && ((PlayerInstance)victim).PlayerData.Clan != null
+                //         && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Order
+                //         && ((PlayerInstance)victim).PlayerData.Clan.ClanType != ClanTypes.Guild)
+                //    ch.PagerPrintfColor("{0}\t", ((PlayerInstance)victim).PlayerData.Clan.Badge.PadRight(18, ' '));
                 else if (victim.CanPKill())
                     ch.SendToPagerColor("(&wUnclanned&P)\t");
                 else

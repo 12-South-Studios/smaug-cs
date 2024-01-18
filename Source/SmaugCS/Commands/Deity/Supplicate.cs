@@ -184,8 +184,9 @@ namespace SmaugCS.Commands
 
             RoomTemplate location = null;
 
-            if (!ch.IsNpc() && ch.PlayerData.Clan != null)
-                location = RepositoryManager.Instance.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
+            // TODO Fix
+            //if (!ch.IsNpc() && ch.PlayerData.Clan != null)
+            //    location = RepositoryManager.Instance.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
 
             if (!ch.IsNpc() && location == null && ch.Level >= 5 && ch.PlayerData.Flags.IsSet(PCFlags.Deadly))
                 location = RepositoryManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_DEADLY);

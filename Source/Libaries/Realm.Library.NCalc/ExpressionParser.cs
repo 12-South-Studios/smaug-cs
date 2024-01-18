@@ -22,7 +22,7 @@ namespace Realm.Library.NCalc
             _expressionTable = exprTable;
         }
 
-        private IEnumerable<CustomExpression> _expressions;
+        public IEnumerable<CustomExpression> Expressions { get; private set; }
 
         /// <summary>
         /// Executes the given expression through the NCalc engine
@@ -35,7 +35,7 @@ namespace Realm.Library.NCalc
         {
             try
             {
-                _expressions = expressions;
+                Expressions = expressions;
 
                 return await Task.Run(() =>
                 {
@@ -46,23 +46,28 @@ namespace Realm.Library.NCalc
 
                     var result = exp.Evaluate();
 
-                    int.TryParse(result.ToString(), out var outResult);
+                    _ = int.TryParse(result.ToString(), out var outResult);
                     return outResult;
                 });
             }
             finally
             {
-                _expressions = null;
+                Expressions = null;
             }
         }
 
         private void ExpOnEvaluateFunction(string name, global::NCalc.FunctionArgs args)
         {
-            var customExpr = _expressionTable?.Get(name);
-            if (customExpr == null)
-                customExpr = _expressions.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-            if (customExpr?.ExpressionFunction != null)
-                args.Result = customExpr.ExpressionFunction.Invoke(args, _expressions);
+            var customExpr = GetCustomExpression(name);
+            if (customExpr?.ExpressionFunction == null)
+                throw new InvalidOperationException();
+            args.Result = customExpr.ExpressionFunction.Invoke(args, Expressions);
+        }
+
+        private CustomExpression GetCustomExpression(string name)
+        {
+            var found = _expressionTable?.Get(name);
+            return found ?? Expressions.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         private string ReplaceExpressionMatches(string expr, object targetObject)
@@ -70,8 +75,8 @@ namespace Realm.Library.NCalc
             var combined = new List<CustomExpression>();
             if (_expressionTable != null && _expressionTable.Values.Any())
                 combined.AddRange(_expressionTable.Values);
-            if (_expressions != null && _expressions.Any())
-                combined.AddRange(_expressions);
+            if (Expressions != null && Expressions.Any())
+                combined.AddRange(Expressions);
             if (!combined.Any()) return expr;
 
             var newStr = expr;
@@ -81,15 +86,19 @@ namespace Realm.Library.NCalc
                 var originalLength = newStr.Length;
                 var lengthOffset = 0;
 
-                foreach (Match match in regex.Matches(newStr))
-                    newStr = ProcessRegexMatch(targetObject, newStr, match, customExpr, originalLength, ref lengthOffset);
+                foreach (Match match in regex.Matches(newStr).Cast<Match>())
+                {
+                    var result = ProcessRegexMatch(targetObject, newStr, match, customExpr, originalLength, lengthOffset);
+                    newStr = result.Item1;
+                    lengthOffset = result.Item2;
+                }
             }
 
             return newStr;
         }
 
-        private static string ProcessRegexMatch(object targetObject, string newStr, Match match, CustomExpression customExpr, int originalLength,
-            ref int lengthOffset)
+        private static Tuple<string, int> ProcessRegexMatch(object targetObject, string newStr, Match match, CustomExpression customExpr,
+             int originalLength, int lengthOffset)
         {
             var len = match.Index + lengthOffset + match.Length;
             var firstPart = newStr.Substring(0, match.Index + lengthOffset);
@@ -98,28 +107,32 @@ namespace Realm.Library.NCalc
             string updatedStr = string.Empty;
             if (customExpr.ReplacementFunction != null)
                 updatedStr += firstPart + customExpr.ReplacementFunction.Invoke(match) + secondPart;
+
             if (customExpr.ReplacementReference != null && targetObject != null)
             {
                 var method = targetObject.GetType().GetMethod(customExpr.ReplacementReference.Item1);
                 var prop = targetObject.GetType().GetProperty(customExpr.ReplacementReference.Item1);
 
-                if (method != null && prop == null)
+                if (method != null)
                 {
-                    if (customExpr.ReplacementReference.Item2 != null)
-                        updatedStr += firstPart + method.Invoke(targetObject, customExpr.ReplacementReference.Item2.ToArray()) + secondPart;
-                    else
-                        updatedStr += firstPart + method.Invoke(targetObject, new object[] { }) + secondPart;
+                    if (prop == null)
+                    {
+                        updatedStr += firstPart + method.Invoke(targetObject,
+                            customExpr.ReplacementReference.Item2 != null
+                                ? customExpr.ReplacementReference.Item2.ToArray()
+                                : Array.Empty<object>()) + secondPart;
+                    }
                 }
+                else
+                {
+                    if (prop == null)
+                        throw new ArgumentNullException($"{customExpr.Name} could not be found on object {targetObject.GetType().FullName}");
 
-                if (method == null && prop != null)
                     updatedStr += firstPart + prop.GetValue(targetObject) + secondPart;
-
-                if (method == null && prop == null)
-                    throw new ArgumentNullException($"{customExpr.Name} could not be found on object {targetObject.GetType().FullName}");
+                }
             }
 
-            lengthOffset = updatedStr.Length - originalLength;
-            return updatedStr;
+            return new Tuple<string, int>(updatedStr, updatedStr.Length - originalLength);
         }
     }
 }

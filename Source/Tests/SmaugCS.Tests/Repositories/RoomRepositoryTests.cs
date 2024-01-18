@@ -1,6 +1,6 @@
-﻿using Moq;
+﻿using FakeItEasy;
+using FluentAssertions;
 using Ninject;
-using NUnit.Framework;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
@@ -16,10 +16,12 @@ using SmaugCS.Repository;
 using System;
 using System.Linq;
 using System.Text;
+using Test.Common;
+using Xunit;
 
 namespace SmaugCS.Tests.Repositories
 {
-    [TestFixture]
+    [Collection(CollectionDefinitions.NonParallelCollection)]
     public class RoomRepositoryTests
     {
         private static string GetRoomLuaScript()
@@ -50,19 +52,18 @@ namespace SmaugCS.Tests.Repositories
             return sb.ToString();
         }
 
-        [SetUp]
-        public void OnSetup()
+        public RoomRepositoryTests()
         {
-            var mockKernel = new Mock<IKernel>();
-            var mockCtx = new Mock<ISmaugDbContext>();
-            var mockLogger = new Mock<ILogWrapper>();
-            var mockTimer = new Mock<ITimer>();
+            var mockKernel = A.Fake<IKernel>();
+            var mockCtx = A.Fake<ISmaugDbContext>();
+            var mockLogger = A.Fake<ILogWrapper>();
+            var mockTimer = A.Fake<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(new Mock<IKernel>().Object, mockLogger.Object);
-            LogManager logMgr = new LogManager(mockLogger.Object, mockKernel.Object, mockTimer.Object, mockCtx.Object, 0);
+            LuaManager luaMgr = new LuaManager(A.Fake<IKernel>(), mockLogger);
+            LogManager logMgr = new LogManager(mockLogger, mockKernel, mockTimer, mockCtx, 0);
 
-            var mockLogMgr = new Mock<ILogManager>();
-            RepositoryManager dbMgr = new RepositoryManager(mockKernel.Object, mockLogMgr.Object);
+            var mockLogMgr = A.Fake<ILogManager>();
+            RepositoryManager dbMgr = new RepositoryManager(mockKernel, mockLogMgr);
 
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
@@ -78,67 +79,67 @@ namespace SmaugCS.Tests.Repositories
             luaMgr.InitializeLuaProxy(proxy);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateRoomTest()
         {
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.SectorType, Is.EqualTo(SectorTypes.Air));
-            Assert.That(result.Description, Is.EqualTo("This is a test description"));
+            result.Should().NotBeNull();
+            result.SectorType.Should().Be(SectorTypes.Air);
+            result.Description.Should().Be("This is a test description");
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateRoom_Exits_Test()
         {
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Exits.Count, Is.EqualTo(2));
-            Assert.That(result.Exits.ToList()[0].Direction, Is.EqualTo(DirectionTypes.Up));
-            Assert.That(result.Exits.ToList()[0].Destination, Is.EqualTo(802));
-            Assert.That(result.Exits.ToList()[0].Keywords, Is.EqualTo("gate"));
-            Assert.That(result.Exits.ToList()[0].Key, Is.EqualTo(800));
-            Assert.That(result.Exits.ToList()[1].Direction, Is.EqualTo(DirectionTypes.Down));
-            Assert.That(result.Exits.ToList()[1].Destination, Is.EqualTo(800));
+            result.Should().NotBeNull();
+            result.Exits.Count.Should().Be(2);
+            result.Exits.ToList()[0].Direction.Should().Be(DirectionTypes.Up);
+            result.Exits.ToList()[0].Destination.Should().Be(802);
+            result.Exits.ToList()[0].Keywords.Should().Be("gate");
+            result.Exits.ToList()[0].Key.Should().Be(800);
+            result.Exits.ToList()[1].Direction.Should().Be(DirectionTypes.Down);
+            result.Exits.ToList()[1].Destination.Should().Be(800);
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateRoom_ExtraDescriptions_Test()
         {
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ExtraDescriptions.Count, Is.EqualTo(1));
-            Assert.That(result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("rainbow")), Is.Not.Null);
+            result.Should().NotBeNull();
+            result.ExtraDescriptions.Count.Should().Be(1);
+            result.ExtraDescriptions.ToList().Find(x => x.Keyword.Equals("rainbow")).Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateRoom_SetFlags_Test()
         {
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Exits.ToList()[0].Flags.IsSet(ExitFlags.IsDoor), Is.True);
-            Assert.That(result.Exits.ToList()[0].Flags.IsSet(ExitFlags.Locked), Is.True);
-            Assert.That(result.Exits.ToList()[0].Flags.IsSet(ExitFlags.Hidden), Is.False);
+            result.Should().NotBeNull();
+            result.Exits.ToList()[0].Flags.IsSet(ExitFlags.IsDoor).Should().BeTrue();
+            result.Exits.ToList()[0].Flags.IsSet(ExitFlags.Locked).Should().BeTrue();
+            result.Exits.ToList()[0].Flags.IsSet(ExitFlags.Hidden).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void LuaCreateRoom_Resets_Test()
         {
             var result = LuaRoomFunctions.LuaProcessRoom(GetRoomLuaScript());
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Resets.Count, Is.EqualTo(2));
-            Assert.That(result.Resets.ToList()[0].Type, Is.EqualTo(ResetTypes.Door));
-            Assert.That(result.Resets.ToList()[0].Extra, Is.EqualTo(15));
-            Assert.That(result.Resets.ToList()[0].Args.ToList()[0], Is.EqualTo(807));
-            Assert.That(result.Resets.ToList()[0].Args.ToList()[1], Is.EqualTo(2));
-            Assert.That(result.Resets.ToList()[0].Args.ToList()[2], Is.EqualTo(2));
+            result.Should().NotBeNull();
+            result.Resets.Count.Should().Be(2);
+            result.Resets.ToList()[0].Type.Should().Be(ResetTypes.Door);
+            result.Resets.ToList()[0].Extra.Should().Be(15);
+            result.Resets.ToList()[0].Args.ToList()[0].Should().Be(807);
+            result.Resets.ToList()[0].Args.ToList()[1].Should().Be(2);
+            result.Resets.ToList()[0].Args.ToList()[2].Should().Be(2);
         }
 
-        /*[Test]
+        /*[Fact]
         [ExpectedException(typeof(DuplicateEntryException))]
         public void LuaCreateRoomDuplicateTest()
         {
@@ -148,17 +149,17 @@ namespace SmaugCS.Tests.Repositories
             Assert.Fail("Unit test expected a DuplicateEntryException to be thrown!");
         }*/
 
-        [Test]
+        [Fact]
         public void Create_ThrowsException()
         {
             var repo = new RoomRepository();
 
             var result = repo.Create(1, null);
 
-            Assert.That(result.Name, Is.EqualTo("Floating in a Void"));
+            result.Name.Should().Be("Floating in a Void");
         }
 
-        [Test]
+        [Fact]
         public void Create_ThrowsException_InvalidVnum()
         {
             var repo = new RoomRepository();
@@ -166,7 +167,7 @@ namespace SmaugCS.Tests.Repositories
             Assert.Throws<ArgumentException>(() => repo.Create(0, null));
         }
 
-        /*[Test]
+        /*[Fact]
         [ExpectedException(typeof(DuplicateIndexException))]
         public void Create_DuplicateVnum_Test()
         {

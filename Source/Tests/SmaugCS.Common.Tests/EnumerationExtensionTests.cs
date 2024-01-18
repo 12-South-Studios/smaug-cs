@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
 using System;
+using Xunit;
 
 namespace SmaugCS.Common.Tests
 {
-    [TestFixture]
+
     public class EnumerationExtensionTests
     {
         private class FakeAttribute : Attribute { }
@@ -19,28 +20,28 @@ namespace SmaugCS.Common.Tests
             Value2
         }
 
-        [Test]
+        [Fact]
         public void GetAttribute_NotFound()
         {
-            Assert.That(FakeEnum.Value1.GetAttribute<Fake2Attribute>(), Is.Null);
+            FakeEnum.Value1.GetAttribute<Fake2Attribute>().Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void GetAttribute_Found()
         {
-            Assert.That(FakeEnum.Value1.GetAttribute<FakeAttribute>(), Is.Not.Null);
+            FakeEnum.Value1.GetAttribute<FakeAttribute>().Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void HasAttribute_NotFound()
         {
-            Assert.That(FakeEnum.Value1.HasAttribute<Fake2Attribute>(), Is.False);
+            FakeEnum.Value1.HasAttribute<Fake2Attribute>().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void HasAttribute_Found()
         {
-            Assert.That(FakeEnum.Value1.HasAttribute<FakeAttribute>(), Is.True);
+            FakeEnum.Value1.HasAttribute<FakeAttribute>().Should().BeTrue();
         }
     }
 }

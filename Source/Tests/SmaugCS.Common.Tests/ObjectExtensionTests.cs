@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
 using System;
+using Xunit;
 
 namespace SmaugCS.Common.Tests
 {
-    [TestFixture]
+
     public class ObjectExtensionTests
     {
         private class FakeAttribute : Attribute { }
@@ -22,52 +23,52 @@ namespace SmaugCS.Common.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public void GetAttribute_NoMethodFound()
         {
             var obj = new FakeObject();
 
-            Assert.That(obj.GetAttribute<FakeAttribute>("IncorrectMethod"), Is.Null);
+            obj.GetAttribute<FakeAttribute>("IncorrectMethod").Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void GetAttribute_NoAttributeFound()
         {
             var obj = new FakeObject();
 
-            Assert.That(obj.GetAttribute<Fake2Attribute>("TestMethod"), Is.Null);
+            obj.GetAttribute<Fake2Attribute>("TestMethod").Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void GetAttribute_AttributeFound()
         {
             var obj = new FakeObject();
 
-            Assert.That(obj.GetAttribute<FakeAttribute>("TestMethod"), Is.Not.Null);
+            obj.GetAttribute<FakeAttribute>("TestMethod").Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void HasAttribute_NoMethodFound()
         {
             var obj = new FakeObject();
 
-            Assert.That(obj.HasAttribute<FakeAttribute>("IncorrectMethod"), Is.False);
+            obj.HasAttribute<FakeAttribute>("IncorrectMethod").Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void HasAttribute_NoAttributeFound()
         {
             var obj = new FakeObject();
 
-            Assert.That(obj.HasAttribute<Fake2Attribute>("TestMethod"), Is.False);
+            obj.HasAttribute<Fake2Attribute>("TestMethod").Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void HasAttribute_AttributeFound()
         {
             var obj = new FakeObject();
 
-            Assert.That(obj.HasAttribute<FakeAttribute>("TestMethod"), Is.True);
+            obj.HasAttribute<FakeAttribute>("TestMethod").Should().BeTrue();
         }
     }
 }

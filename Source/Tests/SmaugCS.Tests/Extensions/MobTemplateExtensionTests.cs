@@ -1,80 +1,81 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Extensions;
 using SmaugCS.Data.Templates;
+using Xunit;
 
 namespace SmaugCS.Tests.Extensions
 {
-    [TestFixture]
+
     public class MobTemplateExtensionTests
     {
-        [Test]
+        [Fact]
         public void GetRaceTest()
         {
             var template = new MobileTemplate(1, "Test") { Race = "valatur" };
 
-            Assert.That(template.GetRace(), Is.EqualTo((int)RaceTypes.Valatur));
+            template.GetRace().Should().Be((int)RaceTypes.Valatur);
         }
 
-        [Test]
+        [Fact]
         public void GetPositionTest()
         {
             var template = new MobileTemplate(1, "Test") { Position = "sitting" };
 
-            Assert.That(template.GetPosition(), Is.EqualTo(PositionTypes.Sitting));
+            template.GetPosition().Should().Be(PositionTypes.Sitting);
         }
 
-        [Test]
+        [Fact]
         public void GetDefensivePositionTest()
         {
             var template = new MobileTemplate(1, "Test") { DefensivePosition = "sitting" };
 
-            Assert.That(template.GetDefensivePosition(), Is.EqualTo(PositionTypes.Sitting));
+            template.GetDefensivePosition().Should().Be(PositionTypes.Sitting);
         }
 
-        [Test]
+        [Fact]
         public void GetGenderTest()
         {
             var template = new MobileTemplate(1, "Test") { Statistics = { [StatisticTypes.Gender] = "neuter" } };
 
-            Assert.That(template.GetGender(), Is.EqualTo(GenderTypes.Neuter));
+            template.GetGender().Should().Be(GenderTypes.Neuter);
         }
 
-        [Test]
+        [Fact]
         public void GetResistanceTest()
         {
             var template = new MobileTemplate(1, "Test") { Resistance = "fire blunt" };
 
             var result = template.GetResistance();
 
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Fire), Is.True);
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Blunt), Is.True);
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Cold), Is.False);
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Fire).Should().BeTrue();
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Blunt).Should().BeTrue();
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Cold).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void GetImmunityTest()
         {
             var template = new MobileTemplate(1, "Test") { Immunity = "fire blunt" };
 
             var result = template.GetImmunity();
 
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Fire), Is.True);
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Blunt), Is.True);
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Cold), Is.False);
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Fire).Should().BeTrue();
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Blunt).Should().BeTrue();
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Cold).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void GetSusceptibilityTest()
         {
             var template = new MobileTemplate(1, "Test") { Susceptibility = "fire blunt" };
 
             var result = template.GetSusceptibility();
 
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Fire), Is.True);
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Blunt), Is.True);
-            Assert.That(Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Cold), Is.False);
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Fire).Should().BeTrue();
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Blunt).Should().BeTrue();
+            Common.NumberExtensions.IsSet(result, (int)ResistanceTypes.Cold).Should().BeFalse();
         }
 
     }

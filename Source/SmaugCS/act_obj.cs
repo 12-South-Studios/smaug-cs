@@ -1,11 +1,9 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using SmaugCS.Data.Organizations;
 using SmaugCS.Logging;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
-using System;
 using System.Linq;
 
 namespace SmaugCS
@@ -172,7 +170,7 @@ namespace SmaugCS
             }
 
             if (obj.InRoom.Flags.IsSet((int)RoomFlags.NoFloor)
-                && Macros.CAN_GO(obj, (int) DirectionTypes.Down)
+                && Macros.CAN_GO(obj, (int)DirectionTypes.Down)
                 && !obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
             {
                 var exit = obj.InRoom.GetExit(DirectionTypes.Down);

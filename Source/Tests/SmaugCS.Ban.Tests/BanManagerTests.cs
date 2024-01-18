@@ -1,17 +1,29 @@
-﻿using Moq;
+﻿using FakeItEasy;
 using Ninject;
-using NUnit.Framework;
 using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Logging;
 using System;
+using Xunit;
 
 namespace SmaugCS.Ban.Tests
 {
-    [TestFixture]
+
     public class BanManagerTests
     {
         private static IBanManager _banManager;
+
+        public BanManagerTests()
+        {
+            var mockLogger = A.Fake<ILogManager>();
+            A.CallTo(() => mockLogger.Error(A<Exception>.Ignored));
+
+            var mockKernel = A.Fake<IKernel>();
+            var mockTimer = A.Fake<ITimer>();
+            var mockRepo = A.Fake<IBanRepository>();
+
+            _banManager = new BanManager(mockKernel, mockTimer, mockLogger, mockRepo);
+        }
 
         private static BanData GetBan()
         {
@@ -27,27 +39,14 @@ namespace SmaugCS.Ban.Tests
             };
         }
 
-        [SetUp]
-        public void OnSetup()
-        {
-            var mockLogger = new Mock<ILogManager>();
-            mockLogger.Setup(x => x.Error(It.IsAny<Exception>()));
 
-            var mockKernel = new Mock<IKernel>();
-            var mockTimer = new Mock<ITimer>();
-            var mockRepo = new Mock<IBanRepository>();
-
-            _banManager = new BanManager(mockKernel.Object, mockTimer.Object, mockLogger.Object, mockRepo.Object);
-        }
-
-        [TearDown]
-        public void OnTeardown()
+        ~BanManagerTests()
         {
             _banManager.ClearBans();
             _banManager = null;
         }
 
-        [Test]
+        [Fact]
         public void AddBan_Empty_Test()
         {
             var ban = GetBan();
@@ -62,47 +61,47 @@ namespace SmaugCS.Ban.Tests
             }
         }
 
-        //[Test]
+        //[Fact]
         //public void AddBan_NotEmpty_Test()
         //{
         //    var ban = GetBan();
 
         //    _banManager.AddBan(ban);
 
-        //    Assert.That(_banManager.AddBan(ban), Is.False); 
+        //    _banManager.AddBan(ban).Should().BeFalse(); 
         //}
 
-        //[Test]
+        //[Fact]
         //public void RemoveBan_Match_Test()
         //{
         //    var ban = GetBan();
 
         //    _banManager.AddBan(ban);
 
-        //    Assert.That(_banManager.RemoveBan(1), Is.True); 
+        //    _banManager.RemoveBan(1).Should().BeTrue(); 
         //}
 
-        //[Test]
+        //[Fact]
         //public void RemoveBan_NoMatch_Test()
         //{
         //    var ban = GetBan();
 
         //    _banManager.AddBan(ban);
 
-        //    Assert.That(_banManager.RemoveBan(2), Is.False);
+        //    _banManager.RemoveBan(2).Should().BeFalse();
         //}
 
-        //[Test]
+        //[Fact]
         //public void CheckTotalBans_NoMatch_Test()
         //{
         //    BanManager mgr = (BanManager)_banManager;
         //    mgr.Repository.Add(new BanData(1, BanTypes.Site) {Level = 5});
         //    mgr.AddBan(new BanData(2, BanTypes.Site) {Level = 10});
 
-        //    Assert.That(mgr.CheckTotalBans("127.0.0.1", 50), Is.False);
+        //    mgr.CheckTotalBans("127.0.0.1", 50).Should().BeFalse();
         //}
 
-        //[Test]
+        //[Fact]
         //public void CheckTotalBans_PrefixAndSuffixHostMatch_Test()
         //{
         //    BanManager mgr = (BanManager)_banManager;
@@ -114,7 +113,7 @@ namespace SmaugCS.Ban.Tests
         //        Level = 50
         //    });
 
-        //    Assert.That(mgr.CheckTotalBans("test.whatever.com", 50), Is.True);
+        //    mgr.CheckTotalBans("test.whatever.com", 50).Should().BeTrue();
         //}
     }
 }
