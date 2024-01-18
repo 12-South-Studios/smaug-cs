@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LuaInterfaceCore" Version="1.0.0" />
+    <ProjectReference Include="..\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Realm.Library.Common\Realm.Library.Common.csproj" />
-    <ProjectReference Include="..\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
+    <Reference Include="KopiLua">
+      <HintPath>..\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface">
+      <HintPath>..\LuaInterface.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

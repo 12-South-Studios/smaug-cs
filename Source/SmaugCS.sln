@@ -71,6 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		..\doc\hacker2.txt = ..\doc\hacker2.txt
 		How To Do Migrations.txt = How To Do Migrations.txt
 		..\doc\Immortal Rules.docx = ..\doc\Immortal Rules.docx
+		LuaInterfaceCore.1.0.0.nupkg = LuaInterfaceCore.1.0.0.nupkg
 		..\doc\Mob.help = ..\doc\Mob.help
 		..\doc\Mortal Rules.docx = ..\doc\Mortal Rules.docx
 		..\doc\Notes.txt = ..\doc\Notes.txt
@@ -358,7 +359,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Sin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.NCalc.Tests", "Tests\Realm.Library.NCalc.Tests\Realm.Library.NCalc.Tests.csproj", "{F52879D3-39FA-4D4D-99A4-671AD8C36CB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Common", "Tests\Test.Common\Test.Common.csproj", "{2A143EE8-F61D-435A-913C-55B9180C2CC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Common", "Tests\Test.Common\Test.Common.csproj", "{2A143EE8-F61D-435A-913C-55B9180C2CC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
