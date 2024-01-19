@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac.Features.AttributeFilters;
 using Realm.Library.Common.Exceptions;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Logging;
@@ -31,7 +31,7 @@ namespace Realm.Library.Common.Events
         ///  </summary>
         ///  <param name="timer"></param>
         /// <param name="logger"></param>
-        public EventHandler([Named("EventTimer")] ITimer timer, ILogWrapper logger)
+        public EventHandler([KeyFilter("EventTimer")] ITimer timer, ILogWrapper logger)
         {
             Validation.IsNotNull(timer, "timer");
             Validation.IsNotNull(logger, "logger");
@@ -57,7 +57,7 @@ namespace Realm.Library.Common.Events
                 if (_frequency != null) return;
                 _frequency = value;
                 Timer.Interval = value;
-                Log.DebugFormat("Event Timer setup with Interval frequency of {0}", Timer.Interval);
+                Log.Debug($"Event Timer setup with Interval frequency of {Timer.Interval}");
             }
         }
         private int? _frequency;
@@ -159,18 +159,18 @@ namespace Realm.Library.Common.Events
             if (sender.IsNull() || thrownEvent.IsNull()) return;
             if (!_events.ContainsKey(thrownEvent.GetType())) return;
 
-            Log.DebugFormat("Locate Event to Throw {0}", thrownEvent.GetType());
+            Log.Debug("Locate Event to Throw {0}", thrownEvent.GetType());
 
             _events.TryGetValue(thrownEvent.GetType(), out IList<EventListener> tupleList);
             if (tupleList.IsNull() || tupleList.Count == 0) return;
 
-            Log.DebugFormat("ThrowEvent {0}/{1}", sender.GetType(), thrownEvent.GetType());
+            Log.Debug("ThrowEvent {0}/{1}", sender.GetType(), thrownEvent.GetType());
 
             thrownEvent.Sender = sender;
             _eventQueue.Enqueue(thrownEvent);
 
             if (!Timer.IsNotNull() || Timer.Enabled) return;
-            Log.DebugFormat("Starting the Event Timer with interval frequency of {0}", Timer.Interval);
+            Log.Debug("Starting the Event Timer with interval frequency of {0}", Timer.Interval);
             Timer.Start();
         }
 
@@ -197,7 +197,7 @@ namespace Realm.Library.Common.Events
         /// </summary>
         public void ThrowEvent<T>(object sender, EventTable table) where T : EventBase
         {
-            Log.DebugFormat("Create instance of Event to throw with Type {0}", typeof(T));
+            Log.Debug("Create instance of Event to throw with Type {0}", typeof(T));
 
             EventBase evt;
             try
@@ -220,7 +220,7 @@ namespace Realm.Library.Common.Events
         /// </summary>
         public void ThrowEvent<T>(object sender) where T : EventBase
         {
-            Log.DebugFormat("Create instance of Event to throw with Type {0}", typeof(T));
+            Log.Debug("Create instance of Event to throw with Type {0}", typeof(T));
 
             EventBase evt;
             try
@@ -245,16 +245,16 @@ namespace Realm.Library.Common.Events
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             if (!_eventQueue.Any()) return;
-            Log.DebugFormat("EventTimer found {0} events in the queue.", _eventQueue.Count);
+            Log.Debug("EventTimer found {0} events in the queue.", _eventQueue.Count);
 
             if (!_eventQueue.TryDequeue(out IEventBase thrownEvent))
                 throw new InvalidOperationException("Failed to dequeue event from EventQueue");
 
             if (thrownEvent.IsNull()) return;
-            Log.DebugFormat("EventHandler got Event {0} to process", thrownEvent.Name);
+            Log.Debug("EventHandler got Event {0} to process", thrownEvent.Name);
 
             if (!_events.ContainsKey(thrownEvent.GetType())) return;
-            Log.DebugFormat("EventHandler got Event {0} and its in the event list.", thrownEvent.GetType());
+            Log.Debug("EventHandler got Event {0} and its in the event list.", thrownEvent.GetType());
 
             if (thrownEvent.Args.IsNull())
                 thrownEvent.Args = new RealmEventArgs();
@@ -262,7 +262,7 @@ namespace Realm.Library.Common.Events
 
             _events.TryGetValue(thrownEvent.GetType(), out IList<EventListener> tupleList);
             if (tupleList.IsNull()) return;
-            Log.DebugFormat("EventHandler got Event {0} and it has {1} listeners.", thrownEvent.GetType(),
+            Log.Debug("EventHandler got Event {0} and it has {1} listeners.", thrownEvent.GetType(),
                              tupleList.Count);
 
             try
@@ -272,7 +272,7 @@ namespace Realm.Library.Common.Events
                          .ToList()
                          .ForEach(tuple =>
                                       {
-                                          Log.DebugFormat("Event {0} making a callback to listener {1}",
+                                          Log.Debug("Event {0} making a callback to listener {1}",
                                                            thrownEvent.GetType(), tuple.Listener.GetType());
                                           tuple.CallbackFunction.DynamicInvoke(thrownEvent.Args);
                                       });

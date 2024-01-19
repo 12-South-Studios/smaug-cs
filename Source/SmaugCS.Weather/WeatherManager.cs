@@ -1,5 +1,4 @@
-﻿using Ninject;
-using SmaugCS.DAL;
+﻿using SmaugCS.DAL;
 using SmaugCS.Data;
 using SmaugCS.Logging;
 using System.Data.Common;
@@ -13,17 +12,13 @@ namespace SmaugCS.Weather
         public WeatherMap Weather { get; set; }
 
         private static ILogManager _logManager;
-        private static IKernel _kernel;
         private static IDbContext _dbContext;
 
-        public WeatherManager(ILogManager logManager, IKernel kernel, IDbContext dbContext)
+        public WeatherManager(ILogManager logManager, IDbContext dbContext)
         {
             _logManager = logManager;
-            _kernel = kernel;
             _dbContext = dbContext;
         }
-
-        public static IWeatherManager Instance => _kernel.Get<IWeatherManager>();
 
         public WeatherCell GetWeather(AreaData area) => Weather.GetCellFromMap(area.WeatherX, area.WeatherY);
 

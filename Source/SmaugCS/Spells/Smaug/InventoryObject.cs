@@ -14,8 +14,8 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_obj_inv(int sn, int level, CharacterInstance ch, object vo)
         {
             var obj = (ObjectInstance)vo;
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
-            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
+            var cell = Program.WeatherManager.GetWeather(ch.CurrentRoom.Area);
 
             if (CheckFunctions.CheckIfNullObjectCasting(obj, skill, ch)) return ReturnTypes.None;
 

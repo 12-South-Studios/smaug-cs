@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac;
 using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace SmaugCS.SpecFuns
     {
         public static bool Execute(MobileInstance ch, IManager dbManager)
         {
-            var handler = Program.Kernel.Get<ISpecFunHandler>();
+            var handler = Program.Container.Resolve<ISpecFunHandler>();
             ch.SummonIfHating();
 
             if (!ch.IsInCombatPosition())

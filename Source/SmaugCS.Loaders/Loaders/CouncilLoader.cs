@@ -11,8 +11,8 @@ namespace SmaugCS.Loaders.Loaders
         {
         }
 
-        public override string Filename => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Council) +
-                                           SystemConstants.GetSystemFile(SystemFileTypes.Councils);
+        //public override string Filename => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Council) +
+        //                                   SystemConstants.GetSystemFile(SystemFileTypes.Councils);
 
         public override void Save()
         {

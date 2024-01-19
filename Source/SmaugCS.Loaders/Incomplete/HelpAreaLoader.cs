@@ -1,5 +1,6 @@
 ﻿using SmaugCS.Data;
 using SmaugCS.Loaders.Obsolete;
+using SmaugCS.Logging;
 using System;
 
 namespace SmaugCS.Loaders.Incomplete
@@ -11,7 +12,7 @@ namespace SmaugCS.Loaders.Incomplete
         {
         }
 
-        public override AreaData LoadArea(AreaData area)
+        public override AreaData LoadArea(ILogManager logManager, AreaData area)
         {
             throw new NotImplementedException();
         }

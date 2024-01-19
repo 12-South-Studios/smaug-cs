@@ -13,7 +13,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_create_mob(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
 
             var targetName = Cast.TargetName;
 
@@ -28,10 +28,10 @@ namespace SmaugCS.Spells
                     id = GameConstants.GetVnum("vampire");
             }
 
-            var mi = RepositoryManager.Instance.MOBILETEMPLATES.Get(id);
+            var mi = Program.RepositoryManager.MOBILETEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(mi, skill, ch)) return ReturnTypes.None;
 
-            var mob = RepositoryManager.Instance.CHARACTERS.Create(mi);
+            var mob = Program.RepositoryManager.CHARACTERS.Create(mi);
             if (CheckFunctions.CheckIfNullObjectCasting(mob, skill, ch)) return ReturnTypes.None;
 
             mob.Level = lvl.GetLowestOfTwoNumbers(!string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : mob.Level);

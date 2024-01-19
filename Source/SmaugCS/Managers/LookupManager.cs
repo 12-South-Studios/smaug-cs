@@ -1,5 +1,4 @@
-﻿using Ninject;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -22,8 +21,6 @@ namespace SmaugCS
             SpellLookup = new SpellLookupTable();
             StatModLookup = new Dictionary<string, List<StatModLookup>>();
         }
-
-        public static ILookupManager Instance => Program.Kernel.Get<ILookupManager>();
 
         public LookupBase<CommandData, DoFunction> CommandLookup { get; }
         public LookupBase<SkillData, DoFunction> SkillLookup { get; }

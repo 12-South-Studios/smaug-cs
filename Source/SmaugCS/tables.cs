@@ -290,13 +290,13 @@ namespace SmaugCS
 
         public static void save_classes()
         {
-            // foreach (ClassData data in RepositoryManager.Instance.CLASSES)
+            // foreach (ClassData data in Program.RepositoryManager.CLASSES)
             //     write_class_file((int)data.Type);
         }
 
         public static void save_races()
         {
-            //foreach (RaceData data in RepositoryManager.Instance.RACES)
+            //foreach (RaceData data in Program.RepositoryManager.RACES)
             //    write_race_file((int)data.Type);
         }
 

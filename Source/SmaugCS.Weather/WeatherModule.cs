@@ -1,23 +1,23 @@
-﻿using Ninject;
-using Ninject.Modules;
-using SmaugCS.Constants.Constants;
-using SmaugCS.DAL;
+﻿using Autofac;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Weather
 {
-    public class WeatherModule : NinjectModule
+    public class WeatherModule : Module
     {
-        public override void Load()
+        private readonly Config.Configuration.Constants _constants;
+        public WeatherModule(Config.Configuration.Constants constants)
         {
-            Kernel.Bind<IWeatherManager>().To<WeatherManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>())
-                .OnActivation(x => x.Initialize(Kernel.Get<IGameManager>().GameTime,
-                    GameConstants.GetConstant<int>("WeatherWidth"),
-                    GameConstants.GetConstant<int>("WeatherHeight")));
+            _constants = constants;
+        }
+
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<WeatherManager>().As<IWeatherManager>().SingleInstance()
+                .OnActivated(x => x.Instance.Initialize(
+                    x.Context.Resolve<IGameManager>().GameTime, 
+                    _constants.WeatherWidth,
+                    _constants.WeatherHeight));
         }
     }
 }

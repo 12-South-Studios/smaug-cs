@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Communication;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -134,10 +135,11 @@ namespace SmaugCS.Commands
             {
                 var buffer =
                     $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} (tell to) {(victim.IsNpc() ? victim.ShortDescription : victim.Name)}";
-                db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log), buffer);
+                // TODO
+                // db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log), buffer);
             }
 
-            MudProgHandler.ExecuteMobileProg(MudProgTypes.Tell, argument, ch);
+            MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Tell, argument, ch);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SmaugCS.SpecFuns
         {
             if (!ch.IsInCombatPosition()) return false;
 
-            var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = (IRepositoryManager)(dbManager ?? Program.RepositoryManager);
             var skill = databaseMgr.GetEntity<SkillData>("gas breath");
             if (skill?.SpellFunction == null) return false;
 

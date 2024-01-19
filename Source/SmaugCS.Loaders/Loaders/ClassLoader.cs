@@ -10,7 +10,7 @@ namespace SmaugCS.Loaders.Loaders
         {
         }
 
-        public override string Filename => string.Empty;
+        //public override string Filename => string.Empty;
 
         public override void Save()
         {

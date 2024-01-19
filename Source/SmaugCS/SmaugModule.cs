@@ -1,52 +1,73 @@
-﻿using Ninject;
-using Ninject.Modules;
+﻿using Autofac;
+using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
-using Realm.Library.Common.Logging;
 using Realm.Library.Network;
+using Realm.Library.Network.Formatters;
+using Realm.Library.Network.Tcp;
 using SmaugCS.Common;
-using SmaugCS.Constants.Constants;
-using SmaugCS.DAL;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Logging;
 using SmaugCS.MudProgs;
-using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
+using System.Collections.Generic;
+using System.Net;
 
 namespace SmaugCS
 {
-    public class SmaugModule : NinjectModule
+    public class SmaugModule : Module
     {
-        public override void Load()
+        private readonly Config.Configuration.Settings _settings;
+        private readonly Config.Configuration.Constants _constants;
+
+        public SmaugModule(Config.Configuration.Settings settings, Config.Configuration.Constants constants)
         {
-            Kernel.Bind<ITimer>().To<CommonTimer>().Named("GameLoopTimer")
-                .OnActivation(x => x.Interval = 1000f / GameConstants.GetSystemValue<int>("PulsesPerSecond"));
+            _settings = settings;
+            _constants = constants;
+        }
 
-            Kernel.Bind<ILookupManager>().To<LookupManager>().InSingletonScope();
+        private IEnumerable<IFormatter> GetFormatters()
+        {
+            var formatters = new List<IFormatter>
+            {
+                new MxpFormatter(),
+                new AnsiFormatter(),
+                new TextFormatter()
+            };
+            return formatters;
+        }
 
-            Kernel.Bind<ITcpUserRepository>().To<TcpUserRepository>();
-            Kernel.Bind<ITcpServer>().To<TcpServer>().InSingletonScope()
-                .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
-                .WithConstructorArgument("repository", Kernel.Get<ITcpUserRepository>());
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<Application>().AsSelf().SingleInstance();
 
-            Kernel.Bind<IGameManager>().To<GameManager>().InSingletonScope()
-                .WithConstructorArgument("databaseManager", Kernel.Get<IRepositoryManager>())
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("GameLoopTimer"));
+            builder.RegisterType<CommonTimer>().Named<ITimer>("GameLoopTimer")
+                .OnActivated(x => x.Instance.Interval = 1000f / _settings.Values.PulsesPerSecond);
 
-            Kernel.Bind<ICalendarManager>().To<CalendarManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("gameManager", Kernel.Get<IGameManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>())
-                .OnActivation(x => x.Initialize());
+            builder.RegisterType<LookupManager>().As<ILookupManager>().SingleInstance();
 
-            Kernel.Bind<IInitializer>().To<LuaInitializer>().InSingletonScope()
-                .Named("LuaInitializer")
-                .OnActivation(x => x.Initialize())
-                .OnActivation(x => x.InitializeLuaInjections(GameConstants.DataPath))
-                .OnActivation(x => x.InitializeLuaFunctions());
+            builder.RegisterType<TcpUserRepository>().As<IUserRepository<string, TcpUser>>();
+            builder.RegisterType<TcpServer>().As<INetworkServer>().SingleInstance()
+                .WithParameter("settings", new NetworkSettings
+                {
+                    Port = _settings.Port,
+                    IpAddress = IPAddress.Parse(_settings.Host).ToString()
+                })
+                .WithParameter("formatters", GetFormatters());
 
-            Kernel.Bind<ISpecFunHandler>().To<SpecFunHandler>();
-            Kernel.Bind<IMudProgHandler>().To<MudProgHandler>();
+            builder.RegisterType<GameManager>().As<IGameManager>()
+                .SingleInstance()
+                .WithAttributeFiltering();
+            builder.RegisterType<CalendarManager>().As<ICalendarManager>().SingleInstance()
+                .OnActivated(x => x.Instance.Initialize());
+            builder.RegisterType<LuaInitializer>().Named<IInitializer>("LuaInitializer").SingleInstance()
+                .OnActivated(x =>
+                {
+                    x.Instance.Initialize();
+                    x.Instance.InitializeLuaInjections($"{_constants.AppPath}/data/");
+                    x.Instance.InitializeLuaFunctions();
+                });
+
+            builder.RegisterType<SpecFunHandler>().As<ISpecFunHandler>();
+            builder.RegisterType<MudProgHandler>().As<IMudProgHandler>();
         }
     }
 }

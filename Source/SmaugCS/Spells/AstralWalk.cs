@@ -10,7 +10,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_astral_walk(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
             var victim = ch.GetCharacterInWorld(Cast.TargetName);
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null

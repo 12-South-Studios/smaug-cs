@@ -1,5 +1,4 @@
-﻿using Ninject;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
@@ -10,13 +9,11 @@ namespace SmaugCS.Time
     {
         private static int _idSpace = 1;
         private static int GetNextId => _idSpace++;
-        private static IKernel _kernel;
 
         private readonly ConcurrentDictionary<int, CommonTimer> _timerTable;
 
-        public TimerManager(IKernel kernel)
+        public TimerManager()
         {
-            _kernel = kernel;
             _timerTable = new ConcurrentDictionary<int, CommonTimer>();
         }
 
@@ -24,8 +21,6 @@ namespace SmaugCS.Time
         {
             _timerTable.Values.ToList().ForEach(x => x.Dispose());
         }
-
-        public static ITimerManager Instance => _kernel.Get<ITimerManager>();
 
         public int AddTimer(double duration, ElapsedEventHandler callback)
         {

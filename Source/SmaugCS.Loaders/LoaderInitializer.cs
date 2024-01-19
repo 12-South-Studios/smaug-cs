@@ -1,50 +1,47 @@
-﻿using Ninject;
-using SmaugCS.Common;
+﻿using SmaugCS.Common;
 using SmaugCS.Loaders.Loaders;
 using SmaugCS.Logging;
 using System;
 using System.Collections.Generic;
+using Autofac;
 
 namespace SmaugCS.Loaders
 {
     public class LoaderInitializer : IInitializer
     {
-        private readonly List<BaseLoader> _loaders;
+        private IEnumerable<IBaseLoader> _loaders;
         private readonly ILogManager _logManager;
-        private readonly IKernel _kernel;
 
-        public LoaderInitializer(ILogManager logManager, IKernel kernel)
+        public LoaderInitializer(ILogManager logManager)
         {
             _logManager = logManager;
-            _kernel = kernel;
-            _loaders = new List<BaseLoader>();
         }
 
         public void Initialize()
         {
-            _loaders.Add(_kernel.Get<BaseLoader>("AreaLoader"));
-            _loaders.Add(_kernel.Get<BaseLoader>("ClanLoader"));
-            _loaders.Add(_kernel.Get<BaseLoader>("ClassLoader"));
-            _loaders.Add(_kernel.Get<BaseLoader>("CouncilLoader"));
-            _loaders.Add(_kernel.Get<BaseLoader>("DeityLoader"));
-            _loaders.Add(_kernel.Get<BaseLoader>("LanguageLoader"));
-            _loaders.Add(_kernel.Get<BaseLoader>("RaceLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("AreaLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("ClanLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("ClassLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("CouncilLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("DeityLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("LanguageLoader"));
+            //_loaders.Add(_kernel.Get<BaseLoader>("RaceLoader"));
         }
 
-        public void Load()
+        public void Load(ILogManager logManager)
         {
-            foreach (var loader in _loaders)
-            {
-                try
-                {
-                    loader.Load();
-                    LogManager.Instance.Boot($"Loaded {loader.GetType().Name}");
-                }
-                catch (Exception ex)
-                {
-                    _logManager.Error(ex);
-                }
-            }
+            //foreach (var loader in _loaders)
+            //{
+            //    try
+            //    {
+            //        loader.Load();
+            //        logManager.Boot($"Loaded {loader.GetType().Name}");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logManager.Error(ex);
+            //    }
+            //}
         }
     }
 }

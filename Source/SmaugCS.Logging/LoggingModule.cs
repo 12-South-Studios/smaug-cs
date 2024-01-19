@@ -1,32 +1,25 @@
-﻿using Ninject;
-using Ninject.Modules;
+﻿using Autofac;
+using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
-using Realm.Library.Common.Logging;
-using SmaugCS.Constants.Constants;
-using SmaugCS.DAL;
 
 namespace SmaugCS.Logging
 {
-    public class LoggingModule : NinjectModule
+    public class LoggingModule : Module
     {
-        private readonly int _sessionId;
-
-        public LoggingModule(int sessionId)
+        private readonly Config.Configuration.Constants _constants;
+        public LoggingModule(Config.Configuration.Constants constants)
         {
-            _sessionId = sessionId;
+            _constants = constants;
         }
 
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<ITimer>().To<CommonTimer>().Named("LogDumpTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("LogDumpFrequencyMS"));
+            builder.RegisterType<CommonTimer>().Named<ITimer>("LogDumpTimer")
+                .OnActivated(x => x.Instance.Interval = _constants.LogDumpFrequencyMS);
 
-            Kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope()
-                .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("LogDumpTimer"))
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>())
-                .WithConstructorArgument("sessionId", _sessionId);
+            builder.RegisterType<LogManager>().As<ILogManager>()
+                .SingleInstance()
+                .WithAttributeFiltering();
         }
     }
 }

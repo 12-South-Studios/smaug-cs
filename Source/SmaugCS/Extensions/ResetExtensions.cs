@@ -22,7 +22,7 @@ namespace SmaugCS
 
         public static void Process(this ResetData reset, IRepositoryManager repositoryManager = null)
         {
-            var dbManager = repositoryManager ?? RepositoryManager.Instance;
+            var dbManager = repositoryManager ?? Program.RepositoryManager;
 
             if (ProcessTable.ContainsKey(reset.Type))
                 ProcessTable[reset.Type].Invoke(reset, dbManager);

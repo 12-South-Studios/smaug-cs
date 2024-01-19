@@ -282,7 +282,7 @@ namespace SmaugCS
 
             ch.AffectedBy = new ExtendedBitvector();
 
-            var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
+            var race = Program.RepositoryManager.GetRace(ch.CurrentRace);
             ch.AffectedBy.SetBits(race.AffectedBy);
             ch.MentalState = -10;
             ch.CurrentHealth = 1.GetHighestOfTwoNumbers(ch.CurrentHealth);
@@ -361,7 +361,7 @@ namespace SmaugCS
                     var name = "unknown";
                     if (Macros.IS_VALID_SN(paf.Modifier))
                     {
-                        var skill = RepositoryManager.Instance.SKILLS.Get(paf.Modifier);
+                        var skill = Program.RepositoryManager.SKILLS.Get(paf.Modifier);
                         name = skill.Name;
                     }
                     buf = $"Casts spell '{name}'";
@@ -457,7 +457,7 @@ namespace SmaugCS
 
         public static void check_switches(bool possess)
         {
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in Program.RepositoryManager.CHARACTERS.Values)
                 check_switch(ch, possess);
         }
 
@@ -468,19 +468,19 @@ namespace SmaugCS
             {
                 foreach (var af in ch.Switched.Affects.Where(x => x.Duration != -1))
                 {
-                    var skill = RepositoryManager.Instance.SKILLS.Get((int)af.Type);
+                    var skill = Program.RepositoryManager.SKILLS.Get((int)af.Type);
                     if (af.Type != AffectedByTypes.None && skill != null &&
                         skill.SpellFunction.Value == Possess.spell_possess)
                         return;
                 }
             }
 
-            foreach (var cmd in RepositoryManager.Instance.COMMANDS.Values
+            foreach (var cmd in Program.RepositoryManager.COMMANDS.Values
                 .Where(x => x.DoFunction.Value == Switch.do_switch)
                 .Where(x => x.Level > ch.Trust))
             {
                 if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Bestowments.Any(x => cmd.Name.EqualsIgnoreCase(x))
-                    && cmd.Level <= ch.Trust + GameManager.Instance.SystemData.BestowDifference)
+                    && cmd.Level <= ch.Trust + Program.GameManager.SystemData.BestowDifference)
                     return;
             }
 

@@ -9,7 +9,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_affectchar(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
             var victim = (CharacterInstance)vo;
 
             if (skill.Flags.IsSet(SkillFlags.ReCastable))

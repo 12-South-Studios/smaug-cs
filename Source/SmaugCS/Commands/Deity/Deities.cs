@@ -16,7 +16,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            var deity = RepositoryManager.Instance.GetEntity<DeityData>(argument);
+            var deity = Program.RepositoryManager.GetEntity<DeityData>(argument);
             if (CheckFunctions.CheckIfNullObject(ch, deity, "&gThat deity does not exist.")) return;
 
             ch.PagerPrintfColor("&gDeity:        &G%s", deity.Name);
@@ -28,7 +28,7 @@ namespace SmaugCS.Commands
             ch.SendToPagerColor("&gFor detailed information on a deity, try 'deities <deity>' or 'help deities'");
             ch.SendToPagerColor("Deity			Worshippers");
 
-            var deities = RepositoryManager.Instance.DEITIES.Values.ToList();
+            var deities = Program.RepositoryManager.DEITIES.Values.ToList();
             if (CheckFunctions.CheckIfTrue(ch, !deities.Any(), "&gThere are no deities on this world.")) return;
 
             foreach (var deity in deities)

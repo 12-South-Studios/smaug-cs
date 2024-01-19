@@ -21,7 +21,7 @@ namespace SmaugCS.Spells
         /// </summary>
         public static int GetIDOfSkillCharacterKnows(this CharacterInstance ch, string name)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(name);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(name);
             if (skill == null) return 0;
 
             if (ch.IsNpc())
@@ -51,9 +51,9 @@ namespace SmaugCS.Spells
             SkillData skill;
 
             if (ch == null || ch.IsNpc() || !shouldCharacterKnowSkill)
-                skill = RepositoryManager.Instance.GetEntity<SkillData>(skillName);
+                skill = Program.RepositoryManager.GetEntity<SkillData>(skillName);
             else
-                skill = RepositoryManager.Instance.GetEntity<SkillData>(ch.GetIDOfSkillCharacterKnows(skillName));
+                skill = Program.RepositoryManager.GetEntity<SkillData>(ch.GetIDOfSkillCharacterKnows(skillName));
 
             if (skill == null) return 0;
             return skill.Type == expectedType ? (int)skill.ID : 0;
@@ -88,7 +88,7 @@ namespace SmaugCS.Spells
         {
             if (slot <= 0)
                 return -1;
-            foreach (var skill in RepositoryManager.Instance.SKILLS.Values.Where(skill => skill.Slot == slot))
+            foreach (var skill in Program.RepositoryManager.SKILLS.Values.Where(skill => skill.Slot == slot))
                 return (int)skill.ID;
             return -1;
         }
@@ -109,7 +109,7 @@ namespace SmaugCS.Spells
             string spell;
             if (paf != null)
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>((int)paf.Type);
+                var skill = Program.RepositoryManager.GetEntity<SkillData>((int)paf.Type);
                 if (skill == null)
                     return 0;
                 spell = skill.Name;
@@ -304,7 +304,7 @@ namespace SmaugCS.Spells
 
         public static void say_spell(CharacterInstance ch, int sn)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
             var newString = tables.ConvertStringSyllables(skill.Name);
 
             foreach (var rch in ch.CurrentRoom.Persons.Where(x => x != ch))
@@ -365,7 +365,7 @@ namespace SmaugCS.Spells
                 return 0;
 
             GameManager.CurrentCharacter = ch;
-            return Task.Run(() => GameManager.Instance.ExpParser.ExecuteAsync(expression)).Result;
+            return Task.Run(() => Program.GameManager.ExpParser.ExecuteAsync(expression)).Result;
         }
 
         public static int ParseDiceExpression(CharacterInstance ch, string expression)
@@ -395,7 +395,7 @@ namespace SmaugCS.Spells
         /// </remarks>
         public static bool process_spell_components(CharacterInstance ch, int sn)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
 
             if (skill == null || skill.Components.Count == 0)
                 return true;
@@ -558,7 +558,7 @@ namespace SmaugCS.Spells
 
         public static object locate_targets(CharacterInstance ch, string arg, int sn, CharacterInstance victim, ObjectInstance obj)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
             if (skill == null)
                 return null;
 
@@ -567,7 +567,7 @@ namespace SmaugCS.Spells
             switch (skill.Target)
             {
                 default:
-                    LogManager.Instance.Bug("Bad target for SN {0}", sn);
+                    Program.LogManager.Bug("Bad target for SN {0}", sn);
                     return -1;
                 case TargetTypes.Ignore:
                     break;
@@ -692,7 +692,7 @@ namespace SmaugCS.Spells
         public static ReturnTypes ObjectCastSpell(this CharacterInstance ch, int sn, int level,
             CharacterInstance victim = null, ObjectInstance obj = null)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
             if (skill?.SpellFunction == null)
                 return ReturnTypes.Error;
 
@@ -735,7 +735,7 @@ namespace SmaugCS.Spells
             switch (skill.Target)
             {
                 default:
-                    LogManager.Instance.Bug("Bad target for sn {0}", sn);
+                    Program.LogManager.Bug("Bad target for sn {0}", sn);
                     return ReturnTypes.Error;
 
                 case TargetTypes.Ignore:

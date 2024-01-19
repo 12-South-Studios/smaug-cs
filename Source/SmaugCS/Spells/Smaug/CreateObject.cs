@@ -12,7 +12,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_create_obj(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
 
             var targetName = Cast.TargetName;
 
@@ -27,10 +27,10 @@ namespace SmaugCS.Spells
                     id = GameConstants.GetVnum("shield");
             }
 
-            var oi = RepositoryManager.Instance.OBJECTTEMPLATES.Get(id);
+            var oi = Program.RepositoryManager.OBJECTTEMPLATES.Get(id);
             if (CheckFunctions.CheckIfNullObjectCasting(oi, skill, ch)) return ReturnTypes.None;
 
-            var obj = RepositoryManager.Instance.OBJECTS.Create(oi);
+            var obj = Program.RepositoryManager.OBJECTS.Create(oi);
             obj.Timer = !string.IsNullOrEmpty(skill.Dice) ? magic.ParseDiceExpression(ch, skill.Dice) : 0;
             obj.Level = lvl;
 

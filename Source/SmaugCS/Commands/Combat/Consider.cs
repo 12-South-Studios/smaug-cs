@@ -31,22 +31,22 @@ namespace SmaugCS.Commands
             const string lookupName = "HealthConsider";
 
             if (diff <= -200)
-                return LookupManager.Instance.GetLookup(lookupName, 0);
+                return Program.LookupManager.GetLookup(lookupName, 0);
             if (diff <= -150)
-                return LookupManager.Instance.GetLookup(lookupName, 1);
+                return Program.LookupManager.GetLookup(lookupName, 1);
             if (diff <= -100)
-                return LookupManager.Instance.GetLookup(lookupName, 2);
+                return Program.LookupManager.GetLookup(lookupName, 2);
             if (diff <= -50)
-                return LookupManager.Instance.GetLookup(lookupName, 3);
+                return Program.LookupManager.GetLookup(lookupName, 3);
             if (diff <= 0)
-                return LookupManager.Instance.GetLookup(lookupName, 4);
+                return Program.LookupManager.GetLookup(lookupName, 4);
             if (diff <= 50)
-                return LookupManager.Instance.GetLookup(lookupName, 5);
+                return Program.LookupManager.GetLookup(lookupName, 5);
             if (diff <= 100)
-                return LookupManager.Instance.GetLookup(lookupName, 6);
+                return Program.LookupManager.GetLookup(lookupName, 6);
             return diff <= 150
-                ? LookupManager.Instance.GetLookup(lookupName, 7)
-                : LookupManager.Instance.GetLookup(lookupName, diff <= 200 ? 8 : 9);
+                ? Program.LookupManager.GetLookup(lookupName, 7)
+                : Program.LookupManager.GetLookup(lookupName, diff <= 200 ? 8 : 9);
         }
 
         private static string GetLevelConsiderMessage(int diff)
@@ -54,16 +54,16 @@ namespace SmaugCS.Commands
             const string lookupName = "LevelConsider";
 
             if (diff <= -10)
-                return LookupManager.Instance.GetLookup(lookupName, 0);
+                return Program.LookupManager.GetLookup(lookupName, 0);
             if (diff <= -5)
-                return LookupManager.Instance.GetLookup(lookupName, 1);
+                return Program.LookupManager.GetLookup(lookupName, 1);
             if (diff <= -2)
-                return LookupManager.Instance.GetLookup(lookupName, 2);
+                return Program.LookupManager.GetLookup(lookupName, 2);
             if (diff <= 1)
-                return LookupManager.Instance.GetLookup(lookupName, 3);
+                return Program.LookupManager.GetLookup(lookupName, 3);
             return diff <= 4
-                ? LookupManager.Instance.GetLookup(lookupName, 4)
-                : LookupManager.Instance.GetLookup(lookupName, diff <= 9 ? 5 : 6);
+                ? Program.LookupManager.GetLookup(lookupName, 4)
+                : Program.LookupManager.GetLookup(lookupName, diff <= 9 ? 5 : 6);
         }
     }
 }

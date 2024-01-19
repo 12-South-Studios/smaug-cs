@@ -1,7 +1,6 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
 using LuaInterface.Exceptions;
-using Ninject;
 using Realm.Library.Common.Objects;
 using Realm.Library.Lua;
 using SmaugCS.Common.Enumerations;
@@ -30,11 +29,9 @@ namespace SmaugCS.Tests
 
             const string dataPath = "D://Projects//SmaugCS//trunk//data";
 
-            IKernel mockKernel = A.Fake<IKernel>();
+            LuaMgr = new LuaManager(mockLogManager.LogWrapper);
 
-            LuaMgr = new LuaManager(mockKernel, mockLogManager.LogWrapper);
-
-            RepositoryManager dbMgr = new RepositoryManager(mockKernel, mockLogManager);
+            RepositoryManager dbMgr = new RepositoryManager(mockLogManager);
 
             LuaGetFunctions.InitializeReferences(LuaMgr, dbMgr, dataPath);
             LuaCreateFunctions.InitializeReferences(LuaMgr, dbMgr, mockLogManager);

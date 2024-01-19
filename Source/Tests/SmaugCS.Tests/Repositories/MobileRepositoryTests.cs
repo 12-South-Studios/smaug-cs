@@ -1,6 +1,5 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
@@ -79,14 +78,13 @@ namespace SmaugCS.Tests.Repositories
 
         public MobileRepositoryTests()
         {
-            var mockKernel = A.Fake<IKernel>();
             var mockCtx = A.Fake<IDbContext>();
             var mockLogger = A.Fake<ILogWrapper>();
             var mockTimer = A.Fake<ITimer>();
 
-            LuaManager luaMgr = new LuaManager(A.Fake<IKernel>(), mockLogger);
-            LogManager logMgr = new LogManager(mockLogger, mockKernel, mockTimer, mockCtx, 0);
-            RepositoryManager dbMgr = new RepositoryManager(mockKernel, A.Fake<ILogManager>());
+            LuaManager luaMgr = new LuaManager(mockLogger);
+            LogManager logMgr = new LogManager(mockLogger, mockTimer, mockCtx);
+            RepositoryManager dbMgr = new RepositoryManager(A.Fake<ILogManager>());
 
             LuaMobFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaCreateFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

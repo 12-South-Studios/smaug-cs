@@ -99,8 +99,8 @@ namespace SmaugCS.Commands
                 return false;
             }
 
-            var spell = LookupManager.Instance.SpellLookup.Get(arg1);
-            var spellSkill = RepositoryManager.Instance.GetEntity<SkillData>(arg1);
+            var spell = Program.LookupManager.SpellLookup.Get(arg1);
+            var spellSkill = Program.RepositoryManager.GetEntity<SkillData>(arg1);
 
             if (ch.Trust < GetGodLevel())
             {
@@ -143,7 +143,7 @@ namespace SmaugCS.Commands
             var sn = ch.tempnum;
             if (Macros.IS_VALID_SN(sn))
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+                var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
                 if (skill == null)
                 {
                     ch.SendTo("Something went wrong...");
@@ -171,7 +171,7 @@ namespace SmaugCS.Commands
             var sn = ch.tempnum;
             if (Macros.IS_VALID_SN(sn))
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+                var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
                 if (skill == null)
                 {
                     ch.SendTo("Something went wrong...");

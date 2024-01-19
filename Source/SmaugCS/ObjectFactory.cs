@@ -14,7 +14,7 @@ namespace SmaugCS
     {
         public static void CreateFire(RoomTemplate inRoom, int duration, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             var fire = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                    .Get(VnumConstants.OBJ_VNUM_FIRE), 0);
             fire.Timer = SmaugRandom.Fuzzy(duration);
@@ -23,7 +23,7 @@ namespace SmaugCS
 
         public static ObjectInstance CreateTrap(IEnumerable<int> values, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             var trap = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_TRAP), 0);
             trap.Timer = 0;
@@ -34,7 +34,7 @@ namespace SmaugCS
         public static void CreateScraps(ObjectInstance obj, IRepositoryManager dbManager = null)
         {
             obj.Split();
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             var scraps = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                            .Get(VnumConstants.OBJ_VNUM_SCRAPS), 0);
 
@@ -97,7 +97,7 @@ namespace SmaugCS
         {
             string name;
             ObjectInstance corpse;
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
 
             if (ch.IsNpc())
             {
@@ -111,7 +111,7 @@ namespace SmaugCS
                     if (ch.CurrentRoom != null)
                     {
                         ch.CurrentRoom.Area.gold_looted += ch.CurrentCoin;
-                        GameManager.Instance.SystemData.global_looted += ch.CurrentCoin / 100;
+                        Program.GameManager.SystemData.global_looted += ch.CurrentCoin / 100;
                     }
 
                     var money = CreateMoney(ch.CurrentCoin);
@@ -129,7 +129,7 @@ namespace SmaugCS
                 corpse.Timer = ch.IsInArena() ? 0 : 40;
                 corpse.Value.ToList()[2] = corpse.Timer / 8;
                 corpse.Value.ToList()[4] = ch.Level;
-                if (ch.CanPKill() && GameManager.Instance.SystemData.PlayerKillLoot > 0)
+                if (ch.CanPKill() && Program.GameManager.SystemData.PlayerKillLoot > 0)
                     corpse.ExtraFlags.SetBit((int)ItemExtraFlags.ClanCorpse);
 
                 corpse.Value.ToList()[3] = !ch.IsNpc() && !killer.IsNpc() ? 1 : 0;
@@ -157,7 +157,7 @@ namespace SmaugCS
 
         public static void CreateBlood(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long,
                 ObjectTemplate>>().Get(VnumConstants.OBJ_VNUM_BLOOD), 0);
 
@@ -168,7 +168,7 @@ namespace SmaugCS
 
         public static void CreateBloodstain(CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(VnumConstants.OBJ_VNUM_BLOODSTAIN), 0);
 
@@ -179,7 +179,7 @@ namespace SmaugCS
         public static ObjectInstance CreateMoney(int amount, IRepositoryManager dbManager = null)
         {
             var coinAmt = amount <= 0 ? 1 : amount;
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             var obj = databaseMgr.OBJECTS.Create(databaseMgr.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>()
                                                        .Get(coinAmt == 1
                                                                 ? VnumConstants.OBJ_VNUM_MONEY_ONE

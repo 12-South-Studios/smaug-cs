@@ -11,7 +11,7 @@ namespace SmaugCS.Loaders.Incomplete
         {
         }
 
-        public override string Filename => SystemConstants.GetSystemFile(SystemFileTypes.Hints);
+        //public override string Filename => SystemConstants.GetSystemFile(SystemFileTypes.Hints);
 
         public override void Save()
         {

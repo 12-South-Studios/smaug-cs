@@ -45,7 +45,7 @@ namespace SmaugCS.SpecFuns
 
         private static bool CastSpell(MobileInstance ch, CharacterInstance victim, int bitFlag, string spellName, IManager dbManager)
         {
-            var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = (IRepositoryManager)(dbManager ?? Program.RepositoryManager);
             var skill = databaseMgr.GetEntity<SkillData>(spellName);
 
             switch (bitFlag)

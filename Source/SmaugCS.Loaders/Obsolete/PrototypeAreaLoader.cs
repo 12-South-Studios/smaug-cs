@@ -12,62 +12,62 @@ namespace SmaugCS.Loaders.Obsolete
 {
     public class PrototypeAreaLoader
     {
-        public string Directory => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
+       // public string Directory => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
 
-        public void Load()
+        public void Load(ILogManager logManager)
         {
-            var dirProxy = new DirectoryProxy();
-            var files = dirProxy.GetFiles(Directory);
+            //var dirProxy = new DirectoryProxy();
+            //var files = dirProxy.GetFiles(Directory);
 
-            var validLines = new List<string> { "level", "roomrange", "mobrange", "objrange" };
+            //var validLines = new List<string> { "level", "roomrange", "mobrange", "objrange" };
 
-            foreach (var file in files.Where(x => !x.Equals(".")))
-            {
-                using (var proxy = new TextReaderProxy(new StreamReader(Directory + file)))
-                {
-                    IEnumerable<string> lines = proxy.ReadIntoList();
+            //foreach (var file in files.Where(x => !x.Equals(".")))
+            //{
+            //    using (var proxy = new TextReaderProxy(new StreamReader(Directory + file)))
+            //    {
+            //        IEnumerable<string> lines = proxy.ReadIntoList();
 
-                    int low = 0, hi = 0, rlow = 0, rhi = 0, mlow, mhi, olow, ohi;
-                    var badFile = false;
+            //        int low = 0, hi = 0, rlow = 0, rhi = 0, mlow, mhi, olow, ohi;
+            //        var badFile = false;
 
-                    foreach (var line in lines)
-                    {
-                        string[] words;
-                        switch (line.ToLower())
-                        {
-                            case "level":
-                                if (low < LevelConstants.ImmortalLevel)
-                                {
-                                    LogManager.Instance.Bug("God file {0} with level {1} < {2}", file, low,
-                                                   LevelConstants.ImmortalLevel);
-                                    badFile = true;
-                                }
-                                break;
-                            case "roomrange":
-                                words = line.Split();
-                                rlow = low = words[1].ToInt32();
-                                rhi = hi = words[2].ToInt32();
-                                break;
-                            case "mobrange":
-                                words = line.Split();
-                                rlow = low = words[1].ToInt32();
-                                rhi = hi = words[2].ToInt32();
-                                break;
-                            case "objrange":
-                                words = line.Split();
-                                rlow = low = words[1].ToInt32();
-                                rhi = hi = words[2].ToInt32();
-                                break;
-                        }
-                    }
+            //        foreach (var line in lines)
+            //        {
+            //            string[] words;
+            //            switch (line.ToLower())
+            //            {
+            //                case "level":
+            //                    if (low < LevelConstants.ImmortalLevel)
+            //                    {
+            //                        logManager.Bug("God file {0} with level {1} < {2}", file, low,
+            //                                       LevelConstants.ImmortalLevel);
+            //                        badFile = true;
+            //                    }
+            //                    break;
+            //                case "roomrange":
+            //                    words = line.Split();
+            //                    rlow = low = words[1].ToInt32();
+            //                    rhi = hi = words[2].ToInt32();
+            //                    break;
+            //                case "mobrange":
+            //                    words = line.Split();
+            //                    rlow = low = words[1].ToInt32();
+            //                    rhi = hi = words[2].ToInt32();
+            //                    break;
+            //                case "objrange":
+            //                    words = line.Split();
+            //                    rlow = low = words[1].ToInt32();
+            //                    rhi = hi = words[2].ToInt32();
+            //                    break;
+            //            }
+            //        }
 
-                    if (rlow > 0 && rhi > 0 && !badFile)
-                    {
+            //        if (rlow > 0 && rhi > 0 && !badFile)
+            //        {
 
-                    }
+            //        }
 
-                }
-            }
+            //    }
+            //}
         }
     }
 }

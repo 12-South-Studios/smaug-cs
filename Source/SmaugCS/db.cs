@@ -128,22 +128,22 @@ namespace SmaugCS
 
         public static void shutdown_mud(string reason)
         {
-            var path = SystemConstants.GetSystemFile(SystemFileTypes.Shutdown);
-            using (var proxy = new TextWriterProxy(new StreamWriter(path, true)))
-            {
-                proxy.Write("{0}\n", reason);
-            }
+            //var path = SystemConstants.GetSystemFile(SystemFileTypes.Shutdown);
+            //using (var proxy = new TextWriterProxy(new StreamWriter(path, true)))
+            //{
+            //    proxy.Write("{0}\n", reason);
+            //}
         }
 
         public static void FixExits()
         {
-            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
+            foreach (var room in Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
                 var fexit = false;
                 foreach (var exit in room.Exits)
                 {
                     exit.Room_vnum = room.ID;
-                    exit.Destination = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
+                    exit.Destination = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                     if (exit.vnum <= 0 || exit.Destination <= 0)
                     {
                         /*if (DatabaseManager.BootDb)
@@ -151,8 +151,8 @@ namespace SmaugCS
                             // TODO boot_log error
                         }*/
 
-                        LogManager.Instance.Bug("Deleting %s exit in room %d",
-                                                LookupManager.Instance.GetLookup("DirectionNames", (int)exit.Direction),
+                        Program.LogManager.Bug("Deleting %s exit in room %d",
+                                                Program.LookupManager.GetLookup("DirectionNames", (int)exit.Direction),
                                                 room.ID);
                         exit.Extract();
                     }
@@ -164,7 +164,7 @@ namespace SmaugCS
                     room.Flags.SetBit((int)RoomFlags.NoMob);
             }
 
-            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
+            foreach (var room in Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values)
             {
                 foreach (var exit in room.Exits)
                 {
@@ -189,7 +189,7 @@ namespace SmaugCS
         {
             if (HELPS.Any(x => x.Level == newHelp.Level && x.Keyword.Equals(newHelp.Keyword)))
             {
-                LogManager.Instance.Bug("Duplicate Help {0}", newHelp.Keyword);
+                Program.LogManager.Bug("Duplicate Help {0}", newHelp.Keyword);
                 return;
             }
 
@@ -283,7 +283,7 @@ namespace SmaugCS
 
         public static void initialize_economy()
         {
-            foreach (var area in RepositoryManager.Instance.AREAS.Values)
+            foreach (var area in Program.RepositoryManager.AREAS.Values)
             {
                 if (area.HighEconomy > 0 || area.LowMobNumber > 10000)
                     continue;
@@ -296,7 +296,7 @@ namespace SmaugCS
 
                 for (var x = area.LowMobNumber; x < area.HighMobNumber; x++)
                 {
-                    var mob = RepositoryManager.Instance.MOBILETEMPLATES.CastAs<Repository<long, MobileTemplate>>().Get(x);
+                    var mob = Program.RepositoryManager.MOBILETEMPLATES.CastAs<Repository<long, MobileTemplate>>().Get(x);
                     if (mob != null)
                         area.BoostEconomy(mob.GetStatistic<int>(StatisticTypes.Coin) * 10);
                 }
@@ -321,7 +321,7 @@ namespace SmaugCS
 
         public static void area_update()
         {
-            foreach (var area in RepositoryManager.Instance.AREAS.Values)
+            foreach (var area in Program.RepositoryManager.AREAS.Values)
             {
                 var resetAge = area.ResetFrequency > 0 ? area.ResetFrequency : 15;
                 if ((resetAge == -1 && area.Age == -1)
@@ -335,7 +335,7 @@ namespace SmaugCS
                                         ? area.ResetMessage + "\r\n"
                                         : "You hear some squeaking sounds...\r\n";
 
-                    foreach (var pch in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
+                    foreach (var pch in Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values
                         .Where(pch => !pch.IsNpc()
                             && pch.IsAwake()
                             && pch.CurrentRoom != null
@@ -353,7 +353,7 @@ namespace SmaugCS
                     area.Age = resetAge == -1 ? -1 : SmaugRandom.Between(0, resetAge / 5);
 
                     //// Mud Academy resets every 3 minutes
-                    var room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
+                    var room = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_SCHOOL);
                     if (room != null && room.Area == area && area.ResetFrequency == 0)
                         area.Age = 15 - 3;
                 }
@@ -457,7 +457,7 @@ namespace SmaugCS
             }
 
             //ch.Comments.Clear();
-            RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
+            Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
         }*/
 
         public static string get_extra_descr(string name, IEnumerable<ExtraDescriptionData> extraDescriptions)
@@ -553,31 +553,31 @@ namespace SmaugCS
                 outline += line;
             }
 
-            outline += "\r\n";
-            using (
-                var proxy =
-                    new TextWriterProxy(new StreamWriter(SystemConstants.GetSystemFile(SystemFileTypes.Wizards), true)))
-            {
-                proxy.Write(outline);
-            }
+            //outline += "\r\n";
+            //using (
+            //    var proxy =
+            //        new TextWriterProxy(new StreamWriter(SystemConstants.GetSystemFile(SystemFileTypes.Wizards), true)))
+            //{
+            //    proxy.Write(outline);
+            //}
         }
 
         public static void make_wizlist()
         {
             var wizList = new List<WizardData>();
-            var directory = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
-            var files = new DirectoryProxy().GetFiles(directory);
-            foreach (var file in files.Where(x => !x.StartsWithIgnoreCase(".")))
-            {
-                using (var proxy = new TextReaderProxy(new StreamReader(file)))
-                {
-                    var wizard = new WizardData { Name = file };
-                    wizard.Level = wizard.Load(proxy.ReadIntoList());
-                    wizList.Add(wizard);
-                }
-            }
+            //var directory = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.God);
+            //var files = new DirectoryProxy().GetFiles(directory);
+            //foreach (var file in files.Where(x => !x.StartsWithIgnoreCase(".")))
+            //{
+            //    using (var proxy = new TextReaderProxy(new StreamReader(file)))
+            //    {
+            //        var wizard = new WizardData { Name = file };
+            //        wizard.Level = wizard.Load(proxy.ReadIntoList());
+            //        wizList.Add(wizard);
+            //    }
+            //}
 
-            var buffer = $" Masters of the {GameManager.Instance.SystemData.MudTitle}!";
+            var buffer = $" Masters of the {Program.GameManager.SystemData.MudTitle}!";
 
             var iLevel = 65535;
             foreach (var wiz in wizList)
@@ -655,39 +655,39 @@ namespace SmaugCS
 
         public static void mudprog_file_read(Template index, string filename)
         {
-            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Prog) + filename;
+            //var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Prog) + filename;
 
-            using (var proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                do
-                {
-                    var line = proxy.ReadLine();
-                    if (line.StartsWith("|"))
-                        break;
-                    if (line.StartsWith(">"))
-                        continue;
+            //using (var proxy = new TextReaderProxy(new StreamReader(path)))
+            //{
+            //    do
+            //    {
+            //        var line = proxy.ReadLine();
+            //        if (line.StartsWith("|"))
+            //            break;
+            //        if (line.StartsWith(">"))
+            //            continue;
 
-                    var type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
-                    if (type == MudProgTypes.Error
-                        || type == MudProgTypes.InFile)
-                    {
-                        LogManager.Instance.Bug("Invalid mud prog type {0} in file {1}", type, path);
-                        continue;
-                    }
+            //        var type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
+            //        if (type == MudProgTypes.Error
+            //            || type == MudProgTypes.InFile)
+            //        {
+            //            Program.LogManager.Bug("Invalid mud prog type {0} in file {1}", type, path);
+            //            continue;
+            //        }
 
-                    var prog = new MudProgData
-                    {
-                        Type = type,
-                        ArgList = proxy.ReadString(),
-                        Script = proxy.ReadString(),
-                        IsFileProg = true
-                    };
+            //        var prog = new MudProgData
+            //        {
+            //            Type = type,
+            //            ArgList = proxy.ReadString(),
+            //            Script = proxy.ReadString(),
+            //            IsFileProg = true
+            //        };
 
-                    index.AddMudProg(prog);
-                    break;
+            //        index.AddMudProg(prog);
+            //        break;
 
-                } while (!proxy.EndOfStream);
-            }
+            //    } while (!proxy.EndOfStream);
+            //}
         }
 
         public static void mudprog_read_programs(TextReaderProxy proxy, Template index)
@@ -699,7 +699,7 @@ namespace SmaugCS
                     return;
                 if (letter != '>')
                 {
-                    LogManager.Instance.Bug("Vnum {0} MudProg Char", index.ID);
+                    Program.LogManager.Bug("Vnum {0} MudProg Char", index.ID);
                     throw new Exception();
                 }
 
@@ -709,7 +709,7 @@ namespace SmaugCS
                 var type = (MudProgTypes)EnumerationFunctions.GetEnumByName<MudProgTypes>(proxy.ReadNextWord());
                 if (type == MudProgTypes.Error)
                 {
-                    LogManager.Instance.Bug("Invalid mud prog type {0} for Index {1}", type, index.ID);
+                    Program.LogManager.Bug("Invalid mud prog type {0} for Index {1}", type, index.ID);
                     throw new Exception();
                 }
                 prog.Type = type;
@@ -732,7 +732,7 @@ namespace SmaugCS
 
         /*public static void delete_room(RoomTemplate room)
         {
-            RoomTemplate limbo = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
+            RoomTemplate limbo = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
 
             CharacterInstance ch;
             while ((ch = room.Persons.FirstOrDefault()) != null)
@@ -746,7 +746,7 @@ namespace SmaugCS
                     CharacterInstanceExtensions.Extract(ch, true);
             }
 
-            foreach (CharacterInstance och in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+            foreach (CharacterInstance och in Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (och.PreviousRoom == room)
                     och.PreviousRoom = och.CurrentRoom;
@@ -779,25 +779,25 @@ namespace SmaugCS
             room.Exits.ForEach(x => handler.extract_exit(room, x));
             room.MudProgActs.Clear();
             room.MudProgs.Clear();
-            RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Delete(room.Vnum);
+            Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Delete(room.Vnum);
 
             // TODO: Room hash stuff here, but can be removed?
         }
 
         public static void delete_obj(ObjectTemplate obj)
         {
-            RepositoryManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
+            Program.RepositoryManager.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Values.Where(x => x.ObjectIndex == obj).ToList().ForEach(handler.extract_obj);
             obj.ExtraDescriptions.Clear();
             obj.Affects.Clear();
             obj.MudProgs.Clear();
-            RepositoryManager.Instance.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Delete(obj.Vnum);
+            Program.RepositoryManager.OBJECT_INDEXES.CastAs<Repository<long, ObjectTemplate>>().Delete(obj.Vnum);
 
             // TODO Object hash stuff here, but can be removed?
         }
 
         public static void delete_mob(MobTemplate mob)
         {
-            foreach (CharacterInstance ch in RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+            foreach (CharacterInstance ch in Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (ch.MobIndex == mob)
                     CharacterInstanceExtensions.Extract(ch, true);
@@ -819,7 +819,7 @@ namespace SmaugCS
                 SHOP.Remove(mob.Shop);
             if (mob.RepairShop != null)
                 REPAIR.Remove(mob.RepairShop);
-            RepositoryManager.Instance.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Delete(mob.Vnum);
+            Program.RepositoryManager.MOBILE_INDEXES.CastAs<Repository<long, MobTemplate>>().Delete(mob.Vnum);
 
             // TODO Mob hash stuff here, but can be removed?
         }*/
@@ -861,7 +861,7 @@ namespace SmaugCS
          {
              for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
              {
-                 RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
+                 RoomTemplate room = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
                  if (room == null)
                      continue;
 
@@ -870,7 +870,7 @@ namespace SmaugCS
                  {
                      fexit = true;
                      exit.Room_vnum = room.Vnum;
-                     exit.Destination = exit.vnum <= 0 ? 0 : RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
+                     exit.Destination = exit.vnum <= 0 ? 0 : Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(exit.vnum).ID;
                  }
                  if (!fexit)
                      room.Flags.SetBit((int)RoomFlags.NoMob);
@@ -878,7 +878,7 @@ namespace SmaugCS
 
              for (int rnum = area.LowRoomNumber; rnum <= area.HighRoomNumber; rnum++)
              {
-                 RoomTemplate room = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
+                 RoomTemplate room = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(rnum);
                  if (room == null)
                      continue;
 
@@ -907,7 +907,7 @@ namespace SmaugCS
 
             var buffer =
                 $"{area.Filename}:\n\tRooms: {area.LowRoomNumber} - {area.HighRoomNumber}\n\tObjects: {area.LowObjectNumber} - {area.HighObjectNumber}\n\tMobs: {area.LowMobNumber} - {area.HighMobNumber}\n";
-            LogManager.Instance.Boot(buffer);
+            Program.LogManager.Boot(buffer);
 
             area.status.SetBit((int)AreaFlags.Loaded);
         }
@@ -968,7 +968,7 @@ namespace SmaugCS
             {
                 if (loginMessage.Type > Program.MAX_MSG)
                 {
-                    LogManager.Instance.Bug("Unknown login message type {0} for {1}", loginMessage.Type, ch.Name);
+                    Program.LogManager.Bug("Unknown login message type {0} for {1}", loginMessage.Type, ch.Name);
                     continue;
                 }
 
@@ -984,7 +984,7 @@ namespace SmaugCS
                         WorldChangeMessage(ch, loginMessage);
                         break;
                     default:
-                        ch.SendTo(LookupManager.Instance.GetLookup("LoginMessage", loginMessage.Type));
+                        ch.SendTo(Program.LookupManager.GetLookup("LoginMessage", loginMessage.Type));
                         break;
                 }
 
@@ -999,7 +999,7 @@ namespace SmaugCS
         {
             if (!lmsg.Text.IsNullOrEmpty())
             {
-                LogManager.Instance.Bug("NULL loginMessage text for type 0");
+                Program.LogManager.Bug("NULL loginMessage text for type 0");
                 return;
             }
 
@@ -1009,7 +1009,7 @@ namespace SmaugCS
         {
             if (!lmsg.Text.IsNullOrEmpty())
             {
-                LogManager.Instance.Bug("NULL loginMessage text for type 17");
+                Program.LogManager.Bug("NULL loginMessage text for type 17");
                 return;
             }
 
@@ -1020,7 +1020,7 @@ namespace SmaugCS
         {
             if (!lmsg.Text.IsNullOrEmpty())
             {
-                LogManager.Instance.Bug("NULL loginMessage text for type 18");
+                Program.LogManager.Bug("NULL loginMessage text for type 18");
                 return;
             }
 

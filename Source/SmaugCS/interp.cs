@@ -79,7 +79,7 @@ namespace SmaugCS
                     throw new InvalidDataException("CharacterSubStates.RepeatCommand with null LastCommand");
                 }
 
-                foreach (var cmd in RepositoryManager.Instance.COMMANDS.Values)
+                foreach (var cmd in Program.RepositoryManager.COMMANDS.Values)
                 {
                     if (cmd.DoFunction == fun)
                     {
@@ -161,7 +161,7 @@ namespace SmaugCS
 
         public static bool check_social(CharacterInstance ch, string command, string argument)
         {
-            var social = RepositoryManager.Instance.GetEntity<SocialData>(command);
+            var social = Program.RepositoryManager.GetEntity<SocialData>(command);
             if (social == null)
                 return false;
 

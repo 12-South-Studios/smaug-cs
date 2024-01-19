@@ -15,6 +15,7 @@ namespace Realm.Library.Lua
     {
         private readonly ConcurrentQueue<LuaVirtualMachine> _virtualMachines = new ConcurrentQueue<LuaVirtualMachine>();
         private readonly LuaFunctionRepository _repository;
+        private readonly ILogWrapper _log;
 
         /// <inheritdoc />
         /// <summary>
@@ -27,6 +28,7 @@ namespace Realm.Library.Lua
             Validation.Validate<ArgumentOutOfRangeException>(numberVirtualMachines > 0);
             Validation.IsNotNull(repository, "repository");
 
+            _log = log;
             _repository = repository;
             var proxy = new LuaInterfaceProxy();
             Enumerable.Range(0, numberVirtualMachines)
@@ -80,7 +82,7 @@ namespace Realm.Library.Lua
             }
             catch (ArgumentException ex)
             {
-                ex.Handle<LuaException>(ExceptionHandlingOptions.RecordAndThrow);
+                ex.Handle<LuaException>(ExceptionHandlingOptions.RecordAndThrow, _log);
             }
         }
 

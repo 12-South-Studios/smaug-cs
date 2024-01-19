@@ -24,7 +24,7 @@ namespace SmaugCS
                     return;
 
                 case ItemTypes.DrinkContainer:
-                    var liq = RepositoryManager.Instance.GetEntity<LiquidData>(obj.Value.ToList()[2]);
+                    var liq = Program.RepositoryManager.GetEntity<LiquidData>(obj.Value.ToList()[2]);
                     comm.act(ATTypes.AT_ACTION, charbuf, ch, obj, liq.Name, ToTypes.Character);
                     comm.act(ATTypes.AT_ACTION, roombuf, ch, obj, liq.Name, ToTypes.Room);
                     return;

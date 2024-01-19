@@ -1,283 +1,89 @@
-﻿using log4net;
-using log4net.Appender;
-using log4net.Config;
-using Ninject;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using Realm.Library.Common.Logging;
 using Realm.Library.Network;
 using SmaugCS.Auction;
 using SmaugCS.Ban;
 using SmaugCS.Board;
 using SmaugCS.Clans;
-using SmaugCS.Common;
-using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
-using SmaugCS.DAL;
-using SmaugCS.Data;
-using SmaugCS.Data.Exceptions;
-using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
-using SmaugCS.Loaders;
 using SmaugCS.Logging;
-using SmaugCS.Lua;
 using SmaugCS.News;
 using SmaugCS.Repository;
-using SmaugCS.Time;
 using SmaugCS.Weather;
 using System;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Reflection;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SmaugCS
 {
-    public static class Program
+    internal class Program
     {
-        private static ILog _logger;
+        private static IContainer _container;
+        public static IContainer Container => _container;
 
-        public static ITcpServer NetworkManager { get; private set; }
-        public static IKernel Kernel { get; private set; }
-        public static ILogManager LogManager { get; private set; }
-        public static ILookupManager LookupManager { get; private set; }
-        public static ILuaManager LuaManager { get; private set; }
-        public static IRepositoryManager RepositoryManager { get; private set; }
-        public static IGameManager GameManager { get; private set; }
-        public static IBanManager BanManager { get; private set; }
-        public static IBoardManager BoardManager { get; private set; }
-        public static ICalendarManager CalendarManager { get; private set; }
-        public static IWeatherManager WeatherManager { get; private set; }
-        public static INewsManager NewsManager { get; private set; }
-        public static IAuctionManager AuctionManager { get; private set; }
-        public static IClanManager ClanManager { get; private set; }
+        public static INetworkServer NetworkManager => Container.Resolve<INetworkServer>();
+        public static ILogManager LogManager => Container.Resolve<ILogManager>();
+        public static ILookupManager LookupManager => Container.Resolve<ILookupManager>();
+        public static ILuaManager LuaManager => Container.Resolve<ILuaManager>();
+        public static IRepositoryManager RepositoryManager => Container.Resolve<IRepositoryManager>();
+        public static IGameManager GameManager => Container.Resolve<IGameManager>();
+        public static IBanManager BanManager => Container.Resolve<IBanManager>();
+        public static IBoardManager BoardManager => Container.Resolve<IBoardManager>();
+        public static ICalendarManager CalendarManager => Container.Resolve<ICalendarManager>();
+        public static IWeatherManager WeatherManager => Container.Resolve<IWeatherManager>();
+        public static INewsManager NewsManager => Container.Resolve<INewsManager>();
+        public static IAuctionManager AuctionManager => Container.Resolve<IAuctionManager>();
+        public static IClanManager ClanManager => Container.Resolve<IClanManager>();
         public static int SessionId { get; private set; }
 
         static void Main()
         {
             AppDomain.CurrentDomain.UnhandledException += Application_OnUnhandledException;
-            _logger = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
             try
             {
-                ConfigureLog4NetProperties();
-
-                InitializeCoreNinjectKernels();
-                StartNewSession(Kernel.Get<IDbContext>());
-                InitializeSecondaryNinjectKernels();
-                InitializeManagersAndGameSettings();
-                LogManager.Boot("---------------------[ End Boot Log ]--------------------");
-
-                while (true)
+                IServiceCollection services = new ServiceCollection();
+                services.AddTransient<ILogWrapper, LogWrapper>();
+                services.AddSingleton<ILoggerFactory, LoggerFactory>();
+                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+                services.AddLogging(builder =>
                 {
-                    GameManager.StartMainGameLoop();
-                }
+                    builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    builder.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
+                });
+                ConfigureServices(services);
+                IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+                var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+                NLog.LogManager.LoadConfiguration("nlog.config");
+
+                var logger = serviceProvider.GetRequiredService<ILogWrapper>();
+                logger.Debug("Initializing Application");
+
+                var settings = serviceProvider.GetService<Config.Configuration.Settings>();
+                var constants = serviceProvider.GetService<Config.Configuration.Constants>();
+                var vnums = serviceProvider.GetService<Config.Configuration.Vnums>();
+                var statics = serviceProvider.GetService<Config.Configuration.Statics>();
+
+                serviceProvider = ConfigureAutofacServices(services, settings, constants);
+
+                var app = serviceProvider.GetService<Application>();
+                Task.Run(() => app.Start(settings, constants)).Wait();
+
+                logger.Debug("Ending Application");
             }
             catch (Exception ex)
             {
-                _logger.Error(ex.ToString());
+                Console.WriteLine("Unhandled Exception in Application");
+                Console.Write(ex.Message);
             }
-            finally
-            {
-                ShutdownManagersAndListeningPort();
-                FlushLog4NetBuffers();
-                _logger = null;
-                Console.WriteLine("Application exiting.");
-            }
-        }
-
-        private static void ConfigureLog4NetProperties()
-        {
-            GlobalContext.Properties["BootLogName"] =
-                $"{GameConstants.LogPath}\\{"BootLog"}_{DateTime.Now.ToString("yyyyMMdd-HHmmss")}.log";
-            GlobalContext.Properties["BugsLogName"] = $"{GameConstants.LogPath}\\{"Bugs"}.log";
-            GlobalContext.Properties["SmaugLogName"] = $"{GameConstants.LogPath}\\{"Smaug"}.log";
-
-            XmlConfigurator.Configure();
-        }
-
-        private static void InitializeCoreNinjectKernels()
-        {
-            Kernel = new StandardKernel();
-
-            Kernel.Bind<ILogWrapper>().To<LogWrapper>()
-                .WithConstructorArgument("log", _logger)
-                .WithConstructorArgument("level", LogLevel.Debug);
-
-            Kernel.Load(new DbContextModule());
-        }
-
-        private static void StartNewSession(IDbContext dbContext)
-        {
-            var newSession = new DAL.Models.Session();
-            newSession.IpAddress = ConfigurationManager.AppSettings["host"];
-            newSession.Port = Convert.ToInt32(ConfigurationManager.AppSettings["port"]);
-            dbContext.AddOrUpdate<DAL.Models.Session>(newSession);
-            SessionId = newSession.Id;
-        }
-
-        private static void InitializeSecondaryNinjectKernels()
-        {
-            Kernel.Load(new LoggingModule(SessionId),
-                new RepositoryModule(),
-                new SmaugModule(),
-                new AuctionModule(),
-                new BanModule(),
-                new BoardModule(),
-                new LuaModule(),
-                new NewsModule(),
-                new TimeModule(),
-                new WeatherModule(),
-                new LoaderModule(),
-                new ClanModule());
-        }
-
-        private static void InitializeManagersAndGameSettings()
-        {
-            LogManager = Kernel.Get<ILogManager>();
-            LogManager.Boot("-----------------------[ Boot Log ]----------------------");
-
-            var loaded = SystemConstants.LoadSystemDirectoriesFromConfig(GameConstants.DataPath);
-            LogManager.Boot("{0} SystemDirectories loaded.", loaded);
-
-            loaded = SystemConstants.LoadSystemFilesFromConfig();
-            LogManager.Boot("{0} SystemFiles loaded.", loaded);
-
-            LookupManager = Kernel.Get<ILookupManager>();
-
-            LuaManager = Kernel.Get<ILuaManager>();
-
-            NetworkManager = Kernel.Get<ITcpServer>();
-            NetworkManager.Startup(Convert.ToInt32(ConfigurationManager.AppSettings["port"]),
-                           IPAddress.Parse(ConfigurationManager.AppSettings["host"]));
-            NetworkManager.OnTcpUserStatusChanged += NetworkManager_OnOnTcpUserStatusChanged;
-
-            RepositoryManager = Kernel.Get<IRepositoryManager>();
-
-            var luaInitializer = Kernel.Get<IInitializer>("LuaInitializer");
-            if (luaInitializer == null)
-                throw new ApplicationException("LuaInitializer failed to start");
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Lookups));
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.StatModLookups));
-
-            BanManager = Kernel.Get<IBanManager>();
-            BoardManager = Kernel.Get<IBoardManager>();
-            CalendarManager = Kernel.Get<ICalendarManager>();
-
-            GameManager = Kernel.Get<IGameManager>();
-            GameManager.SetGameTime(CalendarManager.GameTime);
-            GameManager.GameTime.SetTimeOfDay(GameConstants.GetSystemValue<int>("HourOfSunrise"),
-                GameConstants.GetSystemValue<int>("HourOfDayBegin"), GameConstants.GetSystemValue<int>("HourOfSunset"),
-                GameConstants.GetSystemValue<int>("HourOfNightBegin"));
-
-            WeatherManager = Kernel.Get<IWeatherManager>();
-
-            NewsManager = Kernel.Get<INewsManager>();
-
-            AuctionManager = Kernel.Get<IAuctionManager>();
-
-            ClanManager = Kernel.Get<IClanManager>();
-
-            InitializeStaticGameData();
-        }
-
-        private static void InitializeStaticGameData()
-        {
-            LogManager.Boot("Initializing Game Data");
-            LoadSystemDataFromLuaScripts();
-            var loaderInitializer = Kernel.Get<IInitializer>("LoaderInitializer");
-
-            //// Pre-Tests the module_Area to catch any errors early before area load
-            LuaManager.DoLuaScript(GameConstants.DataPath + "//modules//module_area.lua");
-            ((LoaderInitializer)loaderInitializer).Load();
-        }
-
-        private static void LoadSystemDataFromLuaScripts()
-        {
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Commands));
-            LogManager.Boot("{0} Commands loaded.", RepositoryManager.COMMANDS.Count);
-            LookupManager.CommandLookup.UpdateFunctionReferences(RepositoryManager.COMMANDS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.SpecFuns));
-            LogManager.Boot("{0} SpecFuns loaded.", RepositoryManager.SPEC_FUNS.Count);
-            //SpecFunLookupTable.UpdateCommandFunctionReferences(RepositoryManager.Instance.SPEC_FUNS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Socials));
-            LogManager.Boot("{0} Socials loaded.", RepositoryManager.SOCIALS.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Skills));
-            LogManager.Boot("{0} Skills loaded.", RepositoryManager.SKILLS.Count);
-            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
-            LookupManager.SpellLookup.UpdateFunctionReferences(RepositoryManager.SKILLS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Liquids));
-            LogManager.Boot("{0} Liquids loaded.", RepositoryManager.LIQUIDS.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Mixtures));
-            LogManager.Boot("{0} Mixtures loaded.",
-                RepositoryManager.GetRepository<MixtureData>(RepositoryTypes.Mixtures).Count);
-            // TODO: Update function references
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Herbs));
-            LogManager.Boot("{0} Herbs loaded.", RepositoryManager.HERBS.Count);
-            LookupManager.SkillLookup.UpdateFunctionReferences(RepositoryManager.HERBS.Values);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Tongues));
-            LogManager.Boot("{0} Tongues loaded.", RepositoryManager.LANGUAGES.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Planes));
-            LogManager.Boot("{0} Planes loaded.", RepositoryManager.PLANES.Count);
-
-            LuaManager.DoLuaScript(SystemConstants.GetSystemFile(SystemFileTypes.Morphs));
-            LogManager.Boot("{0} Morphs loaded.", RepositoryManager.MORPHS.Count);
-        }
-
-        private static void FlushLog4NetBuffers()
-        {
-            foreach (IAppender appender in _logger.Logger.Repository.GetAppenders())
-            {
-                var buffered = appender as BufferingAppenderSkeleton;
-                buffered?.Flush();
-            }
-        }
-
-        private static void NetworkManager_OnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
-        {
-            var user = (ITcpUser)sender;
-
-            if (networkEventArgs.SocketStatus == TcpSocketStatus.Disconnected)
-                DisconnectUser(user);
-            else
-                ConnectUser(user);
-        }
-
-        private static void ConnectUser(ITcpUser user)
-        {
-            var descrip = new DescriptorData(9999, 9999, 9999) { User = user };
-            db.DESCRIPTORS.Add(descrip);
-        }
-
-        private static void DisconnectUser(ITcpClientWrapper user)
-        {
-            var character = RepositoryManager.CHARACTERS.Values.OfType<PlayerInstance>().FirstOrDefault(x => x.Descriptor.User == user);
-            if (character == null)
-            {
-                var descrip = db.DESCRIPTORS.FirstOrDefault(x => x.User == user);
-                if (descrip == null)
-                    throw new ObjectNotFoundException($"Character not found matching user {user.IpAddress}");
-
-                db.DESCRIPTORS.Remove(descrip);
-                return;
-            }
-
-            RepositoryManager.CHARACTERS.Delete(character.ID);
-        }
-
-        private static void ShutdownManagersAndListeningPort()
-        {
-            NetworkManager.Shutdown("Shutting down MUD");
-
-            // TODO: Shutdown Managers
         }
 
         private static void Application_OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
@@ -285,6 +91,58 @@ namespace SmaugCS
             LogManager.Bug((Exception)unhandledExceptionEventArgs.ExceptionObject);
         }
 
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddLogging();
+
+            var configuration = GetConfiguration();
+            services.AddSingleton(configuration);
+
+            services.AddOptions();
+
+            var settings = new Config.Configuration.Settings();
+            configuration.GetSection("Settings").Bind(settings);
+            services.AddSingleton(settings);
+
+            var constants = new Config.Configuration.Constants();
+            configuration.GetSection("Constants").Bind(constants);
+            services.AddSingleton(constants);
+
+            var vnums = new Config.Configuration.Vnums();
+            configuration.GetSection("Vnums").Bind(vnums);
+            services.AddSingleton(vnums);
+
+            var statics = new Config.Configuration.Statics();
+            configuration.GetSection("Statics").Bind(statics);
+            services.AddSingleton(statics);
+
+            services.AddTransient<Application>();
+        }
+
+        private static IConfigurationRoot GetConfiguration()
+        {
+            return new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
+                .Build();
+        }
+
+        private static IServiceProvider ConfigureAutofacServices(IServiceCollection services, Config.Configuration.Settings settings,
+            Config.Configuration.Constants constants)
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.Populate(services);
+
+            Application.RegisterModules(containerBuilder, settings, constants);
+            Application.ConfigureServices(containerBuilder);
+
+            _container = containerBuilder.Build();
+            var serviceProvider = new AutofacServiceProvider(_container);
+            return serviceProvider;
+        }
+
+   
         #region Old Constants
         public static int BERR = 255;
 

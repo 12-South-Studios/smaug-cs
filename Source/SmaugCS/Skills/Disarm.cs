@@ -19,7 +19,7 @@ namespace SmaugCS.Skills
             if (tempObj != null && SmaugRandom.Bits(1) == 0)
                 obj = tempObj;
 
-            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("disarm");
+            var skill = (dbManager ?? Program.RepositoryManager).GetEntity<SkillData>("disarm");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'disarm' not found");
 

@@ -11,7 +11,8 @@ namespace SmaugCS.Commands
             ch.SetColor(ATTypes.AT_PLAIN);
             if (CheckFunctions.CheckIfEmptyString(ch, argument, "Usage:  'idea <message>'\r\n")) return;
 
-            db.append_file(ch, SystemConstants.GetSystemFile(SystemFileTypes.Idea), argument);
+            // TODO
+            // db.append_file(ch, SystemConstants.GetSystemFile(SystemFileTypes.Idea), argument);
             ch.SendTo("Thanks, your idea has been recorded.");
         }
     }

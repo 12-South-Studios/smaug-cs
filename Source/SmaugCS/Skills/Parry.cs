@@ -21,7 +21,7 @@ namespace SmaugCS.Skills
 
             int chances;
 
-            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("parry");
+            var skill = (dbManager ?? Program.RepositoryManager).GetEntity<SkillData>("parry");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'parry' not found");
 
@@ -32,7 +32,7 @@ namespace SmaugCS.Skills
                 if (victim.GetEquippedItem(WearLocations.Wield) == null)
                     return false;
                 chances = (int)Macros.LEARNED(victim, (int)skill.ID) /
-                          (gameManager ?? GameManager.Instance).SystemData.ParryMod;
+                          (gameManager ?? Program.GameManager).SystemData.ParryMod;
             }
 
             if (chances != 0 && victim.CurrentMorph != null)

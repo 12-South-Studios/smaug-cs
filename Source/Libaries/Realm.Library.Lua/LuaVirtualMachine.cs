@@ -44,7 +44,7 @@ namespace Realm.Library.Lua
         /// <param name="script"></param>
         public void ExecuteScript(LuaScript script)
         {
-            _log.InfoFormat("Script {0} submitted.", script.Name);
+            _log.Info("Script {0} submitted.", script.Name);
 
             Task<LuaResponse> task = null;
             CancellationTokenSource tokenSource = null;
@@ -61,7 +61,7 @@ namespace Realm.Library.Lua
             }
             catch (AggregateException ex)
             {
-                _log.InfoFormat("Script {0} cancelled.", script.Name);
+                _log.Info("Script {0} cancelled.", script.Name);
                 ex.InnerException.Handle(ExceptionHandlingOptions.RecordAndThrow, _log);
             }
             catch (Exception ex)

@@ -21,7 +21,7 @@ namespace SmaugCS.Skills
             if (sn == -1)
                 return false;
 
-            var skill = (databaseManager ?? RepositoryManager.Instance).GetEntity<SkillData>(sn);
+            var skill = (databaseManager ?? Program.RepositoryManager).GetEntity<SkillData>(sn);
             if (skill.SkillFunction == null || skill.SpellFunction == null
                 || ch.CanUseSkill(0, sn))
                 return false;
@@ -68,7 +68,7 @@ namespace SmaugCS.Skills
                 switch (skill.Target)
                 {
                     default:
-                        LogManager.Instance.Bug("Bad target to Skill {0}", sn);
+                        Program.LogManager.Bug("Bad target to Skill {0}", sn);
                         ch.SendTo("Something went wrong...");
                         return true;
 

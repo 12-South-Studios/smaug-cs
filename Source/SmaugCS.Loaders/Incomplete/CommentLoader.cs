@@ -15,7 +15,7 @@ namespace SmaugCS.Loaders.Incomplete
         {
         }
 
-        public override string Filename => string.Empty;
+       // public override string Filename => string.Empty;
 
         public CharacterInstance Character { get; set; }
 
@@ -24,8 +24,8 @@ namespace SmaugCS.Loaders.Incomplete
             if (Character == null)
                 return;
 
-            using (var proxy = new TextWriterProxy(new StreamWriter(Filename)))
-            {
+            //using (var proxy = new TextWriterProxy(new StreamWriter(Filename)))
+            //{
                 /*foreach (NoteData note in Character.NoteList)
                 {
                     proxy.Write("#COMMENT\n");
@@ -35,7 +35,7 @@ namespace SmaugCS.Loaders.Incomplete
                     proxy.Write("subject {0}~\n", note.Subject);
                     proxy.Write("text\n{0}~\n", note.Text);
                 }*/
-            }
+            //}
         }
 
         protected override string AppSettingName
@@ -53,8 +53,8 @@ namespace SmaugCS.Loaders.Incomplete
             if (Character == null)
                 return;
 
-            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
-            {
+            //using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
+            //{
                 /*List<TextSection> sections = proxy.ReadSections(new[] { "#COMMENT" }, new[] { "*" }, null, null);
                 if (sections.Count > 0 && Character.Comments == null)
                     Character.Comments = new List<NoteData>();
@@ -95,7 +95,7 @@ namespace SmaugCS.Loaders.Incomplete
 
                     Character.Comments.Add(newNote);
                 }*/
-            }
+            //}
         }
 
         #endregion

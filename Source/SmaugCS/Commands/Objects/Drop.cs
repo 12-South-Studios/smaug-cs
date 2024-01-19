@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -47,7 +48,7 @@ namespace SmaugCS.Commands
             else
                 DropAllOrSome(ch, firstArg);
 
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
+            if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
                 save.save_char_obj(ch);
         }
 
@@ -78,7 +79,7 @@ namespace SmaugCS.Commands
             ch.CurrentRoom.AddTo(ObjectFactory.CreateMoney(num));
             ch.SendTo("You let the coin slip from your hand.");
 
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
+            if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
                 save.save_char_obj(ch);
         }
 
@@ -94,14 +95,14 @@ namespace SmaugCS.Commands
 
             obj.RemoveFrom();
             obj = ch.CurrentRoom.AddTo(obj);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Drop, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Drop, ch, obj);
 
             if (ch.CharDied() || handler.obj_extracted(obj))
                 return;
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom))
             {
-                foreach (var clan in RepositoryManager.Instance.CLANS.Values)
+                foreach (var clan in Program.RepositoryManager.CLANS.Values)
                 {
                     // TODO Fix
                     //if (clan.StoreRoom == ch.CurrentRoom.ID)
@@ -109,7 +110,7 @@ namespace SmaugCS.Commands
                 }
             }
 
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
+            if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Drop))
                 save.save_char_obj(ch);
         }
 

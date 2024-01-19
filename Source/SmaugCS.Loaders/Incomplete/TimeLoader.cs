@@ -20,7 +20,7 @@ namespace SmaugCS.Loaders.Incomplete
         {
         }
 
-        public override string Filename => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat";
+       // public override string Filename => SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat";
 
         public override void Save()
         {
@@ -44,24 +44,25 @@ namespace SmaugCS.Loaders.Incomplete
 
         public TimeInfoData LoadTimeInfo()
         {
-            using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
-            {
-                var timeInfo = new TimeInfoData();
+            //using (var proxy = new TextReaderProxy(new StreamReader(Filename)))
+            //{
+            //    var timeInfo = new TimeInfoData();
 
-                IEnumerable<string> lines = proxy.ReadIntoList();
-                foreach (var line in lines.Where(x => !x.StartsWith("*")))
-                {
-                    if (line.StartsWithIgnoreCase("#time"))
-                    {
-                        timeInfo.Load(lines);
-                        break;
-                    }
-                    if (line.EqualsIgnoreCase("end"))
-                        break;
-                }
+            //    IEnumerable<string> lines = proxy.ReadIntoList();
+            //    foreach (var line in lines.Where(x => !x.StartsWith("*")))
+            //    {
+            //        if (line.StartsWithIgnoreCase("#time"))
+            //        {
+            //            timeInfo.Load(lines);
+            //            break;
+            //        }
+            //        if (line.EqualsIgnoreCase("end"))
+            //            break;
+            //    }
 
-                return timeInfo;
-            }
+            //    return timeInfo;
+            //}
+            return null;
         }
 
         #endregion

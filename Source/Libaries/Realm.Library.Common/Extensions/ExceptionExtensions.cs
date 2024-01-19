@@ -1,5 +1,4 @@
-﻿using log4net;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Logging;
 using System;
 using System.Diagnostics;
@@ -15,18 +14,16 @@ namespace Realm.Library.Common
         /// Handles exceptions based upon the indicated behavior and throws a new exception of the given
         /// type, assigning the original exception as the InnerException
         /// </summary>
-        public static void Handle<T>(this Exception exception, ExceptionHandlingOptions exceptionBehavior, ILogWrapper log = null,
+        public static void Handle<T>(this Exception exception, ExceptionHandlingOptions exceptionBehavior, ILogWrapper log,
             string msg = "", params object[] parameters) where T : Exception
         {
             var caller = GetCaller();
             if (exceptionBehavior == ExceptionHandlingOptions.RecordOnly || exceptionBehavior == ExceptionHandlingOptions.RecordAndThrow)
             {
-                ILogWrapper logger = log ?? new LogWrapper(LogManager.GetLogger(caller), LogLevel.Error);
-
                 if (string.IsNullOrEmpty(msg))
-                    logger.Error(exception);
+                    log.Error(exception);
                 else
-                    logger.Error(String.Format(msg, parameters), exception);
+                    log.Error(String.Format(msg, parameters), exception);
             }
 
             if (exceptionBehavior == ExceptionHandlingOptions.RecordAndThrow || exceptionBehavior == ExceptionHandlingOptions.ThrowOnly)
@@ -41,18 +38,16 @@ namespace Realm.Library.Common
         /// <param name="log"></param>
         /// <param name="msg"></param>
         /// <param name="parameters"></param>
-        public static void Handle(this Exception exception, ExceptionHandlingOptions exceptionBehavior, ILogWrapper log = null,
+        public static void Handle(this Exception exception, ExceptionHandlingOptions exceptionBehavior, ILogWrapper log,
                                   string msg = "", params object[] parameters)
         {
             var caller = GetCaller();
             if (exceptionBehavior == ExceptionHandlingOptions.RecordOnly || exceptionBehavior == ExceptionHandlingOptions.RecordAndThrow)
             {
-                ILogWrapper logger = log ?? new LogWrapper(LogManager.GetLogger(caller), LogLevel.Error);
-
                 if (string.IsNullOrEmpty(msg))
-                    logger.Error(exception);
+                    log.Error(exception);
                 else
-                    logger.Error(String.Format(msg, parameters), exception);
+                    log.Error(String.Format(msg, parameters), exception);
             }
 
             if (exceptionBehavior == ExceptionHandlingOptions.RecordAndThrow ||

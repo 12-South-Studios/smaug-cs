@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -91,10 +92,10 @@ namespace SmaugCS.Commands
                     "Your stomach is too full to drink more!")) return;
             }
 
-            LiquidData liquid = RepositoryManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
-                                RepositoryManager.Instance.LIQUIDS.Get(0);
+            LiquidData liquid = Program.RepositoryManager.LIQUIDS.Get(obj.Values.LiquidID) ??
+                                Program.RepositoryManager.LIQUIDS.Get(0);
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n drinks $T from $p.", ch, obj, liquid.ShortDescription, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You drink $T from $p.", ch, obj, liquid.ShortDescription, ToTypes.Character);
@@ -200,8 +201,8 @@ namespace SmaugCS.Commands
             if (obj.Values.Quantity <= 0)
                 obj.Values.QUantity = GetMaximumCondition();
 
-            LiquidData liquid = RepositoryManager.Instance.LIQUIDS.Get(obj.Values.LiquidID) ??
-                                RepositoryManager.Instance.LIQUIDS.Get(0);
+            LiquidData liquid = Program.RepositoryManager.LIQUIDS.Get(obj.Values.LiquidID) ??
+                                Program.RepositoryManager.LIQUIDS.Get(0);
 
             if (!ch.IsNpc())
             {
@@ -219,7 +220,7 @@ namespace SmaugCS.Commands
                     pch.PlayerData.ConditionTable[ConditionTypes.Thirsty] = GetMaximumCondition();
             }
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n drinks from the fountain.", ch, null, null, ToTypes.Room);
                 ch.SendTo("You take a long thirst quenching drink.");
@@ -252,7 +253,7 @@ namespace SmaugCS.Commands
                                                || ch.GetCondition(ConditionTypes.Thirsty) >= maxCond,
                 "You are too full to drink any blood.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_BLOOD, "$n drinks from the spilled blood.", ch, null, null, ToTypes.Room);
                 ch.SetColor(ATTypes.AT_BLOOD);
@@ -274,7 +275,7 @@ namespace SmaugCS.Commands
             if (obj.Values.Quantity - 1 <= 0)
             {
                 obj.Extract();
-                ObjectFactory.CreateBloodstain(ch, RepositoryManager.Instance);
+                ObjectFactory.CreateBloodstain(ch, Program.RepositoryManager);
             }
         }
     }

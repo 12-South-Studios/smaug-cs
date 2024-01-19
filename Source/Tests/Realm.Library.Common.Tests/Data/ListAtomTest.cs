@@ -55,7 +55,7 @@ namespace Realm.Library.Common.Test.Data
             var callback = false;
 
             var logger = A.Fake<ILogWrapper>();
-            A.CallTo(() => logger.InfoFormat(A<string>.Ignored, A<object>.Ignored))
+            A.CallTo(() => logger.Info(A<string>.Ignored, A<object>.Ignored))
                 .Invokes(() => callback = true);
 
             var atom = new ListAtom();

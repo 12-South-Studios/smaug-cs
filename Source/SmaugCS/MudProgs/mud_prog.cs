@@ -160,8 +160,8 @@ namespace SmaugCS.MudProgs
 
         /* public static void init_supermob()
          {
-             db.Supermob = RepositoryManager.Instance.CHARACTERS.Create(RepositoryManager.Instance.MOBILE_INDEXES.Get(3));
-             RoomTemplate office = RepositoryManager.Instance.ROOMS.Get(3);
+             db.Supermob = Program.RepositoryManager.CHARACTERS.Create(Program.RepositoryManager.MOBILE_INDEXES.Get(3));
+             RoomTemplate office = Program.RepositoryManager.ROOMS.Get(3);
              office.AddTo(db.Supermob);
          }
 

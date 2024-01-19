@@ -9,7 +9,7 @@ namespace SmaugCS.Commands
     {
         public static void do_track(CharacterInstance ch, string argument)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>("track");
+            var skill = Program.RepositoryManager.GetEntity<SkillData>("track");
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ((PlayerInstance)ch).PlayerData.GetSkillMastery(skill.ID) <= 0,
                 "You do not know of this skill yet.")) return;
 

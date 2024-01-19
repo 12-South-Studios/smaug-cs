@@ -6,7 +6,7 @@ namespace SmaugCS.Data
 {
     public class DescriptorData
     {
-        public ITcpUser User { get; set; }
+        public INetworkUser User { get; set; }
 
         public PlayerInstance Character { get; set; }
         public PlayerInstance Original { get; set; }

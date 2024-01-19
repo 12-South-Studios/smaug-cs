@@ -15,8 +15,9 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIfEmptyString(ch, argument,
                 "Usage:  'bug <message>'  (your location is automatically recorded)")) return;
 
-            db.append_file(ch, SystemConstants.GetSystemFile(SystemFileTypes.PBug),
-                $"({tm.ToLongDateString()}):  {argument}");
+            // TODO
+            //db.append_file(ch, SystemConstants.GetSystemFile(SystemFileTypes.PBug),
+            //    $"({tm.ToLongDateString()}):  {argument}");
             ch.SendTo("Thanks, your bug notice has been recorded.");
         }
     }

@@ -1,4 +1,5 @@
-﻿using SmaugCS.Commands;
+﻿using Autofac;
+using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -19,7 +20,7 @@ namespace SmaugCS
 
             if (victim.IsNotAuthorized())
             {
-                LogManager.Instance.Bug("Killing unauthorized");
+                Program.LogManager.Bug("Killing unauthorized");
                 return null;
             }
 
@@ -31,11 +32,11 @@ namespace SmaugCS
                 return ch.RawKill(victim);
             }
 
-            MudProgHandler.ExecuteMobileProg(MudProgTypes.Death, ch, victim);
+            MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Death, ch, victim);
             if (victim.CharDied())
                 return null;
 
-            MudProgHandler.ExecuteRoomProg(MudProgTypes.Death, victim);
+            MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Death, victim);
             if (victim.CharDied())
                 return null;
 
@@ -73,7 +74,7 @@ namespace SmaugCS
             while (victim.Affects.Count > 0)
                 victim.RemoveAffect(victim.Affects.First());
 
-            var victimRace = RepositoryManager.Instance.GetRace(victim.CurrentRace);
+            var victimRace = Program.RepositoryManager.GetRace(victim.CurrentRace);
             victim.AffectedBy = victimRace.AffectedBy;
             victim.Resistance = 0;
             victim.Susceptibility = 0;
@@ -167,7 +168,7 @@ namespace SmaugCS
             {
                 if (ch.Master == null)
                 {
-                    LogManager.Instance.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
+                    Program.LogManager.Bug("{0} bad AffectedByTypes.Charm", ch.IsNpc() ? ch.ShortDescription : ch.Name);
                     // TODO affect_strip
                     ch.AffectedBy.RemoveBit((int)AffectedByTypes.Charm);
                     return;
@@ -190,7 +191,7 @@ namespace SmaugCS
             ch.UpdatePositionByCurrentHealth();
 
             if (!includeMyTargetsTarget) return;
-            foreach (var fch in RepositoryManager.Instance.CHARACTERS.Values
+            foreach (var fch in Program.RepositoryManager.CHARACTERS.Values
                 .Where(fch => fch.GetMyTarget() == ch))
                 fch.StopFighting(false);
         }
@@ -209,7 +210,7 @@ namespace SmaugCS
             {
                 // TODO affect_strip
                 ch.SetColor(ATTypes.AT_WEAROFF);
-                ch.SendTo(RepositoryManager.Instance.GetEntity<SkillData>("berserk").WearOffMessage);
+                ch.SendTo(Program.RepositoryManager.GetEntity<SkillData>("berserk").WearOffMessage);
                 ch.SendTo("\r\n");
             }
         }

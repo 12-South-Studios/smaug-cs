@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
@@ -45,7 +46,7 @@ namespace SmaugCS.Commands
         {
             if (obj.Values.Flags.IsSet(TriggerFlags.Door))
             {
-                RoomTemplate room = RepositoryManager.Instance.ROOMS.Get(obj.Values.Val1) ?? obj.InRoom;
+                RoomTemplate room = Program.RepositoryManager.ROOMS.Get(obj.Values.Val1) ?? obj.InRoom;
                 if (room == null)
                     throw new InvalidDataException(string.Format("Room {0} was null", obj.Values.Val1));
 
@@ -113,11 +114,11 @@ namespace SmaugCS.Commands
             if (!obj.Values.Flags.IsSet(TriggerFlags.Passage))
                 throw new InvalidDataException($"Object {obj.ID} is not a passage");
 
-            var sourceRoom = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
+            var sourceRoom = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[1]);
             if (sourceRoom == null)
                 throw new InvalidDataException($"Source Room {obj.Value.ToList()[1]} was null");
 
-            var destRoom = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
+            var destRoom = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[2]);
             if (destRoom == null)
                 throw new InvalidDataException($"Destination Room {obj.Value.ToList()[2]} was null");
 
@@ -147,7 +148,7 @@ namespace SmaugCS.Commands
         {
             exit.Flags = exit.Flags.RemoveBit(ExitFlags.Closed);
 
-            var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
+            var room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[1]);
             if (room == null)
                 throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
@@ -159,7 +160,7 @@ namespace SmaugCS.Commands
             {
                 reverseExit.Flags = reverseExit.Flags.RemoveBit(ExitFlags.Closed);
 
-                var destRoom = exit.GetDestination(RepositoryManager.Instance);
+                var destRoom = exit.GetDestination(Program.RepositoryManager);
                 foreach (var rch in destRoom.Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d opens.", rch, null, reverseExit.Keywords, ToTypes.Character);
             }
@@ -171,7 +172,7 @@ namespace SmaugCS.Commands
         {
             exit.Flags = exit.Flags.SetBit(ExitFlags.Closed);
 
-            var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
+            var room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[1]);
             if (room == null)
                 throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
@@ -183,7 +184,7 @@ namespace SmaugCS.Commands
             {
                 reverseExit.Flags = reverseExit.Flags.SetBit(ExitFlags.Closed);
 
-                var destRoom = exit.GetDestination(RepositoryManager.Instance);
+                var destRoom = exit.GetDestination(Program.RepositoryManager);
                 foreach (var rch in destRoom.Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d closes.", rch, null, reverseExit.Keywords, ToTypes.Character);
             }
@@ -195,7 +196,7 @@ namespace SmaugCS.Commands
         {
             if (obj.Values.Flags.IsSet(TriggerFlags.Container))
             {
-                var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]) ?? obj.InRoom;
+                var room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[1]) ?? obj.InRoom;
                 if (room == null)
                     throw new InvalidDataException($"Room {obj.Value.ToList()[1]} was null");
 
@@ -245,7 +246,7 @@ namespace SmaugCS.Commands
         {
             if (obj.Value.ToList()[0].IsSet(TriggerFlags.MobileLoad))
             {
-                var template = RepositoryManager.Instance.MOBILETEMPLATES.Get(obj.Value.ToList()[1]);
+                var template = Program.RepositoryManager.MOBILETEMPLATES.Get(obj.Value.ToList()[1]);
                 if (template == null)
                 {
                     // TODO Exception, log it!
@@ -255,7 +256,7 @@ namespace SmaugCS.Commands
                 var room = ch.CurrentRoom;
                 if (obj.Value.ToList()[2] > 0)
                 {
-                    room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
+                    room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[2]);
                     if (room == null)
                     {
                         // TODO Exception, log it!
@@ -263,7 +264,7 @@ namespace SmaugCS.Commands
                     }
                 }
 
-                var instance = RepositoryManager.Instance.CHARACTERS.Create(template);
+                var instance = Program.RepositoryManager.CHARACTERS.Create(template);
                 if (instance == null)
                 {
                     // TODO Exception, log it!
@@ -306,7 +307,7 @@ namespace SmaugCS.Commands
         {
             if (obj.Value.ToList()[0].IsSet((int)TriggerFlags.ObjectLoad))
             {
-                var template = RepositoryManager.Instance.OBJECTTEMPLATES.Get(obj.Value.ToList()[1]);
+                var template = Program.RepositoryManager.OBJECTTEMPLATES.Get(obj.Value.ToList()[1]);
                 if (template == null)
                 {
                     // TODO Exception, log it!
@@ -316,7 +317,7 @@ namespace SmaugCS.Commands
                 RoomTemplate room = null;
                 if (obj.Value.ToList()[2] > 0)
                 {
-                    room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[2]);
+                    room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[2]);
                     if (room == null)
                     {
                         // TODO Exception, log it!
@@ -325,7 +326,7 @@ namespace SmaugCS.Commands
                 }
 
                 var level = 0.GetNumberThatIsBetween(obj.Value.ToList()[3], LevelConstants.MaxLevel);
-                var instance = RepositoryManager.Instance.OBJECTS.Create(template, level);
+                var instance = Program.RepositoryManager.OBJECTS.Create(template, level);
                 if (instance == null)
                 {
                     // TODO Exception, log it!
@@ -366,7 +367,7 @@ namespace SmaugCS.Commands
         {
             if (obj.Value.ToList()[0].IsSet(TriggerFlags.Rand4) || obj.Value.ToList()[0].IsSet(TriggerFlags.Rand6))
             {
-                var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
+                var room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[1]);
                 if (room == null)
                 {
                     // TODO Exception, log it!
@@ -390,7 +391,7 @@ namespace SmaugCS.Commands
         {
             if (obj.Value.ToList()[0].IsSet(TriggerFlags.Teleport) || obj.Value.ToList()[0].IsSet(TriggerFlags.TeleportAll))
             {
-                var room = RepositoryManager.Instance.ROOMS.Get(obj.Value.ToList()[1]);
+                var room = Program.RepositoryManager.ROOMS.Get(obj.Value.ToList()[1]);
                 if (room == null)
                 {
                     // TODO Exception, log it!
@@ -417,7 +418,7 @@ namespace SmaugCS.Commands
             {
                 if (obj.Value.ToList()[0].IsSet(TriggerFlags.AutoReturn))
                     obj.Value.ToList()[0].RemoveBit(TriggerFlags.Up);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Pull, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Pull, ch, obj);
                 return true;
             }
             return false;
@@ -429,7 +430,7 @@ namespace SmaugCS.Commands
             {
                 if (obj.Value.ToList()[0].IsSet(TriggerFlags.AutoReturn))
                     obj.Value.ToList()[0].SetBit(TriggerFlags.Up);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Push, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Push, ch, obj);
                 return true;
             }
             return false;
@@ -437,7 +438,7 @@ namespace SmaugCS.Commands
 
         private static bool CheckAndFireOProgUseTrigger(bool pull, CharacterInstance ch, ObjectInstance obj)
         {
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, $"$n {(pull ? "pulls" : "pushes")} $p.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, $"You {(pull ? "pull" : "push")} $p.", ch, obj, null, ToTypes.Character);

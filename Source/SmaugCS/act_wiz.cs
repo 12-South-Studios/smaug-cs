@@ -81,9 +81,9 @@ namespace SmaugCS
         public static RoomTemplate find_location(CharacterInstance ch, string arg)
         {
             if (arg.IsNumber())
-                return RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(arg.ToInt32());
+                return Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(arg.ToInt32());
             if (arg.Equals("pk"))
-                return RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
+                return Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(db.LastPKRoom);
 
             var victim = ch.GetCharacterInWorld(arg);
             if (victim != null)
@@ -108,7 +108,7 @@ namespace SmaugCS
         {
             if (victim.CurrentRoom == null)
             {
-                LogManager.Instance.Bug("Victim {0} in null room", victim.Name);
+                Program.LogManager.Bug("Victim {0} in null room", victim.Name);
                 return;
             }
 
@@ -169,7 +169,7 @@ namespace SmaugCS
             GameConstants.GetSystemValue<int>("HourOfSunset = ((GameConstants.GetSystemValue<int>("HoursPerDay / 4) * 3);
             GameConstants.GetSystemValue<int>("HourOfNightBegin = GameConstants.GetSystemValue<int>("HourOfSunset + 1;
             GameConstants.GetSystemValue<int>("HourOfMidnight = GameConstants.GetSystemValue<int>("HoursPerDay;
-            CalendarManager.Instance.CalculateSeason(GameManager.Instance.GameTime);*/
+            CalendarManager.Instance.CalculateSeason(Program.GameManager.GameTime);*/
         }
 
         public static void update_timers()
@@ -210,8 +210,8 @@ namespace SmaugCS
 
         public static bool check_area_conflicts(int lo, int hi)
         {
-            return RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
-                   || RepositoryManager.Instance.AREAS.Values.Any(area => check_area_conflict(area, lo, hi));
+            return Program.RepositoryManager.AREAS.Values.Any(area => check_area_conflict(area, lo, hi))
+                   || Program.RepositoryManager.AREAS.Values.Any(area => check_area_conflict(area, lo, hi));
         }
     }
 }

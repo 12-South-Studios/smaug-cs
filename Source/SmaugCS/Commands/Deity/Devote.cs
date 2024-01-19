@@ -25,7 +25,7 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            var deity = RepositoryManager.Instance.GetEntity<DeityData>(firstArg);
+            var deity = Program.RepositoryManager.GetEntity<DeityData>(firstArg);
             if (CheckFunctions.CheckIfNullObject(ch, deity, "No such deity holds weight on this world.")) return;
             if (CheckFunctions.CheckIfNotNullObject(ch, ((PlayerInstance)ch).PlayerData.CurrentDeity,
                 "You are already devoted to a deity.")) return;

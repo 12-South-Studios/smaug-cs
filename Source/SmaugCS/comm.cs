@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
@@ -251,14 +252,14 @@ namespace SmaugCS
             if (flags1 != (int)ActFFlags.None && flags1 != (int)ActFFlags.Text
                 && flags1 != (int)ActFFlags.CH && flags1 != (int)ActFFlags.OBJ)
             {
-                LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags1);
+                Program.LogManager.Bug("More than one type {0} defined. Setting all null.", flags1);
                 obj1 = null;
             }
 
             if (flags2 != (int)ActFFlags.None && flags2 != (int)ActFFlags.Text
                 && flags2 != (int)ActFFlags.CH && flags2 != (int)ActFFlags.OBJ)
             {
-                LogManager.Instance.Bug("More than one type {0} defined. Setting all null.", flags2);
+                Program.LogManager.Bug("More than one type {0} defined. Setting all null.", flags2);
                 vch = null;
                 obj2 = null;
             }
@@ -287,12 +288,12 @@ namespace SmaugCS
             {
                 txt = act_string(format, null, ch, arg1, arg2, Program.STRING_IMM);
                 if (to.CurrentRoom.HasProg(MudProgTypes.Act))
-                    MudProgHandler.ExecuteRoomProg(MudProgTypes.Act, txt, to.CurrentRoom, ch, (ObjectInstance)arg1, arg2);
+                    MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Act, txt, to.CurrentRoom, ch, (ObjectInstance)arg1, arg2);
 
                 foreach (var toObj in to.CurrentRoom.Contents
                     .Where(toObj => to.CurrentRoom.HasProg(MudProgTypes.Act)))
                 {
-                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Act, txt, toObj, ch, (ObjectInstance)arg1, arg2);
+                    MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Act, txt, toObj, ch, (ObjectInstance)arg1, arg2);
                 }
             }
 
@@ -336,7 +337,7 @@ namespace SmaugCS
                     to.SendTo(txt);
                 }
 
-                MudProgHandler.ExecuteMobileProg(MudProgTypes.Act, txt, to, ch, arg1, arg2);
+                MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Act, txt, to, ch, arg1, arg2);
             }
         }
 
@@ -379,7 +380,7 @@ namespace SmaugCS
 
             if (ch == null)
             {
-                LogManager.Instance.Bug("Null ch");
+                Program.LogManager.Bug("Null ch");
                 return;
             }
 
@@ -429,7 +430,7 @@ namespace SmaugCS
         {
             act_wiz.echo_to_all(ATTypes.AT_IMMORT, "MUD shutting down by system operator NOW!!", (int)EchoTypes.All);
             db.shutdown_mud("MUD shutdown by system operator");
-            LogManager.Instance.Info("MUD shutdown by system operator");
+            Program.LogManager.Info("MUD shutdown by system operator");
 
             Thread.Sleep(5000);
 

@@ -68,7 +68,7 @@ namespace SmaugCS.Commands
             if (exit?.GetDestination() == null || exit.Flags.IsSet(ExitFlags.NoFlee) || exit.Flags.IsSet(ExitFlags.Closed) || !ch.IsAffected(AffectedByTypes.PassDoor) || (ch.IsNpc() && exit.GetDestination().Flags.IsSet(RoomFlags.NoMob)))
                 return false;
 
-            var sneak = RepositoryManager.Instance.GetEntity<SkillData>("sneak");
+            var sneak = Program.RepositoryManager.GetEntity<SkillData>("sneak");
             if (sneak == null) return false;
 
             ch.StripAffects((int)sneak.ID);

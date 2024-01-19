@@ -24,12 +24,7 @@
     <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="Ninject">
-      <Version>3.3.6</Version>
-    </PackageReference>
+    <PackageReference Include="Autofac" Version="8.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
   </ItemGroup>

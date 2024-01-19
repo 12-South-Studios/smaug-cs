@@ -1,12 +1,19 @@
-﻿using Ninject.Modules;
+﻿using Autofac;
 
 namespace SmaugCS.DAL
 {
-    public class DbContextModule : NinjectModule
+    public class DbContextModule : Module
     {
-        public override void Load()
+        private readonly string _dbConnectionString;
+        public DbContextModule(string dbConnectionString)
         {
-            Bind<IDbContext>().To<DbContext>().InSingletonScope();
+            _dbConnectionString = dbConnectionString;
+        }
+
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<DbContext>().As<IDbContext>()
+                .WithParameter("connectionString", _dbConnectionString);
         }
     }
 }

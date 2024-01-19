@@ -21,11 +21,11 @@ namespace SmaugCS
 
             try
             {
-                (luaManager ?? LuaManager.Instance).DoLuaScript(mudProg.Script);
+                (luaManager ?? Program.LuaManager).DoLuaScript(mudProg.Script);
             }
             catch (Exception ex)
             {
-                (logManager ?? LogManager.Instance).Error(ex);
+                (logManager ?? Program.LogManager).Error(ex);
                 return false;
             }
 

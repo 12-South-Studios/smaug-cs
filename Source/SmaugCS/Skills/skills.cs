@@ -21,42 +21,42 @@ namespace SmaugCS.Skills
 
         public static int get_ssave(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellSaves"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellSaves"));
         }
 
         public static int get_starget(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("TargetTypes"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("TargetTypes"));
         }
 
         public static int get_sdamage(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellDamageTypes"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellDamageTypes"));
         }
 
         public static int get_saction(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellActionTypes"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellActionTypes"));
         }
 
         public static int get_ssave_effect(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellSaveEffects"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellSaveEffects"));
         }
 
         public static int get_sflag(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellFlags"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellFlags"));
         }
 
         public static int get_spower(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellPowerTypes"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellPowerTypes"));
         }
 
         public static int get_sclass(string name)
         {
-            return LookupConstants.GetFlagIndex(name, LookupManager.Instance.GetLookups("SpellClassTypes"));
+            return LookupConstants.GetFlagIndex(name, Program.LookupManager.GetLookups("SpellClassTypes"));
         }
 
         public static bool is_legal_kill(CharacterInstance ch, CharacterInstance vch)
@@ -91,7 +91,7 @@ namespace SmaugCS.Skills
             var was_in_room = ch.CurrentRoom;
             var max_distance = 8;
 
-            if (ch.IsVampire() && GameManager.Instance.GameTime.Hour < 21 && GameManager.Instance.GameTime.Hour > 5)
+            if (ch.IsVampire() && Program.GameManager.GameTime.Hour < 21 && Program.GameManager.GameTime.Hour > 5)
                 max_distance = 1;
 
             if (ch.Level < 50)
@@ -203,7 +203,7 @@ namespace SmaugCS.Skills
                 return ReturnTypes.None;
             }
 
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>("MissileWeapons");
+            var skill = Program.RepositoryManager.GetEntity<SkillData>("MissileWeapons");
 
             if (victim.IsNpc() && victim.Act.IsSet((int)ActFlags.Sentinel)
                 && ch.CurrentRoom != victim.CurrentRoom)
@@ -299,7 +299,7 @@ namespace SmaugCS.Skills
 
             SkillData skill = null;
             if (Macros.IS_VALID_SN(sn))
-                skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+                skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
 
             if (exit != null && exit.GetDestination() == null)
             {

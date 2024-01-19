@@ -47,9 +47,8 @@ namespace SmaugCS.DAL
         private IMongoCollection<GameState> GameStates {  get { return Database.GetCollection<GameState>(CollectionNames.GameStates); } }
         private IMongoCollection<Session> Sessions {  get {  return Database.GetCollection<Session>(CollectionNames.Sessions); } }
 
-        public DbContext(long id, IConfiguration configuration, ILogger<DbContext> logger) : base(id, typeof(DbContext).FullName)
+        public DbContext(string connectionString, ILogger<DbContext> logger) : base(1, typeof(DbContext).FullName)
         {
-            var connectionString = configuration.GetConnectionString("ConnectionString");
             _connectionString = connectionString;
             _logger = logger;
             Registrations();

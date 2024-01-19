@@ -87,7 +87,7 @@ namespace SmaugCS.Commands
 
         private static int GetSaveFlags()
         {
-            return GameManager.Instance.SystemData.SaveFlags;
+            return Program.GameManager.SystemData.SaveFlags;
         }
 
         private static void EmptyToGround(CharacterInstance ch, ObjectInstance obj)

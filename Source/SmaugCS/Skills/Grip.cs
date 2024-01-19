@@ -17,7 +17,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet((int)DefenseTypes.Grip))
                 return false;
 
-            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("grip");
+            var skill = (dbManager ?? Program.RepositoryManager).GetEntity<SkillData>("grip");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'grip' not found");
 

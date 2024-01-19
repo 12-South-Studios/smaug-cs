@@ -43,7 +43,7 @@ namespace SmaugCS.Commands
                     // TODO: add_ban(ch, "", "", 0, 0);
                     return;
                 default:
-                    LogManager.Instance.Bug("Illegal Characer Substate (Name={0}, SubState={1}", pch.Name, pch.SubState);
+                    Program.LogManager.Bug("Illegal Characer Substate (Name={0}, SubState={1}", pch.Name, pch.SubState);
                     return;
             }
 
@@ -87,9 +87,9 @@ namespace SmaugCS.Commands
                 return;
             }
 
-            if (ch.Trust < GameManager.Instance.SystemData.ban_site_level)
+            if (ch.Trust < Program.GameManager.SystemData.ban_site_level)
             {
-                ch.Printf("You must be {0} level to add bans.", GameManager.Instance.SystemData.ban_site_level);
+                ch.Printf("You must be {0} level to add bans.", Program.GameManager.SystemData.ban_site_level);
                 return;
             }
 
@@ -142,7 +142,7 @@ namespace SmaugCS.Commands
             var ban = ch.DestinationBuffer.CastAs<BanData>();
             if (ban == null)
             {
-                LogManager.Instance.Bug("Null DestinationBuffer for character {0}", ch.Name);
+                Program.LogManager.Bug("Null DestinationBuffer for character {0}", ch.Name);
                 ch.SubState = CharacterSubStates.None;
                 return 0;
             }
@@ -154,7 +154,7 @@ namespace SmaugCS.Commands
             //build.stop_editing(ch);
 
             ch.SubState = EnumerationExtensions.GetEnum<CharacterSubStates>(ch.tempnum);
-            BanManager.Instance.Repository.Add(ban);
+            Program.BanManager.Repository.Add(ban);
 
             if (ban.Duration > 0)
                 ch.Printf("{0} is banned for {1} days.\r\n", ban.Name, ban.Duration / 86400);
@@ -192,7 +192,7 @@ namespace SmaugCS.Commands
         //                            else
         //                            {
         //                                int count = 0;
-        //                                foreach (ClassData cls in RepositoryManager.Instance.CLASSES)
+        //                                foreach (ClassData cls in Program.RepositoryManager.CLASSES)
         //                                {
         //                                    if (cls.Name.EqualsIgnoreCase(arg))
         //                                        break;
@@ -201,7 +201,7 @@ namespace SmaugCS.Commands
         //                                value = count;
         //                            }
 
-        //                            if (value < 0 || value >= RepositoryManager.Instance.CLASSES.Count())
+        //                            if (value < 0 || value >= Program.RepositoryManager.CLASSES.Count())
         //                            {
         //                                ch.SendTo("Unknown class.\r\n", ch);
         //                                return 0;
@@ -229,7 +229,7 @@ namespace SmaugCS.Commands
         //                                return 1;
         //                            }
 
-        //                            newBan.Name = RepositoryManager.Instance.CLASSES.ToList()[value].Name;
+        //                            newBan.Name = Program.RepositoryManager.CLASSES.ToList()[value].Name;
         //                            newBan.Flag = value;
         //                            newBan.Level = level;
         //                            newBan.BannedBy = ch.Name;
@@ -241,7 +241,7 @@ namespace SmaugCS.Commands
         //                            else
         //                            {
         //                                int count = 0;
-        //                                foreach (RaceData race in RepositoryManager.Instance.RACES)
+        //                                foreach (RaceData race in Program.RepositoryManager.RACES)
         //                                {
         //                                    if (race.Name.EqualsIgnoreCase(arg))
         //                                        break;
@@ -250,7 +250,7 @@ namespace SmaugCS.Commands
         //                                value = count;
         //                            }
 
-        //                            if (value < 0 || value >= RepositoryManager.Instance.RACES.Count())
+        //                            if (value < 0 || value >= Program.RepositoryManager.RACES.Count())
         //                            {
         //                                ch.SendTo("Unknown race.\r\n", ch);
         //                                return 0;
@@ -277,7 +277,7 @@ namespace SmaugCS.Commands
         //                                ch.SendTo("Updated entry.\r\n", ch);
         //                                return 1;
         //                            }
-        //                            newBan.Name = RepositoryManager.Instance.RACES.ToList()[value].Name;
+        //                            newBan.Name = Program.RepositoryManager.RACES.ToList()[value].Name;
         //                            newBan.Flag = value;
         //                            newBan.Level = level;
         //                            newBan.BannedBy = ch.Name;
@@ -312,7 +312,7 @@ namespace SmaugCS.Commands
         //                            // TODO Finish site bans
         //                            break;
         //                        default:
-        //                            LogManager.Instance.Bug("Bad type {0}", type);
+        //                            Program.LogManager.Bug("Bad type {0}", type);
         //                            return 0;
         //                    }
 
@@ -327,7 +327,7 @@ namespace SmaugCS.Commands
         //                    return 1;
 
         //                default:
-        //                    LogManager.Instance.Bug("Illegal substate {0}", ch.SubState);
+        //                    Program.LogManager.Bug("Illegal substate {0}", ch.SubState);
         //                    return 0;
         //            }
         //        }
@@ -361,7 +361,7 @@ namespace SmaugCS.Commands
         //                    level = (int)BanTypes.Warn;
         //                    break;
         //                default:
-        //                    LogManager.Instance.Bug("Bad string for flag {0}", arg2);
+        //                    Program.LogManager.Bug("Bad string for flag {0}", arg2);
         //                    level = 0;
         //                    break;
         //            }

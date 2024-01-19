@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.NCalc;
@@ -25,7 +25,7 @@ namespace SmaugCS
         private static ILogManager _logger;
         private static ITimer _timer;
 
-        public GameManager(IRepositoryManager databaseManager, ILogManager logManager, ITimer timer)
+        public GameManager(IRepositoryManager databaseManager, ILogManager logManager, [KeyFilter("GameLoopTimer")]ITimer timer)
         {
             _dbManager = databaseManager;
             _logger = logManager;
@@ -35,8 +35,6 @@ namespace SmaugCS
             ExpParser = new ExpressionParser(ExpressionTableInitializer.GetExpressionTable());
             SystemData = new SystemData();
         }
-
-        public static IGameManager Instance => Program.Kernel.Get<IGameManager>();
 
         public SystemData SystemData { get; private set; }
 
@@ -140,7 +138,7 @@ namespace SmaugCS
 
             update.auth_update();
             update.time_update();
-            WeatherManager.Instance.Weather.Update(Instance.GameTime);
+            Program.WeatherManager.Weather.Update(Program.GameManager.GameTime);
             update.hint_update();
             update.char_update();
             update.obj_update();
@@ -164,7 +162,7 @@ namespace SmaugCS
             var players = 0;
             var mobiles = 0;
 
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in Program.RepositoryManager.CHARACTERS.Values)
             {
                 if (ch is PlayerInstance)
                 {
@@ -173,7 +171,7 @@ namespace SmaugCS
                 }
                 else if (ch is MobileInstance)
                 {
-                    ((MobileInstance)ch).ProcessUpdate(RepositoryManager.Instance);
+                    ((MobileInstance)ch).ProcessUpdate(Program.RepositoryManager);
                     mobiles++;
                 }
             }

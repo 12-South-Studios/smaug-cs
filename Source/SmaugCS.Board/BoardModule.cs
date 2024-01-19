@@ -1,23 +1,14 @@
-﻿using Ninject;
-using Ninject.Modules;
-using SmaugCS.DAL;
-using SmaugCS.Logging;
+﻿using Autofac;
 
 namespace SmaugCS.Board
 {
-    public class BoardModule : NinjectModule
+    public class BoardModule : Module
     {
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<IBoardRepository>().To<BoardRepository>()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>());
-
-            Kernel.Bind<IBoardManager>().To<BoardManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("repository", Kernel.Get<IBoardRepository>())
-                .OnActivation(x => x.Initialize());
+            builder.RegisterType<BoardRepository>().As<IBoardRepository>();
+            builder.RegisterType<BoardManager>().As<IBoardManager>().SingleInstance()
+                .OnActivated(x => x.Instance.Initialize());
         }
     }
 }

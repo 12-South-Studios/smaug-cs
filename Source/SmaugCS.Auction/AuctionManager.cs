@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Data.Instances;
@@ -10,16 +10,14 @@ namespace SmaugCS.Auction
     // ReSharper disable once ClassNeverInstantiated.Global
     public sealed class AuctionManager : IAuctionManager
     {
-        private static IKernel _kernel;
         private static ITimer _timer;
 
         public AuctionData Auction { get; private set; }
 
         public IAuctionRepository Repository { get; }
 
-        public AuctionManager(IKernel kernel, ITimer timer, IAuctionRepository repository)
+        public AuctionManager([KeyFilter("AuctionPulseTimer")]ITimer timer, IAuctionRepository repository)
         {
-            _kernel = kernel;
             Repository = repository;
 
             _timer = timer;
@@ -37,8 +35,6 @@ namespace SmaugCS.Auction
             _timer.Stop();
             _timer.Dispose();
         }
-
-        public static IAuctionManager Instance => _kernel.Get<IAuctionManager>();
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {

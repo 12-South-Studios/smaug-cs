@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.MudProgs;
@@ -24,7 +25,7 @@ namespace SmaugCS
             }
 
             if (obj.ItemType != ItemTypes.Light || !ch.IsInArena())
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Damage, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Damage, ch, obj);
 
             if (handler.obj_extracted(obj))
                 return handler.GlobalObjectCode;

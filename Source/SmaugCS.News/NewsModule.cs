@@ -1,23 +1,15 @@
-﻿using Ninject;
-using Ninject.Modules;
-using SmaugCS.DAL;
-using SmaugCS.Logging;
+﻿using Autofac;
 
 namespace SmaugCS.News
 {
-    public class NewsModule : NinjectModule
+    public class NewsModule : Module
     {
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<INewsRepository>().To<NewsRepository>()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>());
+            builder.RegisterType<NewsRepository>().As<INewsRepository>();
 
-            Kernel.Bind<INewsManager>().To<NewsManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("repository", Kernel.Get<INewsRepository>())
-                .OnActivation(x => x.Initialize());
+            builder.RegisterType<NewsManager>().As<INewsManager>().SingleInstance()
+                .OnActivated(x => x.Instance.Initialize());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SmaugCS.Skills
             if (victim.CurrentClass != ClassTypes.Thief || !victim.IsAwake())
                 return false;
 
-            var skill = (dbManager ?? RepositoryManager.Instance).GetEntity<SkillData>("tumble");
+            var skill = (dbManager ?? Program.RepositoryManager).GetEntity<SkillData>("tumble");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'tumble' not found");
 
@@ -28,7 +28,7 @@ namespace SmaugCS.Skills
                 chances = 60.GetLowestOfTwoNumbers(2 * victim.Level);
             else
                 chances = (int)Macros.LEARNED(victim, (int)skill.ID) /
-                          (gameManager ?? GameManager.Instance).SystemData.TumbleMod +
+                          (gameManager ?? Program.GameManager).SystemData.TumbleMod +
                           (victim.GetCurrentDexterity() - 13);
 
             if (chances != 0 && victim.CurrentMorph != null)

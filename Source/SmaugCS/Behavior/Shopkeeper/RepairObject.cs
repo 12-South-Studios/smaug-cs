@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Constants;
+﻿using Autofac;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.MudProgs;
@@ -71,7 +72,7 @@ namespace SmaugCS.Behavior
                         break;
                 }
 
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Repair, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Repair, ch, obj);
             }
         }
     }

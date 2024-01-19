@@ -1,12 +1,8 @@
-﻿using Realm.Library.Common;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Realm.Library.Network.Mxp
 {
-    /// <summary>
-    ///
-    /// </summary>
     public static class MxpExtensions
     {
         public const char SE = '\xF0';
@@ -20,57 +16,19 @@ namespace Realm.Library.Network.Mxp
         public const char GA = '\xF9';
         public const char ESC = '\x1B';
 
-        /// <summary>
-        /// Converts the string into a Mxp Tag
-        /// </summary>
         public static string MxpTag(this string input, params object[] parameters)
-        {
-            return parameters == null
-                ? MxpBeg() + input + MxpEnd()
-                : MxpBeg() + string.Format(input, parameters) + MxpEnd();
-        }
+          => parameters == null
+             ? MxpBeg() + input + MxpEnd()
+             : MxpBeg() + string.Format(input, parameters) + MxpEnd();
 
-        /// <summary>
-        /// Gets an ampersand in Mxp format
-        /// </summary>
-        public static string MxpAmp()
-        {
-            return "\x06";
-        }
+        public static string MxpAmp() => "\x06";
+        public static string MxpBeg() => "\x03";
+        public static string MxpEnd() => "\x04";
+        public static string MxpMode(this int arg) => $"{ESC}[{arg}z";
 
-        /// <summary>
-        /// Gets the beginning of a mxp tag
-        /// </summary>
-        public static string MxpBeg()
-        {
-            return "\x03";
-        }
-
-        /// <summary>
-        /// Gets the end of a mxp tag
-        /// </summary>
-        public static string MxpEnd()
-        {
-            return "\x04";
-        }
-
-        /// <summary>
-        /// Gets the enable mxp mode string
-        /// </summary>
-        public static string MxpMode(this int arg)
-        {
-            return $"{ESC}[{arg}z";
-        }
-
-        /// <summary>
-        /// Sends mxp negotiation to the given stream
-        /// </summary>
         [ExcludeFromCodeCoverage]
         public static void SendMxpNegotiation(this Stream clientStream)
         {
-            Validation.IsNotNull(clientStream, "clientStream");
-            Validation.Validate(clientStream.CanWrite);
-
             var buffer = new byte[3];
             buffer[0] = (byte)IAC;
             buffer[1] = (byte)WILL;

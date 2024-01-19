@@ -1,28 +1,20 @@
-﻿using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
-using Realm.Library.Common.Logging;
+﻿using Realm.Library.Common.Extensions;
+using Realm.Library.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using Realm.Library.Common.Logging;
 
-namespace Realm.Library.Network
+namespace Realm.Library.Network.Tcp
 {
-    /// <summary>
-    /// Abstract class wraps the TcpClient and exposes additional functionality
-    /// </summary>
-    public abstract class TcpClientWrapper : ITcpClientWrapper
+    public abstract class TcpClientWrapper : IClient
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="log"></param>
-        /// <param name="tcpClient"></param>
-        /// <param name="formatters"></param>
         [ExcludeFromCodeCoverage]
         protected TcpClientWrapper(ILogWrapper log, TcpClient tcpClient, IEnumerable<IFormatter> formatters)
         {
@@ -37,44 +29,18 @@ namespace Realm.Library.Network
             ConnectedOn = DateTime.Now;
         }
 
-        /// <summary>
-        /// Gets a reference to the ILog interface
-        /// </summary>
         protected ILogWrapper Log { get; }
-
-        /// <summary>
-        /// Gets a reference to the TcpClient attached to this object
-        /// </summary>
         protected TcpClient TcpClient { get; }
-
-        /// <summary>
-        ///
-        /// </summary>
         protected IEnumerable<IFormatter> Formatters { get; }
-
-        /// <summary>
-        /// Gets the IpAddress of the connected user
-        /// </summary>
         public string IpAddress { get; protected set; }
-
-        /// <summary>
-        /// Gets the datetime when a connection occurred
-        /// </summary>
         public DateTime ConnectedOn { get; protected set; }
-
-        /// <summary>
-        /// Gets a reference to the NetworkStream object
-        /// </summary>
         public NetworkStream ClientStream { get; protected set; }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// Writes a given message to the buffer which will be queued to send to the client stream.
-        /// </summary>
         [ExcludeFromCodeCoverage]
-        public void WriteToBuffer(string msg)
+        public async Task Write(string msg)
         {
-            if (string.IsNullOrEmpty(msg)) return;
+            if (TcpClient == null)
+                return;
 
             var encoder = new ASCIIEncoding();
             var clientStream = TcpClient.GetStream();
@@ -83,7 +49,8 @@ namespace Realm.Library.Network
             {
                 foreach (var formattedString in Formatters.Select(formatter => formatter.Format(msg)))
                 {
-                    clientStream.Write(encoder.GetBytes(formattedString), 0, formattedString.Length);
+                    //Log.Debug($"[TCP USER]: {formattedString}");
+                    await clientStream.WriteAsync(encoder.GetBytes(formattedString), 0, formattedString.Length);
                 }
 
                 clientStream.Flush();

@@ -265,7 +265,7 @@ namespace Realm.Library.Common.Data
         {
             Validation.IsNotNull(log, "log");
 
-            log.InfoFormat("{0}(ListAtom)", prefix);
+            log.Info("{0}(ListAtom)", prefix);
             Enumerable.Range(1, Count).ToList().ForEach(i =>
                 {
                     var atom = Get(i - 1);

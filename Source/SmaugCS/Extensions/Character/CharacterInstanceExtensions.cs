@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Commands;
@@ -170,7 +171,7 @@ namespace SmaugCS
                 ch.CurrentMount.Act.RemoveBit((int)ActFlags.Mounted);
                 foreach (
                     var wch in
-                        RepositoryManager.Instance.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
+                        Program.RepositoryManager.CHARACTERS.Values.Where(wch => wch.CurrentMount == ch))
                 {
                     wch.CurrentMount = null;
                     wch.CurrentPosition = PositionTypes.Standing;
@@ -203,13 +204,13 @@ namespace SmaugCS
                 RoomTemplate location = null;
                 // TODO fix
                 //if (!ch.IsNpc() && ((PlayerInstance)ch).PlayerData.Clan != null)
-                //    location = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
+                //    location = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(((PlayerInstance)ch).PlayerData.Clan.RecallRoom);
 
                 if (location == null)
-                    location = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_ALTAR);
+                    location = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_ALTAR);
 
                 if (location == null)
-                    location = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(1);
+                    location = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(1);
 
                 location.AddTo(ch);
 
@@ -239,7 +240,7 @@ namespace SmaugCS
             if (((PlayerInstance)ch.Switched)?.Descriptor != null)
                 Return.do_return(ch.Switched, "");
 
-            foreach (var wch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var wch in Program.RepositoryManager.CHARACTERS.Values)
             {
                 if (((PlayerInstance)wch).ReplyTo == ch)
                     ((PlayerInstance)wch).ReplyTo = null;
@@ -247,7 +248,7 @@ namespace SmaugCS
                     ((PlayerInstance)wch).RetellTo = null;
             }
 
-            RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
+            Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Delete(ch.ID);
 
             if (!ch.IsNpc() && ((PlayerInstance)ch).Descriptor != null)
             {
@@ -271,7 +272,7 @@ namespace SmaugCS
             if (!ch.IsVampire() || !ch.IsOutside()) return 0;
 
             var attrib =
-                (gameManager ?? GameManager.Instance).GameTime.Sunlight.GetAttribute<ArmorClassAttribute>();
+                (gameManager ?? Program.GameManager).GameTime.Sunlight.GetAttribute<ArmorClassAttribute>();
             return attrib.ModValue;
         }
 
@@ -284,7 +285,7 @@ namespace SmaugCS
         public static bool CanUseSkill(this CharacterInstance ch, int percent, int skillId,
             IRepositoryManager dbManager = null)
         {
-            var skill = (dbManager ?? RepositoryManager.Instance).SKILLS.Get(skillId);
+            var skill = (dbManager ?? Program.RepositoryManager).SKILLS.Get(skillId);
             if (skill == null)
                 throw new EntryNotFoundException("Skill {0} not found", skillId);
 
@@ -579,7 +580,7 @@ namespace SmaugCS
         public static bool CouldDualWield(this CharacterInstance ch)
         {
             return ch.IsNpc() ||
-                   ((PlayerInstance)ch).PlayerData.GetSkillMastery(RepositoryManager.Instance.GetEntity<SkillData>("dual wield").ID) > 0;
+                   ((PlayerInstance)ch).PlayerData.GetSkillMastery(Program.RepositoryManager.GetEntity<SkillData>("dual wield").ID) > 0;
         }
 
         public static bool CanDualWield(this CharacterInstance ch)
@@ -639,7 +640,7 @@ namespace SmaugCS
             if (morph.race != 0 && morph.race.IsSet(1 << (int)ch.CurrentRace))
                 return false;
             if (!string.IsNullOrWhiteSpace(morph.deity) &&
-                (((PlayerInstance)ch).PlayerData.CurrentDeity != null || RepositoryManager.Instance.GetEntity<DeityData>(morph.deity) == null))
+                (((PlayerInstance)ch).PlayerData.CurrentDeity != null || Program.RepositoryManager.GetEntity<DeityData>(morph.deity) == null))
                 return false;
             if (morph.timeto != -1 && morph.timefrom != -1)
             {
@@ -648,7 +649,7 @@ namespace SmaugCS
 
                 for (i = 0, tmp = morph.timefrom; i < 25 && tmp != morph.timeto; i++)
                 {
-                    if (tmp == GameManager.Instance.GameTime.Hour)
+                    if (tmp == Program.GameManager.GameTime.Hour)
                     {
                         found = true;
                         break;
@@ -664,8 +665,8 @@ namespace SmaugCS
             }
 
             return morph.dayfrom == -1 || morph.dayto == -1 ||
-                   (morph.dayto >= GameManager.Instance.GameTime.Day + 1 &&
-                    morph.dayfrom <= GameManager.Instance.GameTime.Day + 1);
+                   (morph.dayto >= Program.GameManager.GameTime.Day + 1 &&
+                    morph.dayfrom <= Program.GameManager.GameTime.Day + 1);
         }
 
         public static bool CanCharm(this CharacterInstance ch)
@@ -700,7 +701,7 @@ namespace SmaugCS
         public static bool IsImmune(this CharacterInstance ch, SpellDamageTypes type,
             ILookupManager lookupManager = null)
         {
-            var resType = (lookupManager ?? LookupManager.Instance).GetResistanceType(type);
+            var resType = (lookupManager ?? Program.LookupManager).GetResistanceType(type);
 
             return resType != ResistanceTypes.Unknown && ch.Immunity.IsSet(resType);
         }
@@ -723,7 +724,7 @@ namespace SmaugCS
 
         public static bool CanCast(this CharacterInstance ch, IRepositoryManager dbManager = null)
         {
-            var cls = (dbManager ?? RepositoryManager.Instance).GetClass(ch.CurrentClass);
+            var cls = (dbManager ?? Program.RepositoryManager).GetClass(ch.CurrentClass);
 
             return cls.IsSpellcaster;
         }
@@ -850,14 +851,14 @@ namespace SmaugCS
 
         public static int GetHitroll(this CharacterInstance ch)
         {
-            var toHitMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var toHitMod = (int)Program.LookupManager.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.ToHit);
             return ch.HitRoll.SizeOf + toHitMod + (2 - Math.Abs(ch.MentalState) / 10);
         }
 
         public static int GetDamroll(this CharacterInstance ch)
         {
-            var toDamMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var toDamMod = (int)Program.LookupManager.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.ToDam);
             return ch.DamageRoll.SizeOf + ch.DamageRoll.Bonus + toDamMod +
                    (ch.MentalState > 5 && ch.MentalState < 15 ? 1 : 0);
@@ -915,7 +916,7 @@ namespace SmaugCS
             if (ch.IsNpc())
                 return;
 
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
             if (add)
                 ((PlayerInstance)ch).PlayerData.UpdateSkillMastery(sn, mod, true);
             else
@@ -968,7 +969,7 @@ namespace SmaugCS
             var buffer = $"the {tables.GetTitle(ch.CurrentClass, ch.Level, ch.Gender)}";
             player.set_title(ch, buffer);
 
-            var myClass = (databaseManager ?? RepositoryManager.Instance).GetClass(ch.CurrentClass);
+            var myClass = (databaseManager ?? Program.RepositoryManager).GetClass(ch.CurrentClass);
 
             var add_hp = LookupConstants.con_app[ch.GetCurrentConstitution()].hitp +
                          SmaugRandom.Between(myClass.MinimumHealthGain, myClass.MaximumHealthGain);
@@ -1056,7 +1057,7 @@ namespace SmaugCS
                 }
             }
 
-            var myRace = RepositoryManager.Instance.GetRace(ch.CurrentRace);
+            var myRace = Program.RepositoryManager.GetRace(ch.CurrentRace);
             modgain *= myRace.ExperienceMultiplier / 100.0f;
 
             if (ch.IsPKill() && modgain < 0)
@@ -1220,7 +1221,7 @@ namespace SmaugCS
 
             if (ch.IsOutside())
             {
-                switch (GameManager.Instance.GameTime.Sunlight)
+                switch (Program.GameManager.GameTime.Sunlight)
                 {
                     case SunPositionTypes.Sunset:
                     case SunPositionTypes.Sunrise:
@@ -1236,8 +1237,8 @@ namespace SmaugCS
 
         public static void CheckAlignment(this CharacterInstance ch)
         {
-            if (ch.CurrentAlignment < RepositoryManager.Instance.GetRace(ch.CurrentRace).MinimumAlignment
-                || ch.CurrentAlignment > RepositoryManager.Instance.GetRace(ch.CurrentRace).MaximumAlignment)
+            if (ch.CurrentAlignment < Program.RepositoryManager.GetRace(ch.CurrentRace).MinimumAlignment
+                || ch.CurrentAlignment > Program.RepositoryManager.GetRace(ch.CurrentRace).MaximumAlignment)
             {
                 ch.SetColor(ATTypes.AT_BLOOD);
                 ch.SendTo("Your actions have been incompatible with the ideals of your race. This troubles you.");
@@ -1272,9 +1273,9 @@ namespace SmaugCS
             {
                 if (fall > 80)
                 {
-                    LogManager.Instance.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.ID);
+                    Program.LogManager.Bug("Falling (in a loop?) more than 80 rooms: vnum {0}", ch.CurrentRoom.ID);
                     ch.CurrentRoom.RemoveFrom(ch);
-                    RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_TEMPLE).AddTo(ch);
+                    Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_TEMPLE).AddTo(ch);
                     return true;
                 }
 
@@ -1312,9 +1313,9 @@ namespace SmaugCS
                     obj.RemoveFrom();
 
                 ch.CurrentRoom.AddTo(obj);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Zap, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Zap, ch, obj);
 
-                if ((gameManager ?? GameManager.Instance).GetSaveFlags().IsSet(AutoSaveFlags.ZapDrop) && !ch.CharDied())
+                if ((gameManager ?? Program.GameManager).GetSaveFlags().IsSet(AutoSaveFlags.ZapDrop) && !ch.CharDied())
                     save.save_char_obj(ch);
                 return;
             }

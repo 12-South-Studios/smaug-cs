@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.MudProgs;
@@ -31,7 +32,7 @@ namespace SmaugCS.Commands
                     break;
             }
 
-            MudProgHandler.ExecuteRoomProg(MudProgTypes.Sleep, ch);
+            MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Sleep, ch);
         }
 
         private static bool CantSleepDueToMentalState(CharacterInstance ch, int modifier)

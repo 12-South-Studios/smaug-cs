@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Enums;
+﻿using Autofac;
+using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.MudProgs;
 
@@ -30,7 +31,7 @@ namespace SmaugCS.Commands
                     break;
             }
 
-            MudProgHandler.ExecuteRoomProg(MudProgTypes.Rest, ch);
+            MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Rest, ch);
         }
 
         private static void FromSitting(CharacterInstance ch)

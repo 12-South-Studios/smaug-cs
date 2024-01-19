@@ -118,7 +118,7 @@ namespace SmaugCS
             var number = argument.IsNumberArgument() ? argument.GetNumberArgument() : 1;
             var arg = argument.IsNumberArgument() ? argument.StripNumberArgument() : argument;
 
-            var items = (dbManager ?? RepositoryManager.Instance).OBJECTS.Values.Where(ch.CanSee);
+            var items = (dbManager ?? Program.RepositoryManager).OBJECTS.Values.Where(ch.CanSee);
 
             var vnum = GetVnumFromArgumentIfImmortal(ch, arg);
             return vnum > 0
@@ -153,7 +153,7 @@ namespace SmaugCS
                 return ch;
 
             var chars =
-                (dbManager ?? RepositoryManager.Instance).CHARACTERS.Values.Where(ch.CanSee);
+                (dbManager ?? Program.RepositoryManager).CHARACTERS.Values.Where(ch.CanSee);
 
             var vnum = GetVnumFromArgumentIfImmortal(ch, arg);
             return vnum > 0

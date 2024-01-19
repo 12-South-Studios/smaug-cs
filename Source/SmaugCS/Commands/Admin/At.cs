@@ -21,14 +21,14 @@ namespace SmaugCS.Commands
             CharacterInstance worldCharacter = null;
 
             if (argument.IsNumber())
-                location = RepositoryManager.Instance.GetEntity<RoomTemplate>(argument);
+                location = Program.RepositoryManager.GetEntity<RoomTemplate>(argument);
             else if (argument.EqualsIgnoreCase("pk"))
             {
                 // todo get last pkroom
             }
             else
             {
-                worldCharacter = RepositoryManager.Instance.GetEntity<CharacterInstance>(argument);
+                worldCharacter = Program.RepositoryManager.GetEntity<CharacterInstance>(argument);
                 if (CheckFunctions.CheckIf(ch, () => worldCharacter?.CurrentRoom == null,
                     "No such mobile or player in the world.")) return;
             }

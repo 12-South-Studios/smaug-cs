@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using SmaugCS.Common.Enumerations;
@@ -13,15 +13,13 @@ namespace SmaugCS.Ban
     {
         private readonly ILogManager _logManager;
         private readonly ITimer _timer;
-        private static IKernel _kernel;
 
         public IBanRepository Repository { get; }
 
-        public BanManager(IKernel kernel, ITimer timer, ILogManager logManager, IBanRepository repository)
+        public BanManager([KeyFilter("BanExpireTimer")]ITimer timer, ILogManager logManager, IBanRepository repository)
         {
             _logManager = logManager;
             Repository = repository;
-            _kernel = kernel;
 
             _timer = timer;
 
@@ -38,8 +36,6 @@ namespace SmaugCS.Ban
             _timer.Stop();
             _timer.Dispose();
         }
-
-        public static IBanManager Instance => _kernel.Get<IBanManager>();
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {

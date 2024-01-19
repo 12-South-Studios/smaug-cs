@@ -1,16 +1,13 @@
-﻿using Ninject;
-using Ninject.Modules;
-using Realm.Library.Common.Logging;
+﻿using Autofac;
 using SmaugCS.Data.Interfaces;
 
 namespace SmaugCS.Lua
 {
-    public class LuaModule : NinjectModule
+    public class LuaModule : Module
     {
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<ILuaManager>().To<LuaManager>().InSingletonScope()
-                .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>());
+            builder.RegisterType<LuaManager>().As<ILuaManager>().SingleInstance();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace SmaugCS.Commands
             {
                 foreach (var xit in ch.CurrentRoom.Exits)
                 {
-                    var room = xit.GetDestination(RepositoryManager.Instance);
+                    var room = xit.GetDestination(Program.RepositoryManager);
                     if (room == null ||
                         (room.SectorType != SectorTypes.Inside && !room.Flags.IsSet(RoomFlags.Indoors))) continue;
 

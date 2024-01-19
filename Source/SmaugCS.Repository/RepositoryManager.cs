@@ -1,5 +1,4 @@
-﻿using Ninject;
-using Realm.Library.Common;
+﻿using Realm.Library.Common;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using SmaugCS.Clans;
@@ -18,12 +17,10 @@ namespace SmaugCS.Repository
     {
         private readonly Dictionary<RepositoryTypes, object> _repositories;
         public ILogManager LogManager { get; }
-        public static IKernel Kernel { get; private set; }
 
-        public RepositoryManager(IKernel kernel, ILogManager logManager)
+        public RepositoryManager(ILogManager logManager)
         {
             LogManager = logManager;
-            Kernel = kernel;
 
             _repositories = new Dictionary<RepositoryTypes, object>();
             foreach (var repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
@@ -35,8 +32,6 @@ namespace SmaugCS.Repository
                 _repositories.Add(repoType, Activator.CreateInstance(attrib.Repository));
             }
         }
-
-        public static IRepositoryManager Instance => Kernel.Get<IRepositoryManager>();
 
         /// <summary>
         /// Adds the given object to the repository of the matching entity type

@@ -46,7 +46,7 @@ namespace SmaugCS.Commands
 
             if (CheckFunctions.CheckIfTrue(ch, !found, "You have no followers here.")) return;
 
-            LogManager.Instance.Info("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Info, ch.Level));
+            Program.LogManager.Info("{0}: order {1}.", ch.Name, string.Format(argument, (int)LogTypes.Info, ch.Level));
             ch.SendTo("Ok.");
             Macros.WAIT_STATE(ch, 12);
         }

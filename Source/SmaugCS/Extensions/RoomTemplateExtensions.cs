@@ -36,10 +36,10 @@ namespace SmaugCS
             if (ch == null) throw new ArgumentNullException(nameof(ch));
 
             var localRoom = room;
-            var databaseMgr = dbManager ?? RepositoryManager.Instance;
+            var databaseMgr = dbManager ?? Program.RepositoryManager;
             if (databaseMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room.ID) == null)
             {
-                LogManager.Instance.Bug("{0} -> NULL room! Putting char in limbo ({1})",
+                Program.LogManager.Bug("{0} -> NULL room! Putting char in limbo ({1})",
                    ch.Name, VnumConstants.ROOM_VNUM_LIMBO);
                 localRoom = databaseMgr.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(VnumConstants.ROOM_VNUM_LIMBO);
             }
@@ -143,8 +143,8 @@ namespace SmaugCS
             if (room.SectorType == SectorTypes.Inside || room.SectorType == SectorTypes.City)
                 return false;
 
-            return GameManager.Instance.GameTime.Sunlight == SunPositionTypes.Sunset
-                   || GameManager.Instance.GameTime.Sunlight == SunPositionTypes.Dark;
+            return Program.GameManager.GameTime.Sunlight == SunPositionTypes.Sunset
+                   || Program.GameManager.GameTime.Sunlight == SunPositionTypes.Dark;
         }
     }
 }

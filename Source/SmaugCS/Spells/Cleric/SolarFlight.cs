@@ -13,8 +13,8 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_solar_flight(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
-            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
+            var cell = Program.WeatherManager.GetWeather(ch.CurrentRoom.Area);
 
             var victim = ch.GetCharacterInWorld(Cast.TargetName);
 
@@ -22,8 +22,8 @@ namespace SmaugCS.Spells
 
             if (CheckFunctions.CheckIfTrueCasting(victim == null || victim == ch, skill, ch, CastingFunctionType.Failed,
                 victim)) return ReturnTypes.SpellFailed;
-            if (CheckFunctions.CheckIfTrueCasting(GameManager.Instance.GameTime.Hour > 18
-                || GameManager.Instance.GameTime.Hour < 8, skill, ch, CastingFunctionType.Failed, victim))
+            if (CheckFunctions.CheckIfTrueCasting(Program.GameManager.GameTime.Hour > 18
+                || Program.GameManager.GameTime.Hour < 8, skill, ch, CastingFunctionType.Failed, victim))
                 return ReturnTypes.SpellFailed;
             if (CheckFunctions.CheckIfNullObjectCasting(victim.CurrentRoom, skill, ch, CastingFunctionType.Failed,
                 victim)) return ReturnTypes.SpellFailed;

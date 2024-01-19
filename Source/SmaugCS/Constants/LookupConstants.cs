@@ -762,14 +762,14 @@ namespace SmaugCS
                 case "claw":
                 case "bite":
                 case "pierce":
-                    return LookupManager.Instance.GetLookups("SlashBladeMessages");
+                    return Program.LookupManager.GetLookups("SlashBladeMessages");
                 case "whip":
                 case "pound":
                 case "crush":
                 case "suction":
-                    return LookupManager.Instance.GetLookups("SlashBluntMessages");
+                    return Program.LookupManager.GetLookups("SlashBluntMessages");
                 default:
-                    return LookupManager.Instance.GetLookups("SlashGenericMessages");
+                    return Program.LookupManager.GetLookups("SlashGenericMessages");
             }
         }
 
@@ -783,14 +783,14 @@ namespace SmaugCS
                 case "claw":
                 case "bite":
                 case "pierce":
-                    return LookupManager.Instance.GetLookups("PierceBladeMessages");
+                    return Program.LookupManager.GetLookups("PierceBladeMessages");
                 case "whip":
                 case "pound":
                 case "crush":
                 case "suction":
-                    return LookupManager.Instance.GetLookups("PierceBluntMessages");
+                    return Program.LookupManager.GetLookups("PierceBluntMessages");
                 default:
-                    return LookupManager.Instance.GetLookups("PierceGenericMessages");
+                    return Program.LookupManager.GetLookups("PierceGenericMessages");
             }
         }
 

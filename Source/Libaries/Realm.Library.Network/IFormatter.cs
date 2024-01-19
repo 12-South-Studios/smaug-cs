@@ -1,22 +1,10 @@
-﻿using System.Net.Sockets;
+﻿using System.IO;
 
 namespace Realm.Library.Network
 {
-    /// <summary>
-    /// Defines the contract for a formatter object
-    /// </summary>
     public interface IFormatter
     {
-        /// <summary>
-        /// Formats the source string
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         string Format(string source);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void Enable(ITcpUser tcpUser, NetworkStream clientStream);
+        void Enable(INetworkUser user, Stream stream);
     }
 }

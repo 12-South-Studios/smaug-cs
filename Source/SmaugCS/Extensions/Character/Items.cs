@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
@@ -39,7 +40,7 @@ namespace SmaugCS
 
             comm.act(ATTypes.AT_ACTION, "$n stop using $p.", ch, obj, null, ToTypes.Room);
             comm.act(ATTypes.AT_ACTION, "You stop using $p.", ch, obj, null, ToTypes.Character);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Remove, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Remove, ch, obj);
 
             return ch.GetEquippedItem(location) == null;
         }
@@ -118,14 +119,14 @@ namespace SmaugCS
             {
                 if (!ch.RemoveFrom(WearLocations.Light, replace))
                     return;
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n holds $p as a light.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You hold $p as your light.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.Light);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
@@ -144,7 +145,7 @@ namespace SmaugCS
                     ItemWearWield(obj, ch, replace, wearFlag);
                 else
                 {
-                    LogManager.Instance.Bug("Unknown/Unused ItemWearFlag {0}", wearFlag);
+                    Program.LogManager.Bug("Unknown/Unused ItemWearFlag {0}", wearFlag);
                     if (replace)
                         ch.SendTo("You can't wear, wield, or hold that.");
                 }
@@ -184,27 +185,27 @@ namespace SmaugCS
 
             if (ch.GetEquippedItem(WearLocations.LeftFinger) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n slips $s left finger into $p.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You slip your left finger into $p.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.LeftFinger);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
             if (ch.GetEquippedItem(WearLocations.RightFinger) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n slips $s right finger into $p.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You slip your right finger into $p.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.RightFinger);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
@@ -220,27 +221,27 @@ namespace SmaugCS
 
             if (ch.GetEquippedItem(WearLocations.Neck_1) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n wears $p around $s neck.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You wear $p around your neck.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.Neck_1);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
             if (ch.GetEquippedItem(WearLocations.Neck_2) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n wears $p around $s neck.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You wear $p around your neck.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.Neck_2);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
@@ -251,168 +252,168 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.Body),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n fits $p on $s body.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You fit $p on your body.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Body);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearHead(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (!ch.RemoveFrom(WearLocations.Head, replace))
                 return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n dons $p upon $s body.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You don $p upon your head.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Head);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearEyes(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (!ch.RemoveFrom(WearLocations.Eyes, replace))
                 return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n places $p on $s eyes.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You place $p on your eyes.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Eyes);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearFace(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (!ch.RemoveFrom(WearLocations.Face, replace))
                 return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n places $p on $s face.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You place $p on your face.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Face);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearEars(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (!ch.RemoveFrom(WearLocations.Ears, replace))
                 return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wears $p on $s ears.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wear $p on your ears.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Ears);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearLegs(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.Legs),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n slips into $p.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You slip into $p.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Legs);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearFeet(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.Feet),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wears $p on $s feet.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wear $p on your feet.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Feet);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearHands(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.Hands),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wears $p on $s hands.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wear $p on your hands.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Hands);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearArms(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.Arms),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wears $p on $s arms.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wear $p on your arms.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Arms);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearAbout(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.About),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wears $p about $s arms.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wear $p about your arms.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.About);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearBack(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (!ch.RemoveFrom(WearLocations.Back, replace))
                 return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n slings $p on $s back.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You sling $p on your back.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Back);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearWaist(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
             if (CheckFunctions.CheckIfTrue(ch, !ch.CanWearLayer(obj, WearLocations.Waist),
                 "It won't fit overtop of what you're already wearing.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wears $p about $s waist.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wear $p about your waist.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Waist);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearWrist(ObjectInstance obj, CharacterInstance ch, bool replace)
         {
@@ -424,27 +425,27 @@ namespace SmaugCS
 
             if (ch.GetEquippedItem(WearLocations.LeftWrist) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n fit $p around $s left wrist.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You fit $p around your left wrist.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.LeftWrist);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
             if (ch.GetEquippedItem(WearLocations.RightWrist) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n fit $p around $s right wrist.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You fit $p around your right wrist.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.RightWrist);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
@@ -460,27 +461,27 @@ namespace SmaugCS
 
             if (ch.GetEquippedItem(WearLocations.LeftAnkle) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n fit $p around $s left ankle.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You fit $p around your left ankle.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.LeftAnkle);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
             if (ch.GetEquippedItem(WearLocations.RightAnkle) != null)
             {
-                if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                 {
                     comm.act(ATTypes.AT_ACTION, "$n fit $p around $s right ankle.", ch, obj, null, ToTypes.Room);
                     comm.act(ATTypes.AT_ACTION, "You fit $p around your right ankle.", ch, obj, null, ToTypes.Character);
                 }
 
                 ch.Equip(obj, WearLocations.RightAnkle);
-                MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                 return;
             }
 
@@ -502,18 +503,18 @@ namespace SmaugCS
             }
             if (!ch.RemoveFrom(WearLocations.Shield, replace))
                 return;
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n uses $p as a shield.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You use $p as a shield.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Shield);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
         private static void ItemWearWield(ObjectInstance obj, CharacterInstance ch, bool replace, ItemWearFlags wearFlag)
         {
-            var strWieldMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var strWieldMod = (int)Program.LookupManager.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Wield);
 
             if (!ch.CouldDualWield())
@@ -544,7 +545,7 @@ namespace SmaugCS
                     if (CheckFunctions.CheckIfTrue(ch, hd != null || sd != null,
                         "You're already wielding a weapon AND holding something.")) return;
 
-                    if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                    if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
                     {
                         comm.act(ATTypes.AT_ACTION, "$n dual-wields $p.", ch, obj, null, ToTypes.Room);
                         comm.act(ATTypes.AT_ACTION, "You dual-wield $p.", ch, obj, null, ToTypes.Character);
@@ -552,7 +553,7 @@ namespace SmaugCS
 
                     ch.Equip(obj, wearFlag == ItemWearFlags.MissileWield
                         ? WearLocations.WieldMissile : WearLocations.DualWield);
-                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+                    MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
                     return;
                 }
 
@@ -566,14 +567,14 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfTrue(ch, obj.GetWeight() > strWieldMod, "It is too heavy for you to wield."))
                 return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wields $p.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wield $p.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, wearFlag == ItemWearFlags.MissileWield ? WearLocations.WieldMissile : WearLocations.Wield);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
 
         private static void ItemEquipMissileWeapon(ObjectInstance obj, CharacterInstance ch, ObjectInstance mw,
@@ -585,7 +586,7 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfTrue(ch, obj.ItemType == ItemTypes.MissileWeapon,
                 "You're already wielding a missile weapon.")) return;
 
-            var strWieldMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var strWieldMod = (int)Program.LookupManager.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Wield);
 
             if (CheckFunctions.CheckIfTrue(ch,
@@ -595,14 +596,14 @@ namespace SmaugCS
             if (CheckFunctions.CheckIfTrue(ch, hd != null || sd != null,
                 "You're already wielding a weapon AND holding something.")) return;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n wields $p.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You wield $p.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Wield);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
 
         private static void ItemWearHold(ObjectInstance obj, CharacterInstance ch, bool replace)
@@ -634,14 +635,14 @@ namespace SmaugCS
                 || obj.ItemType == ItemTypes.Pipe
                 || obj.ItemType == ItemTypes.Herb
                 || obj.ItemType == ItemTypes.Key
-                || !MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+                || !MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_ACTION, "$n holds $p in $s hands.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_ACTION, "You hold $p in your hands.", ch, obj, null, ToTypes.Character);
             }
 
             ch.Equip(obj, WearLocations.Hold);
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Wear, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Wear, ch, obj);
         }
     }
 }

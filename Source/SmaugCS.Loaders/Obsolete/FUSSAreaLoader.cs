@@ -1,4 +1,5 @@
 ﻿using SmaugCS.Data;
+using SmaugCS.Logging;
 
 namespace SmaugCS.Loaders.Obsolete
 {
@@ -13,7 +14,7 @@ namespace SmaugCS.Loaders.Obsolete
 
         #region Overrides of AreaLoader
 
-        public override AreaData LoadArea(AreaData area)
+        public override AreaData LoadArea(ILogManager logManager, AreaData area)
         {
             /*using (TextReaderProxy proxy = new TextReaderProxy(new StreamReader(FilePath)))
             {

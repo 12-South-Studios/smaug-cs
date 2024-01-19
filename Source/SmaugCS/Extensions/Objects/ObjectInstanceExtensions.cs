@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac;
 using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
@@ -9,7 +9,6 @@ using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Data.Templates;
-using SmaugCS.Logging;
 using SmaugCS.MudProgs;
 using SmaugCS.Repository;
 using System;
@@ -22,53 +21,52 @@ namespace SmaugCS
     public static class ObjectInstanceExtensions
     {
         public static string GetFormattedDescription(this ObjectInstance obj, CharacterInstance ch,
-            bool isShortDescription, ILookupManager lookupManager = null)
+            bool isShortDescription, ILookupManager lookupManager)
         {
-            var lookupMgr = lookupManager ?? LookupManager.Instance;
             var glowsee = IsGlowingOrCanSee(obj, ch);
 
             var sb = new StringBuilder();
 
             if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Invisible))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 0));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 0));
             if ((ch.IsAffected(AffectedByTypes.DetectEvil)
                  || ch.CurrentClass == ClassTypes.Paladin)
                 && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Evil))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 1));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 1));
 
             if (ch.CurrentClass == ClassTypes.Paladin)
-                GetPaladinDescriptions(obj, sb, lookupMgr);
+                GetPaladinDescriptions(obj, sb, lookupManager);
 
             if ((ch.IsAffected(AffectedByTypes.DetectMagic)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
                 && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Magical))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 8));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 8));
             if (!glowsee && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Glow))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 9));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 9));
             if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Hum))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 10));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 10));
             if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Hidden))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 11));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 11));
             if (obj.ExtraFlags.IsSet((int)ItemExtraFlags.Buried))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 12));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 12));
             if (ch.IsImmortal() && obj.ExtraFlags.IsSet((int)ItemExtraFlags.Prototype))
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 13));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 13));
             if ((ch.IsAffected(AffectedByTypes.DetectTraps)
                  || ch.Act.IsSet((int)PlayerFlags.HolyLight))
                 && obj.IsTrapped())
-                sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 14));
+                sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 14));
 
             if (isShortDescription)
             {
                 if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
-                    sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 15));
+                    sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 15));
                 else if (!string.IsNullOrWhiteSpace(obj.ShortDescription))
                     sb.Append(obj.ShortDescription);
             }
             else
             {
                 if (glowsee && (ch.IsNpc() || !ch.Act.IsSet((int)PlayerFlags.HolyLight)))
-                    sb.Append(lookupMgr.GetLookup("ObjectAffectStrings", 16));
+                    sb.Append(lookupManager.GetLookup("ObjectAffectStrings", 16));
                 else if (!string.IsNullOrWhiteSpace(obj.Description))
                     sb.Append(obj.Description);
             }
@@ -144,7 +142,7 @@ namespace SmaugCS
             {
                 obj1.Count += obj2.Count;
                 obj1.ObjectIndex.Count += obj2.Count;
-                obj2.Extract(auctionManager ?? AuctionManager.Instance);
+                obj2.Extract(auctionManager ?? Program.AuctionManager);
                 return obj1;
             }
             return obj2;
@@ -158,8 +156,8 @@ namespace SmaugCS
             if (obj.ItemType == ItemTypes.Portal)
                 update.remove_portal(obj);
 
-            if (AuctionManager.Instance.Auction.ItemForSale == obj)
-                SmaugCS.Commands.Auction.StopAuction((auctionManager ?? AuctionManager.Instance).Auction.Seller,
+            if (Program.AuctionManager.Auction.ItemForSale == obj)
+                SmaugCS.Commands.Auction.StopAuction((auctionManager ?? Program.AuctionManager).Auction.Seller,
                     "Sale of {0} has been stopped by a system action.", auctionManager);
 
             if (obj.CarriedBy != null)
@@ -187,7 +185,7 @@ namespace SmaugCS
                 db.RELATIONS.Remove(relation);
             }
 
-            RepositoryManager.Instance.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
+            Program.RepositoryManager.OBJECTS.CastAs<Repository<long, ObjectInstance>>().Delete(obj.ID);
 
             handler.queue_extracted_obj(obj);
 
@@ -323,7 +321,7 @@ namespace SmaugCS
             var ch = obj.CarriedBy;
             if (ch == null)
             {
-                LogManager.Instance.Bug("%s: null ch", "obj_from_char");
+                Program.LogManager.Bug("%s: null ch", "obj_from_char");
                 return;
             }
 
@@ -348,7 +346,7 @@ namespace SmaugCS
         {
             if (obj == o)
             {
-                LogManager.Instance.Bug("Trying to put object inside itself: vnum {0}", obj.ObjectIndex.ID);
+                Program.LogManager.Bug("Trying to put object inside itself: vnum {0}", obj.ObjectIndex.ID);
                 return obj;
             }
 
@@ -402,7 +400,7 @@ namespace SmaugCS
         public static ObjectInstance Clone(this ObjectInstance obj)
         {
             var repo =
-                (ObjInstanceRepository)Program.Kernel.Get<IInstanceRepository<ObjectInstance>>();
+                (ObjInstanceRepository)Program.Container.Resolve<IInstanceRepository<ObjectInstance>>();
             return repo.Clone(obj);
         }
 
@@ -508,7 +506,7 @@ namespace SmaugCS
 
                 if (ch != null)
                 {
-                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Drop, ch, tObj);
+                    MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Drop, ch, tObj);
                     if (ch.CharDied())
                         ch = null;
                 }

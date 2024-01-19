@@ -81,8 +81,8 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateAvatarCost,
                 "You are not favored enough for that.")) return;
 
-            var template = RepositoryManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY);
-            var mob = RepositoryManager.Instance.CHARACTERS.Create(template);
+            var template = Program.RepositoryManager.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY);
+            var mob = Program.RepositoryManager.CHARACTERS.Create(template);
 
             ch.CurrentRoom.AddTo(mob);
 
@@ -116,8 +116,8 @@ namespace SmaugCS.Commands
             if (CheckFunctions.CheckIfTrue(ch, ch.PlayerData.Favor < ch.PlayerData.CurrentDeity.SupplicateDeityObjectCost,
                 "You are not favored enough for that.")) return;
 
-            var template = RepositoryManager.Instance.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
-            var obj = RepositoryManager.Instance.OBJECTS.Create(template, ch.Level,
+            var template = Program.RepositoryManager.OBJECTTEMPLATES.Get(VnumConstants.OBJ_VNUM_DEITY);
+            var obj = Program.RepositoryManager.OBJECTS.Create(template, ch.Level,
                 $"sigil {ch.PlayerData.CurrentDeity.Name}");
             obj = obj.WearFlags.IsSet(ItemWearFlags.Take) ? obj.AddTo(ch) : ch.CurrentRoom.AddTo(obj);
 
@@ -186,19 +186,19 @@ namespace SmaugCS.Commands
 
             // TODO Fix
             //if (!ch.IsNpc() && ch.PlayerData.Clan != null)
-            //    location = RepositoryManager.Instance.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
+            //    location = Program.RepositoryManager.ROOMS.Get(ch.PlayerData.Clan.RecallRoom);
 
             if (!ch.IsNpc() && location == null && ch.Level >= 5 && ch.PlayerData.Flags.IsSet(PCFlags.Deadly))
-                location = RepositoryManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_DEADLY);
+                location = Program.RepositoryManager.ROOMS.Get(VnumConstants.ROOM_VNUM_DEADLY);
 
             if (location == null)
             {
-                var raceRecallRoom = RepositoryManager.Instance.RACES.Get(ch.CurrentRace.GetValue()).RaceRecallRoom;
-                location = RepositoryManager.Instance.ROOMS.Get(raceRecallRoom);
+                var raceRecallRoom = Program.RepositoryManager.RACES.Get(ch.CurrentRace.GetValue()).RaceRecallRoom;
+                location = Program.RepositoryManager.ROOMS.Get(raceRecallRoom);
             }
 
             if (location == null)
-                location = RepositoryManager.Instance.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
+                location = Program.RepositoryManager.ROOMS.Get(VnumConstants.ROOM_VNUM_TEMPLE);
 
             if (CheckFunctions.CheckIfNullObject(ch, location, "You are completely lost.")) return;
 

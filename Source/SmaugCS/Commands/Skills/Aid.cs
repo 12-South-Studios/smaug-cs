@@ -39,7 +39,7 @@ namespace SmaugCS.Commands
 
             var percent = SmaugRandom.D100() - ch.GetCurrentLuck() - 13;
 
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>("aid");
+            var skill = Program.RepositoryManager.GetEntity<SkillData>("aid");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'aid' was not found.");
 

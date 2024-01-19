@@ -1,25 +1,21 @@
-﻿using Ninject;
-using Ninject.Modules;
-using Realm.Library.Common.Logging;
+﻿using Autofac;
 using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 
 namespace SmaugCS.Repository
 {
-    public class RepositoryModule : NinjectModule
+    public class RepositoryModule : Module
     {
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<IRepositoryManager>().To<RepositoryManager>().InSingletonScope()
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("logWrapper", Kernel.Get<ILogWrapper>());
+            builder.RegisterType<RepositoryManager>().As<IRepositoryManager>().SingleInstance();
 
-            Kernel.Bind<IInstanceRepository<ObjectInstance>>().To<ObjInstanceRepository>();
-            Kernel.Bind<IInstanceRepository<CharacterInstance>>().To<CharacterRepository>();
-            Kernel.Bind<ITemplateRepository<MobileTemplate>>().To<MobileRepository>();
-            Kernel.Bind<ITemplateRepository<ObjectTemplate>>().To<ObjectRepository>();
-            Kernel.Bind<ITemplateRepository<RoomTemplate>>().To<RoomRepository>();
+            builder.RegisterType<ObjInstanceRepository>().As<IInstanceRepository<ObjectInstance>>();
+            builder.RegisterType<CharacterRepository>().As<IInstanceRepository<CharacterInstance>>();
+            builder.RegisterType<MobileRepository>().As<ITemplateRepository<MobileTemplate>>();
+            builder.RegisterType<ObjectRepository>().As<ITemplateRepository<ObjectTemplate>>();
+            builder.RegisterType<RoomRepository>().As<ITemplateRepository<RoomTemplate>>();
         }
     }
 }

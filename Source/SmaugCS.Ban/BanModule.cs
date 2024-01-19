@@ -1,29 +1,27 @@
-﻿using Ninject;
-using Ninject.Modules;
+﻿using Autofac;
+using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
-using SmaugCS.Constants.Constants;
-using SmaugCS.DAL;
-using SmaugCS.Logging;
 
 namespace SmaugCS.Ban
 {
-    public class BanModule : NinjectModule
+    public class BanModule : Module
     {
-        public override void Load()
+        private readonly Config.Configuration.Constants _constants;
+        public BanModule(Config.Configuration.Constants constants)
         {
-            Kernel.Bind<ITimer>().To<CommonTimer>().Named("BanExpireTimer")
-                .OnActivation(x => x.Interval = GameConstants.GetConstant<int>("BanExpireFrequencyMS"));
+            _constants = constants;
+        }
 
-            Kernel.Bind<IBanRepository>().To<BanRepository>()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>());
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<CommonTimer>().Named<ITimer>("BanExpireTimer")
+                .OnActivated(x => x.Instance.Interval = _constants.BanExpireFrequencyMS);
 
-            Kernel.Bind<IBanManager>().To<BanManager>().InSingletonScope()
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("timer", Kernel.Get<ITimer>("BanExpireTimer"))
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("repository", Kernel.Get<IBanRepository>())
-                .OnActivation(x => x.Initialize());
+            builder.RegisterType<BanRepository>().As<IBanRepository>();
+            builder.RegisterType<BanManager>().As<IBanManager>()
+                .SingleInstance()
+                .OnActivated(x => x.Instance.Initialize())
+                .WithAttributeFiltering();
         }
     }
 }

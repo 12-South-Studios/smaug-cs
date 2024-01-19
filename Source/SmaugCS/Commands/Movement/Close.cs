@@ -76,7 +76,7 @@ namespace SmaugCS.Commands
             if (reverseExit != null)
             {
                 reverseExit.Flags.SetBit(ExitFlags.Closed);
-                foreach (var vch in exit.GetDestination(RepositoryManager.Instance).Persons)
+                foreach (var vch in exit.GetDestination(Program.RepositoryManager).Persons)
                     comm.act(ATTypes.AT_ACTION, "The $d closes.", vch, null, reverseExit.Keywords, ToTypes.Character);
             }
 

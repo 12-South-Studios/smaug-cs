@@ -100,7 +100,7 @@ namespace SmaugCS
                 return ch.CurrentClass.ToString();
             if (!ch.IsNpc())
             {
-                var cls = RepositoryManager.Instance.GetClass(ch.CurrentClass);
+                var cls = Program.RepositoryManager.GetClass(ch.CurrentClass);
                 return cls.Name;
             }
             return "Unknown";
@@ -112,7 +112,7 @@ namespace SmaugCS
                 return ch.CurrentRace.ToString();
             if (!ch.IsNpc())
             {
-                var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
+                var race = Program.RepositoryManager.GetRace(ch.CurrentRace);
                 return race.Name;
             }
             return "Unknown";

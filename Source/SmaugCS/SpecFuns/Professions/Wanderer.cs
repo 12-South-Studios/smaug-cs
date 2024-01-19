@@ -59,7 +59,7 @@ namespace SmaugCS.SpecFuns
                         var door = db.number_door();
                         exit = ch.CurrentRoom.GetExitNumber(door);
 
-                        var destRoom = exit?.GetDestination(RepositoryManager.Instance);
+                        var destRoom = exit?.GetDestination(Program.RepositoryManager);
                         if (destRoom == null || exit.Flags.IsSet(ExitFlags.Closed) ||
                             destRoom.Flags.IsSet(RoomFlags.NoDrop)) continue;
                         if (destRoom.Persons.OfType<MobileInstance>().Any(x => x.SpecialFunctionName.EqualsIgnoreCase("spec_wanderer")))
@@ -92,7 +92,7 @@ namespace SmaugCS.SpecFuns
             trash.RemoveFrom();
 
             var oldRoom = ch.CurrentRoom;
-            var room = exit.GetDestination(RepositoryManager.Instance);
+            var room = exit.GetDestination(Program.RepositoryManager);
             room.AddTo(trash);
             ch.CurrentRoom.RemoveFrom(ch);
             room.AddTo(ch);

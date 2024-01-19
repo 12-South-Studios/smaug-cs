@@ -8,7 +8,7 @@ namespace SmaugCS
     {
         public static void InitializeWeatherMap(this IWeatherManager manager, int weatherSizeX, int weatherSizeY)
         {
-            var newMap = new WeatherMap(GameManager.Instance.GameTime, weatherSizeX, weatherSizeY);
+            var newMap = new WeatherMap(Program.GameManager.GameTime, weatherSizeX, weatherSizeY);
             newMap.LoadMap(SystemFileTypes.StarMap, newMap.StarMap.ToList());
             newMap.LoadMap(SystemFileTypes.SunMap, newMap.SunMap.ToList());
             newMap.LoadMap(SystemFileTypes.MoonMap, newMap.MoonMap.ToList());

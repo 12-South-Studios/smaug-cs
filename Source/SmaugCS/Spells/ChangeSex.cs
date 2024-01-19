@@ -12,7 +12,7 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_change_sex(int sn, int level, CharacterInstance ch, object vo)
         {
             var victim = (CharacterInstance)vo;
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
 
             if (CheckFunctions.CheckIfTrueCasting(victim.IsImmune(ResistanceTypes.Magic), skill, ch,
                 CastingFunctionType.Immune, victim)) return ReturnTypes.SpellFailed;

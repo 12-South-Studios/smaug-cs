@@ -12,7 +12,7 @@ namespace SmaugCS.Spells
         public static ReturnTypes spell_blindness(int sn, int level, CharacterInstance ch, object vo)
         {
             var victim = (CharacterInstance)vo;
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
 
             var tmp = skill.Flags.IsSet(SkillFlags.PKSensitive) ? level / 2 : level;
 

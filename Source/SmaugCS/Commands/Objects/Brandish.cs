@@ -1,4 +1,5 @@
-﻿using SmaugCS.Constants.Constants;
+﻿using Autofac;
+using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.MudProgs;
@@ -36,7 +37,7 @@ namespace SmaugCS.Commands
 
         private static void BrandishStaff(CharacterInstance ch, ObjectInstance obj)
         {
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 comm.act(ATTypes.AT_MAGIC, "$n brandishes $p.", ch, obj, null, ToTypes.Room);
                 comm.act(ATTypes.AT_MAGIC, "You brandish $p.", ch, obj, null, ToTypes.Character);
@@ -52,7 +53,7 @@ namespace SmaugCS.Commands
                         continue;
                 }
 
-                var skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
+                var skill = Program.RepositoryManager.SKILLS.Get(obj.Value.ToList()[3]);
                 switch (skill.Target)
                 {
                     case TargetTypes.Ignore:

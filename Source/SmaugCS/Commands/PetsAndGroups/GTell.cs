@@ -35,7 +35,7 @@ namespace SmaugCS.Commands
 
             foreach (
                 var gch in
-                    RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
+                    Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>()
                         .Values.Where(x => x.IsSameGroup(ch)))
             {
                 gch.SetColor(ATTypes.AT_GTELL);

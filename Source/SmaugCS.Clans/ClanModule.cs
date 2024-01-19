@@ -1,23 +1,14 @@
-﻿using Ninject;
-using Ninject.Modules;
-using SmaugCS.DAL;
-using SmaugCS.Logging;
+﻿using Autofac;
 
 namespace SmaugCS.Clans
 {
-    public class ClanModule : NinjectModule
+    public class ClanModule : Module
     {
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<IClanRepository>().To<ClanRepository>()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("dbContext", Kernel.Get<IDbContext>());
-
-            Kernel.Bind<IClanManager>().To<ClanManager>().InSingletonScope()
-                .WithConstructorArgument("logManager", Kernel.Get<ILogManager>())
-                .WithConstructorArgument("kernel", Kernel)
-                .WithConstructorArgument("repository", Kernel.Get<IClanRepository>())
-                .OnActivation(x => x.Initialize());
+            builder.RegisterType<ClanRepository>().As<IClanRepository>();
+            builder.RegisterType<ClanManager>().As<IClanManager>().SingleInstance()
+                .OnActivated(x => x.Instance.Initialize());
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SmaugCS.Behavior
             if (DoesKeeperHateThieves(keeper, ch)) return null;
             if (DoesKeeperHateFighting(keeper, ch)) return null;
             if (IsKeeperFighting(keeper, ch)) return null;
-            if (IsShopClosed(keeper, ch, (gameManager ?? GameManager.Instance).GameTime.Hour)) return null;
+            if (IsShopClosed(keeper, ch, (gameManager ?? Program.GameManager).GameTime.Hour)) return null;
             if (CheckFunctions.CheckIfTrue(ch, keeper.CurrentPosition == PositionTypes.Sleeping,
                 "While they're asleep?")) return null;
             if (CheckFunctions.CheckIfTrue(ch, (int)keeper.CurrentPosition < (int)PositionTypes.Sleeping,

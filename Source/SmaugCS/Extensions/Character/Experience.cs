@@ -29,7 +29,7 @@ namespace SmaugCS
         {
             return ch.IsNpc()
                 ? 1000
-                : (databaseManager ?? RepositoryManager.Instance).CLASSES.Values.First(
+                : (databaseManager ?? Program.RepositoryManager).CLASSES.Values.First(
                     x => x.Type == ch.CurrentClass).BaseExperience;
         }
 

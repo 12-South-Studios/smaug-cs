@@ -22,16 +22,16 @@ namespace SmaugCS.Spells
             if (CheckFunctions.CheckIfNullObject(ch, corpse, "You cannot find a suitable corpse here"))
                 return ReturnTypes.SpellFailed;
 
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
 
-            var template = RepositoryManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
+            var template = Program.RepositoryManager.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_ANIMATED_CORPSE);
             if (template == null)
                 throw new ObjectNotFoundException("Animated Corpse VNUM template was not found.");
 
             // TODO Get the template using the corpse cost?  huh?
 
             if (CheckFunctions.CheckIfEquivalent(ch, template,
-                RepositoryManager.Instance.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY),
+                Program.RepositoryManager.MOBILETEMPLATES.Get(VnumConstants.MOB_VNUM_DEITY),
                 "You can't animate the corpse of a deity's Avatar.")) return ReturnTypes.SpellFailed;
 
             if (!ch.IsNpc())
@@ -77,7 +77,7 @@ namespace SmaugCS.Spells
 
         private static void CreateAnimatedCorpse(int level, CharacterInstance ch, MobileTemplate template, ObjectInstance corpse)
         {
-            var mob = RepositoryManager.Instance.CHARACTERS.Create(template, 0,
+            var mob = Program.RepositoryManager.CHARACTERS.Create(template, 0,
                 $"animated corpse {template.PlayerName}");
 
             ch.CurrentRoom.AddTo(mob);

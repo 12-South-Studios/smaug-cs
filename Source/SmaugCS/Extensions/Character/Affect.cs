@@ -29,7 +29,7 @@ namespace SmaugCS
                 if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
                 {
                     mod = Math.Abs(mod);
-                    var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
+                    var skill = Program.RepositoryManager.SKILLS.Values.ToList()[mod];
 
                     if (!Macros.IS_VALID_SN(mod) || skill == null || skill.Type != SkillTypes.Spell)
                         throw new InvalidDataException($"RecurringSpell with bad SN {mod}");
@@ -169,7 +169,7 @@ namespace SmaugCS
                     if (Macros.IS_VALID_SN(mod))
                         ch.StripAffects(mod);
                     else
-                        LogManager.Instance.Bug("apply_modify: ApplyTypes.StripSN invalid SN %d", mod);
+                        Program.LogManager.Bug("apply_modify: ApplyTypes.StripSN invalid SN %d", mod);
                     break;
 
                 case ApplyTypes.WearSpell:
@@ -183,14 +183,14 @@ namespace SmaugCS
                         return;
 
                     mod = Math.Abs(mod);
-                    var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
+                    var skill = Program.RepositoryManager.SKILLS.Values.ToList()[mod];
 
                     if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     {
                         if (skill.Target == TargetTypes.Ignore ||
                             skill.Target == TargetTypes.InventoryObject)
                         {
-                            LogManager.Instance.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
+                            Program.LogManager.Bug("ApplyTypes.WearSpell trying to apply bad target spell. SN is %d.", mod);
                             return;
                         }
                         var retcode = skill.SpellFunction.Value.Invoke(mod, ch.Level, ch, ch);
@@ -200,16 +200,16 @@ namespace SmaugCS
                     break;
 
                 default:
-                    var skillData = RepositoryManager.Instance.GetEntity<SkillData>(applyType.GetName());
+                    var skillData = Program.RepositoryManager.GetEntity<SkillData>(applyType.GetName());
                     if (skillData != null)
                         ch.ModifySkill((int)skillData.Type, mod, add);
                     else
-                        LogManager.Instance.Bug("affect_modify: unknown location %d", affect.Location);
+                        Program.LogManager.Bug("affect_modify: unknown location %d", affect.Location);
                     break;
             }
 
             var wield = ch.GetEquippedItem(WearLocations.Wield);
-            var strWieldMod = (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            var strWieldMod = (int)Program.LookupManager.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Wield);
 
             if (!ch.IsNpc() && handler.SavingCharacter != ch && wield != null && wield.GetWeight() > strWieldMod)
@@ -261,7 +261,7 @@ namespace SmaugCS
             if ((int)affect.Location % Program.REVERSE_APPLY == (int)ApplyTypes.RecurringSpell)
             {
                 mod = Math.Abs(mod);
-                var skill = RepositoryManager.Instance.SKILLS.Values.ToList()[mod];
+                var skill = Program.RepositoryManager.SKILLS.Values.ToList()[mod];
 
                 if (Macros.IS_VALID_SN(mod) && skill != null && skill.Type == SkillTypes.Spell)
                     ch.AffectedBy.SetBit((int)AffectedByTypes.RecurringSpell);
@@ -363,13 +363,13 @@ namespace SmaugCS
             ch.NoSusceptibility = 0;
 
             // Race Affects
-            var myRace = RepositoryManager.Instance.GetRace(ch.CurrentRace);
+            var myRace = Program.RepositoryManager.GetRace(ch.CurrentRace);
             ch.AffectedBy.SetBits(myRace.AffectedBy);
             ch.Resistance.SetBit(myRace.Resistance);
             ch.Susceptibility.SetBit(myRace.Susceptibility);
 
             // Class Affects
-            var myClass = RepositoryManager.Instance.GetClass(ch.CurrentClass);
+            var myClass = Program.RepositoryManager.GetClass(ch.CurrentClass);
             ch.AffectedBy.SetBits(myClass.AffectedBy);
             ch.Resistance.SetBit(myClass.Resistance);
             ch.Susceptibility.SetBit(myClass.Susceptibility);

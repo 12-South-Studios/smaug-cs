@@ -16,7 +16,7 @@ namespace SmaugCS.Commands
             var firstArg = argument.FirstWord();
             if (CheckFunctions.CheckIfEmptyString(ch, firstArg, "At where what?")) return;
 
-            ObjectInstance obj = RepositoryManager.Instance.GetEntity<ObjectInstance>(argument);
+            ObjectInstance obj = Program.RepositoryManager.GetEntity<ObjectInstance>(argument);
             if (CheckFunctions.CheckIf(ch, () => obj?.InRoom == null,
                 "No such object in existence.")) return;
 

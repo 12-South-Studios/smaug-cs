@@ -19,7 +19,7 @@ namespace SmaugCS.Loaders.Obsolete
 
         #region Overrides of AreaLoader
 
-        public override AreaData LoadArea(AreaData area)
+        public override AreaData LoadArea(ILogManager logManager, AreaData area)
         {
             using (var proxy = new TextReaderProxy(new StreamReader(FilePath)))
             {
@@ -34,7 +34,7 @@ namespace SmaugCS.Loaders.Obsolete
                     var c = proxy.ReadNextLetter();
                     if (c != '#')
                     {
-                        LogManager.Instance.Bug("LoadArea: # not found in area file %s", AreaName);
+                        logManager.Bug("LoadArea: # not found in area file %s", AreaName);
                         throw new InitializationException("# not found in area file");
                     }
 
@@ -103,7 +103,7 @@ namespace SmaugCS.Loaders.Obsolete
                             area.SpellLimit = proxy.ReadNumber();
                             break;
                         default:
-                            LogManager.Instance.Bug("LoadArea: Area %s: bad section name %s", AreaName, word);
+                            logManager.Bug("LoadArea: Area %s: bad section name %s", AreaName, word);
                             if (BootDb)
                                 throw new InitializationException("Area {0} had a bad section name {1}", AreaName, word);
                             return null;

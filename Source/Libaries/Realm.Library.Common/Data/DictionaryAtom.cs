@@ -264,7 +264,7 @@ namespace Realm.Library.Common.Data
         {
             Validation.IsNotNull(log, "log");
 
-            log.InfoFormat("{0} (DictionaryAtom)", prefix);
+            log.Info("{0} (DictionaryAtom)", prefix);
             _map.Keys.ToList().ForEach(key =>
                 {
                     var value = _map[key];
@@ -276,7 +276,7 @@ namespace Realm.Library.Common.Data
                                 if (value.IsNotNull())
                                     value.Dump(log, string.Format("{0}.{1}", prefix, stringKey.Value));
                                 else
-                                    log.InfoFormat("{0}.{1} (null)", prefix, stringKey.Value);
+                                    log.Info("{0}.{1} (null)", prefix, stringKey.Value);
                             }
                             break;
 
@@ -286,7 +286,7 @@ namespace Realm.Library.Common.Data
                                 if (value.IsNotNull())
                                     value.Dump(log, string.Format("{0}.{1}", prefix, intKey.Value));
                                 else
-                                    log.InfoFormat("{0}.{1} (null)", prefix, intKey.Value);
+                                    log.Info("{0}.{1} (null)", prefix, intKey.Value);
                             }
                             break;
                     }

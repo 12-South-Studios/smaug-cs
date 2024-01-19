@@ -1,6 +1,7 @@
 ﻿using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data;
+using SmaugCS.Logging;
 
 namespace SmaugCS.Loaders.Obsolete
 {
@@ -14,10 +15,10 @@ namespace SmaugCS.Loaders.Obsolete
         {
             AreaName = areaName;
             BootDb = bootDb;
-            FilePath = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Area) + AreaName;
+           // FilePath = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Area) + AreaName;
         }
 
-        public abstract AreaData LoadArea(AreaData area);
+        public abstract AreaData LoadArea(ILogManager logManager, AreaData area);
 
         protected AreaData CreateArea()
         {

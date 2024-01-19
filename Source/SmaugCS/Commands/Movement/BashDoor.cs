@@ -12,7 +12,7 @@ namespace SmaugCS.Commands
     {
         public static void do_bashdoor(CharacterInstance ch, string argument)
         {
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>("bashdoor");
+            var skill = Program.RepositoryManager.GetEntity<SkillData>("bashdoor");
             if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && ch.Level < skill.SkillLevels.ToList()[(int)ch.CurrentClass],
                 "You're not enough of a warrior to bash doors!")) return;
 
@@ -72,7 +72,7 @@ namespace SmaugCS.Commands
             var reverseExit = exit.GetReverse();
             BashExit(reverseExit);
 
-            var destination = exit.GetDestination(RepositoryManager.Instance);
+            var destination = exit.GetDestination(Program.RepositoryManager);
             foreach (var ch in destination.Persons)
                 comm.act(ATTypes.AT_SKILL, "The $d crashes open!", ch, null, reverseExit.Keywords, ToTypes.Character);
 

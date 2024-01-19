@@ -1,4 +1,5 @@
-﻿using SmaugCS.Commands;
+﻿using Autofac;
+using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Constants;
@@ -21,12 +22,12 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in Program.RepositoryManager.CHARACTERS.Values)
             {
                 if (ch is PlayerInstance)
                     ((PlayerInstance)ch).ProcessUpdate();
                 else
-                    (ch as MobileInstance)?.ProcessUpdate(RepositoryManager.Instance);
+                    (ch as MobileInstance)?.ProcessUpdate(Program.RepositoryManager);
             }
 
             // trworld_dispose
@@ -36,13 +37,13 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK);
 
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values.Where(ch => !ch.IsNpc() && !ch.IsImmortal()))
+            foreach (var ch in Program.RepositoryManager.CHARACTERS.Values.Where(ch => !ch.IsNpc() && !ch.IsImmortal()))
             {
                 ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
                 if (ch.CurrentRoom != null && ch.Level > 3)
                 {
-                    var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
+                    var race = Program.RepositoryManager.GetRace(ch.CurrentRace);
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     var attrib = ch.CurrentRoom.SectorType.GetAttribute<ThirstAttribute>();
@@ -59,21 +60,21 @@ namespace SmaugCS
         {
             //lc = trworld_create(TR_CHAR_WORLD_BACK)
 
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in Program.RepositoryManager.CHARACTERS.Values)
             {
                 handler.CurrentCharacter = ch;
 
                 if (!ch.IsNpc())
-                    MudProgHandler.ExecuteRoomProg(MudProgTypes.Random, ch);
+                    MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Random, ch);
                 if (ch.CharDied())
                     continue;
 
                 if (ch.IsNpc())
-                    MudProgHandler.ExecuteMobileProg(MudProgTypes.Time, ch);
+                    MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Time, ch);
                 if (ch.CharDied())
                     continue;
 
-                MudProgHandler.ExecuteRoomProg(MudProgTypes.Time, ch);
+                MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Time, ch);
                 if (ch.CharDied())
                     continue;
 
@@ -147,12 +148,12 @@ namespace SmaugCS
                     ch.CheckAlignment();
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Drunk, -1);
 
-                    var race = RepositoryManager.Instance.GetRace(ch.CurrentRace);
+                    var race = Program.RepositoryManager.GetRace(ch.CurrentRace);
                     ((PlayerInstance)ch).GainCondition(ConditionTypes.Full, -1 + race.HungerMod);
 
                     if (ch.IsVampire() && ch.Level >= 10)
                     {
-                        if (GameManager.Instance.GameTime.Hour < 21 && GameManager.Instance.GameTime.Hour >= 10)
+                        if (Program.GameManager.GameTime.Hour < 21 && Program.GameManager.GameTime.Hour >= 10)
                             ((PlayerInstance)ch).GainCondition(ConditionTypes.Bloodthirsty, -1);
                     }
 
@@ -167,7 +168,7 @@ namespace SmaugCS
                 //    ((PlayerInstance)ch).PlayerData.release_date <= DateTime.Now)
                 //{
                 //    var location =
-                //        RepositoryManager.Instance.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan?.RecallRoom ??
+                //        Program.RepositoryManager.ROOMS.Get(((PlayerInstance)ch).PlayerData.Clan?.RecallRoom ??
                 //                                             VnumConstants.ROOM_VNUM_TEMPLE) ?? ch.CurrentRoom;
 
                 //    ch.CurrentRoom.RemoveFrom(ch);
@@ -188,7 +189,7 @@ namespace SmaugCS
 
                         var minMentalState = CalculateMinMentalStateWhilePoisoned(ch);
                         ch.MentalState = 20.GetNumberThatIsBetween(minMentalState, 100);
-                        ch.CauseDamageTo(ch, 6, RepositoryManager.Instance.LookupSkill("poison"));
+                        ch.CauseDamageTo(ch, 6, Program.RepositoryManager.LookupSkill("poison"));
                     }
                     else switch (ch.CurrentPosition)
                         {
@@ -211,7 +212,7 @@ namespace SmaugCS
                             found = true;
                             if (Macros.IS_VALID_SN(paf.Modifier))
                             {
-                                var skill = RepositoryManager.Instance.SKILLS.Get(paf.Modifier);
+                                var skill = Program.RepositoryManager.SKILLS.Get(paf.Modifier);
                                 if (skill == null || skill.Type != SkillTypes.Spell)
                                     continue;
 
@@ -266,7 +267,7 @@ namespace SmaugCS
 
                     if (ch.Timer > 24)
                         Quit.do_quit(ch, string.Empty);
-                    else if (ch == ch_save && GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auto))
+                    else if (ch == ch_save && Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auto))
                         save.save_char_obj(ch);
                 }
             }
@@ -320,13 +321,13 @@ namespace SmaugCS
                 comm.act(ATTypes.AT_ACTION, "$n disappears into the void.", ch, null, null, ToTypes.Room);
                 ch.SendTo("You disappear into the void.");
 
-                if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Idle))
+                if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Idle))
                     save.save_char_obj(ch);
 
                 ((PlayerInstance)ch).PlayerData.Flags.SetBit(PCFlags.Idle);
                 ch.CurrentRoom.RemoveFrom(ch);
 
-                var room = RepositoryManager.Instance.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
+                var room = Program.RepositoryManager.GetEntity<RoomTemplate>(VnumConstants.ROOM_VNUM_LIMBO);
                 room.AddTo(ch);
             }
         }
@@ -346,21 +347,21 @@ namespace SmaugCS
 
         private static bool CheckSaveFrequency(CharacterInstance ch)
         {
-            return ((PlayerInstance)ch).PlayedDuration > GameManager.Instance.SystemData.SaveFrequency;
+            return ((PlayerInstance)ch).PlayedDuration > Program.GameManager.SystemData.SaveFrequency;
         }
 
         public static void obj_update()
         {
             // lc = trworld_create(TR_OBJ_WORLD_BACK);
 
-            foreach (var obj in RepositoryManager.Instance.OBJECTS.Values)
+            foreach (var obj in Program.RepositoryManager.OBJECTS.Values)
             {
                 handler.CurrentObject = obj;
 
                 if (obj.CarriedBy != null)
-                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Random, obj);
+                    MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Random, obj);
                 else if (obj.InRoom != null && obj.InRoom.Area.NumberOfPlayers > 0)
-                    MudProgHandler.ExecuteObjectProg(MudProgTypes.Random, obj);
+                    MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Random, obj);
 
                 if (handler.obj_extracted(obj))
                     continue;
@@ -441,7 +442,7 @@ namespace SmaugCS
 
                 var buf =
                     string.Format(
-                        LookupManager.Instance.GetLookup("CorpseDescs", (timer - 1).GetLowestOfTwoNumbers(4)),
+                        Program.LookupManager.GetLookup("CorpseDescs", (timer - 1).GetLowestOfTwoNumbers(4)),
                         obj.ShortDescription);
                 obj.Description = buf;
             }
@@ -484,7 +485,7 @@ namespace SmaugCS
 
             // lc1 = trworld_create(TR_CHAR_WORLD_FORW);
 
-            foreach (var ch in RepositoryManager.Instance.CHARACTERS.Values)
+            foreach (var ch in Program.RepositoryManager.CHARACTERS.Values)
             {
                 handler.set_cur_char(ch);
                 ch.WillFall(0);
@@ -492,7 +493,7 @@ namespace SmaugCS
                     continue;
 
                 if (ch.IsNpc())
-                    CheckNpc((MobileInstance)ch, RepositoryManager.Instance);
+                    CheckNpc((MobileInstance)ch, Program.RepositoryManager);
                 else
                     CheckPlayer(ch);
             }
@@ -613,7 +614,7 @@ namespace SmaugCS
                 // TODO Exception, log it
             }
 
-            if (exit.GetDestination(RepositoryManager.Instance) == null)
+            if (exit.GetDestination(Program.RepositoryManager) == null)
             {
                 // TODO Exception, log it
             }

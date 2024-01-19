@@ -46,7 +46,7 @@ namespace SmaugCS.Commands
                 "Personal items may not be auctioned.")) return;
 
             if (CheckFunctions.CheckIfTrue(ch,
-                (auctionManager ?? AuctionManager.Instance).Repository.History.Any(x => x.ItemForSale == obj.ObjectIndex.ID),
+                (auctionManager ?? Program.AuctionManager).Repository.History.Any(x => x.ItemForSale == obj.ObjectIndex.ID),
                 "Such an item has been auctioned recently, try again later.")) return;
 
             var secondArg = argument.SecondWord();
@@ -57,10 +57,10 @@ namespace SmaugCS.Commands
             var startingBid = secondArg.ToInt32();
             if (CheckFunctions.CheckIfTrue(ch, startingBid <= 0, "You can't auction something for nothing!")) return;
 
-            if ((auctionManager ?? AuctionManager.Instance).Auction != null)
+            if ((auctionManager ?? Program.AuctionManager).Auction != null)
             {
                 comm.act(ATTypes.AT_TELL, "Try again later - $p is being auctioned right now!", ch,
-                    (auctionManager ?? AuctionManager.Instance).Auction.ItemForSale, null, ToTypes.Character);
+                    (auctionManager ?? Program.AuctionManager).Auction.ItemForSale, null, ToTypes.Character);
                 if (!ch.IsImmortal())
                     Macros.WAIT_STATE(ch, GameConstants.GetSystemValue<int>("PulseViolence"));
                 return;
@@ -74,19 +74,19 @@ namespace SmaugCS.Commands
 
             obj.Split();
             obj.RemoveFrom();
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
+            if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
 
-            (auctionManager ?? AuctionManager.Instance).StartAuction(ch, obj, startingBid);
+            (auctionManager ?? Program.AuctionManager).StartAuction(ch, obj, startingBid);
             ChatManager.talk_auction($"A new item is being auctioned: {obj.ShortDescription} at {startingBid} coin.");
         }
 
         private static void PlaceBid(CharacterInstance ch, string argument, IAuctionManager auctionManager)
         {
-            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? AuctionManager.Instance).Auction,
+            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? Program.AuctionManager).Auction,
                 "There isn't anything being auctioned right now.")) return;
 
-            var auction = (auctionManager ?? AuctionManager.Instance).Auction;
+            var auction = (auctionManager ?? Program.AuctionManager).Auction;
 
             if (CheckFunctions.CheckIfTrue(ch, ch.Level < auction.ItemForSale.Level,
                 "This object's level is too high for your use.")) return;
@@ -113,27 +113,27 @@ namespace SmaugCS.Commands
                 auction.Buyer.CurrentCoin += auction.BidAmount;
 
             ch.CurrentCoin -= bid;
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
+            if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(ch);
 
-            (auctionManager ?? AuctionManager.Instance).PlaceBid(ch, bid);
+            (auctionManager ?? Program.AuctionManager).PlaceBid(ch, bid);
 
             ChatManager.talk_auction($"A bid of {bid} coin has been received on {auction.ItemForSale.ShortDescription}.");
         }
 
         public static void StopAuction(CharacterInstance ch, string argument, IAuctionManager auctionManager)
         {
-            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? AuctionManager.Instance).Auction, "There is no auction to stop."))
+            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? Program.AuctionManager).Auction, "There is no auction to stop."))
                 return;
 
             ch.SetColor(ATTypes.AT_LBLUE);
 
-            var auction = (auctionManager ?? AuctionManager.Instance).Auction;
+            var auction = (auctionManager ?? Program.AuctionManager).Auction;
 
             ChatManager.talk_auction(string.Format(argument, auction.ItemForSale.ShortDescription));
             auction.ItemForSale.AddTo(auction.Seller);
 
-            if (GameManager.Instance.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
+            if (Program.GameManager.SystemData.SaveFlags.IsSet(AutoSaveFlags.Auction))
                 save.save_char_obj(auction.Seller);
 
             if (auction.Buyer != null && auction.Buyer != auction.Seller)
@@ -142,18 +142,18 @@ namespace SmaugCS.Commands
                 auction.Buyer.SendTo("Your money has been returned.");
             }
 
-            (auctionManager ?? AuctionManager.Instance).StopAuction();
+            (auctionManager ?? Program.AuctionManager).StopAuction();
         }
 
         private static void ReviewAuction(CharacterInstance ch, IAuctionManager auctionManager)
         {
-            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? AuctionManager.Instance).Auction,
+            if (CheckFunctions.CheckIfNullObject(ch, (auctionManager ?? Program.AuctionManager).Auction,
                 "There is nothing being auctioned right now.  What would you like to auction?")) return;
 
             ch.SetColor(ATTypes.AT_BLUE);
             ch.SendTo("Auctions:");
 
-            var auction = (auctionManager ?? AuctionManager.Instance).Auction;
+            var auction = (auctionManager ?? Program.AuctionManager).Auction;
             if (auction.BidAmount > 0)
                 ch.Printf("Current bid on this item is %s coin.", auction.BidAmount);
             else
@@ -246,21 +246,21 @@ namespace SmaugCS.Commands
             SkillData skill;
             if (obj.Value.ToList()[1] >= 0)
             {
-                skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[1]);
+                skill = Program.RepositoryManager.SKILLS.Get(obj.Value.ToList()[1]);
                 if (skill != null)
                     ch.SendTo($" '{skill.Name}'");
             }
 
             if (obj.Value.ToList()[2] >= 0)
             {
-                skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[2]);
+                skill = Program.RepositoryManager.SKILLS.Get(obj.Value.ToList()[2]);
                 if (skill != null)
                     ch.SendTo($" '{skill.Name}'");
             }
 
             if (obj.Value.ToList()[3] >= 0)
             {
-                skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
+                skill = Program.RepositoryManager.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
                     ch.SendTo($" '{skill.Name}'");
             }
@@ -273,7 +273,7 @@ namespace SmaugCS.Commands
 
             if (obj.Value.ToList()[3] >= 0)
             {
-                var skill = RepositoryManager.Instance.SKILLS.Get(obj.Value.ToList()[3]);
+                var skill = Program.RepositoryManager.SKILLS.Get(obj.Value.ToList()[3]);
                 if (skill != null)
                     ch.SendTo($" '{skill.Name}'");
             }

@@ -139,7 +139,7 @@ namespace SmaugCS
 
         public static string rev_exit(DirectionTypes vdir)
         {
-            return LookupManager.Instance.GetLookup("ReverseDirectionNames", (int)vdir);
+            return Program.LookupManager.GetLookup("ReverseDirectionNames", (int)vdir);
         }
 
         public static RoomTemplate generate_exit(RoomTemplate room, ExitData exit)
@@ -167,7 +167,7 @@ namespace SmaugCS
                     ++roomnum;
                     distance = exit.Distance - 1;
                 }
-                backroom = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(brvnum);
+                backroom = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(brvnum);
             }
             else
             {
@@ -184,7 +184,7 @@ namespace SmaugCS
             var found = false;
 
             var foundRoom =
-                RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
+                Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values.FirstOrDefault(
                     x => x.ID == serial && x.TeleportToVnum == roomnum);
             if (foundRoom != null)
                 found = true;
@@ -201,7 +201,7 @@ namespace SmaugCS
                     Flags = room.Flags
                 };
                 decorate_room(newRoom);
-                RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.ID, newRoom);
+                Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Add(newRoom.ID, newRoom);
             }
 
             var xit = newRoom.GetExit(vdir);
@@ -256,10 +256,10 @@ namespace SmaugCS
 
         public static void teleport(CharacterInstance ch, int room, int flags)
         {
-            var dest = RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
+            var dest = Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Get(room);
             if (dest == null)
             {
-                LogManager.Instance.Bug("bad room vnum {0}", room);
+                Program.LogManager.Bug("bad room vnum {0}", room);
                 return;
             }
 
@@ -289,7 +289,7 @@ namespace SmaugCS
         {
             if (ch.CurrentRoom == null)
             {
-                LogManager.Instance.Bug("{0} not in a room?!?", ch.Name);
+                Program.LogManager.Bug("{0} not in a room?!?", ch.Name);
                 return ReturnTypes.None;
             }
 
@@ -414,12 +414,12 @@ namespace SmaugCS
                 if (!string.IsNullOrEmpty(msg.ToChar))
                 {
                     comm.act(ATTypes.AT_PLAIN, msg.ToChar, ch, null,
-                             LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Character);
+                             Program.LookupManager.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Character);
                     ch.SendTo("\r\n");
                 }
                 if (!string.IsNullOrEmpty(msg.ToRoom))
                     comm.act(ATTypes.AT_PLAIN, msg.ToRoom, ch, null,
-                             LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Room);
+                             Program.LookupManager.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Room);
 
                 if (!string.IsNullOrEmpty(msg.DestRoom)
                                           && xit.GetDestination().Persons.Any())
@@ -484,10 +484,10 @@ namespace SmaugCS
                         && ch.CurrentRoom.Persons.Any())
                     {
                         comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj,
-                                 LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction),
+                                 Program.LookupManager.GetLookup("DirectionNames", (int)xit.Direction),
                                  ToTypes.Character);
                         comm.act(ATTypes.AT_PLAIN, msg.ObjMsg, ch.CurrentRoom.Persons.First(), obj,
-                                 LookupManager.Instance.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Room);
+                                 Program.LookupManager.GetLookup("DirectionNames", (int)xit.Direction), ToTypes.Room);
                     }
 
                     if (!string.IsNullOrEmpty(msg.DestObj) && ch.CurrentRoom.Persons.Any())

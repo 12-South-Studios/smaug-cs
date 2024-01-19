@@ -23,7 +23,7 @@ namespace Realm.Library.Common.Objects
 
             var initAtom = args.GetValue("InitAtom") as DictionaryAtom;
             var logger = initAtom.GetObject("Logger").CastAs<LogWrapper>();
-            logger.InfoFormat("Manager {0} initialized.", GetType());
+            logger.Info("Manager {0} initialized.", GetType());
         }
     }
 }

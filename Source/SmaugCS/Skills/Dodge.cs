@@ -19,7 +19,7 @@ namespace SmaugCS.Skills
             if (victim.IsNpc() && !victim.Defenses.IsSet((int)DefenseTypes.Dodge))
                 return false;
 
-            var skill = (databaseManager ?? RepositoryManager.Instance).GetEntity<SkillData>("dodge");
+            var skill = (databaseManager ?? Program.RepositoryManager).GetEntity<SkillData>("dodge");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'dodge' not found");
 
@@ -29,7 +29,7 @@ namespace SmaugCS.Skills
                 chances = 60.GetLowestOfTwoNumbers(2 * victim.Level);
             else
                 chances = (int)Macros.LEARNED(victim, (int)skill.ID) /
-                          (gameManager ?? GameManager.Instance).SystemData.DodgeMod;
+                          (gameManager ?? Program.GameManager).SystemData.DodgeMod;
 
             if (chances != 0 && victim.CurrentMorph != null)
                 chances += victim.CurrentMorph.Morph.DodgeChances;

@@ -31,7 +31,7 @@ namespace Realm.Library.Common.Data
         {
             Validation.IsNotNull(log, "log");
 
-            log.InfoFormat("{0}:{1}(BoolAtom)", prefix, Value);
+            log.Info("{0}:{1}(BoolAtom)", prefix, Value);
         }
     }
 }

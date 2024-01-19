@@ -1,4 +1,5 @@
-﻿using SmaugCS.Commands;
+﻿using Autofac;
+using SmaugCS.Commands;
 using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
@@ -49,7 +50,7 @@ namespace SmaugCS
 
             if (ch.MobIndex.HasProg(MudProgTypes.Script))
             {
-                MudProgHandler.ExecuteMobileProg(MudProgTypes.Script, ch);
+                MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Script, ch);
                 return;
             }
 
@@ -75,18 +76,18 @@ namespace SmaugCS
 
             if (ch.CurrentRoom.Area.NumberOfPlayers > 0)
             {
-                MudProgHandler.ExecuteMobileProg(MudProgTypes.Random, ch);
+                MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Random, ch);
                 if (ch.CharDied())
                     return;
                 if ((int)ch.CurrentPosition < (int)PositionTypes.Standing)
                     return;
             }
 
-            MudProgHandler.ExecuteMobileProg(MudProgTypes.Hour, ch);
+            MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Hour, ch);
             if (ch.CharDied())
                 return;
 
-            MudProgHandler.ExecuteRoomProg(MudProgTypes.Hour, ch);
+            MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Hour, ch);
             if (ch.CharDied())
                 return;
 

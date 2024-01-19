@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -67,17 +68,18 @@ namespace SmaugCS.Commands
 
             if (ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
             {
-                db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
-                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument}");
+                // TODO
+                // db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
+                 //   $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument}");
             }
 
-            MudProgHandler.ExecuteMobileProg(MudProgTypes.Speech, argument, ch);
+            MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Speech, argument, ch);
             if (ch.CharDied())
                 return;
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Speech, argument, ch);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Speech, argument, ch);
             if (ch.CharDied())
                 return;
-            MudProgHandler.ExecuteRoomProg(MudProgTypes.Speech, argument, ch);
+            MudProgHandler.ExecuteRoomProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Speech, argument, ch);
         }
     }
 }

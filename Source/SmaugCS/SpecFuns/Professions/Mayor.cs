@@ -20,13 +20,13 @@ namespace SmaugCS.SpecFuns
         {
             if (!_move)
             {
-                if (GameManager.Instance.GameTime.Hour == 6 || GameManager.Instance.GameTime.Hour == 20)
+                if (Program.GameManager.GameTime.Hour == 6 || Program.GameManager.GameTime.Hour == 20)
                 {
                     _move = true;
                     _index = 0;
                 }
 
-                _path = GameManager.Instance.GameTime.Hour == 6 ? OpenPath : (GameManager.Instance.GameTime.Hour == 20 ? ClosePath : string.Empty);
+                _path = Program.GameManager.GameTime.Hour == 6 ? OpenPath : (Program.GameManager.GameTime.Hour == 20 ? ClosePath : string.Empty);
             }
 
             if (ch.CurrentFighting != null)

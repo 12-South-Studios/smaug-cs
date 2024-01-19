@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Common;
 using SmaugCS.Communication;
 using SmaugCS.Constants.Constants;
@@ -128,11 +129,12 @@ namespace SmaugCS.Commands
                          ch, argument, victim, ToTypes.NotVictim);
 #endif
 
-            if (!ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
-                db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
-                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} (whisper to) {(victim.IsNpc() ? victim.ShortDescription : victim.Name)}");
+            // TODO
+            //if (!ch.CurrentRoom.Flags.IsSet((int)RoomFlags.LogSpeech))
+            //    db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
+            //        $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} (whisper to) {(victim.IsNpc() ? victim.ShortDescription : victim.Name)}");
 
-            MudProgHandler.ExecuteMobileProg(MudProgTypes.Tell, argument, ch);
+            MudProgHandler.ExecuteMobileProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Tell, argument, ch);
         }
     }
 }

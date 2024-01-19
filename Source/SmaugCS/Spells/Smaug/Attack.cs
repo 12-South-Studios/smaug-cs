@@ -11,7 +11,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_attack(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
             var vch = (CharacterInstance)vo;
 
             var saved = skill.CheckSave(level, ch, vch);

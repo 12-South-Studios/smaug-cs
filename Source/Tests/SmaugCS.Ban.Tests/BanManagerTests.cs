@@ -1,5 +1,4 @@
 ﻿using FakeItEasy;
-using Ninject;
 using Realm.Library.Common;
 using SmaugCS.Common.Enumerations;
 using SmaugCS.Logging;
@@ -18,11 +17,10 @@ namespace SmaugCS.Ban.Tests
             var mockLogger = A.Fake<ILogManager>();
             A.CallTo(() => mockLogger.Error(A<Exception>.Ignored));
 
-            var mockKernel = A.Fake<IKernel>();
             var mockTimer = A.Fake<ITimer>();
             var mockRepo = A.Fake<IBanRepository>();
 
-            _banManager = new BanManager(mockKernel, mockTimer, mockLogger, mockRepo);
+            _banManager = new BanManager(mockTimer, mockLogger, mockRepo);
         }
 
         private static BanData GetBan()

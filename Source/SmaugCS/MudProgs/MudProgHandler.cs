@@ -1,5 +1,4 @@
-﻿using Ninject;
-using SmaugCS.Constants.Enums;
+﻿using SmaugCS.Constants.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,13 +6,6 @@ namespace SmaugCS.MudProgs
 {
     public class MudProgHandler : IMudProgHandler
     {
-        private static IKernel _kernel;
-
-        public MudProgHandler(IKernel kernel)
-        {
-            _kernel = kernel;
-        }
-
         private static readonly Dictionary<MudProgLocationTypes, List<MudProgFunction>> MudProgTable = new Dictionary
             <MudProgLocationTypes, List<MudProgFunction>>
         {
@@ -56,13 +48,13 @@ namespace SmaugCS.MudProgs
             return function.Function.Invoke(args);
         }
 
-        public static bool ExecuteMobileProg(MudProgTypes mudProgType, params object[] args)
-            => _kernel.Get<IMudProgHandler>().Execute(MudProgLocationTypes.Mobile, mudProgType, args);
+        public static bool ExecuteMobileProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
+            => handler.Execute(MudProgLocationTypes.Mobile, mudProgType, args);
 
-        public static bool ExecuteObjectProg(MudProgTypes mudProgType, params object[] args)
-            => _kernel.Get<IMudProgHandler>().Execute(MudProgLocationTypes.Object, mudProgType, args);
+        public static bool ExecuteObjectProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
+            => handler.Execute(MudProgLocationTypes.Object, mudProgType, args);
 
-        public static bool ExecuteRoomProg(MudProgTypes mudProgType, params object[] args)
-            => _kernel.Get<IMudProgHandler>().Execute(MudProgLocationTypes.Room, mudProgType, args);
+        public static bool ExecuteRoomProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
+            => handler.Execute(MudProgLocationTypes.Room, mudProgType, args);
     }
 }

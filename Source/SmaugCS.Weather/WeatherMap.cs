@@ -26,7 +26,7 @@ namespace SmaugCS.Weather
         public int Width { get; }
         public int Height { get; }
 
-        public static string WeatherFile => SystemConstants.GetSystemFile(SystemFileTypes.Weather);
+        //public static string WeatherFile => SystemConstants.GetSystemFile(SystemFileTypes.Weather);
 
         #region Function Maps
 
@@ -95,16 +95,17 @@ namespace SmaugCS.Weather
 
         public void LoadMap(SystemFileTypes fileType, IEnumerable<string> map)
         {
-            var path = SystemConstants.GetSystemFile(fileType);
+            // TODO
+            //var path = SystemConstants.GetSystemFile(fileType);
 
-            using (var proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                IEnumerable<string> lines = proxy.ReadIntoList();
-                if (!lines.Any())
-                    throw new InvalidDataException($"Missing data for {fileType}");
+            //using (var proxy = new TextReaderProxy(new StreamReader(path)))
+            //{
+            //    IEnumerable<string> lines = proxy.ReadIntoList();
+            //    if (!lines.Any())
+            //        throw new InvalidDataException($"Missing data for {fileType}");
 
-                map.ToList().AddRange(lines);
-            }
+            //    map.ToList().AddRange(lines);
+            //}
         }
 
         public WeatherCell GetCellFromMap(int x, int y)
@@ -245,24 +246,25 @@ namespace SmaugCS.Weather
 
         public void Save()
         {
-            using (var proxy = new TextWriterProxy(new StreamWriter(WeatherFile)))
-            {
-                for (var y = 0; y < Height; y++)
-                {
-                    for (var x = 0; x < Width; x++)
-                    {
-                        var cell = GetCellFromMap(x, y);
+            // TODO
+            //using (var proxy = new TextWriterProxy(new StreamWriter(WeatherFile)))
+            //{
+            //    for (var y = 0; y < Height; y++)
+            //    {
+            //        for (var x = 0; x < Width; x++)
+            //        {
+            //            var cell = GetCellFromMap(x, y);
 
-                        proxy.Write("#CELL		  {0} {1}\n", x, y);
-                        proxy.Write("Climate      {0}\n", cell.Climate);
-                        proxy.Write("Hemisphere   {0}\n", cell.Hemisphere);
-                        proxy.Write("State        {0}\n",
-                            $"{cell.CloudCover} {cell.Energy} {cell.Humidity} {cell.Precipitation} {cell.Pressure} {cell.Temperature} {cell.WindSpeedX} {cell.WindSpeedY}");
-                        proxy.Write("End\n\n");
-                    }
-                }
-                proxy.Write("\n#END\n\n");
-            }
+            //            proxy.Write("#CELL		  {0} {1}\n", x, y);
+            //            proxy.Write("Climate      {0}\n", cell.Climate);
+            //            proxy.Write("Hemisphere   {0}\n", cell.Hemisphere);
+            //            proxy.Write("State        {0}\n",
+            //                $"{cell.CloudCover} {cell.Energy} {cell.Humidity} {cell.Precipitation} {cell.Pressure} {cell.Temperature} {cell.WindSpeedX} {cell.WindSpeedY}");
+            //            proxy.Write("End\n\n");
+            //        }
+            //    }
+            //    proxy.Write("\n#END\n\n");
+            //}
         }
 
         public void ApplyDeltaChanges()

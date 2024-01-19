@@ -27,7 +27,7 @@ namespace SmaugCS
                 modifiedDamage = CheckDamageForResistances(victim, dam, dt);
                 if (modifiedDamage == -1)
                 {
-                    var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
+                    var skill = Program.RepositoryManager.GetEntity<SkillData>(dt);
                     if (skill == null)
                         modifiedDamage = 0;
                     else
@@ -44,7 +44,7 @@ namespace SmaugCS
             if (modifiedDamage > 0 && victim.IsNpc() && ch != victim)
                 DoHuntAndHate(ch, victim);
 
-            var maxDamage = ch.Level * (dt == RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID ? 80 : 40);
+            var maxDamage = ch.Level * (dt == Program.RepositoryManager.GetEntity<SkillData>("backstab").ID ? 80 : 40);
             if (modifiedDamage > maxDamage)
                 modifiedDamage = maxDamage;
 
@@ -320,7 +320,7 @@ namespace SmaugCS
         {
             if (dt >= 0)
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>(dt);
+                var skill = Program.RepositoryManager.GetEntity<SkillData>(dt);
                 if (!skill.DieCharacterMessage.IsNullOrEmpty())
                     comm.act(ATTypes.AT_DEAD, skill.DieCharacterMessage, ch, null, victim, ToTypes.Character);
                 if (!skill.DieVictimMessage.IsNullOrEmpty())
@@ -396,8 +396,8 @@ namespace SmaugCS
             else
                 xpGain = (int)(ch.ComputeExperienceGain(victim) * 0.85f * dam) / victim.MaximumHealth;
 
-            if (dt == RepositoryManager.Instance.GetEntity<SkillData>("backstab").ID
-                || dt == RepositoryManager.Instance.GetEntity<SkillData>("circle").ID)
+            if (dt == Program.RepositoryManager.GetEntity<SkillData>("backstab").ID
+                || dt == Program.RepositoryManager.GetEntity<SkillData>("circle").ID)
                 xpGain = 0;
 
             ((PlayerInstance)ch).GainXP(xpGain);
@@ -443,7 +443,7 @@ namespace SmaugCS
                 modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Drain);
             else if (Macros.IS_POISON(dt))
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>("poison");
+                var skill = Program.RepositoryManager.GetEntity<SkillData>("poison");
                 if (skill != null)
                     modDmg = victim.ModifyDamageWithResistance(modDmg, ResistanceTypes.Poison);
             }

@@ -29,12 +29,12 @@ namespace SmaugCS.Spells
                 "What do you want to change about the weather?"))
                 return ReturnTypes.SpellFailed;
 
-            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var cell = Program.WeatherManager.GetWeather(ch.CurrentRoom.Area);
             var change = 5.GetNumberThatIsBetween(SmaugRandom.Between(5, 15) + ch.Level / 10, 15);
 
             WeatherChangeTable[Cast.TargetName.ToLower()].Invoke(cell, change);
 
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>(sn);
+            var skill = Program.RepositoryManager.GetEntity<SkillData>(sn);
             ch.SuccessfulCast(skill);
 
             return ReturnTypes.None;

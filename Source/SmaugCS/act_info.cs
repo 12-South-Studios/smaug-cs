@@ -21,7 +21,7 @@ namespace SmaugCS
     {
         public static void look_sky(CharacterInstance ch)
         {
-            var cell = WeatherManager.Instance.GetWeather(ch.CurrentRoom.Area);
+            var cell = Program.WeatherManager.GetWeather(ch.CurrentRoom.Area);
 
             ch.SendToPager("You gaze up towards the heavens and see:\r\n");
 
@@ -31,19 +31,19 @@ namespace SmaugCS
                 return;
             }
 
-            var sunpos = Program.MAP_WIDTH * (24 - GameManager.Instance.GameTime.Hour) / 24;
-            var moonpos = (sunpos + GameManager.Instance.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
+            var sunpos = Program.MAP_WIDTH * (24 - Program.GameManager.GameTime.Hour) / 24;
+            var moonpos = (sunpos + Program.GameManager.GameTime.Day * Program.MAP_WIDTH / Program.NUM_DAYS) % Program.MAP_WIDTH;
             var moonphase = ((Program.MAP_WIDTH + moonpos - sunpos) % Program.MAP_WIDTH + Program.MAP_WIDTH / 16) * 8 /
                             Program.MAP_WIDTH;
             if (moonphase > 4)
                 moonphase -= 8;
-            var starpos = (sunpos + Program.MAP_WIDTH * GameManager.Instance.GameTime.Month / Program.NUM_MONTHS) % Program.MAP_WIDTH;
+            var starpos = (sunpos + Program.MAP_WIDTH * Program.GameManager.GameTime.Month / Program.NUM_MONTHS) % Program.MAP_WIDTH;
 
             var sb = new StringBuilder();
 
             for (var line = 0; line < Program.MAP_HEIGHT; line++)
             {
-                if (GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18
+                if (Program.GameManager.GameTime.Hour >= 6 && Program.GameManager.GameTime.Hour <= 18
                     && (line < 3 || line >= 6))
                     continue;
 
@@ -51,12 +51,12 @@ namespace SmaugCS
 
                 for (var i = 0; i <= Program.MAP_WIDTH; i++)
                 {
-                    if (GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18
+                    if (Program.GameManager.GameTime.Hour >= 6 && Program.GameManager.GameTime.Hour <= 18
                         && (moonpos >= Program.MAP_WIDTH / 4 - 2)
                         && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                         && (i >= moonpos - 2) && (i <= moonpos + 2)
-                        && ((sunpos == moonpos && GameManager.Instance.GameTime.Hour == 12) || moonphase != 0)
-                        && (WeatherManager.Instance.Weather.MoonMap.ToList()[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
+                        && ((sunpos == moonpos && Program.GameManager.GameTime.Hour == 12) || moonphase != 0)
+                        && (Program.WeatherManager.Weather.MoonMap.ToList()[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
                             || (moonphase > 0 && i + 2 - moonpos <= moonphase))
@@ -67,7 +67,7 @@ namespace SmaugCS
                     else if ((line >= 3) && (line < 6)
                              && (moonpos >= Program.MAP_WIDTH / 4 - 2) && (moonpos <= 3 * Program.MAP_WIDTH / 4 + 2)
                              && (i >= moonpos - 2) && (i <= moonpos + 2)
-                             && (WeatherManager.Instance.Weather.MoonMap.ToList()[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
+                             && (Program.WeatherManager.Weather.MoonMap.ToList()[line - 3].ToCharArray()[i + 2 - moonpos] == '@'))
                     {
                         if ((moonphase < 0 && i - 2 - moonpos >= moonphase)
                             || (moonphase > 0 && i + 2 - moonpos <= moonphase))
@@ -77,11 +77,11 @@ namespace SmaugCS
                     }
                     else
                     {
-                        if (GameManager.Instance.GameTime.Hour >= 6 && GameManager.Instance.GameTime.Hour <= 18)
+                        if (Program.GameManager.GameTime.Hour >= 6 && Program.GameManager.GameTime.Hour <= 18)
                         {
                             if (i >= sunpos - 2 && i <= sunpos + 2)
                                 sb.AppendFormat("&Y{0}",
-                                                WeatherManager.Instance.Weather.SunMap.ToList()[line - 3].ToCharArray()[
+                                                Program.WeatherManager.Weather.SunMap.ToList()[line - 3].ToCharArray()[
                                                     i + 2 - sunpos]);
                             else
                                 sb.Append(" ");
@@ -89,7 +89,7 @@ namespace SmaugCS
                         else
                         {
                             var c =
-                                WeatherManager.Instance.Weather.StarMap.ToList()[line].ToCharArray()[
+                                Program.WeatherManager.Weather.StarMap.ToList()[line].ToCharArray()[
                                     (Program.MAP_WIDTH + 1 - starpos) % Program.MAP_WIDTH];
                             sb.Append(LookupConstants.StarCharacterMap.ContainsKey(c)
                                           ? LookupConstants.StarCharacterMap[c]
@@ -115,10 +115,10 @@ namespace SmaugCS
             var sms = (temp / 5).GetNumberThatIsBetween(1, 20);
 
             return fShort
-                       ? LookupManager.Instance.GetLookup("HallucinatedShortNames",
+                       ? Program.LookupManager.GetLookup("HallucinatedShortNames",
                                                           SmaugRandom.Between(
                                                               6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1)
-                       : LookupManager.Instance.GetLookup("HallucinatedLongNames",
+                       : Program.LookupManager.GetLookup("HallucinatedLongNames",
                                                           SmaugRandom.Between(
                                                               6 - (sms / 2).GetNumberThatIsBetween(1, 5), sms) - 1);
         }
@@ -199,7 +199,7 @@ namespace SmaugCS
                     && (obj.ItemType != ItemTypes.Trap
                         || ch.IsAffected(AffectedByTypes.DetectInvisibility)))
                 {
-                    string pstrShow = obj.GetFormattedDescription(ch, fShort);
+                    string pstrShow = obj.GetFormattedDescription(ch, fShort, Program.LookupManager);
                     bool fCombine = false;
 
                     if (ch.Act.IsSet((int)PlayerFlags.Combine))
@@ -317,12 +317,12 @@ namespace SmaugCS
 
                     if (!victim.IsNpc())
                     {
-                        var race = RepositoryManager.Instance.GetRace(victim.CurrentRace);
+                        var race = Program.RepositoryManager.GetRace(victim.CurrentRace);
                         ch.SendTo(race.WhereNames.ToList()[i]);
                     }
                     else
-                        ch.SendTo(LookupManager.Instance.GetLookup("WhereNames", i));
-                    ch.SendTo(obj.GetFormattedDescription(ch, true));
+                        ch.SendTo(Program.LookupManager.GetLookup("WhereNames", i));
+                    ch.SendTo(obj.GetFormattedDescription(ch, true, Program.LookupManager));
                     ch.SendTo("\r\n");
                 }
             }
@@ -338,11 +338,11 @@ namespace SmaugCS
                     ch.Printf("\r\n%s ", victim.Name);
 
                 ch.Printf("is a level %d %s %s.\r\n", victim.Level,
-                                RepositoryManager.Instance.GetRace(victim.CurrentRace).Name,
-                                RepositoryManager.Instance.GetClass(victim.CurrentClass).Name);
+                                Program.RepositoryManager.GetRace(victim.CurrentRace).Name,
+                                Program.RepositoryManager.GetClass(victim.CurrentClass).Name);
             }
 
-            var skill = RepositoryManager.Instance.GetEntity<SkillData>("peek");
+            var skill = Program.RepositoryManager.GetEntity<SkillData>("peek");
             if (skill == null)
                 throw new ObjectNotFoundException("Skill 'peek' not found");
 

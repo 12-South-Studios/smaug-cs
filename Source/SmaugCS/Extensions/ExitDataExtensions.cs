@@ -13,7 +13,7 @@ namespace SmaugCS
     {
         public static void Extract(this ExitData exit)
         {
-            var room = RepositoryManager.Instance.ROOMS.Get(exit.Room_vnum);
+            var room = Program.RepositoryManager.ROOMS.Get(exit.Room_vnum);
             room.Exits.Remove(exit);
             var reverseExit = exit.GetReverse();
             reverseExit.Reverse = 0;
@@ -27,7 +27,7 @@ namespace SmaugCS
 
         public static RoomTemplate GetDestination(this ExitData exit, IRepositoryManager dbManager = null)
         {
-            return (dbManager ?? RepositoryManager.Instance).ROOMS.CastAs<Repository<long, RoomTemplate>>()
+            return (dbManager ?? Program.RepositoryManager).ROOMS.CastAs<Repository<long, RoomTemplate>>()
                                                           .Values.ToList()
                                                           .Find(x => x.ID == exit.Destination);
         }

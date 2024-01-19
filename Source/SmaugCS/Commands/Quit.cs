@@ -50,7 +50,7 @@ namespace SmaugCS.Commands
             // TODO quitting_char = ch;
             save.save_char_obj(ch);
 
-            if (GameManager.Instance.SystemData.SavePets && ((PlayerInstance)ch).PlayerData.Pet != null)
+            if (Program.GameManager.SystemData.SavePets && ((PlayerInstance)ch).PlayerData.Pet != null)
             {
                 comm.act(ATTypes.AT_BYE, "$N follows $S master into the Void.", ch, null, ((PlayerInstance)ch).PlayerData.Pet, ToTypes.Room);
                 ((PlayerInstance)ch).PlayerData.Pet.Extract(true);
@@ -69,7 +69,7 @@ namespace SmaugCS.Commands
                 }
             }
 
-            LogManager.Instance.Info(
+            Program.LogManager.Info(
                 $"{ch.Name} has quit (Room {ch.CurrentRoom?.ID ?? -1}).",
                 LogTypes.Info, ch.Trust);
 

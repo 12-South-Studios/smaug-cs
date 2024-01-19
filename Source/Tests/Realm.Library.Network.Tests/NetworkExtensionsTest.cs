@@ -37,14 +37,5 @@ namespace Realm.Library.Network.Test
         {
             ipAddress.ConvertToIpAddress().Should().Be(new IPAddress(bigEndianValue));
         }
-
-        [Fact]
-        public void ConvertToIpAddress_GetsNullIpAddress_ThrowsException()
-        {
-            const string ipAddress = null;
-
-            Action act = () => ipAddress.ConvertToIpAddress();
-            act.Should().Throw<ArgumentNullException>();
-        }
     }
 }

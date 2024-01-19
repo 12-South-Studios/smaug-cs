@@ -31,8 +31,8 @@ namespace SmaugCS
 
             if (!mix.Object)
             {
-                var ingredient1 = RepositoryManager.Instance.GetEntity<LiquidData>(mix.Data.ToList()[0]);
-                var ingredient2 = RepositoryManager.Instance.GetEntity<LiquidData>(mix.Data.ToList()[1]);
+                var ingredient1 = Program.RepositoryManager.GetEntity<LiquidData>(mix.Data.ToList()[0]);
+                var ingredient2 = Program.RepositoryManager.GetEntity<LiquidData>(mix.Data.ToList()[1]);
                 ch.SendToPager("&wCombine two liquids to create this mixture:");
 
                 if (ingredient1 == null)
@@ -47,14 +47,14 @@ namespace SmaugCS
             }
             else
             {
-                var obj = RepositoryManager.Instance.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>().Get(mix.Data.ToList()[0]);
+                var obj = Program.RepositoryManager.OBJECTTEMPLATES.CastAs<Repository<long, ObjectTemplate>>().Get(mix.Data.ToList()[0]);
                 if (obj == null)
                 {
                     ch.PagerPrintf("%s has a bad object vnum %d, inform an Admin\r\n", mix.Name, mix.Data.ToList()[0]);
                     return;
                 }
 
-                var ingredient1 = RepositoryManager.Instance.GetEntity<LiquidData>(mix.Data.ToList()[1]);
+                var ingredient1 = Program.RepositoryManager.GetEntity<LiquidData>(mix.Data.ToList()[1]);
                 ch.SendToPager("Combine an object and a liquid in this mixture");
                 ch.PagerPrintf("&wMix &G%s&w (%d)\r\n", obj.Name, mix.Data.ToList()[0]);
                 ch.PagerPrintf("&winto one part &G%s&w (%d)&D\r\n", ingredient1.Name, mix.Data.ToList()[1]);
@@ -64,13 +64,13 @@ namespace SmaugCS
         public static LiquidData liq_can_mix(ObjectInstance sourceObj, ObjectInstance targetObj)
         {
             var mixture =
-                RepositoryManager.Instance.MIXTURES.Values.FirstOrDefault(m => m.Data.ToList()[0] == sourceObj.Value.ToList()[2]
+                Program.RepositoryManager.MIXTURES.Values.FirstOrDefault(m => m.Data.ToList()[0] == sourceObj.Value.ToList()[2]
                     || m.Data.ToList()[1] == sourceObj.Value.ToList()[2]);
 
             if (mixture == null || mixture.Data.ToList()[2] == -1)
                 return null;
 
-            var liquid = RepositoryManager.Instance.GetEntity<LiquidData>(mixture.Data.ToList()[2]);
+            var liquid = Program.RepositoryManager.GetEntity<LiquidData>(mixture.Data.ToList()[2]);
             if (liquid == null)
                 return null;
 
@@ -83,7 +83,7 @@ namespace SmaugCS
 
         public static LiquidData liqobj_can_mix(ObjectInstance sourceObj, ObjectInstance objectLiq)
         {
-            var mixture = RepositoryManager.Instance.MIXTURES.Values.Where(m => m.Data.ToList()[0] == sourceObj.Value.ToList()[2]
+            var mixture = Program.RepositoryManager.MIXTURES.Values.Where(m => m.Data.ToList()[0] == sourceObj.Value.ToList()[2]
                                                                                 || m.Data.ToList()[1] == sourceObj.Value.ToList()[2])
                                      .FirstOrDefault(m => m.Data.ToList()[0] == objectLiq.Value.ToList()[2]
                                                                 || m.Data.ToList()[1] == objectLiq.Value.ToList()[2]);
@@ -91,7 +91,7 @@ namespace SmaugCS
             if (mixture == null || mixture.Data.ToList()[2] == -1)
                 return null;
 
-            var liquid = RepositoryManager.Instance.GetEntity<LiquidData>(mixture.Data.ToList()[2]);
+            var liquid = Program.RepositoryManager.GetEntity<LiquidData>(mixture.Data.ToList()[2]);
             if (liquid == null)
                 return null;
 

@@ -20,7 +20,7 @@ namespace SmaugCS
                 return;
 
             var victim =
-                (dbManager ?? RepositoryManager.Instance).GetEntity<CharacterInstance>(ch.CurrentHating.Name);
+                (dbManager ?? Program.RepositoryManager).GetEntity<CharacterInstance>(ch.CurrentHating.Name);
             if (victim == null || ch.CurrentRoom == victim.CurrentRoom)
                 return;
 

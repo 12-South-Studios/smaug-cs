@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿using Autofac.Features.AttributeFilters;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Lua;
@@ -17,20 +17,15 @@ namespace SmaugCS.Logging
     {
         public ILogWrapper LogWrapper { get; private set; }
 
-        private static IKernel _kernel;
         private readonly IDbContext _dbContext;
         private readonly List<LogEntry> _pendingLogs;
         private readonly ITimer _dbDumpTimer;
         private readonly int _sessionId;
 
-        public static ILogManager Instance => _kernel.Get<ILogManager>();
-
-        public LogManager(ILogWrapper logWrapper, IKernel kernel, ITimer timer, IDbContext dbContext, int sessionId)
+        public LogManager(ILogWrapper logWrapper, [KeyFilter("LogDumpTimer")] ITimer timer, IDbContext dbContext)
         {
             LogWrapper = logWrapper;
-            _kernel = kernel;
             _dbContext = dbContext;
-            _sessionId = sessionId;
 
             _pendingLogs = new List<LogEntry>();
 
@@ -81,7 +76,7 @@ namespace SmaugCS.Logging
         {
             var sb = new StringBuilder();
             sb.AppendFormat(str, args);
-            LogWrapper.InfoFormat("[FATAL] {0}", sb.ToString());
+            LogWrapper.Info($"[FATAL] {sb}");
         }
 
         #region Boot Log
@@ -89,12 +84,12 @@ namespace SmaugCS.Logging
         {
             var sb = new StringBuilder();
             sb.AppendFormat(str, args);
-            LogWrapper.InfoFormat("[BOOT] {0}", sb.ToString());
+            LogWrapper.Info($"[BOOT] {sb}");
         }
 
         public void Boot(Exception ex)
         {
-            Boot(ex.Message + "\n{0}", ex.StackTrace);
+            Boot($"{ex.Message}\n{ex.StackTrace}");
         }
         #endregion
 

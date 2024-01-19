@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Udp\" />
+  </ItemGroup>
+
 </Project>

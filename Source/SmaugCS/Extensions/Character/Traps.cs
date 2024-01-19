@@ -44,7 +44,7 @@ namespace SmaugCS
             var returnCode = ReturnTypes.None;
             if (!string.IsNullOrEmpty(attrib?.Messages.ToList()[1]))
             {
-                var skill = RepositoryManager.Instance.GetEntity<SkillData>(attrib.Messages.ToList()[1]);
+                var skill = Program.RepositoryManager.GetEntity<SkillData>(attrib.Messages.ToList()[1]);
                 returnCode = ch.ObjectCastSpell((int)skill.ID, level, ch);
             }
 

@@ -62,7 +62,7 @@ namespace SmaugCS
 
             foreach (
                 var fch in
-                    RepositoryManager.Instance.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
+                    Program.RepositoryManager.CHARACTERS.CastAs<Repository<long, CharacterInstance>>().Values)
             {
                 if (fch.Master == ch)
                     ch.StopFollower();

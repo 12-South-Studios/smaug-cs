@@ -44,7 +44,7 @@ namespace SmaugCS
             return DirectionLookupTable.ContainsKey(direction.ToLower()) ? DirectionLookupTable[direction.ToLower()] : 10;
         }
 
-        [LuaFunction("LAddStatModLookup", "Category", "Name", "Value")]
+        [LuaFunction("LAddStatModLookup", "Adds Stat Mods", "Category", "Name", "Value")]
         public static int LAddStatModLookup(string category, string name, object value)
         {
             if (!_lookupManager.StatModLookup.ContainsKey(category))

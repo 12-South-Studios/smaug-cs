@@ -1,4 +1,5 @@
-﻿using Realm.Library.Common.Extensions;
+﻿using Autofac;
+using Realm.Library.Common.Extensions;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
@@ -48,7 +49,7 @@ namespace SmaugCS.Commands
             salve.Split();
             salve.Values.Charges -= 1;
 
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, salve, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, salve, null, null))
                 UseSalve(salve, ch, victim);
 
             Macros.WAIT_STATE(ch, salve.Values.Delay);

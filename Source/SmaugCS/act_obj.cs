@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using SmaugCS.Logging;
@@ -13,7 +14,7 @@ namespace SmaugCS
         public static void get_obj(CharacterInstance ch, ObjectInstance obj, ObjectInstance container)
         {
             if (CheckFunctions.CheckIfTrue(ch, !obj.WearFlags.IsSet(ItemWearFlags.Take)
-                && (ch.Level < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)),
+                && (ch.Level < Program.GameManager.SystemData.GetMinimumLevel(PlayerPermissionTypes.LevelGetObjectNoTake)),
                 "You can't take that.")) return;
 
             if (obj.MagicFlags.IsSet(ItemMagicFlags.PKDisarmed) && !ch.IsNpc())
@@ -92,7 +93,7 @@ namespace SmaugCS
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.ClanStoreroom)
                 && (container?.CarriedBy == null))
             {
-                foreach (var clan in RepositoryManager.Instance.CLANS.Values)
+                foreach (var clan in Program.RepositoryManager.CLANS.Values)
                 {
                     if (clan.StoreRoom == ch.CurrentRoom.ID)
                     {
@@ -118,7 +119,7 @@ namespace SmaugCS
             if (ch.CharDied() || handler.obj_extracted(obj))
                 return;
 
-            MudProgHandler.ExecuteObjectProg(MudProgTypes.Get, ch, obj);
+            MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Get, ch, obj);
         }
 
         private static void GetObjectFromRoom(CharacterInstance ch, ObjectInstance obj)
@@ -163,7 +164,7 @@ namespace SmaugCS
 
             if (fall_count > 30)
             {
-                LogManager.Instance.Bug("Object falling in loop more than 30 times");
+                Program.LogManager.Bug("Object falling in loop more than 30 times");
                 obj.Extract();
                 fall_count = 0;
                 return;
@@ -183,7 +184,7 @@ namespace SmaugCS
 
                 if (obj.InRoom == to_room)
                 {
-                    LogManager.Instance.Bug("Object falling into same room {0}", to_room.ID);
+                    Program.LogManager.Bug("Object falling into same room {0}", to_room.ID);
                     obj.Extract();
                     return;
                 }

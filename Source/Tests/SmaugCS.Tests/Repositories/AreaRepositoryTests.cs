@@ -1,6 +1,5 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Ninject;
 using Realm.Library.Common;
 using Realm.Library.Common.Logging;
 using Realm.Library.Common.Objects;
@@ -45,12 +44,11 @@ namespace SmaugCS.Tests.Repositories
 
         public AreaRepositoryTests()
         {
-            LuaManager luaMgr = new LuaManager(A.Fake<IKernel>(), A.Fake<ILogWrapper>());
+            LuaManager luaMgr = new LuaManager(A.Fake<ILogWrapper>());
 
-            RepositoryManager dbMgr = new RepositoryManager(A.Fake<IKernel>(), A.Fake<ILogManager>());
+            RepositoryManager dbMgr = new RepositoryManager(A.Fake<ILogManager>());
 
-            LogManager logMgr = new LogManager(A.Fake<ILogWrapper>(), A.Fake<IKernel>(),
-                A.Fake<ITimer>(), A.Fake<IDbContext>(), 0);
+            LogManager logMgr = new LogManager(A.Fake<ILogWrapper>(), A.Fake<ITimer>(), A.Fake<IDbContext>());
 
             LuaAreaFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);
             LuaRoomFunctions.InitializeReferences(luaMgr, dbMgr, logMgr);

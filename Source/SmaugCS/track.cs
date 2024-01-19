@@ -73,7 +73,7 @@ namespace SmaugCS
         {
             if (src == null || target == null)
             {
-                LogManager.Instance.Bug("Illegal value passed to find_first_step");
+                Program.LogManager.Bug("Illegal value passed to find_first_step");
                 return BFS_ERROR;
             }
 

@@ -19,24 +19,24 @@ namespace SmaugCS
             ch.SendToPager("&Ythe following themes are available:\r\n");
 
             var proxy = new DirectoryProxy();
-            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color);
+            //var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color);
 
-            var count = 0;
-            var col = 0;
-            foreach (var file in proxy.GetFiles(path).ToList()
-                                         .Where(x => !x.EqualsIgnoreCase("cvs") && !x.StartsWith(".")))
-            {
-                ++count;
-                ch.PagerPrintf("%s%-15.15s", color_str(ATTypes.AT_PLAIN, ch), file);
-                if (++col % 6 == 0)
-                    ch.SendToPager("\r\n");
-            }
+            //var count = 0;
+            //var col = 0;
+            //foreach (var file in proxy.GetFiles(path).ToList()
+            //                             .Where(x => !x.EqualsIgnoreCase("cvs") && !x.StartsWith(".")))
+            //{
+            //    ++count;
+            //    ch.PagerPrintf("%s%-15.15s", color_str(ATTypes.AT_PLAIN, ch), file);
+            //    if (++col % 6 == 0)
+            //        ch.SendToPager("\r\n");
+            //}
 
-            if (count == 0)
-                ch.SendToPager("No themes defined yet.\r\n");
+            //if (count == 0)
+            //    ch.SendToPager("No themes defined yet.\r\n");
 
-            if (col % 6 != 0)
-                ch.SendToPager("\r\n");
+            //if (col % 6 != 0)
+            //    ch.SendToPager("\r\n");
         }
 
         public static void show_colors(CharacterInstance ch)
@@ -73,7 +73,7 @@ namespace SmaugCS
             ch.SendToPager("&YAvailable colors are:\r\n");
 
             var numColors = 0;
-            foreach (var color in LookupManager.Instance.GetLookups("ValidColors"))
+            foreach (var color in Program.LookupManager.GetLookups("ValidColors"))
             {
                 if (numColors % 8 == 0 && numColors != 0)
                     ch.SendToPager("\r\n");
@@ -88,29 +88,29 @@ namespace SmaugCS
 
         public static void reset_colors(PlayerInstance ch)
         {
-            var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color) + "default";
-            using (var proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                IEnumerable<string> lines = proxy.ReadIntoList();
-                foreach (var line in lines.Where(l => !l.EqualsIgnoreCase("#colortheme")
-                                                         && !l.StartsWithIgnoreCase("name") &&
-                                                         !l.EqualsIgnoreCase("maxcolors")))
-                {
-                    var tuple = line.FirstArgument();
-                    switch (tuple.Item1.ToLower())
-                    {
-                        case "colors":
-                            var colors = tuple.Item2.Split(' ');
-                            for (var i = 0; i < colors.Length; i++)
-                            {
-                                ch.Colors[EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
-                            }
-                            break;
-                        case "end":
-                            return;
-                    }
-                }
-            }
+            //var path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.Color) + "default";
+            //using (var proxy = new TextReaderProxy(new StreamReader(path)))
+            //{
+            //    IEnumerable<string> lines = proxy.ReadIntoList();
+            //    foreach (var line in lines.Where(l => !l.EqualsIgnoreCase("#colortheme")
+            //                                             && !l.StartsWithIgnoreCase("name") &&
+            //                                             !l.EqualsIgnoreCase("maxcolors")))
+            //    {
+            //        var tuple = line.FirstArgument();
+            //        switch (tuple.Item1.ToLower())
+            //        {
+            //            case "colors":
+            //                var colors = tuple.Item2.Split(' ');
+            //                for (var i = 0; i < colors.Length; i++)
+            //                {
+            //                    ch.Colors[EnumerationExtensions.GetEnum<ATTypes>(i)] = (char)colors[i].ToInt32();
+            //                }
+            //                break;
+            //            case "end":
+            //                return;
+            //        }
+            //    }
+            //}
         }
 
         public static string color_str(ATTypes attype, CharacterInstance ch)

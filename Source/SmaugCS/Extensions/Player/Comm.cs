@@ -10,12 +10,13 @@ namespace SmaugCS
     {
         private static void SendFileToBuffer(this PlayerInstance ch, SystemFileTypes fileType)
         {
-            var path = SystemConstants.GetSystemFile(fileType);
-            using (var proxy = new TextReaderProxy(new StreamReader(path)))
-            {
-                var buffer = proxy.ReadToEnd();
-                ch.Descriptor.WriteToBuffer(buffer, buffer.Length);
-            }
+            // TODO
+            //var path = SystemConstants.GetSystemFile(fileType);
+            //using (var proxy = new TextReaderProxy(new StreamReader(path)))
+            //{
+            //    var buffer = proxy.ReadToEnd();
+            //    ch.Descriptor.WriteToBuffer(buffer, buffer.Length);
+            //}
         }
 
         public static void SendRIPScreen(this PlayerInstance ch)

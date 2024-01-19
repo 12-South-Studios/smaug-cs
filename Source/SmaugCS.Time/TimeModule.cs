@@ -1,12 +1,12 @@
-﻿using Ninject.Modules;
+﻿using Autofac;
 
 namespace SmaugCS.Time
 {
-    public class TimeModule : NinjectModule
+    public class TimeModule : Module
     {
-        public override void Load()
+        protected override void Load(ContainerBuilder builder)
         {
-            Kernel.Bind<ITimerManager>().To<TimerManager>().InSingletonScope();
+            builder.RegisterType<TimerManager>().As<ITimerManager>().SingleInstance();
         }
     }
 }

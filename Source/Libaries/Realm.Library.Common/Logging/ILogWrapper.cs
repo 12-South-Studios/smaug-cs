@@ -1,54 +1,24 @@
-﻿using log4net;
-using log4net.Core;
+﻿using Microsoft.Extensions.Logging;
 using System;
 
 namespace Realm.Library.Common.Logging
 {
     public interface ILogWrapper
     {
-        ILog Log { get; }
         ILogger Logger { get; }
-        int MinLoggingLevel { get; }
-        bool LogThis(LogLevel logLevel);
 
-        void Debug(object message);
-        void Debug(object message, Exception exception);
-        void DebugFormat(string format, params object[] args);
-        void DebugFormat(string format, object arg0);
-        void DebugFormat(string format, object arg0, object arg1);
-        void DebugFormat(string format, object arg0, object arg1, object arg2);
-        void DebugFormat(IFormatProvider provider, string format, params object[] args);
+        void Info(string message, params object[] args);
 
-        void Error(object message);
-        void Error(object message, Exception exception);
-        void ErrorFormat(string format, params object[] args);
-        void ErrorFormat(string format, object arg0);
-        void ErrorFormat(string format, object arg0, object arg1);
-        void ErrorFormat(string format, object arg0, object arg1, object arg2);
-        void ErrorFormat(IFormatProvider provider, string format, params object[] args);
+        void Error(Exception ex);
 
-        void Info(object message);
-        void Info(object message, Exception exception);
-        void InfoFormat(string format, params object[] args);
-        void InfoFormat(string format, object arg0);
-        void InfoFormat(string format, object arg0, object arg1);
-        void InfoFormat(string format, object arg0, object arg1, object arg2);
-        void InfoFormat(IFormatProvider provider, string format, params object[] args);
+        void Error(string message, params object[] args);
 
-        void Warn(object message);
-        void Warn(object message, Exception exception);
-        void WarnFormat(string format, params object[] args);
-        void WarnFormat(string format, object arg0);
-        void WarnFormat(string format, object arg0, object arg1);
-        void WarnFormat(string format, object arg0, object arg1, object arg2);
-        void WarnFormat(IFormatProvider provider, string format, params object[] args);
+        void Debug(string message, params object[] args);
 
-        void Fatal(object message);
-        void Fatal(object message, Exception exception);
-        void FatalFormat(string format, params object[] args);
-        void FatalFormat(string format, object arg0);
-        void FatalFormat(string format, object arg0, object arg1);
-        void FatalFormat(string format, object arg0, object arg1, object arg2);
-        void FatalFormat(IFormatProvider provider, string format, params object[] args);
+        void Warn(string message, params object[] args);
+
+        void Fatal(string message, params object[] args);
+
+        void Log(int logType, string message, params object[] args);
     }
 }

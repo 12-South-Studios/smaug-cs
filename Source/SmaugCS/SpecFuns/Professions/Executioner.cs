@@ -40,7 +40,7 @@ namespace SmaugCS.SpecFuns
 
             var vnum = GameConstants.GetVnum("MobileCityGuard");
 
-            var databaseMgr = (IRepositoryManager)(dbManager ?? RepositoryManager.Instance);
+            var databaseMgr = (IRepositoryManager)(dbManager ?? Program.RepositoryManager);
             var cityguard = databaseMgr.GetEntity<MobileTemplate>(vnum);
 
             var newGuard = databaseMgr.CHARACTERS.Create(cityguard, null);

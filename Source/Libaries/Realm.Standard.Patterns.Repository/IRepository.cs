@@ -2,7 +2,7 @@
 
 namespace Realm.Standard.Patterns.Repository
 {
-    public interface IRepository<TKey, T> where T : class
+    public interface IRepository<TKey, T>
     {
         bool Add(TKey key, T entity);
 

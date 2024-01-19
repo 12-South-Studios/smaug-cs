@@ -28,7 +28,7 @@ namespace SmaugCS.Commands
             if (firstArg.IsNumber() && secondArg.IsNullOrEmpty())
             {
                 var lowerBound = long.Parse(firstArg);
-                areas = RepositoryManager.Instance.AREAS.Values.Where(x => x.HighSoftRange >= lowerBound).ToList();
+                areas = Program.RepositoryManager.AREAS.Values.Where(x => x.HighSoftRange >= lowerBound).ToList();
             }
             else if (firstArg.IsNumber() && !secondArg.IsNullOrEmpty() && secondArg.IsNumber())
             {
@@ -40,15 +40,15 @@ namespace SmaugCS.Commands
                     lowerBound = upperBound;
                     upperBound = swap;
                 }
-                areas = RepositoryManager.Instance.AREAS.Values.Where(x => x.HighSoftRange >= lowerBound && x.LowSoftRange <= upperBound).ToList();
+                areas = Program.RepositoryManager.AREAS.Values.Where(x => x.HighSoftRange >= lowerBound && x.LowSoftRange <= upperBound).ToList();
             }
             else if (firstArg.EqualsIgnoreCase("old"))
             {
-                areas = RepositoryManager.Instance.AREAS.Values.ToList();
+                areas = Program.RepositoryManager.AREAS.Values.ToList();
             }
             else
             {
-                areas = RepositoryManager.Instance.AREAS.Values.OrderBy(x => x.Name).ToList();
+                areas = Program.RepositoryManager.AREAS.Values.OrderBy(x => x.Name).ToList();
             }
 
             var header1 = "   Author    |             Area                     | Recommended |  Enforced\n\r";

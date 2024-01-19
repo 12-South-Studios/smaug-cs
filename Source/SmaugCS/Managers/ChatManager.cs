@@ -43,9 +43,9 @@ namespace SmaugCS
                 if (och == null || vch == null)
                     continue;
                 if (!vch.IsImmortal()
-                    || (vch.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel)
+                    || (vch.Trust < Program.GameManager.SystemData.GetMinimumLevel(PlayerPermissionTypes.BuildLevel)
                         && channel == ChannelTypes.Build)
-                    || (vch.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel)
+                    || (vch.Trust < Program.GameManager.SystemData.GetMinimumLevel(PlayerPermissionTypes.LogLevel)
                         && (channel == ChannelTypes.Log || channel == ChannelTypes.High
                             || channel == ChannelTypes.Warn || channel == ChannelTypes.Comm)))
                     continue;
@@ -177,8 +177,9 @@ namespace SmaugCS
 
             if (ch.CurrentRoom.Flags.IsSet(RoomFlags.LogSpeech))
             {
-                db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
-                    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} ({verb})");
+                // TODO
+                // db.append_to_file(SystemConstants.GetSystemFile(SystemFileTypes.Log),
+                //    $"{(ch.IsNpc() ? ch.ShortDescription : ch.Name)}: {argument} ({verb})");
             }
 
             foreach (var d in db.DESCRIPTORS)
@@ -202,9 +203,9 @@ namespace SmaugCS
                         continue;
                     if (channel == ChannelTypes.AvTalk && !och.IsHero())
                         continue;
-                    if (channel == ChannelTypes.Highgod && och.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.MuseLevel))
+                    if (channel == ChannelTypes.Highgod && och.Trust < Program.GameManager.SystemData.GetMinimumLevel(PlayerPermissionTypes.MuseLevel))
                         continue;
-                    if (channel == ChannelTypes.High && och.Trust < GameManager.Instance.SystemData.GetMinimumLevel(PlayerPermissionTypes.ThinkLevel))
+                    if (channel == ChannelTypes.High && och.Trust < Program.GameManager.SystemData.GetMinimumLevel(PlayerPermissionTypes.ThinkLevel))
                         continue;
                     if (channel == ChannelTypes.Traffic && !och.IsImmortal() && !ch.IsImmortal())
                     {

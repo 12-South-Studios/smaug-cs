@@ -31,7 +31,7 @@ namespace SmaugCS
             if (ConditionTable.ContainsKey(condition))
                 ConditionTable[condition].Invoke(ch, conditionValue);
             else
-                LogManager.Instance.Bug("Invalid condition type {0}", condition);
+                Program.LogManager.Bug("Invalid condition type {0}", condition);
         }
 
         private static readonly Dictionary<ConditionTypes, Func<PlayerInstance, int, ReturnTypes>> ConditionTable

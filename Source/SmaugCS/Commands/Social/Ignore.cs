@@ -83,7 +83,7 @@ namespace SmaugCS.Commands
             }
 
             var victim =
-                RepositoryManager.Instance.CHARACTERS.Values.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+                Program.RepositoryManager.CHARACTERS.Values.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
             if (victim == null)
             {
                 ch.SetColor(ATTypes.AT_IGNORE);

@@ -1,23 +1,32 @@
-﻿using Ninject.Modules;
+﻿using Autofac;
 using SmaugCS.Common;
 using SmaugCS.Loaders.Loaders;
+using System.Collections.Generic;
 
 namespace SmaugCS.Loaders
 {
-    public class LoaderModule : NinjectModule
+    public class LoaderModule : Module
     {
-        public override void Load()
+        private IEnumerable<IBaseLoader> GetLoaders()
         {
-            Kernel.Bind<BaseLoader>().To<AreaListLoader>().Named("AreaLoader");
-            Kernel.Bind<BaseLoader>().To<ClanLoader>().Named("ClanLoader");
-            Kernel.Bind<BaseLoader>().To<ClassLoader>().Named("ClassLoader");
-            Kernel.Bind<BaseLoader>().To<CouncilLoader>().Named("CouncilLoader");
-            Kernel.Bind<BaseLoader>().To<DeityListLoader>().Named("DeityLoader");
-            Kernel.Bind<BaseLoader>().To<LanguageLoader>().Named("LanguageLoader");
-            Kernel.Bind<BaseLoader>().To<RaceLoader>().Named("RaceLoader");
-            Kernel.Bind<IInitializer>().To<LoaderInitializer>().InSingletonScope()
-                .Named("LoaderInitializer")
-                .OnActivation(x => x.Initialize());
+            var list = new List<IBaseLoader>();
+
+            return list;
+        }
+
+        protected override void Load(ContainerBuilder builder)
+        {
+            //builder.RegisterType<AreaListLoader>().Named<IBaseLoader>("AreaLoader");
+            //builder.RegisterType<ClanLoader>().Named<IBaseLoader>("ClanLoader");
+            //builder.RegisterType<ClassLoader>().Named<IBaseLoader>("ClassLoader");
+            //builder.RegisterType<CouncilLoader>().Named<IBaseLoader>("CouncilLoader");
+            //builder.RegisterType<DeityListLoader>().Named<IBaseLoader>("DeityListLoader");
+            //builder.RegisterType<LanguageLoader>().Named<IBaseLoader>("LanguageLoader");
+            //builder.RegisterType<RaceLoader>().Named<IBaseLoader>("RaceLoader");
+            builder.RegisterType<LoaderInitializer>().Named<IInitializer>("LoaderInitializer")
+                .SingleInstance()
+                .WithParameter("loaders", GetLoaders())
+                .OnActivated(x => x.Instance.Initialize());
         }
     }
 }

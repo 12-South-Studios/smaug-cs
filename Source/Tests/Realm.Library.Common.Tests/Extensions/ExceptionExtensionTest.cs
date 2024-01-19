@@ -23,10 +23,10 @@ namespace Realm.Library.Common.Test.Extensions
             var logger = A.Fake<ILogWrapper>();
 
             if (throwLoggingException)
-                A.CallTo(() => logger.Error(A<object>.Ignored, A<Exception>.Ignored))
+                A.CallTo(() => logger.Error(A<Exception>.Ignored))
                     .Throws(new InvalidOperationException("Unit test should not get an exception of this type"));
             else
-                A.CallTo(() => logger.Error(A<object>.Ignored, A<Exception>.Ignored));
+                A.CallTo(() => logger.Error(A<Exception>.Ignored));
 
             try
             {
@@ -42,7 +42,7 @@ namespace Realm.Library.Common.Test.Extensions
         public void Handle_ReThrowsException_WhenRecordAndThrowIsOption()
         {
             var logger = A.Fake<ILogWrapper>();
-            A.CallTo(() => logger.Error(A<object>.Ignored, A<Exception>.Ignored));
+            A.CallTo(() => logger.Error(A<Exception>.Ignored));
 
             try
             {
@@ -59,7 +59,7 @@ namespace Realm.Library.Common.Test.Extensions
         public void Handle_ReThrowsException_WhenThrowOnlyIsOption()
         {
             var logger = A.Fake<ILogWrapper>();
-            A.CallTo(() => logger.Error(A<object>.Ignored, A<Exception>.Ignored))
+            A.CallTo(() => logger.Error(A<Exception>.Ignored))
                 .Throws(new InvalidOperationException("Unit test should not get an exception of this type"));
 
             try
@@ -82,10 +82,10 @@ namespace Realm.Library.Common.Test.Extensions
             var logger = A.Fake<ILogWrapper>();
 
             if (throwLoggingException)
-                A.CallTo(() => logger.Error(A<object>.Ignored, A<Exception>.Ignored))
+                A.CallTo(() => logger.Error(A<Exception>.Ignored))
                     .Throws(new InvalidOperationException("Unit test should not get an exception of this type"));
             else
-                A.CallTo(() => logger.Error(A<object>.Ignored, A<Exception>.Ignored));
+                A.CallTo(() => logger.Error(A<Exception>.Ignored));
 
             try
             {

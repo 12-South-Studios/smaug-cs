@@ -30,7 +30,7 @@ namespace SmaugCS
 
             if (!ch.IsNpc())
             {
-                if (RepositoryManager.Instance.GetRace(ch.CurrentRace).Language.IsSet(language))
+                if (Program.RepositoryManager.GetRace(ch.CurrentRace).Language.IsSet(language))
                     return 100;
 
                 // TODO
@@ -41,7 +41,7 @@ namespace SmaugCS
 
                     if (language.IsSet(i) && ch.Speaks.IsSet(i))
                     {
-                        SkillData skill = RepositoryManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
+                        SkillData skill = Program.RepositoryManager.GetSkill(GameConstants.LanguageTable[i]);
                         if (skill.Slot != -1)
                             return ch.PlayerData.Learned[skill.Slot];
                     }
@@ -57,7 +57,7 @@ namespace SmaugCS
                 return false;
             if (ch.IsNpc() || ch.IsImmortal())
                 return false;
-            if ((RepositoryManager.Instance.GetRace(ch.CurrentRace).Language & language) > 0)
+            if ((Program.RepositoryManager.GetRace(ch.CurrentRace).Language & language) > 0)
                 return false;
 
             if ((ch.Speaks & language) > 0)
@@ -73,10 +73,10 @@ namespace SmaugCS
                         if (((int)LanguageTypes.ValidLanguages & i) == 0)
                             return false;
 
-                        SkillData skill = RepositoryManager.Instance.GetSkill(GameConstants.LanguageTable[i]);
+                        SkillData skill = Program.RepositoryManager.GetSkill(GameConstants.LanguageTable[i]);
                         if (skill == null)
                         {
-                            LogManager.Instance.Bug("can_learn_lang: valid language without sn: %d", i);
+                            Program.LogManager.Bug("can_learn_lang: valid language without sn: %d", i);
                             continue;
                         }
                     }

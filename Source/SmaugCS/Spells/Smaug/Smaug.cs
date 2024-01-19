@@ -13,7 +13,7 @@ namespace SmaugCS.Spells
     {
         public static ReturnTypes spell_smaug(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
             if (skill == null)
                 return ReturnTypes.Error;
 
@@ -92,7 +92,7 @@ namespace SmaugCS.Spells
             {
                 if (Macros.SPELL_DAMAGE(skill) == (int)SpellDamageTypes.Poison)
                 {
-                    var poisonSkill = RepositoryManager.Instance.GetEntity<SkillData>("poison");
+                    var poisonSkill = Program.RepositoryManager.GetEntity<SkillData>("poison");
                     if (poisonSkill == null)
                         throw new ObjectNotFoundException("Skill 'poison' not found");
 
@@ -101,7 +101,7 @@ namespace SmaugCS.Spells
 
                 if (Macros.SPELL_CLASS(skill) == (int)SpellClassTypes.Illusion)
                 {
-                    var blindSkill = RepositoryManager.Instance.GetEntity<SkillData>("blindness");
+                    var blindSkill = Program.RepositoryManager.GetEntity<SkillData>("blindness");
                     if (blindSkill == null)
                         throw new ObjectNotFoundException("Skill 'blindness' not found");
 

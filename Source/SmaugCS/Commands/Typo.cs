@@ -23,9 +23,9 @@ namespace SmaugCS.Commands
 
             if (!argument.EqualsIgnoreCase("clear now") || ch.Trust < LevelConstants.GetLevel(ImmortalTypes.Ascendant))
                 return;
-            var path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
-            using (var proxy = new TextWriterProxy(new StreamWriter(path, false)))
-                proxy.Write(string.Empty);
+            //var path = SystemConstants.GetSystemFile(SystemFileTypes.Typo);
+            //using (var proxy = new TextWriterProxy(new StreamWriter(path, false)))
+           //     proxy.Write(string.Empty);
             ch.SendTo("Typo file cleared.");
         }
     }

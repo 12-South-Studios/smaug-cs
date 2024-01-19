@@ -25,7 +25,7 @@ namespace SmaugCS.Commands
             var arg = tuple.Item1;
 
             // TODO fix
-            //var clan = RepositoryManager.Instance.GetEntity<ClanData>(arg);
+            //var clan = Program.RepositoryManager.GetEntity<ClanData>(arg);
             //if (clan == null)
             //{
             //    ch.Printf("No such guild or clan known as %s.\r\n", arg);
@@ -44,7 +44,7 @@ namespace SmaugCS.Commands
             //    foreach (var member in clan.Members)
             //    {
             //        ch.Printf("%-15.15s  %-15.15s %-6d %-6d %-6d %s",
-            //                        member.Name, LookupManager.Instance.GetLookup("NPCClasses", member.Class).CapitalizeFirst(),
+            //                        member.Name, Program.LookupManager.GetLookup("NPCClasses", member.Class).CapitalizeFirst(),
             //                        member.Level, member.Kills, member.Deaths, member.Joined.ToShortTimeString());
             //        total++;
             //    }

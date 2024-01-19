@@ -1,4 +1,5 @@
-﻿using SmaugCS.Common;
+﻿using Autofac;
+using SmaugCS.Common;
 using SmaugCS.Constants.Constants;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
@@ -54,9 +55,9 @@ namespace SmaugCS.Commands
                 QuaffPotion(ch, obj, hgFlag);
 
             if (obj.ObjectIndex.ID == VnumConstants.OBJ_VNUM_FLASK_BREWING)
-                GameManager.Instance.SystemData.brewed_used++;
+                Program.GameManager.SystemData.brewed_used++;
             else
-                GameManager.Instance.SystemData.upotion_val += obj.Cost / 100;
+                Program.GameManager.SystemData.upotion_val += obj.Cost / 100;
 
             // TODO global_objcode?
 
@@ -65,7 +66,7 @@ namespace SmaugCS.Commands
 
         private static void QuaffPotion(CharacterInstance ch, ObjectInstance obj, bool hgFlag)
         {
-            if (!MudProgHandler.ExecuteObjectProg(MudProgTypes.Use, ch, obj, null, null))
+            if (!MudProgHandler.ExecuteObjectProg(Program.Container.Resolve<IMudProgHandler>(), MudProgTypes.Use, ch, obj, null, null))
             {
                 if (!ch.CanPKill() || obj.InObject == null)
                 {

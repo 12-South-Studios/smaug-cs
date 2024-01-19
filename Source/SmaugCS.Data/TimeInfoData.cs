@@ -58,17 +58,17 @@ namespace SmaugCS.Data
 
         public void Save()
         {
-            string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat";
-            using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
-            {
-                proxy.Write("#TIME\n");
-                proxy.Write("Mhour  {0}\n", Hour);
-                proxy.Write("Mday   {0}\n", Day);
-                proxy.Write("Mmonth {0}\n", Month);
-                proxy.Write("Myear  {0}\n", Year);
-                proxy.Write("End\n\n");
-                proxy.Write("#END\n");
-            }
+            //string path = SystemConstants.GetSystemDirectory(SystemDirectoryTypes.System) + "time.dat";
+            //using (TextWriterProxy proxy = new TextWriterProxy(new StreamWriter(path)))
+            //{
+            //    proxy.Write("#TIME\n");
+            //    proxy.Write("Mhour  {0}\n", Hour);
+            //    proxy.Write("Mday   {0}\n", Day);
+            //    proxy.Write("Mmonth {0}\n", Month);
+            //    proxy.Write("Myear  {0}\n", Year);
+            //    proxy.Write("End\n\n");
+            //    proxy.Write("#END\n");
+            //}
         }
     }
 }

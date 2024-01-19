@@ -29,13 +29,7 @@
     <Content Include="NCalcLicense.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Ninject">
-      <Version>3.3.6</Version>
-    </PackageReference>
     <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>

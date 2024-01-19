@@ -11,7 +11,7 @@ namespace SmaugCS
     {
         public static int GetCurrentStat(this CharacterInstance ch, StatisticTypes statistic)
         {
-            var currentClass = RepositoryManager.Instance.GetClass(ch.CurrentClass);
+            var currentClass = Program.RepositoryManager.GetClass(ch.CurrentClass);
             var max = 20;
 
             if (ch.IsNpc() || currentClass.PrimaryAttribute == statistic)
@@ -93,7 +93,7 @@ namespace SmaugCS
             if (ch.IsNpc() && ch.Act.IsSet((int)ActFlags.Immortal))
                 return 1000000;
 
-            return (int)LookupManager.Instance.GetStatMod("Strength", ch.GetCurrentStrength(),
+            return (int)Program.LookupManager.GetStatMod("Strength", ch.GetCurrentStrength(),
                 StrengthModTypes.Carry);
         }
     }

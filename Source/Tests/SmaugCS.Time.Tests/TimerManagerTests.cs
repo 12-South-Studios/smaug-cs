@@ -1,9 +1,7 @@
-﻿using Ninject;
-using System.Timers;
+﻿using System.Timers;
 using FakeItEasy;
 using Xunit;
 using FluentAssertions;
-using System.Threading.Tasks;
 
 namespace SmaugCS.Time.Tests
 {
@@ -15,7 +13,7 @@ namespace SmaugCS.Time.Tests
 
         public TimerManagerTests()
         {
-            _mgr = new TimerManager(A.Fake<IKernel>());
+            _mgr = new TimerManager();
         }
 
         private void Callback(object sender, ElapsedEventArgs elapsedEventArgs)

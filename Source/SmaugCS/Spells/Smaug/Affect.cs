@@ -22,7 +22,7 @@ namespace SmaugCS.Spells
 
         public static ReturnTypes spell_affect(int sn, int level, CharacterInstance ch, object vo)
         {
-            var skill = RepositoryManager.Instance.SKILLS.Get(sn);
+            var skill = Program.RepositoryManager.SKILLS.Get(sn);
 
             if (!skill.Affects.Any())
                 return ReturnTypes.None;

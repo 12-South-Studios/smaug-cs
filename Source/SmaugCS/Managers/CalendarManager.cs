@@ -1,5 +1,4 @@
-﻿using Ninject;
-using Realm.Library.Common.Extensions;
+﻿using Realm.Library.Common.Extensions;
 using Realm.Library.Common.Objects;
 using Realm.Standard.Patterns.Repository;
 using SmaugCS.Constants.Constants;
@@ -33,8 +32,6 @@ namespace SmaugCS
             _gameManager = gameManager;
             _dbContext = dbContext;
         }
-
-        public static ICalendarManager Instance => Program.Kernel.Get<ICalendarManager>();
 
         public void Initialize()
         {
@@ -133,7 +130,7 @@ namespace SmaugCS
             act_wiz.echo_to_all(ATTypes.AT_CYAN, "Freshwater bodies everywhere have frozen over.\r\n", (int)EchoTypes.All);
 
             _winterFreeze = true;
-            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+            foreach (var room in Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.DeepWater
                     || x.SectorType == SectorTypes.ShallowWater))
             {
@@ -150,7 +147,7 @@ namespace SmaugCS
                                 (int)EchoTypes.All);
 
             _winterFreeze = true;
-            foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+            foreach (var room in Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                 .Where(x => x.SectorType == SectorTypes.Ice
                     && x.SectorType != SectorTypes.Unknown))
             {
@@ -180,7 +177,7 @@ namespace SmaugCS
             if (gameTime.Season == SeasonTypes.Winter && !_winterFreeze)
             {
                 _winterFreeze = true;
-                foreach (var room in RepositoryManager.Instance.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
+                foreach (var room in Program.RepositoryManager.ROOMS.CastAs<Repository<long, RoomTemplate>>().Values
                     .Where(x => x.SectorType == SectorTypes.DeepWater
                         || x.SectorType == SectorTypes.ShallowWater))
                 {
