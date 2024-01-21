@@ -11,7 +11,6 @@ using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Data.Instances;
 using SmaugCS.Data;
-using SmaugCS.Loaders;
 using SmaugCS.Logging;
 using SmaugCS.Lua;
 using SmaugCS.News;
@@ -56,7 +55,6 @@ namespace SmaugCS
             containerBuilder.RegisterModule(new NewsModule());
             containerBuilder.RegisterModule(new TimeModule());
             containerBuilder.RegisterModule(new WeatherModule(constants));
-            containerBuilder.RegisterModule(new LoaderModule());
             containerBuilder.RegisterModule(new ClanModule());
         }
 
@@ -122,8 +120,8 @@ namespace SmaugCS
 
             //// Pre-Tests the module_Area to catch any errors early before area load
             Program.LuaManager.DoLuaScript($"{constants.AppPath}/data/modules/module_area.lua");
-            // TODO
-            // ((LoaderInitializer)loaderInitializer).Load(Program.LogManager);
+            // TODO Load Areas,Clans,Classes,Councils,Deities,Languages,Races (lua scripts)
+            // TODO Incomplete - Comments, Help Areas, Hints, Holidays, Mixtures, Reserved, Time, Watch List
         }
 
         private static void LoadSystemDataFromLuaScripts(Config.Configuration.Constants constants, Config.Configuration.Settings settings)
@@ -173,16 +171,6 @@ namespace SmaugCS
         {
 
         }
-
-
-        //private static void StartNewSession(IDbContext dbContext)
-        //{
-        //    var newSession = new DAL.Models.Session();
-        //    newSession.IpAddress = ConfigurationManager.AppSettings["host"];
-        //    newSession.Port = Convert.ToInt32(ConfigurationManager.AppSettings["port"]);
-        //    dbContext.AddOrUpdate<DAL.Models.Session>(newSession);
-        //    SessionId = newSession.Id;
-        //}
 
         private static void NetworkManager_OnOnTcpUserStatusChanged(object sender, NetworkEventArgs networkEventArgs)
         {

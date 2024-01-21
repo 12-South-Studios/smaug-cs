@@ -68,7 +68,6 @@
     <ProjectReference Include="..\SmaugCS.DAL\SmaugCS.DAL.csproj" />
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj" />
     <ProjectReference Include="..\SmaugCS.Language\SmaugCS.Language.csproj" />
-    <ProjectReference Include="..\SmaugCS.Loaders\SmaugCS.Loaders.csproj" />
     <ProjectReference Include="..\SmaugCS.Logging\SmaugCS.Logging.csproj" />
     <ProjectReference Include="..\SmaugCS.Lua\SmaugCS.Lua.csproj" />
     <ProjectReference Include="..\SmaugCS.News\SmaugCS.News.csproj" />
