@@ -1,6 +1,7 @@
 ﻿using Realm.Library.Common.Extensions;
 using SmaugCS.DAL;
 using SmaugCS.DAL.Models;
+using SmaugCS.Data;
 using SmaugCS.Data.Organizations;
 using SmaugCS.Logging;
 using System.Collections.Generic;

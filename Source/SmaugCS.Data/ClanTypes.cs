@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmaugCS.Clans
+namespace SmaugCS.Data
 {
     [Flags]
     public enum ClanTypes

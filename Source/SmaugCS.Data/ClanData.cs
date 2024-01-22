@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace SmaugCS.Clans
+namespace SmaugCS.Data
 {
     [XmlRoot("Clan")]
     public class ClanData : OrganizationData

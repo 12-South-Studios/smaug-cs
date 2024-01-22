@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SmaugCS.Data;
+using System.Collections.Generic;
 
 namespace SmaugCS.Clans
 {
