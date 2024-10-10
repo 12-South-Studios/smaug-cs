@@ -2,27 +2,26 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmaugCS.DAL.Models
+namespace SmaugCS.DAL.Models;
+
+[Table("Notes")]
+public class Note : IEntity
 {
-    [Table("Notes")]
-    public class Note : IEntity
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public virtual int Id { get; set; }
 
-        public DateTime? CreateDateUtc { get; set; }
+    public DateTime? CreateDateUtc { get; set; }
 
-        public string Sender { get; set; }
+    public string Sender { get; set; }
 
-        public DateTime DateSent { get; set; }
+    public DateTime DateSent { get; set; }
 
-        public string RecipientList { get; set; }
+    public string RecipientList { get; set; }
 
-        public string Subject { get; set; }
+    public string Subject { get; set; }
 
-        public bool IsPoll { get; set; }
+    public bool IsPoll { get; set; }
 
-        public string Text { get; set; }
-    }
+    public string Text { get; set; }
 }

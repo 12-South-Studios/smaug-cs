@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Data;
 
-namespace SmaugCS.Weather
+namespace SmaugCS.Weather;
+
+public interface IWeatherManager
 {
-    public interface IWeatherManager
-    {
-        WeatherMap Weather { get; set; }
-        WeatherCell GetWeather(AreaData area);
-    }
+    WeatherMap Weather { get; set; }
+    WeatherCell GetWeather(AreaData area);
 }

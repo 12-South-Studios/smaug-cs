@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Scatter
 {
-    class Scatter
+    public static void do_scatter(CharacterInstance ch, string argument)
     {
-        public static void do_scatter(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum TargetTypes
 {
-    public enum TargetTypes
-    {
-        Ignore = 0,
-        OffensiveCharacter = 1,
-        DefensiveCharacter = 2,
-        Self = 3,
-        InventoryObject = 4
-    }
+    Ignore = 0,
+    OffensiveCharacter = 1,
+    DefensiveCharacter = 2,
+    Self = 3,
+    InventoryObject = 4
 }

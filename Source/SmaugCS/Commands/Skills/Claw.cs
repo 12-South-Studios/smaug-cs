@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Claw
 {
-    class Claw
+    public static void do_claw(CharacterInstance ch, string argument)
     {
-        public static void do_claw(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

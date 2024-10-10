@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills.Thief;
+
+class Circle
 {
-    class Circle
+    public static void do_circle(CharacterInstance ch, string argument)
     {
-        public static void do_circle(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

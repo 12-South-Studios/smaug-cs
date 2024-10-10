@@ -1,24 +1,18 @@
 ﻿using System.Collections.Generic;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class StatModLookup
 {
-    public class StatModLookup
-    {
-        public Dictionary<string, object> LookupValues { get; }
+  public Dictionary<string, object> LookupValues { get; } = new();
 
-        public StatModLookup()
-        {
-            LookupValues = new Dictionary<string, object>();
-        }
+  public void AddLookup(string name, object value)
+  {
+    LookupValues[name] = value;
+  }
 
-        public void AddLookup(string name, object value)
-        {
-            LookupValues[name] = value;
-        }
-
-        public object GetLookup(string name)
-        {
-            return LookupValues.ContainsKey(name) ? LookupValues[name] : null;
-        }
-    }
+  public object GetLookup(string name)
+  {
+    return LookupValues.GetValueOrDefault(name);
+  }
 }

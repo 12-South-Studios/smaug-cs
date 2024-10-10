@@ -1,10 +1,9 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum StrengthModTypes
 {
-    public enum StrengthModTypes
-    {
-        ToHit,
-        ToDam,
-        Carry,
-        Wield
-    }
+    ToHit,
+    ToDam,
+    Carry,
+    Wield
 }

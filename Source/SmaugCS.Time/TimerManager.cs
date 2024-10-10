@@ -1,49 +1,43 @@
-﻿using Realm.Library.Common;
+﻿using Library.Common;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
 
-namespace SmaugCS.Time
+namespace SmaugCS.Time;
+
+public sealed class TimerManager : ITimerManager
 {
-    public sealed class TimerManager : ITimerManager
-    {
-        private static int _idSpace = 1;
-        private static int GetNextId => _idSpace++;
+  private static int _idSpace = 1;
+  private static int GetNextId => _idSpace++;
 
-        private readonly ConcurrentDictionary<int, CommonTimer> _timerTable;
+  private readonly ConcurrentDictionary<int, CommonTimer> _timerTable = new();
 
-        public TimerManager()
-        {
-            _timerTable = new ConcurrentDictionary<int, CommonTimer>();
-        }
+  ~TimerManager()
+  {
+    _timerTable.Values.ToList().ForEach(x => x.Dispose());
+  }
 
-        ~TimerManager()
-        {
-            _timerTable.Values.ToList().ForEach(x => x.Dispose());
-        }
+  public int AddTimer(double duration, ElapsedEventHandler callback)
+  {
+    int newId = GetNextId;
 
-        public int AddTimer(double duration, ElapsedEventHandler callback)
-        {
-            var newId = GetNextId;
+    CommonTimer newTimer = new(newId) { Interval = duration };
+    newTimer.Elapsed += callback;
 
-            var newTimer = new CommonTimer(newId) { Interval = duration };
-            newTimer.Elapsed += callback;
+    _timerTable.GetOrAdd(newId, newTimer);
+    newTimer.Start();
+    return newId;
+  }
 
-            _timerTable.GetOrAdd(newId, newTimer);
-            newTimer.Start();
-            return newId;
-        }
+  public CommonTimer GetTimer(int timerId)
+  {
+    _timerTable.TryGetValue(timerId, out CommonTimer timer);
+    return timer;
+  }
 
-        public CommonTimer GetTimer(int timerId)
-        {
-            _timerTable.TryGetValue(timerId, out CommonTimer timer);
-            return timer;
-        }
-
-        public void DeleteTimer(int timerId)
-        {
-            _timerTable.TryRemove(timerId, out CommonTimer timer);
-            timer?.Dispose();
-        }
-    }
+  public void DeleteTimer(int timerId)
+  {
+    _timerTable.TryRemove(timerId, out CommonTimer timer);
+    timer?.Dispose();
+  }
 }

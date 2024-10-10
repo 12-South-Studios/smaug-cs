@@ -1,18 +1,17 @@
 ﻿using SmaugCS.Data;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class RPEdit
 {
-    class RPEdit
+    public static void rpedit(CharacterInstance ch, MudProgData mprog, int mptype, string arguments)
     {
-        public static void rpedit(CharacterInstance ch, MudProgData mprog, int mptype, string arguments)
-        {
             // TODO
         }
 
-        public static void do_rpedit(CharacterInstance ch, string argument)
-        {
+    public static void do_rpedit(CharacterInstance ch, string argument)
+    {
             // TODO
         }
-    }
 }

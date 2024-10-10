@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Boards;
+
+class MailRoom
 {
-    class MailRoom
+    public static void do_mailroom(CharacterInstance ch, string argument)
     {
-        public static void do_mailroom(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

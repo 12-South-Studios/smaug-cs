@@ -1,34 +1,33 @@
-﻿using Realm.Library.Common.Exceptions;
+﻿using Library.Common.Exceptions;
 using System;
 using System.Runtime.Serialization;
 
-namespace SmaugCS.Config
+namespace SmaugCS.Config;
+
+[Serializable]
+public class ConfigurationSectionNotFoundException : BaseException
 {
-    [Serializable]
-    public class ConfigurationSectionNotFoundException : BaseException
-    {
-        protected ConfigurationSectionNotFoundException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+  protected ConfigurationSectionNotFoundException(SerializationInfo info, StreamingContext context)
+    : base(info, context)
+  {
+  }
 
-        public ConfigurationSectionNotFoundException()
-        {
-        }
+  public ConfigurationSectionNotFoundException()
+  {
+  }
 
-        public ConfigurationSectionNotFoundException(string msg)
-            : base(msg)
-        {
-        }
+  public ConfigurationSectionNotFoundException(string msg)
+    : base(msg)
+  {
+  }
 
-        public ConfigurationSectionNotFoundException(string msg, Exception ex)
-            : base(msg, ex)
-        {
-        }
+  public ConfigurationSectionNotFoundException(string msg, Exception ex)
+    : base(msg, ex)
+  {
+  }
 
-        public ConfigurationSectionNotFoundException(string msg, params object[] args)
-            : base(string.Format(msg, args))
-        {
-        }
-    }
+  public ConfigurationSectionNotFoundException(string msg, params object[] args)
+    : base(string.Format(msg, args))
+  {
+  }
 }

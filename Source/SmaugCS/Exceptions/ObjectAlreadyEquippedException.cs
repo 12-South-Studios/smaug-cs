@@ -1,22 +1,21 @@
-﻿using Realm.Library.Common.Exceptions;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
+using Library.Common.Exceptions;
 
-namespace SmaugCS
+namespace SmaugCS.Exceptions;
+
+[Serializable]
+public sealed class ObjectAlreadyEquippedException : BaseException
 {
-    [Serializable]
-    public sealed class ObjectAlreadyEquippedException : BaseException
-    {
-        public ObjectAlreadyEquippedException() { }
+    public ObjectAlreadyEquippedException() { }
 
-        public ObjectAlreadyEquippedException(string message) : base(message) { }
+    public ObjectAlreadyEquippedException(string message) : base(message) { }
 
-        public ObjectAlreadyEquippedException(string format, params object[] args)
-            : base(string.Format(format, args)) { }
+    public ObjectAlreadyEquippedException(string format, params object[] args)
+        : base(string.Format(format, args)) { }
 
-        public ObjectAlreadyEquippedException(string message, Exception inner) : base(message, inner) { }
+    public ObjectAlreadyEquippedException(string message, Exception inner) : base(message, inner) { }
 
-        private ObjectAlreadyEquippedException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
-    }
+    private ObjectAlreadyEquippedException(SerializationInfo info, StreamingContext context)
+        : base(info, context) { }
 }

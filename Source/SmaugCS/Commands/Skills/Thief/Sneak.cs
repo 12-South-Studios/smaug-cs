@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills.Thief;
+
+class Sneak
 {
-    class Sneak
+    public static void do_sneak(CharacterInstance ch, string argument)
     {
-        public static void do_sneak(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

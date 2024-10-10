@@ -1,31 +1,30 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum DefenseTypes
 {
-    public enum DefenseTypes
-    {
-        Parry,
-        Dodge,
-        Heal,
-        CureLight,
-        CureSerious,
-        CureCritical,
-        DispelMagic,
-        DispelEvil,
-        Sanctuary,
-        FireShield,
-        ShockShield,
-        Shield,
-        Bless,
-        StoneSkin,
-        Teleport,
-        MonSum1,
-        MonSum2,
-        MonSum3,
-        MonSum4,
-        Disarm,
-        IceShield,
-        Grip,
-        TrueSight,
-        AcidMist,
-        VenomShield
-    }
+    Parry,
+    Dodge,
+    Heal,
+    CureLight,
+    CureSerious,
+    CureCritical,
+    DispelMagic,
+    DispelEvil,
+    Sanctuary,
+    FireShield,
+    ShockShield,
+    Shield,
+    Bless,
+    StoneSkin,
+    Teleport,
+    MonSum1,
+    MonSum2,
+    MonSum3,
+    MonSum4,
+    Disarm,
+    IceShield,
+    Grip,
+    TrueSight,
+    AcidMist,
+    VenomShield
 }

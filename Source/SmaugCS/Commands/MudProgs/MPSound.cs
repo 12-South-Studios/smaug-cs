@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPSound
 {
-    class MPSound
+    public static void do_mpsound(CharacterInstance ch, string argument)
     {
-        public static void do_mpsound(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

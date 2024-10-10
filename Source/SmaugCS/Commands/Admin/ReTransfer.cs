@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class ReTransfer
 {
-    class ReTransfer
+    public static void do_retran(CharacterInstance ch, string argument)
     {
-        public static void do_retran(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

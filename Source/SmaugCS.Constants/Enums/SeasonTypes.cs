@@ -1,11 +1,10 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum SeasonTypes
 {
-    public enum SeasonTypes
-    {
-        Spring = 0,
-        Summer = 1,
-        Fall = 2,
-        Winter = 3
-    }
+    Spring = 0,
+    Summer = 1,
+    Fall = 2,
+    Winter = 3
 }

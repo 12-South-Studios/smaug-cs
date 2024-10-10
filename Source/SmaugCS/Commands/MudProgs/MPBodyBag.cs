@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPBodyBag
 {
-    class MPBodyBag
+    public static void do_mpbodybag(CharacterInstance ch, string argument)
     {
-        public static void do_mpbodybag(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

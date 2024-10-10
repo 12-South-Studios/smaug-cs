@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Punch
 {
-    class Punch
+    public static void do_punch(CharacterInstance ch, string argument)
     {
-        public static void do_punch(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

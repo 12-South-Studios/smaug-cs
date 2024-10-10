@@ -5,62 +5,60 @@ using SmaugCS.Repository;
 using SmaugCS.SpecFuns;
 using Xunit;
 
-namespace SmaugCS.Tests.SpecFuns
+namespace SmaugCS.Tests.SpecFuns;
+
+public class SpecFunLookupTests
 {
+  private readonly GenericRepository<SpecialFunction> _specFunRepository;
+  private readonly IRepositoryManager _mockDbManager;
+  private readonly SpecFunHandler _handler;
 
-    public class SpecFunLookupTests
-    {
-        private GenericRepository<SpecialFunction> SpecFunRepository;
-        private IRepositoryManager MockDbManager;
-        private SpecFunHandler Handler;
+  public SpecFunLookupTests()
+  {
+    _specFunRepository = new GenericRepository<SpecialFunction>();
+    _mockDbManager = A.Fake<IRepositoryManager>();
+    _handler = new SpecFunHandler(_mockDbManager);
+  }
 
-        public SpecFunLookupTests()
-        {
-            SpecFunRepository = new GenericRepository<SpecialFunction>();
-            MockDbManager = A.Fake<IRepositoryManager>();
-            Handler = new SpecFunHandler(MockDbManager);
-        }
+  private SpecialFunction GetSpecFun()
+  {
+    SpecialFunction specFun = new(1, "spec_cast_adept");
+    _specFunRepository.Add(specFun.Id, specFun);
+    return specFun;
+  }
 
-        private SpecialFunction GetSpecFun()
-        {
-            var specFun = new SpecialFunction(1, "spec_cast_adept");
-            SpecFunRepository.Add(specFun.ID, specFun);
-            return specFun;
-        }
+  [Fact]
+  public void GetSpecFunReference_NoMatch_Test()
+  {
+    SpecFunHandler.GetSpecFunReference("invalid").Should().BeNull();
+  }
 
-        [Fact]
-        public void GetSpecFunReference_NoMatch_Test()
-        {
-            SpecFunHandler.GetSpecFunReference("invalid").Should().BeNull();
-        }
+  [Theory]
+  [InlineData("spec_cast_adept", true)]
+  [InlineData("invalid", false)]
+  public void IsValidSpecFunTest(string specFun, bool expectedValue)
+  {
+    SpecialFunction expectedSpecFun = GetSpecFun();
+    A.CallTo(() => _mockDbManager.GetEntity<SpecialFunction>(A<string>.Ignored)).Returns(expectedSpecFun);
 
-        [Theory]
-        [InlineData("spec_cast_adept", true)]
-        [InlineData("invalid", false)]
-        public void IsValidSpecFunTest(string specFun, bool expectedValue)
-        {
-            var expectedSpecFun = GetSpecFun();
-            A.CallTo(() => MockDbManager.GetEntity<SpecialFunction>(A<string>.Ignored)).Returns(expectedSpecFun);
+    _handler.IsValidSpecFun(specFun).Should().Be(expectedValue);
+  }
 
-            Handler.IsValidSpecFun(specFun).Should().Be(expectedValue);
-        }
+  [Fact]
+  public void GetSpecFun_Valid_Test()
+  {
+    SpecialFunction expectedSpecFun = GetSpecFun();
+    A.CallTo(() => _mockDbManager.GetEntity<SpecialFunction>(A<string>.Ignored)).Returns(expectedSpecFun);
 
-        [Fact]
-        public void GetSpecFun_Valid_Test()
-        {
-            var expectedSpecFun = GetSpecFun();
-            A.CallTo(() => MockDbManager.GetEntity<SpecialFunction>(A<string>.Ignored)).Returns(expectedSpecFun);
+    _handler.GetSpecFun("spec_cast_adept").Should().Be(expectedSpecFun);
+  }
 
-            Handler.GetSpecFun("spec_cast_adept").Should().Be(expectedSpecFun);
-        }
+  [Fact]
+  public void GetSpecFun_Invalid_Test()
+  {
+    GetSpecFun();
+    A.CallTo(() => _mockDbManager.GetEntity<SpecialFunction>(A<string>.Ignored)).Returns((SpecialFunction)null);
 
-        [Fact]
-        public void GetSpecFun_Invalid_Test()
-        {
-            GetSpecFun();
-            A.CallTo(() => MockDbManager.GetEntity<SpecialFunction>(A<string>.Ignored)).Returns((SpecialFunction)null);
-
-            Handler.GetSpecFun("spec_cast_cleric").Should().BeNull();
-        }
-    }
+    _handler.GetSpecFun("spec_cast_cleric").Should().BeNull();
+  }
 }

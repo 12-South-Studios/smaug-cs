@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Disarm
 {
-    class Disarm
+    public static void do_disarm(CharacterInstance ch, string argument)
     {
-        public static void do_disarm(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

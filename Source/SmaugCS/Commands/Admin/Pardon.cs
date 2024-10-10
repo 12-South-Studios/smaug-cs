@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Pardon
 {
-    class Pardon
+    public static void do_pardon(CharacterInstance ch, string argument)
     {
-        public static void do_pardon(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

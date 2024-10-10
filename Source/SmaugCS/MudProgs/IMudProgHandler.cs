@@ -1,9 +1,8 @@
 ﻿using SmaugCS.Constants.Enums;
 
-namespace SmaugCS.MudProgs
+namespace SmaugCS.MudProgs;
+
+public interface IMudProgHandler
 {
-    public interface IMudProgHandler
-    {
-        bool Execute(MudProgLocationTypes locationType, MudProgTypes mudProgType, params object[] args);
-    }
+    bool Execute(MudProgLocationTypes locationType, MudProgTypes mudProgType, params object[] args);
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Pipe;
+
+class Tamp
 {
-    class Tamp
+    public static void do_tamp(CharacterInstance ch, string argument)
     {
-        public static void do_tamp(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

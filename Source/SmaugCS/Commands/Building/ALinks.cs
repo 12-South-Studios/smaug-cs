@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class ALinks
 {
-    class ALinks
+    public static void do_alinks(CharacterInstance ch, string argument)
     {
-        public static void do_alinks(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

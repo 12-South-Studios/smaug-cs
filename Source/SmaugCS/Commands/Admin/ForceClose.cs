@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class ForceClose
 {
-    class ForceClose
+    public static void do_forceclose(CharacterInstance ch, string argument)
     {
-        public static void do_forceclose(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

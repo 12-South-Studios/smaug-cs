@@ -7,70 +7,71 @@ using SmaugCS.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SmaugCS.Extensions;
 
-namespace SmaugCS
+namespace SmaugCS;
+
+public static class track
 {
-    public static class track
+    public static int BFS_ERROR = -1;
+    public static int BFS_ALREADY_THERE = -2;
+    public static int BFS_NO_PATH = -3;
+    public static readonly int BFS_MARK = Convert.ToInt32(RoomFlags.BfsMark);
+
+    public static readonly Queue<BFSQueueData> BFS_DATA = new();
+    public static List<BFSQueueData> room_queue = new();
+
+    public static void MARK(RoomTemplate room)
     {
-        public static int BFS_ERROR = -1;
-        public static int BFS_ALREADY_THERE = -2;
-        public static int BFS_NO_PATH = -3;
-        public static readonly int BFS_MARK = Convert.ToInt32(RoomFlags.BfsMark);
-
-        public static readonly Queue<BFSQueueData> BFS_DATA = new Queue<BFSQueueData>();
-        public static List<BFSQueueData> room_queue = new List<BFSQueueData>();
-
-        public static void MARK(RoomTemplate room)
-        {
             room.Flags.IsSet(BFS_MARK);
         }
 
-        public static void UNMARK(RoomTemplate room)
-        {
+    public static void UNMARK(RoomTemplate room)
+    {
             room.Flags.RemoveBit(BFS_MARK);
         }
 
-        public static bool IS_MARKED(RoomTemplate room)
-        {
+    public static bool IS_MARKED(RoomTemplate room)
+    {
             return room.Flags.IsSet(BFS_MARK);
         }
 
-        public static bool valid_edge(ExitData exit)
-        {
-            return exit.Destination != null
+    public static bool valid_edge(ExitData exit)
+    {
+        return exit.Destination != null
 #if !TRACK_THROUGH_DOORS
- && !exit.Flags.IsSet((int)ExitFlags.Closed)
+               && !exit.Flags.IsSet((int)ExitFlags.Closed)
 #endif
- && !IS_MARKED(exit.GetDestination());
-        }
+               && !IS_MARKED(exit.GetDestination());
+    }
 
-        public static void bfs_enqueue(RoomTemplate room, char dir)
-        {
+    public static void bfs_enqueue(RoomTemplate room, char dir)
+    {
             BFS_DATA.Enqueue(new BFSQueueData { Room = room, Dir = dir });
         }
 
-        public static void bfs_dequeue()
-        {
+    public static void bfs_dequeue()
+    {
             BFS_DATA.Dequeue();
         }
 
-        public static void bfs_clear_queue()
-        {
+    public static void bfs_clear_queue()
+    {
             BFS_DATA.Clear();
         }
 
-        public static void room_enqueue(RoomTemplate room)
-        {
+    public static void room_enqueue(RoomTemplate room)
+    {
             room_queue.Add(new BFSQueueData { Room = room });
         }
 
-        public static void clean_room_queue()
-        {
+    public static void clean_room_queue()
+    {
             room_queue.Clear();
         }
 
-        public static int find_first_step(RoomTemplate src, RoomTemplate target, int maxdist)
-        {
+    public static int find_first_step(RoomTemplate src, RoomTemplate target, int maxdist)
+    {
             if (src == null || target == null)
             {
                 Program.LogManager.Bug("Illegal value passed to find_first_step");
@@ -86,8 +87,8 @@ namespace SmaugCS
             room_enqueue(src);
             MARK(src);
 
-            var curr_dir = 0;
-            foreach (var exit in src.Exits.Where(valid_edge))
+            int curr_dir = 0;
+            foreach (ExitData exit in src.Exits.Where(valid_edge))
             {
                 curr_dir = (int)exit.Direction;
                 MARK(exit.GetDestination());
@@ -95,9 +96,9 @@ namespace SmaugCS
                 bfs_enqueue(exit.GetDestination(), Convert.ToChar(curr_dir));
             }
 
-            var count = 0;
+            int count = 0;
 
-            var queueHead = BFS_DATA.Peek();
+            BFSQueueData queueHead = BFS_DATA.Peek();
             while (queueHead != null)
             {
                 if (++count > maxdist)
@@ -114,7 +115,7 @@ namespace SmaugCS
                     return curr_dir;
                 }
 
-                foreach (var exit in queueHead.Room.Exits.Where(valid_edge))
+                foreach (ExitData exit in queueHead.Room.Exits.Where(valid_edge))
                 {
                     curr_dir = (int)exit.Direction;
                     MARK(exit.GetDestination());
@@ -128,14 +129,13 @@ namespace SmaugCS
             return BFS_NO_PATH;
         }
 
-        public static void found_prey(CharacterInstance ch, CharacterInstance victim)
-        {
+    public static void found_prey(CharacterInstance ch, CharacterInstance victim)
+    {
             // TODO
         }
 
-        public static void hunt_victim(CharacterInstance ch)
-        {
+    public static void hunt_victim(CharacterInstance ch)
+    {
             // TODO
         }
-    }
 }

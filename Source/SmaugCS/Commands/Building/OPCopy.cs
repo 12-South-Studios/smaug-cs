@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class OPCopy
 {
-    class OPCopy
+    public static void do_opcopy(CharacterInstance ch, string argument)
     {
-        public static void do_opcopy(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

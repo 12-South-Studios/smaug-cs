@@ -1,10 +1,9 @@
 ﻿
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class afswap_data
 {
-    public class afswap_data
-    {
-        public int old_af { get; set; }
-        public int new_af { get; set; }
-        public short swap_chance { get; set; }
-    }
+    public int old_af { get; set; }
+    public int new_af { get; set; }
+    public short swap_chance { get; set; }
 }

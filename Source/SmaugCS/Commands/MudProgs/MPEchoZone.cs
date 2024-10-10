@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPEchoZone
 {
-    class MPEchoZone
+    public static void do_mpechozone(CharacterInstance ch, string argument)
     {
-        public static void do_mpechozone(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

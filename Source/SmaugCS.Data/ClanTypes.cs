@@ -1,24 +1,23 @@
 ﻿using System;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+[Flags]
+public enum ClanTypes
 {
-    [Flags]
-    public enum ClanTypes
-    {
-        None = 0,
-        Vampire = 1,
-        Warrior = 2,
-        Druid = 3,
-        Mage = 4,
-        Celtic = 5,
-        Thief = 6,
-        Cleric = 7,
-        Undead = 8,
-        Chaotic = 9,
-        Neutral = 10,
-        Lawful = 11,
-        NoKill = 12,
-        Order = 13,
-        Guild = 14
-    }
+    None = 0,
+    Vampire = 1,
+    Warrior = 2,
+    Druid = 3,
+    Mage = 4,
+    Celtic = 5,
+    Thief = 6,
+    Cleric = 7,
+    Undead = 8,
+    Chaotic = 9,
+    Neutral = 10,
+    Lawful = 11,
+    NoKill = 12,
+    Order = 13,
+    Guild = 14
 }

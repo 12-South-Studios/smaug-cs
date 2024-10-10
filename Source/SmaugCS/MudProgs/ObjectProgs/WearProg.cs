@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.Object
+namespace SmaugCS.MudProgs.ObjectProgs;
+
+public static class WearProg
 {
-    public static class WearProg
+    public static void Execute(CharacterInstance ch, ObjectInstance obj)
     {
-        public static void Execute(CharacterInstance ch, ObjectInstance obj)
-        {
 
         }
-    }
 }

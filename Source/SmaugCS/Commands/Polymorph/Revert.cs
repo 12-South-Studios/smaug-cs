@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Polymorph;
+
+class Revert
 {
-    class Revert
+    public static void do_revert(CharacterInstance ch, string argument)
     {
-        public static void do_revert(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Project
 {
-    class Project
+    public static void do_project(CharacterInstance ch, string argument)
     {
-        public static void do_project(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

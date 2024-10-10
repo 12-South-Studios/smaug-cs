@@ -1,5 +1,5 @@
-﻿using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Library.Common;
+using Library.Common.Extensions;
 using SmaugCS.Config;
 using SmaugCS.Constants.Enums;
 using System;
@@ -7,110 +7,109 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 
-namespace SmaugCS.Constants.Constants
-{
-    /// <summary>
-    /// Static class that contains system constants for the MUD
-    /// </summary>
-    //public static class SystemConstants
-    //{
-        //private static readonly Dictionary<SystemDirectoryTypes, string> SystemDirectories =
-        //    new Dictionary<SystemDirectoryTypes, string>();
+namespace SmaugCS.Constants.Constants;
 
-        //private static readonly Dictionary<SystemFileTypes, KeyValuePair<string, bool>> SystemFiles =
-        //    new Dictionary<SystemFileTypes, KeyValuePair<string, bool>>();
+/// <summary>
+/// Static class that contains system constants for the MUD
+/// </summary>
+//public static class SystemConstants
+//{
+//private static readonly Dictionary<SystemDirectoryTypes, string> SystemDirectories =
+//    new Dictionary<SystemDirectoryTypes, string>();
 
-        //private static readonly string[] BooleanConstants = { "true", "false", "1", "0", "yes", "no" };
+//private static readonly Dictionary<SystemFileTypes, KeyValuePair<string, bool>> SystemFiles =
+//    new Dictionary<SystemFileTypes, KeyValuePair<string, bool>>();
 
-        //public static string GetSystemDirectory(string directory)
-        //{
-        //    var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(directory);
-        //    return GetSystemDirectory(dirType);
-        //}
+//private static readonly string[] BooleanConstants = { "true", "false", "1", "0", "yes", "no" };
 
-        //public static string GetSystemDirectory(SystemDirectoryTypes directory)
-        //{
-        //    return SystemDirectories.ContainsKey(directory) ? SystemDirectories[directory] : string.Empty;
-        //}
+//public static string GetSystemDirectory(string directory)
+//{
+//    var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(directory);
+//    return GetSystemDirectory(dirType);
+//}
 
-        //public static string GetSystemFile(string file)
-        //{
-        //    var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(file);
-        //    return GetSystemFile(fileType);
-        //}
+//public static string GetSystemDirectory(SystemDirectoryTypes directory)
+//{
+//    return SystemDirectories.ContainsKey(directory) ? SystemDirectories[directory] : string.Empty;
+//}
 
-        //public static string GetSystemFile(SystemFileTypes file)
-        //{
-        //    if (SystemFiles.ContainsKey(file))
-        //    {
-        //        var kvp = SystemFiles[file];
-        //        return kvp.Value
-        //            ? GetSystemDirectory(SystemDirectoryTypes.System) + kvp.Key
-        //            : kvp.Key;
-        //    }
-        //    return string.Empty;
-        //}
+//public static string GetSystemFile(string file)
+//{
+//    var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(file);
+//    return GetSystemFile(fileType);
+//}
 
-        //[Obsolete("No longer loaded from a data file, now stored in app.Config")]
-        //public static void LoadSystemDirectoriesFromDataFile(string path)
-        //{
-        //    using (var proxy = new TextReaderProxy(new StreamReader(path + "\\SystemDirectories.txt")))
-        //    {
-        //        while (!proxy.EndOfStream)
-        //        {
-        //            var line = proxy.ReadLine().TrimEnd('~');
-        //            var words = line.Split(',');
+//public static string GetSystemFile(SystemFileTypes file)
+//{
+//    if (SystemFiles.ContainsKey(file))
+//    {
+//        var kvp = SystemFiles[file];
+//        return kvp.Value
+//            ? GetSystemDirectory(SystemDirectoryTypes.System) + kvp.Key
+//            : kvp.Key;
+//    }
+//    return string.Empty;
+//}
 
-        //            var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(words[0]);
-        //            SystemDirectories.Add(dirType, path + "\\" + words[1]);
-        //        }
-        //    }
-        //}
+//[Obsolete("No longer loaded from a data file, now stored in app.Config")]
+//public static void LoadSystemDirectoriesFromDataFile(string path)
+//{
+//    using (var proxy = new TextReaderProxy(new StreamReader(path + "\\SystemDirectories.txt")))
+//    {
+//        while (!proxy.EndOfStream)
+//        {
+//            var line = proxy.ReadLine().TrimEnd('~');
+//            var words = line.Split(',');
 
-        //[Obsolete("No longer loaded from a data file, now stored in app.Config")]
-        //public static void LoadSystemFilesFromDataFile(string path)
-        //{
-        //    using (var proxy = new TextReaderProxy(new StreamReader(path + "\\SystemFiles.txt")))
-        //    {
-        //        while (!proxy.EndOfStream)
-        //        {
-        //            var line = proxy.ReadLine().TrimEnd('~');
-        //            var words = line.Split(',');
+//            var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(words[0]);
+//            SystemDirectories.Add(dirType, path + "\\" + words[1]);
+//        }
+//    }
+//}
 
-        //            var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(words[0]);
-        //            var useSystemDirectory = Convert.ToBoolean(BooleanConstants.ContainsIgnoreCase(words[2]));
+//[Obsolete("No longer loaded from a data file, now stored in app.Config")]
+//public static void LoadSystemFilesFromDataFile(string path)
+//{
+//    using (var proxy = new TextReaderProxy(new StreamReader(path + "\\SystemFiles.txt")))
+//    {
+//        while (!proxy.EndOfStream)
+//        {
+//            var line = proxy.ReadLine().TrimEnd('~');
+//            var words = line.Split(',');
 
-        //            SystemFiles.Add(fileType, new KeyValuePair<string, bool>(words[1], useSystemDirectory));
-        //        }
-        //    }
-        //}
+//            var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(words[0]);
+//            var useSystemDirectory = Convert.ToBoolean(BooleanConstants.ContainsIgnoreCase(words[2]));
 
-        //public static int LoadSystemDirectoriesFromConfig(string path, Config.Configuration.Settings settings)
-        //{
-        //    //var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
-        //    //var collection = section.SystemDirectories;
+//            SystemFiles.Add(fileType, new KeyValuePair<string, bool>(words[1], useSystemDirectory));
+//        }
+//    }
+//}
 
-        //    foreach (SystemDirectoryElement element in settings.)
-        //    {
-        //        var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(element.Name);
-        //        SystemDirectories.Add(dirType, path + "\\" + element.Path);
-        //    }
+//public static int LoadSystemDirectoriesFromConfig(string path, Config.Configuration.Settings settings)
+//{
+//    //var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
+//    //var collection = section.SystemDirectories;
 
-        //    return SystemDirectories.Count;
-        //}
+//    foreach (SystemDirectoryElement element in settings.)
+//    {
+//        var dirType = EnumerationExtensions.GetEnum<SystemDirectoryTypes>(element.Name);
+//        SystemDirectories.Add(dirType, path + "\\" + element.Path);
+//    }
 
-        //public static int LoadSystemFilesFromConfig()
-        //{
-        //    var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
-        //    var collection = section.SystemFiles;
+//    return SystemDirectories.Count;
+//}
 
-        //    foreach (SystemFileElement element in collection)
-        //    {
-        //        var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(element.Name);
-        //        SystemFiles.Add(fileType, new KeyValuePair<string, bool>(element.Filename, element.UseSystemFolder));
-        //    }
+//public static int LoadSystemFilesFromConfig()
+//{
+//    var section = (SystemDataConfigurationSection)ConfigurationManager.GetSection("SystemDataSection");
+//    var collection = section.SystemFiles;
 
-        //    return SystemFiles.Count;
-        //}
-   // }
-}
+//    foreach (SystemFileElement element in collection)
+//    {
+//        var fileType = EnumerationExtensions.GetEnum<SystemFileTypes>(element.Name);
+//        SystemFiles.Add(fileType, new KeyValuePair<string, bool>(element.Filename, element.UseSystemFolder));
+//    }
+
+//    return SystemFiles.Count;
+//}
+// }

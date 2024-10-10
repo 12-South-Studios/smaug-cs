@@ -3,110 +3,102 @@ using SmaugCS.Logging;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using SmaugCS.DAL.Models;
 
-namespace SmaugCS.News
+namespace SmaugCS.News;
+
+public class NewsRepository(ILogManager logManager, IDbContext dbContext) : INewsRepository
 {
-    public class NewsRepository : INewsRepository
+  public IEnumerable<NewsData> News { get; private set; } = new List<NewsData>();
+
+  public void Add(NewsData news)
+  {
+    News.ToList().Add(news);
+  }
+
+  public void Load()
+  {
+    try
     {
-        public IEnumerable<NewsData> News { get; private set; }
-        private readonly ILogManager _logManager;
-        private readonly IDbContext _dbContext;
+      if (dbContext.Count<DAL.Models.News>() == 0) return;
 
-        public NewsRepository(ILogManager logManager, IDbContext dbContext)
+      foreach (DAL.Models.News news in dbContext.GetAll<DAL.Models.News>())
+      {
+        NewsData newNews = new(news.Id)
         {
-            News = new List<NewsData>();
-            _logManager = logManager;
-            _dbContext = dbContext;
-        }
+          Name = news.Name,
+          Header = news.Header,
+          Level = news.Level,
+          CreatedBy = news.CreatedBy,
+          CreatedOn = news.CreatedOn,
+          Active = news.IsActive
+        };
+        News.ToList().Add(newNews);
 
-        public void Add(NewsData news)
+        foreach (NewsEntry entry in news.Entries)
         {
-            News.ToList().Add(news);
+          NewsEntryData newEntry = new()
+          {
+            Id = entry.Id,
+            Title = entry.Title,
+            Name = entry.Name,
+            Text = entry.Text,
+            PostedOn = entry.PostedOn,
+            PostedBy = entry.PostedBy,
+            Active = entry.IsActive
+          };
+          newNews.Entries.ToList().Add(newEntry);
         }
+      }
 
-        public void Load()
-        {
-            try
-            {
-                if (_dbContext.Count<DAL.Models.News>() == 0) return;
-
-                foreach (DAL.Models.News news in _dbContext.GetAll<DAL.Models.News>())
-                {
-                    var newNews = new NewsData(news.Id)
-                    {
-                        Name = news.Name,
-                        Header = news.Header,
-                        Level = news.Level,
-                        CreatedBy = news.CreatedBy,
-                        CreatedOn = news.CreatedOn,
-                        Active = news.IsActive
-                    };
-                    News.ToList().Add(newNews);
-
-                    foreach (DAL.Models.NewsEntry entry in news.Entries)
-                    {
-                        var newEntry = new NewsEntryData
-                        {
-                            Id = entry.Id,
-                            Title = entry.Title,
-                            Name = entry.Name,
-                            Text = entry.Text,
-                            PostedOn = entry.PostedOn,
-                            PostedBy = entry.PostedBy,
-                            Active = entry.IsActive
-                        };
-                        newNews.Entries.ToList().Add(newEntry);
-                    }
-                }
-                _logManager.Boot("Loaded {0} News", News.Count());
-            }
-            catch (DbException ex)
-            {
-                _logManager.Error(ex);
-                throw;
-            }
-        }
-
-        public void Save()
-        {
-            try
-            {
-                foreach (var news in News.Where(x => !x.Saved).ToList())
-                {
-                    var newsToSave = new DAL.Models.News
-                    {
-                        CreatedBy = news.CreatedBy,
-                        CreatedOn = news.CreatedOn,
-                        Header = news.Header,
-                        IsActive = news.Active,
-                        Level = news.Level,
-                        Name = news.Name
-                    };
-                    news.Saved = true;
-
-                    foreach (var entry in news.Entries.Where(y => !y.Saved).ToList())
-                    {
-                        var entryToSave = new DAL.Models.NewsEntry
-                        {
-                            IsActive = entry.Active,
-                            Name = entry.Name,
-                            PostedBy = entry.PostedBy,
-                            PostedOn = entry.PostedOn,
-                            Title = entry.Title,
-                            Text = entry.Text
-                        };
-                        entry.Saved = true;
-                        newsToSave.Entries.Add(entryToSave);
-                    }
-
-                    _dbContext.AddOrUpdate<DAL.Models.News>(newsToSave);
-                }
-            }
-            catch (DbException ex)
-            {
-                _logManager.Error(ex);
-                throw;
-            }
-        }
+      logManager.Boot("Loaded {0} News", News.Count());
     }
+    catch (DbException ex)
+    {
+      logManager.Error(ex);
+      throw;
+    }
+  }
+
+  public void Save()
+  {
+    try
+    {
+      foreach (NewsData news in News.Where(x => !x.Saved).ToList())
+      {
+        DAL.Models.News newsToSave = new()
+        {
+          CreatedBy = news.CreatedBy,
+          CreatedOn = news.CreatedOn,
+          Header = news.Header,
+          IsActive = news.Active,
+          Level = news.Level,
+          Name = news.Name
+        };
+        news.Saved = true;
+
+        foreach (NewsEntryData entry in news.Entries.Where(y => !y.Saved).ToList())
+        {
+          NewsEntry entryToSave = new()
+          {
+            IsActive = entry.Active,
+            Name = entry.Name,
+            PostedBy = entry.PostedBy,
+            PostedOn = entry.PostedOn,
+            Title = entry.Title,
+            Text = entry.Text
+          };
+          entry.Saved = true;
+          newsToSave.Entries.Add(entryToSave);
+        }
+
+        dbContext.AddOrUpdate(newsToSave);
+      }
+    }
+    catch (DbException ex)
+    {
+      logManager.Error(ex);
+      throw;
+    }
+  }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Delay
 {
-    class Delay
-    {
-        public static void do_delay(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-    }
+  public static void do_delay(CharacterInstance ch, string argument)
+  {
+    // TODO
+  }
 }

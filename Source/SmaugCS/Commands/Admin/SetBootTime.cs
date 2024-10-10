@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class SetBootTime
 {
-    class SetBootTime
+    public static void do_set_boot_time(CharacterInstance ch, string argument)
     {
-        public static void do_set_boot_time(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

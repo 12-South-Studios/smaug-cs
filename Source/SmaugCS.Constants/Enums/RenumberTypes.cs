@@ -1,10 +1,9 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum RenumberTypes
 {
-    public enum RenumberTypes
-    {
-        Room,
-        Object,
-        Mobile
-    }
+    Room,
+    Object,
+    Mobile
 }

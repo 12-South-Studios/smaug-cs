@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Bloodlet
 {
-    class Bloodlet
+    public static void do_bloodlet(CharacterInstance ch, string argument)
     {
-        public static void do_bloodlet(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

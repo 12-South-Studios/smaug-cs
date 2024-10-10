@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Organizations;
+
+class SetClan
 {
-    class SetClan
+    public static void do_setclan(CharacterInstance ch, string argument)
     {
-        public static void do_setclan(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

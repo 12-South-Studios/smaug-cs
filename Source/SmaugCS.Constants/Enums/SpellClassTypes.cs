@@ -1,14 +1,13 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum SpellClassTypes
 {
-    public enum SpellClassTypes
-    {
-        None,
-        Lunar,
-        Solar,
-        Travel,
-        Summon,
-        Life,
-        Death,
-        Illusion
-    }
+    None,
+    Lunar,
+    Solar,
+    Travel,
+    Summon,
+    Life,
+    Death,
+    Illusion
 }

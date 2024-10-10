@@ -1,8 +1,7 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum HemisphereTypes
 {
-    public enum HemisphereTypes
-    {
-        North = 0,
-        South = 1
-    }
+    North = 0,
+    South = 1
 }

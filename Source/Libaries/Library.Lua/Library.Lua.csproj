@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Library.Lua</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library.Common\Library.Common.csproj" />
+    <ProjectReference Include="..\Patterns.Repository\Patterns.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="KopiLua">
+      <HintPath>..\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface">
+      <HintPath>..\LuaInterface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

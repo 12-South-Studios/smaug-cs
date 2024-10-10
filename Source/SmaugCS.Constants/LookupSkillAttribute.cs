@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace SmaugCS.Constants
+namespace SmaugCS.Constants;
+
+[AttributeUsage(AttributeTargets.Field)]
+public sealed class LookupSkillAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public sealed class LookupSkillAttribute : Attribute
-    {
-        public string Skill { get; set; }
-    }
+    public string Skill { get; set; }
 }

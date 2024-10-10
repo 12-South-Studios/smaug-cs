@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPNuisance
 {
-    class MPNuisance
+    public static void do_mpnuisance(CharacterInstance ch, string argument)
     {
-        public static void do_mpnuisance(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

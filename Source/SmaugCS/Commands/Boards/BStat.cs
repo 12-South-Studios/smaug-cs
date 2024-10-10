@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Boards;
+
+class BStat
 {
-    class BStat
+    public static void do_bstat(CharacterInstance ch, string argument)
     {
-        public static void do_bstat(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

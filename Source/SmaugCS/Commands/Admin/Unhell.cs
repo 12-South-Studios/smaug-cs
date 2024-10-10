@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Unhell
 {
-    class Unhell
+    public static void do_unhell(CharacterInstance ch, string argument)
     {
-        public static void do_unhell(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

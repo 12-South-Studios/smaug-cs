@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Lua</AssemblyTitle>
     <Product>SmaugCS.Lua</Product>
@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
-    <ProjectReference Include="..\Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj" />
+    <ProjectReference Include="..\Libaries\Library.Common\Library.Common.csproj" />
+    <ProjectReference Include="..\Libaries\Library.Lua\Library.Lua.csproj" />
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,11 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum SaveVsTypes
 {
-    public enum SaveVsTypes
-    {
-        None,
-        PoisonOrDeath,
-        RodsOrWands,
-        ParalysisOrPetrification,
-        Breath,
-        SpellsOrStaves
-    }
+    None,
+    PoisonOrDeath,
+    RodsOrWands,
+    ParalysisOrPetrification,
+    Breath,
+    SpellsOrStaves
 }

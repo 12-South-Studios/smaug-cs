@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Clans</AssemblyTitle>
@@ -10,9 +10,9 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
-    <ProjectReference Include="..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj" />
+    <ProjectReference Include="..\Libaries\Library.Common\Library.Common.csproj" />
+    <ProjectReference Include="..\Libaries\Patterns.Repository\Patterns.Repository.csproj" />
+    <ProjectReference Include="..\Libaries\Patterns.Singleton\Patterns.Singleton.csproj" />
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj" />
     <ProjectReference Include="..\SmaugCS.DAL\SmaugCS.DAL.csproj" />

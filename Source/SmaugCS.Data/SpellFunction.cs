@@ -2,10 +2,9 @@
 using SmaugCS.Data.Instances;
 using System;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class SpellFunction
 {
-    public class SpellFunction
-    {
-        public Func<int, int, CharacterInstance, object, ReturnTypes> Value { get; set; }
-    }
+    public Func<int, int, CharacterInstance, object, ReturnTypes> Value { get; set; }
 }

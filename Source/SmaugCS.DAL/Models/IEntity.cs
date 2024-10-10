@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace SmaugCS.DAL.Models
-{
-    public interface IEntity
-    {
-        int Id { get; set; }
+namespace SmaugCS.DAL.Models;
 
-        DateTime? CreateDateUtc { get; set; }
-    }
+public interface IEntity
+{
+    int Id { get; set; }
+
+    DateTime? CreateDateUtc { get; set; }
 }

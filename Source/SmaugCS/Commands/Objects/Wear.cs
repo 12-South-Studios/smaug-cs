@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Objects;
+
+class Wear
 {
-    class Wear
+    public static void do_wear(CharacterInstance ch, string argument)
     {
-        public static void do_wear(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

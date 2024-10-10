@@ -1,15 +1,14 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum TimerTypes
 {
-    public enum TimerTypes
-    {
-        None,
-        RecentFight,
-        ShoveDrag,
-        DoFunction,
-        Applied,
-        PKilled,
-        ASupressed,
-        Nuisance
-    }
+    None,
+    RecentFight,
+    ShoveDrag,
+    DoFunction,
+    Applied,
+    PKilled,
+    ASupressed,
+    Nuisance
 }

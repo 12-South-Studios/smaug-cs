@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPPardon
 {
-    class MPPardon
+    public static void do_mppardon(CharacterInstance ch, string argument)
     {
-        public static void do_mppardon(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

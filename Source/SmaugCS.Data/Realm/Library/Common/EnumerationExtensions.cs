@@ -1,6 +1,5 @@
-﻿namespace Realm.Library.Common
+﻿namespace Realm.Library.Common;
+
+internal class EnumerationExtensions
 {
-    internal class EnumerationExtensions
-    {
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class DMesg
 {
-    class DMesg
-    {
-        public static void do_dmesg(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-    }
+  public static void do_dmesg(CharacterInstance ch, string argument)
+  {
+    // TODO
+  }
 }

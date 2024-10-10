@@ -1,7 +1,6 @@
-﻿namespace SmaugCS.Clans
+﻿namespace SmaugCS.Clans;
+
+public interface IClanManager
 {
-    public interface IClanManager
-    {
-        void Initialize();
-    }
+    void Initialize();
 }

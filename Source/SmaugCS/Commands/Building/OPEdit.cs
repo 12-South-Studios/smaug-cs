@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class OPEdit
 {
-    class OPEdit
+    public static void do_opedit(CharacterInstance ch, string argument)
     {
-        public static void do_opedit(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

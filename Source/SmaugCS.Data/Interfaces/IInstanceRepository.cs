@@ -4,11 +4,10 @@ using SmaugCS.Data.Templates;
 // ReSharper disable once CheckNamespace
 
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public interface IInstanceRepository<T> where T : Instance
 {
-    public interface IInstanceRepository<T> where T : Instance
-    {
-        T Create(Template parent, params object[] args);
-        T Clone(T source, params object[] args);
-    }
+    T Create(Template parent, params object[] args);
+    T Clone(T source, params object[] args);
 }

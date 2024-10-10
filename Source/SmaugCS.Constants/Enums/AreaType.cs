@@ -1,11 +1,10 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum AreaType
 {
-    public enum AreaType
-    {
-        Error,
-        FUSS,
-        Smaug,
-        Help
-    }
+    Error,
+    FUSS,
+    Smaug,
+    Help
 }

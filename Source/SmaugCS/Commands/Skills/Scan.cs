@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Scan
 {
-    class Scan
+    public static void do_scan(CharacterInstance ch, string argument)
     {
-        public static void do_scan(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

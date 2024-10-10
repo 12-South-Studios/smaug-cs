@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Polymorph;
+
+class MorphList
 {
-    class MorphList
+    public static void do_morphlist(CharacterInstance ch, string argument)
     {
-        public static void do_morphlist(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

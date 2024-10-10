@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Objects;
+
+class Get
 {
-    class Get
+    public static void do_get(CharacterInstance ch, string argument)
     {
-        public static void do_get(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building.Shop;
+
+class MakeRepair
 {
-    class MakeRepair
+    public static void do_makerepair(CharacterInstance ch, string argument)
     {
-        public static void do_makerepair(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,17 +1,16 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Organizations;
+
+class Induct
 {
-    class Induct
+    public static void do_induct(CharacterInstance ch, string argument)
     {
-        public static void do_induct(CharacterInstance ch, string argument)
-        {
             // TODO
         }
 
-        public static void do_council_induct(CharacterInstance ch, string argument)
-        {
+    public static void do_council_induct(CharacterInstance ch, string argument)
+    {
             // TODO
         }
-    }
 }

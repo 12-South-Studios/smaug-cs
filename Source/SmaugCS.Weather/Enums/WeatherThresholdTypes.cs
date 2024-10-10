@@ -1,17 +1,16 @@
-﻿namespace SmaugCS.Weather.Enums
+﻿namespace SmaugCS.Weather.Enums;
+
+public enum WeatherThresholdTypes
 {
-    public enum WeatherThresholdTypes
-    {
-        DropsBelowTempThreshold,
-        ExceedsTempThreshold,
-        ExceedsPrecipThresholdInStorm,
-        ExceedsPrecipThreshold,
-        ExceedsPrecipThresholdAndDropsBelowFreezing,
-        ExceedsPrecipThresholdIsFreezing,
-        ExceedsPrecipAndTempThresholdsInStorm,
-        ExceedsPrecipAndTempThresholds,
-        IsBelowFreezing,
-        IsStormy,
-        None
-    }
+    DropsBelowTempThreshold,
+    ExceedsTempThreshold,
+    ExceedsPrecipThresholdInStorm,
+    ExceedsPrecipThreshold,
+    ExceedsPrecipThresholdAndDropsBelowFreezing,
+    ExceedsPrecipThresholdIsFreezing,
+    ExceedsPrecipAndTempThresholdsInStorm,
+    ExceedsPrecipAndTempThresholds,
+    IsBelowFreezing,
+    IsStormy,
+    None
 }

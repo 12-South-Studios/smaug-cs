@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class MistWalk
 {
-    class MistWalk
+    public static void do_mistwalk(CharacterInstance ch, string argument)
     {
-        public static void do_mistwalk(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

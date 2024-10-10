@@ -1,13 +1,12 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells;
+
+class Teleport
 {
-    class Teleport
+    public static int spell_teleport(int sn, int level, CharacterInstance ch, object vo)
     {
-        public static int spell_teleport(int sn, int level, CharacterInstance ch, object vo)
-        {
             // TODO
             return 0;
         }
-    }
 }

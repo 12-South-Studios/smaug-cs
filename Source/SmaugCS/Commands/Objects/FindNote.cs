@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Objects;
+
+class FindNote
 {
-    class FindNote
+    public static void do_findnote(CharacterInstance ch, string argument)
     {
-        public static void do_findnote(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

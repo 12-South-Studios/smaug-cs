@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Slice
 {
-    class Slice
+    public static void do_slice(CharacterInstance ch, string argument)
     {
-        public static void do_slice(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

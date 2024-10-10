@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Peace
 {
-    class Peace
+    public static void do_peace(CharacterInstance ch, string argument)
     {
-        public static void do_peace(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,13 +1,12 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells;
+
+class RemoveInvis
 {
-    class RemoveInvis
+    public static int spell_remove_invis(int sn, int level, CharacterInstance ch, object vo)
     {
-        public static int spell_remove_invis(int sn, int level, CharacterInstance ch, object vo)
-        {
             // TODO
             return 0;
         }
-    }
 }

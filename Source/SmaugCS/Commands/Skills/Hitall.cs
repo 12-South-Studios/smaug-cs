@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Hitall
 {
-    class Hitall
+    public static void do_hitall(CharacterInstance ch, string argument)
     {
-        public static void do_hitall(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

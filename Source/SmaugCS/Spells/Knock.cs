@@ -1,13 +1,12 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells;
+
+class Knock
 {
-    class Knock
+    public static int spell_knock(int sn, int level, CharacterInstance ch, object vo)
     {
-        public static int spell_knock(int sn, int level, CharacterInstance ch, object vo)
-        {
             // TODO
             return 0;
         }
-    }
 }

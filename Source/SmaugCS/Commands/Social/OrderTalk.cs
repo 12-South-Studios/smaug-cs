@@ -1,11 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Social;
+
+public static class OrderTalk
 {
-    public static class OrderTalk
+    public static void do_ordertalk(CharacterInstance ch, string argument)
     {
-        public static void do_ordertalk(CharacterInstance ch, string argument)
-        {
             // TODO Fix
             //if (CheckFunctions.CheckIfNotAuthorized(ch, ch, "Huh?")) return;
             //if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || ((PlayerInstance)ch).PlayerData.Clan == null
@@ -13,5 +13,4 @@ namespace SmaugCS.Commands
 
             //ChatManager.talk_channel(ch, argument, ChannelTypes.Order, "ordertalk");
         }
-    }
 }

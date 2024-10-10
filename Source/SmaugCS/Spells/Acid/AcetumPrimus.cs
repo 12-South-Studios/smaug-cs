@@ -1,21 +1,22 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Acid;
+
+public static class AcetumPrimus
 {
-    public static class AcetumPrimus
-    {
-        public static ReturnTypes spell_acetum_primus(int sn, int level, CharacterInstance ch, object vo)
-        {
-            var victim = (CharacterInstance)vo;
+  public static ReturnTypes spell_acetum_primus(int sn, int level, CharacterInstance ch, object vo)
+  {
+    CharacterInstance victim = (CharacterInstance)vo;
 
-            var lvl = 0.GetHighestOfTwoNumbers(level);
-            var damage = (int)(1.3f * (2 * lvl * SmaugRandom.D4() + 7));
+    int lvl = 0.GetHighestOfTwoNumbers(level);
+    int damage = (int)(1.3f * (2 * lvl * SmaugRandom.D4() + 7));
 
-            if (victim.SavingThrows.CheckSaveVsSpellStaff(lvl, victim))
-                damage = 3 * damage / 4;
-            return ch.CauseDamageTo(victim, damage, sn);
-        }
-    }
+    if (victim.SavingThrows.CheckSaveVsSpellStaff(lvl, victim))
+      damage = 3 * damage / 4;
+    return ch.CauseDamageTo(victim, damage, sn);
+  }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPAdvance
 {
-    class MPAdvance
+    public static void do_mpdavance(CharacterInstance ch, string argument)
     {
-        public static void do_mpdavance(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

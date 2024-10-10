@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class SaveArea
 {
-    class SaveArea
+    public static void do_savearea(CharacterInstance ch, string argument)
     {
-        public static void do_savearea(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class OStat
 {
-    class OStat
+    public static void do_ostat(CharacterInstance ch, string argument)
     {
-        public static void do_ostat(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

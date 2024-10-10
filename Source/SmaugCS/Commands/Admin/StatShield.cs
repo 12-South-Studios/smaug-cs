@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class StatShield
 {
-    class StatShield
+    public static void do_statshield(CharacterInstance ch, string argument)
     {
-        public static void do_statshield(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

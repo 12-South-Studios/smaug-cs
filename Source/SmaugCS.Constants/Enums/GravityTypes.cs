@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum GravityTypes
 {
-    public enum GravityTypes
-    {
-        Normal = 0,
-        Zero = 1,
-        Reverse = 2
-    }
+    Normal = 0,
+    Zero = 1,
+    Reverse = 2
 }

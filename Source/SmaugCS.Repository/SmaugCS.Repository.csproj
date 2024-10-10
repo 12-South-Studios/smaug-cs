@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Repository</AssemblyTitle>
     <Product>SmaugCS.Repository</Product>
@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
+    <ProjectReference Include="..\Libaries\Library.Common\Library.Common.csproj" />
     <ProjectReference Include="..\SmaugCS.Clans\SmaugCS.Clans.csproj" />
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
     <ProjectReference Include="..\SmaugCS.Constants\SmaugCS.Constants.csproj" />

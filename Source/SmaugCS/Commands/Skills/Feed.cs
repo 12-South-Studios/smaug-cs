@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Feed
 {
-    class Feed
+    public static void do_feed(CharacterInstance ch, string argument)
     {
-        public static void do_feed(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,10 +1,9 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum SpellPowerTypes
 {
-    public enum SpellPowerTypes
-    {
-        None,
-        Minor,
-        Greater,
-        Major
-    }
+    None,
+    Minor,
+    Greater,
+    Major
 }

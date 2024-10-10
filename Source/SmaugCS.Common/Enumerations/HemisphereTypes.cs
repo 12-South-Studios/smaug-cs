@@ -1,13 +1,12 @@
-﻿using Realm.Library.Common.Attributes;
+﻿using Library.Common.Attributes;
 
-namespace SmaugCS.Common.Enumerations
+namespace SmaugCS.Common.Enumerations;
+
+public enum HemisphereTypes
 {
-    public enum HemisphereTypes
-    {
-        [Name("Northern")]
-        North = 0,
+    [Name("Northern")]
+    North = 0,
 
-        [Name("Southern")]
-        South = 1
-    }
+    [Name("Southern")]
+    South = 1
 }

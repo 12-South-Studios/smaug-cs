@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPTransfer
 {
-    class MPTransfer
+    public static void do_mptransfer(CharacterInstance ch, string argument)
     {
-        public static void do_mptransfer(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

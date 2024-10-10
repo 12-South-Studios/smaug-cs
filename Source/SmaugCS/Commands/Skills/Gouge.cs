@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Gouge
 {
-    class Gouge
+    public static void do_gouge(CharacterInstance ch, string argument)
     {
-        public static void do_gouge(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

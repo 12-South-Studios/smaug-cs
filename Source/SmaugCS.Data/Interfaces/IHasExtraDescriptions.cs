@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.Data.Interfaces
+﻿namespace SmaugCS.Data.Interfaces;
+
+public interface IHasExtraDescriptions
 {
-    public interface IHasExtraDescriptions
-    {
-        void AddExtraDescription(string keywords, string description);
-        bool DeleteExtraDescription(string keyword);
-        ExtraDescriptionData GetExtraDescription(string keyword);
-    }
+    void AddExtraDescription(string keywords, string description);
+    bool DeleteExtraDescription(string keyword);
+    ExtraDescriptionData GetExtraDescription(string keyword);
 }

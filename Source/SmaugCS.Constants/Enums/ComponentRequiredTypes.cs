@@ -1,22 +1,21 @@
-﻿using Realm.Library.Common.Attributes;
+﻿using Library.Common.Attributes;
 
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum ComponentRequiredTypes
 {
-    public enum ComponentRequiredTypes
-    {
-        [Name("T")]
-        ItemType,
+    [Name("T")]
+    ItemType,
 
-        [Name("V")]
-        ItemVnum,
+    [Name("V")]
+    ItemVnum,
 
-        [Name("K")]
-        ItemKeyword,
+    [Name("K")]
+    ItemKeyword,
 
-        [Name("G")]
-        PlayerCoin,
+    [Name("G")]
+    PlayerCoin,
 
-        [Name("H")]
-        PlayerHealth
-    }
+    [Name("H")]
+    PlayerHealth
 }

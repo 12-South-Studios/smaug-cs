@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace SmaugCS.Communication
+namespace SmaugCS.Communication;
+
+[AttributeUsage(AttributeTargets.Field)]
+public sealed class ChannelPrintAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public sealed class ChannelPrintAttribute : Attribute
-    {
-        public string On { get; set; }
-        public string Off { get; set; }
-    }
+    public string On { get; set; }
+    public string Off { get; set; }
 }

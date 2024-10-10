@@ -1,31 +1,30 @@
-﻿using Realm.Library.Common.Attributes;
+﻿using Library.Common.Attributes;
 
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum ComponentOperatorTypes
 {
-    public enum ComponentOperatorTypes
-    {
-        [Name("!")]
-        FailIfPresent,
+    [Name("!")]
+    FailIfPresent,
 
-        [Name("+")]
-        DoNotConsume,
+    [Name("+")]
+    DoNotConsume,
 
-        [Name("@")]
-        DecreaseValue0,
+    [Name("@")]
+    DecreaseValue0,
 
-        [Name("#")]
-        DecreaseValue1,
+    [Name("#")]
+    DecreaseValue1,
 
-        [Name("$")]
-        DecreaseValue2,
+    [Name("$")]
+    DecreaseValue2,
 
-        [Name("%")]
-        DecreaseValue3,
+    [Name("%")]
+    DecreaseValue3,
 
-        [Name("^")]
-        DecreaseValue4,
+    [Name("^")]
+    DecreaseValue4,
 
-        [Name("&")]
-        DecreaseValue5
-    }
+    [Name("&")]
+    DecreaseValue5
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class VAssign
 {
-    class VAssign
+    public static void do_vassign(CharacterInstance ch, string argument)
     {
-        public static void do_vassign(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

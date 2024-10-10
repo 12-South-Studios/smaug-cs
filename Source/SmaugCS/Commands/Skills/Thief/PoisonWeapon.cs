@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills.Thief;
+
+class PoisonWeapon
 {
-    class PoisonWeapon
+    public static void do_poison_weapon(CharacterInstance ch, string argument)
     {
-        public static void do_poison_weapon(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace SmaugCS.Common.Enumerations
+namespace SmaugCS.Common.Enumerations;
+
+[Flags]
+public enum BanTypes
 {
-    [Flags]
-    public enum BanTypes
-    {
-        Site = 1,
-        Class = 2,
-        Race = 3,
-        Warn = 4
-    }
+    Site = 1,
+    Class = 2,
+    Race = 3,
+    Warn = 4
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class ShowClass
 {
-    class ShowClass
+    public static void do_showclass(CharacterInstance ch, string argument)
     {
-        public static void do_showclass(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

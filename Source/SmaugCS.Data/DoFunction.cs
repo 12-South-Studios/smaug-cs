@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Data.Instances;
 using System;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class DoFunction
 {
-    public class DoFunction
-    {
-        public Action<CharacterInstance, string> Value { get; set; }
-    }
+    public Action<CharacterInstance, string> Value { get; set; }
 }

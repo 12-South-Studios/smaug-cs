@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Pipe;
+
+class Smoke
 {
-    class Smoke
+    public static void do_smoke(CharacterInstance ch, string argument)
     {
-        public static void do_smoke(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPOOwner
 {
-    class MPOOwner
+    public static void do_mpoowner(CharacterInstance ch, string argument)
     {
-        public static void do_mpoowner(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

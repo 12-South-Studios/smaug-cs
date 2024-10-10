@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class IPCompare
 {
-    class IPCompare
+    public static void do_ipcompare(CharacterInstance ch, string argument)
     {
-        public static void do_ipcompare(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

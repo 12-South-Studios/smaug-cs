@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class Goto
 {
-    class Goto
+    public static void do_goto(CharacterInstance ch, string argument)
     {
-        public static void do_goto(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

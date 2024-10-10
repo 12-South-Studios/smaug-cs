@@ -1,14 +1,13 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum SpellSaveEffectTypes
 {
-    public enum SpellSaveEffectTypes
-    {
-        None,
-        Negate,
-        EighthDamage,
-        QuarterDamage,
-        HalfDamage,
-        ThreeQuartersDamage,
-        Reflect,
-        Absorb
-    }
+    None,
+    Negate,
+    EighthDamage,
+    QuarterDamage,
+    HalfDamage,
+    ThreeQuartersDamage,
+    Reflect,
+    Absorb
 }

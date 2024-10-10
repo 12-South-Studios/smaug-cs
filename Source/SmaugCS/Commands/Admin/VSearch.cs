@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class VSearch
 {
-    class VSearch
+    public static void do_vsearch(CharacterInstance ch, string argument)
     {
-        public static void do_vsearch(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

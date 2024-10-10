@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace SmaugCS.Constants
+namespace SmaugCS.Constants;
+
+[AttributeUsage(AttributeTargets.Field)]
+public sealed class DragValueAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public sealed class DragValueAttribute : Attribute
-    {
-        public int ModValue { get; set; }
-    }
+    public int ModValue { get; set; }
 }

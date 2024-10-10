@@ -1,16 +1,15 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Ban
+namespace SmaugCS.Ban;
+
+public interface IBanManager
 {
-    public interface IBanManager
-    {
-        void ClearBans();
+    void ClearBans();
 
-        bool CheckTotalBans(string host, int supremeLevel);
-        bool CheckBans(PlayerInstance ch, int type);
+    bool CheckTotalBans(string host, int supremeLevel);
+    bool CheckBans(PlayerInstance ch, int type);
 
-        void Initialize();
+    void Initialize();
 
-        IBanRepository Repository { get; }
-    }
+    IBanRepository Repository { get; }
 }

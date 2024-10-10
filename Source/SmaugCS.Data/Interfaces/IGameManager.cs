@@ -1,13 +1,12 @@
-﻿using Realm.Library.NCalc;
+﻿using Library.NCalc;
 
-namespace SmaugCS.Data.Interfaces
+namespace SmaugCS.Data.Interfaces;
+
+public interface IGameManager
 {
-    public interface IGameManager
-    {
-        TimeInfoData GameTime { get; }
-        SystemData SystemData { get; }
-        void SetGameTime(TimeInfoData gameTime);
-        ExpressionParser ExpParser { get; }
-        void StartMainGameLoop();
-    }
+    TimeInfoData GameTime { get; }
+    SystemData SystemData { get; }
+    void SetGameTime(TimeInfoData gameTime);
+    ExpressionParser ExpParser { get; }
+    void StartMainGameLoop();
 }

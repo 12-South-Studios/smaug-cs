@@ -1,11 +1,10 @@
 ﻿using SmaugCS.Data;
 
-namespace SmaugCS
+namespace SmaugCS.Interfaces;
+
+public interface ICalendarManager
 {
-    public interface ICalendarManager
-    {
-        void Initialize();
-        void CalculateSeason(TimeInfoData gameTime);
-        TimeInfoData GameTime { get; }
-    }
+    void Initialize();
+    void CalculateSeason(TimeInfoData gameTime);
+    TimeInfoData GameTime { get; }
 }

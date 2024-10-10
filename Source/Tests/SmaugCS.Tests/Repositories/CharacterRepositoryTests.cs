@@ -1,34 +1,35 @@
 ﻿using FluentAssertions;
 using SmaugCS.Repository;
 using System;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using Test.Common;
 using Xunit;
 
-namespace SmaugCS.Tests.Repositories
+namespace SmaugCS.Tests.Repositories;
+
+[Collection(CollectionDefinitions.NonParallelCollection)]
+public class CharacterRepositoryTests
 {
-    [Collection(CollectionDefinitions.NonParallelCollection)]
-    public class CharacterRepositoryTests
-    {
-        //[Fact]
-        public void Create()
-        {
-            var mobRepo = new MobileRepository();
-            var mob = mobRepo.Create(1, "TestMob");
+  //[Fact]
+  public void Create()
+  {
+    MobileRepository mobRepo = new();
+    MobileTemplate mob = mobRepo.Create(1, "TestMob");
 
-            var repo = new CharacterRepository();
-            var actual = repo.Create(mob);
+    CharacterRepository repo = new();
+    CharacterInstance actual = repo.Create(mob);
 
-            actual.Should().NotBeNull();
-            actual.ID.Should().BeGreaterThanOrEqualTo(1);
-        }
+    actual.Should().NotBeNull();
+    actual.Id.Should().BeGreaterThanOrEqualTo(1);
+  }
 
-        [Fact]
-        public void Create_InvalidParent()
-        {
-            var repo = new CharacterRepository();
+  [Fact]
+  public void Create_InvalidParent()
+  {
+    CharacterRepository repo = new();
 
-            Action act = () => repo.Create(null);
-            act.Should().Throw<ArgumentNullException>();
-        }
-    }
+    Action act = () => repo.Create(null);
+    act.Should().Throw<ArgumentNullException>();
+  }
 }

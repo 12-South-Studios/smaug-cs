@@ -1,10 +1,9 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum ShopTypes
 {
-    public enum ShopTypes
-    {
-        Item,
-        Repair,
-        Spell
-    }
+    Item,
+    Repair,
+    Spell
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Organizations;
+
+class Victories
 {
-    class Victories
+    public static void do_victories(CharacterInstance ch, string argument)
     {
-        public static void do_victories(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

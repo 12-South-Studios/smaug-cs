@@ -1,8 +1,7 @@
-﻿namespace SmaugCS
+﻿namespace SmaugCS;
+
+public class who_data
 {
-    public class who_data
-    {
-        public string text { get; set; }
-        public int type { get; set; }
-    }
+    public string text { get; set; }
+    public int type { get; set; }
 }

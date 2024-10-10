@@ -1,16 +1,15 @@
 ﻿using System.Configuration;
 
-namespace SmaugCS.Config
+namespace SmaugCS.Config;
+
+public class SystemFileElement : ConfigurationElement
 {
-    public class SystemFileElement : ConfigurationElement
-    {
-        [ConfigurationProperty("name", IsKey = true, IsRequired = true)]
-        public string Name => (string)this["name"];
+    [ConfigurationProperty("name", IsKey = true, IsRequired = true)]
+    public string Name => (string)this["name"];
 
-        [ConfigurationProperty("Filename", IsRequired = true)]
-        public string Filename => (string)this["Filename"];
+    [ConfigurationProperty("Filename", IsRequired = true)]
+    public string Filename => (string)this["Filename"];
 
-        [ConfigurationProperty("UseSystemFolder", IsRequired = false)]
-        public bool UseSystemFolder => (bool)this["UseSystemFolder"];
-    }
+    [ConfigurationProperty("UseSystemFolder", IsRequired = false)]
+    public bool UseSystemFolder => (bool)this["UseSystemFolder"];
 }

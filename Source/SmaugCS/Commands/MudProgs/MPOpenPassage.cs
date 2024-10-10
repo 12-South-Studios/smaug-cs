@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPOpenPassage
 {
-    class MPOpenPassage
+    public static void do_mp_open_passage(CharacterInstance ch, string argument)
     {
-        public static void do_mp_open_passage(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

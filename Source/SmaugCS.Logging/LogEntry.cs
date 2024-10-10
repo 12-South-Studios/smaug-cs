@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Common.Enumerations;
 
-namespace SmaugCS.Logging
+namespace SmaugCS.Logging;
+
+public class LogEntry
 {
-    public class LogEntry
-    {
-        public LogTypes LogType { get; set; }
-        public string Text { get; set; }
-    }
+    public LogTypes LogType { get; set; }
+    public string Text { get; set; }
 }

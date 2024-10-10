@@ -1,12 +1,12 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Social;
+
+public static class ClanTalk
 {
-    public static class ClanTalk
+    // TODO Fix
+    public static void do_clantalk(CharacterInstance ch, string argument)
     {
-        // TODO Fix
-        public static void do_clantalk(CharacterInstance ch, string argument)
-        {
             //if (CheckFunctions.CheckIfNotAuthorized(ch, ch, "Huh?")) return;
             //if (CheckFunctions.CheckIfTrue(ch, ch.IsNpc() || ((PlayerInstance)ch).PlayerData.Clan == null
             //                                   || ((PlayerInstance)ch).PlayerData.Clan.ClanType == ClanTypes.Order
@@ -14,5 +14,4 @@ namespace SmaugCS.Commands
 
             //ChatManager.talk_channel(ch, argument, ChannelTypes.Clan, "clantalk");
         }
-    }
 }

@@ -1,10 +1,8 @@
-﻿using Realm.Standard.Patterns.Repository;
-using SmaugCS.Data;
+﻿using SmaugCS.Data;
 
-namespace SmaugCS.Repository
+namespace SmaugCS.Repository;
+
+public class AreaRepository : Patterns.Repository.Repository<long, AreaData>
 {
-    public class AreaRepository : Repository<long, AreaData>
-    {
-        private AreaData LastArea { get; set; }
-    }
+    private AreaData LastArea { get; set; }
 }

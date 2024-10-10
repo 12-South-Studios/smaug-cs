@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.Object
+namespace SmaugCS.MudProgs.ObjectProgs;
+
+public static class SpeechProg
 {
-    public static class SpeechProg
+    public static void Execute(string txt, CharacterInstance actor)
     {
-        public static void Execute(string txt, CharacterInstance actor)
-        {
 
         }
-    }
 }

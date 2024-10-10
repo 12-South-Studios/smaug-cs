@@ -1,22 +1,22 @@
 ﻿
-namespace SmaugCS.Constants.Enums
-{
-    public enum GenderTypes
-    {
-        Neuter = 0,
-        Male = 1,
-        Female = 2
-    }
+namespace SmaugCS.Constants.Enums;
 
-    public static class GenderTypeExtensions
+public enum GenderTypes
+{
+    Neuter = 0,
+    Male = 1,
+    Female = 2
+}
+
+public static class GenderTypeExtensions
+{
+    /// <summary>
+    /// Converts the given Gender to a Subject Pronoun string
+    /// </summary>
+    /// <param name="type">The type of Gender</param>
+    /// <returns>Returns a string representing the subject pronoun</returns>
+    public static string SubjectPronoun(this GenderTypes type)
     {
-        /// <summary>
-        /// Converts the given Gender to a Subject Pronoun string
-        /// </summary>
-        /// <param name="type">The type of Gender</param>
-        /// <returns>Returns a string representing the subject pronoun</returns>
-        public static string SubjectPronoun(this GenderTypes type)
-        {
             switch (type)
             {
                 case GenderTypes.Male:
@@ -28,13 +28,13 @@ namespace SmaugCS.Constants.Enums
             }
         }
 
-        /// <summary>
-        /// Converts the given Gender to a Object Pronoun string
-        /// </summary>
-        /// <param name="type">The type of Gender</param>
-        /// <returns>Returns a string representing the object pronoun</returns>
-        public static string ObjectPronoun(this GenderTypes type)
-        {
+    /// <summary>
+    /// Converts the given Gender to a Object Pronoun string
+    /// </summary>
+    /// <param name="type">The type of Gender</param>
+    /// <returns>Returns a string representing the object pronoun</returns>
+    public static string ObjectPronoun(this GenderTypes type)
+    {
             switch (type)
             {
                 case GenderTypes.Male:
@@ -46,13 +46,13 @@ namespace SmaugCS.Constants.Enums
             }
         }
 
-        /// <summary>
-        /// Converts the given Gender to a Possessive Pronoun string
-        /// </summary>
-        /// <param name="type">The type of Gender</param>
-        /// <returns>Returns a string representing the possessive pronoun</returns>
-        public static string PossessivePronoun(this GenderTypes type)
-        {
+    /// <summary>
+    /// Converts the given Gender to a Possessive Pronoun string
+    /// </summary>
+    /// <param name="type">The type of Gender</param>
+    /// <returns>Returns a string representing the possessive pronoun</returns>
+    public static string PossessivePronoun(this GenderTypes type)
+    {
             switch (type)
             {
                 case GenderTypes.Male:
@@ -64,13 +64,13 @@ namespace SmaugCS.Constants.Enums
             }
         }
 
-        /// <summary>
-        /// Converts the given Gender to a Reflexive Pronoun string
-        /// </summary>
-        /// <param name="type">The type of Gender</param>
-        /// <returns>Returns a string representing the reflexive pronoun</returns>
-        public static string ReflexivePronoun(this GenderTypes type)
-        {
+    /// <summary>
+    /// Converts the given Gender to a Reflexive Pronoun string
+    /// </summary>
+    /// <param name="type">The type of Gender</param>
+    /// <returns>Returns a string representing the reflexive pronoun</returns>
+    public static string ReflexivePronoun(this GenderTypes type)
+    {
             switch (type)
             {
                 case GenderTypes.Male:
@@ -81,5 +81,4 @@ namespace SmaugCS.Constants.Enums
                     return "itself";
             }
         }
-    }
 }

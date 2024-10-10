@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Restrict
 {
-    class Restrict
+    public static void do_restrict(CharacterInstance ch, string argument)
     {
-        public static void do_restrict(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

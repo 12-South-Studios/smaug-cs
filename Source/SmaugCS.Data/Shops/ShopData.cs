@@ -2,35 +2,29 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace SmaugCS.Data.Shops
+namespace SmaugCS.Data.Shops;
+
+[XmlRoot("Shop")]
+public abstract class ShopData
 {
-    [XmlRoot("Shop")]
-    public abstract class ShopData
-    {
-        private readonly List<ItemTypes> _itemTypes;
+  private readonly List<ItemTypes> _itemTypes = [];
 
-        public int Keeper { get; set; }
-        public IEnumerable<ItemTypes> ItemTypes => _itemTypes;
-        public int OpenHour { get; set; }
-        public int CloseHour { get; set; }
-        public ShopTypes ShopType { get; set; }
+  public int Keeper { get; set; }
+  public IEnumerable<ItemTypes> ItemTypes => _itemTypes;
+  public int OpenHour { get; set; }
+  public int CloseHour { get; set; }
+  public ShopTypes ShopType { get; set; }
 
-        protected ShopData()
-        {
-            _itemTypes = new List<ItemTypes>();
-        }
+  public void AddItemType(string type)
+  {
+    ItemTypes itemType = Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<ItemTypes>(type);
+    if (!_itemTypes.Contains(itemType))
+      _itemTypes.Add(itemType);
+  }
 
-        public void AddItemType(string type)
-        {
-            ItemTypes itemType = Realm.Library.Common.Extensions.EnumerationExtensions.GetEnumIgnoreCase<ItemTypes>(type);
-            if (!_itemTypes.Contains(itemType))
-                _itemTypes.Add(itemType);
-        }
-
-        public void AddItemType(ItemTypes type)
-        {
-            if (!_itemTypes.Contains(type))
-                _itemTypes.Add(type);
-        }
-    }
+  public void AddItemType(ItemTypes type)
+  {
+    if (!_itemTypes.Contains(type))
+      _itemTypes.Add(type);
+  }
 }

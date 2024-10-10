@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class HuntHateFearData
 {
-    public class HuntHateFearData
-    {
-        public string Name { get; set; }
-        public CharacterInstance Who { get; set; }
-    }
+    public string Name { get; set; }
+    public CharacterInstance Who { get; set; }
 }

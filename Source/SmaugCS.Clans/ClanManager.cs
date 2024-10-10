@@ -1,21 +1,14 @@
 ﻿using SmaugCS.Logging;
 
-namespace SmaugCS.Clans
+namespace SmaugCS.Clans;
+
+public sealed class ClanManager(ILogManager logManager, IClanRepository repository) : IClanManager
 {
-    public sealed class ClanManager : IClanManager
-    {
-        private readonly ILogManager _logManager;
+  private readonly ILogManager _logManager = logManager;
 
-        public IClanRepository Repository { get; private set; }
+  public IClanRepository Repository { get; private set; } = repository;
 
-        public ClanManager(ILogManager logManager,  IClanRepository repository)
-        {
-            _logManager = logManager;
-            Repository = repository;
-        }
-
-        public void Initialize()
-        {
-        }
-    }
+  public void Initialize()
+  {
+  }
 }

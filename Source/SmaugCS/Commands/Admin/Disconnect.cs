@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Disconnect
 {
-    class Disconnect
-    {
-        public static void do_disconnect(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-    }
+  public static void do_disconnect(CharacterInstance ch, string argument)
+  {
+    // TODO
+  }
 }

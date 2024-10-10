@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class InstallArea
 {
-    class InstallArea
+    public static void do_installarea(CharacterInstance ch, string argument)
     {
-        public static void do_installarea(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

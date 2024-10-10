@@ -1,9 +1,8 @@
-﻿namespace SmaugCS
+﻿namespace SmaugCS.Helpers;
+
+public enum CastingFunctionType
 {
-    public enum CastingFunctionType
-    {
-        Failed,
-        Success,
-        Immune
-    }
+    Failed,
+    Success,
+    Immune
 }

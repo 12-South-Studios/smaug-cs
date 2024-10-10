@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Switch
 {
-    class Switch
+    public static void do_switch(CharacterInstance ch, string argument)
     {
-        public static void do_switch(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

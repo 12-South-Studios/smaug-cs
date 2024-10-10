@@ -1,19 +1,18 @@
 ﻿using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.Mobile
+namespace SmaugCS.MudProgs.MobileProgs;
+
+public static class FightProg
 {
-    public static class FightProg
-    {
-        public static bool Execute(object[] args)
-        {
-            var mob = (MobileInstance)args[0];
-            var ch = (CharacterInstance)args[1];
+  public static bool Execute(object[] args)
+  {
+    MobileInstance mob = (MobileInstance)args[0];
+    CharacterInstance ch = (CharacterInstance)args[1];
 
-            if (mob.IsNpc() && mob.MobIndex.HasProg(MudProgTypes.Fight))
-                CheckFunctions.CheckIfExecute(mob, MudProgTypes.Fight);
+    if (mob.IsNpc() && mob.MobIndex.HasProg(MudProgTypes.Fight))
+      CheckFunctions.CheckIfExecute(mob, MudProgTypes.Fight);
 
-            return true;
-        }
-    }
+    return true;
+  }
 }

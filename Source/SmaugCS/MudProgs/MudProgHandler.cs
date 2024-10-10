@@ -1,60 +1,52 @@
 ﻿using SmaugCS.Constants.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using SmaugCS.MudProgs.MobileProgs;
 
-namespace SmaugCS.MudProgs
+namespace SmaugCS.MudProgs;
+
+public class MudProgHandler : IMudProgHandler
 {
-    public class MudProgHandler : IMudProgHandler
+  private static readonly Dictionary<MudProgLocationTypes, List<MudProgFunction>> MudProgTable = new()
+  {
     {
-        private static readonly Dictionary<MudProgLocationTypes, List<MudProgFunction>> MudProgTable = new Dictionary
-            <MudProgLocationTypes, List<MudProgFunction>>
-        {
-            {
-                MudProgLocationTypes.Mobile, new List<MudProgFunction>
-                {
-                    new MudProgFunction {Type = MudProgTypes.Act, Function = Mobile.ActProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Bribe, Function = Mobile.BribeProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Command, Function = Mobile.CommandProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Death, Function = Mobile.DeathProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Entry, Function = Mobile.EntryProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Fight, Function = Mobile.FightProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Give, Function = Mobile.GiveProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.Greet, Function = Mobile.GreetProg.Execute},
-                    new MudProgFunction {Type = MudProgTypes.HitPercent, Function = Mobile.HitPercentProg.Execute}
-                }
-            },
-            {
-                MudProgLocationTypes.Object, new List<MudProgFunction>
-                {
-                    new MudProgFunction {Type = MudProgTypes.Act, Function = Object.ActProg.Execute}
-                }
-            },
-            {
-                MudProgLocationTypes.Room, new List<MudProgFunction>
-                {
-                    new MudProgFunction {Type = MudProgTypes.Act, Function = Room.ActProg.Execute}
-                }
-            }
-        };
-
-        public bool Execute(MudProgLocationTypes locationType, MudProgTypes mudProgType, params object[] args)
-        {
-            if (!MudProgTable.ContainsKey(locationType)) return false;
-
-            var functionList = MudProgTable[locationType];
-            if (functionList.All(x => x.Type != mudProgType)) return false;
-
-            var function = functionList.First(x => x.Type == mudProgType);
-            return function.Function.Invoke(args);
-        }
-
-        public static bool ExecuteMobileProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
-            => handler.Execute(MudProgLocationTypes.Mobile, mudProgType, args);
-
-        public static bool ExecuteObjectProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
-            => handler.Execute(MudProgLocationTypes.Object, mudProgType, args);
-
-        public static bool ExecuteRoomProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
-            => handler.Execute(MudProgLocationTypes.Room, mudProgType, args);
+      MudProgLocationTypes.Mobile, [
+        new MudProgFunction { Type = MudProgTypes.Act, Function = ActProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Bribe, Function = BribeProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Command, Function = CommandProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Death, Function = DeathProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Entry, Function = EntryProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Fight, Function = FightProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Give, Function = GiveProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.Greet, Function = GreetProg.Execute },
+        new MudProgFunction { Type = MudProgTypes.HitPercent, Function = HitPercentProg.Execute }
+      ]
+    },
+    {
+      MudProgLocationTypes.Object, [new MudProgFunction { Type = MudProgTypes.Act, Function = ObjectProgs.ActProg.Execute }]
+    },
+    {
+      MudProgLocationTypes.Room, [new MudProgFunction { Type = MudProgTypes.Act, Function = RoomProgs.ActProg.Execute }]
     }
+  };
+
+  public bool Execute(MudProgLocationTypes locationType, MudProgTypes mudProgType, params object[] args)
+  {
+    if (!MudProgTable.TryGetValue(locationType, out List<MudProgFunction> value)) return false;
+
+    List<MudProgFunction> functionList = value;
+    if (functionList.All(x => x.Type != mudProgType)) return false;
+
+    MudProgFunction function = functionList.First(x => x.Type == mudProgType);
+    return function.Function.Invoke(args);
+  }
+
+  public static bool ExecuteMobileProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
+    => handler.Execute(MudProgLocationTypes.Mobile, mudProgType, args);
+
+  public static bool ExecuteObjectProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
+    => handler.Execute(MudProgLocationTypes.Object, mudProgType, args);
+
+  public static bool ExecuteRoomProg(IMudProgHandler handler, MudProgTypes mudProgType, params object[] args)
+    => handler.Execute(MudProgLocationTypes.Room, mudProgType, args);
 }

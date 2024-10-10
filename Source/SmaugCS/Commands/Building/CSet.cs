@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class CSet
 {
-    class CSet
+    public static void do_cset(CharacterInstance ch, string argument)
     {
-        public static void do_cset(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

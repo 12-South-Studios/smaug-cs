@@ -1,13 +1,12 @@
-﻿namespace SmaugCS
-{
-    public class map_index_data
-    {
-        public int vnum { get; set; }
-        public int[,] map_of_vnums { get; set; }
+﻿namespace SmaugCS;
 
-        public map_index_data()
-        {
+public class map_index_data
+{
+    public int vnum { get; set; }
+    public int[,] map_of_vnums { get; set; }
+
+    public map_index_data()
+    {
             map_of_vnums = new int[49, 81];
         }
-    }
 }

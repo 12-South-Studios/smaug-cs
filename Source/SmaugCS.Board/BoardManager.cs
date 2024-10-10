@@ -1,23 +1,16 @@
 ﻿using SmaugCS.Logging;
 
-namespace SmaugCS.Board
+namespace SmaugCS.Board;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+public sealed class BoardManager(ILogManager logManager, IBoardRepository repository) : IBoardManager
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
-    public sealed class BoardManager : IBoardManager
-    {
-        private readonly ILogManager _logManager;
+  private readonly ILogManager _logManager = logManager;
 
-        public IBoardRepository Repository { get; private set; }
+  public IBoardRepository Repository { get; } = repository;
 
-        public BoardManager(ILogManager logManager, IBoardRepository repository)
-        {
-            _logManager = logManager;
-            Repository = repository;
-        }
-
-        public void Initialize()
-        {
-            Repository.Load();
-        }
-    }
+  public void Initialize()
+  {
+    Repository.Load();
+  }
 }

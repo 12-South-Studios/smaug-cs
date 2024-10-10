@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Organizations;
+
+class Make
 {
-    class Make
+    public static void do_make(CharacterInstance ch, string argument)
     {
-        public static void do_make(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

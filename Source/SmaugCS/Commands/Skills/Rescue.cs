@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Rescue
 {
-    class Rescue
+    public static void do_rescue(CharacterInstance ch, string argument)
     {
-        public static void do_rescue(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

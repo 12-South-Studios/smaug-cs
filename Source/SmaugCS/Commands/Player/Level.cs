@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Player;
+
+class Level
 {
-    class Level
+    public static void do_level(CharacterInstance ch, string argument)
     {
-        public static void do_level(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

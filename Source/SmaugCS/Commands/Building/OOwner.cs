@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class OOwner
 {
-    class OOwner
+    public static void do_oowner(CharacterInstance ch, string argument)
     {
-        public static void do_oowner(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

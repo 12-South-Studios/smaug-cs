@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class CEdit
 {
-    class CEdit
+    public static void do_cedit(CharacterInstance ch, string argument)
     {
-        public static void do_cedit(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

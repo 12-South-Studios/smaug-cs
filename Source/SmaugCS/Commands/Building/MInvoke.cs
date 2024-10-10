@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class MInvoke
 {
-    class MInvoke
+    public static void do_minvoke(CharacterInstance ch, string argument)
     {
-        public static void do_minvoke(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

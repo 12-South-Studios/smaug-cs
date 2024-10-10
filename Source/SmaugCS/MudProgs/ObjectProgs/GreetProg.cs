@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.Object
+namespace SmaugCS.MudProgs.ObjectProgs;
+
+public static class GreetProg
 {
-    public static class GreetProg
+    public static void Execute(CharacterInstance ch)
     {
-        public static void Execute(CharacterInstance ch)
-        {
 
         }
-    }
 }

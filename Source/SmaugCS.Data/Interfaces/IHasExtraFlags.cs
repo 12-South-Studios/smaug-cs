@@ -1,9 +1,8 @@
 ﻿using SmaugCS.Common;
 
-namespace SmaugCS.Data.Interfaces
+namespace SmaugCS.Data.Interfaces;
+
+public interface IHasExtraFlags
 {
-    public interface IHasExtraFlags
-    {
-        ExtendedBitvector ExtraFlags { get; set; }
-    }
+    ExtendedBitvector ExtraFlags { get; set; }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Silence
 {
-    class Silence
+    public static void do_silence(CharacterInstance ch, string argument)
     {
-        public static void do_silence(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Deny
 {
-    class Deny
-    {
-        public static void do_deny(CharacterInstance ch, string argument)
-        {
-            // TODO
-        }
-    }
+  public static void do_deny(CharacterInstance ch, string argument)
+  {
+    // TODO
+  }
 }

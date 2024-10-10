@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Hell
 {
-    class Hell
+    public static void do_hell(CharacterInstance ch, string argument)
     {
-        public static void do_hell(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

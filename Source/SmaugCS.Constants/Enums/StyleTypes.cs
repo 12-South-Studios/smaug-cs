@@ -1,22 +1,21 @@
-﻿using Realm.Library.Common.Attributes;
+﻿using Library.Common.Attributes;
 
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum StyleTypes
 {
-    public enum StyleTypes
-    {
-        [Name("berserk")]
-        Berserk,
+    [Name("berserk")]
+    Berserk,
 
-        [Name("aggressive")]
-        Aggressive,
+    [Name("aggressive")]
+    Aggressive,
 
-        [Name("standard")]
-        Fighting,
+    [Name("standard")]
+    Fighting,
 
-        [Name("defensive")]
-        Defensive,
+    [Name("defensive")]
+    Defensive,
 
-        [Name("evasive")]
-        Evasive
-    }
+    [Name("evasive")]
+    Evasive
 }

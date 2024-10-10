@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class QPSet
 {
-    class QPSet
+    public static void do_qpset(CharacterInstance ch, string argument)
     {
-        public static void do_qpset(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

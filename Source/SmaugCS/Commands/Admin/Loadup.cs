@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Loadup
 {
-    class Loadup
+    public static void do_loadup(CharacterInstance ch, string argument)
     {
-        public static void do_loadup(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

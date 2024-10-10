@@ -1,19 +1,18 @@
 ﻿using SmaugCS.Common;
 using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.Object
-{
-    public static class ActProg
-    {
-        public static bool Execute(object[] args)
-        {
-            var buffer = args.GetValue<string>(0);
-            var actObj = args.GetValue<ObjectInstance>(1);
-            var mob = args.GetValue<MobileInstance>(2);
-            var obj = args.GetValue<ObjectInstance>(3);
-            // var vo = args[4]
+namespace SmaugCS.MudProgs.ObjectProgs;
 
-            return false;
-        }
-    }
+public static class ActProg
+{
+  public static bool Execute(object[] args)
+  {
+    string buffer = args.GetValue<string>(0);
+    ObjectInstance actObj = args.GetValue<ObjectInstance>(1);
+    MobileInstance mob = args.GetValue<MobileInstance>(2);
+    ObjectInstance obj = args.GetValue<ObjectInstance>(3);
+    // var vo = args[4]
+
+    return false;
+  }
 }

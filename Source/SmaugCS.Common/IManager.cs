@@ -1,6 +1,3 @@
-﻿namespace SmaugCS.Common
-{
-    public interface IManager
-    {
-    }
-}
+﻿namespace SmaugCS.Common;
+
+public interface IManager;

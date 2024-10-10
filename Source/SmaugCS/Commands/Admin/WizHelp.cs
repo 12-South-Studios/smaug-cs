@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class WizHelp
 {
-    class WizHelp
+    public static void do_wizhelp(CharacterInstance ch, string argument)
     {
-        public static void do_wizhelp(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

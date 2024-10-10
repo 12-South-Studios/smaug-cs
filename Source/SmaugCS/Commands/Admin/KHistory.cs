@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class KHistory
 {
-    class KHistory
+    public static void do_khistory(CharacterInstance ch, string argument)
     {
-        public static void do_khistory(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

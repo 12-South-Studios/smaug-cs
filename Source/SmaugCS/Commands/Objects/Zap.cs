@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Objects;
+
+class Zap
 {
-    class Zap
+    public static void do_zap(CharacterInstance ch, string argument)
     {
-        public static void do_zap(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

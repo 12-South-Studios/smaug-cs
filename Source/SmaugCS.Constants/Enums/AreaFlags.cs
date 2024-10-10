@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+[Flags]
+public enum AreaFlags
 {
-    [Flags]
-    public enum AreaFlags
-    {
-        NoPlayerVsPlayer,
-        FreeKill,
-        NoTeleport,
-        SpellLimit,
-        Prototype,
-        Loaded
-    }
+    NoPlayerVsPlayer,
+    FreeKill,
+    NoTeleport,
+    SpellLimit,
+    Prototype,
+    Loaded
 }

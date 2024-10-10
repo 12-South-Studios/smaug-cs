@@ -1,9 +1,3 @@
-﻿
-using Realm.Standard.Patterns.Repository;
+﻿namespace SmaugCS.Repository;
 
-namespace SmaugCS.Repository
-{
-    public class GenericRepository<T> : Repository<long, T> where T : class
-    {
-    }
-}
+public class GenericRepository<T> : Patterns.Repository.Repository<long, T> where T : class;

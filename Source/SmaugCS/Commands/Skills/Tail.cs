@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Tail
 {
-    class Tail
+    public static void do_tail(CharacterInstance ch, string argument)
     {
-        public static void do_tail(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

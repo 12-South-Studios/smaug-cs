@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPWithdraw
 {
-    class MPWithdraw
+    public static void do_mp_withdraw(CharacterInstance ch, string argument)
     {
-        public static void do_mp_withdraw(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

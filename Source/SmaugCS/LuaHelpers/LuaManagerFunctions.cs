@@ -1,21 +1,20 @@
-﻿using Realm.Library.Lua;
+﻿using Library.Lua;
 using SmaugCS.Logging;
 
-namespace SmaugCS
+namespace SmaugCS.LuaHelpers;
+
+public static class LuaManagerFunctions
 {
-    public static class LuaManagerFunctions
-    {
-        private static ILogManager _logManager;
+  private static ILogManager _logManager;
 
-        public static void InitializeReferences(ILogManager logManager)
-        {
-            _logManager = logManager;
-        }
+  public static void InitializeReferences(ILogManager logManager)
+  {
+    _logManager = logManager;
+  }
 
-        [LuaFunction("LBootLog", "Logs an entry to the boot log", "Text to log")]
-        public static void LuaBootLog(string txt)
-        {
-            _logManager.Boot(txt);
-        }
-    }
+  [LuaFunction("LBootLog", "Logs an entry to the boot log", "Text to log")]
+  public static void LuaBootLog(string txt)
+  {
+    _logManager.Boot(txt);
+  }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPStrew
 {
-    class MPStrew
+    public static void do_mpstrew(CharacterInstance ch, string argument)
     {
-        public static void do_mpstrew(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Kick
 {
-    class Kick
+    public static void do_kick(CharacterInstance ch, string argument)
     {
-        public static void do_kick(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

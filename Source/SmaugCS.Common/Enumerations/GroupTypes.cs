@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.Common.Enumerations
+﻿namespace SmaugCS.Common.Enumerations;
+
+public enum GroupTypes
 {
-    public enum GroupTypes
-    {
-        Clan,
-        Council,
-        Guild
-    }
+    Clan,
+    Council,
+    Guild
 }

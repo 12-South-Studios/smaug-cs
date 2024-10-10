@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills.Thief;
+
+class Steal
 {
-    class Steal
+    public static void do_steal(CharacterInstance ch, string argument)
     {
-        public static void do_steal(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

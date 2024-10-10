@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPClosePassage
 {
-    class MPClosePassage
+    public static void do_mp_close_passage(CharacterInstance ch, string argument)
     {
-        public static void do_mp_close_passage(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

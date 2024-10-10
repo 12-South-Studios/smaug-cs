@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class MWhere
 {
-    class MWhere
+    public static void do_mwhere(CharacterInstance ch, string argument)
     {
-        public static void do_mwhere(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

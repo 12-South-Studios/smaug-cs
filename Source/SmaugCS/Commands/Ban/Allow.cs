@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Ban;
+
+class Allow
 {
-    class Allow
+    public static void do_allow(CharacterInstance ch, string argument)
     {
-        public static void do_allow(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

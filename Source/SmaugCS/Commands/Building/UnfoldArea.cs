@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class UnfoldArea
 {
-    class UnfoldArea
+    public static void do_unfoldarea(CharacterInstance ch, string argument)
     {
-        public static void do_unfoldarea(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

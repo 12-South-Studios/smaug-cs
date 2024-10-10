@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Berserk
 {
-    class Berserk
+    public static void do_berserk(CharacterInstance ch, string argument)
     {
-        public static void do_berserk(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

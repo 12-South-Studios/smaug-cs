@@ -1,7 +1,6 @@
-﻿namespace SmaugCS.Board
+﻿namespace SmaugCS.Board;
+
+public interface IBoardManager
 {
-    public interface IBoardManager
-    {
-        void Initialize();
-    }
+    void Initialize();
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Weather.Tests</AssemblyTitle>
     <Product>SmaugCS.Weather.Tests</Product>
@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Library.Common\Realm.Library.Common.csproj" />
-    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj" />
-    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj" />
-    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj" />
-    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
-    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj" />
+    <ProjectReference Include="..\..\Libaries\Library.Common\Library.Common.csproj" />
+    <ProjectReference Include="..\..\Libaries\Patterns.Command\Patterns.Command.csproj" />
+    <ProjectReference Include="..\..\Libaries\Patterns.Decorator\Patterns.Decorator.csproj" />
+    <ProjectReference Include="..\..\Libaries\Patterns.Factory\Patterns.Factory.csproj" />
+    <ProjectReference Include="..\..\Libaries\Patterns.Repository\Patterns.Repository.csproj" />
+    <ProjectReference Include="..\..\Libaries\Patterns.Singleton\Patterns.Singleton.csproj" />
     <ProjectReference Include="..\..\SmaugCS.Weather\SmaugCS.Weather.csproj" />
   </ItemGroup>
   <ItemGroup>

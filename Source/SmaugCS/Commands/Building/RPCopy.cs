@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class RPCopy
 {
-    class RPCopy
+    public static void do_rpcopy(CharacterInstance ch, string argument)
     {
-        public static void do_rpcopy(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

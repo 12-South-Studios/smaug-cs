@@ -1,61 +1,62 @@
-﻿using SmaugCS.Commands;
+﻿using System.Linq;
+using SmaugCS.Commands;
+using SmaugCS.Commands.Social;
 using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
-using System.Linq;
+using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.SpecFuns
+namespace SmaugCS.SpecFuns.Professions;
+
+public static class Guard
 {
-    public static class Guard
+  public static bool Execute(MobileInstance ch, IManager dbManager)
+  {
+    if (!ch.IsAwake() || ch.CurrentFighting != null) return false;
+
+    int maxEvil = 300;
+    string crime = string.Empty;
+    CharacterInstance victim = null;
+    CharacterInstance ech = null;
+
+    foreach (CharacterInstance vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
     {
-        public static bool Execute(MobileInstance ch, IManager dbManager)
-        {
-            if (!ch.IsAwake() || ch.CurrentFighting != null) return false;
+      victim = vch;
 
-            var maxEvil = 300;
-            var crime = string.Empty;
-            CharacterInstance victim = null;
-            CharacterInstance ech = null;
+      crime = GetCrime(victim);
+      if (!string.IsNullOrEmpty(crime))
+        break;
 
-            foreach (var vch in ch.CurrentRoom.Persons.Where(vch => vch != ch))
-            {
-                victim = vch;
+      if (vch.CurrentFighting == null || vch.GetMyTarget() == ch || vch.CurrentAlignment >= maxEvil) continue;
 
-                crime = GetCrime(victim);
-                if (!string.IsNullOrEmpty(crime))
-                    break;
-
-                if (vch.CurrentFighting == null || vch.GetMyTarget() == ch || vch.CurrentAlignment >= maxEvil) continue;
-
-                maxEvil = vch.CurrentAlignment;
-                ech = victim;
-            }
-
-            if (victim != null && ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
-            {
-                Yell.do_yell(ch, $"{victim.Name} is a {crime}! As well as a COWARD!");
-                return true;
-            }
-
-            if (victim != null)
-            {
-                Shout.do_shout(ch, $"{victim.Name} is a {crime}! PROTECT THE INNOCENT! BANZAI!!!");
-                fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
-                return true;
-            }
-
-            if (ech == null) return false;
-
-            comm.act(ATTypes.AT_YELL, "$n screams 'PROTECT THE INNOCENT!! BANZAI!!", ch, null, null, ToTypes.Room);
-            fight.multi_hit(ch, ech, Program.TYPE_UNDEFINED);
-            return true;
-        }
-
-        private static string GetCrime(CharacterInstance victim)
-        {
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Killer)) return "KILLER";
-            if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Thief)) return "THIEF";
-            return string.Empty;
-        }
+      maxEvil = vch.CurrentAlignment;
+      ech = victim;
     }
+
+    if (victim != null && ch.CurrentRoom.Flags.IsSet(RoomFlags.Safe))
+    {
+      Yell.do_yell(ch, $"{victim.Name} is a {crime}! As well as a COWARD!");
+      return true;
+    }
+
+    if (victim != null)
+    {
+      Shout.do_shout(ch, $"{victim.Name} is a {crime}! PROTECT THE INNOCENT! BANZAI!!!");
+      fight.multi_hit(ch, victim, Program.TYPE_UNDEFINED);
+      return true;
+    }
+
+    if (ech == null) return false;
+
+    comm.act(ATTypes.AT_YELL, "$n screams 'PROTECT THE INNOCENT!! BANZAI!!", ch, null, null, ToTypes.Room);
+    fight.multi_hit(ch, ech, Program.TYPE_UNDEFINED);
+    return true;
+  }
+
+  private static string GetCrime(CharacterInstance victim)
+  {
+    if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Killer)) return "KILLER";
+    if (!victim.IsNpc() && victim.Act.IsSet((int)PlayerFlags.Thief)) return "THIEF";
+    return string.Empty;
+  }
 }

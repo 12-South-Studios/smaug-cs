@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Shop;
+
+class Buy
 {
-    class Buy
+    public static void do_buy(CharacterInstance ch, string argument)
     {
-        public static void do_buy(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

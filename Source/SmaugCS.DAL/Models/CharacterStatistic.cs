@@ -3,21 +3,20 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmaugCS.DAL.Models
+namespace SmaugCS.DAL.Models;
+
+[Table("CharacterStatistics")]
+public class CharacterStatistic : IEntity
 {
-    [Table("CharacterStatistics")]
-    public class CharacterStatistic : IEntity
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public virtual int Id { get; set; }
 
-        public DateTime? CreateDateUtc { get; set; }
+    public DateTime? CreateDateUtc { get; set; }
 
-        public StatisticTypes Statistic { get; set; }
+    public StatisticTypes Statistic { get; set; }
 
-        public int? IntValue { get; set; }
+    public int? IntValue { get; set; }
 
-        public string StringValue { get; set; }
-    }
+    public string StringValue { get; set; }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class NoEmote
 {
-    class NoEmote
+    public static void do_noemote(CharacterInstance ch, string argument)
     {
-        public static void do_noemote(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

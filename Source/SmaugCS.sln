@@ -323,35 +323,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{4A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmaugCS.Clans", "SmaugCS.Clans\SmaugCS.Clans.csproj", "{CD5620F8-FD72-4DD7-BF00-80B847B112C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.Common.Tests", "Tests\Realm.Library.Common.Tests\Realm.Library.Common.Tests.csproj", "{2E0063CA-3795-4C1F-A61A-FD0C2A0A47FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Common.Tests", "Tests\Library.Common.Tests\Library.Common.Tests.csproj", "{2E0063CA-3795-4C1F-A61A-FD0C2A0A47FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.Lua.Tests", "Tests\Realm.Library.Lua.Tests\Realm.Library.Lua.Tests.csproj", "{315F6BCE-DB85-43FB-A7DB-FD6B57437045}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Lua.Tests", "Tests\Library.Lua.Tests\Library.Lua.Tests.csproj", "{315F6BCE-DB85-43FB-A7DB-FD6B57437045}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.Network.Tests", "Tests\Realm.Library.Network.Tests\Realm.Library.Network.Tests.csproj", "{8F0381CB-D2A8-45A2-800F-0F706591B8AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Network.Tests", "Tests\Library.Network.Tests\Library.Network.Tests.csproj", "{8F0381CB-D2A8-45A2-800F-0F706591B8AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Tests", "Tests\Realm.Standard.Patterns.Tests\Realm.Standard.Patterns.Tests.csproj", "{E4C930EA-3B49-4F11-8216-EF657298E16D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns.Tests", "Tests\Patterns.Tests\Patterns.Tests.csproj", "{E4C930EA-3B49-4F11-8216-EF657298E16D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{C8F079AC-7939-431C-82A5-2D0F75C860AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.Common", "Libaries\Realm.Library.Common\Realm.Library.Common.csproj", "{A6EFB12F-A43E-48F1-98C9-9202D71C532C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Common", "Libaries\Library.Common\Library.Common.csproj", "{A6EFB12F-A43E-48F1-98C9-9202D71C532C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.Lua", "Libaries\Realm.Library.Lua\Realm.Library.Lua.csproj", "{5029615A-CFB4-4FBF-97F3-2806D8B00BCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Lua", "Libaries\Library.Lua\Library.Lua.csproj", "{5029615A-CFB4-4FBF-97F3-2806D8B00BCB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.NCalc", "Libaries\Realm.Library.NCalc\Realm.Library.NCalc.csproj", "{47D1C292-7956-48A3-8BD0-5A96DEC1FA74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.NCalc", "Libaries\Library.NCalc\Library.NCalc.csproj", "{47D1C292-7956-48A3-8BD0-5A96DEC1FA74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.Network", "Libaries\Realm.Library.Network\Realm.Library.Network.csproj", "{AE657BC4-3731-4734-9209-D38ADCD33091}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Network", "Libaries\Library.Network\Library.Network.csproj", "{AE657BC4-3731-4734-9209-D38ADCD33091}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Command", "Libaries\Realm.Standard.Patterns.Command\Realm.Standard.Patterns.Command.csproj", "{FAA7D7A7-E109-4C6E-A203-6C54CB33BB44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns.Command", "Libaries\Patterns.Command\Patterns.Command.csproj", "{FAA7D7A7-E109-4C6E-A203-6C54CB33BB44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Decorator", "Libaries\Realm.Standard.Patterns.Decorator\Realm.Standard.Patterns.Decorator.csproj", "{54384188-3D85-408D-B77B-31D3E0D3C225}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns.Decorator", "Libaries\Patterns.Decorator\Patterns.Decorator.csproj", "{54384188-3D85-408D-B77B-31D3E0D3C225}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Factory", "Libaries\Realm.Standard.Patterns.Factory\Realm.Standard.Patterns.Factory.csproj", "{D077DBB3-03C0-49D1-BBC3-6FF888177B57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns.Factory", "Libaries\Patterns.Factory\Patterns.Factory.csproj", "{D077DBB3-03C0-49D1-BBC3-6FF888177B57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Repository", "Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj", "{9EA93E0C-7490-4242-BEC8-C58095911B6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns.Repository", "Libaries\Patterns.Repository\Patterns.Repository.csproj", "{9EA93E0C-7490-4242-BEC8-C58095911B6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Standard.Patterns.Singleton", "Libaries\Realm.Standard.Patterns.Singleton\Realm.Standard.Patterns.Singleton.csproj", "{D8AC9063-CACA-48EC-A331-A8E6DF03F491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns.Singleton", "Libaries\Patterns.Singleton\Patterns.Singleton.csproj", "{D8AC9063-CACA-48EC-A331-A8E6DF03F491}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realm.Library.NCalc.Tests", "Tests\Realm.Library.NCalc.Tests\Realm.Library.NCalc.Tests.csproj", "{F52879D3-39FA-4D4D-99A4-671AD8C36CB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.NCalc.Tests", "Tests\Library.NCalc.Tests\Library.NCalc.Tests.csproj", "{F52879D3-39FA-4D4D-99A4-671AD8C36CB1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Common", "Tests\Test.Common\Test.Common.csproj", "{2A143EE8-F61D-435A-913C-55B9180C2CC8}"
 EndProject

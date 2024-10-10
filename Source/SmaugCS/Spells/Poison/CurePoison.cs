@@ -1,13 +1,12 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Poison;
+
+class CurePoison
 {
-    class CurePoison
+    public static int spell_cure_poison(int sn, int level, CharacterInstance ch, object vo)
     {
-        public static int spell_cure_poison(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
+            // TODO
             return 0;
         }
-    }
 }

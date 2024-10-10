@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Watch
 {
-    class Watch
+    public static void do_watch(CharacterInstance ch, string argument)
     {
-        public static void do_watch(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

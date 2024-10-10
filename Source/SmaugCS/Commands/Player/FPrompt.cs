@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Player;
+
+class FPrompt
 {
-    class FPrompt
+    public static void do_fprompt(CharacterInstance ch, string argument)
     {
-        public static void do_fprompt(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

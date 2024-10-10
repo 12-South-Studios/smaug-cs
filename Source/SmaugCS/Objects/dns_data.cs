@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace SmaugCS
+namespace SmaugCS;
+
+public class dns_data
 {
-    public class dns_data
-    {
-        public string ip { get; set; }
-        public string name { get; set; }
-        public DateTime time { get; set; }
-    }
+    public string ip { get; set; }
+    public string name { get; set; }
+    public DateTime time { get; set; }
 }

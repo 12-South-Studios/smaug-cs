@@ -1,17 +1,16 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Organizations;
+
+class Outcast
 {
-    class Outcast
+    public static void do_outcast(CharacterInstance ch, string argument)
     {
-        public static void do_outcast(CharacterInstance ch, string argument)
-        {
             // TODO
         }
 
-        public static void do_council_outcast(CharacterInstance ch, string argument)
-        {
+    public static void do_council_outcast(CharacterInstance ch, string argument)
+    {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Polymorph;
+
+class MorphSet
 {
-    class MorphSet
+    public static void do_morphset(CharacterInstance ch, string argument)
     {
-        public static void do_morphset(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

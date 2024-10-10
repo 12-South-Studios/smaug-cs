@@ -1,8 +1,7 @@
-﻿namespace SmaugCS
+﻿namespace SmaugCS;
+
+public class coordinate
 {
-    public class coordinate
-    {
-        public int x { get; set; }
-        public int y { get; set; }
-    }
+    public int x { get; set; }
+    public int y { get; set; }
 }

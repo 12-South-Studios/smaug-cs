@@ -1,10 +1,9 @@
 ﻿using System.Configuration;
 
-namespace SmaugCS.Config
+namespace SmaugCS.Config;
+
+public class StaticStringConfigurationSection : ConfigurationSection
 {
-    public class StaticStringConfigurationSection : ConfigurationSection
-    {
-        [ConfigurationProperty("MayorTextStrings")]
-        public MayorTextStringsElementCollection MayorTextStrings => (MayorTextStringsElementCollection)this["MayorTextStrings"];
-    }
+    [ConfigurationProperty("MayorTextStrings")]
+    public MayorTextStringsElementCollection MayorTextStrings => (MayorTextStringsElementCollection)this["MayorTextStrings"];
 }

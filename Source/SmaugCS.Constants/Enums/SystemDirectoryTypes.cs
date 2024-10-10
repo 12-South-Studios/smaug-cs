@@ -1,25 +1,24 @@
 ﻿
-namespace SmaugCS.Constants.Enums
+namespace SmaugCS.Constants.Enums;
+
+public enum SystemDirectoryTypes
 {
-    public enum SystemDirectoryTypes
-    {
-        Area,
-        Player,
-        Backup,
-        God,
-        Board,
-        Clan,
-        Council,
-        Deity,
-        Build,
-        System,
-        Prog,
-        Corpse,
-        Class,
-        Race,
-        Watch,
-        Hotboot,
-        Color,
-        Language
-    }
+    Area,
+    Player,
+    Backup,
+    God,
+    Board,
+    Clan,
+    Council,
+    Deity,
+    Build,
+    System,
+    Prog,
+    Corpse,
+    Class,
+    Race,
+    Watch,
+    Hotboot,
+    Color,
+    Language
 }

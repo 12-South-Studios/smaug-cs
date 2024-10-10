@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPForce
 {
-    class MPForce
+    public static void do_mpforce(CharacterInstance ch, string argument)
     {
-        public static void do_mpforce(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

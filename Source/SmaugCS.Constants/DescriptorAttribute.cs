@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SmaugCS.Constants
-{
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method)]
-    public sealed class DescriptorAttribute : Attribute
-    {
-        public IEnumerable<string> Messages { get; private set; }
+namespace SmaugCS.Constants;
 
-        public DescriptorAttribute(params string[] Messages)
-        {
-            this.Messages = Messages;
-        }
-    }
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Method)]
+public sealed class DescriptorAttribute(params string[] messages) : Attribute
+{
+    public IEnumerable<string> Messages { get; private set; } = messages;
 }

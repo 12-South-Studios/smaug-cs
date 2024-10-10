@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPEchoAt
 {
-    class MPEchoAt
+    public static void do_mpechoat(CharacterInstance ch, string argument)
     {
-        public static void do_mpechoat(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

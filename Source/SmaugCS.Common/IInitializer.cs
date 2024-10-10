@@ -1,7 +1,6 @@
-﻿namespace SmaugCS.Common
+﻿namespace SmaugCS.Common;
+
+public interface IInitializer
 {
-    public interface IInitializer
-    {
-        void Initialize();
-    }
+    void Initialize();
 }

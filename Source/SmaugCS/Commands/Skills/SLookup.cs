@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class SLookup
 {
-    class SLookup
+    public static void do_slookup(CharacterInstance ch, string argument)
     {
-        public static void do_slookup(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

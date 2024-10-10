@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class RGrid
 {
-    class RGrid
+    public static void do_rgrid(CharacterInstance ch, string argument)
     {
-        public static void do_rgrid(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,13 +1,12 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Paladin;
+
+class SacralDivinity
 {
-    class SacralDivinity
+    public static int spell_sacral_divinity(int sn, int level, CharacterInstance ch, object vo)
     {
-        public static int spell_sacral_divinity(int sn, int level, CharacterInstance ch, object vo)
-        {
-            // TODO 
+            // TODO
             return 0;
         }
-    }
 }

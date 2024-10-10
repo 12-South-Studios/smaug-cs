@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPDelay
 {
-    class MPDelay
+    public static void do_mpdelay(CharacterInstance ch, string argument)
     {
-        public static void do_mpdelay(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

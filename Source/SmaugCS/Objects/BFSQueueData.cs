@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Data.Templates;
 
-namespace SmaugCS
+namespace SmaugCS;
+
+public class BFSQueueData
 {
-    public class BFSQueueData
-    {
-        public char Dir { get; set; }
-        public RoomTemplate Room { get; set; }
-    }
+    public char Dir { get; set; }
+    public RoomTemplate Room { get; set; }
 }

@@ -1,59 +1,58 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum DamageTypes
 {
-    public enum DamageTypes
-    {
-        [LookupSkill(Skill = "pugilism")]
-        Hit,
+    [LookupSkill(Skill = "pugilism")]
+    Hit,
 
-        [LookupSkill(Skill = "long blades")]
-        Slice,
+    [LookupSkill(Skill = "long blades")]
+    Slice,
 
-        [LookupSkill(Skill = "short blades")]
-        Stab,
+    [LookupSkill(Skill = "short blades")]
+    Stab,
 
-        [LookupSkill(Skill = "long blades")]
-        Slash,
+    [LookupSkill(Skill = "long blades")]
+    Slash,
 
-        [LookupSkill(Skill = "flexible arms")]
-        Whip,
+    [LookupSkill(Skill = "flexible arms")]
+    Whip,
 
-        [LookupSkill(Skill = "talonous arms")]
-        Claw,
+    [LookupSkill(Skill = "talonous arms")]
+    Claw,
 
-        [LookupSkill(Skill = "pugilism")]
-        Blast,
+    [LookupSkill(Skill = "pugilism")]
+    Blast,
 
-        [LookupSkill(Skill = "bludgeons")]
-        Pound,
+    [LookupSkill(Skill = "bludgeons")]
+    Pound,
 
-        [LookupSkill(Skill = "bludgeons")]
-        Crush,
+    [LookupSkill(Skill = "bludgeons")]
+    Crush,
 
-        [LookupSkill(Skill = "none")]
-        Grep,
+    [LookupSkill(Skill = "none")]
+    Grep,
 
-        [LookupSkill(Skill = "pugilism")]
-        Bite,
+    [LookupSkill(Skill = "pugilism")]
+    Bite,
 
-        [LookupSkill(Skill = "short blades")]
-        Pierce,
+    [LookupSkill(Skill = "short blades")]
+    Pierce,
 
-        [LookupSkill(Skill = "pugilism")]
-        Suction,
+    [LookupSkill(Skill = "pugilism")]
+    Suction,
 
-        [LookupSkill(Skill = "missile weapons")]
-        Bolt,
+    [LookupSkill(Skill = "missile weapons")]
+    Bolt,
 
-        [LookupSkill(Skill = "missile weapons")]
-        Arrow,
+    [LookupSkill(Skill = "missile weapons")]
+    Arrow,
 
-        [LookupSkill(Skill = "missile weapons")]
-        Dart,
+    [LookupSkill(Skill = "missile weapons")]
+    Dart,
 
-        [LookupSkill(Skill = "missile weapons")]
-        Stone,
+    [LookupSkill(Skill = "missile weapons")]
+    Stone,
 
-        [LookupSkill(Skill = "missile weapons")]
-        Pea
-    }
+    [LookupSkill(Skill = "missile weapons")]
+    Pea
 }

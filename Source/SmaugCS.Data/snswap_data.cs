@@ -1,10 +1,9 @@
 ﻿
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class snswap_data
 {
-    public class snswap_data
-    {
-        public short old_sn { get; set; }
-        public short new_sn { get; set; }
-        public short swap_chance { get; set; }
-    }
+    public short old_sn { get; set; }
+    public short new_sn { get; set; }
+    public short swap_chance { get; set; }
 }

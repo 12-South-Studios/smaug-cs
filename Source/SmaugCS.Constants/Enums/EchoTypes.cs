@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum EchoTypes
 {
-    public enum EchoTypes
-    {
-        All = 0,
-        Player = 1,
-        Immortal = 2
-    }
+    All = 0,
+    Player = 1,
+    Immortal = 2
 }

@@ -1,22 +1,21 @@
-﻿using Realm.Library.Common.Exceptions;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
+using Library.Common.Exceptions;
 
-namespace SmaugCS
+namespace SmaugCS.Exceptions;
+
+[Serializable]
+public class RoomMismatchException : BaseException
 {
-    [Serializable]
-    public class RoomMismatchException : BaseException
-    {
-        public RoomMismatchException() { }
+    public RoomMismatchException() { }
 
-        public RoomMismatchException(string message) : base(message) { }
+    public RoomMismatchException(string message) : base(message) { }
 
-        public RoomMismatchException(string format, params object[] args)
-            : base(string.Format(format, args)) { }
+    public RoomMismatchException(string format, params object[] args)
+        : base(string.Format(format, args)) { }
 
-        public RoomMismatchException(string message, Exception inner) : base(message, inner) { }
+    public RoomMismatchException(string message, Exception inner) : base(message, inner) { }
 
-        protected RoomMismatchException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
-    }
+    protected RoomMismatchException(SerializationInfo info, StreamingContext context)
+        : base(info, context) { }
 }

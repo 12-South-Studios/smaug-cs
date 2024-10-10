@@ -1,17 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Communication
+namespace SmaugCS.Communication;
+
+public abstract class RequireTrustChannelAttribute(string trustType = "") : ChannelAttribute
 {
-    public abstract class RequireTrustChannelAttribute : ChannelAttribute
-    {
-        public string TrustType { get; set; }
+    public string TrustType { get; set; } = trustType;
 
-        protected RequireTrustChannelAttribute(string TrustType = "")
-        {
-            this.TrustType = TrustType;
-        }
-
-        public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
-            => ch.Trust >= minTrust;
-    }
+    public override bool Verify(ChannelTypes channelType, PlayerInstance ch, int minTrust = 0)
+        => ch.Trust >= minTrust;
 }

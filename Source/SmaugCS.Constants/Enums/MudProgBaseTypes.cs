@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum MudProgBaseTypes
 {
-    public enum MudProgBaseTypes
-    {
-        Mobile,
-        Room,
-        Object
-    }
+    Mobile,
+    Room,
+    Object
 }

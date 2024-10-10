@@ -1,7 +1,6 @@
-﻿namespace SmaugCS.Data.Shops
+﻿namespace SmaugCS.Data.Shops;
+
+public class RepairShopData : ShopData
 {
-    public class RepairShopData : ShopData
-    {
-        public int ProfitFix { get; set; }
-    }
+    public int ProfitFix { get; set; }
 }

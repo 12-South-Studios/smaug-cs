@@ -1,58 +1,44 @@
-﻿using Realm.Library.Lua;
+﻿using Library.Lua;
 using SmaugCS.Common;
 using SmaugCS.Data.Interfaces;
 using SmaugCS.Logging;
 using SmaugCS.Repository;
 
-namespace SmaugCS
+namespace SmaugCS.LuaHelpers;
+
+public class LuaInitializer(ILuaManager luaManager, IRepositoryManager dbManager, ILogManager logManager,
+  ILookupManager lookupManager) : IInitializer
 {
-    public class LuaInitializer : IInitializer
-    {
-        private readonly ILuaManager _luaManager;
-        private readonly IRepositoryManager _dbManager;
-        private readonly ILogManager _logManager;
-        private readonly ILookupManager _lookupManager;
+  public void Initialize()
+  {
+  }
 
-        public LuaInitializer(ILuaManager luaManager, IRepositoryManager dbManager, ILogManager logManager,
-            ILookupManager lookupManager)
-        {
-            _luaManager = luaManager;
-            _dbManager = dbManager;
-            _logManager = logManager;
-            _lookupManager = lookupManager;
-        }
+  public void InitializeLuaInjections(string dataPath)
+  {
+    LuaAreaFunctions.InitializeReferences(luaManager, dbManager, logManager);
+    LuaCreateFunctions.InitializeReferences(luaManager, dbManager, logManager);
+    LuaGetFunctions.InitializeReferences(luaManager, dbManager, dataPath);
+    LuaMobFunctions.InitializeReferences(luaManager, dbManager, logManager);
+    LuaObjectFunctions.InitializeReferences(luaManager, dbManager, logManager);
+    LuaRoomFunctions.InitializeReferences(luaManager, dbManager, logManager);
+    LuaLookupFunctions.InitializeReferences(lookupManager, logManager);
+    LuaManagerFunctions.InitializeReferences(logManager);
+  }
 
-        public void Initialize()
-        {
-        }
-
-        public void InitializeLuaInjections(string dataPath)
-        {
-            LuaAreaFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
-            LuaCreateFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
-            LuaGetFunctions.InitializeReferences(_luaManager, _dbManager, dataPath);
-            LuaMobFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
-            LuaObjectFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
-            LuaRoomFunctions.InitializeReferences(_luaManager, _dbManager, _logManager);
-            LuaLookupFunctions.InitializeReferences(_lookupManager, _logManager);
-            LuaManagerFunctions.InitializeReferences(_logManager);
-        }
-
-        public void InitializeLuaFunctions()
-        {
-            var proxy = new LuaInterfaceProxy();
-            var luaFuncRepo = new LuaFunctionRepository();
-            LuaHelper.Register(typeof(LuaAreaFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaCreateFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaGetFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaMobFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaObjectFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaRoomFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaLookupFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaManagerFunctions), luaFuncRepo);
-            LuaHelper.Register(typeof(LuaMudProgFunctions), luaFuncRepo);
-            proxy.RegisterFunctions(luaFuncRepo);
-            _luaManager.InitializeLuaProxy(proxy);
-        }
-    }
+  public void InitializeLuaFunctions()
+  {
+    LuaInterfaceProxy proxy = new();
+    LuaFunctionRepository luaFuncRepo = new();
+    LuaHelper.Register(typeof(LuaAreaFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaCreateFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaGetFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaMobFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaObjectFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaRoomFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaLookupFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaManagerFunctions), luaFuncRepo);
+    LuaHelper.Register(typeof(LuaMudProgFunctions), luaFuncRepo);
+    proxy.RegisterFunctions(luaFuncRepo);
+    luaManager.InitializeLuaProxy(proxy);
+  }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Snoop
 {
-    class Snoop
+    public static void do_snoop(CharacterInstance ch, string argument)
     {
-        public static void do_snoop(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

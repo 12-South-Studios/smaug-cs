@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace SmaugCS.Auction
-{
-    public interface IAuctionRepository
-    {
-        void Add(AuctionData auction);
-        void Load();
-        void Save();
+namespace SmaugCS.Auction;
 
-        IEnumerable<AuctionHistory> History { get; }
-    }
+public interface IAuctionRepository
+{
+    void Add(AuctionData auction);
+    void Load();
+    void Save();
+
+    IEnumerable<AuctionHistory> History { get; }
 }

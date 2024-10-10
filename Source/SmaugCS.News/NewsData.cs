@@ -1,34 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SmaugCS.News
+namespace SmaugCS.News;
+
+public class NewsData(int id)
 {
-    public class NewsData
-    {
-        private readonly List<NewsEntryData> _entries;
+  private readonly List<NewsEntryData> _entries = [];
 
-        public int Id { get; private set; }
-        public string Header { get; set; }
-        public string Name { get; set; }
-        public int Level { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public string CreatedBy { get; set; }
-        public bool Active { get; set; }
-        public bool Saved { get; set; }
+  public int Id { get; private set; } = id;
+  public string Header { get; set; }
+  public string Name { get; set; }
+  public int Level { get; set; }
+  public DateTime CreatedOn { get; set; }
+  public string CreatedBy { get; set; }
+  public bool Active { get; set; }
+  public bool Saved { get; set; } = false;
 
-        public IEnumerable<NewsEntryData> Entries => _entries;
+  public IEnumerable<NewsEntryData> Entries => _entries;
 
-        public NewsData(int id)
-        {
-            Id = id;
-            _entries = new List<NewsEntryData>();
-            Saved = false;
-        }
-
-        public void AddEntry(NewsEntryData entry)
-        {
-            if (!_entries.Contains(entry))
-                _entries.Add(entry);
-        }
-    }
+  public void AddEntry(NewsEntryData entry)
+  {
+    if (!_entries.Contains(entry))
+      _entries.Add(entry);
+  }
 }

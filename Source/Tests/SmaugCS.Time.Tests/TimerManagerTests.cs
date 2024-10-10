@@ -2,45 +2,44 @@
 using FakeItEasy;
 using Xunit;
 using FluentAssertions;
+using Library.Common;
 
-namespace SmaugCS.Time.Tests
+namespace SmaugCS.Time.Tests;
+
+public class TimerManagerTests
 {
+  private bool _callback;
+  private static ITimerManager _mgr;
 
-    public class TimerManagerTests
-    {
-        private bool _callback;
-        private static ITimerManager _mgr;
+  public TimerManagerTests()
+  {
+    _mgr = new TimerManager();
+  }
 
-        public TimerManagerTests()
-        {
-            _mgr = new TimerManager();
-        }
+  private void Callback(object sender, ElapsedEventArgs elapsedEventArgs)
+  {
+    _callback = true;
+  }
 
-        private void Callback(object sender, ElapsedEventArgs elapsedEventArgs)
-        {
-            _callback = true;
-        }
+  [Fact]
+  public void GetTimerTest()
+  {
+    int id = _mgr.AddTimer(200, Callback);
 
-        [Fact]
-        public void GetTimerTest()
-        {
-            var id = _mgr.AddTimer(200, Callback);
+    CommonTimer timer = _mgr.GetTimer(id);
 
-            var timer = _mgr.GetTimer(id);
+    timer.Id.Should().Be(id);
+  }
 
-            timer.Id.Should().Be(id);
-        }
+  [Fact]
+  public void DeleteTimerTest()
+  {
+    int id = _mgr.AddTimer(200, Callback);
 
-        [Fact]
-        public void DeleteTimerTest()
-        {
-            var id = _mgr.AddTimer(200, Callback);
+    _mgr.DeleteTimer(id);
 
-            _mgr.DeleteTimer(id);
+    CommonTimer timer = _mgr.GetTimer(id);
 
-            var timer = _mgr.GetTimer(id);
-
-            timer.Should().BeNull();
-        }
-    }
+    timer.Should().BeNull();
+  }
 }

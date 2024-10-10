@@ -1,11 +1,11 @@
 ﻿//using System;
 //using System.Collections.Generic;
 //using System.IO;
-//using Realm.Library.Common;
+//using Library.Common;
 //using SmaugCS.Common;
 //using SmaugCS.Constants.Constants;
 //using SmaugCS.Constants.Enums;
-//using Realm.Library.Common.Extensions;
+//using Library.Common.Extensions;
 
 //namespace SmaugCS.Ban
 //{

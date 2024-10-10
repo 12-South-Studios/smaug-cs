@@ -1,10 +1,9 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum VariableTypes
 {
-    public enum VariableTypes
-    {
-        None,
-        Integer,
-        ExtendedBit,
-        String
-    }
+    None,
+    Integer,
+    ExtendedBit,
+    String
 }

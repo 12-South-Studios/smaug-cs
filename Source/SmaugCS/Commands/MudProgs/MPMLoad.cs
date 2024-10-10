@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPMLoad
 {
-    class MPMLoad
+    public static void do_mpmload(CharacterInstance ch, string argument)
     {
-        public static void do_mpmload(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

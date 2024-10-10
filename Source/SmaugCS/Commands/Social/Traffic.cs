@@ -1,13 +1,13 @@
 ﻿using SmaugCS.Communication;
 using SmaugCS.Data.Instances;
+using SmaugCS.Managers;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Social;
+
+public static class Traffic
 {
-    public static class Traffic
-    {
-        public static void do_traffic(CharacterInstance ch, string argument)
-        {
-            ChatManager.SendToChat(ch, argument, ChannelTypes.Traffic, "openly traffic");
-        }
-    }
+  public static void do_traffic(CharacterInstance ch, string argument)
+  {
+    ChatManager.SendToChat(ch, argument, ChannelTypes.Traffic, "openly traffic");
+  }
 }

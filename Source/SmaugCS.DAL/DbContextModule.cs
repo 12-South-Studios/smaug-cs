@@ -1,19 +1,12 @@
 ﻿using Autofac;
 
-namespace SmaugCS.DAL
-{
-    public class DbContextModule : Module
-    {
-        private readonly string _dbConnectionString;
-        public DbContextModule(string dbConnectionString)
-        {
-            _dbConnectionString = dbConnectionString;
-        }
+namespace SmaugCS.DAL;
 
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<DbContext>().As<IDbContext>()
-                .WithParameter("connectionString", _dbConnectionString);
-        }
-    }
+public class DbContextModule(string dbConnectionString) : Module
+{
+  protected override void Load(ContainerBuilder builder)
+  {
+    builder.RegisterType<DbContext>().As<IDbContext>()
+      .WithParameter("connectionString", dbConnectionString);
+  }
 }

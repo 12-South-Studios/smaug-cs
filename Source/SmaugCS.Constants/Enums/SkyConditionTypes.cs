@@ -1,10 +1,9 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum SkyConditionTypes
 {
-    public enum SkyConditionTypes
-    {
-        Cloudless,
-        Cloudy,
-        Raining,
-        Lightning
-    }
+    Cloudless,
+    Cloudy,
+    Raining,
+    Lightning
 }

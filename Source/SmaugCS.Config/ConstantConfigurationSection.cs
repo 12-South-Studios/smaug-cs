@@ -1,10 +1,9 @@
 ﻿using System.Configuration;
 
-namespace SmaugCS.Config
+namespace SmaugCS.Config;
+
+public class ConstantConfigurationSection : ConfigurationSection
 {
-    public class ConstantConfigurationSection : ConfigurationSection
-    {
-        [ConfigurationProperty("Constants")]
-        public ConstantElementCollection Constants => (ConstantElementCollection)this["Constants"];
-    }
+    [ConfigurationProperty("Constants")]
+    public ConstantElementCollection Constants => (ConstantElementCollection)this["Constants"];
 }

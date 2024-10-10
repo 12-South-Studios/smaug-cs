@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Polymorph;
+
+class ImmUnmorph
 {
-    class ImmUnmorph
+    public static void do_imm_unmorph(CharacterInstance ch, string argument)
     {
-        public static void do_imm_unmorph(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,16 +1,15 @@
 ﻿using System.Configuration;
 
-namespace SmaugCS.Config
+namespace SmaugCS.Config;
+
+public class VnumConfigurationSection : ConfigurationSection
 {
-    public class VnumConfigurationSection : ConfigurationSection
-    {
-        [ConfigurationProperty("RoomVnums")]
-        public VnumElementCollection RoomVnums => (VnumElementCollection)this["RoomVnums"];
+    [ConfigurationProperty("RoomVnums")]
+    public VnumElementCollection RoomVnums => (VnumElementCollection)this["RoomVnums"];
 
-        [ConfigurationProperty("MobileVnums")]
-        public VnumElementCollection MobileVnums => (VnumElementCollection)this["MobileVnums"];
+    [ConfigurationProperty("MobileVnums")]
+    public VnumElementCollection MobileVnums => (VnumElementCollection)this["MobileVnums"];
 
-        [ConfigurationProperty("ObjectVnums")]
-        public VnumElementCollection ObjectVnums => (VnumElementCollection)this["ObjectVnums"];
-    }
+    [ConfigurationProperty("ObjectVnums")]
+    public VnumElementCollection ObjectVnums => (VnumElementCollection)this["ObjectVnums"];
 }

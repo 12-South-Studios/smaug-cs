@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Bash
 {
-    class Bash
+    public static void do_bash(CharacterInstance ch, string argument)
     {
-        public static void do_bash(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

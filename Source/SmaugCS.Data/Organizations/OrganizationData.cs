@@ -1,21 +1,16 @@
-﻿using Realm.Library.Common.Objects;
+﻿using Library.Common.Objects;
 using System.Xml.Serialization;
 
-namespace SmaugCS.Data.Organizations
+namespace SmaugCS.Data.Organizations;
+
+public abstract class OrganizationData(long id, string name) : Entity(id, name)
 {
-    public abstract class OrganizationData : Entity
-    {
-        protected OrganizationData(long id, string name) : base(id, name)
-        {
-        }
+    [XmlElement]
+    public string Description { get; set; }
 
-        [XmlElement]
-        public string Description { get; set; }
+    [XmlElement]
+    public string Leader { get; set; }
 
-        [XmlElement]
-        public string Leader { get; set; }
-
-        [XmlElement]
-        public int Board { get; set; }
-    }
+    [XmlElement]
+    public int Board { get; set; }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Memory
 {
-    class Memory
+    public static void do_memory(CharacterInstance ch, string argument)
     {
-        public static void do_memory(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

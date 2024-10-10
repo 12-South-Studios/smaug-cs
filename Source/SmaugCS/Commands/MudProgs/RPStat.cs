@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class RPStat
 {
-    class RPStat
+    public static void do_rpstat(CharacterInstance ch, string argument)
     {
-        public static void do_rpstat(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

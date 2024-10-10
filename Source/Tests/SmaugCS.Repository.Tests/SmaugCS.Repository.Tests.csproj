@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libaries\Realm.Standard.Patterns.Repository\Realm.Standard.Patterns.Repository.csproj" />
+    <ProjectReference Include="..\..\Libaries\Patterns.Repository\Patterns.Repository.csproj" />
     <ProjectReference Include="..\..\SmaugCS.Data\SmaugCS.Data.csproj" />
     <ProjectReference Include="..\..\SmaugCS.Logging\SmaugCS.Logging.csproj" />
     <ProjectReference Include="..\..\SmaugCS.Lua\SmaugCS.Lua.csproj" />

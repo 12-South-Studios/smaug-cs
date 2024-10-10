@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Skills;
+
+class Mount
 {
-    class Mount
+    public static void do_mount(CharacterInstance ch, string argument)
     {
-        public static void do_mount(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

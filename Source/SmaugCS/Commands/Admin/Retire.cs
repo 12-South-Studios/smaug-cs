@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Retire
 {
-    class Retire
+    public static void do_retire(CharacterInstance ch, string argument)
     {
-        public static void do_retire(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

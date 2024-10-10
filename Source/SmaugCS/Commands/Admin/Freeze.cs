@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Freeze
 {
-    class Freeze
+    public static void do_freeze(CharacterInstance ch, string argument)
     {
-        public static void do_freeze(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

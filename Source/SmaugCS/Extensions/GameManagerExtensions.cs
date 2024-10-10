@@ -1,9 +1,8 @@
 ﻿using SmaugCS.Data.Interfaces;
 
-namespace SmaugCS
+namespace SmaugCS.Extensions;
+
+public static class GameManagerExtensions
 {
-    public static class GameManagerExtensions
-    {
-        public static int GetSaveFlags(this IGameManager gameManager) => gameManager.SystemData.SaveFlags;
-    }
+    public static int GetSaveFlags(this IGameManager gameManager) => gameManager.SystemData.SaveFlags;
 }

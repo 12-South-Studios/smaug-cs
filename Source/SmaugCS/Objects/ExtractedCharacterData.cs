@@ -2,13 +2,12 @@
 using SmaugCS.Data.Instances;
 using SmaugCS.Data.Templates;
 
-namespace SmaugCS
+namespace SmaugCS;
+
+public class ExtracedCharacterData
 {
-    public class ExtracedCharacterData
-    {
-        public CharacterInstance Character { get; set; }
-        public RoomTemplate Room { get; set; }
-        public ReturnTypes ReturnCode { get; set; }
-        public bool Extract { get; set; }
-    }
+    public CharacterInstance Character { get; set; }
+    public RoomTemplate Room { get; set; }
+    public ReturnTypes ReturnCode { get; set; }
+    public bool Extract { get; set; }
 }

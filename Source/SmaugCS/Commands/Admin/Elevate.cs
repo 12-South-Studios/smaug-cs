@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Elevate
 {
-    class Elevate
+    public static void do_elevate(CharacterInstance ch, string argument)
     {
-        public static void do_elevate(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

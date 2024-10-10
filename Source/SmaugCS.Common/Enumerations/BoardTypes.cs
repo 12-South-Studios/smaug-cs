@@ -1,8 +1,7 @@
-﻿namespace SmaugCS.Common.Enumerations
+﻿namespace SmaugCS.Common.Enumerations;
+
+public enum BoardTypes
 {
-    public enum BoardTypes
-    {
-        Note,
-        Mail
-    }
+    Note,
+    Mail
 }

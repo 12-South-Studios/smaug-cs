@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Player;
+
+class Homepage
 {
-    class Homepage
+    public static void do_homepage(CharacterInstance ch, string argument)
     {
-        public static void do_homepage(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

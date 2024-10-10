@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class SetLiquid
 {
-    class SetLiquid
+    public static void do_setliquid(CharacterInstance ch, string argument)
     {
-        public static void do_setliquid(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

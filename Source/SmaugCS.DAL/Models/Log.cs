@@ -3,24 +3,23 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmaugCS.DAL.Models
+namespace SmaugCS.DAL.Models;
+
+[Table("Logs")]
+public class Log : IEntity
 {
-    [Table("Logs")]
-    public class Log : IEntity
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public virtual int Id { get; set; }
 
-        public DateTime? CreateDateUtc { get; set; }
+    public DateTime? CreateDateUtc { get; set; }
 
-        public LogTypes LogType { get; set; }
+    public LogTypes LogType { get; set; }
 
-        public string Text { get; set; }
+    public string Text { get; set; }
 
-        public int SessionId { get; set; }
+    public int SessionId { get; set; }
 
-        [ForeignKey("SessionId")]
-        public virtual Session Session { get; set; }
-    }
+    [ForeignKey("SessionId")]
+    public virtual Session Session { get; set; }
 }

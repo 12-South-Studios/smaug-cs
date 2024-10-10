@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Organizations;
+
+class ShowCouncil
 {
-    class ShowCouncil
+    public static void do_showcouncil(CharacterInstance ch, string argument)
     {
-        public static void do_showcouncil(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

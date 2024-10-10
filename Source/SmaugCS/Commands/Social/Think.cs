@@ -1,13 +1,13 @@
 ﻿using SmaugCS.Communication;
 using SmaugCS.Data.Instances;
+using SmaugCS.Managers;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Social;
+
+public static class Think
 {
-    public static class Think
-    {
-        public static void do_think(CharacterInstance ch, string argument)
-        {
-            ChatManager.SendToChat(ch, argument, ChannelTypes.High, "think");
-        }
-    }
+  public static void do_think(CharacterInstance ch, string argument)
+  {
+    ChatManager.SendToChat(ch, argument, ChannelTypes.High, "think");
+  }
 }

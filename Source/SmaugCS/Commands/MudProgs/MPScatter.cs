@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.MudProgs;
+
+class MPScatter
 {
-    class MPScatter
+    public static void do_mpscatter(CharacterInstance ch, string argument)
     {
-        public static void do_mpscatter(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class GFighting
 {
-    class GFighting
+    public static void do_gfighting(CharacterInstance ch, string argument)
     {
-        public static void do_gfighting(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

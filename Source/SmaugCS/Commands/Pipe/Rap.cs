@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Pipe;
+
+class Rap
 {
-    class Rap
+    public static void do_rap(CharacterInstance ch, string argument)
     {
-        public static void do_rap(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

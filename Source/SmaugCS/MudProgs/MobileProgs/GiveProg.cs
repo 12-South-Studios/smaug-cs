@@ -1,16 +1,15 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.MudProgs.Mobile
-{
-    public static class GiveProg
-    {
-        public static bool Execute(object[] args)
-        {
-            var mob = (MobileInstance)args[0];
-            var ch = (CharacterInstance)args[1];
-            var obj = (ObjectInstance)args[2];
+namespace SmaugCS.MudProgs.MobileProgs;
 
-            return false;
-        }
-    }
+public static class GiveProg
+{
+  public static bool Execute(object[] args)
+  {
+    MobileInstance mob = (MobileInstance)args[0];
+    CharacterInstance ch = (CharacterInstance)args[1];
+    ObjectInstance obj = (ObjectInstance)args[2];
+
+    return false;
+  }
 }

@@ -1,7 +1,6 @@
-﻿namespace SmaugCS
+﻿namespace SmaugCS;
+
+public class act_prog_data
 {
-    public class act_prog_data
-    {
-        public object vo { get; set; }
-    }
+    public object vo { get; set; }
 }

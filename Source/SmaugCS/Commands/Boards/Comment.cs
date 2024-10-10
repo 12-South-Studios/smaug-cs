@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Boards;
+
+class Comment
 {
-    class Comment
+    public static void do_comment(CharacterInstance ch, string argument)
     {
-        public static void do_comment(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

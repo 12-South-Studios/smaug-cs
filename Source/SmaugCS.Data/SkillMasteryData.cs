@@ -1,10 +1,9 @@
 ﻿using SmaugCS.Constants.Enums;
 
-namespace SmaugCS.Data
+namespace SmaugCS.Data;
+
+public class SkillMasteryData
 {
-    public class SkillMasteryData
-    {
-        public ClassTypes ClassType { get; set; }
-        public int MasteryLevel { get; set; }
-    }
+    public ClassTypes ClassType { get; set; }
+    public int MasteryLevel { get; set; }
 }

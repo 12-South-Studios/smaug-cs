@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.MudProgs
+﻿namespace SmaugCS.MudProgs;
+
+public enum MudProgLocationTypes
 {
-    public enum MudProgLocationTypes
-    {
-        Mobile,
-        Object,
-        Room
-    }
+    Mobile,
+    Object,
+    Room
 }

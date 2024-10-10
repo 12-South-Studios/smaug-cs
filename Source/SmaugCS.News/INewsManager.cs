@@ -1,7 +1,6 @@
-﻿namespace SmaugCS.News
+﻿namespace SmaugCS.News;
+
+public interface INewsManager
 {
-    public interface INewsManager
-    {
-        void Initialize();
-    }
+    void Initialize();
 }

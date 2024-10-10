@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace SmaugCS.Repository
+namespace SmaugCS.Repository;
+
+[AttributeUsage(AttributeTargets.Field)]
+public sealed class TypeMapAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public sealed class TypeMapAttribute : Attribute
-    {
-        public Type Repository { get; set; }
-        public Type Object { get; set; }
-    }
+    public Type Repository { get; set; }
+    public Type Object { get; set; }
 }

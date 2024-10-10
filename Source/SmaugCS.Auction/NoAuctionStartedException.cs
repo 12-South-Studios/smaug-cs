@@ -1,24 +1,23 @@
-﻿using Realm.Library.Common.Exceptions;
+﻿using Library.Common.Exceptions;
 using System;
 using System.Runtime.Serialization;
 
-namespace SmaugCS.Auction
+namespace SmaugCS.Auction;
+
+[Serializable]
+public class NoAuctionStartedException : BaseException
 {
-    [Serializable]
-    public class NoAuctionStartedException : BaseException
-    {
-        protected NoAuctionStartedException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+  protected NoAuctionStartedException(SerializationInfo info, StreamingContext context)
+    : base(info, context)
+  {
+  }
 
-        public NoAuctionStartedException(string msg) : base(msg)
-        {
-        }
+  public NoAuctionStartedException(string msg) : base(msg)
+  {
+  }
 
-        public NoAuctionStartedException(string msg, params object[] args)
-            : base(string.Format(msg, args))
-        {
-        }
-    }
+  public NoAuctionStartedException(string msg, params object[] args)
+    : base(string.Format(msg, args))
+  {
+  }
 }

@@ -1,11 +1,10 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum ToTypes
 {
-    public enum ToTypes
-    {
-        Room,
-        NotVictim,
-        Victim,
-        Character,
-        CanSee
-    }
+    Room,
+    NotVictim,
+    Victim,
+    Character,
+    CanSee
 }

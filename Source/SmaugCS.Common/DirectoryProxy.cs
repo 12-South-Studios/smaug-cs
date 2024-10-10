@@ -2,11 +2,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace SmaugCS.Common
+namespace SmaugCS.Common;
+
+[ExcludeFromCodeCoverage]
+public class DirectoryProxy
 {
-    [ExcludeFromCodeCoverage]
-    public class DirectoryProxy
-    {
-        public virtual IEnumerable<string> GetFiles(string path) => Directory.GetFiles(path);
-    }
+    public virtual IEnumerable<string> GetFiles(string path) => Directory.GetFiles(path);
 }

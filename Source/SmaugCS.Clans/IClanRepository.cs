@@ -1,14 +1,13 @@
 ﻿using SmaugCS.Data;
 using System.Collections.Generic;
 
-namespace SmaugCS.Clans
-{
-    public interface IClanRepository
-    {
-        void Add(ClanData clan);
-        void Load();
-        void Save();
+namespace SmaugCS.Clans;
 
-        IEnumerable<ClanData> Clans { get; }
-    }
+public interface IClanRepository
+{
+    void Add(ClanData clan);
+    void Load();
+    void Save();
+
+    IEnumerable<ClanData> Clans { get; }
 }

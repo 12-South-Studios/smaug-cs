@@ -1,16 +1,16 @@
-﻿using Realm.Library.Common;
-using Realm.Library.Common.Extensions;
+﻿using Library.Common;
+using Library.Common.Extensions;
 
-namespace SmaugCS
+namespace SmaugCS;
+
+public class LoginMessageData
 {
-    public class LoginMessageData
-    {
-        public string Name { get; set; }
-        public string Text { get; set; }
-        public int Type { get; set; }
+    public string Name { get; set; }
+    public string Text { get; set; }
+    public int Type { get; set; }
 
-        public void Save(TextWriterProxy proxy)
-        {
+    public void Save(TextWriterProxy proxy)
+    {
             proxy.Write("#LOGINMSG\n");
             proxy.Write("Name  {0}~\n", Name);
             if (!Text.IsNullOrEmpty())
@@ -18,5 +18,4 @@ namespace SmaugCS
             proxy.Write("Type  {0}\n", Type);
             proxy.Write("End\n");
         }
-    }
 }

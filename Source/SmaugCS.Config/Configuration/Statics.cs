@@ -1,7 +1,6 @@
-﻿namespace SmaugCS.Config.Configuration
+﻿namespace SmaugCS.Config.Configuration;
+
+public class Statics
 {
-    public class Statics
-    {
-        public MayorText MayorText { get; set; }
-    }
+    public MayorText MayorText { get; set; }
 }

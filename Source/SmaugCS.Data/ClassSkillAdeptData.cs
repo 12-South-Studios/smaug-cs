@@ -1,9 +1,8 @@
-﻿namespace SmaugCS.Data
+﻿namespace SmaugCS.Data;
+
+public class ClassSkillAdeptData
 {
-    public class ClassSkillAdeptData
-    {
-        public string Skill { get; set; }
-        public int Level { get; set; }
-        public int Adept { get; set; }
-    }
+    public string Skill { get; set; }
+    public int Level { get; set; }
+    public int Adept { get; set; }
 }

@@ -1,32 +1,33 @@
 ﻿using FluentAssertions;
 using SmaugCS.Repository;
 using System;
+using SmaugCS.Data.Instances;
+using SmaugCS.Data.Templates;
 using Test.Common;
 using Xunit;
 
-namespace SmaugCS.Tests.Repositories
+namespace SmaugCS.Tests.Repositories;
+
+[Collection(CollectionDefinitions.NonParallelCollection)]
+public class ObjInstanceRepositoryTests
 {
-    [Collection(CollectionDefinitions.NonParallelCollection)]
-    public class ObjInstanceRepositoryTests
-    {
-        [Fact]
-        public void Create()
-        {
-            var objRepo = new ObjectRepository();
-            var obj = objRepo.Create(1, "TestObj");
+  [Fact]
+  public void Create()
+  {
+    ObjectRepository objRepo = new();
+    ObjectTemplate obj = objRepo.Create(1, "TestObj");
 
-            var repo = new ObjInstanceRepository();
-            var actual = repo.Create(obj, 5);
+    ObjInstanceRepository repo = new();
+    ObjectInstance actual = repo.Create(obj, 5);
 
-            actual.Should().NotBeNull();
-            actual.ID.Should().BeGreaterThanOrEqualTo(1);
-        }
+    actual.Should().NotBeNull();
+    actual.Id.Should().BeGreaterThanOrEqualTo(1);
+  }
 
-        [Fact]
-        public void Create_InvalidParent()
-        {
-            var repo = new ObjInstanceRepository();
-            Assert.Throws<ArgumentNullException>(() => repo.Create(null, null));
-        }
-    }
+  [Fact]
+  public void Create_InvalidParent()
+  {
+    ObjInstanceRepository repo = new();
+    Assert.Throws<ArgumentNullException>(() => repo.Create(null, null));
+  }
 }

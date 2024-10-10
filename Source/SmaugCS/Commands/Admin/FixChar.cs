@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class FixChar
 {
-    class FixChar
+    public static void do_fixchar(CharacterInstance ch, string argument)
     {
-        public static void do_fixchar(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

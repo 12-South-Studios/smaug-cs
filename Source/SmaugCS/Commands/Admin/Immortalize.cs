@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Admin;
+
+class Immortalize
 {
-    class Immortalize
+    public static void do_immortalize(CharacterInstance ch, string argument)
     {
-        public static void do_immortalize(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

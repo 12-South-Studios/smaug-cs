@@ -1,34 +1,35 @@
-﻿using SmaugCS.Common;
+﻿using System.Linq;
+using SmaugCS.Common;
 using SmaugCS.Constants.Enums;
+using SmaugCS.Data;
 using SmaugCS.Data.Instances;
-using System.Linq;
+using SmaugCS.Extensions.Character;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Movement;
+
+public static class Climb
 {
-    public static class Climb
+  public static void do_climb(CharacterInstance ch, string argument)
+  {
+    if (string.IsNullOrEmpty(argument))
     {
-        public static void do_climb(CharacterInstance ch, string argument)
-        {
-            if (string.IsNullOrEmpty(argument))
-            {
-                foreach (var ext in ch.CurrentRoom.Exits.Where(ext => ext.Flags.IsSet(ExitFlags.xClimb)))
-                {
-                    Move.move_char(ch, ext, 0);
-                    return;
-                }
+      foreach (ExitData ext in ch.CurrentRoom.Exits.Where(ext => ext.Flags.IsSet(ExitFlags.xClimb)))
+      {
+        Move.move_char(ch, ext, 0);
+        return;
+      }
 
-                ch.SendTo("You cannot climb here.");
-                return;
-            }
-
-            var exit = ch.FindExit(argument, true);
-            if (exit != null && exit.Flags.IsSet(ExitFlags.xClimb))
-            {
-                Move.move_char(ch, exit, 0);
-                return;
-            }
-
-            ch.SendTo("You cannot climb there.");
-        }
+      ch.SendTo("You cannot climb here.");
+      return;
     }
+
+    ExitData exit = ch.FindExit(argument, true);
+    if (exit != null && exit.Flags.IsSet(ExitFlags.xClimb))
+    {
+      Move.move_char(ch, exit, 0);
+      return;
+    }
+
+    ch.SendTo("You cannot climb there.");
+  }
 }

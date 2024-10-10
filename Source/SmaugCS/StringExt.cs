@@ -2,93 +2,101 @@
 using SmaugCS.Constants.Enums;
 using SmaugCS.Data.Instances;
 using System;
+using System.Collections.Generic;
 using System.Text;
-using Random = Realm.Library.Common.Random;
+using Random = Library.Common.Random;
 
-namespace SmaugCS
+namespace SmaugCS;
+
+public static class StringExt
 {
-    public static class StringExt
+  public static string Scramble(this string argument, int modifier)
+  {
+    StringBuilder arg = new(argument);
+    int position;
+    int conversion = 0;
+    int length = argument.Length;
+
+    modifier %= SmaugRandom.Between(80, 300);
+
+    for (position = 0; position < length; position++)
     {
-        public static string Scramble(this string argument, int modifier)
+      switch (argument[position])
+      {
+        case >= 'A' and <= 'Z':
         {
-            var arg = new StringBuilder(argument);
-            int position;
-            var conversion = 0;
-            var length = argument.Length;
-
-            modifier %= SmaugRandom.Between(80, 300);
-
-            for (position = 0; position < length; position++)
-            {
-                if (argument[position] >= 'A' && argument[position] <= 'Z')
-                {
-                    conversion = -conversion + position - modifier + argument[position] - 'A';
-                    conversion = SmaugRandom.Between(conversion - 5, conversion + 5);
-                    while (conversion > 25)
-                        conversion -= 26;
-                    while (conversion < 0)
-                        conversion += 26;
-                    arg[position] = Convert.ToChar(conversion + 'A');
-                }
-                else if (argument[position] >= 'a' && argument[position] <= 'z')
-                {
-                    conversion = -conversion + position - modifier + argument[position] - 'a';
-                    conversion = SmaugRandom.Between(conversion - 5, conversion + 5);
-                    while (conversion > 25)
-                        conversion -= 26;
-                    while (conversion < 0)
-                        conversion += 26;
-                    arg[position] = Convert.ToChar(conversion + 'a');
-                }
-                else if (argument[position] >= '0' && argument[position] <= '9')
-                {
-                    conversion = -conversion + position - modifier + argument[position] - '0';
-                    conversion = SmaugRandom.Between(conversion - 2, conversion + 2);
-                    while (conversion > 9)
-                        conversion -= 10;
-                    while (conversion < 0)
-                        conversion += 10;
-                    arg[position] = Convert.ToChar(conversion + '0');
-                }
-                else
-                {
-                    arg[position] = argument[position];
-                }
-            }
-
-            return arg.ToString();
+          conversion = -conversion + position - modifier + argument[position] - 'A';
+          conversion = SmaugRandom.Between(conversion - 5, conversion + 5);
+          while (conversion > 25)
+            conversion -= 26;
+          while (conversion < 0)
+            conversion += 26;
+          arg[position] = Convert.ToChar(conversion + 'A');
+          break;
         }
-
-        public static string Drunkify(this string argument, CharacterInstance ch)
+        case >= 'a' and <= 'z':
         {
-            if (ch.IsNpc() || ((PlayerInstance)ch).PlayerData == null)
-                return argument;
-
-            var drunk = ((PlayerInstance)ch).PlayerData.ConditionTable.ContainsKey(ConditionTypes.Drunk)
-                                   ? ((PlayerInstance)ch).PlayerData.ConditionTable[ConditionTypes.Drunk]
-                                   : 0;
-
-            if (drunk <= 0)
-                return argument;
-
-            var newstring = string.Empty;
-            var chars = argument.ToCharArray();
-
-            foreach (var c in chars)
-            {
-                if (char.ToUpper(c) == 'T' && Random.D100(1) < drunk * 2)
-                    newstring += c + 'h';
-                else if (char.ToUpper(c) == 'X' && Random.D100(1) < drunk * 2 / 5)
-                    newstring += c + "csh";
-                else if (Random.D100(1) < drunk * 2 / 5)
-                {
-
-                }
-                else
-                    newstring += c;
-            }
-
-            return string.Empty;
+          conversion = -conversion + position - modifier + argument[position] - 'a';
+          conversion = SmaugRandom.Between(conversion - 5, conversion + 5);
+          while (conversion > 25)
+            conversion -= 26;
+          while (conversion < 0)
+            conversion += 26;
+          arg[position] = Convert.ToChar(conversion + 'a');
+          break;
         }
+        case >= '0' and <= '9':
+        {
+          conversion = -conversion + position - modifier + argument[position] - '0';
+          conversion = SmaugRandom.Between(conversion - 2, conversion + 2);
+          while (conversion > 9)
+            conversion -= 10;
+          while (conversion < 0)
+            conversion += 10;
+          arg[position] = Convert.ToChar(conversion + '0');
+          break;
+        }
+        default:
+          arg[position] = argument[position];
+          break;
+      }
     }
+
+    return arg.ToString();
+  }
+
+  public static string Drunkify(this string argument, CharacterInstance ch)
+  {
+    if (ch.IsNpc() || ((PlayerInstance)ch).PlayerData == null)
+      return argument;
+
+    int drunk = ((PlayerInstance)ch).PlayerData.ConditionTable.GetValueOrDefault(ConditionTypes.Drunk, 0);
+
+    if (drunk <= 0)
+      return argument;
+
+    string newstring = string.Empty;
+    char[] chars = argument.ToCharArray();
+
+    foreach (char c in chars)
+    {
+      switch (char.ToUpper(c))
+      {
+        case 'T' when Random.D100(1) < drunk * 2:
+          newstring += c + 'h';
+          break;
+        case 'X' when Random.D100(1) < drunk * 2 / 5:
+          newstring += c + "csh";
+          break;
+        default:
+        {
+          if (Random.D100(1) >= drunk * 2 / 5)
+            newstring += c;
+          break;
+        }
+      }
+    }
+
+    return string.Empty;
+  }
 }

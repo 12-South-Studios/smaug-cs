@@ -1,13 +1,58 @@
-﻿using SmaugCS.Data.Instances;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SmaugCS.Common;
+using SmaugCS.Constants.Constants;
+using SmaugCS.Constants.Enums;
+using SmaugCS.Data.Instances;
+using SmaugCS.Extensions;
+using SmaugCS.Extensions.Character;
+using SmaugCS.Extensions.Objects;
 
-namespace SmaugCS.Spells
+namespace SmaugCS.Spells.Ice;
+
+class FrostBreath
 {
-    class FrostBreath
+  private static readonly Dictionary<ItemTypes, string> ItemTypeMessages = new()
+  {
+    { ItemTypes.Container, "$p freezes and shatters!" },
+    { ItemTypes.DrinkContainer, "$p freezes and shatters!" },
+    { ItemTypes.Potion, "$p freezes and shatters!" }
+  };
+
+  public static ReturnTypes spell_frost_breath(int sn, int level, CharacterInstance ch, object vo)
+  {
+    CharacterInstance victim = (CharacterInstance)vo;
+
+    if (ch.Chance(2 * level) && !victim.SavingThrows.CheckSaveVsBreath(level, victim))
     {
-        public static int spell_frost_breath(int sn, int level, CharacterInstance ch, object vo)
+      int chance = GameConstants.GetConstant<int>("FrostBreathItemDestroyChance");
+      foreach (ObjectInstance instance in victim.Carrying.Where(instance => SmaugRandom.D100() < chance))
+      {
+        if (!ItemTypeMessages.TryGetValue(instance.ItemType, out string msg))
+          continue;
+
+        handler.separate_obj(instance);
+        comm.act(ATTypes.AT_DAMAGE, msg, victim, instance, null, ToTypes.Character);
+
+        if (instance.ItemType == ItemTypes.Container)
         {
-            // TODO
-            return 0;
+          comm.act(ATTypes.AT_OBJECT, "The contents of $p held by $N spill onto the ground.", victim, instance, victim,
+            ToTypes.Room);
+          comm.act(ATTypes.AT_OBJECT, "The contents of $p spill out onto the ground!", victim, instance, null,
+            ToTypes.Character);
+          instance.Empty(null, victim.CurrentRoom);
         }
+
+        instance.Extract(Program.AuctionManager);
+      }
     }
+
+    int hpch = Macros.UMAX(10, ch.CurrentHealth);
+    int dam = SmaugRandom.Between(hpch / 16 + 1, hpch / 8);
+
+    if (victim.SavingThrows.CheckSaveVsBreath(level, victim))
+      dam /= 2;
+
+    return ch.CauseDamageTo(victim, dam, sn);
+  }
 }

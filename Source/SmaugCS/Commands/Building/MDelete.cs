@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class MDelete
 {
-    class MDelete
+    public static void do_mdelete(CharacterInstance ch, string argument)
     {
-        public static void do_mdelete(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

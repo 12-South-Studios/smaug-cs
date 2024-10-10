@@ -2,49 +2,44 @@
 using FluentAssertions;
 using SmaugCS.Data.Exceptions;
 using SmaugCS.Logging;
+using SmaugCS.LuaHelpers;
+using SmaugCS.Managers;
 using Xunit;
 
-namespace SmaugCS.Tests
+namespace SmaugCS.Tests;
+
+public class LuaLookupFunctionTests
 {
+  private LookupManager LookupMgr { get; set; } = new();
 
-    public class LuaLookupFunctionTests
-    {
-        private LookupManager LookupMgr { get; set; }
+  [Fact]
+  public void LuaAddLookupTest()
+  {
+    ILogManager mockLogger = A.Fake<ILogManager>();
 
-        public LuaLookupFunctionTests()
-        {
-            LookupMgr = new LookupManager();
-        }
+    LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger);
 
-        [Fact]
-        public void LuaAddLookupTest()
-        {
-            var mockLogger = A.Fake<ILogManager>();
+    LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
-            LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger);
+    LookupMgr.HasLookup("TestTable", "This is a test entry").Should().BeTrue();
+  }
 
-            LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
+  [Fact]
+  public void LuaAddLookup_AlreadyPresent_Test()
+  {
+    bool callbackValue = false;
 
-            LookupMgr.HasLookup("TestTable", "This is a test entry").Should().BeTrue();
-        }
+    ILogManager mockLogger = A.Fake<ILogManager>();
+    A.CallTo(() => mockLogger.Boot(A<DuplicateEntryException>.Ignored)).Invokes(() => callbackValue = true);
 
-        [Fact]
-        public void LuaAddLookup_AlreadyPresent_Test()
-        {
-            var callbackValue = false;
+    LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger);
 
-            var mockLogger = A.Fake<ILogManager>();
-            A.CallTo(() => mockLogger.Boot(A<DuplicateEntryException>.Ignored)).Invokes(() => callbackValue = true);
+    // Add once to enter it into the list
+    LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
-            LuaLookupFunctions.InitializeReferences(LookupMgr, mockLogger);
+    // Add it again to verify an exception is logged
+    LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
 
-            // Add once to enter it into the list
-            LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
-
-            // Add it again to verify an exception is logged
-            LuaLookupFunctions.LuaAddLookup("TestTable", "This is a test entry");
-
-            callbackValue.Should().BeTrue();
-        }
-    }
+    callbackValue.Should().BeTrue();
+  }
 }

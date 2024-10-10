@@ -1,12 +1,11 @@
 ﻿using SmaugCS.Data.Instances;
 
-namespace SmaugCS.Commands
+namespace SmaugCS.Commands.Building;
+
+class RList
 {
-    class RList
+    public static void do_rlist(CharacterInstance ch, string argument)
     {
-        public static void do_rlist(CharacterInstance ch, string argument)
-        {
             // TODO
         }
-    }
 }

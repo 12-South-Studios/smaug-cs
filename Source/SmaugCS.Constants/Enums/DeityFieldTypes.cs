@@ -1,24 +1,23 @@
-﻿namespace SmaugCS.Constants.Enums
+﻿namespace SmaugCS.Constants.Enums;
+
+public enum DeityFieldTypes
 {
-    public enum DeityFieldTypes
-    {
-        Flee,
-        FleeNPCRace,
-        Kill,
-        KillNPCRace,
-        KillMagic,
-        Sacrifice,
-        BuryCorpse,
-        AidSpell,
-        Aid,
-        Steal,
-        Backstab,
-        Die,
-        DieNPCRace,
-        SpellAid,
-        DigCorpse,
-        DieNPCFoe,
-        FleeNPCFoe,
-        KillNPCFoe
-    }
+    Flee,
+    FleeNPCRace,
+    Kill,
+    KillNPCRace,
+    KillMagic,
+    Sacrifice,
+    BuryCorpse,
+    AidSpell,
+    Aid,
+    Steal,
+    Backstab,
+    Die,
+    DieNPCRace,
+    SpellAid,
+    DigCorpse,
+    DieNPCFoe,
+    FleeNPCFoe,
+    KillNPCFoe
 }

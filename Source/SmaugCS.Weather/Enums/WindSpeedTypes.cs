@@ -1,25 +1,24 @@
-﻿using Realm.Library.Common.Attributes;
+﻿using Library.Common.Attributes;
 
-namespace SmaugCS.Weather.Enums
+namespace SmaugCS.Weather.Enums;
+
+public enum WindSpeedTypes
 {
-    public enum WindSpeedTypes
-    {
-        [Range(Maximum = 10)]
-        Calm,
+    [Range(Maximum = 10)]
+    Calm,
 
-        [Range(Minimum = 11, Maximum = 20)]
-        Breezy,
+    [Range(Minimum = 11, Maximum = 20)]
+    Breezy,
 
-        [Range(Minimum = 21, Maximum = 40)]
-        Blustery,
+    [Range(Minimum = 21, Maximum = 40)]
+    Blustery,
 
-        [Range(Minimum = 41, Maximum = 60)]
-        Windy,
+    [Range(Minimum = 41, Maximum = 60)]
+    Windy,
 
-        [Range(Minimum = 61, Maximum = 80)]
-        Gusty,
+    [Range(Minimum = 61, Maximum = 80)]
+    Gusty,
 
-        [Range(Minimum = 81)]
-        GaleForce
-    }
+    [Range(Minimum = 81)]
+    GaleForce
 }

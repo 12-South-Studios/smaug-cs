@@ -1,12 +1,11 @@
-﻿using Realm.Library.Common;
+﻿using Library.Common;
 using System.Timers;
 
-namespace SmaugCS.Time
+namespace SmaugCS.Time;
+
+public interface ITimerManager
 {
-    public interface ITimerManager
-    {
-        int AddTimer(double duration, ElapsedEventHandler callback);
-        CommonTimer GetTimer(int timerId);
-        void DeleteTimer(int timerId);
-    }
+    int AddTimer(double duration, ElapsedEventHandler callback);
+    CommonTimer GetTimer(int timerId);
+    void DeleteTimer(int timerId);
 }
