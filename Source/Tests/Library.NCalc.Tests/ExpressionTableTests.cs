@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using NCalc;
+using NCalc.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

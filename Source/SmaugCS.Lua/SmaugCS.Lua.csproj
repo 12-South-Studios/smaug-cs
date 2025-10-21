@@ -16,7 +16,7 @@
     <ProjectReference Include="..\SmaugCS.Data\SmaugCS.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="8.1.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
+    <PackageReference Include="Autofac" Version="8.4.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
   </ItemGroup>
 </Project>

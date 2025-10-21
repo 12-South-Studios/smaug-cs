@@ -19,6 +19,6 @@
     <ProjectReference Include="..\Libaries\Patterns.Singleton\Patterns.Singleton.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
+    <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreCLR-NCalc" Version="3.1.253" />
+    <PackageReference Include="NCalcSync" Version="5.7.0" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NCalc;
+using NCalc.Handlers;
 
 namespace Library.NCalc;
 

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmaugCS.DAL.Exceptions;
+using System.Linq;
 
 namespace SmaugCS.DAL;
 
@@ -279,7 +280,7 @@ public partial class DbContext : Library.Common.Objects.Entity, IDbContext
     return results.FirstOrDefault();
   }
 
-  public virtual IMongoQueryable<T> GetList<T>(string collectionName) where T : Entity
+  public virtual IQueryable<T> GetList<T>(string collectionName) where T : Entity
   {
     IMongoCollection<T> collection = Database.GetCollection<T>(collectionName);
     return collection.AsQueryable();

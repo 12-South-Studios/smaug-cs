@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NCalc;
+using NCalc.Handlers;
 
 namespace Library.NCalc;
 
