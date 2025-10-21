@@ -16,7 +16,7 @@ public class LiquidData(long id, string name) : Entity(id, name)
 
   [XmlElement("LiquidType")] public LiquidTypes Type { get; set; }
 
-  public Dictionary<ConditionTypes, int> Mods { get; private set; } = new();
+  public Dictionary<ConditionTypes, int> Mods { get; private set; } = [];
 
 
   public void SetType(string type)

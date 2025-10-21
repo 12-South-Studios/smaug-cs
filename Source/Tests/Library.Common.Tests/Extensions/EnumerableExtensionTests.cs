@@ -7,7 +7,7 @@ namespace Library.Common.Tests.Extensions;
 
 public class EnumerableExtensionTests
 {
-  private static IEnumerable<int> GetEnumerableIntegerList() => new List<int> { 5, 10, 15, 20, 25 };
+  private static IEnumerable<int> GetEnumerableIntegerList() => [5, 10, 15, 20, 25];
 
   private class Fake(string name)
   {
@@ -36,12 +36,11 @@ public class EnumerableExtensionTests
   }
 
   private static IEnumerable<Fake> GetEnumerableFakeList() =>
-    new List<Fake>
-    {
+    [
       new("Test1"),
       new("Test2"),
       new("Test3")
-    };
+    ];
 
   [Fact]
   public void IndexOfTest()

@@ -311,7 +311,7 @@ public partial class DbContext : Library.Common.Objects.Entity, IDbContext
     try
     {
       IMongoCollection<TEntity> collection = GetMongoCollection<TEntity>();
-      if (collection == null) return new List<TEntity>();
+      if (collection == null) return [];
 
       return await (await collection.FindAsync(_ => true)).ToListAsync();
     }

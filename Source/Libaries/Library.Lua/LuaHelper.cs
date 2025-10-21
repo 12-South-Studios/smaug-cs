@@ -29,7 +29,7 @@ public static class LuaHelper
       return null;
 
     LuaFunctionAttribute functionAttr = attr as LuaFunctionAttribute;
-    Dictionary<string, string> paramTable = new();
+    Dictionary<string, string> paramTable = [];
 
     // Get the desired function name and doc string, along with parameter info
     if (functionAttr == null)

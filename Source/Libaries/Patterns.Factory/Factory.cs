@@ -7,7 +7,7 @@ public abstract class Factory<TK, TV> : IFactory<TK, TV>
   where TK : Type
   where TV : class, new()
 {
-  private readonly SortedList<TK, CreateFunctor> _products = new();
+  private readonly SortedList<TK, CreateFunctor> _products = [];
 
   private delegate TV CreateFunctor();
 

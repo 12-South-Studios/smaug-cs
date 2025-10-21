@@ -76,9 +76,9 @@ public class WeatherMap
     for (int i = 0; i < width; i++)
       _delta[i] = new WeatherCell[height];
 
-    StarMap = new List<string>();
-    SunMap = new List<string>();
-    MoonMap = new List<string>();
+    StarMap = [];
+    SunMap = [];
+    MoonMap = [];
   }
 
   public WeatherMap(TimeInfoData gameTime, int width, int height, IEnumerable<WeatherCell> cells)

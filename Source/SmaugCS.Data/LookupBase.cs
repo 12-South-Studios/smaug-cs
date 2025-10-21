@@ -7,7 +7,7 @@ public abstract class LookupBase<T, TK>(TK defaultFunc)
   where T : Entity
   where TK : class, new()
 {
-  protected Dictionary<string, TK> LookupTable { get; private set; } = new();
+  protected Dictionary<string, TK> LookupTable { get; private set; } = [];
 
   protected TK GetFunction(string name)
   {

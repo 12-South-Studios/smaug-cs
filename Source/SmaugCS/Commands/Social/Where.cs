@@ -69,7 +69,7 @@ public static class Where
 
   private static IEnumerable<CharacterInstance> GetVisiblePlayersInArea(CharacterInstance ch)
   {
-    List<CharacterInstance> list = new();
+    List<CharacterInstance> list = [];
     foreach (RoomTemplate room in ch.CurrentRoom.Area.Rooms)
     {
       foreach (CharacterInstance victim in room.Persons.Where(x => !x.IsNpc()))

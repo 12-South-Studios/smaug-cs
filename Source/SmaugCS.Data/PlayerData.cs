@@ -79,13 +79,13 @@ public class PlayerData
 
   public PlayerData(int maxSkills, int maxPersonal)
   {
-    Killed = new List<KilledData>();
-    ConditionTable = new Dictionary<ConditionTypes, int>();
+    Killed = [];
+    ConditionTable = [];
     Learned = new List<Tuple<long, int>>(maxSkills);
     SpecialSkills = new SkillData[maxPersonal];
-    TellHistory = new List<string>();
-    Ignored = new List<IgnoreData>();
-    SpecialSkills = new List<SkillData>();
+    TellHistory = [];
+    Ignored = [];
+    SpecialSkills = [];
   }
 
   public int GetConditionValue(ConditionTypes condition)

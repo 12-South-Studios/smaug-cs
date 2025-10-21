@@ -39,7 +39,7 @@ public static class Drag
     if (CheckFunctions.CheckIfTrue(ch, victim.HasTimer(TimerTypes.PKilled),
           "You can't drag that player right now.")) return;
     if (CheckFunctions.CheckIf(ch, HelperFunctions.IsFighting,
-          "You try, but can't get close enough.", new List<object> { ch })) return;
+          "You try, but can't get close enough.", [ch])) return;
     if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !victim.IsDeadly() && ch.IsDeadly(),
           "You can't drag a deadly character.")) return;
     if (CheckFunctions.CheckIfTrue(ch, !ch.IsNpc() && !ch.IsDeadly() && (int)ch.CurrentPosition > 3,

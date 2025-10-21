@@ -9,7 +9,7 @@ public abstract class Instance(long id, string name) : Entity(id, name)
   public string ShortDescription { get; set; }
   public string Description { get; set; }
   public Template Parent { get; set; }
-  public ICollection<AffectData> Affects { get; private set; } = new List<AffectData>();
+  public ICollection<AffectData> Affects { get; private set; } = [];
   public int Level { get; set; }
   public int Timer { get; set; }
 

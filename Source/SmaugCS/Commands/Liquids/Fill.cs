@@ -376,17 +376,17 @@ public static class Fill
     switch (obj.ItemType)
     {
       case ItemTypes.Container:
-        return new List<ItemTypes> { ItemTypes.Container, ItemTypes.NpcCorpse, ItemTypes.PlayerCorpse };
+        return [ItemTypes.Container, ItemTypes.NpcCorpse, ItemTypes.PlayerCorpse];
       case ItemTypes.DrinkContainer:
-        return new List<ItemTypes> { ItemTypes.Fountain, ItemTypes.Blood };
+        return [ItemTypes.Fountain, ItemTypes.Blood];
       case ItemTypes.HerbContainer:
-        return new List<ItemTypes> { ItemTypes.Herb, ItemTypes.HerbContainer };
+        return [ItemTypes.Herb, ItemTypes.HerbContainer];
       case ItemTypes.Pipe:
-        return new List<ItemTypes> { ItemTypes.Herb, ItemTypes.HerbContainer };
+        return [ItemTypes.Herb, ItemTypes.HerbContainer];
     }
 
     comm.act(ATTypes.AT_ACTION, "$n tries to fill $p... (Don't ask me how)", ch, obj, null, ToTypes.Room);
     ch.SendTo("You cannot fill that.");
-    return new List<ItemTypes>();
+    return [];
   }
 }

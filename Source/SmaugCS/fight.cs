@@ -1471,8 +1471,8 @@ public static class fight
     }
   }
 
-  private static readonly List<string> DeathCries = new()
-  {
+  private static readonly List<string> DeathCries =
+  [
     "You hear $n's death cry.",
     "$n screams furiously as $e falls to the ground in a heap!",
     "$n hits the ground ... DEAD.",
@@ -1481,7 +1481,7 @@ public static class fight
     "$n gasps $s last breath and blood spurts out of $s mouth and ears.",
     "You hear something's death cry.",
     "You hear someone's death cry."
-  };
+  ];
 
   public static void death_cry(CharacterInstance ch)
   {
@@ -1762,8 +1762,8 @@ public static class fight
     return 0;
   }
 
-  private static readonly List<string> SlashMessageTable = new()
-  {
+  private static readonly List<string> SlashMessageTable =
+  [
     "SlashGenericMessages", // hit
     "SlashBladeMessages", // slice
     "SlashBladeMessages", // stab
@@ -1782,10 +1782,10 @@ public static class fight
     "SlashGenericMessages", // dart
     "SlashGenericMessages", // stone
     "SlashGenericMessages" // pea
-  };
+  ];
 
-  private static readonly List<string> PierceMessageTable = new()
-  {
+  private static readonly List<string> PierceMessageTable =
+  [
     "PierceGenericMessages", // hit
     "PierceBladeMessages", // slice
     "PierceBladeMessages", // stab
@@ -1804,7 +1804,7 @@ public static class fight
     "PierceGenericMessages", // dart
     "PierceGenericMessages", // stone
     "PierceGenericMessages" // pea
-  };
+  ];
 
   public static void dam_message(CharacterInstance ch, CharacterInstance victim, int dam, int dt)
   {

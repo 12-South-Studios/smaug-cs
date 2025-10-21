@@ -48,13 +48,13 @@ public class BidirectionalDictionary<TFirst, TSecond>
   {
     if (!Forward.TryGetValue(first, out IEnumerable<TSecond> secondList))
     {
-      secondList = new List<TSecond>();
+      secondList = [];
       Forward[first] = secondList;
     }
 
     if (!Backward.TryGetValue(second, out IEnumerable<TFirst> firstList))
     {
-      firstList = new List<TFirst>();
+      firstList = [];
       Backward[second] = firstList;
     }
 

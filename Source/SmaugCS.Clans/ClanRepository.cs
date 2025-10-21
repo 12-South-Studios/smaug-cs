@@ -12,7 +12,7 @@ namespace SmaugCS.Clans;
 
 public class ClanRepository(ILogManager logManager, IDbContext dbContext) : IClanRepository
 {
-  public IEnumerable<ClanData> Clans { get; private set; } = new List<ClanData>();
+  public IEnumerable<ClanData> Clans { get; private set; } = [];
 
   public void Add(ClanData clan)
   {

@@ -13,7 +13,7 @@ public class ListAtomTest
   [Fact]
   public void ListAtomConstructorTest()
   {
-    ListAtom atom = new();
+    ListAtom atom = [];
 
     atom.Should().NotBeNull();
     atom.Type.Should().Be(AtomType.List);
@@ -42,7 +42,7 @@ public class ListAtomTest
   [Fact]
   public void ListAtomDumpNullParameterTest()
   {
-    ListAtom atom = new();
+    ListAtom atom = [];
 
     const string prefix = "Test";
 
@@ -59,7 +59,7 @@ public class ListAtomTest
     A.CallTo(() => logger.Info(A<string>.Ignored, A<object>.Ignored))
       .Invokes(() => callback = true);
 
-    ListAtom atom = new();
+    ListAtom atom = [];
 
     const string prefix = "Test";
     atom.Dump(logger, prefix);
@@ -91,7 +91,7 @@ public class ListAtomTest
     IntAtom atom1 = new(15);
     IntAtom atom2 = new(25);
     IntAtom atom3 = new(35);
-    ListAtom listAtom = new() { atom1, atom2, atom3 };
+    ListAtom listAtom = [atom1, atom2, atom3];
 
     listAtom.Count.Should().Be(3);
 
@@ -215,7 +215,7 @@ public class ListAtomTest
     DictionaryAtom atom2 = new();
     atom2.Set("Test2", "This is a big test");
 
-    ListAtom listAtom = new() { atom1, atom2 };
+    ListAtom listAtom = [atom1, atom2];
 
     listAtom.GetDictionary(1).Should().Be(atom2);
   }
@@ -236,7 +236,7 @@ public class ListAtomTest
   {
     ListAtom atom1 = new() { "Tester tester 1 2 3" };
     ListAtom atom2 = new() { "This is a big test" };
-    ListAtom listAtom = new() { atom1, atom2 };
+    ListAtom listAtom = [atom1, atom2];
 
     listAtom.GetList(1).Should().BeSameAs(atom2);
   }

@@ -22,7 +22,7 @@ public sealed class RepositoryManager : IRepositoryManager
   {
     LogManager = logManager;
 
-    _repositories = new Dictionary<RepositoryTypes, object>();
+    _repositories = [];
     foreach (RepositoryTypes repoType in EnumerationFunctions.GetAllEnumValues<RepositoryTypes>())
     {
       TypeMapAttribute attrib = EnumerationExtensions.GetAttribute<TypeMapAttribute>(repoType);

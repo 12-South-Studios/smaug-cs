@@ -325,7 +325,7 @@ public class StringExtensionsTest
   [InlineData("A big bear clapped and clawed the ant hill.", "A ig er lpped nd lwed the nt hill.")]
   public void RemoveAllTest(string value, string expected)
   {
-    string result = value.RemoveAll(new List<char> { 'a', 'b', 'c' });
+    string result = value.RemoveAll(['a', 'b', 'c']);
     result.Should().Be(expected);
   }
 

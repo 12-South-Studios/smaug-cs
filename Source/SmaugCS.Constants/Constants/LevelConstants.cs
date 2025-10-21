@@ -14,7 +14,7 @@ public static class LevelConstants
       _maxLevel ??= GameConstants.GetConstant<int>("MaximumLevel");
       return _maxLevel.Value;
     }
-    internal set => _maxLevel = value;
+    set => _maxLevel = value;
   }
 
   public static int GetLevel(ImmortalTypes type)

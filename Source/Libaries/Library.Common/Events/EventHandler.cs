@@ -71,7 +71,7 @@ public class EventHandler : IEventHandler
     Validation.IsNotNull(eventListener, "eventLister");
 
     if (!_events.ContainsKey(eventListener.EventType))
-      _events.TryAdd(eventListener.EventType, new List<EventListener> { eventListener });
+      _events.TryAdd(eventListener.EventType, [eventListener]);
     else
     {
       _events.TryGetValue(eventListener.EventType, out IList<EventListener> tupleList);

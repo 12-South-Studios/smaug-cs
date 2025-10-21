@@ -59,9 +59,7 @@ public class ValidationTest
     [Fact]
     public void IsNotEmptyByTypeTest()
     {
-            ICollection<string> list = new Collection<string>();
-            list.Add("Test1");
-            list.Add("Test2");
+            ICollection<string> list = ["Test1", "Test2"];
 
             Action act = () => Validation.IsNotEmpty(list, "list");
             act.Should().NotThrow();

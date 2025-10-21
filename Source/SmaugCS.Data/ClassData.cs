@@ -42,8 +42,8 @@ public class ClassData(long id, string name) : Entity(id, name)
   public int Susceptibility { get; set; }
   public int Immunity { get; set; }
 
-  public ICollection<ClassSkillAdeptData> Skills { get; private set; } = new List<ClassSkillAdeptData>();
-  public Dictionary<int, Tuple<string, string>> Titles { get; private set; } = new();
+  public ICollection<ClassSkillAdeptData> Skills { get; private set; } = [];
+  public Dictionary<int, Tuple<string, string>> Titles { get; private set; } = [];
 
   public void SetPrimaryAttribute(string name)
   {

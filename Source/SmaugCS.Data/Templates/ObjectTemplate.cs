@@ -34,9 +34,9 @@ public class ObjectTemplate : Template, IHasExtraFlags, IHasExtraDescriptions
         : base(id, name)
     {
             Values = new ExpandoObject();
-            ExtraDescriptions = new List<ExtraDescriptionData>();
-            Affects = new List<AffectData>();
-            Spells = new List<string>();
+            ExtraDescriptions = [];
+            Affects = [];
+            Spells = [];
             ExtraFlags = new ExtendedBitvector();
 
             ShortDescription = $"A newly created {name}";

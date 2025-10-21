@@ -23,7 +23,7 @@ public static class LuaCreateFunctions
 
   #region LastObject
 
-  private static readonly Dictionary<Type, object> LastObjects = new();
+  private static readonly Dictionary<Type, object> LastObjects = [];
   public static object LastObject { get; private set; }
 
   private static void AddLastObject(object obj)

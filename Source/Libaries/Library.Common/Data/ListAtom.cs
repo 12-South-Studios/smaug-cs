@@ -47,7 +47,7 @@ public class ListAtom : Atom, IEnumerable<Atom>
   /// 
   /// </summary>
   /// <returns></returns>
-  public IEnumerable<Atom> GetList() => new List<Atom>(_list);
+  public IEnumerable<Atom> GetList() => [.. _list];
 
   /// <summary>
   /// Gets the number of objects in the list

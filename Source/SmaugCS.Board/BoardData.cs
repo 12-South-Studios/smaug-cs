@@ -28,7 +28,7 @@ public class BoardData(int id, BoardTypes type)
   public long BoardObjectId { get; set; }
   public bool Saved { get; set; } = false;
 
-  public ReadOnlyCollection<NoteData> Notes { get; } = new(new List<NoteData>());
+  public ReadOnlyCollection<NoteData> Notes { get; } = new([]);
 
   public void AddNotes(IEnumerable<NoteData> notes) => Notes.ToList().AddRange(notes);
 

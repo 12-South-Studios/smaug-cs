@@ -413,8 +413,8 @@ public static class act_info
 
   public static void print_compass(CharacterInstance ch)
   {
-    List<int> exitInfo = new() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    List<string> exitColors = new() { "&w", "&Y", "&C", "&b", "&w", "&R" };
+    List<int> exitInfo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<string> exitColors = ["&w", "&Y", "&C", "&b", "&w", "&R"];
 
     foreach (ExitData exit in ch.CurrentRoom.Exits)
     {

@@ -28,7 +28,7 @@ public sealed class RealmEventArgs : EventArgs
   /// </summary>
   public RealmEventArgs()
   {
-    Data = new EventTable();
+    Data = [];
   }
 
   /// <summary>

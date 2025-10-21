@@ -33,7 +33,7 @@ public sealed class LuaVirtualMachine : Entity
   {
     ArgumentOutOfRangeException.ThrowIfLessThan(id, 1);
 
-    _tasks = new Dictionary<Task, CancellationTokenSource>();
+    _tasks = [];
     _log = log;
     _repository = repository;
     _luaProxy = luaProxy;

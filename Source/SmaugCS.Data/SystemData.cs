@@ -71,7 +71,7 @@ public class SystemData
   public int HourOfNightBegin { get; set; }
   public int HourOfMidnight { get; set; }*/
 
-  public Dictionary<PlayerPermissionTypes, int> PlayerPermissions = new()
+  public Dictionary<PlayerPermissionTypes, int> PlayerPermissions = []
     /*{
         {PlayerPermissionTypes.ReadAllMail, Program.LEVEL_DEMI},
         {PlayerPermissionTypes.ReadMailFree, Program.GetLevel("immortal")},

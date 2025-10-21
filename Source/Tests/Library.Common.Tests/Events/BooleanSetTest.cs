@@ -14,7 +14,7 @@ public class BooleanSetTest
   [Fact]
   public void ConstructorTest()
   {
-    BooleanSet set = new(new EventTable(), _eventCallback);
+    BooleanSet set = new([], _eventCallback);
     set.IsComplete.Should().BeTrue();
   }
 

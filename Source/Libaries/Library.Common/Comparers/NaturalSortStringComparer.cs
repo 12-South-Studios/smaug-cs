@@ -12,7 +12,7 @@ namespace Library.Common.Comparers;
 public class NaturalSortStringComparer : IComparer<string>, IDisposable
 {
   private readonly bool _isAscending;
-  private Dictionary<string, string[]> _table = new();
+  private Dictionary<string, string[]> _table = [];
 
   /// <summary>
   /// Constructor

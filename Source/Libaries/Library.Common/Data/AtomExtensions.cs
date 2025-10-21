@@ -110,7 +110,7 @@ public static class AtomExtensions
   {
     Validation.IsNotNull(list, "list");
 
-    ListAtom atom = new ListAtom();
+    ListAtom atom = [];
 
     list.Cast<object>().Where(value => value != null).ToList().ForEach(value =>
     {

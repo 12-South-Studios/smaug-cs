@@ -9,7 +9,7 @@ namespace SmaugCS.News;
 
 public class NewsRepository(ILogManager logManager, IDbContext dbContext) : INewsRepository
 {
-  public IEnumerable<NewsData> News { get; private set; } = new List<NewsData>();
+  public IEnumerable<NewsData> News { get; private set; } = [];
 
   public void Add(NewsData news)
   {

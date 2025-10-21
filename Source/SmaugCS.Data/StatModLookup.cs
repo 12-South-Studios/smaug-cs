@@ -4,7 +4,7 @@ namespace SmaugCS.Data;
 
 public class StatModLookup
 {
-  public Dictionary<string, object> LookupValues { get; } = new();
+  public Dictionary<string, object> LookupValues { get; } = [];
 
   public void AddLookup(string name, object value)
   {

@@ -34,7 +34,7 @@ public class CharacterInstance(long id, string name) : Instance(id, name), IVeri
     public object DestinationBuffer { get; set; }
 
 
-    public IEnumerable<TimerData> Timers { get; private set; } = new List<TimerData>();
+    public IEnumerable<TimerData> Timers { get; private set; } = [];
     public CharacterMorph CurrentMorph { get; set; }
     public string LongDescription { get; set; }
 

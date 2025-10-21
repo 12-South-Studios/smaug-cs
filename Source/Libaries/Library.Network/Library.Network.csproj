@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Library.Common\Library.Common.csproj" />
-    <ProjectReference Include="..\Patterns.Repository\Patterns.Repository.csproj" />
+    <Compile Remove="Udp\**" />
+    <EmbeddedResource Remove="Udp\**" />
+    <None Remove="Udp\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Udp\" />
+    <ProjectReference Include="..\Library.Common\Library.Common.csproj" />
+    <ProjectReference Include="..\Patterns.Repository\Patterns.Repository.csproj" />
   </ItemGroup>
 
 </Project>

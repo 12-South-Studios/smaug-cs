@@ -19,7 +19,7 @@ public static class track
     public static readonly int BFS_MARK = Convert.ToInt32(RoomFlags.BfsMark);
 
     public static readonly Queue<BFSQueueData> BFS_DATA = new();
-    public static List<BFSQueueData> room_queue = new();
+    public static List<BFSQueueData> room_queue = [];
 
     public static void MARK(RoomTemplate room)
     {

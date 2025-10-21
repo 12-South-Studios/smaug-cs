@@ -16,11 +16,11 @@ public sealed class LookupManager : ILookupManager
 
   public LookupManager()
   {
-    _lookupTable = new Dictionary<string, List<string>>();
+    _lookupTable = [];
     CommandLookup = new CommandLookupTable();
     SkillLookup = new SkillLookupTable();
     SpellLookup = new SpellLookupTable();
-    StatModLookup = new Dictionary<string, List<StatModLookup>>();
+    StatModLookup = [];
   }
 
   public LookupBase<CommandData, DoFunction> CommandLookup { get; }
@@ -57,7 +57,7 @@ public sealed class LookupManager : ILookupManager
 
   public IEnumerable<string> GetLookups(string table)
   {
-    return _lookupTable.ContainsKey(table.ToLower()) ? _lookupTable[table.ToLower()] : new List<string>();
+    return _lookupTable.ContainsKey(table.ToLower()) ? _lookupTable[table.ToLower()] : [];
   }
 
   public string GetLookup(string table, int index)

@@ -21,7 +21,7 @@ public class RealmEventArgsTest
   [Fact]
   public void Constructor_ReturnsValidData_WhenEventTableIsPassed()
   {
-    RealmEventArgs result = new(new EventTable());
+    RealmEventArgs result = new([]);
     result.Data.Should().NotBeNull();
   }
 

@@ -15,14 +15,14 @@ public class WeatherRangeData(HemisphereTypes hemisphere, SeasonTypes season, Cl
   public SeasonTypes Season { get; private set; } = season;
   public ClimateTypes Climate { get; private set; } = climate;
 
-  public IEnumerable<int> Temperature { get; } = new List<int>();
-  public IEnumerable<int> Pressure { get; } = new List<int>();
-  public IEnumerable<int> CloudCover { get; } = new List<int>();
-  public IEnumerable<int> Humidity { get; } = new List<int>();
-  public IEnumerable<int> Precipitation { get; } = new List<int>();
-  public IEnumerable<int> Energy { get; } = new List<int>();
-  public IEnumerable<int> WindSpeedX { get; } = new List<int>();
-  public IEnumerable<int> WindSpeedY { get; } = new List<int>();
+  public IEnumerable<int> Temperature { get; } = [];
+  public IEnumerable<int> Pressure { get; } = [];
+  public IEnumerable<int> CloudCover { get; } = [];
+  public IEnumerable<int> Humidity { get; } = [];
+  public IEnumerable<int> Precipitation { get; } = [];
+  public IEnumerable<int> Energy { get; } = [];
+  public IEnumerable<int> WindSpeedX { get; } = [];
+  public IEnumerable<int> WindSpeedY { get; } = [];
 
   public void SetData(int tempLo, int tempHi, int presLo, int presHi,
     int cloudLo, int cloudHi, int humidLo, int humidHi, int precipLo,

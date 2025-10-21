@@ -70,8 +70,8 @@ public class TextReaderProxyTests
       new(new StringReader(
         "#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r#end\n\r"));
 
-    List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, new List<string> { "*" },
-      new List<string> { "#" }, "#end");
+    List<TextSection> results = proxy.ReadSections(["#"], ["*"],
+      ["#"], "#end");
 
     results.Count.Should().Be(0);
   }
@@ -83,8 +83,8 @@ public class TextReaderProxyTests
       new(new StringReader(
         "#common\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\r\n^end_common\n\r#uncommon\r\n~\r\nabcdefghijklmnopqrstuvwxyz~\r\n~\n\r^end_uncommon\r\n#end\n\r"));
 
-    List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, 
-      new List<string> { "*" }, new List<string> { "^" }, "#end");
+    List<TextSection> results = proxy.ReadSections(["#"], 
+      ["*"], ["^"], "#end");
 
     results.Should().NotBeNull();
     results[0].Footer.Should().Be("end_common");
@@ -96,8 +96,8 @@ public class TextReaderProxyTests
     TextReaderProxy proxy =
       new(new StringReader("#common|~|abcdefghijklmnopqrstuvwxyz~|~|#uncommon|~|abcdefghijklmnopqrstuvwxyz~|~|#end|"));
 
-    List<TextSection> results = proxy.ReadSections(new List<string> { "#" }, 
-      new List<string> { "*" }, null, "#end", ['|']);
+    List<TextSection> results = proxy.ReadSections(["#"], 
+      ["*"], null, "#end", ['|']);
 
     using (new AssertionScope())
     {

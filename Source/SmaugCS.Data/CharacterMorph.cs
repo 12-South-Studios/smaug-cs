@@ -19,6 +19,6 @@ public class CharacterMorph
     public int suscept { get; set; }
     public int timer { get; set; }
 
-    public Dictionary<StatisticTypes, int> Statistics { get; private set; } = new();
+    public Dictionary<StatisticTypes, int> Statistics { get; private set; } = [];
     public SavingThrowData SavingThrows { get; set; } = new();
 }

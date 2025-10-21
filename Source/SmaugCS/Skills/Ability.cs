@@ -34,7 +34,7 @@ public static class Ability
 
     if (CheckFunctions.CheckIf(ch, HelperFunctions.IsCharmedOrPossessed,
           "For some reason, you seem unable to perform that...",
-          new List<object> { ch }))
+          [ch]))
     {
       comm.act(ATTypes.AT_GREY, "$n wanders around aimlessly.", ch, null, null, ToTypes.Room);
       return true;
@@ -53,11 +53,11 @@ public static class Ability
 
       if (CheckFunctions.CheckIf(ch, HelperFunctions.HasSufficientBloodPower,
             "You don't have enough blood power.",
-            new List<object> { ch, blood }))
+            [ch, blood]))
         return true;
 
       if (CheckFunctions.CheckIf(ch, HelperFunctions.HasSufficientMana, "You don't have enough mana.",
-            new List<object> { ch, mana }))
+            [ch, mana]))
         return true;
     }
 

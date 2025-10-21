@@ -11,7 +11,7 @@ public static class ObjectTemplateExtensions
   public static IEnumerable<WearLocations> GetWearFlags(this ObjectTemplate template)
   {
     if (template.WearFlags.IsNullOrEmpty())
-      return new List<WearLocations>();
+      return [];
 
     string[] words = template.WearFlags.Split(' ');
     return words.Select(EnumerationExtensions.GetEnum<WearLocations>).ToList();

@@ -9,7 +9,7 @@ namespace SmaugCS.Board;
 
 public class BoardRepository(ILogManager logManager, IDbContext dbContext) : IBoardRepository
 {
-  public IEnumerable<BoardData> Boards { get; } = new List<BoardData>();
+  public IEnumerable<BoardData> Boards { get; } = [];
 
   public void Add(BoardData board) => Boards.ToList().Add(board);
 

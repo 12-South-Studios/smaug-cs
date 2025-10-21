@@ -18,10 +18,10 @@ public class SkillData(long id, string name) : Entity(id, name)
   public string SkillFunctionName { get; set; }
   public SpellFunction SpellFunction { get; set; }
 
-  public IEnumerable<int> SkillLevels { get; private set; } = new List<int>();
-  public IEnumerable<SkillMasteryData> SkillMasteries { get; private set; } = new List<SkillMasteryData>();
-  public IEnumerable<int> RaceLevel { get; private set; } = new List<int>();
-  public IEnumerable<int> RaceAdept { get; private set; } = new List<int>();
+  public IEnumerable<int> SkillLevels { get; private set; } = [];
+  public IEnumerable<SkillMasteryData> SkillMasteries { get; private set; } = [];
+  public IEnumerable<int> RaceLevel { get; private set; } = [];
+  public IEnumerable<int> RaceAdept { get; private set; } = [];
 
   private int _minimumPosition;
 
@@ -61,9 +61,9 @@ public class SkillData(long id, string name) : Entity(id, name)
   public int spell_sector { get; set; }
   public SaveVsTypes SaveVs { get; set; }
   public char difficulty { get; set; }
-  public ICollection<SmaugAffect> Affects { get; private set; } = new List<SmaugAffect>();
-  public ICollection<SpellComponent> Components { get; private set; } = new List<SpellComponent>();
-  public ICollection<string> Teachers { get; private set; } = new List<string>();
+  public ICollection<SmaugAffect> Affects { get; private set; } = [];
+  public ICollection<SpellComponent> Components { get; private set; } = [];
+  public ICollection<string> Teachers { get; private set; } = [];
   public char participants { get; set; }
   public UseHistory UseHistory { get; set; }
   public string NounDamage { get; set; }

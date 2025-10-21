@@ -10,7 +10,7 @@ namespace SmaugCS.Auction;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class AuctionRepository(ILogManager logManager, IDbContext dbContext) : IAuctionRepository
 {
-  public IEnumerable<AuctionHistory> History { get; private set; } = new List<AuctionHistory>();
+  public IEnumerable<AuctionHistory> History { get; private set; } = [];
 
   public void Add(AuctionData auction)
   {

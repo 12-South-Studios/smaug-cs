@@ -47,7 +47,7 @@ public class RaceData(long id, string name) : Entity(id, name)
   public int HungerMod { get; set; }
   public int ThirstMod { get; set; }
   public SavingThrowData SavingThrows { get; set; } = new();
-  public ICollection<string> WhereNames { get; private set; } = new List<string>();
+  public ICollection<string> WhereNames { get; private set; } = [];
   public int HitrollBonus { get; set; }
 
   [XmlElement] public int ManaRegenRate { get; set; }

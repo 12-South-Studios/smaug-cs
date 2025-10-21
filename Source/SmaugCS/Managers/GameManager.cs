@@ -111,7 +111,7 @@ public sealed class GameManager : IGameManager
     _logger.Info("Timing Complete: {0} seconds.", end.Subtract(start).TotalSeconds);
   }
 
-  private static readonly Dictionary<PulseTypes, int> PulseTrackerTable = new();
+  private static readonly Dictionary<PulseTypes, int> PulseTrackerTable = [];
 
   private static int GetPulseTimer(PulseTypes pulseType)
   {

@@ -68,8 +68,8 @@ public static class Channels
     return !ch.Deaf.IsSet(channelType) ? print.On : print.Off;
   }
 
-  private static readonly List<ChannelTypes> ClearAllList = new()
-  {
+  private static readonly List<ChannelTypes> ClearAllList =
+  [
     ChannelTypes.RaceTalk,
     ChannelTypes.Auction,
     ChannelTypes.Chat,
@@ -82,7 +82,7 @@ public static class Channels
     ChannelTypes.Shout,
     ChannelTypes.Yell,
     ChannelTypes.AvTalk
-  };
+  ];
 
   private static void SetChannel(CharacterInstance ch, ChannelTypes channelType)
   {

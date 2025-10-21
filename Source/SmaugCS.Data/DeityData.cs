@@ -32,7 +32,7 @@ public class DeityData(long id, string name) : Entity(id, name)
   public int AffectedNum { get; set; }
   public int ObjStat { get; set; }
 
-  private readonly Dictionary<DeityFieldTypes, int> _values = new();
+  private readonly Dictionary<DeityFieldTypes, int> _values = [];
 
   public void SetRaceType(string field, string value)
   {

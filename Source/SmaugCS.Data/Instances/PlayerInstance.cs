@@ -15,7 +15,7 @@ public class PlayerInstance(int id, string name) : CharacterInstance(id, name)
     public DateTime LoggedOn => Descriptor.User.ConnectedOn;
     public int TotalPlayedTime { get; set; }
     public DateTime save_time { get; set; }
-    public Dictionary<ATTypes, char> Colors { get; private set; } = new();
+    public Dictionary<ATTypes, char> Colors { get; private set; } = [];
     public CharacterInstance ReplyTo { get; set; }
     public CharacterInstance RetellTo { get; set; }
 

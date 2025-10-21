@@ -10,18 +10,18 @@ namespace SmaugCS.Data.Templates;
 
 public class RoomTemplate(long id, string name) : Template(id, name), IHasExtraDescriptions
 {
-  public ICollection<ResetData> Resets { get; } = new List<ResetData>();
+  public ICollection<ResetData> Resets { get; } = [];
   public ResetData LastMobReset { get; set; }
   public ResetData LastObjectReset { get; set; }
-  public ICollection<CharacterInstance> Persons { get; } = new List<CharacterInstance>();
-  public ICollection<ObjectInstance> Contents { get; } = new List<ObjectInstance>();
-  public ICollection<ExtraDescriptionData> ExtraDescriptions { get; } = new List<ExtraDescriptionData>();
+  public ICollection<CharacterInstance> Persons { get; } = [];
+  public ICollection<ObjectInstance> Contents { get; } = [];
+  public ICollection<ExtraDescriptionData> ExtraDescriptions { get; } = [];
   public AreaData Area { get; set; }
-  public ICollection<ExitData> Exits { get; } = new List<ExitData>();
-  public ICollection<AffectData> PermanentAffects { get; private set; } = new List<AffectData>();
-  public ICollection<AffectData> Affects { get; } = new List<AffectData>();
+  public ICollection<ExitData> Exits { get; } = [];
+  public ICollection<AffectData> PermanentAffects { get; private set; } = [];
+  public ICollection<AffectData> Affects { get; } = [];
   public PlaneData plane { get; set; }
-  public ICollection<MudProgActData> MudProgActs { get; private set; } = new List<MudProgActData>();
+  public ICollection<MudProgActData> MudProgActs { get; private set; } = [];
   public int Flags { get; set; }
 
   public int mpactnum { get; set; }

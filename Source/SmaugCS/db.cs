@@ -134,7 +134,7 @@ public static class db
 
   public static List<WatchData> WATCHES = [];
 
-  public static Dictionary<string, Dictionary<string, string>> TITLES = new();
+  public static Dictionary<string, Dictionary<string, string>> TITLES = [];
 
   public static List<SkillData> DISEASES = [];
 

@@ -42,7 +42,7 @@ public class MobileTemplate : Template
     SavingThrows = new SavingThrowData();
     HitDice = new DiceData();
     DamageDice = new DiceData();
-    Statistics = new Dictionary<StatisticTypes, object>();
+    Statistics = [];
 
     ShortDescription = $"A newly created {name}";
     LongDescription = $"Somebody abandoned a newly created {name} here.";

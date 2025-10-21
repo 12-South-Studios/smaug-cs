@@ -12,7 +12,7 @@ public static class WeatherConstants
 {
   public static readonly List<WeatherRangeData> WeatherData = [];
 
-  private static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages = new();
+  private static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages = [];
     private static readonly string[] HeaderChars = ["#"];
 
     public static IEnumerable<string> GetWeatherMessages(PrecipitationTypes precip)

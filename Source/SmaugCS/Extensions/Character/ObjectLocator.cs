@@ -162,8 +162,7 @@ public static class ObjectLocator
 
   private static T GetObjectInReversedList<T>(IEnumerable<T> items, string argument) where T : Cell
   {
-    List<T> reversedList = new();
-    reversedList.AddRange(items);
+    List<T> reversedList = [.. items];
     reversedList.Reverse();
 
     return GetObjectInList(reversedList

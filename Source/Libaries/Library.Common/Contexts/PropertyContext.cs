@@ -11,7 +11,7 @@ namespace Library.Common.Contexts;
 /// </summary>
 public class PropertyContext : BaseContext<IEntity>, IPropertyContext
 {
-  private readonly Dictionary<string, Property> _properties = new();
+  private readonly Dictionary<string, Property> _properties = [];
 
   /// <summary>
   ///

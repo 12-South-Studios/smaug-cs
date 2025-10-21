@@ -8,13 +8,13 @@ public class ResetData
   public ResetTypes Type { get; set; }
   public string Command { get; set; }
   public int Extra { get; set; }
-  public IEnumerable<int> Args { get; private set; } = new List<int>();
+  public IEnumerable<int> Args { get; private set; } = [];
   public bool sreset { get; set; }
-  public ICollection<ResetData> Resets { get; private set; } = new List<ResetData>();
+  public ICollection<ResetData> Resets { get; private set; } = [];
 
   public void SetArgs(int v1, int v2, int v3)
   {
-    Args = new List<int> { v1, v2, v3 };
+    Args = [v1, v2, v3];
   }
 
   public void AddReset(string type, int extra, int arg1, int arg2, int arg3)

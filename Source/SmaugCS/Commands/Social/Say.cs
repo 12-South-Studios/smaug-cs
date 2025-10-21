@@ -27,7 +27,7 @@ public static class Say
     if (CheckFunctions.CheckIfEmptyString(ch, argument, "Say what?")) return;
     if (CheckFunctions.CheckIf(ch,
           args => ((CharacterInstance)args[0]).CurrentRoom.Flags.IsSet((int)RoomFlags.Silence),
-          "You can't do that here.", new List<object> { ch })) return;
+          "You can't do that here.", [ch])) return;
 
     ExtendedBitvector actflags = ch.Act;
     if (ch.IsNpc())

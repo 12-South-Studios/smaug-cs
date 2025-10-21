@@ -24,7 +24,7 @@ public class BooleanSet
   public BooleanSet(EventTable table, EventCallback<RealmEventArgs> callback)
   {
     _callback = callback;
-    _set = new Dictionary<string, bool>();
+    _set = [];
     _table = table;
   }
 
@@ -36,7 +36,7 @@ public class BooleanSet
   public BooleanSet(string msg, EventCallback<RealmEventArgs> callback)
   {
     _callback = callback;
-    _set = new Dictionary<string, bool>();
+    _set = [];
     _table = new EventTable { { "message", msg } };
   }
 

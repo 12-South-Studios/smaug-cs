@@ -21,10 +21,10 @@ public static class Quit
     if (CheckFunctions.CheckIfNpc(ch, ch)) return;
 
     if (CheckFunctions.CheckIf(ch, HelperFunctions.IsInFightingPosition,
-          "No way! You are fighting.", new List<object> { ch }, ATTypes.AT_RED)) return;
+          "No way! You are fighting.", [ch], ATTypes.AT_RED)) return;
 
     if (CheckFunctions.CheckIf(ch, args => ((CharacterInstance)args[0]).CurrentPosition == PositionTypes.Stunned,
-          "You're not DEAD yet.", new List<object> { ch }, ATTypes.AT_BLOOD)) return;
+          "You're not DEAD yet.", [ch], ATTypes.AT_BLOOD)) return;
 
     TimerData timer = ch.Timers.FirstOrDefault(x => x.Type == TimerTypes.RecentFight);
     if (timer != null && !ch.IsImmortal())
@@ -39,7 +39,7 @@ public static class Quit
         {
           CharacterInstance actor = (CharacterInstance)args[0];
           return actor.IsPKill() && actor.wimpy > actor.MaximumHealth / 2.25f;
-        }, "Your wimpy has been adjusted to the maximum level for deadlies.", new List<object> { ch }))
+        }, "Your wimpy has been adjusted to the maximum level for deadlies.", [ch]))
       Wimpy.do_wimpy(ch, "max");
 
     if (ch.CurrentPosition == PositionTypes.Mounted)

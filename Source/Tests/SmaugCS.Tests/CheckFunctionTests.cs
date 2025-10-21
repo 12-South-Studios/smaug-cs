@@ -68,7 +68,7 @@ public class CheckFunctionTests
 
 
     CheckFunctions.CheckIf(actor, args => ((CharacterInstance)args[0]).PermanentStrength == 25, string.Empty,
-      new List<object> { actor }).Should().BeTrue();
+      [actor]).Should().BeTrue();
   }
 
   [Fact]

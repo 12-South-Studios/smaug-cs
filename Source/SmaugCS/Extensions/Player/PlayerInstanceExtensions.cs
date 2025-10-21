@@ -54,11 +54,11 @@ public static class PlayerInstanceExtensions
     return age;
   }
 
-  private static readonly List<AffectedByTypes> AffectedByList = new()
-  {
+  private static readonly List<AffectedByTypes> AffectedByList =
+  [
     AffectedByTypes.FireShield, AffectedByTypes.ShockShield, AffectedByTypes.AcidMist,
     AffectedByTypes.IceShield, AffectedByTypes.VenomShield, AffectedByTypes.Charm
-  };
+  ];
 
   [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
   public static void ShowVisibleAffectsOn(this PlayerInstance ch, CharacterInstance victim)

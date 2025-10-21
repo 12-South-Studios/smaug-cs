@@ -13,6 +13,7 @@ using System.Net;
 using SmaugCS.Interfaces;
 using SmaugCS.LuaHelpers;
 using SmaugCS.Managers;
+using System;
 
 namespace SmaugCS;
 

@@ -16,7 +16,7 @@ public class ObjectInstance(long id, string name, int maxWear, int maxLayers)
   : Instance(id, name), IHasExtraFlags, IHasExtraDescriptions
 {
   public new string Name { get; set; }
-  public ICollection<ObjectInstance> Contents { get; private set; } = new List<ObjectInstance>();
+  public ICollection<ObjectInstance> Contents { get; private set; } = [];
   public ObjectInstance InObject { get; set; }
 
   private CharacterInstance _carriedBy;
@@ -27,7 +27,7 @@ public class ObjectInstance(long id, string name, int maxWear, int maxLayers)
     set => _carriedBy = value;
   }
 
-  public ICollection<ExtraDescriptionData> ExtraDescriptions { get; } = new List<ExtraDescriptionData>();
+  public ICollection<ExtraDescriptionData> ExtraDescriptions { get; } = [];
   public RoomTemplate InRoom { get; set; }
   public string Action { get; set; }
   public string Owner { get; set; }

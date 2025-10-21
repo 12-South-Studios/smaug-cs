@@ -223,8 +223,8 @@ public static class color
     ch.SetColor(attype);
   }
 
-  private static readonly List<string> color_list = new()
-  {
+  private static readonly List<string> color_list =
+  [
     "_bla",
     "_red",
     "_dgr",
@@ -241,10 +241,10 @@ public static class color
     "_pin",
     "_lbl",
     "_whi"
-  };
+  ];
 
-  private static readonly List<string> blink_list = new()
-  {
+  private static readonly List<string> blink_list =
+  [
     "*bla",
     "*red",
     "*dgr",
@@ -261,7 +261,7 @@ public static class color
     "*pin",
     "*lbl",
     "*whi"
-  };
+  ];
 
   /// <summary>
   /// Examines a text string to determine if the first "word" is a color indicator

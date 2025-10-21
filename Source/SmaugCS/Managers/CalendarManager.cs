@@ -75,8 +75,8 @@ public sealed class CalendarManager(ILogManager logManager, IGameManager gameMan
     gameManager.GameTime.Year = (int)(lmonth % GameConstants.GetSystemValue<int>("MonthsPerYear"));
   }
 
-  private static readonly List<TimezoneData> TimezoneTable = new()
-  {
+  private static readonly List<TimezoneData> TimezoneTable =
+  [
     new TimezoneData("GMT-12", "Eniwetok", -12, 0),
     new TimezoneData("GMT-11", "Samoa", -11, 0),
     new TimezoneData("GMT-10", "Hawaii", -10, 0),
@@ -102,7 +102,7 @@ public sealed class CalendarManager(ILogManager logManager, IGameManager gameMan
     new TimezoneData("GMT+10", "Sydney, Melbourne, Guam", 10, 0),
     new TimezoneData("GMT+11", "Magadan, Soloman Is", 11, 0),
     new TimezoneData("GMT+12", "Fiji, Wellington, Auckland", 12, 0)
-  };
+  ];
 
   public static int GetTimezone(string arg)
   {
