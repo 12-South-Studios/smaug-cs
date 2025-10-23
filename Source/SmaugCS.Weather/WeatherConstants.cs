@@ -10,6 +10,9 @@ namespace SmaugCS.Weather;
 
 public static class WeatherConstants
 {
+  public const int WeatherSizeX = 3;
+  public const int WeatherSizeY = 3;
+
   public static readonly List<WeatherRangeData> WeatherData = [];
 
   private static readonly Dictionary<PrecipitationTypes, List<string>> WeatherMessages = [];
