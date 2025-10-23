@@ -25,6 +25,26 @@ public static class Weather
       return;
     }
 
+
+    if (string.IsNullOrEmpty(argument))
+    {
+      ch.SendTo("Syntax: showweather <x> <y>");
+      return;
+    }
+
+    string[] args = argument.Split(' ');
+
+    if (!int.TryParse(args[0], out var x))
+    {
+      ch.SendTo($"X value must be between 1 and {WeatherConstants.WeatherSizeX}");
+      return;
+    }
+    if (!int.TryParse(args[1], out var y))
+    {
+      ch.SendTo($"Y value must be between 1 and {WeatherConstants.WeatherSizeY}");
+      return;
+    }
+
     WeatherCell cell = Program.WeatherManager.Weather.GetCellFromMap(x, y);
     if (cell == null)
     {
