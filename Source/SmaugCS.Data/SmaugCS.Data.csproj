@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Data</AssemblyTitle>
     <Product>SmaugCS.Data</Product>
@@ -29,8 +29,7 @@
     <Content Include="NCalcLicense.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
+    <PackageReference Include="System.Runtime.Caching" Version="10.0.9" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="AuctionData.cs" />

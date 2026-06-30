@@ -1,4 +1,7 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/12-South-Studios/smaug-cs/dotnet.yml)
+![.NET Version](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)
+![License](https://img.shields.io/badge/license-GPLv3-blue)
+![GitHub last commit](https://img.shields.io/github/last-commit/12-South-Studios/smaug-cs)
 
 ## SmaugCS
 A multi-user dungeon application, based on SmaugFUSS 1.9 which was obtained from Nick Gammon's website (http://www.mushclient.com/downloads/dlsmaug.htm). See SmaugFUSSLicense.txt for more about licensing of this application and code

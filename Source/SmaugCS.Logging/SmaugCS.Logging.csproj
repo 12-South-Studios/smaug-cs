@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Logging</AssemblyTitle>
     <Product>SmaugCS.Logging</Product>
@@ -19,7 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
+    <PackageReference Include="System.Runtime.Caching" Version="10.0.9" />
   </ItemGroup>
 
 </Project>

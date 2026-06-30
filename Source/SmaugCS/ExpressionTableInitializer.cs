@@ -104,62 +104,62 @@ public static class ExpressionTableInitializer
 
   #region Custom Functions
 
-  private static int LevelFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int LevelFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.Level;
 
   private static string ReplaceLevelCall(Match regexMatch) => "Level()";
 
-  private static int HealthFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int HealthFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.CurrentHealth;
 
   private static string ReplaceHealthCall(Match regexMatch) => "Health()";
 
-  private static int ManaFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int ManaFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.CurrentMana;
 
   private static string ReplaceManaCall(Match regexMatch) => "Mana()";
 
-  private static int MovementFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int MovementFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.CurrentMovement;
 
   private static string ReplaceMovementCall(Match regexMatch) => "Movement()";
 
-  private static int StrengthFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int StrengthFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentStrength();
 
   private static string ReplaceStrengthCall(Match regexMatch) => "Strength()";
 
-  private static int IntelligenceFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int IntelligenceFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentIntelligence();
 
   private static string ReplaceIntelligenceCall(Match regexMatch) => "Intelligence()";
 
-  private static int WisdomFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int WisdomFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentWisdom();
 
   private static string ReplaceWisdomCall(Match regexMatch) => "Wisdom()";
 
-  private static int DexterityFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int DexterityFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentDexterity();
 
   private static string ReplaceDexterityCall(Match regexMatch) => "Dexterity()";
 
-  private static int ConstitutionFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int ConstitutionFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentConstitution();
 
   private static string ReplaceConstitutionCall(Match regexMatch) => "Constitution()";
 
-  private static int CharismaFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int CharismaFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentCharisma();
 
   private static string ReplaceCharismaCall(Match regexMatch) => "Charisma()";
 
-  private static int LuckFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int LuckFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     GameManager.CurrentCharacter.GetCurrentLuck();
 
   private static string ReplaceLuckCall(Match regexMatch) => "Luck()";
 
-  private static int AgeFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions) =>
+  private static int AgeFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions) =>
     (GameManager.CurrentCharacter as PlayerInstance)?.CalculateAge() ?? 0;
 
   private static string ReplaceAgeCall(Match regexMatch) => "Age()";

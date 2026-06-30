@@ -60,7 +60,7 @@ public class ExpressionParser
     }
   }
 
-  private void ExpOnEvaluateFunction(string name, FunctionArgs args)
+  private void ExpOnEvaluateFunction(string name, FunctionEventArgs args)
   {
     CustomExpression customExpr = GetCustomExpression(name);
     if (customExpr?.ExpressionFunction == null)

@@ -18,15 +18,15 @@
     <ProjectReference Include="..\SmaugCS.Common\SmaugCS.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
-    <PackageReference Include="MongoDB.Driver" Version="3.5.0" />
+    <PackageReference Include="Autofac" Version="9.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.9" />
+    <PackageReference Include="MongoDB.Driver" Version="3.9.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
+    <PackageReference Include="System.Runtime.Caching" Version="10.0.9" />
   </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.DAL</AssemblyTitle>
     <Copyright>Copyright ©</Copyright>

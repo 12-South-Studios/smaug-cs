@@ -23,7 +23,7 @@ public class CustomExpression
   /// <summary>
   /// Function call if a regex match is found (after replacement)
   /// </summary>
-  public Func<FunctionArgs, IEnumerable<CustomExpression>, int> ExpressionFunction { get; set; }
+  public Func<FunctionEventArgs, IEnumerable<CustomExpression>, int> ExpressionFunction { get; set; }
 
   /// <summary>
   /// Function that performs the proper replacement of the string matched using 

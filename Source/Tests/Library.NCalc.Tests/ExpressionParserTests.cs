@@ -70,12 +70,12 @@ public class ExpressionParserTests
     result.Should().Be(expected);
   }
 
-  private static int RollFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions)
+  private static int RollFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions)
   {
     TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
     Random random = new(Convert.ToInt32(t.TotalSeconds));
 
-    return random.Next((int)args.Parameters[0].Evaluate(), (int)args.Parameters[1].Evaluate());
+    return random.Next((int)args.Parameters.Evaluate(0), (int)args.Parameters.Evaluate(1));
   }
 
   private static string ReplaceRollCall(Match regexMatch)
@@ -106,7 +106,7 @@ public class ExpressionParserTests
     result.Should().BeLessOrEqualTo(maxExpected);
   }
 
-  private static int NumberFunction(FunctionArgs args, IEnumerable<CustomExpression> expressions)
+  private static int NumberFunction(FunctionEventArgs args, IEnumerable<CustomExpression> expressions)
   {
     return 18;
   }

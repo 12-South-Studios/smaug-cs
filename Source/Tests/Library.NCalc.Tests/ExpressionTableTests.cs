@@ -9,7 +9,7 @@ namespace Library.NCalc.Tests;
 
 public class ExpressionTableTests
 {
-  private static int FakeFunc(FunctionArgs args, IEnumerable<CustomExpression> expressions)
+  private static int FakeFunc(FunctionEventArgs args, IEnumerable<CustomExpression> expressions)
   {
     return 0;
   }

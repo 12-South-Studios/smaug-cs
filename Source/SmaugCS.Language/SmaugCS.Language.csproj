@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>SmaugCS.Language</AssemblyTitle>
     <Product>SmaugCS.Language</Product>
@@ -19,6 +19,6 @@
     <ProjectReference Include="..\Libaries\Patterns.Singleton\Patterns.Singleton.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
+    <PackageReference Include="System.Runtime.Caching" Version="10.0.9" />
   </ItemGroup>
 </Project>
